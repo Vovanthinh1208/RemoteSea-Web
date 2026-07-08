@@ -10,7 +10,14 @@ export const CompletionRing = ({ pct }: CompletionRingProps) => {
   return (
     <div className="relative flex-shrink-0">
       <svg height="58" viewBox="0 0 58 58" width="58">
-        <circle className="stroke-neutral-100" cx="29" cy="29" fill="none" r={RADIUS} strokeWidth="5" />
+        <circle
+          className="stroke-neutral-100"
+          cx="29"
+          cy="29"
+          fill="none"
+          r={RADIUS}
+          strokeWidth="5"
+        />
         <circle
           className="stroke-brand-600"
           cx="29"

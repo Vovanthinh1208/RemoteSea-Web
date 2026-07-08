@@ -27,14 +27,19 @@ export const EmployerDashboard = () => {
   const inReview = jobs.filter((j) => j.status === "PENDING_REVIEW").length;
 
   const hour = new Date().getHours();
-  const greeting = hour < MORNING_END_HOUR ? "Good morning" : hour < AFTERNOON_END_HOUR ? "Good afternoon" : "Good evening";
+  const greeting =
+    hour < MORNING_END_HOUR
+      ? "Good morning"
+      : hour < AFTERNOON_END_HOUR
+        ? "Good afternoon"
+        : "Good evening";
   const firstName = (user?.name ?? "there").split(" ").slice(-1)[0] ?? user?.name ?? "there";
 
   return (
     <div className="min-h-screen bg-[#F8F7F4]">
       <div className="mx-auto max-w-[1240px] px-6 py-8">
         {!profile && (
-          <div className="mb-6 flex items-start gap-4 rounded-20 border border-amber-200 bg-amber-50 p-5">
+          <div className="rounded-20 mb-6 flex items-start gap-4 border border-amber-200 bg-amber-50 p-5">
             <div className="min-w-0 flex-1">
               <h3 className="mb-1 text-[14.5px] font-semibold text-neutral-900">
                 Set up your company profile
@@ -44,7 +49,7 @@ export const EmployerDashboard = () => {
               </p>
             </div>
             <Link
-              className="flex-shrink-0 rounded-10 bg-brand-600 px-3 py-1.5 text-[12.5px] font-medium text-white hover:bg-brand-700"
+              className="rounded-10 flex-shrink-0 bg-brand-600 px-3 py-1.5 text-[12.5px] font-medium text-white hover:bg-brand-700"
               to="/post-job"
             >
               Get started
@@ -63,8 +68,9 @@ export const EmployerDashboard = () => {
               {greeting}, <em className="font-serif-italic text-brand-700">{firstName}.</em>
             </h1>
             <p className="text-[15px] text-neutral-500">
-              You have <strong className="text-neutral-900">{stats.totalApps} applicants</strong> across{" "}
-              <strong className="text-neutral-900">{activeListings}</strong> live{activeListings === 1 ? " role" : " roles"}.
+              You have <strong className="text-neutral-900">{stats.totalApps} applicants</strong>{" "}
+              across <strong className="text-neutral-900">{activeListings}</strong> live
+              {activeListings === 1 ? " role" : " roles"}.
             </p>
           </div>
           {profile && (
@@ -92,9 +98,24 @@ export const EmployerDashboard = () => {
 
         {/* KPIs */}
         <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          <KpiCard icon={Briefcase} label="Active listings" sub={`${inReview} in review`} value={String(activeListings)} />
-          <KpiCard icon={Users} label="Total applications" sub="all listings" value={String(stats.totalApps)} />
-          <KpiCard icon={Star} label="Shortlisted" sub="across roles" value={String(stats.shortlisted)} />
+          <KpiCard
+            icon={Briefcase}
+            label="Active listings"
+            sub={`${inReview} in review`}
+            value={String(activeListings)}
+          />
+          <KpiCard
+            icon={Users}
+            label="Total applications"
+            sub="all listings"
+            value={String(stats.totalApps)}
+          />
+          <KpiCard
+            icon={Star}
+            label="Shortlisted"
+            sub="across roles"
+            value={String(stats.shortlisted)}
+          />
           <KpiCard
             icon={Clock}
             label="Avg. time to hire"

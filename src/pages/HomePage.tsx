@@ -161,7 +161,9 @@ export const HomePage = () => {
                   />
                   <div className="min-w-0 flex-1">
                     <div className="mb-0.5 flex items-center gap-1.5 text-[12px] text-neutral-400">
-                      {job.employer.isVerified && <ShieldCheck className="text-brand-600" size={11} />}
+                      {job.employer.isVerified && (
+                        <ShieldCheck className="text-brand-600" size={11} />
+                      )}
                       {job.employer.companyName} · {countryFlag(job.country)} {country}
                     </div>
                     <p className="truncate text-sm font-semibold text-neutral-900">{job.title}</p>
@@ -298,9 +300,7 @@ export const HomePage = () => {
           </div>
           <h2 className="mb-10 text-[32px] font-semibold tracking-tight text-neutral-900">
             Built by someone who&apos;s{" "}
-            <em className="font-serif-italic text-brand-700">
-              actually done it.
-            </em>
+            <em className="font-serif-italic text-brand-700">actually done it.</em>
           </h2>
           <div className="grid gap-10 lg:grid-cols-[280px_1fr]">
             {/* Aside */}

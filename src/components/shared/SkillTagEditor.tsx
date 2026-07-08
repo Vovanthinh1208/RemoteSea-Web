@@ -68,7 +68,7 @@ export const SkillTagEditor = ({ skills, setSkills, suggestions = [] }: SkillTag
           <span className="text-[11.5px] text-neutral-400">Suggested:</span>
           {suggestedSkills.slice(0, MAX_SUGGESTIONS).map((skill) => (
             <button
-              className="rounded-full border border-neutral-200 px-2.5 py-0.5 text-[11.5px] text-neutral-600 hover:border-brand-300 hover:text-brand-700"
+              className="hover:border-brand-300 rounded-full border border-neutral-200 px-2.5 py-0.5 text-[11.5px] text-neutral-600 hover:text-brand-700"
               key={skill}
               type="button"
               onClick={() => addSkill(skill)}

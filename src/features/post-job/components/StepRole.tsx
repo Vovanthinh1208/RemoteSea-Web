@@ -24,7 +24,9 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
     <div className="space-y-6">
       <div>
         <h2 className="text-[22px] font-semibold text-neutral-900">Role details</h2>
-        <p className="mt-1 text-sm text-neutral-500">Help candidates understand exactly what you need.</p>
+        <p className="mt-1 text-sm text-neutral-500">
+          Help candidates understand exactly what you need.
+        </p>
       </div>
 
       <Field label="Job title">
@@ -108,7 +110,7 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
         <div className="grid gap-4 sm:grid-cols-4">
           <Field label="Min">
             <input
-              className="w-full rounded-10 border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
+              className="rounded-10 focus:border-brand-500 w-full border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-100"
               min={0}
               type="number"
               value={form.salMin}
@@ -117,7 +119,7 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
           </Field>
           <Field label="Max">
             <input
-              className="w-full rounded-10 border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
+              className="rounded-10 focus:border-brand-500 w-full border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-100"
               min={0}
               type="number"
               value={form.salMax}

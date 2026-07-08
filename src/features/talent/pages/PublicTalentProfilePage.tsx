@@ -1,5 +1,15 @@
 import { Link, useParams } from "react-router-dom";
-import { Briefcase, Clock, Code2, FileText, Globe, MapPin, Settings, ShieldCheck, User } from "lucide-react";
+import {
+  Briefcase,
+  Clock,
+  Code2,
+  FileText,
+  Globe,
+  MapPin,
+  Settings,
+  ShieldCheck,
+  User,
+} from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { usePublicTalentProfile } from "@/features/talent/talent.queries";
@@ -12,7 +22,9 @@ export const PublicTalentProfilePage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
   const { data: profile, isLoading, isError } = usePublicTalentProfile(slug);
-  useDocumentTitle(profile?.user?.name ? `${profile.user.name} — Talent Profile` : "Talent Profile");
+  useDocumentTitle(
+    profile?.user?.name ? `${profile.user.name} — Talent Profile` : "Talent Profile"
+  );
 
   if (isLoading) {
     return (
@@ -26,7 +38,9 @@ export const PublicTalentProfilePage = () => {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-md flex-col items-center justify-center px-6 text-center">
         <h1 className="text-2xl font-semibold text-neutral-900">Profile not found</h1>
-        <p className="mt-2 text-sm text-neutral-500">This talent profile doesn&apos;t exist or was removed.</p>
+        <p className="mt-2 text-sm text-neutral-500">
+          This talent profile doesn&apos;t exist or was removed.
+        </p>
         <Link className="mt-6" to={ROUTES.jobs}>
           <Button variant="primary">Browse jobs</Button>
         </Link>
@@ -46,7 +60,11 @@ export const PublicTalentProfilePage = () => {
   const links = [
     profile.githubUrl && { icon: Code2, label: profile.githubUrl, href: profile.githubUrl },
     profile.linkedinUrl && { icon: User, label: profile.linkedinUrl, href: profile.linkedinUrl },
-    profile.portfolioUrl && { icon: Globe, label: profile.portfolioUrl, href: profile.portfolioUrl },
+    profile.portfolioUrl && {
+      icon: Globe,
+      label: profile.portfolioUrl,
+      href: profile.portfolioUrl,
+    },
     profile.resumeUrl && { icon: FileText, label: "Resume / CV", href: profile.resumeUrl },
   ].filter((l): l is { icon: typeof Code2; label: string; href: string } => Boolean(l));
 
@@ -59,7 +77,7 @@ export const PublicTalentProfilePage = () => {
             <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-brand-600 text-[26px] font-bold text-white">
               {initials}
               {profile.isOpenToWork && (
-                <span className="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-white bg-brand-500" />
+                <span className="bg-brand-500 absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-white" />
               )}
             </div>
           </div>
@@ -68,13 +86,17 @@ export const PublicTalentProfilePage = () => {
             <div className="mb-2 flex flex-wrap items-center gap-2">
               {profile.isOpenToWork && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-100 bg-brand-50 px-2.5 py-0.5 text-[11.5px] font-medium text-brand-700">
-                  <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
+                  <span className="bg-brand-500 h-1.5 w-1.5 rounded-full" />
                   Open to opportunities
                 </span>
               )}
             </div>
-            <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">{name}</h1>
-            {profile.headline && <p className="mb-3 text-[16px] text-neutral-500">{profile.headline}</p>}
+            <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
+              {name}
+            </h1>
+            {profile.headline && (
+              <p className="mb-3 text-[16px] text-neutral-500">{profile.headline}</p>
+            )}
             <div className="flex flex-wrap gap-x-5 gap-y-1.5">
               {profile.location && (
                 <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
@@ -103,9 +125,12 @@ export const PublicTalentProfilePage = () => {
 
           {profile.desiredSalaryMin && profile.desiredSalaryMax && (
             <div className="min-w-[200px] rounded-16 border border-neutral-100 bg-neutral-50 p-5">
-              <p className="mb-1 text-[10.5px] font-semibold uppercase tracking-wider text-neutral-400">Expecting</p>
+              <p className="mb-1 text-[10.5px] font-semibold uppercase tracking-wider text-neutral-400">
+                Expecting
+              </p>
               <p className="text-[26px] font-semibold leading-tight tracking-tight text-neutral-900">
-                ${(profile.desiredSalaryMin ?? 0).toLocaleString()}–${(profile.desiredSalaryMax ?? 0).toLocaleString()}
+                ${(profile.desiredSalaryMin ?? 0).toLocaleString()}–$
+                {(profile.desiredSalaryMax ?? 0).toLocaleString()}
                 <span className="ml-1 text-[14px] font-normal text-neutral-400"> / mo</span>
               </p>
               <p className="text-[12px] text-neutral-500">{profile.currency}</p>
@@ -154,7 +179,7 @@ export const PublicTalentProfilePage = () => {
                   <div className="space-y-1.5">
                     {links.map((l) => (
                       <a
-                        className="flex items-center gap-2.5 rounded-10 px-2 py-1.5 text-[13px] text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
+                        className="rounded-10 flex items-center gap-2.5 px-2 py-1.5 text-[13px] text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
                         href={l.href}
                         key={l.href}
                         rel="noopener noreferrer"

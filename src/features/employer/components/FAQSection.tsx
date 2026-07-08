@@ -36,12 +36,11 @@ export const FAQSection = () => {
   return (
     <section className="py-16">
       <div className="mx-auto max-w-[760px] px-6">
-        <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">FAQ</p>
+        <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
+          FAQ
+        </p>
         <h2 className="mb-10 text-[32px] font-semibold tracking-tight text-neutral-900">
-          Honest{" "}
-          <em className="font-serif-italic text-brand-700">
-            answers.
-          </em>
+          Honest <em className="font-serif-italic text-brand-700">answers.</em>
         </h2>
 
         <div className="flex flex-col gap-2">
@@ -56,7 +55,9 @@ export const FAQSection = () => {
                 className="flex w-full items-center justify-between gap-4 px-6 py-[18px] text-left"
                 onClick={() => setOpenIndex(openIndex === i ? NO_ITEM_OPEN : i)}
               >
-                <span className="text-[15px] font-medium tracking-tight text-neutral-900">{item.q}</span>
+                <span className="text-[15px] font-medium tracking-tight text-neutral-900">
+                  {item.q}
+                </span>
                 {openIndex === i ? (
                   <Minus className="flex-shrink-0 text-neutral-400" size={16} />
                 ) : (
@@ -64,7 +65,9 @@ export const FAQSection = () => {
                 )}
               </button>
               {openIndex === i && (
-                <div className="px-6 pb-5 text-[14.5px] leading-relaxed text-neutral-500">{item.a}</div>
+                <div className="px-6 pb-5 text-[14.5px] leading-relaxed text-neutral-500">
+                  {item.a}
+                </div>
               )}
             </div>
           ))}

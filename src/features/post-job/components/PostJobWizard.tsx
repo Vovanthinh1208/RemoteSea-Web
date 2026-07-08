@@ -97,7 +97,9 @@ export const PostJobWizard = () => {
       }
     }
 
-    const skillIndex = Object.fromEntries((allSkills ?? []).map((s) => [s.name.toLowerCase(), s.id]));
+    const skillIndex = Object.fromEntries(
+      (allSkills ?? []).map((s) => [s.name.toLowerCase(), s.id])
+    );
     const skillIds = form.jobSkills
       .map((s) => skillIndex[s.toLowerCase()])
       .filter((id): id is string => Boolean(id))
@@ -198,7 +200,7 @@ export const PostJobWizard = () => {
           {step === 4 && <StepReview form={form} />}
 
           {error && (
-            <p className="mt-4 rounded-10 bg-red-50 px-3 py-2 text-[13px] text-red-600">{error}</p>
+            <p className="rounded-10 mt-4 bg-red-50 px-3 py-2 text-[13px] text-red-600">{error}</p>
           )}
 
           <div className="mt-8 flex justify-between border-t border-neutral-100 pt-6">
@@ -262,7 +264,7 @@ export const PostJobWizard = () => {
             </div>
 
             <div className="flex items-center gap-2 rounded-12 border border-neutral-100 bg-white p-3 text-[12px] text-neutral-400">
-              <Shield className="flex-shrink-0 text-brand-500" size={13} />
+              <Shield className="text-brand-500 flex-shrink-0" size={13} />
               Secured by Stripe · SSL encrypted
             </div>
           </div>

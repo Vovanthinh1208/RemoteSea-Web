@@ -8,7 +8,11 @@ interface SubmissionSummaryProps {
 
 export const SubmissionSummary = ({ job }: SubmissionSummaryProps) => {
   const facts = [
-    { k: "Salary", v: `${formatSalary(job.salaryMin, job.salaryMax, job.currency)}/mo`, mono: true },
+    {
+      k: "Salary",
+      v: `${formatSalary(job.salaryMin, job.salaryMax, job.currency)}/mo`,
+      mono: true,
+    },
     { k: "Type", v: JOB_TYPE_LABELS[job.jobType] },
     { k: "Region", v: job.country ?? (job.isRemote ? "Remote" : "—") },
     { k: "Plan", v: PLAN_LABELS[job.planType] },
@@ -21,9 +25,14 @@ export const SubmissionSummary = ({ job }: SubmissionSummaryProps) => {
       </div>
       <div className="grid grid-cols-2 gap-2">
         {facts.map((f) => (
-          <div className="flex items-center justify-between rounded-8 bg-neutral-50 px-3 py-2 text-[13px]" key={f.k}>
+          <div
+            className="flex items-center justify-between rounded-8 bg-neutral-50 px-3 py-2 text-[13px]"
+            key={f.k}
+          >
             <span className="text-neutral-500">{f.k}</span>
-            <span className={`font-medium text-neutral-900 ${f.mono ? "font-mono" : ""}`}>{f.v}</span>
+            <span className={`font-medium text-neutral-900 ${f.mono ? "font-mono" : ""}`}>
+              {f.v}
+            </span>
           </div>
         ))}
       </div>

@@ -16,7 +16,8 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const rawCallbackUrl = searchParams.get("callbackUrl");
-  const callbackUrl = rawCallbackUrl && isSafeInternalPath(rawCallbackUrl) ? rawCallbackUrl : ROUTES.jobs;
+  const callbackUrl =
+    rawCallbackUrl && isSafeInternalPath(rawCallbackUrl) ? rawCallbackUrl : ROUTES.jobs;
   const { login } = useAuth();
   const { toast } = useToast();
   const [formError, setFormError] = useState<string | null>(null);
@@ -62,7 +63,10 @@ export const LoginForm = () => {
           id="password"
           label="Password"
           labelSlot={
-            <Link className="text-xs text-brand-600 hover:text-brand-700" to={ROUTES.forgotPassword}>
+            <Link
+              className="text-xs text-brand-600 hover:text-brand-700"
+              to={ROUTES.forgotPassword}
+            >
               Forgot?
             </Link>
           }

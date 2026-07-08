@@ -9,7 +9,13 @@ interface QueueKpisProps {
   rejectedCount: number;
 }
 
-export const QueueKpis = ({ activeCount, overdueCount, avgWaitHours, approvedCount, rejectedCount }: QueueKpisProps) => {
+export const QueueKpis = ({
+  activeCount,
+  overdueCount,
+  avgWaitHours,
+  approvedCount,
+  rejectedCount,
+}: QueueKpisProps) => {
   const tiles = [
     {
       icon: <Inbox size={14} />,
@@ -46,7 +52,9 @@ export const QueueKpis = ({ activeCount, overdueCount, avgWaitHours, approvedCou
             {s.icon}
             {s.label}
           </div>
-          <div className={`text-[22px] font-semibold ${s.warn ? "text-amber-600" : "text-neutral-900"}`}>
+          <div
+            className={`text-[22px] font-semibold ${s.warn ? "text-amber-600" : "text-neutral-900"}`}
+          >
             {s.val}
           </div>
           <div className="mt-0.5 text-[11px] text-neutral-400">{s.sub}</div>

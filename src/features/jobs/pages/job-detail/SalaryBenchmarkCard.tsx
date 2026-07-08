@@ -31,15 +31,22 @@ export const SalaryBenchmarkCard = ({ job, benchmarks }: SalaryBenchmarkCardProp
 
   return (
     <div className="rounded-16 border border-neutral-100 bg-white p-5">
-      <h4 className="mb-4 text-[13px] font-semibold text-neutral-900">Salary check · {bench.role}</h4>
+      <h4 className="mb-4 text-[13px] font-semibold text-neutral-900">
+        Salary check · {bench.role}
+      </h4>
       <div className="space-y-3">
         <div>
           <div className="mb-1.5 flex items-center justify-between text-[12px]">
             <span className="text-neutral-500">This role</span>
-            <span className="font-mono font-semibold text-neutral-900">${jobMid.toLocaleString()}/mo</span>
+            <span className="font-mono font-semibold text-neutral-900">
+              ${jobMid.toLocaleString()}/mo
+            </span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-neutral-100">
-            <div className="h-full rounded-full bg-brand-600" style={{ width: `${Math.max(MIN_BENCH_BAR_PCT, benchPos)}%` }} />
+            <div
+              className="h-full rounded-full bg-brand-600"
+              style={{ width: `${Math.max(MIN_BENCH_BAR_PCT, benchPos)}%` }}
+            />
           </div>
         </div>
         <div>
@@ -59,7 +66,8 @@ export const SalaryBenchmarkCard = ({ job, benchmarks }: SalaryBenchmarkCardProp
         </div>
       </div>
       <p className="mt-3 text-[12px] leading-relaxed text-neutral-400">
-        This offer sits at the <strong className="text-neutral-700">{percentile}th percentile</strong> for{" "}
+        This offer sits at the{" "}
+        <strong className="text-neutral-700">{percentile}th percentile</strong> for{" "}
         {bench.role.toLowerCase()}s based on {bench.count} VN data points.
       </p>
     </div>

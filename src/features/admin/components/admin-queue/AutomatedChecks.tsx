@@ -35,7 +35,9 @@ export const AutomatedChecks = ({ job }: AutomatedChecksProps) => {
       <div className="space-y-1.5">
         {checks.map((a) => (
           <div className="flex items-start gap-2.5" key={a.t}>
-            <span className={`mt-0.5 grid h-5 w-5 flex-shrink-0 place-items-center rounded-full ${AUTO_COLOR[a.state]}`}>
+            <span
+              className={`mt-0.5 grid h-5 w-5 flex-shrink-0 place-items-center rounded-full ${AUTO_COLOR[a.state]}`}
+            >
               {AUTO_ICON[a.state]}
             </span>
             <div>

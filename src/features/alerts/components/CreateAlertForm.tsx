@@ -115,7 +115,11 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
           type="number"
           {...register("salaryMin")}
         />
-        <select aria-label="Notification frequency" className={INPUT_FIELD_CLASS} {...register("frequency")}>
+        <select
+          aria-label="Notification frequency"
+          className={INPUT_FIELD_CLASS}
+          {...register("frequency")}
+        >
           {FREQUENCIES.map((frequency) => (
             <option key={frequency} value={frequency}>
               {frequency.toLowerCase()}

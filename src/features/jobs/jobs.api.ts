@@ -1,7 +1,13 @@
 import { apiClient } from "@/services/api-client";
 import type { ExperienceLevel, Job, JobFacets, JobType, PlanType } from "@/types/job";
 import type { PaginationMeta } from "@/types/api";
-import { JOBTYPE_TO_ENUMS, SENIORITY_TO_LEVELS, SALARY_FLOOR, SALARY_CEIL, type JobFilters } from "@/features/jobs/job-filters";
+import {
+  JOBTYPE_TO_ENUMS,
+  SENIORITY_TO_LEVELS,
+  SALARY_FLOOR,
+  SALARY_CEIL,
+  type JobFilters,
+} from "@/features/jobs/job-filters";
 
 export type JobListResponse = { jobs: Job[]; pagination: PaginationMeta; facets: JobFacets };
 

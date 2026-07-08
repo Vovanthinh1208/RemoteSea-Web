@@ -28,7 +28,12 @@ interface JobSummaryHeaderProps {
 
 export const JobSummaryHeader = ({ job }: JobSummaryHeaderProps) => {
   const waitHours = hoursSince(job.createdAt);
-  const tags = [job.categories[0]?.category.name ?? "Other", LEVEL_LABELS[job.level], JOB_TYPE_LABELS[job.jobType], jobRegion(job)];
+  const tags = [
+    job.categories[0]?.category.name ?? "Other",
+    LEVEL_LABELS[job.level],
+    JOB_TYPE_LABELS[job.jobType],
+    jobRegion(job),
+  ];
 
   return (
     <div className="border-b border-neutral-100 p-5">
@@ -41,13 +46,18 @@ export const JobSummaryHeader = ({ job }: JobSummaryHeaderProps) => {
         <div className="flex-1">
           <div className="mb-1 flex flex-wrap items-center gap-2">
             <span className="text-[13px] text-neutral-500">Submitted by</span>
-            <span className="text-[13px] font-semibold text-neutral-900">{job.employer.companyName}</span>
+            <span className="text-[13px] font-semibold text-neutral-900">
+              {job.employer.companyName}
+            </span>
             <VerifiedBadge isVerified={job.employer.isVerified} size="md" />
           </div>
           <h2 className="mb-2 text-[18px] font-semibold text-neutral-900">{job.title}</h2>
           <div className="flex flex-wrap gap-1.5">
             {tags.map((t) => (
-              <span className="rounded-full border border-neutral-200 px-2.5 py-0.5 text-[12px] text-neutral-600" key={t}>
+              <span
+                className="rounded-full border border-neutral-200 px-2.5 py-0.5 text-[12px] text-neutral-600"
+                key={t}
+              >
                 {t}
               </span>
             ))}

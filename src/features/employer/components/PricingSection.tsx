@@ -97,13 +97,11 @@ export const PricingSection = () => {
             Pricing
           </p>
           <h2 className="text-[36px] font-semibold tracking-tight text-neutral-900">
-            One-time, not{" "}
-            <em className="font-serif-italic text-brand-700">
-              subscription.
-            </em>
+            One-time, not <em className="font-serif-italic text-brand-700">subscription.</em>
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm text-neutral-500">
-            No &quot;talent network access fees.&quot; No seats. Pay per role, only when you&apos;re hiring.
+            No &quot;talent network access fees.&quot; No seats. Pay per role, only when you&apos;re
+            hiring.
           </p>
         </div>
 
@@ -150,11 +148,16 @@ export const PricingSection = () => {
               <div className="mb-1 text-[16px] font-semibold text-neutral-900">{tier.name}</div>
               <div className="mb-4 text-[12.5px] text-neutral-400">{tier.tag}</div>
 
-              <div className="mb-3 font-serif text-[48px] leading-none tracking-tight text-neutral-900" style={{ fontFamily: "var(--font-serif)" }}>
+              <div
+                className="mb-3 font-serif text-[48px] leading-none tracking-tight text-neutral-900"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
                 <TierPrice annual={annual} tier={tier} />
               </div>
 
-              <p className="mb-5 min-h-[42px] text-[13.5px] leading-relaxed text-neutral-500">{tier.desc}</p>
+              <p className="mb-5 min-h-[42px] text-[13.5px] leading-relaxed text-neutral-500">
+                {tier.desc}
+              </p>
 
               {tier.name === "Hands-on" ? (
                 <a

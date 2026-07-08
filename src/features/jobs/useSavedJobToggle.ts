@@ -14,7 +14,10 @@ interface UseSavedJobToggleResult {
 // so the button never rendered a wrong state. This is a client-only query instead, so
 // while it's resolving for a signed-in user, callers show a neutral placeholder rather
 // than defaulting to "unsaved" and flashing to "Saved" once it loads.
-export const useSavedJobToggle = (jobId: string, loginCallbackUrl: string): UseSavedJobToggleResult => {
+export const useSavedJobToggle = (
+  jobId: string,
+  loginCallbackUrl: string
+): UseSavedJobToggleResult => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();

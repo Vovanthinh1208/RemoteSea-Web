@@ -22,14 +22,20 @@ export const AuthCallbackPage = () => {
 
     const token = searchParams.get("token");
     if (!token) {
-      toast({ title: "Sign in failed", description: "Missing authentication token.", variant: "error" });
+      toast({
+        title: "Sign in failed",
+        description: "Missing authentication token.",
+        variant: "error",
+      });
       navigate(ROUTES.login, { replace: true });
       return;
     }
 
     loginWithToken(token)
       .then((user) => {
-        navigate(user.role === "EMPLOYER" ? ROUTES.employerDashboard : ROUTES.talent, { replace: true });
+        navigate(user.role === "EMPLOYER" ? ROUTES.employerDashboard : ROUTES.talent, {
+          replace: true,
+        });
       })
       .catch(() => {
         toast({ title: "Sign in failed", description: "Please try again.", variant: "error" });

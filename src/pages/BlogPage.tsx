@@ -37,7 +37,8 @@ const POSTS = [
     id: "p3",
     category: "Salary",
     title: "What 612 remote offers told us about senior frontend pay.",
-    excerpt: "Median: $4,800. Top decile: $7,200+. The full breakdown by company size, country, and seniority.",
+    excerpt:
+      "Median: $4,800. Top decile: $7,200+. The full breakdown by company size, country, and seniority.",
     author: "Hà Phạm",
     authorInitial: "H",
     authorColor: "linear-gradient(135deg,#2563EB,#1D4ED8)",
@@ -50,7 +51,8 @@ const POSTS = [
     id: "p4",
     category: "Interview",
     title: "I bombed 7 Stripe-loop interviews. Then I figured out the system.",
-    excerpt: "The system design rounds at top-tier companies follow a pattern. Memorize the pattern, ace the round.",
+    excerpt:
+      "The system design rounds at top-tier companies follow a pattern. Memorize the pattern, ace the round.",
     author: "Khang Lê",
     authorInitial: "K",
     authorColor: "linear-gradient(135deg,#7C3AED,#5B21B6)",
@@ -77,7 +79,8 @@ const POSTS = [
     id: "p6",
     category: "Async Work",
     title: "Standups are dead, long live the Friday roll-up.",
-    excerpt: "How three of our members run weekly written async updates instead of 5 standups. Saves 4hr/week per engineer.",
+    excerpt:
+      "How three of our members run weekly written async updates instead of 5 standups. Saves 4hr/week per engineer.",
     author: "Phương Vũ",
     authorInitial: "P",
     authorColor: "linear-gradient(135deg,#65A30D,#3F6212)",
@@ -104,7 +107,8 @@ const POSTS = [
     id: "p8",
     category: "Tools",
     title: "My async stack: Notion + Linear + Loom, and the glue between them.",
-    excerpt: "How I run product design for a remote-first team across 6 timezones with three tools and a Friday ritual.",
+    excerpt:
+      "How I run product design for a remote-first team across 6 timezones with three tools and a Friday ritual.",
     author: "Sương Bùi",
     authorInitial: "S",
     authorColor: "linear-gradient(135deg,#16766F,#134E4A)",
@@ -157,7 +161,10 @@ export const BlogPage = () => {
           {/* Featured */}
           <article className="rounded-20 grid gap-8 overflow-hidden border border-neutral-100 bg-white shadow-card transition-shadow hover:shadow-[0_4px_24px_rgba(26,25,23,0.10)] lg:grid-cols-[420px_1fr]">
             <div className="rounded-l-20 overflow-hidden">
-              <div className="h-full min-h-[260px] w-full" style={{ background: featured.bg, aspectRatio: "4/3" }} />
+              <div
+                className="h-full min-h-[260px] w-full"
+                style={{ background: featured.bg, aspectRatio: "4/3" }}
+              />
             </div>
             <div className="flex flex-col justify-center p-8">
               <div className="mb-3 flex items-center gap-2 text-[13px] text-neutral-400">
@@ -169,8 +176,12 @@ export const BlogPage = () => {
                 <span>·</span>
                 <span>{featured.readTime} read</span>
               </div>
-              <h2 className="mb-3 text-[22px] font-semibold leading-snug text-neutral-900">{featured.title}</h2>
-              <p className="mb-6 text-[14px] leading-relaxed text-neutral-500">{featured.excerpt}</p>
+              <h2 className="mb-3 text-[22px] font-semibold leading-snug text-neutral-900">
+                {featured.title}
+              </h2>
+              <p className="mb-6 text-[14px] leading-relaxed text-neutral-500">
+                {featured.excerpt}
+              </p>
               <div className="flex items-center gap-3">
                 <div
                   className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full text-sm font-semibold text-white"
@@ -179,7 +190,9 @@ export const BlogPage = () => {
                   {featured.authorInitial}
                 </div>
                 <div>
-                  <div className="text-[13px] font-semibold text-neutral-900">{featured.author}</div>
+                  <div className="text-[13px] font-semibold text-neutral-900">
+                    {featured.author}
+                  </div>
                   <div className="text-[12px] text-neutral-400">Senior FE · 7yrs remote</div>
                 </div>
                 <span className="ml-auto inline-flex items-center gap-1 text-[13px] font-medium text-brand-600">
@@ -196,10 +209,15 @@ export const BlogPage = () => {
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="mb-1 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">Recent</p>
+              <p className="mb-1 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
+                Recent
+              </p>
               <h2 className="text-[28px] font-semibold text-neutral-900">
                 The{" "}
-                <em className="font-serif text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>
+                <em
+                  className="font-serif text-brand-700"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
                   archive
                 </em>
               </h2>
@@ -237,8 +255,12 @@ export const BlogPage = () => {
                       <span>·</span>
                       <span>{p.readTime}</span>
                     </div>
-                    <h3 className="mb-2 text-[15px] font-semibold leading-snug text-neutral-900">{p.title}</h3>
-                    <p className="mb-4 line-clamp-2 text-[13px] leading-relaxed text-neutral-500">{p.excerpt}</p>
+                    <h3 className="mb-2 text-[15px] font-semibold leading-snug text-neutral-900">
+                      {p.title}
+                    </h3>
+                    <p className="mb-4 line-clamp-2 text-[13px] leading-relaxed text-neutral-500">
+                      {p.excerpt}
+                    </p>
                     <div className="flex items-center gap-2">
                       <div
                         className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-full text-[11px] font-semibold text-white"
@@ -247,7 +269,9 @@ export const BlogPage = () => {
                         {p.authorInitial}
                       </div>
                       <div>
-                        <div className="text-[12.5px] font-semibold text-neutral-900">{p.author}</div>
+                        <div className="text-[12.5px] font-semibold text-neutral-900">
+                          {p.author}
+                        </div>
                         <div className="text-[11px] text-neutral-400">{p.date}</div>
                       </div>
                     </div>
@@ -275,7 +299,9 @@ export const BlogPage = () => {
               </div>
 
               <div className="rounded-16 border border-brand-100 bg-brand-50 p-5">
-                <h4 className="mb-1 text-[15px] font-semibold text-neutral-900">Field notes, in your inbox.</h4>
+                <h4 className="mb-1 text-[15px] font-semibold text-neutral-900">
+                  Field notes, in your inbox.
+                </h4>
                 <p className="mb-4 text-[13px] text-neutral-500">
                   One essay every Tuesday. Honest, unpolished, no sponsors.
                 </p>
@@ -289,7 +315,9 @@ export const BlogPage = () => {
                     Subscribe
                   </button>
                 </form>
-                <p className="mt-3 text-[11px] text-neutral-400">Joining 2,400+ readers · unsubscribe anytime</p>
+                <p className="mt-3 text-[11px] text-neutral-400">
+                  Joining 2,400+ readers · unsubscribe anytime
+                </p>
               </div>
 
               <div className="rounded-16 border border-neutral-100 bg-white p-5">
@@ -297,8 +325,8 @@ export const BlogPage = () => {
                   Write for us
                 </h4>
                 <p className="mb-3 text-[13px] leading-relaxed text-neutral-600">
-                  If you&apos;ve negotiated a tough offer, navigated a hard timezone, or built an async
-                  ritual that works — we&apos;d love your story.
+                  If you&apos;ve negotiated a tough offer, navigated a hard timezone, or built an
+                  async ritual that works — we&apos;d love your story.
                 </p>
                 <a
                   className="inline-flex items-center gap-1 text-[13px] font-medium text-brand-600 hover:text-brand-700"
@@ -327,7 +355,10 @@ export const BlogPage = () => {
             One thoughtful piece every Tuesday morning, written by working remote professionals. No
             marketing tricks, no &ldquo;tools we love&rdquo; affiliate roundups.
           </p>
-          <form className="flex flex-col gap-3 sm:flex-row sm:justify-center" onSubmit={(e) => e.preventDefault()}>
+          <form
+            className="flex flex-col gap-3 sm:flex-row sm:justify-center"
+            onSubmit={(e) => e.preventDefault()}
+          >
             <input
               className="h-12 flex-1 rounded-12 border border-neutral-200 bg-white px-4 text-sm outline-none placeholder:text-neutral-400 focus:border-brand-600 sm:max-w-xs"
               placeholder="you@work.com"

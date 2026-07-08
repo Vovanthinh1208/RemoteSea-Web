@@ -36,8 +36,15 @@ export const useAdminEmployers = () => {
 export const useReviewAdminJob = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, action, note }: { id: string; action: "approve" | "reject"; note?: string }) =>
-      reviewAdminJob(id, action, note),
+    mutationFn: ({
+      id,
+      action,
+      note,
+    }: {
+      id: string;
+      action: "approve" | "reject";
+      note?: string;
+    }) => reviewAdminJob(id, action, note),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ADMIN_JOBS_KEY });
     },

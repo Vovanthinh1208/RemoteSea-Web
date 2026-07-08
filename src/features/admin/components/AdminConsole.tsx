@@ -19,14 +19,16 @@ export const AdminConsole = () => {
       <div className="mx-auto flex max-w-[1240px] gap-6 px-6 py-8">
         <aside className="w-[180px] flex-shrink-0">
           <div className="mb-6">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-neutral-400">RemoteSEA</p>
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
+              RemoteSEA
+            </p>
             <p className="text-[15px] font-semibold text-neutral-900">Ops console</p>
           </div>
           <nav className="space-y-0.5">
             {TABS.map((t) => (
               <button
                 className={cn(
-                  "flex w-full items-center gap-2 rounded-10 px-3 py-2 text-[13px] transition-all",
+                  "rounded-10 flex w-full items-center gap-2 px-3 py-2 text-[13px] transition-all",
                   tab === t.id
                     ? "bg-white font-medium text-neutral-900 shadow-sm"
                     : "text-neutral-500 hover:bg-white/60 hover:text-neutral-700"

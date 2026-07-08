@@ -25,12 +25,12 @@ export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
       </h1>
       <p className="mb-6 max-w-md text-[15px] text-neutral-500">
         <strong className="text-neutral-800">{form.jobTitle || "Your job"}</strong> at{" "}
-        <strong className="text-neutral-800">{form.coName || "your company"}</strong> was created as a
-        draft. Checkout couldn&apos;t be started, so it hasn&apos;t been paid or submitted for review
-        yet.
+        <strong className="text-neutral-800">{form.coName || "your company"}</strong> was created as
+        a draft. Checkout couldn&apos;t be started, so it hasn&apos;t been paid or submitted for
+        review yet.
       </p>
 
-      <div className="mb-8 w-full max-w-md rounded-20 border border-neutral-200 bg-white p-6 text-left shadow-card">
+      <div className="rounded-20 mb-8 w-full max-w-md border border-neutral-200 bg-white p-6 text-left shadow-card">
         <p className="mb-4 text-[12px] font-semibold uppercase tracking-widest text-neutral-400">
           Job details
         </p>
@@ -40,7 +40,10 @@ export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
           { k: "Role", v: form.jobTitle || "—" },
           { k: "Reference", v: jobId },
         ].map(({ k, v }) => (
-          <div className="flex items-center justify-between border-b border-neutral-50 py-2.5 last:border-none" key={k}>
+          <div
+            className="flex items-center justify-between border-b border-neutral-50 py-2.5 last:border-none"
+            key={k}
+          >
             <span className="text-[12.5px] text-neutral-500">{k}</span>
             <span className="text-[13px] text-neutral-900">{v}</span>
           </div>

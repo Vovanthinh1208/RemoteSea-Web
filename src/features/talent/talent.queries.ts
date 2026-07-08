@@ -1,5 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getMyTalentProfile, getPublicTalentProfile, updateMyTalentProfile } from "@/features/talent/talent.api";
+import {
+  getMyTalentProfile,
+  getPublicTalentProfile,
+  updateMyTalentProfile,
+} from "@/features/talent/talent.api";
 import { useAuth } from "@/contexts/AuthContext";
 import { ApiError } from "@/services/api-error";
 

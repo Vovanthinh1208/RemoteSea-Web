@@ -71,8 +71,14 @@ const ListingRow = memo(function ListingRow({ job: j, applications: apps }: List
             )}
           </div>
           <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-neutral-100">
-            <span className="absolute h-full rounded-full bg-amber-300" style={{ width: `${reviewPct}%` }} />
-            <span className="absolute h-full rounded-full bg-brand-500" style={{ width: `${shortPct}%` }} />
+            <span
+              className="absolute h-full rounded-full bg-amber-300"
+              style={{ width: `${reviewPct}%` }}
+            />
+            <span
+              className="bg-brand-500 absolute h-full rounded-full"
+              style={{ width: `${shortPct}%` }}
+            />
           </div>
         </div>
       ) : (
@@ -124,7 +130,7 @@ export const ListingsPanel = ({ jobs, applicationsByJob }: ListingsPanelProps) =
           Your listings <span className="font-normal text-neutral-400">· {active} active</span>
         </h3>
         <Link
-          className="inline-flex items-center gap-1.5 rounded-10 bg-brand-600 px-3 py-1.5 text-[12px] font-medium text-white hover:bg-brand-700"
+          className="rounded-10 inline-flex items-center gap-1.5 bg-brand-600 px-3 py-1.5 text-[12px] font-medium text-white hover:bg-brand-700"
           to="/post-job"
         >
           <Plus size={11} /> Post a job
@@ -145,7 +151,11 @@ export const ListingsPanel = ({ jobs, applicationsByJob }: ListingsPanelProps) =
 
           <div className="divide-y divide-neutral-50">
             {jobs.map((j) => (
-              <ListingRow applications={applicationsByJob.get(j.id) ?? EMPTY_APPLICATIONS} job={j} key={j.id} />
+              <ListingRow
+                applications={applicationsByJob.get(j.id) ?? EMPTY_APPLICATIONS}
+                job={j}
+                key={j.id}
+              />
             ))}
           </div>
         </>

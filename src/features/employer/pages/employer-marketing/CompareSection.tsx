@@ -22,7 +22,9 @@ interface CompareCellProps {
 const CompareCell = ({ v, highlight }: CompareCellProps) => {
   if (v === true) {
     return (
-      <span className={`inline-grid h-7 w-7 place-items-center rounded-full ${highlight ? "bg-brand-600 text-white" : "bg-neutral-100 text-neutral-400"}`}>
+      <span
+        className={`inline-grid h-7 w-7 place-items-center rounded-full ${highlight ? "bg-brand-600 text-white" : "bg-neutral-100 text-neutral-400"}`}
+      >
         <Check size={13} />
       </span>
     );
@@ -34,18 +36,19 @@ const CompareCell = ({ v, highlight }: CompareCellProps) => {
       </span>
     );
   }
-  return <span className="text-[11px] font-medium uppercase tracking-wide text-amber-700">partial</span>;
+  return (
+    <span className="text-[11px] font-medium uppercase tracking-wide text-amber-700">partial</span>
+  );
 };
 
 export const CompareSection = () => (
   <section className="pb-20">
     <div className="mx-auto max-w-[1240px] px-6">
-      <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">Side by side</p>
+      <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
+        Side by side
+      </p>
       <h2 className="mb-8 text-[32px] font-semibold tracking-tight text-neutral-900">
-        Versus the{" "}
-        <em className="font-serif-italic">
-          alternatives.
-        </em>
+        Versus the <em className="font-serif-italic">alternatives.</em>
       </h2>
       <div className="overflow-hidden rounded-24 border border-neutral-100 bg-white">
         <div className="grid grid-cols-[1.4fr_repeat(4,1fr)] border-b border-neutral-100 bg-neutral-50">
@@ -60,7 +63,10 @@ export const CompareSection = () => (
           ))}
         </div>
         {COMPARE.map((row, i) => (
-          <div className={`grid grid-cols-[1.4fr_repeat(4,1fr)] border-b border-neutral-100 last:border-none ${i % 2 === 1 ? "bg-neutral-50/50" : ""}`} key={row.f}>
+          <div
+            className={`grid grid-cols-[1.4fr_repeat(4,1fr)] border-b border-neutral-100 last:border-none ${i % 2 === 1 ? "bg-neutral-50/50" : ""}`}
+            key={row.f}
+          >
             <div className="px-5 py-4 text-[14px] font-medium text-neutral-800">{row.f}</div>
             <div className="flex items-center justify-center border-x border-brand-100 bg-gradient-to-b from-brand-50/30 to-transparent px-5 py-4">
               <CompareCell highlight v={row.us as CellValue} />

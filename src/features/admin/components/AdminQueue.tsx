@@ -5,7 +5,10 @@ import { hoursSince, REVIEW_CHECKLIST, URGENT_WAIT_HOURS } from "@/features/admi
 import { AdminQueueSkeleton } from "@/features/admin/components/admin-queue/AdminQueueSkeleton";
 import { QueueKpis } from "@/features/admin/components/admin-queue/QueueKpis";
 import { QueueListPane } from "@/features/admin/components/admin-queue/QueueListPane";
-import { ResolutionBanner, type ResolutionKind } from "@/features/admin/components/admin-queue/ResolutionBanner";
+import {
+  ResolutionBanner,
+  type ResolutionKind,
+} from "@/features/admin/components/admin-queue/ResolutionBanner";
 import { JobSummaryHeader } from "@/features/admin/components/admin-queue/JobSummaryHeader";
 import { SubmissionSummary } from "@/features/admin/components/admin-queue/SubmissionSummary";
 import { AutomatedChecks } from "@/features/admin/components/admin-queue/AutomatedChecks";
@@ -54,7 +57,11 @@ export const AdminQueue = () => {
     const action = kind === "approved" ? "approve" : "reject";
     runWithToast(
       async () => {
-        await reviewJobMutation.mutateAsync({ id: decidedId, action, note: notes[decidedId] || undefined });
+        await reviewJobMutation.mutateAsync({
+          id: decidedId,
+          action,
+          note: notes[decidedId] || undefined,
+        });
         setResolved((prev) => ({ ...prev, [decidedId]: kind }));
         setBanner({ id: decidedId, kind });
         setTimeout(() => {
@@ -127,7 +134,11 @@ export const AdminQueue = () => {
           <div className="overflow-y-auto p-5" style={{ maxHeight: "calc(100vh - 440px)" }}>
             <SubmissionSummary job={sel} />
             <AutomatedChecks job={sel} />
-            <ReviewerChecklist checkedIndices={selChecked} disabled={!!isResolved} onToggle={toggleChecklistItem} />
+            <ReviewerChecklist
+              checkedIndices={selChecked}
+              disabled={!!isResolved}
+              onToggle={toggleChecklistItem}
+            />
             <DecisionBar
               canApprove={allDone}
               isPending={reviewJobMutation.isPending}

@@ -8,7 +8,10 @@ interface VisibilitySectionProps {
 }
 
 export const VisibilitySection = ({ isOpenToWork, onToggle }: VisibilitySectionProps) => (
-  <section className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7" id="visibility">
+  <section
+    className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7"
+    id="visibility"
+  >
     <SectionHead
       eyebrow="07 · Who sees you"
       help="Employers can only find and contact you while you're open to work."

@@ -38,7 +38,8 @@ apiClient.interceptors.response.use(
     const status = error.response?.status;
     const isNetworkError = !error.response;
     const isRetryable =
-      config?.method?.toLowerCase() === RETRYABLE_METHOD && (isNetworkError || (status ?? 0) >= 500);
+      config?.method?.toLowerCase() === RETRYABLE_METHOD &&
+      (isNetworkError || (status ?? 0) >= 500);
 
     if (isRetryable && config) {
       config.__retryCount = (config.__retryCount ?? 0) + 1;

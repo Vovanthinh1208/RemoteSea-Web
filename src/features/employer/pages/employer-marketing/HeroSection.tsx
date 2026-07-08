@@ -22,13 +22,15 @@ export const HeroSection = () => (
     <div
       className="pointer-events-none absolute inset-0 -z-10"
       style={{
-        background: "radial-gradient(ellipse 60% 50% at 90% 20%, rgba(46,155,82,0.10) 0%, transparent 60%), #F8F7F4",
+        background:
+          "radial-gradient(ellipse 60% 50% at 90% 20%, rgba(46,155,82,0.10) 0%, transparent 60%), #F8F7F4",
       }}
     />
     <div
       className="pointer-events-none absolute inset-0 -z-10 opacity-60"
       style={{
-        backgroundImage: "linear-gradient(#EFEDE8 1px, transparent 1px), linear-gradient(90deg, #EFEDE8 1px, transparent 1px)",
+        backgroundImage:
+          "linear-gradient(#EFEDE8 1px, transparent 1px), linear-gradient(90deg, #EFEDE8 1px, transparent 1px)",
         backgroundSize: "72px 72px",
         maskImage: "radial-gradient(ellipse 100% 70% at 30% 30%, black, transparent 70%)",
       }}
@@ -40,7 +42,10 @@ export const HeroSection = () => (
           <Building2 size={13} /> For hiring teams
         </div>
 
-        <h1 className="mb-4 font-serif text-[clamp(40px,5.5vw,60px)] leading-[1.15] tracking-tight text-neutral-900" style={{ fontFamily: "var(--font-serif)" }}>
+        <h1
+          className="mb-4 font-serif text-[clamp(40px,5.5vw,60px)] leading-[1.15] tracking-tight text-neutral-900"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
           Hire from Vietnam.
           <br />
           <em className="italic text-brand-700">The right way.</em>
@@ -78,7 +83,8 @@ export const HeroSection = () => (
           <div
             className="pointer-events-none absolute -inset-px -z-10 rounded-24 opacity-50"
             style={{
-              background: "linear-gradient(135deg, rgba(46,155,82,0.25), transparent 50%, rgba(245,158,11,0.20))",
+              background:
+                "linear-gradient(135deg, rgba(46,155,82,0.25), transparent 50%, rgba(245,158,11,0.20))",
               filter: "blur(20px)",
             }}
           />
@@ -89,19 +95,30 @@ export const HeroSection = () => (
               </span>
               Senior Frontend · Editor team
             </div>
-            <span className="text-[11.5px] font-medium uppercase tracking-wider text-neutral-400">Live · 4 days left</span>
+            <span className="text-[11.5px] font-medium uppercase tracking-wider text-neutral-400">
+              Live · 4 days left
+            </span>
           </div>
 
           <div className="mb-5 grid grid-cols-3 gap-3">
             {DASHBOARD_STATS.map((stat) => (
               <div className="flex flex-col gap-1 rounded-12 bg-neutral-50 p-3" key={stat.label}>
-                <div className="font-serif text-[28px] leading-none tracking-tight text-neutral-900" style={{ fontFamily: "var(--font-serif)" }}>
+                <div
+                  className="font-serif text-[28px] leading-none tracking-tight text-neutral-900"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
                   {stat.num}
                 </div>
-                <div className="text-[10.5px] font-medium uppercase tracking-widest text-neutral-400">{stat.label}</div>
+                <div className="text-[10.5px] font-medium uppercase tracking-widest text-neutral-400">
+                  {stat.label}
+                </div>
                 <div className="mt-1.5 flex h-7 items-end gap-0.5">
                   {stat.bars.map((h, i) => (
-                    <span className={`flex-1 rounded-sm opacity-65 ${stat.color}`} key={i} style={{ height: `${h * BAR_HEIGHT_SCALE}px`, minHeight: MIN_BAR_HEIGHT }} />
+                    <span
+                      className={`flex-1 rounded-sm opacity-65 ${stat.color}`}
+                      key={i}
+                      style={{ height: `${h * BAR_HEIGHT_SCALE}px`, minHeight: MIN_BAR_HEIGHT }}
+                    />
                   ))}
                 </div>
               </div>
@@ -113,7 +130,10 @@ export const HeroSection = () => (
           </div>
           <div className="flex flex-col gap-1">
             {APPLICANTS.map((a) => (
-              <div className="flex items-center gap-3 rounded-12 px-3 py-2.5 transition-colors hover:bg-neutral-50" key={a.name}>
+              <div
+                className="flex items-center gap-3 rounded-12 px-3 py-2.5 transition-colors hover:bg-neutral-50"
+                key={a.name}
+              >
                 <div className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 text-xs font-semibold text-white">
                   {a.name.trim().split(" ").pop()?.[0] ?? "?"}
                 </div>
@@ -123,7 +143,9 @@ export const HeroSection = () => (
                     {a.role} · {a.loc}
                   </div>
                 </div>
-                <span className={`rounded-full px-2 py-0.5 font-mono text-[11px] font-semibold ${a.match > HIGH_MATCH_THRESHOLD ? "bg-brand-50 text-brand-700" : "bg-neutral-100 text-neutral-500"}`}>
+                <span
+                  className={`rounded-full px-2 py-0.5 font-mono text-[11px] font-semibold ${a.match > HIGH_MATCH_THRESHOLD ? "bg-brand-50 text-brand-700" : "bg-neutral-100 text-neutral-500"}`}
+                >
                   {a.match}% match
                 </span>
               </div>

@@ -15,8 +15,12 @@ export const Field = ({ label, children, hint }: FieldProps) => {
   const child = Children.only(children);
   const canAssociate =
     isValidElement<AssociableFieldProps>(child) &&
-    (child.type === Input || child.type === Select || child.type === Textarea ||
-      child.type === "input" || child.type === "select" || child.type === "textarea");
+    (child.type === Input ||
+      child.type === Select ||
+      child.type === Textarea ||
+      child.type === "input" ||
+      child.type === "select" ||
+      child.type === "textarea");
 
   const fieldId = canAssociate ? (child.props.id ?? generatedId) : undefined;
   const associatedChild = canAssociate ? cloneElement(child, { id: fieldId }) : children;
@@ -42,7 +46,7 @@ interface InputProps {
 
 export const Input = ({ id, value, onChange, placeholder, type = "text" }: InputProps) => (
   <input
-    className="w-full rounded-10 border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 placeholder:text-neutral-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
+    className="rounded-10 focus:border-brand-500 w-full border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
     id={id}
     placeholder={placeholder}
     type={type}
@@ -60,7 +64,7 @@ interface SelectProps {
 
 export const Select = ({ id, value, onChange, options }: SelectProps) => (
   <select
-    className="w-full rounded-10 border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
+    className="rounded-10 focus:border-brand-500 w-full border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-100"
     id={id}
     value={value}
     onChange={(e) => onChange(e.target.value)}
@@ -83,7 +87,7 @@ interface TextareaProps {
 
 export const Textarea = ({ id, value, onChange, placeholder, rows = 4 }: TextareaProps) => (
   <textarea
-    className="w-full resize-none rounded-10 border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 placeholder:text-neutral-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
+    className="rounded-10 focus:border-brand-500 w-full resize-none border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
     id={id}
     placeholder={placeholder}
     rows={rows}

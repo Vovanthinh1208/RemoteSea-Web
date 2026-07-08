@@ -17,7 +17,11 @@ export const QuickFactsCard = ({ job }: QuickFactsCardProps) => {
     { icon: <MapPin size={13} />, k: "Visa needed", v: "No · remote" },
     { icon: <Clock size={13} />, k: "Timezone overlap", v: timezone },
     { icon: <FileText size={13} />, k: "Contract type", v: JOB_TYPE_LABELS[job.jobType] },
-    { icon: <Monitor size={13} />, k: "Equipment", v: hasEquipmentBenefit ? "Provided" : "Self-supplied" },
+    {
+      icon: <Monitor size={13} />,
+      k: "Equipment",
+      v: hasEquipmentBenefit ? "Provided" : "Self-supplied",
+    },
     { icon: <Users size={13} />, k: "Interview rounds", v: DEFAULT_INTERVIEW_ROUNDS },
   ];
 

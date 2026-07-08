@@ -34,7 +34,11 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
     try {
       await applyToJobMutation.mutateAsync({ jobId });
       setState("applied");
-      toast({ variant: "success", title: "Application sent", description: "The employer has been notified." });
+      toast({
+        variant: "success",
+        title: "Application sent",
+        description: "The employer has been notified.",
+      });
     } catch (err) {
       if (err instanceof ApiError && err.status === ALREADY_APPLIED_STATUS) {
         setState("applied");
@@ -51,7 +55,11 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
       }
       setState("error");
       setMessage("Something went wrong. Please try again.");
-      toast({ variant: "error", title: "Couldn't submit application", description: "Please try again." });
+      toast({
+        variant: "error",
+        title: "Couldn't submit application",
+        description: "Please try again.",
+      });
     }
   };
 

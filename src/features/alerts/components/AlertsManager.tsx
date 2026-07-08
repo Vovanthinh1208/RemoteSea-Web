@@ -38,7 +38,9 @@ export const AlertsManager = () => {
   return (
     <div className="mx-auto max-w-[820px] px-6 py-10">
       <div className="mb-8">
-        <h1 className="mb-1 text-[28px] font-semibold tracking-tight text-neutral-900">Job alerts</h1>
+        <h1 className="mb-1 text-[28px] font-semibold tracking-tight text-neutral-900">
+          Job alerts
+        </h1>
         <p className="text-[15px] text-neutral-500">
           Get notified when new jobs match your criteria. We email you on your chosen schedule.
         </p>
