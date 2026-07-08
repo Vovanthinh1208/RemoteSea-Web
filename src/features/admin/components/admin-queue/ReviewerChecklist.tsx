@@ -7,7 +7,11 @@ interface ReviewerChecklistProps {
   disabled: boolean;
 }
 
-export const ReviewerChecklist = ({ checkedIndices, onToggle, disabled }: ReviewerChecklistProps) => {
+export const ReviewerChecklist = ({
+  checkedIndices,
+  onToggle,
+  disabled,
+}: ReviewerChecklistProps) => {
   const reqCount = REVIEW_CHECKLIST.length;
   const doneCount = checkedIndices.size;
   const allDone = doneCount === reqCount;
@@ -41,7 +45,9 @@ export const ReviewerChecklist = ({ checkedIndices, onToggle, disabled }: Review
                 <Check size={11} />
               </span>
               <div className="flex-1">
-                <div className={`text-[13px] font-medium ${done ? "text-brand-700" : "text-neutral-800"}`}>
+                <div
+                  className={`text-[13px] font-medium ${done ? "text-brand-700" : "text-neutral-800"}`}
+                >
                   {c.label}
                 </div>
                 <div className="mt-0.5 text-[12px] text-neutral-400">{c.hint}</div>
@@ -52,7 +58,10 @@ export const ReviewerChecklist = ({ checkedIndices, onToggle, disabled }: Review
       </div>
       <div className="mt-3 flex items-center gap-3">
         <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-neutral-100">
-          <div className="h-full rounded-full bg-brand-600 transition-all" style={{ width: `${reqCount ? (doneCount / reqCount) * 100 : 0}%` }} />
+          <div
+            className="h-full rounded-full bg-brand-600 transition-all"
+            style={{ width: `${reqCount ? (doneCount / reqCount) * 100 : 0}%` }}
+          />
         </div>
         <span className="text-[12px] text-neutral-400">
           {allDone ? "All checks complete" : `${reqCount - doneCount} left before approval`}

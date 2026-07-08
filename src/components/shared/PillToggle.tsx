@@ -9,7 +9,14 @@ interface PillToggleProps {
   children: React.ReactNode;
 }
 
-export const PillToggle = ({ active, activeClassName, inactiveClassName, className, onClick, children }: PillToggleProps) => (
+export const PillToggle = ({
+  active,
+  activeClassName,
+  inactiveClassName,
+  className,
+  onClick,
+  children,
+}: PillToggleProps) => (
   <button
     aria-pressed={active}
     className={cn("rounded-full", className, active ? activeClassName : inactiveClassName)}

@@ -206,11 +206,18 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
               register={register}
             />
 
-            <AboutSection bioError={errors.bio?.message} bioLength={bio?.length ?? 0} register={register} />
+            <AboutSection
+              bioError={errors.bio?.message}
+              bioLength={bio?.length ?? 0}
+              register={register}
+            />
 
             <ExperienceSection />
 
-            <section className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7" id="skills">
+            <section
+              className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7"
+              id="skills"
+            >
               <SectionHead
                 eyebrow="04 · What you use"
                 help="5–12 specific skills. Tools and stacks, not soft skills. We match jobs based on this."
@@ -240,7 +247,10 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
               resumeUrl={resumeUrl ?? ""}
             />
 
-            <VisibilitySection isOpenToWork={isOpenToWork} onToggle={(v) => setValue("isOpenToWork", v)} />
+            <VisibilitySection
+              isOpenToWork={isOpenToWork}
+              onToggle={(v) => setValue("isOpenToWork", v)}
+            />
 
             {/* Save bar */}
             <div className="rounded-20 sticky bottom-0 flex items-center justify-between border border-neutral-200 bg-white/90 px-5 py-3 shadow-card backdrop-blur-sm">

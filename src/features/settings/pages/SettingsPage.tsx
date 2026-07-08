@@ -33,10 +33,7 @@ export const SettingsPage = () => {
       <div className="mx-auto max-w-[820px] px-6 py-10">
         <div className="mb-8">
           <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
-            Your account,{" "}
-            <em className="font-serif-italic text-brand-700">
-              your rules.
-            </em>
+            Your account, <em className="font-serif-italic text-brand-700">your rules.</em>
           </h1>
           <p className="text-[15px] text-neutral-500">
             Sign-in and security. Profile content lives under{" "}
@@ -59,7 +56,12 @@ export const SettingsPage = () => {
           </section>
 
           <section className="rounded-20 border border-neutral-100 bg-white p-7">
-            <SectionHead eyebrow="Access" help="Keep your account secure." icon={Lock} title="Security" />
+            <SectionHead
+              eyebrow="Access"
+              help="Keep your account secure."
+              icon={Lock}
+              title="Security"
+            />
             <ChangePasswordForm />
           </section>
 
@@ -71,7 +73,7 @@ export const SettingsPage = () => {
               title="Privacy"
             />
             <Link
-              className="inline-flex items-center gap-1.5 rounded-10 border border-neutral-200 bg-white px-3.5 py-2 text-[13px] font-medium text-neutral-700 hover:border-neutral-300"
+              className="rounded-10 inline-flex items-center gap-1.5 border border-neutral-200 bg-white px-3.5 py-2 text-[13px] font-medium text-neutral-700 hover:border-neutral-300"
               to={ROUTES.profile}
             >
               Manage in Profile setup

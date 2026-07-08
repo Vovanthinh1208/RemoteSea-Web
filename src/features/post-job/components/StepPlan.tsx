@@ -15,7 +15,7 @@ export const StepPlan = ({ form, set }: PostJobStepProps) => (
       {TIERS.map((t) => (
         <button
           className={cn(
-            "relative rounded-20 border p-5 text-left transition-all",
+            "rounded-20 relative border p-5 text-left transition-all",
             form.tier === t.id
               ? "border-brand-600 bg-brand-50 shadow-card"
               : "border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-card"

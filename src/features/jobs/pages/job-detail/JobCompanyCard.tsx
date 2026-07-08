@@ -13,7 +13,9 @@ export const JobCompanyCard = ({ job }: JobCompanyCardProps) => {
 
   return (
     <div className="rounded-16 border border-neutral-100 bg-white p-5">
-      <h3 className="mb-3 text-[13px] font-semibold uppercase tracking-widest text-neutral-400">Company</h3>
+      <h3 className="mb-3 text-[13px] font-semibold uppercase tracking-widest text-neutral-400">
+        Company
+      </h3>
       <div className="mb-3 flex items-center gap-3">
         <CompanyLogo color={color} initial={initial} size={40} />
         <div>

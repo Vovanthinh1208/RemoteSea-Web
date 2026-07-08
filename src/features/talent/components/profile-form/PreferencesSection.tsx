@@ -12,7 +12,12 @@ interface PreferencesSectionProps {
   onMaxChange: (value: number) => void;
 }
 
-export const PreferencesSection = ({ salMin, salMax, onMinChange, onMaxChange }: PreferencesSectionProps) => (
+export const PreferencesSection = ({
+  salMin,
+  salMax,
+  onMinChange,
+  onMaxChange,
+}: PreferencesSectionProps) => (
   <section className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7" id="prefs">
     <SectionHead
       eyebrow="05 · What you want"

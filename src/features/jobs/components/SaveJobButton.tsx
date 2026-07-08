@@ -23,7 +23,11 @@ export const SaveJobButton = ({ jobId }: SaveJobButtonProps) => {
       type="button"
       onClick={() => toggle()}
     >
-      <Bookmark className={statusUnknown ? "text-transparent" : undefined} fill={saved ? "currentColor" : "none"} size={15} />
+      <Bookmark
+        className={statusUnknown ? "text-transparent" : undefined}
+        fill={saved ? "currentColor" : "none"}
+        size={15}
+      />
       {saved ? "Saved" : "Save for later"}
     </button>
   );

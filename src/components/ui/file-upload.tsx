@@ -51,7 +51,13 @@ export const FileUpload = ({ type, accept, label, value, onUploaded }: FileUploa
 
   return (
     <div className="space-y-1.5">
-      <input accept={accept} className="hidden" ref={inputRef} type="file" onChange={handleChange} />
+      <input
+        accept={accept}
+        className="hidden"
+        ref={inputRef}
+        type="file"
+        onChange={handleChange}
+      />
       <button
         className="rounded-10 inline-flex items-center gap-2 border border-neutral-200 bg-white px-3.5 py-2 text-[13px] font-medium text-neutral-700 transition-colors hover:border-neutral-300 disabled:opacity-60"
         disabled={state === "uploading"}

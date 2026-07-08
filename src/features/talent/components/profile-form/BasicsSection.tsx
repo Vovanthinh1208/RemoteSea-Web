@@ -1,6 +1,9 @@
 import type { UseFormRegister } from "react-hook-form";
 import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
-import { SELECT_INPUT_CLASS, TEXT_INPUT_CLASS } from "@/features/talent/components/profile-form/profile-form.constants";
+import {
+  SELECT_INPUT_CLASS,
+  TEXT_INPUT_CLASS,
+} from "@/features/talent/components/profile-form/profile-form.constants";
 import { TIMEZONE_OPTIONS } from "@/features/talent/talent.constants";
 import type { ProfileFormValues } from "@/features/talent/talent.schemas";
 
@@ -13,7 +16,12 @@ interface BasicsSectionProps {
 
 const MAX_HEADLINE_LENGTH = 80;
 
-export const BasicsSection = ({ register, nameError, headlineError, headlineLength }: BasicsSectionProps) => (
+export const BasicsSection = ({
+  register,
+  nameError,
+  headlineError,
+  headlineLength,
+}: BasicsSectionProps) => (
   <section className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7" id="basics">
     <SectionHead
       eyebrow="01 · Identity"
@@ -39,7 +47,12 @@ export const BasicsSection = ({ register, nameError, headlineError, headlineLeng
         <label className="block text-[12.5px] font-medium text-neutral-700" htmlFor="p-pronouns">
           Pronouns <span className="font-normal text-neutral-400">(optional)</span>
         </label>
-        <input className={TEXT_INPUT_CLASS} disabled id="p-pronouns" placeholder="Not tracked yet" />
+        <input
+          className={TEXT_INPUT_CLASS}
+          disabled
+          id="p-pronouns"
+          placeholder="Not tracked yet"
+        />
       </div>
       <div className="space-y-1.5 sm:col-span-2">
         <div className="flex items-center justify-between">

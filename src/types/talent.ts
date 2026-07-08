@@ -1,6 +1,11 @@
 import type { ExperienceLevel, Skill } from "@/types/job";
 
-export type TalentSkill = { talentId: string; skillId: string; yearsExp: number | null; skill: Skill };
+export type TalentSkill = {
+  talentId: string;
+  skillId: string;
+  yearsExp: number | null;
+  skill: Skill;
+};
 
 export type TalentProfile = {
   id: string;

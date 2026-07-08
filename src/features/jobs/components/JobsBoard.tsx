@@ -53,7 +53,8 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  const setFilters = (filters: Filters) => onFiltersChange({ ...query, filters, q: search, page: 1 });
+  const setFilters = (filters: Filters) =>
+    onFiltersChange({ ...query, filters, q: search, page: 1 });
   const setSort = (sort: SortKey) => onFiltersChange({ ...query, sort, q: search, page: 1 });
   const goToPage = (page: number) => onFiltersChange({ ...query, q: search, page });
 
@@ -111,7 +112,8 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
                 "Loading jobs…"
               ) : (
                 <>
-                  <strong className="text-neutral-900">{total}</strong> {total === 1 ? "job" : "jobs"}
+                  <strong className="text-neutral-900">{total}</strong>{" "}
+                  {total === 1 ? "job" : "jobs"}
                   <span className="text-neutral-400"> matching your filters</span>
                 </>
               )}

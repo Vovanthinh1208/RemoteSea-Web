@@ -1,5 +1,9 @@
 import { Field, Input, Select, Textarea } from "@/features/post-job/components/form-primitives";
-import { COMPANY_SIZE_OPTIONS, HQ_OPTIONS, type PostJobStepProps } from "@/features/post-job/post-job.schemas";
+import {
+  COMPANY_SIZE_OPTIONS,
+  HQ_OPTIONS,
+  type PostJobStepProps,
+} from "@/features/post-job/post-job.schemas";
 
 export const StepCompany = ({ form, set }: PostJobStepProps) => (
   <div className="space-y-6">
@@ -14,7 +18,11 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => (
         <Input placeholder="Acme Corp" value={form.coName} onChange={(v) => set("coName", v)} />
       </Field>
       <Field label="Website">
-        <Input placeholder="https://acme.com" value={form.coWeb} onChange={(v) => set("coWeb", v)} />
+        <Input
+          placeholder="https://acme.com"
+          value={form.coWeb}
+          onChange={(v) => set("coWeb", v)}
+        />
       </Field>
     </div>
     <div className="grid gap-4 sm:grid-cols-2">
@@ -50,7 +58,9 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => (
     </Field>
 
     <div className="border-t border-neutral-100 pt-5">
-      <h3 className="mb-4 text-[14px] font-semibold text-neutral-800">Recruiter / hiring manager</h3>
+      <h3 className="mb-4 text-[14px] font-semibold text-neutral-800">
+        Recruiter / hiring manager
+      </h3>
       <div className="grid gap-4 sm:grid-cols-3">
         <Field label="Full name">
           <Input placeholder="Alex Chen" value={form.recName} onChange={(v) => set("recName", v)} />

@@ -15,9 +15,11 @@ const PLAN_BAR_COLOR: Record<string, string> = {
 
 const formatDollars = (cents: number): string => `$${(cents / CENTS_PER_DOLLAR).toLocaleString()}`;
 
-const formatThousands = (cents: number): string => `$${(cents / CENTS_PER_DOLLAR / DOLLARS_PER_THOUSAND).toFixed(1)}k`;
+const formatThousands = (cents: number): string =>
+  `$${(cents / CENTS_PER_DOLLAR / DOLLARS_PER_THOUSAND).toFixed(1)}k`;
 
-const monthTotal = (month: RevenueMonthBucket): number => month.standard + month.featured + month.handsOn;
+const monthTotal = (month: RevenueMonthBucket): number =>
+  month.standard + month.featured + month.handsOn;
 
 export const AdminRevenue = () => {
   const { data, isLoading } = useAdminRevenue();
@@ -27,13 +29,18 @@ export const AdminRevenue = () => {
 
   const { months, mix, transactions, totals } = data;
   const peak = Math.max(...months.map(monthTotal), 1);
-  const totalMix = Math.max(mix.reduce((sum, m) => sum + m.amount, 0), 1);
+  const totalMix = Math.max(
+    mix.reduce((sum, m) => sum + m.amount, 0),
+    1
+  );
 
   return (
     <div className="flex-1 overflow-hidden">
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">Finance</p>
+          <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
+            Finance
+          </p>
           <h1 className="text-[26px] font-semibold text-neutral-900">Revenue</h1>
           <p className="mt-1 text-sm text-neutral-500">Per-post billing · all amounts in USD</p>
         </div>
@@ -45,14 +52,18 @@ export const AdminRevenue = () => {
           <div className="mb-2 flex items-center gap-1.5 text-[12px] text-neutral-400">
             <Wallet size={14} /> Revenue all time
           </div>
-          <div className="text-[22px] font-semibold text-neutral-900">{formatThousands(totals.allTime)}</div>
+          <div className="text-[22px] font-semibold text-neutral-900">
+            {formatThousands(totals.allTime)}
+          </div>
           <div className="mt-0.5 text-[11px] text-neutral-400">across every paid listing</div>
         </div>
         <div className="rounded-12 border border-neutral-100 bg-white p-4">
           <div className="mb-2 flex items-center gap-1.5 text-[12px] text-neutral-400">
             <TrendingUp size={14} /> This month
           </div>
-          <div className="text-[22px] font-semibold text-neutral-900">{formatDollars(totals.thisMonth)}</div>
+          <div className="text-[22px] font-semibold text-neutral-900">
+            {formatDollars(totals.thisMonth)}
+          </div>
           <div className="mt-0.5 text-[11px] text-neutral-400">in progress</div>
         </div>
         {mix.map((m) => (
@@ -61,7 +72,9 @@ export const AdminRevenue = () => {
               <RefreshCw size={14} /> {m.label}
             </div>
             <div className="text-[22px] font-semibold text-neutral-900">{m.count}</div>
-            <div className="mt-0.5 text-[11px] text-neutral-400">posts · {formatDollars(m.amount)}</div>
+            <div className="mt-0.5 text-[11px] text-neutral-400">
+              posts · {formatDollars(m.amount)}
+            </div>
           </div>
         ))}
       </div>
@@ -71,18 +84,34 @@ export const AdminRevenue = () => {
         <div className="rounded-12 border border-neutral-100 bg-white p-5">
           <div className="mb-4 flex items-end justify-between">
             <div>
-              <div className="text-[22px] font-semibold text-neutral-900">{formatThousands(totals.allTime)}</div>
-              <div className="text-[12px] text-neutral-400">Monthly revenue · last {months.length} months</div>
+              <div className="text-[22px] font-semibold text-neutral-900">
+                {formatThousands(totals.allTime)}
+              </div>
+              <div className="text-[12px] text-neutral-400">
+                Monthly revenue · last {months.length} months
+              </div>
             </div>
             <div className="flex items-center gap-4 text-[12px] text-neutral-500">
               <span className="flex items-center gap-1">
-                <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: PLAN_BAR_COLOR.STANDARD }} /> Standard
+                <span
+                  className="inline-block h-2.5 w-2.5 rounded-full"
+                  style={{ background: PLAN_BAR_COLOR.STANDARD }}
+                />{" "}
+                Standard
               </span>
               <span className="flex items-center gap-1">
-                <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: PLAN_BAR_COLOR.FEATURED }} /> Featured
+                <span
+                  className="inline-block h-2.5 w-2.5 rounded-full"
+                  style={{ background: PLAN_BAR_COLOR.FEATURED }}
+                />{" "}
+                Featured
               </span>
               <span className="flex items-center gap-1">
-                <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: PLAN_BAR_COLOR.HANDS_ON }} /> Hands-on
+                <span
+                  className="inline-block h-2.5 w-2.5 rounded-full"
+                  style={{ background: PLAN_BAR_COLOR.HANDS_ON }}
+                />{" "}
+                Hands-on
               </span>
             </div>
           </div>
@@ -98,9 +127,24 @@ export const AdminRevenue = () => {
                   >
                     {sum > 0 && (
                       <>
-                        <div style={{ height: `${(month.standard / sum) * 100}%`, background: PLAN_BAR_COLOR.STANDARD }} />
-                        <div style={{ height: `${(month.featured / sum) * 100}%`, background: PLAN_BAR_COLOR.FEATURED }} />
-                        <div style={{ height: `${(month.handsOn / sum) * 100}%`, background: PLAN_BAR_COLOR.HANDS_ON }} />
+                        <div
+                          style={{
+                            height: `${(month.standard / sum) * 100}%`,
+                            background: PLAN_BAR_COLOR.STANDARD,
+                          }}
+                        />
+                        <div
+                          style={{
+                            height: `${(month.featured / sum) * 100}%`,
+                            background: PLAN_BAR_COLOR.FEATURED,
+                          }}
+                        />
+                        <div
+                          style={{
+                            height: `${(month.handsOn / sum) * 100}%`,
+                            background: PLAN_BAR_COLOR.HANDS_ON,
+                          }}
+                        />
                       </>
                     )}
                   </div>
@@ -113,14 +157,18 @@ export const AdminRevenue = () => {
 
         <div className="rounded-12 border border-neutral-100 bg-white p-5">
           <h3 className="mb-4 text-[14px] font-semibold text-neutral-900">
-            Revenue by plan <span className="text-[12px] font-normal text-neutral-400">· all time</span>
+            Revenue by plan{" "}
+            <span className="text-[12px] font-normal text-neutral-400">· all time</span>
           </h3>
           <div className="mb-4 flex h-6 overflow-hidden rounded-8">
             {mix.map((m) => (
               <div
                 className="flex items-center justify-center text-[10px] font-semibold text-white"
                 key={m.planType}
-                style={{ width: `${(m.amount / totalMix) * 100}%`, background: PLAN_BAR_COLOR[m.planType] }}
+                style={{
+                  width: `${(m.amount / totalMix) * 100}%`,
+                  background: PLAN_BAR_COLOR[m.planType],
+                }}
               >
                 {m.amount > 0 ? `${Math.round((m.amount / totalMix) * 100)}%` : ""}
               </div>
@@ -129,12 +177,20 @@ export const AdminRevenue = () => {
           <div className="space-y-3">
             {mix.map((m) => (
               <div className="flex items-center gap-2.5" key={m.planType}>
-                <span className="h-2.5 w-2.5 flex-shrink-0 rounded-full" style={{ background: PLAN_BAR_COLOR[m.planType] }} />
+                <span
+                  className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
+                  style={{ background: PLAN_BAR_COLOR[m.planType] }}
+                />
                 <span className="flex-1 text-[13px] text-neutral-700">
-                  {m.label} <span className="font-mono text-[11px] text-neutral-400">{formatDollars(m.price)}</span>
+                  {m.label}{" "}
+                  <span className="font-mono text-[11px] text-neutral-400">
+                    {formatDollars(m.price)}
+                  </span>
                 </span>
                 <span className="text-[12px] text-neutral-400">{m.count} posts</span>
-                <span className="font-mono text-[13px] font-semibold text-neutral-900">{formatThousands(m.amount)}</span>
+                <span className="font-mono text-[13px] font-semibold text-neutral-900">
+                  {formatThousands(m.amount)}
+                </span>
               </div>
             ))}
           </div>
@@ -165,13 +221,22 @@ export const AdminRevenue = () => {
               style={{ gridTemplateColumns: "1fr 140px 100px 90px" }}
             >
               <div className="min-w-0">
-                <div className="truncate text-[14px] font-medium text-neutral-900">{t.companyName}</div>
+                <div className="truncate text-[14px] font-medium text-neutral-900">
+                  {t.companyName}
+                </div>
                 <div className="truncate text-[12px] text-neutral-400">{t.jobTitle}</div>
               </div>
               <span className="flex items-center gap-1 text-[13px] text-neutral-600">
-                <CreditCard size={13} /> {t.planType === "HANDS_ON" ? "Hands-on" : t.planType === "FEATURED" ? "Featured" : "Standard"}
+                <CreditCard size={13} />{" "}
+                {t.planType === "HANDS_ON"
+                  ? "Hands-on"
+                  : t.planType === "FEATURED"
+                    ? "Featured"
+                    : "Standard"}
               </span>
-              <span className="font-mono text-[13px] font-semibold text-neutral-900">{formatDollars(t.amount)}</span>
+              <span className="font-mono text-[13px] font-semibold text-neutral-900">
+                {formatDollars(t.amount)}
+              </span>
               <span className="text-[13px] text-neutral-400">
                 {new Date(t.paidAt).toLocaleDateString("en-US", { month: "short", day: "2-digit" })}
               </span>

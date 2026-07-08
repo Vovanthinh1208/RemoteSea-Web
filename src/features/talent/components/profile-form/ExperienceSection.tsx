@@ -29,7 +29,10 @@ const SAMPLE_EXPERIENCE = [
 ];
 
 export const ExperienceSection = () => (
-  <section className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7" id="experience">
+  <section
+    className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7"
+    id="experience"
+  >
     <SectionHead
       eyebrow="03 · Track record"
       help="Work history isn't backed by an API yet — shown here as a preview of the layout."

@@ -1,13 +1,7 @@
 import type { Job } from "@/types/job";
 
 export type ApplicationStatus =
-  | "PENDING"
-  | "REVIEWING"
-  | "SHORTLISTED"
-  | "INTERVIEW"
-  | "OFFERED"
-  | "REJECTED"
-  | "WITHDRAWN";
+  "PENDING" | "REVIEWING" | "SHORTLISTED" | "INTERVIEW" | "OFFERED" | "REJECTED" | "WITHDRAWN";
 
 export type Application = {
   id: string;

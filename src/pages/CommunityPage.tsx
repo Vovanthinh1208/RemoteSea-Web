@@ -10,7 +10,8 @@ const MEMBERS = [
     years: 7,
     initial: "L",
     color: "linear-gradient(135deg,#2E9B52,#1F7A3D)",
-    quote: "After two years, I finally figured out how to do deep work in PJs without losing my mind.",
+    quote:
+      "After two years, I finally figured out how to do deep work in PJs without losing my mind.",
   },
   {
     name: "Minh Trần",
@@ -20,7 +21,8 @@ const MEMBERS = [
     years: 5,
     initial: "M",
     color: "linear-gradient(135deg,#F59E0B,#B45309)",
-    quote: "The async culture here means my best work happens between 5–11pm. The team in SF doesn't blink.",
+    quote:
+      "The async culture here means my best work happens between 5–11pm. The team in SF doesn't blink.",
   },
   {
     name: "Hà Phạm",
@@ -181,7 +183,12 @@ export const CommunityPage = () => {
           {/* Avatar cloud */}
           <div className="hidden lg:block">
             <div className="relative h-[460px] w-[380px]">
-              <svg aria-hidden="true" className="absolute inset-0 h-full w-full" height="460" width="380">
+              <svg
+                aria-hidden="true"
+                className="absolute inset-0 h-full w-full"
+                height="460"
+                width="380"
+              >
                 <line stroke="#E5E5E3" strokeWidth="1" x1="110" x2="232" y1="48" y2="70" />
                 <line stroke="#E5E5E3" strokeWidth="1" x1="232" x2="186" y1="70" y2="200" />
                 <line stroke="#E5E5E3" strokeWidth="1" x1="186" x2="68" y1="200" y2="165" />
@@ -193,7 +200,14 @@ export const CommunityPage = () => {
                 <div
                   className="absolute grid place-items-center rounded-full font-semibold text-white shadow-card"
                   key={i}
-                  style={{ left: a.x, top: a.y, width: a.s, height: a.s, background: a.c, fontSize: a.s * 0.42 }}
+                  style={{
+                    left: a.x,
+                    top: a.y,
+                    width: a.s,
+                    height: a.s,
+                    background: a.c,
+                    fontSize: a.s * 0.42,
+                  }}
                 >
                   {a.l}
                 </div>
@@ -225,7 +239,9 @@ export const CommunityPage = () => {
       <section className="py-16">
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="mb-10 text-center">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">Members</p>
+            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
+              Members
+            </p>
             <h2 className="mb-3 text-[32px] font-semibold text-neutral-900">
               The people{" "}
               <em className="font-serif text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>
@@ -240,7 +256,10 @@ export const CommunityPage = () => {
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {MEMBERS.map((m) => (
-              <article className="rounded-16 border border-neutral-100 bg-white p-5 shadow-card" key={m.name}>
+              <article
+                className="rounded-16 border border-neutral-100 bg-white p-5 shadow-card"
+                key={m.name}
+              >
                 <div className="mb-4 flex items-center gap-3">
                   <div
                     className="grid h-12 w-12 flex-shrink-0 place-items-center rounded-full text-base font-semibold text-white"
@@ -254,7 +273,9 @@ export const CommunityPage = () => {
                     <div className="text-[12px] text-neutral-400">@ {m.company}</div>
                   </div>
                 </div>
-                <p className="mb-4 text-[13px] italic leading-relaxed text-neutral-600">&ldquo;{m.quote}&rdquo;</p>
+                <p className="mb-4 text-[13px] italic leading-relaxed text-neutral-600">
+                  &ldquo;{m.quote}&rdquo;
+                </p>
                 <div className="flex flex-wrap gap-3 text-[12px] text-neutral-400">
                   <span className="flex items-center gap-1">
                     <MapPin size={11} /> {m.city}
@@ -273,7 +294,9 @@ export const CommunityPage = () => {
       <section className="pb-16">
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="mb-10 text-center">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">Inside</p>
+            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
+              Inside
+            </p>
             <h2 className="mb-3 text-[32px] font-semibold text-neutral-900">
               What people{" "}
               <em className="font-serif text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>
@@ -282,8 +305,8 @@ export const CommunityPage = () => {
               talk about.
             </h2>
             <p className="mx-auto max-w-lg text-neutral-500">
-              A peek at the channels and a few threads from this week. Names redacted out of respect —
-              when you join, the full archive is yours.
+              A peek at the channels and a few threads from this week. Names redacted out of respect
+              — when you join, the full archive is yours.
             </p>
           </div>
           <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
@@ -294,7 +317,10 @@ export const CommunityPage = () => {
               </div>
               <div className="space-y-1">
                 {CHANNELS.map((ch) => (
-                  <div className="rounded-10 flex items-center gap-2.5 px-3 py-2.5 transition-colors hover:bg-neutral-50" key={ch.name}>
+                  <div
+                    className="rounded-10 flex items-center gap-2.5 px-3 py-2.5 transition-colors hover:bg-neutral-50"
+                    key={ch.name}
+                  >
                     <span className="text-[15px] font-bold" style={{ color: ch.color }}>
                       #
                     </span>
@@ -302,7 +328,9 @@ export const CommunityPage = () => {
                       <div className="text-[13px] font-medium text-neutral-800">{ch.name}</div>
                       <div className="text-[11px] text-neutral-400">{ch.topic}</div>
                     </div>
-                    <span className="flex-shrink-0 font-mono text-[11px] text-neutral-400">{ch.count}</span>
+                    <span className="flex-shrink-0 font-mono text-[11px] text-neutral-400">
+                      {ch.count}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -312,7 +340,10 @@ export const CommunityPage = () => {
             {/* Threads */}
             <div className="space-y-4">
               {THREADS.map((t, i) => (
-                <article className="rounded-16 border border-neutral-100 bg-white p-5 shadow-card" key={i}>
+                <article
+                  className="rounded-16 border border-neutral-100 bg-white p-5 shadow-card"
+                  key={i}
+                >
                   <div className="mb-3 flex items-center gap-2.5">
                     <div
                       className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full text-sm font-semibold text-white"
@@ -332,7 +363,10 @@ export const CommunityPage = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex gap-1.5">
                       {t.reactions.map((r) => (
-                        <span className="rounded-full border border-neutral-100 bg-neutral-50 px-2 py-0.5 text-sm" key={r}>
+                        <span
+                          className="rounded-full border border-neutral-100 bg-neutral-50 px-2 py-0.5 text-sm"
+                          key={r}
+                        >
                           {r}
                         </span>
                       ))}
@@ -352,7 +386,9 @@ export const CommunityPage = () => {
       <section className="bg-neutral-900 py-16">
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="mb-10 text-center">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-500">In person</p>
+            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-500">
+              In person
+            </p>
             <h2 className="mb-3 text-[32px] font-semibold text-white">
               Coffee, beers, &amp;{" "}
               <em className="font-serif text-brand-400" style={{ fontFamily: "var(--font-serif)" }}>
@@ -361,13 +397,16 @@ export const CommunityPage = () => {
               bandwidth.
             </h2>
             <p className="mx-auto max-w-lg text-neutral-400">
-              Members organize meetups whenever 5+ folks are in the same city. Free, low-key, and the
-              wifi is always passable.
+              Members organize meetups whenever 5+ folks are in the same city. Free, low-key, and
+              the wifi is always passable.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {EVENTS.map((e, i) => (
-              <article className="flex gap-4 rounded-16 border border-neutral-700 bg-neutral-800 p-5" key={i}>
+              <article
+                className="flex gap-4 rounded-16 border border-neutral-700 bg-neutral-800 p-5"
+                key={i}
+              >
                 <div
                   className="rounded-10 flex w-14 flex-shrink-0 flex-col items-center border-t-2 bg-neutral-700 pt-2"
                   style={{ borderColor: e.color }}
@@ -375,7 +414,9 @@ export const CommunityPage = () => {
                   <span className="text-[10px] font-semibold uppercase text-neutral-400">
                     {e.date.split(" ")[0]}
                   </span>
-                  <span className="text-[22px] font-semibold text-white">{e.date.split(" ")[1]}</span>
+                  <span className="text-[22px] font-semibold text-white">
+                    {e.date.split(" ")[1]}
+                  </span>
                   <span className="text-[10px] text-neutral-400">{e.day}</span>
                 </div>
                 <div className="min-w-0 flex-1">
@@ -395,7 +436,10 @@ export const CommunityPage = () => {
                       ))}
                       <span className="ml-1 text-[11px] text-neutral-400">{e.attendees} going</span>
                     </div>
-                    <button className="text-[12px] font-medium transition-colors" style={{ color: e.color }}>
+                    <button
+                      className="text-[12px] font-medium transition-colors"
+                      style={{ color: e.color }}
+                    >
                       RSVP →
                     </button>
                   </div>
@@ -409,7 +453,9 @@ export const CommunityPage = () => {
       {/* Join CTA */}
       <section className="py-20">
         <div className="mx-auto max-w-[720px] px-6 text-center">
-          <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">Apply</p>
+          <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
+            Apply
+          </p>
           <h2 className="mb-4 text-[36px] font-semibold text-neutral-900">
             Ready to join the{" "}
             <em className="font-serif text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>

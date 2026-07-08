@@ -1,10 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  createAlert,
-  deleteAlert,
-  listAlerts,
-  setAlertActive,
-} from "@/features/alerts/alerts.api";
+import { createAlert, deleteAlert, listAlerts, setAlertActive } from "@/features/alerts/alerts.api";
 import { useAuth } from "@/contexts/AuthContext";
 
 export const ALERTS_KEY = ["alerts"];

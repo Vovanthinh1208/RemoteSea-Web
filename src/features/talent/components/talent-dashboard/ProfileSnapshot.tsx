@@ -38,7 +38,10 @@ export const ProfileSnapshot = () => {
                 : "—",
           },
         ].map(({ icon: Icon, label, value }) => (
-          <div className="flex items-center justify-between border-b border-neutral-50 px-4 py-2.5 last:border-none" key={label}>
+          <div
+            className="flex items-center justify-between border-b border-neutral-50 px-4 py-2.5 last:border-none"
+            key={label}
+          >
             <span className="flex items-center gap-1.5 text-[12px] text-neutral-400">
               <Icon size={12} /> {label}
             </span>

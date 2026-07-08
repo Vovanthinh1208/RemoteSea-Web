@@ -6,4 +6,7 @@
  * to a different origin despite starting with "/".
  */
 export const isSafeInternalPath = (path: string): boolean =>
-  path.startsWith("/") && !path.startsWith("//") && !path.startsWith("/\\") && !path.includes("://");
+  path.startsWith("/") &&
+  !path.startsWith("//") &&
+  !path.startsWith("/\\") &&
+  !path.includes("://");

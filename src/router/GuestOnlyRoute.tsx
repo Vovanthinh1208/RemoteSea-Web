@@ -14,7 +14,9 @@ import { ROUTES } from "@/constants/routes";
  */
 export const GuestOnlyRoute = () => {
   const { user, status } = useAuth();
-  const [decided, setDecided] = useState<boolean | null>(() => (status === "loading" ? null : !!user));
+  const [decided, setDecided] = useState<boolean | null>(() =>
+    status === "loading" ? null : !!user
+  );
   const [lastStatus, setLastStatus] = useState(status);
 
   // Adjusting state during render (not in an effect) so the decision is locked in

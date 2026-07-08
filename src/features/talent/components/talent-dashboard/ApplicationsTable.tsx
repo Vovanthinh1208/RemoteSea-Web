@@ -6,7 +6,11 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { cn } from "@/utils/cn";
 import { companyColor, countryFlag } from "@/features/jobs/jobs.utils";
 import { Pipeline } from "@/features/talent/components/talent-dashboard/Pipeline";
-import { STAGE_LABEL, STATUS_TO_BUCKET, type AppStatusBucket } from "@/features/talent/talent-dashboard.utils";
+import {
+  STAGE_LABEL,
+  STATUS_TO_BUCKET,
+  type AppStatusBucket,
+} from "@/features/talent/talent-dashboard.utils";
 import type { ApplicationWithJob } from "@/types/application";
 
 const STATUS_MAP: Record<AppStatusBucket, { label: string; cls: string }> = {
@@ -34,7 +38,11 @@ const ApplicationRow = memo(function ApplicationRow({ application: a }: Applicat
       to={`/jobs/${a.jobId}`}
     >
       <div className="flex min-w-0 items-center gap-3">
-        <CompanyLogo color={companyColor(company)} initial={company.charAt(0).toUpperCase()} size={36} />
+        <CompanyLogo
+          color={companyColor(company)}
+          initial={company.charAt(0).toUpperCase()}
+          size={36}
+        />
         <div className="min-w-0">
           <p className="truncate text-[13.5px] font-medium text-neutral-900">{a.job.title}</p>
           <p className="text-[12px] text-neutral-400">
@@ -42,10 +50,17 @@ const ApplicationRow = memo(function ApplicationRow({ application: a }: Applicat
           </p>
         </div>
       </div>
-      <span className={cn("inline-flex w-[100px] items-center justify-center rounded-full px-2.5 py-0.5 text-[11.5px] font-medium", s.cls)}>
+      <span
+        className={cn(
+          "inline-flex w-[100px] items-center justify-center rounded-full px-2.5 py-0.5 text-[11.5px] font-medium",
+          s.cls
+        )}
+      >
         {s.label}
       </span>
-      <span className="hidden w-[140px] text-[12px] text-neutral-500 md:block">{STAGE_LABEL[a.status]}</span>
+      <span className="hidden w-[140px] text-[12px] text-neutral-500 md:block">
+        {STAGE_LABEL[a.status]}
+      </span>
       <span className="hidden w-[72px] text-right text-[12px] text-neutral-400 md:block">
         {new Date(a.appliedAt).toLocaleDateString("en-US", { month: "short", day: "2-digit" })}
       </span>
@@ -66,9 +81,21 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
 
   const tabs: { id: TabId; label: string; count: number }[] = [
     { id: "all", label: "All", count: applications.length },
-    { id: "active", label: "Active", count: applications.filter((a) => inBucket(a, ["applied", "review", "interview"])).length },
-    { id: "offers", label: "Offers", count: applications.filter((a) => inBucket(a, ["offer"])).length },
-    { id: "closed", label: "Closed", count: applications.filter((a) => inBucket(a, ["closed"])).length },
+    {
+      id: "active",
+      label: "Active",
+      count: applications.filter((a) => inBucket(a, ["applied", "review", "interview"])).length,
+    },
+    {
+      id: "offers",
+      label: "Offers",
+      count: applications.filter((a) => inBucket(a, ["offer"])).length,
+    },
+    {
+      id: "closed",
+      label: "Closed",
+      count: applications.filter((a) => inBucket(a, ["closed"])).length,
+    },
   ];
 
   const filtered = applications.filter((a) => {
@@ -92,7 +119,9 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
             <button
               className={cn(
                 "rounded-6 px-3 py-1 text-[12px] font-medium transition-all",
-                tab === t.id ? "bg-white text-neutral-900 shadow-sm" : "text-neutral-500 hover:text-neutral-700"
+                tab === t.id
+                  ? "bg-white text-neutral-900 shadow-sm"
+                  : "text-neutral-500 hover:text-neutral-700"
               )}
               key={t.id}
               onClick={() => setTab(t.id)}

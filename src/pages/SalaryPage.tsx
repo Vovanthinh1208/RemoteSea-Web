@@ -283,7 +283,10 @@ const ExplorerSection = () => {
       : `$${n >= 1000 ? `${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k` : n}`;
 
   const rows = useMemo(
-    () => SALARY_DATA.filter((r) => r.role === role && (seniority === "All" || r.seniority === seniority)),
+    () =>
+      SALARY_DATA.filter(
+        (r) => r.role === role && (seniority === "All" || r.seniority === seniority)
+      ),
     [role, seniority]
   );
 
@@ -296,10 +299,7 @@ const ExplorerSection = () => {
               Explorer
             </p>
             <h2 className="text-[28px] font-semibold tracking-tight text-neutral-900">
-              Salary by{" "}
-              <em className="font-serif-italic text-brand-700">
-                role &amp; seniority
-              </em>
+              Salary by <em className="font-serif-italic text-brand-700">role &amp; seniority</em>
             </h2>
           </div>
           <div className="flex items-center gap-0.5 rounded-8 border border-neutral-200 bg-white p-0.5">
@@ -307,7 +307,9 @@ const ExplorerSection = () => {
               <button
                 className={cn(
                   "rounded-6 px-3 py-1.5 text-[12px] font-medium transition-all",
-                  currency === c ? "bg-neutral-900 text-white" : "text-neutral-500 hover:text-neutral-700"
+                  currency === c
+                    ? "bg-neutral-900 text-white"
+                    : "text-neutral-500 hover:text-neutral-700"
                 )}
                 key={c}
                 type="button"
@@ -321,7 +323,9 @@ const ExplorerSection = () => {
 
         {/* Role chips */}
         <div className="mb-4">
-          <p className="mb-2 text-[11.5px] font-semibold uppercase tracking-wider text-neutral-400">Role</p>
+          <p className="mb-2 text-[11.5px] font-semibold uppercase tracking-wider text-neutral-400">
+            Role
+          </p>
           <div className="flex flex-wrap gap-2">
             {ROLES.map((r) => (
               <Chip active={role === r} key={r} onClick={() => setRole(r)}>
@@ -371,7 +375,12 @@ const ExplorerSection = () => {
           ) : (
             <div>
               {rows.map((row) => (
-                <SalaryBar fmt={fmt} globalMax={globalMax} key={row.role + row.seniority} row={row} />
+                <SalaryBar
+                  fmt={fmt}
+                  globalMax={globalMax}
+                  key={row.role + row.seniority}
+                  row={row}
+                />
               ))}
             </div>
           )}
@@ -397,11 +406,7 @@ const CountrySection = () => {
             By country
           </p>
           <h2 className="text-[28px] font-semibold tracking-tight text-neutral-900">
-            Where the{" "}
-            <em className="font-serif-italic text-brand-700">
-              money
-            </em>{" "}
-            lives
+            Where the <em className="font-serif-italic text-brand-700">money</em> lives
           </h2>
           <p className="mx-auto mt-2 max-w-lg text-sm text-neutral-500">
             Median compensation for mid-level remote roles, by where the company is headquartered.
@@ -415,7 +420,12 @@ const CountrySection = () => {
             >
               <div className="mb-2 text-[36px] leading-none">{c.flag}</div>
               <p className="mb-3 text-[13.5px] font-medium text-neutral-700">{c.country}</p>
-              <p className={cn("mb-1 text-[32px] font-semibold leading-none tracking-tight", c.color)}>
+              <p
+                className={cn(
+                  "mb-1 text-[32px] font-semibold leading-none tracking-tight",
+                  c.color
+                )}
+              >
                 ${c.median.toLocaleString()}
                 <span className="ml-0.5 text-[14px] font-normal text-neutral-400">/mo</span>
               </p>
@@ -442,11 +452,7 @@ const DistributionSection = () => {
               Distribution
             </p>
             <h2 className="mb-3 text-[28px] font-semibold tracking-tight text-white">
-              The{" "}
-              <em className="font-serif-italic text-brand-400">
-                shape
-              </em>{" "}
-              of remote pay.
+              The <em className="font-serif-italic text-brand-400">shape</em> of remote pay.
             </h2>
             <p className="mb-6 text-sm leading-relaxed text-neutral-400">
               Most VN talent working remote sits in the $2k–$5k band. The fat tail is real — but it
@@ -461,7 +467,8 @@ const DistributionSection = () => {
                   <strong className="text-white">$3,200</strong> is the median across all roles
                 </>,
                 <>
-                  Staff+ engineering jobs can hit <strong className="text-white">$10k+</strong> monthly
+                  Staff+ engineering jobs can hit <strong className="text-white">$10k+</strong>{" "}
+                  monthly
                 </>,
               ].map((item, i) => (
                 <li className="flex items-start gap-2.5 text-[13.5px] text-neutral-400" key={i}>
@@ -501,11 +508,7 @@ const SubmitSection = () => {
               Contribute
             </p>
             <h2 className="mb-3 text-[28px] font-semibold tracking-tight text-neutral-900">
-              Submit your salary,{" "}
-              <em className="font-serif-italic text-brand-700">
-                anonymously
-              </em>
-              .
+              Submit your salary, <em className="font-serif-italic text-brand-700">anonymously</em>.
             </h2>
             <p className="mb-6 text-sm leading-relaxed text-neutral-500">
               It takes 90 seconds. No name, no email required. Your data point makes the next
@@ -552,7 +555,12 @@ const SubmitSection = () => {
                 key={k}
               >
                 <span className="text-[12.5px] text-neutral-500">{k}</span>
-                <span className={cn("text-[13px] font-medium", highlight ? "font-semibold text-brand-700" : "text-neutral-900")}>
+                <span
+                  className={cn(
+                    "text-[13px] font-medium",
+                    highlight ? "font-semibold text-brand-700" : "text-neutral-900"
+                  )}
+                >
                   {v}
                 </span>
               </div>
@@ -587,11 +595,8 @@ export const SalaryPage = () => {
             Updated weekly · 612 data points from 2026
           </div>
           <h1 className="mb-4 max-w-2xl text-[clamp(32px,4.5vw,52px)] font-semibold leading-[1.1] tracking-tight text-neutral-900">
-            What should you{" "}
-            <em className="font-serif-italic text-brand-700">
-              actually
-            </em>{" "}
-            earn working remotely?
+            What should you <em className="font-serif-italic text-brand-700">actually</em> earn
+            working remotely?
           </h1>
           <p className="mb-10 max-w-xl text-[16px] leading-relaxed text-neutral-500">
             Real numbers from real offers — submitted by Vietnamese professionals working for
@@ -608,7 +613,9 @@ export const SalaryPage = () => {
               <div className="flex items-center gap-4" key={s.label}>
                 {i > 0 && <div className="hidden h-8 w-px bg-neutral-200 sm:block" />}
                 <div>
-                  <p className="text-[26px] font-semibold tracking-tight text-neutral-900">{s.num}</p>
+                  <p className="text-[26px] font-semibold tracking-tight text-neutral-900">
+                    {s.num}
+                  </p>
                   <p className="text-[12px] text-neutral-400">{s.label}</p>
                 </div>
               </div>

@@ -31,7 +31,9 @@ export const ApplyCard = ({ job }: ApplyCardProps) => {
       <div className="mt-4 space-y-2 border-t border-neutral-200 pt-4">
         <div className="flex items-center justify-between text-[13px]">
           <span className="text-neutral-400">Posted</span>
-          <span className="font-medium text-neutral-700">{timeAgo(job.publishedAt ?? job.createdAt)} ago</span>
+          <span className="font-medium text-neutral-700">
+            {timeAgo(job.publishedAt ?? job.createdAt)} ago
+          </span>
         </div>
         <div className="flex items-center justify-between text-[13px]">
           <span className="text-neutral-400">Applicants so far</span>

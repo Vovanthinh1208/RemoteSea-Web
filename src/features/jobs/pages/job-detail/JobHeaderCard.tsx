@@ -3,7 +3,13 @@ import { CompanyLogo } from "@/components/ui/company-logo";
 import { Badge } from "@/components/ui/badge";
 import { SalaryBadge } from "@/components/ui/salary-badge";
 import { Tag } from "@/components/ui/tag";
-import { JOB_TYPE_LABELS, LEVEL_LABELS, companyColor, countryFlag, timeAgo } from "@/features/jobs/jobs.utils";
+import {
+  JOB_TYPE_LABELS,
+  LEVEL_LABELS,
+  companyColor,
+  countryFlag,
+  timeAgo,
+} from "@/features/jobs/jobs.utils";
 import type { Job } from "@/types/job";
 
 interface JobHeaderCardProps {

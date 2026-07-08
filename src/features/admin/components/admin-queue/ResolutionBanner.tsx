@@ -29,7 +29,9 @@ export const ResolutionBanner = ({ banner, jobId }: ResolutionBannerProps) => {
   if (!banner || banner.id !== jobId) return null;
 
   return (
-    <div className={`flex items-center gap-2 px-5 py-3 text-sm font-medium ${BANNER_CLASS[banner.kind]}`}>
+    <div
+      className={`flex items-center gap-2 px-5 py-3 text-sm font-medium ${BANNER_CLASS[banner.kind]}`}
+    >
       {BANNER_ICON[banner.kind]}
       {BANNER_MESSAGE[banner.kind]}
     </div>

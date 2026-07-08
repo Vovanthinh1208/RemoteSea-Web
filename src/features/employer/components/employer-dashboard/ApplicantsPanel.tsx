@@ -39,7 +39,11 @@ interface ApplicantRowProps {
   onStatusChange: (id: string, status: ApplicationStatus) => void;
 }
 
-const ApplicantRow = memo(function ApplicantRow({ applicant: a, isPending, onStatusChange }: ApplicantRowProps) {
+const ApplicantRow = memo(function ApplicantRow({
+  applicant: a,
+  isPending,
+  onStatusChange,
+}: ApplicantRowProps) {
   const name = a.talent.user.name ?? "Candidate";
   const initial = name.split(" ").slice(-1)[0]?.[0]?.toUpperCase() ?? "C";
   const group = APPLICANT_STATUS[a.status];
@@ -64,7 +68,12 @@ const ApplicantRow = memo(function ApplicantRow({ applicant: a, isPending, onSta
       </div>
 
       <div className="flex-shrink-0 text-right">
-        <div className={cn("rounded-full px-1.5 py-0.5 text-[10px] font-medium", APPLICANT_STATUS_CLASS[group])}>
+        <div
+          className={cn(
+            "rounded-full px-1.5 py-0.5 text-[10px] font-medium",
+            APPLICANT_STATUS_CLASS[group]
+          )}
+        >
           {APPLICANT_STATUS_LABEL[group]}
         </div>
       </div>
@@ -107,14 +116,19 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
 
   const tabs: { id: ApplicantTabId; label: string; count: number }[] = [
     { id: "all", label: "All", count: applicants.length },
-    { id: "new", label: "New", count: applicants.filter((a) => APPLICANT_STATUS[a.status] === "new").length },
+    {
+      id: "new",
+      label: "New",
+      count: applicants.filter((a) => APPLICANT_STATUS[a.status] === "new").length,
+    },
     {
       id: "shortlisted",
       label: "Shortlisted",
       count: applicants.filter((a) => APPLICANT_STATUS[a.status] === "shortlisted").length,
     },
   ];
-  const list = tab === "all" ? applicants : applicants.filter((a) => APPLICANT_STATUS[a.status] === tab);
+  const list =
+    tab === "all" ? applicants : applicants.filter((a) => APPLICANT_STATUS[a.status] === tab);
 
   const { mutateAsync: updateStatus } = updateStatusMutation;
   const updateApplicantStatus = useCallback(
@@ -136,7 +150,9 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
             <button
               className={cn(
                 "rounded-6 px-2.5 py-1 text-[11.5px] font-medium transition-all",
-                tab === t.id ? "bg-white text-neutral-900 shadow-sm" : "text-neutral-500 hover:text-neutral-700"
+                tab === t.id
+                  ? "bg-white text-neutral-900 shadow-sm"
+                  : "text-neutral-500 hover:text-neutral-700"
               )}
               key={t.id}
               type="button"

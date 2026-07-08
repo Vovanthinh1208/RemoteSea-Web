@@ -16,7 +16,15 @@ export const hqToCountry = (hq: string): string | undefined => {
   return stripped || undefined;
 };
 
-export const SENIORITY_OPTIONS = ["Intern", "Junior", "Mid", "Senior", "Staff", "Lead", "Head"] as const;
+export const SENIORITY_OPTIONS = [
+  "Intern",
+  "Junior",
+  "Mid",
+  "Senior",
+  "Staff",
+  "Lead",
+  "Head",
+] as const;
 
 export const SENIORITY_TO_LEVEL: Record<(typeof SENIORITY_OPTIONS)[number], ExperienceLevel> = {
   Intern: "ENTRY",

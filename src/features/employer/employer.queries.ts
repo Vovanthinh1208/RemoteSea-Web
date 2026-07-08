@@ -27,7 +27,10 @@ export const useEmployerProfile = () => {
       try {
         return await getEmployerProfile();
       } catch (err) {
-        if (err instanceof ApiError && (err.status === NOT_FOUND_STATUS || err.status === FORBIDDEN_STATUS)) {
+        if (
+          err instanceof ApiError &&
+          (err.status === NOT_FOUND_STATUS || err.status === FORBIDDEN_STATUS)
+        ) {
           return null;
         }
         throw err;
@@ -104,8 +107,15 @@ export const useEmployerApplicationsAggregate = () => {
 export const useUpdateApplicationStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, status, notes }: { id: string; status: ApplicationStatus; notes?: string }) =>
-      updateApplicationStatus(id, status, notes),
+    mutationFn: ({
+      id,
+      status,
+      notes,
+    }: {
+      id: string;
+      status: ApplicationStatus;
+      notes?: string;
+    }) => updateApplicationStatus(id, status, notes),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employer", "job-applications"] });
       queryClient.invalidateQueries({ queryKey: EMPLOYER_JOBS_KEY });

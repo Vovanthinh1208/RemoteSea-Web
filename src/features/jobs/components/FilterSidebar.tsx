@@ -81,7 +81,10 @@ export const FilterSidebar = ({ filters, onChange, facets }: FilterSidebarProps)
   const { data: categories } = useCategories();
   const activeCount = countActiveFilters(filters);
 
-  const toggle = (key: keyof Pick<Filters, "jobType" | "timezone" | "category" | "seniority">, val: string) => {
+  const toggle = (
+    key: keyof Pick<Filters, "jobType" | "timezone" | "category" | "seniority">,
+    val: string
+  ) => {
     const current = filters[key];
     onChange({
       ...filters,

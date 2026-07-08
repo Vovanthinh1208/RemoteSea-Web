@@ -53,7 +53,9 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
               Verified
             </Badge>
           )}
-          <span className="text-[13px] font-medium text-neutral-600">{job.employer.companyName}</span>
+          <span className="text-[13px] font-medium text-neutral-600">
+            {job.employer.companyName}
+          </span>
           <span className="text-[13px] text-neutral-400">
             {countryFlag(job.country)} {country}
           </span>

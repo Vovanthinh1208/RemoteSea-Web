@@ -10,7 +10,9 @@ const HomePage = lazy(() => import("@/pages/HomePage").then((m) => ({ default: m
 const NotFoundPage = lazy(() =>
   import("@/pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage }))
 );
-const SalaryPage = lazy(() => import("@/pages/SalaryPage").then((m) => ({ default: m.SalaryPage })));
+const SalaryPage = lazy(() =>
+  import("@/pages/SalaryPage").then((m) => ({ default: m.SalaryPage }))
+);
 const BlogPage = lazy(() => import("@/pages/BlogPage").then((m) => ({ default: m.BlogPage })));
 const CommunityPage = lazy(() =>
   import("@/pages/CommunityPage").then((m) => ({ default: m.CommunityPage }))
@@ -23,7 +25,9 @@ const RegisterPage = lazy(() =>
   import("@/features/auth/pages/RegisterPage").then((m) => ({ default: m.RegisterPage }))
 );
 const ForgotPasswordPage = lazy(() =>
-  import("@/features/auth/pages/ForgotPasswordPage").then((m) => ({ default: m.ForgotPasswordPage }))
+  import("@/features/auth/pages/ForgotPasswordPage").then((m) => ({
+    default: m.ForgotPasswordPage,
+  }))
 );
 const ResetPasswordPage = lazy(() =>
   import("@/features/auth/pages/ResetPasswordPage").then((m) => ({ default: m.ResetPasswordPage }))

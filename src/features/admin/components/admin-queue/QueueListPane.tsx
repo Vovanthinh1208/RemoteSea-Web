@@ -40,7 +40,9 @@ const QueueListRow = memo(function QueueListRow({ job: j, selected, onSelect }: 
               Featured
             </span>
           )}
-          {!j.employer.isVerified && <VerifiedBadge isVerified={false} label="Unverified employer" />}
+          {!j.employer.isVerified && (
+            <VerifiedBadge isVerified={false} label="Unverified employer" />
+          )}
         </div>
       </div>
     </button>
@@ -52,7 +54,9 @@ export const QueueListPane = ({ jobs, selectedId, onSelect }: QueueListPaneProps
     <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
       <span className="text-[13px] font-semibold text-neutral-900">
         Pending{" "}
-        <span className="ml-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[11px]">{jobs.length}</span>
+        <span className="ml-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[11px]">
+          {jobs.length}
+        </span>
       </span>
       <span className="flex items-center gap-1 text-[11px] text-neutral-400">
         <Clock size={12} /> Oldest first

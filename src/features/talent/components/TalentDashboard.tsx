@@ -26,8 +26,15 @@ export const TalentDashboard = () => {
   const { data: savedJobs = [] } = useSavedJobs();
 
   const hour = new Date().getHours();
-  const greeting = hour < MORNING_END_HOUR ? "Chào buổi sáng" : hour < AFTERNOON_END_HOUR ? "Chào buổi chiều" : "Chào buổi tối";
-  const interviewing = applications.filter((a) => STATUS_TO_BUCKET[a.status] === "interview").length;
+  const greeting =
+    hour < MORNING_END_HOUR
+      ? "Chào buổi sáng"
+      : hour < AFTERNOON_END_HOUR
+        ? "Chào buổi chiều"
+        : "Chào buổi tối";
+  const interviewing = applications.filter(
+    (a) => STATUS_TO_BUCKET[a.status] === "interview"
+  ).length;
   const offers = applications.filter((a) => STATUS_TO_BUCKET[a.status] === "offer").length;
   const completion = profileCompletion(profile);
   const missing = missingProfileFields(profile);
@@ -44,10 +51,15 @@ export const TalentDashboard = () => {
             Dashboard
           </div>
           <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
-            {greeting}, <em className="font-serif-italic text-brand-700">{user?.name ?? "there"}</em>.
+            {greeting},{" "}
+            <em className="font-serif-italic text-brand-700">{user?.name ?? "there"}</em>.
           </h1>
           <p className="text-[14px] text-neutral-500">
-            You have <strong className="font-semibold text-neutral-800">{interviewing} {interviewing === 1 ? "interview" : "interviews"} in progress</strong> and {offers} {offers === 1 ? "offer" : "offers"} on the table.
+            You have{" "}
+            <strong className="font-semibold text-neutral-800">
+              {interviewing} {interviewing === 1 ? "interview" : "interviews"} in progress
+            </strong>{" "}
+            and {offers} {offers === 1 ? "offer" : "offers"} on the table.
           </p>
         </div>
         <Link
@@ -64,12 +76,26 @@ export const TalentDashboard = () => {
           <CompletionRing pct={completion} />
           <div className="flex-1">
             <h3 className="mb-0.5 text-[14px] font-semibold text-neutral-900">
-              Your profile is <em className="italic text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>{completion}% complete</em>
+              Your profile is{" "}
+              <em className="italic text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>
+                {completion}% complete
+              </em>
             </h3>
             <p className="text-[13px] text-neutral-500">
-              {missing.length > 0
-                ? <>Add {missing.map((m, i) => <strong className="text-neutral-700" key={m}>{i > 0 ? ", " : ""}{m}</strong>)} to show up in more searches.</>
-                : "Nice — your profile is in good shape."}
+              {missing.length > 0 ? (
+                <>
+                  Add{" "}
+                  {missing.map((m, i) => (
+                    <strong className="text-neutral-700" key={m}>
+                      {i > 0 ? ", " : ""}
+                      {m}
+                    </strong>
+                  ))}{" "}
+                  to show up in more searches.
+                </>
+              ) : (
+                "Nice — your profile is in good shape."
+              )}
             </p>
           </div>
           <Link
@@ -83,9 +109,24 @@ export const TalentDashboard = () => {
 
       {/* KPI tiles */}
       <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <KpiCard icon={Briefcase} label="Applications sent" sub="all time" value={String(applications.length)} />
-        <KpiCard icon={Bookmark} label="Saved jobs" sub="current" value={String(savedJobs.length)} />
-        <KpiCard icon={TrendingUp} label="Interview rate" sub="of submitted" value={`${interviewRate}%`} />
+        <KpiCard
+          icon={Briefcase}
+          label="Applications sent"
+          sub="all time"
+          value={String(applications.length)}
+        />
+        <KpiCard
+          icon={Bookmark}
+          label="Saved jobs"
+          sub="current"
+          value={String(savedJobs.length)}
+        />
+        <KpiCard
+          icon={TrendingUp}
+          label="Interview rate"
+          sub="of submitted"
+          value={`${interviewRate}%`}
+        />
       </div>
 
       {/* Main two-column grid */}

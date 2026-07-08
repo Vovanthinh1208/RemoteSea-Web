@@ -9,7 +9,9 @@ export const updateMyName = async (name: string): Promise<UpdatedUser> => {
   return data;
 };
 
-export const changeMyPassword = async (payload: ChangePasswordPayload): Promise<{ message: string }> => {
+export const changeMyPassword = async (
+  payload: ChangePasswordPayload
+): Promise<{ message: string }> => {
   const { data } = await apiClient.post<{ message: string }>("/users/me/password", payload);
   return data;
 };

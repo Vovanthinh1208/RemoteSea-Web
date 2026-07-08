@@ -1,4 +1,12 @@
-import { Asterisk, Briefcase, Code2, Share2, ShieldCheck, SlidersHorizontal, User } from "lucide-react";
+import {
+  Asterisk,
+  Briefcase,
+  Code2,
+  Share2,
+  ShieldCheck,
+  SlidersHorizontal,
+  User,
+} from "lucide-react";
 
 export const TEXT_INPUT_CLASS =
   "rounded-10 focus:border-brand-500 w-full border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-100";

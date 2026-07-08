@@ -53,7 +53,9 @@ export const AboutSection = ({ register, bioError, bioLength }: AboutSectionProp
           </select>
         </div>
         <div className="space-y-1.5">
-          <label className="block text-[12.5px] font-medium text-neutral-700">Years of experience</label>
+          <label className="block text-[12.5px] font-medium text-neutral-700">
+            Years of experience
+          </label>
           <select className={SELECT_INPUT_CLASS} {...register("yearsBucket")}>
             {YEARS_BUCKETS.map((o) => (
               <option key={o}>{o}</option>

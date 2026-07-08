@@ -15,7 +15,8 @@ const parseErrorBody = (body: unknown): ParsedErrorBody => {
     const { error } = body as ApiErrorBody;
     if (typeof error === "string") return { message: error };
     if (isZodFlattenedError(error)) {
-      const message = error.formErrors[0] ?? firstFieldError(error.fieldErrors) ?? "Validation failed";
+      const message =
+        error.formErrors[0] ?? firstFieldError(error.fieldErrors) ?? "Validation failed";
       return { message, fieldErrors: error.fieldErrors, formErrors: error.formErrors };
     }
   }
