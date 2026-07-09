@@ -41,15 +41,13 @@ export const BasicsSection = ({
         {nameError && <p className="text-[11.5px] text-red-600">{nameError}</p>}
       </div>
       <div className="space-y-1.5">
-        <label className="block text-[12.5px] font-medium text-neutral-700" htmlFor="p-pronouns">
+        <p className="text-[12.5px] font-medium text-neutral-700">
           Pronouns <span className="font-normal text-neutral-400">(optional)</span>
-        </label>
-        <input
-          className={TEXT_INPUT_CLASS}
-          disabled
-          id="p-pronouns"
-          placeholder="Not tracked yet"
-        />
+        </p>
+        {/* Not a real input — there's no field for this yet. A disabled-but-
+            normal-looking input invited users to click in, type, and find
+            nothing saves. */}
+        <p className="text-[13.5px] text-neutral-400">Coming soon</p>
       </div>
       <div className="space-y-1.5 sm:col-span-2">
         <div className="flex items-center justify-between">

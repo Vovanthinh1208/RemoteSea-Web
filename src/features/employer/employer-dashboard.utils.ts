@@ -18,7 +18,9 @@ export const STATUS_LABEL: Record<JobStatus, string> = {
   DRAFT: "Draft",
   PENDING_REVIEW: "In review",
   ACTIVE: "Live",
-  CLOSED: "Filled",
+  // "Filled" presumed a specific reason — a job can also close because it
+  // expired or the employer pulled it, not just because it was filled.
+  CLOSED: "Closed",
   REJECTED: "Rejected",
 };
 

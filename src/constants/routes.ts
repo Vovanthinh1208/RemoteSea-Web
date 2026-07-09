@@ -11,6 +11,7 @@ export const ROUTES = {
   community: "/community",
   employer: "/employer",
   talent: "/talent",
+  saved: "/saved",
   employerDashboard: "/employer-dashboard",
   profile: "/profile",
   postJob: "/post-job",

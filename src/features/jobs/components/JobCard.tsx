@@ -41,13 +41,17 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
   const category = job.categories[0]?.category.name ?? "Other";
 
   return (
-    <Link
+    // A <button> nested inside this card's own <Link> is invalid HTML (interactive
+    // content inside interactive content) and produces inconsistent screen-reader
+    // behavior. Instead: the title is the real, keyboard-reachable link, extended
+    // with a `after:absolute after:inset-0` overlay so the whole card is still
+    // clickable — and the save button sits at `z-10` above that overlay as a
+    // sibling, not a descendant, of the anchor.
+    <article
       className={cn(
-        "group flex items-start gap-4 rounded-12 border border-neutral-100 bg-white p-5 transition-all duration-150 hover:border-neutral-200 hover:shadow-card",
+        "group relative flex items-start gap-4 rounded-12 border border-neutral-100 bg-white p-5 transition-all duration-150 hover:border-neutral-200 hover:shadow-card",
         job.isFeatured && "border-l-2 border-l-amber-400"
       )}
-      to={`/jobs/${job.id}`}
-      onMouseEnter={prefetchJob}
     >
       <CompanyLogo
         color={companyColor(job.employer.companyName)}
@@ -79,8 +83,14 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
         </div>
 
         {/* Title */}
-        <h3 className="mb-2 text-[15px] font-semibold leading-snug text-neutral-900 transition-colors group-hover:text-brand-700">
-          {job.title}
+        <h3 className="mb-2 text-[15px] font-semibold leading-snug text-neutral-900">
+          <Link
+            className="transition-colors after:absolute after:inset-0 group-hover:text-brand-700"
+            to={`/jobs/${job.id}`}
+            onMouseEnter={prefetchJob}
+          >
+            {job.title}
+          </Link>
         </h3>
 
         {/* Tags */}
@@ -105,7 +115,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
         <button
           aria-label={saved ? "Unsave job" : "Save job"}
           className={cn(
-            "grid h-8 w-8 place-items-center rounded-8 transition-colors",
+            "relative z-10 grid h-8 w-8 place-items-center rounded-8 transition-colors",
             statusUnknown
               ? "text-transparent"
               : saved
@@ -118,6 +128,6 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
           <Bookmark fill={saved ? "currentColor" : "none"} size={15} />
         </button>
       </div>
-    </Link>
+    </article>
   );
 });

@@ -4,6 +4,7 @@ import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { VerifiedBadge } from "@/components/shared/VerifiedBadge";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { PillToggle } from "@/components/shared/PillToggle";
+import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { StatCard } from "@/components/ui/stat-card";
 import { useToastMutation } from "@/hooks/useToastMutation";
@@ -72,14 +73,22 @@ const EmployerRow = memo(function EmployerRow({
         {new Date(e.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
       </span>
       {e.isVerified ? (
-        <button
-          className="rounded-6 border border-neutral-200 px-2 py-1 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-60"
-          disabled={isPending}
-          type="button"
-          onClick={() => onStatusChange(e.id, "suspend")}
+        <ConfirmAction
+          isPending={isPending}
+          message={`Suspend ${e.companyName}? Their listings will come down immediately.`}
+          onConfirm={() => onStatusChange(e.id, "suspend")}
         >
-          Suspend
-        </button>
+          {({ onClick }) => (
+            <button
+              className="rounded-6 whitespace-nowrap border border-neutral-200 px-2 py-1 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-60"
+              disabled={isPending}
+              type="button"
+              onClick={onClick}
+            >
+              Suspend
+            </button>
+          )}
+        </ConfirmAction>
       ) : (
         <button
           className="rounded-6 border border-brand-200 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100 disabled:opacity-60"

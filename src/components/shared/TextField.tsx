@@ -18,22 +18,31 @@ export const TextField = ({
   placeholder,
   error,
   labelSlot,
-}: TextFieldProps) => (
-  <div>
-    <div className="mb-1.5 flex items-center justify-between">
-      <label className="block text-sm font-medium text-neutral-700" htmlFor={id}>
-        {label}
-      </label>
-      {labelSlot}
+}: TextFieldProps) => {
+  const errorId = `${id}-error`;
+
+  return (
+    <div>
+      <div className="mb-1.5 flex items-center justify-between">
+        <label className="block text-sm font-medium text-neutral-700" htmlFor={id}>
+          {label}
+        </label>
+        {labelSlot}
+      </div>
+      <input
+        aria-describedby={error ? errorId : undefined}
+        aria-invalid={!!error}
+        className="h-11 w-full rounded-12 border border-neutral-200 bg-white px-4 text-sm outline-none transition-all placeholder:text-neutral-400 focus:border-brand-600 focus:shadow-focus"
+        id={id}
+        placeholder={placeholder}
+        type={type}
+        {...registration}
+      />
+      {error && (
+        <p className="mt-1 text-xs text-red-600" id={errorId} role="alert">
+          {error}
+        </p>
+      )}
     </div>
-    <input
-      aria-invalid={!!error}
-      className="h-11 w-full rounded-12 border border-neutral-200 bg-white px-4 text-sm outline-none transition-all placeholder:text-neutral-400 focus:border-brand-600 focus:shadow-focus"
-      id={id}
-      placeholder={placeholder}
-      type={type}
-      {...registration}
-    />
-    {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
-  </div>
-);
+  );
+};

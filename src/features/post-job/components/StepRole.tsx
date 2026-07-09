@@ -29,7 +29,7 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
         </p>
       </div>
 
-      <Field label="Job title">
+      <Field label="Job title" required>
         <Input
           placeholder="Senior Frontend Engineer"
           value={form.jobTitle}
@@ -38,7 +38,7 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
       </Field>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Field label="Category">
+        <Field label="Category" required>
           <Select
             options={(categories ?? []).map((c) => ({ value: c.id, label: c.name }))}
             value={form.jobCategoryId}
@@ -81,6 +81,7 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
       <Field
         hint="What will this person do day-to-day? What does success look like in 6 months? Minimum 100 characters."
         label="Job description"
+        required
       >
         <Textarea
           placeholder={"What you'll do...\n\nWhat we're looking for..."}
@@ -108,7 +109,7 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
       <div className="border-t border-neutral-100 pt-5">
         <h3 className="mb-4 text-[14px] font-semibold text-neutral-800">Compensation</h3>
         <div className="grid gap-4 sm:grid-cols-4">
-          <Field label="Min">
+          <Field label="Min" required>
             <Input
               min={0}
               type="number"

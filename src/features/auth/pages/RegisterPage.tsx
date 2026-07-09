@@ -21,7 +21,9 @@ export const RegisterPage = () => {
           RemoteSEA
         </div>
         <div>
-          <h2 className="mb-4 text-[40px] font-semibold leading-tight">
+          {/* Decorative marketing copy, not document structure — using <p> instead
+              of <h2> avoids a heading that appears before the page's real <h1>. */}
+          <p className="mb-4 text-[40px] font-semibold leading-tight">
             <span
               className="text-brand-400"
               style={{ fontFamily: "var(--font-serif)", fontStyle: "italic" }}
@@ -33,7 +35,7 @@ export const RegisterPage = () => {
             Quietly, sustainably
             <br />
             finding remote work.
-          </h2>
+          </p>
           <p className="mb-8 max-w-sm text-sm leading-relaxed text-white/60">
             No spam. No recruiters in your inbox. Just curated jobs you can actually trust.
           </p>

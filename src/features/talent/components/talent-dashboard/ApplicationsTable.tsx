@@ -119,6 +119,7 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
         <div className="flex items-center gap-0.5 rounded-8 bg-neutral-100 p-0.5">
           {tabs.map((t) => (
             <button
+              aria-pressed={tab === t.id}
               className={cn(
                 "rounded-6 px-3 py-1 text-[12px] font-medium transition-all",
                 tab === t.id

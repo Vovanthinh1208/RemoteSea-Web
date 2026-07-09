@@ -74,12 +74,13 @@ export const Navbar = () => {
             For employers
           </Link>
 
-          <button
+          <Link
             aria-label="Saved jobs"
             className="grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+            to={ROUTES.saved}
           >
             <Bookmark size={17} />
-          </button>
+          </Link>
 
           {user ? (
             <>

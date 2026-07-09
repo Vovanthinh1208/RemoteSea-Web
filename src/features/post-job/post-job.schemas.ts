@@ -231,10 +231,16 @@ const STEP_SCHEMAS: Partial<Record<number, z.ZodType<unknown>>> = {
   2: stepRoleSchema,
 };
 
-/** Returns the first validation error for the given step, or null if it's valid. */
-export const validateStep = (step: number, form: PostJobFormState): string | null => {
+/**
+ * Returns every validation error for the given step, or an empty array if it's
+ * valid. Returning all issues (not just the first) means a user who left three
+ * required fields blank sees all three at once instead of a "Continue" ->
+ * fix-one -> "Continue" -> fix-the-next whack-a-mole loop.
+ */
+export const validateStep = (step: number, form: PostJobFormState): string[] => {
   const schema = STEP_SCHEMAS[step];
-  if (!schema) return null;
+  if (!schema) return [];
   const result = schema.safeParse(form);
-  return result.success ? null : (result.error.issues[0]?.message ?? "Please check this step.");
+  if (result.success) return [];
+  return result.error.issues.map((issue) => issue.message);
 };

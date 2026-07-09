@@ -31,11 +31,16 @@ const CheckRow = ({ checked, label, count, onToggle }: CheckRowProps) => (
       "flex cursor-pointer select-none items-center gap-2.5 py-1.5 text-[13.5px] transition-colors",
       checked ? "text-neutral-900" : "text-neutral-500 hover:text-neutral-900"
     )}
-    onClick={onToggle}
   >
+    {/* A <label> with no associated form control isn't in the tab order and
+        doesn't respond to Enter/Space — this was previously just a styled
+        <span>, making every filter in this sidebar keyboard-inoperable. */}
+    <input checked={checked} className="peer sr-only" type="checkbox" onChange={onToggle} />
     <span
+      aria-hidden="true"
       className={cn(
         "grid h-4 w-4 flex-shrink-0 place-items-center rounded-[4px] border transition-all",
+        "peer-focus-visible:shadow-focus",
         checked ? "border-brand-600 bg-brand-600" : "border-neutral-300 bg-white"
       )}
     >

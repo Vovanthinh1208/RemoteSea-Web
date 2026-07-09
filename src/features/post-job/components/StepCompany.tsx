@@ -14,7 +14,7 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => (
       </p>
     </div>
     <div className="grid gap-4 sm:grid-cols-2">
-      <Field label="Company name">
+      <Field label="Company name" required>
         <Input placeholder="Acme Corp" value={form.coName} onChange={(v) => set("coName", v)} />
       </Field>
       <Field label="Website">
@@ -62,7 +62,7 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => (
         Recruiter / hiring manager
       </h3>
       <div className="grid gap-4 sm:grid-cols-3">
-        <Field label="Full name">
+        <Field label="Full name" required>
           <Input placeholder="Alex Chen" value={form.recName} onChange={(v) => set("recName", v)} />
         </Field>
         <Field label="Role">
@@ -72,7 +72,7 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => (
             onChange={(v) => set("recRole", v)}
           />
         </Field>
-        <Field label="Work email">
+        <Field label="Work email" required>
           <Input
             placeholder="alex@acme.com"
             type="email"

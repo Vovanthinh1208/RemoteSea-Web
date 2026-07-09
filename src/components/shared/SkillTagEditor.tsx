@@ -5,11 +5,17 @@ interface SkillTagEditorProps {
   skills: string[];
   setSkills: (skills: string[]) => void;
   suggestions?: string[];
+  id?: string;
 }
 
 const MAX_SUGGESTIONS = 6;
 
-export const SkillTagEditor = ({ skills, setSkills, suggestions = [] }: SkillTagEditorProps) => {
+export const SkillTagEditor = ({
+  skills,
+  setSkills,
+  suggestions = [],
+  id,
+}: SkillTagEditorProps) => {
   const [inputValue, setInputValue] = useState("");
 
   const addSkill = (skill: string) => {
@@ -54,6 +60,7 @@ export const SkillTagEditor = ({ skills, setSkills, suggestions = [] }: SkillTag
         ))}
         <input
           className="min-w-[120px] flex-1 px-1.5 py-0.5 text-[13px] text-neutral-700 placeholder:text-neutral-400 focus:outline-none"
+          id={id}
           placeholder={skills.length === 0 ? "Type a skill and press Enter…" : "Add another…"}
           value={inputValue}
           onBlur={() => {

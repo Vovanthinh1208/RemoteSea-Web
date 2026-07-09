@@ -45,11 +45,13 @@ export const LoginPage = () => {
           >
             Welcome back.
           </p>
-          <h2 className="mb-4 text-[40px] font-semibold leading-tight">
+          {/* Decorative marketing copy, not document structure — using <p> instead
+              of <h2> avoids a heading that appears before the page's real <h1>. */}
+          <p className="mb-4 text-[40px] font-semibold leading-tight">
             Pick up where
             <br />
             you left off.
-          </h2>
+          </p>
           <p className="mb-8 text-sm leading-relaxed text-white/60">
             New jobs went live this week. Two match your saved filters.
           </p>

@@ -21,7 +21,11 @@ const getLogoRadius = (size: number): number => {
 };
 
 export const CompanyLogo = ({ initial, color, size = 44, className }: CompanyLogoProps) => (
+  // Every usage renders the full company name as adjacent visible text, so this
+  // is purely decorative — without aria-hidden, a screen reader announces a
+  // stray single letter right before the real name.
   <div
+    aria-hidden="true"
     className={cn("grid flex-shrink-0 place-items-center font-semibold text-white", className)}
     style={{
       width: size,

@@ -45,6 +45,10 @@ export const PostJobWizard = () => {
   const [publishedJobId, setPublishedJobId] = useState<string | null>(null);
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Separate from `error` (a single final-publish failure) — a step can have
+  // several invalid fields at once, and showing only the first meant fixing one
+  // just revealed the next in a whack-a-mole loop.
+  const [stepErrors, setStepErrors] = useState<string[]>([]);
 
   const { data: categories } = useCategories();
   const { data: allSkills, isError: skillsErrored } = useSkills();
@@ -74,12 +78,13 @@ export const PostJobWizard = () => {
     // Only gate moving *forward* — going back to fix an earlier step should
     // always be allowed even if the current step is currently invalid.
     if (nextStep > step) {
-      const stepError = validateStep(step, form);
-      if (stepError) {
-        setError(stepError);
+      const errors = validateStep(step, form);
+      if (errors.length > 0) {
+        setStepErrors(errors);
         return;
       }
     }
+    setStepErrors([]);
     setError(null);
     setStep(nextStep);
   };
@@ -87,6 +92,7 @@ export const PostJobWizard = () => {
   const handlePublish = async () => {
     setPublishing(true);
     setError(null);
+    setStepErrors([]);
 
     if (form.jobDesc.trim().length < MIN_JOB_DESCRIPTION_LENGTH) {
       fail(`Job description must be at least ${MIN_JOB_DESCRIPTION_LENGTH} characters.`);
@@ -228,7 +234,28 @@ export const PostJobWizard = () => {
           {step === 4 && <StepReview form={form} />}
 
           {error && (
-            <p className="rounded-10 mt-4 bg-red-50 px-3 py-2 text-[13px] text-red-600">{error}</p>
+            <p
+              className="rounded-10 mt-4 bg-red-50 px-3 py-2 text-[13px] text-red-600"
+              role="alert"
+            >
+              {error}
+            </p>
+          )}
+          {stepErrors.length > 0 && (
+            <div
+              className="rounded-10 mt-4 bg-red-50 px-3 py-2.5 text-[13px] text-red-600"
+              role="alert"
+            >
+              {stepErrors.length === 1 ? (
+                stepErrors[0]
+              ) : (
+                <ul className="list-disc space-y-0.5 pl-4">
+                  {stepErrors.map((message) => (
+                    <li key={message}>{message}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
           )}
 
           <div className="mt-8 flex justify-between border-t border-neutral-100 pt-6">

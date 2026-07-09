@@ -38,6 +38,15 @@ const APPLICANT_STATUS_LABEL: Record<ApplicantStatusGroup, string> = {
   archived: "Archived",
 };
 
+// The "archived" group covers both REJECTED and WITHDRAWN for tab-filtering
+// purposes, but showing "Archived" on the row badge right after an employer
+// clicks reject (with a toast that says "Applicant rejected") reads as if the
+// action didn't register. The badge shows the real, specific status instead.
+const APPLICANT_ROW_STATUS_LABEL: Partial<Record<ApplicationStatus, string>> = {
+  REJECTED: "Rejected",
+  WITHDRAWN: "Withdrawn",
+};
+
 interface ApplicantRowProps {
   applicant: ApplicantWithJob;
   isPending: boolean;
@@ -74,7 +83,7 @@ const ApplicantRow = memo(function ApplicantRow({
 
       <div className="flex-shrink-0 text-right">
         <Badge className="px-1.5 py-0.5 text-[10px]" variant={APPLICANT_STATUS_VARIANT[group]}>
-          {APPLICANT_STATUS_LABEL[group]}
+          {APPLICANT_ROW_STATUS_LABEL[a.status] ?? APPLICANT_STATUS_LABEL[group]}
         </Badge>
       </div>
 
@@ -153,6 +162,7 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
         <div className="flex gap-0.5 rounded-8 border border-neutral-200 bg-neutral-50 p-0.5">
           {tabs.map((t) => (
             <button
+              aria-pressed={tab === t.id}
               className={cn(
                 "rounded-6 px-2.5 py-1 text-[11.5px] font-medium transition-all",
                 tab === t.id

@@ -201,6 +201,7 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
               </button>
               {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
                 <button
+                  aria-current={n === query.page ? "page" : undefined}
                   className={
                     n === query.page
                       ? "grid h-9 min-w-9 place-items-center rounded-8 bg-brand-600 px-2 text-sm font-medium text-white"

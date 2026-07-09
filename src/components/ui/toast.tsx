@@ -60,7 +60,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
             <div
               className="pointer-events-auto flex items-start gap-3 rounded-12 border border-neutral-200 bg-white p-3.5 shadow-card"
               key={t.id}
-              role="status"
+              role={t.variant === "error" ? "alert" : "status"}
             >
               <Icon className={cn("mt-0.5 flex-shrink-0", ACCENT[t.variant])} size={17} />
               <div className="min-w-0 flex-1">

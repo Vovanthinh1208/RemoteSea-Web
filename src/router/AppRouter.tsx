@@ -79,6 +79,10 @@ const AlertsPage = lazy(() =>
   import("@/features/alerts/pages/AlertsPage").then((m) => ({ default: m.AlertsPage }))
 );
 
+const SavedJobsPage = lazy(() =>
+  import("@/features/saved/pages/SavedJobsPage").then((m) => ({ default: m.SavedJobsPage }))
+);
+
 const SettingsPage = lazy(() =>
   import("@/features/settings/pages/SettingsPage").then((m) => ({ default: m.SettingsPage }))
 );
@@ -122,6 +126,7 @@ export const AppRouter = () => {
           <Route element={<PostJobPage />} path="post-job" />
           <Route element={<AlertsPage />} path="alerts" />
           <Route element={<SettingsPage />} path="settings" />
+          <Route element={<SavedJobsPage />} path="saved" />
         </Route>
 
         <Route element={<ProtectedRoute roles={["TALENT"]} />}>

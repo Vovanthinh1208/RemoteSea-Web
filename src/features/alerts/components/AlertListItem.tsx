@@ -1,11 +1,13 @@
 import { Bell, Trash2 } from "lucide-react";
 import { PillToggle } from "@/components/shared/PillToggle";
+import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import type { JobAlert } from "@/types/alert";
 
 interface AlertListItemProps {
   alert: JobAlert;
   onToggleActive: (alert: JobAlert) => void;
-  onDelete: (alert: JobAlert) => void;
+  onDelete: (alert: JobAlert) => Promise<void> | void;
+  isDeleting?: boolean;
 }
 
 const summarizeAlert = (alert: JobAlert): string =>
@@ -20,7 +22,12 @@ const summarizeAlert = (alert: JobAlert): string =>
     .filter(Boolean)
     .join(" · ") || "All jobs";
 
-export const AlertListItem = ({ alert, onToggleActive, onDelete }: AlertListItemProps) => (
+export const AlertListItem = ({
+  alert,
+  onToggleActive,
+  onDelete,
+  isDeleting,
+}: AlertListItemProps) => (
   <div className="flex items-center gap-4 rounded-16 border border-neutral-100 bg-white p-4 shadow-card">
     <span className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full bg-brand-50 text-brand-600">
       <Bell size={15} />
@@ -38,13 +45,21 @@ export const AlertListItem = ({ alert, onToggleActive, onDelete }: AlertListItem
     >
       {alert.isActive ? "Active" : "Paused"}
     </PillToggle>
-    <button
-      aria-label="Delete alert"
-      className="grid h-8 w-8 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600"
-      type="button"
-      onClick={() => onDelete(alert)}
+    <ConfirmAction
+      isPending={isDeleting}
+      message="Delete this alert?"
+      onConfirm={() => onDelete(alert)}
     >
-      <Trash2 size={15} />
-    </button>
+      {({ onClick }) => (
+        <button
+          aria-label="Delete alert"
+          className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600"
+          type="button"
+          onClick={onClick}
+        >
+          <Trash2 size={15} />
+        </button>
+      )}
+    </ConfirmAction>
   </div>
 );

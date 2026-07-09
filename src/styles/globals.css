@@ -51,3 +51,18 @@
     font-style: italic;
   }
 }
+
+/* Applies to every animation/transition in the app (spinners, pulse skeletons,
+   hero fade-ups, hover transitions) in one place, rather than adding a
+   reduced-motion variant to each Tailwind animation utility individually —
+   a real vestibular-disorder consideration, not just polish. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
