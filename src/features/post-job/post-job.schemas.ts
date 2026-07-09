@@ -1,3 +1,4 @@
+import { z } from "zod";
 import type { ExperienceLevel, JobType, PlanType } from "@/types/job";
 
 export const COMPANY_SIZE_OPTIONS = ["1–10", "11–50", "51–200", "201–500", "500+"] as const;
@@ -192,4 +193,48 @@ export const INITIAL_FORM_STATE: PostJobFormState = {
   salPer: "/ month",
   benefits: ["Health insurance", "Home-office stipend"],
   tier: "featured",
+};
+
+export const MIN_JOB_DESCRIPTION_LENGTH = 100;
+
+// Per-step validation so "Continue" catches an empty/garbage required field
+// immediately — the wizard used to only validate at final publish, so a user
+// could click through every step with blank required fields and get no error
+// until the server call at the very end.
+const stepCompanySchema = z.object({
+  coName: z.string().trim().min(1, "Company name is required."),
+  recName: z.string().trim().min(1, "Recruiter/hiring manager name is required."),
+  recEmail: z.string().trim().min(1, "Work email is required.").email("Enter a valid work email."),
+});
+
+const stepRoleSchema = z
+  .object({
+    jobTitle: z.string().trim().min(1, "Job title is required."),
+    jobCategoryId: z.string().trim().min(1, "Select a category."),
+    jobDesc: z
+      .string()
+      .trim()
+      .min(
+        MIN_JOB_DESCRIPTION_LENGTH,
+        `Job description must be at least ${MIN_JOB_DESCRIPTION_LENGTH} characters.`
+      ),
+    salMin: z.number().min(1, "Enter a minimum salary."),
+    salMax: z.number(),
+  })
+  .refine((v) => v.salMax >= v.salMin, {
+    message: "Max salary must be at least the minimum.",
+    path: ["salMax"],
+  });
+
+const STEP_SCHEMAS: Partial<Record<number, z.ZodType<unknown>>> = {
+  1: stepCompanySchema,
+  2: stepRoleSchema,
+};
+
+/** Returns the first validation error for the given step, or null if it's valid. */
+export const validateStep = (step: number, form: PostJobFormState): string | null => {
+  const schema = STEP_SCHEMAS[step];
+  if (!schema) return null;
+  const result = schema.safeParse(form);
+  return result.success ? null : (result.error.issues[0]?.message ?? "Please check this step.");
 };

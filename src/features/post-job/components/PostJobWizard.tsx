@@ -19,8 +19,10 @@ import {
   hqToCountry,
   INITIAL_FORM_STATE,
   JOB_TYPE_TO_ENUM,
+  MIN_JOB_DESCRIPTION_LENGTH,
   SENIORITY_TO_LEVEL,
   TIERS,
+  validateStep,
   type PostJobFormState,
 } from "@/features/post-job/post-job.schemas";
 import { ROUTES } from "@/constants/routes";
@@ -32,7 +34,6 @@ const STEPS = [
   { id: 4, label: "Review & pay" },
 ];
 
-const MIN_JOB_DESCRIPTION_LENGTH = 100;
 const MAX_SKILL_IDS = 15;
 const MAX_BENEFITS = 10;
 const PROFILE_ALREADY_EXISTS_STATUS = 409;
@@ -67,6 +68,20 @@ export const PostJobWizard = () => {
     setError(msg);
     setPublishing(false);
     toast({ variant: "error", title: "Couldn't publish job", description: msg });
+  };
+
+  const goToStep = (nextStep: number) => {
+    // Only gate moving *forward* — going back to fix an earlier step should
+    // always be allowed even if the current step is currently invalid.
+    if (nextStep > step) {
+      const stepError = validateStep(step, form);
+      if (stepError) {
+        setError(stepError);
+        return;
+      }
+    }
+    setError(null);
+    setStep(nextStep);
   };
 
   const handlePublish = async () => {
@@ -181,7 +196,7 @@ export const PostJobWizard = () => {
                   )}
                   type="button"
                   onClick={() => {
-                    if (s.id < step) setStep(s.id);
+                    if (s.id < step) goToStep(s.id);
                   }}
                 >
                   {step > s.id ? <Check size={11} /> : s.id}
@@ -221,7 +236,7 @@ export const PostJobWizard = () => {
               <button
                 className="rounded-12 border border-neutral-200 px-5 py-2.5 text-[13.5px] font-medium text-neutral-600 hover:border-neutral-300"
                 type="button"
-                onClick={() => setStep((s) => s - 1)}
+                onClick={() => goToStep(step - 1)}
               >
                 Back
               </button>
@@ -232,7 +247,7 @@ export const PostJobWizard = () => {
               <button
                 className="inline-flex items-center gap-2 rounded-12 bg-brand-600 px-6 py-2.5 text-[13.5px] font-medium text-white hover:bg-brand-700"
                 type="button"
-                onClick={() => setStep((s) => s + 1)}
+                onClick={() => goToStep(step + 1)}
               >
                 Continue <ChevronRight size={14} />
               </button>

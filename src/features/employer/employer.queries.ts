@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createEmployerProfile,
@@ -94,15 +95,28 @@ export const useEmployerApplicationsAggregate = () => {
   // A per-job fetch failing shouldn't be indistinguishable from "no applicants" —
   // surface it so the dashboard can show a retry instead of silently under-reporting.
   const isError = results.some((r) => r.isError);
-  const byJobId = new Map<string, EmployerApplicant[]>();
-  jobIds.forEach((jobId, i) => {
-    byJobId.set(jobId, results[i]?.data?.applications ?? []);
-  });
 
-  const all: ApplicantWithJob[] = jobIds.flatMap((jobId) => {
-    const job = jobs.find((j) => j.id === jobId);
-    return (byJobId.get(jobId) ?? []).map((a) => ({ ...a, jobId, jobTitle: job?.title ?? "" }));
-  });
+  // Recompute only when the underlying query data actually changes, not on every
+  // render of the consuming dashboard — each applicant object below is spread
+  // fresh, so without this every downstream memo()'d ApplicantRow would re-render
+  // on any unrelated parent re-render. `dataUpdatedAt` gives a fixed-length,
+  // per-query change signal without depending on the (variable-length) data itself.
+  const jobIdsKey = jobIds.join(",");
+  const dataVersion = results.map((r) => r.dataUpdatedAt).join(",");
+  const { byJobId, all } = useMemo(() => {
+    const byJobId = new Map<string, EmployerApplicant[]>();
+    jobIds.forEach((jobId, i) => {
+      byJobId.set(jobId, results[i]?.data?.applications ?? []);
+    });
+
+    const all: ApplicantWithJob[] = jobIds.flatMap((jobId) => {
+      const job = jobs.find((j) => j.id === jobId);
+      return (byJobId.get(jobId) ?? []).map((a) => ({ ...a, jobId, jobTitle: job?.title ?? "" }));
+    });
+
+    return { byJobId, all };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jobIdsKey, dataVersion, jobs]);
 
   const refetchAll = () => results.forEach((r) => r.refetch());
 

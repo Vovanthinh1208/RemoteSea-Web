@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { AlertCircle, CheckCircle2, Info, X } from "lucide-react";
 import { cn } from "@/utils/cn";
 
@@ -46,8 +46,12 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
     [remove]
   );
 
+  // ToastProvider wraps the whole app; an unmemoized value here would re-render
+  // every useToast() consumer whenever any toast fires or auto-dismisses anywhere.
+  const value = useMemo<ToastContextValue>(() => ({ toast }), [toast]);
+
   return (
-    <ToastContext.Provider value={{ toast }}>
+    <ToastContext.Provider value={value}>
       {children}
       <div className="pointer-events-none fixed bottom-4 right-4 z-[100] flex w-[340px] max-w-[calc(100vw-2rem)] flex-col gap-2">
         {toasts.map((t) => {

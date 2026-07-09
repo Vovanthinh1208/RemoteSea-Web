@@ -1,9 +1,10 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback } from "react";
 import { Check, X } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { useToastMutation } from "@/hooks/useToastMutation";
+import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { useUpdateApplicationStatus } from "@/features/employer/employer.queries";
 import {
   APPLICANT_STATUS,
@@ -17,6 +18,9 @@ import type { ApplicantWithJob } from "@/features/employer/employer.queries";
 import type { ApplicationStatus } from "@/types/application";
 
 type ApplicantTabId = "all" | "new" | "shortlisted";
+
+const isApplicantTabId = (v: string): v is ApplicantTabId =>
+  (["all", "new", "shortlisted"] as const).includes(v as ApplicantTabId);
 
 const RECENT_APPLICANTS_DISPLAY_COUNT = 8;
 
@@ -108,7 +112,8 @@ interface ApplicantsPanelProps {
 export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
   const runWithToast = useToastMutation();
   const updateStatusMutation = useUpdateApplicationStatus();
-  const [tab, setTab] = useState<ApplicantTabId>("all");
+  // URL-synced so reloading (or sharing the link) doesn't silently revert to "All".
+  const [tab, setTab] = useSearchParamState<ApplicantTabId>("applicantTab", "all", isApplicantTabId);
 
   const tabs: { id: ApplicantTabId; label: string; count: number }[] = [
     { id: "all", label: "All", count: applicants.length },

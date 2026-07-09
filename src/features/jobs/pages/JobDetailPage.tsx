@@ -14,13 +14,27 @@ import { SalaryBenchmarkCard } from "@/features/jobs/pages/job-detail/SalaryBenc
 import { QuickFactsCard } from "@/features/jobs/pages/job-detail/QuickFactsCard";
 import { JobCompanyCard } from "@/features/jobs/pages/job-detail/JobCompanyCard";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useJobPostingSchema } from "@/hooks/useJobPostingSchema";
+import { LEVEL_LABELS, JOB_TYPE_LABELS } from "@/utils/labels";
 import { ROUTES } from "@/constants/routes";
+
+const jobMetaDescription = (job: NonNullable<ReturnType<typeof useJobQuery>["data"]>): string => {
+  const salary = job.salaryMin
+    ? ` · ${job.currency} ${job.salaryMin.toLocaleString()}${job.salaryMax ? `–${job.salaryMax.toLocaleString()}` : "+"}/mo`
+    : "";
+  const location = job.isRemote ? "Remote" : (job.country ?? "Remote");
+  return `${LEVEL_LABELS[job.level]} ${JOB_TYPE_LABELS[job.jobType]} role at ${job.employer.companyName} · ${location}${salary}. Apply on RemoteSEA.`;
+};
 
 export const JobDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data: job, isLoading, isError } = useJobQuery(id);
   const { data: benchmarks } = useSalaryBenchmarks();
-  useDocumentTitle(job ? `${job.title} at ${job.employer.companyName}` : "Job");
+  useDocumentTitle(
+    job ? `${job.title} at ${job.employer.companyName}` : "Job",
+    job ? jobMetaDescription(job) : undefined
+  );
+  useJobPostingSchema(job);
 
   if (isLoading) {
     return (

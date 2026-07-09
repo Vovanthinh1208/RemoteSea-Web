@@ -45,8 +45,13 @@ export const useReviewAdminJob = () => {
       action: "approve" | "reject";
       note?: string;
     }) => reviewAdminJob(id, action, note),
-    onSuccess: () => {
+    onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: ADMIN_JOBS_KEY });
+      // A review changes the job's public status (e.g. approved -> live) — without
+      // this, the public jobs list/detail can keep showing stale data for up to a
+      // minute (default staleTime) after an approval.
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      queryClient.invalidateQueries({ queryKey: ["job", id] });
     },
   });
 };

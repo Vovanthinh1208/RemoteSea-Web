@@ -1,9 +1,8 @@
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import { RootLayout } from "@/layouts/RootLayout";
 import { GuestOnlyRoute } from "@/router/GuestOnlyRoute";
 import { ProtectedRoute } from "@/router/ProtectedRoute";
-import { FullPageLoader } from "@/components/ui/spinner";
 import { useAnalyticsPageview } from "@/hooks/useAnalyticsPageview";
 
 const HomePage = lazy(() => import("@/pages/HomePage").then((m) => ({ default: m.HomePage })));
@@ -92,47 +91,45 @@ export const AppRouter = () => {
   useAnalyticsPageview();
 
   return (
-    <Suspense fallback={<FullPageLoader />}>
-      <Routes>
-        <Route element={<RootLayout />} path="/">
-          <Route index element={<HomePage />} />
+    <Routes>
+      <Route element={<RootLayout />} path="/">
+        <Route index element={<HomePage />} />
 
-          <Route element={<GuestOnlyRoute />}>
-            <Route element={<LoginPage />} path="login" />
-            <Route element={<RegisterPage />} path="register" />
-            <Route element={<ForgotPasswordPage />} path="forgot-password" />
-            <Route element={<ResetPasswordPage />} path="reset-password" />
-          </Route>
-
-          <Route element={<AuthCallbackPage />} path="auth/callback" />
-
-          <Route element={<JobsPage />} path="jobs" />
-          <Route element={<JobDetailPage />} path="jobs/:id" />
-
-          <Route element={<SalaryPage />} path="salary" />
-          <Route element={<BlogPage />} path="blog" />
-          <Route element={<CommunityPage />} path="community" />
-
-          <Route element={<EmployerMarketingPage />} path="employer" />
-          <Route element={<PostJobSuccessPage />} path="post-job/success" />
-          <Route element={<PublicTalentProfilePage />} path="talent/:slug" />
-
-          <Route element={<ProtectedRoute />}>
-            <Route element={<ProfilePage />} path="profile" />
-            <Route element={<TalentDashboardPage />} path="talent" />
-            <Route element={<EmployerDashboardPage />} path="employer-dashboard" />
-            <Route element={<PostJobPage />} path="post-job" />
-            <Route element={<AlertsPage />} path="alerts" />
-            <Route element={<SettingsPage />} path="settings" />
-          </Route>
-
-          <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
-            <Route element={<AdminPage />} path="admin" />
-          </Route>
-
-          <Route element={<NotFoundPage />} path="*" />
+        <Route element={<GuestOnlyRoute />}>
+          <Route element={<LoginPage />} path="login" />
+          <Route element={<RegisterPage />} path="register" />
+          <Route element={<ForgotPasswordPage />} path="forgot-password" />
+          <Route element={<ResetPasswordPage />} path="reset-password" />
         </Route>
-      </Routes>
-    </Suspense>
+
+        <Route element={<AuthCallbackPage />} path="auth/callback" />
+
+        <Route element={<JobsPage />} path="jobs" />
+        <Route element={<JobDetailPage />} path="jobs/:id" />
+
+        <Route element={<SalaryPage />} path="salary" />
+        <Route element={<BlogPage />} path="blog" />
+        <Route element={<CommunityPage />} path="community" />
+
+        <Route element={<EmployerMarketingPage />} path="employer" />
+        <Route element={<PostJobSuccessPage />} path="post-job/success" />
+        <Route element={<PublicTalentProfilePage />} path="talent/:slug" />
+
+        <Route element={<ProtectedRoute />}>
+          <Route element={<ProfilePage />} path="profile" />
+          <Route element={<TalentDashboardPage />} path="talent" />
+          <Route element={<EmployerDashboardPage />} path="employer-dashboard" />
+          <Route element={<PostJobPage />} path="post-job" />
+          <Route element={<AlertsPage />} path="alerts" />
+          <Route element={<SettingsPage />} path="settings" />
+        </Route>
+
+        <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
+          <Route element={<AdminPage />} path="admin" />
+        </Route>
+
+        <Route element={<NotFoundPage />} path="*" />
+      </Route>
+    </Routes>
   );
 };

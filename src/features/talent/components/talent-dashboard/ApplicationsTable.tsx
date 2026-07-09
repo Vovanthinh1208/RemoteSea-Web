@@ -1,10 +1,11 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { cn } from "@/utils/cn";
+import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { companyColor, countryFlag } from "@/features/jobs/jobs.utils";
 import { Pipeline } from "@/features/talent/components/talent-dashboard/Pipeline";
 import {
@@ -69,8 +70,11 @@ interface ApplicationsTableProps {
   applications: ApplicationWithJob[];
 }
 
+const isTabId = (v: string): v is TabId => (["all", "active", "offers", "closed"] as const).includes(v as TabId);
+
 export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
-  const [tab, setTab] = useState<TabId>("active");
+  // URL-synced so reloading (or sharing the link) doesn't silently revert to "Active".
+  const [tab, setTab] = useSearchParamState<TabId>("appTab", "active", isTabId);
 
   const inBucket = (a: ApplicationWithJob, buckets: AppStatusBucket[]) =>
     buckets.includes(STATUS_TO_BUCKET[a.status]);

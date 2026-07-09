@@ -30,13 +30,14 @@ export const AdminQueue = () => {
 
   const queue = data?.jobs ?? [];
   const active = queue.filter((j) => !resolved[j.id]);
-  // While a confirmation banner is showing, keep displaying the job it's for even
-  // though `decide()` has already removed it from `active` — otherwise the banner
-  // ends up attached to whatever job the selection snaps to next, and effectively
-  // never renders. Only fall through to "pick the next pending job" once the
-  // banner's timeout clears both `banner` and `selId` together.
+  // Keep showing the just-decided job (even though `decide()` already removed it
+  // from `active`) ONLY if the reviewer hasn't since selected something else —
+  // otherwise this used to force the view back to the decided job's banner even
+  // after the reviewer had already moved on to reviewing a different one.
   const effectiveSelId =
-    banner?.id ?? (selId && active.some((j) => j.id === selId) ? selId : (active[0]?.id ?? null));
+    selId && (active.some((j) => j.id === selId) || banner?.id === selId)
+      ? selId
+      : (active[0]?.id ?? null);
   const sel = queue.find((j) => j.id === effectiveSelId);
   const isResolved = sel && resolved[sel.id];
   const selChecked = (effectiveSelId && checked[effectiveSelId]) || new Set<number>();
@@ -54,6 +55,9 @@ export const AdminQueue = () => {
   const decide = (kind: ResolutionKind) => {
     if (!effectiveSelId) return;
     const decidedId = effectiveSelId;
+    // Pin explicitly, even if `decidedId` was only showing via the active[0]
+    // default (never clicked) — otherwise the pin check below has nothing to match.
+    setSelId(decidedId);
     const action = kind === "approved" ? "approve" : "reject";
     runWithToast(
       async () => {
@@ -65,8 +69,10 @@ export const AdminQueue = () => {
         setResolved((prev) => ({ ...prev, [decidedId]: kind }));
         setBanner({ id: decidedId, kind });
         setTimeout(() => {
-          setBanner(null);
-          setSelId(null);
+          // Only clear state that's still about this decision — if the reviewer has
+          // since selected a different job, don't clobber their new selection.
+          setBanner((prev) => (prev?.id === decidedId ? null : prev));
+          setSelId((prev) => (prev === decidedId ? null : prev));
         }, RESOLUTION_BANNER_DISPLAY_MS);
       },
       {

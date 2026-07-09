@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -29,12 +30,19 @@ export const useSavedJobToggle = (
   const statusUnknown = !!user && savedStatusLoading;
   const saved = savedJobs?.some((s) => s.jobId === jobId) ?? false;
 
+  // Guards against a rapid double-click firing a second toggle before the first's
+  // optimistic update/rollback has settled — without this, `prev` in the second
+  // call can be read from an in-flight optimistic write rather than a stable value.
+  const togglingRef = useRef(false);
+
   const toggle = async (e?: React.MouseEvent) => {
     e?.preventDefault();
     if (!user) {
       navigate(`${ROUTES.login}?callbackUrl=${encodeURIComponent(loginCallbackUrl)}`);
       return;
     }
+    if (togglingRef.current) return;
+    togglingRef.current = true;
     const prev = saved;
     try {
       if (prev) {
@@ -46,6 +54,8 @@ export const useSavedJobToggle = (
     } catch (err) {
       reportError(err);
       toast({ variant: "error", title: "Couldn't update saved jobs" });
+    } finally {
+      togglingRef.current = false;
     }
   };
 

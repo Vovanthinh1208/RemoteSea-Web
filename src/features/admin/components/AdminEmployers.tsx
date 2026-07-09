@@ -1,5 +1,6 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback } from "react";
 import { Briefcase, Building, Search, Shield, Wallet } from "lucide-react";
+import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { VerifiedBadge } from "@/components/shared/VerifiedBadge";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { PillToggle } from "@/components/shared/PillToggle";
@@ -97,8 +98,17 @@ export const AdminEmployers = () => {
   const runWithToast = useToastMutation();
   const { data, isLoading } = useAdminEmployers();
   const updateEmployerMutation = useUpdateAdminEmployer();
-  const [filter, setFilter] = useState<(typeof FILTERS)[number]["id"]>("all");
-  const [search, setSearch] = useState("");
+
+  // URL-synced (like JobsBoard) so a filtered/searched view survives a refresh and
+  // can be shared/deep-linked, instead of silently resetting to "All" on reload.
+  const isFilterId = (v: string): v is (typeof FILTERS)[number]["id"] =>
+    FILTERS.some((f) => f.id === v);
+  const [filter, setFilter] = useSearchParamState<(typeof FILTERS)[number]["id"]>(
+    "filter",
+    "all",
+    isFilterId
+  );
+  const [search, setSearch] = useSearchParamState<string>("q", "");
 
   const employers = data?.employers ?? [];
 

@@ -92,8 +92,12 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
       portfolioUrl: profile.portfolioUrl ?? "",
     });
     setSkills(profile.skills.map((s) => s.skill.name));
+    // Depend on the whole `profile` object, not just its id: a successful save
+    // writes the server's (possibly normalized) response into the cache under the
+    // same id, and the form/skill list should pick that up rather than keep
+    // showing the un-normalized values the user originally typed.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile?.id]);
+  }, [profile]);
 
   const scrollTo = (id: string) => {
     setActiveSection(id);
