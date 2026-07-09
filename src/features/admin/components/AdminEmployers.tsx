@@ -28,6 +28,7 @@ interface EmployerRowProps {
   onStatusChange: (id: string, action: "verify" | "suspend") => void;
 }
 
+const EMPLOYER_GRID_COLUMNS = "minmax(260px, 1fr) 90px 140px 100px 88px";
 const EmployerRow = memo(function EmployerRow({
   employer: e,
   maxSpend,
@@ -37,68 +38,83 @@ const EmployerRow = memo(function EmployerRow({
   return (
     <div
       className="grid items-center border-b border-neutral-50 px-5 py-4 transition-colors last:border-0 hover:bg-neutral-50"
-      style={{ gridTemplateColumns: "1fr 90px 140px 100px 32px" }}
+      style={{ gridTemplateColumns: EMPLOYER_GRID_COLUMNS }}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex min-w-0 items-center gap-3">
         <CompanyLogo
           color={colorFor(e.companyName)}
           initial={e.companyName.charAt(0).toUpperCase()}
           size={38}
         />
-        <div>
+
+        <div className="min-w-0">
           <div className="flex items-center gap-1.5 text-[14px] font-semibold text-neutral-900">
-            {e.companyName}
+            <span className="truncate">{e.companyName}</span>
             <VerifiedBadge isVerified={e.isVerified} />
           </div>
-          <div className="text-[12px] text-neutral-400">
+
+          <div className="truncate text-[12px] text-neutral-400">
             {e.user.email} · {e.hqCountry ?? "—"}
           </div>
         </div>
       </div>
+
       <div className="flex items-center gap-1 text-[14px] font-semibold text-neutral-900">
-        <Briefcase className="text-neutral-300" size={12} /> {e.jobCount}
+        <Briefcase className="text-neutral-300" size={12} />
+        {e.jobCount}
       </div>
+
       <div>
         <div className="mb-1 font-mono text-[13px] font-semibold text-neutral-900">
           ${(e.totalSpend / CENTS_PER_DOLLAR).toLocaleString()}
         </div>
+
         <div className="h-1 overflow-hidden rounded-full bg-neutral-100">
           <div
             className="h-full rounded-full bg-brand-600"
-            style={{ width: `${Math.round((e.totalSpend / maxSpend) * 100)}%` }}
+            style={{
+              width: `${Math.round((e.totalSpend / maxSpend) * 100)}%`,
+            }}
           />
         </div>
       </div>
+
       <span className="text-[13px] text-neutral-400">
-        {new Date(e.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+        {new Date(e.createdAt).toLocaleDateString("en-US", {
+          month: "short",
+          year: "numeric",
+        })}
       </span>
-      {e.isVerified ? (
-        <ConfirmAction
-          isPending={isPending}
-          message={`Suspend ${e.companyName}? Their listings will come down immediately.`}
-          onConfirm={() => onStatusChange(e.id, "suspend")}
-        >
-          {({ onClick }) => (
-            <button
-              className="rounded-6 whitespace-nowrap border border-neutral-200 px-2 py-1 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-60"
-              disabled={isPending}
-              type="button"
-              onClick={onClick}
-            >
-              Suspend
-            </button>
-          )}
-        </ConfirmAction>
-      ) : (
-        <button
-          className="rounded-6 border border-brand-200 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100 disabled:opacity-60"
-          disabled={isPending}
-          type="button"
-          onClick={() => onStatusChange(e.id, "verify")}
-        >
-          Verify
-        </button>
-      )}
+
+      <div className="flex justify-end">
+        {e.isVerified ? (
+          <ConfirmAction
+            isPending={isPending}
+            message={`Suspend ${e.companyName}? Their listings will come down immediately.`}
+            onConfirm={() => onStatusChange(e.id, "suspend")}
+          >
+            {({ onClick }) => (
+              <button
+                type="button"
+                disabled={isPending}
+                onClick={onClick}
+                className="inline-flex h-8 min-w-[76px] items-center justify-center rounded-8 border border-neutral-200 bg-white px-3 text-xs font-medium text-neutral-600 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                Suspend
+              </button>
+            )}
+          </ConfirmAction>
+        ) : (
+          <button
+            type="button"
+            disabled={isPending}
+            onClick={() => onStatusChange(e.id, "verify")}
+            className="inline-flex h-8 min-w-[76px] items-center justify-center rounded-8 border border-brand-200 bg-brand-50 px-3 text-xs font-medium text-brand-700 transition-all hover:bg-brand-100 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            Verify
+          </button>
+        )}
+      </div>
     </div>
   );
 });
@@ -216,7 +232,7 @@ export const AdminEmployers = () => {
       <div className="overflow-hidden rounded-12 border border-neutral-100 bg-white">
         <div
           className="grid border-b border-neutral-100 px-5 py-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400"
-          style={{ gridTemplateColumns: "1fr 90px 140px 100px 32px" }}
+          style={{ gridTemplateColumns: EMPLOYER_GRID_COLUMNS }}
         >
           <span>Employer</span>
           <span>Listings</span>
