@@ -10,8 +10,9 @@ import {
 } from "@/features/employer/employer.api";
 import { ApiError } from "@/services/api-error";
 import { useAuth } from "@/contexts/AuthContext";
+import { MY_APPLICATIONS_KEY } from "@/features/applications/applications.queries";
 import type { ApplicationStatus } from "@/types/application";
-import type { EmployerApplicant } from "@/types/employer";
+import type { EmployerApplicant, EmployerProfileSummary } from "@/types/employer";
 
 export const EMPLOYER_PROFILE_KEY = ["employer", "profile"];
 export const EMPLOYER_JOBS_KEY = ["employer", "jobs"];
@@ -56,7 +57,12 @@ export const useUpdateEmployerProfile = () => {
   return useMutation({
     mutationFn: updateEmployerProfile,
     onSuccess: (profile) => {
-      queryClient.setQueryData(EMPLOYER_PROFILE_KEY, profile);
+      // The update response doesn't include _count/totalApplications (only GET
+      // does) — merge into the existing cache instead of replacing it wholesale,
+      // so those fields aren't silently dropped after every profile edit.
+      queryClient.setQueryData<EmployerProfileSummary | null>(EMPLOYER_PROFILE_KEY, (prev) =>
+        prev ? { ...prev, ...profile } : prev
+      );
     },
   });
 };
@@ -138,6 +144,11 @@ export const useUpdateApplicationStatus = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employer", "job-applications"] });
       queryClient.invalidateQueries({ queryKey: EMPLOYER_JOBS_KEY });
+      // The talent side's own applications list reads the same status this
+      // mutation changes — low-impact today since employer/talent are separate
+      // sessions, but matches the cross-feature invalidation pattern used
+      // elsewhere and matters the moment any shared-session view exists.
+      queryClient.invalidateQueries({ queryKey: MY_APPLICATIONS_KEY });
     },
   });
 };

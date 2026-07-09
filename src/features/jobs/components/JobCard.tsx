@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { Bookmark, Clock, RefreshCw, ShieldCheck, Star } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import { SalaryBadge } from "@/components/ui/salary-badge";
 import { Tag } from "@/components/ui/tag";
 import { cn } from "@/utils/cn";
 import { useSavedJobToggle } from "@/features/jobs/useSavedJobToggle";
+import { getJob } from "@/features/jobs/jobs.api";
 import {
   JOB_TYPE_LABELS,
   LEVEL_LABELS,
@@ -24,6 +26,14 @@ interface JobCardProps {
 
 export const JobCard = memo(function JobCard({ job }: JobCardProps) {
   const { saved, statusUnknown, toggle } = useSavedJobToggle(job.id, ROUTES.jobs);
+  const queryClient = useQueryClient();
+
+  // Job-board -> job-detail is the single most common navigation in the app;
+  // prefetching on hover means the detail page's data is often already cached
+  // by the time the click lands, instead of always showing a skeleton.
+  const prefetchJob = () => {
+    void queryClient.prefetchQuery({ queryKey: ["job", job.id], queryFn: () => getJob(job.id) });
+  };
 
   const country = job.country ?? "Remote";
   const timezone = job.timezone ?? (job.isRemote ? "Remote" : country);
@@ -37,6 +47,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
         job.isFeatured && "border-l-2 border-l-amber-400"
       )}
       to={`/jobs/${job.id}`}
+      onMouseEnter={prefetchJob}
     >
       <CompanyLogo
         color={companyColor(job.employer.companyName)}

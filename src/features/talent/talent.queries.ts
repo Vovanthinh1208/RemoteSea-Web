@@ -33,6 +33,10 @@ export const useUpdateMyTalentProfile = () => {
     mutationFn: updateMyTalentProfile,
     onSuccess: (profile) => {
       queryClient.setQueryData(MY_TALENT_PROFILE_KEY, profile);
+      // The public profile page supports viewing your own profile — without
+      // this, editing and then clicking through to your own public URL shows
+      // stale data for up to staleTime.
+      queryClient.invalidateQueries({ queryKey: ["talent", "public", profile.slug] });
     },
   });
 };

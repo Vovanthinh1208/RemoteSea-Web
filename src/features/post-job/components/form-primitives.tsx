@@ -1,4 +1,9 @@
 import { Children, cloneElement, isValidElement, useId } from "react";
+import {
+  SELECT_INPUT_CLASS,
+  TEXT_INPUT_CLASS,
+  TEXTAREA_INPUT_CLASS,
+} from "@/components/shared/input-styles";
 
 interface FieldProps {
   label: string;
@@ -38,16 +43,18 @@ export const Field = ({ label, children, hint }: FieldProps) => {
 
 interface InputProps {
   id?: string;
-  value: string;
+  value: string | number;
   onChange: (v: string) => void;
   placeholder?: string;
   type?: string;
+  min?: number;
 }
 
-export const Input = ({ id, value, onChange, placeholder, type = "text" }: InputProps) => (
+export const Input = ({ id, value, onChange, placeholder, type = "text", min }: InputProps) => (
   <input
-    className="rounded-10 focus:border-brand-500 w-full border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+    className={TEXT_INPUT_CLASS}
     id={id}
+    min={min}
     placeholder={placeholder}
     type={type}
     value={value}
@@ -64,7 +71,7 @@ interface SelectProps {
 
 export const Select = ({ id, value, onChange, options }: SelectProps) => (
   <select
-    className="rounded-10 focus:border-brand-500 w-full border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-100"
+    className={SELECT_INPUT_CLASS}
     id={id}
     value={value}
     onChange={(e) => onChange(e.target.value)}
@@ -87,7 +94,7 @@ interface TextareaProps {
 
 export const Textarea = ({ id, value, onChange, placeholder, rows = 4 }: TextareaProps) => (
   <textarea
-    className="rounded-10 focus:border-brand-500 w-full resize-none border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+    className={TEXTAREA_INPUT_CLASS}
     id={id}
     placeholder={placeholder}
     rows={rows}

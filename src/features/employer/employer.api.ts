@@ -5,6 +5,7 @@ import type {
   CreateEmployerProfilePayload,
   EmployerJobApplicationsResponse,
   EmployerJobsResponse,
+  EmployerProfile,
   EmployerProfileSummary,
   UpdateEmployerProfilePayload,
 } from "@/types/employer";
@@ -21,10 +22,12 @@ export const getEmployerProfile = async (): Promise<EmployerProfileSummary> => {
   return data;
 };
 
+// The backend's update endpoint only returns EmployerProfile's fields — unlike
+// GET /employer/profile, it does not include _count/totalApplications.
 export const updateEmployerProfile = async (
   payload: UpdateEmployerProfilePayload
-): Promise<EmployerProfileSummary> => {
-  const { data } = await apiClient.patch<EmployerProfileSummary>("/employer/profile", payload);
+): Promise<EmployerProfile> => {
+  const { data } = await apiClient.patch<EmployerProfile>("/employer/profile", payload);
   return data;
 };
 

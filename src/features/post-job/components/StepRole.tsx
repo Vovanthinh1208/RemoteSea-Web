@@ -109,21 +109,19 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
         <h3 className="mb-4 text-[14px] font-semibold text-neutral-800">Compensation</h3>
         <div className="grid gap-4 sm:grid-cols-4">
           <Field label="Min">
-            <input
-              className="rounded-10 focus:border-brand-500 w-full border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-100"
+            <Input
               min={0}
               type="number"
               value={form.salMin}
-              onChange={(e) => set("salMin", Number(e.target.value))}
+              onChange={(v) => set("salMin", Number(v))}
             />
           </Field>
           <Field label="Max">
-            <input
-              className="rounded-10 focus:border-brand-500 w-full border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-100"
+            <Input
               min={0}
               type="number"
               value={form.salMax}
-              onChange={(e) => set("salMax", Number(e.target.value))}
+              onChange={(v) => set("salMax", Number(v))}
             />
           </Field>
           <Field label="Currency">

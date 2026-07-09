@@ -1,6 +1,6 @@
 import type { UseFormRegister } from "react-hook-form";
 import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
-import { SELECT_INPUT_CLASS } from "@/features/talent/components/profile-form/profile-form.constants";
+import { SELECT_INPUT_CLASS, TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 import { SENIORITY_OPTIONS, YEARS_BUCKETS } from "@/features/talent/talent.constants";
 import type { ProfileFormValues } from "@/features/talent/talent.schemas";
 
@@ -36,11 +36,7 @@ export const AboutSection = ({ register, bioError, bioLength }: AboutSectionProp
             {bioLength} / {MAX_BIO_LENGTH}
           </span>
         </div>
-        <textarea
-          className="rounded-10 focus:border-brand-500 w-full resize-none border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-100"
-          rows={4}
-          {...register("bio")}
-        />
+        <textarea className={TEXTAREA_INPUT_CLASS} rows={4} {...register("bio")} />
         {bioError && <p className="text-[11.5px] text-red-600">{bioError}</p>}
       </div>
       <div className="grid gap-4 sm:grid-cols-2">

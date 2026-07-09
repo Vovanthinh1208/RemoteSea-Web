@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
@@ -77,34 +77,37 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
   // URL-synced so reloading (or sharing the link) doesn't silently revert to "Active".
   const [tab, setTab] = useSearchParamState<TabId>("appTab", "active", isTabId);
 
-  const inBucket = (a: ApplicationWithJob, buckets: AppStatusBucket[]) =>
-    buckets.includes(STATUS_TO_BUCKET[a.status]);
+  // Single O(n) bucketing pass instead of re-filtering `applications` once per tab
+  // count plus once for the visible rows (previously 6 separate .filter() passes
+  // over the same array on every render).
+  const grouped = useMemo(() => {
+    const buckets: Record<AppStatusBucket, ApplicationWithJob[]> = {
+      applied: [],
+      review: [],
+      interview: [],
+      offer: [],
+      closed: [],
+    };
+    for (const a of applications) buckets[STATUS_TO_BUCKET[a.status]].push(a);
+
+    const byTab: Record<TabId, ApplicationWithJob[]> = {
+      all: applications,
+      active: [...buckets.applied, ...buckets.review, ...buckets.interview],
+      offers: buckets.offer,
+      closed: buckets.closed,
+    };
+
+    return { byTab, notClosedCount: applications.length - buckets.closed.length };
+  }, [applications]);
+
+  const filtered = grouped.byTab[tab];
 
   const tabs: { id: TabId; label: string; count: number }[] = [
     { id: "all", label: "All", count: applications.length },
-    {
-      id: "active",
-      label: "Active",
-      count: applications.filter((a) => inBucket(a, ["applied", "review", "interview"])).length,
-    },
-    {
-      id: "offers",
-      label: "Offers",
-      count: applications.filter((a) => inBucket(a, ["offer"])).length,
-    },
-    {
-      id: "closed",
-      label: "Closed",
-      count: applications.filter((a) => inBucket(a, ["closed"])).length,
-    },
+    { id: "active", label: "Active", count: grouped.byTab.active.length },
+    { id: "offers", label: "Offers", count: grouped.byTab.offers.length },
+    { id: "closed", label: "Closed", count: grouped.byTab.closed.length },
   ];
-
-  const filtered = applications.filter((a) => {
-    if (tab === "all") return true;
-    if (tab === "active") return inBucket(a, ["applied", "review", "interview"]);
-    if (tab === "offers") return inBucket(a, ["offer"]);
-    return inBucket(a, ["closed"]);
-  });
 
   return (
     <div className="mb-5 overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">
@@ -112,7 +115,7 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
         <h3 className="text-[14px] font-semibold text-neutral-900">
           Your applications{" "}
           <span className="font-normal text-neutral-400">
-            · {applications.filter((a) => STATUS_TO_BUCKET[a.status] !== "closed").length} active
+            · {grouped.notClosedCount} active
           </span>
         </h3>
         <div className="flex items-center gap-0.5 rounded-8 bg-neutral-100 p-0.5">

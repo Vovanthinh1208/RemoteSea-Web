@@ -15,12 +15,20 @@ export const ADMIN_REVENUE_KEY = ["admin", "revenue"];
 
 const ADMIN_LIST_LIMIT = 50;
 
+// A review queue needs to reflect other admins'/employers' activity promptly —
+// the global 60s staleTime with refetchOnWindowFocus disabled otherwise means a
+// new submission won't show up until some unrelated action happens to
+// invalidate this key.
+const ADMIN_QUEUE_STALE_TIME_MS = 15_000;
+
 export const useAdminJobs = (status: JobStatus = "PENDING_REVIEW") => {
   const { user } = useAuth();
   return useQuery({
     queryKey: [...ADMIN_JOBS_KEY, status],
     queryFn: () => listAdminJobs({ status, limit: ADMIN_LIST_LIMIT }),
     enabled: !!user && user.role === "ADMIN",
+    staleTime: ADMIN_QUEUE_STALE_TIME_MS,
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -63,6 +71,10 @@ export const useUpdateAdminEmployer = () => {
       updateAdminEmployer(id, action),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ADMIN_EMPLOYERS_KEY });
+      // employer.isVerified is denormalized into every job list/detail response
+      // (drives the "Verified" badge) — same class of gap already fixed for job
+      // approval above, just missed here.
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
     },
   });
 };

@@ -2,7 +2,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { listSavedJobs, saveJob, unsaveJob, type SavedJob } from "@/features/saved/saved.api";
 import { useAuth } from "@/contexts/AuthContext";
 
-export const SAVED_JOBS_KEY = ["saved-jobs"];
+// Hierarchical (matches the rest of the app's ["feature", "scope"] convention)
+// rather than a flat string, so a future feature can invalidate by ["saved"]
+// prefix if more saved-* queries are ever added.
+export const SAVED_JOBS_KEY = ["saved", "jobs"];
 
 const SAVED_JOBS_STALE_TIME_MS = 30_000;
 

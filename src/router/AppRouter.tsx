@@ -115,13 +115,22 @@ export const AppRouter = () => {
         <Route element={<PostJobSuccessPage />} path="post-job/success" />
         <Route element={<PublicTalentProfilePage />} path="talent/:slug" />
 
+        {/* post-job/alerts/settings are intentionally role-agnostic: creating an
+            employer profile via the post-job wizard is how a user *becomes* an
+            employer, and alerts/settings apply to any authenticated account. */}
         <Route element={<ProtectedRoute />}>
-          <Route element={<ProfilePage />} path="profile" />
-          <Route element={<TalentDashboardPage />} path="talent" />
-          <Route element={<EmployerDashboardPage />} path="employer-dashboard" />
           <Route element={<PostJobPage />} path="post-job" />
           <Route element={<AlertsPage />} path="alerts" />
           <Route element={<SettingsPage />} path="settings" />
+        </Route>
+
+        <Route element={<ProtectedRoute roles={["TALENT"]} />}>
+          <Route element={<ProfilePage />} path="profile" />
+          <Route element={<TalentDashboardPage />} path="talent" />
+        </Route>
+
+        <Route element={<ProtectedRoute roles={["EMPLOYER"]} />}>
+          <Route element={<EmployerDashboardPage />} path="employer-dashboard" />
         </Route>
 
         <Route element={<ProtectedRoute roles={["ADMIN"]} />}>

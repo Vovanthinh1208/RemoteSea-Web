@@ -2,6 +2,11 @@ import type { ExperienceLevel, JobType } from "@/types/job";
 
 export const JOB_LIMIT = 12;
 
+// Shared by HomePage and RecommendedJobs, both of which query
+// DEFAULT_JOB_FILTERS at this same limit so they hit one cache entry instead
+// of firing a duplicate request when navigating between the two pages.
+export const DEFAULT_FILTERS_FETCH_LIMIT = 20;
+
 export const SALARY_FLOOR = 500;
 export const SALARY_CEIL = 8000;
 

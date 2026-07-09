@@ -2,7 +2,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { applyToJob, listMyApplications } from "@/features/applications/applications.api";
 import { useAuth } from "@/contexts/AuthContext";
 
-export const MY_APPLICATIONS_KEY = ["my-applications"];
+// Hierarchical (matches the rest of the app's ["feature", "scope"] convention)
+// rather than a flat string.
+export const MY_APPLICATIONS_KEY = ["applications", "me"];
 
 export const useMyApplications = () => {
   const { user } = useAuth();

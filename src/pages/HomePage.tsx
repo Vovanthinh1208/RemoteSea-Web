@@ -8,7 +8,7 @@ import { SalaryBadge } from "@/components/ui/salary-badge";
 import { Tag } from "@/components/ui/tag";
 import { useJobsQuery } from "@/features/jobs/jobs.queries";
 import { useSalaryBenchmarks } from "@/features/salary/salary.queries";
-import { DEFAULT_JOB_FILTERS } from "@/features/jobs/job-filters";
+import { DEFAULT_FILTERS_FETCH_LIMIT, DEFAULT_JOB_FILTERS } from "@/features/jobs/job-filters";
 import { LEVEL_LABELS, companyColor, countryFlag } from "@/features/jobs/jobs.utils";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ROUTES } from "@/constants/routes";
@@ -78,10 +78,12 @@ const TESTIMONIALS = [
   },
 ];
 
+const FEATURED_JOBS_DISPLAY_COUNT = 4;
+
 export const HomePage = () => {
   useDocumentTitle("Remote Jobs from SG, AU & beyond");
-  const { data } = useJobsQuery(DEFAULT_JOB_FILTERS, 4);
-  const featuredJobs = data?.jobs ?? [];
+  const { data } = useJobsQuery(DEFAULT_JOB_FILTERS, DEFAULT_FILTERS_FETCH_LIMIT);
+  const featuredJobs = (data?.jobs ?? []).slice(0, FEATURED_JOBS_DISPLAY_COUNT);
   const { data: salaryBenches } = useSalaryBenchmarks();
 
   return (

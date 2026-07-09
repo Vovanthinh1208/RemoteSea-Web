@@ -4,12 +4,11 @@ import { CompanyLogo } from "@/components/ui/company-logo";
 import { SalaryBadge } from "@/components/ui/salary-badge";
 import { Tag } from "@/components/ui/tag";
 import { useJobsQuery } from "@/features/jobs/jobs.queries";
-import { DEFAULT_JOB_FILTERS } from "@/features/jobs/job-filters";
+import { DEFAULT_FILTERS_FETCH_LIMIT, DEFAULT_JOB_FILTERS } from "@/features/jobs/job-filters";
 import { companyColor, countryFlag } from "@/features/jobs/jobs.utils";
 import { ROUTES } from "@/constants/routes";
 import type { ApplicationWithJob } from "@/types/application";
 
-const RECOMMENDED_JOBS_LIMIT = 20;
 const RECOMMENDED_JOBS_DISPLAY_COUNT = 3;
 const WHY_SKILLS_DISPLAY_COUNT = 2;
 const TAGS_DISPLAY_COUNT = 3;
@@ -19,7 +18,7 @@ interface RecommendedJobsProps {
 }
 
 export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
-  const { data } = useJobsQuery(DEFAULT_JOB_FILTERS, RECOMMENDED_JOBS_LIMIT);
+  const { data } = useJobsQuery(DEFAULT_JOB_FILTERS, DEFAULT_FILTERS_FETCH_LIMIT);
   const appliedIds = new Set(applications.map((a) => a.jobId));
   const recommended = (data?.jobs ?? [])
     .filter((j) => !appliedIds.has(j.id))

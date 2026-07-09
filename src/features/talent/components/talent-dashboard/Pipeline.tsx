@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { cn } from "@/utils/cn";
 import { STATUS_TO_BUCKET, type AppStatusBucket } from "@/features/talent/talent-dashboard.utils";
 import type { ApplicationWithJob } from "@/types/application";
@@ -7,14 +8,24 @@ interface PipelineProps {
 }
 
 export const Pipeline = ({ applications }: PipelineProps) => {
-  const countByBucket = (bucket: AppStatusBucket) =>
-    applications.filter((a) => STATUS_TO_BUCKET[a.status] === bucket).length;
+  const counts = useMemo(() => {
+    const c: Record<AppStatusBucket, number> = {
+      applied: 0,
+      review: 0,
+      interview: 0,
+      offer: 0,
+      closed: 0,
+    };
+    for (const a of applications) c[STATUS_TO_BUCKET[a.status]] += 1;
+    return c;
+  }, [applications]);
+
   const stages: { label: string; n: number; active?: boolean }[] = [
-    { label: "Applied", n: countByBucket("applied") },
-    { label: "In review", n: countByBucket("review") },
-    { label: "Interviewing", n: countByBucket("interview"), active: true },
-    { label: "Offers", n: countByBucket("offer") },
-    { label: "Closed", n: countByBucket("closed") },
+    { label: "Applied", n: counts.applied },
+    { label: "In review", n: counts.review },
+    { label: "Interviewing", n: counts.interview, active: true },
+    { label: "Offers", n: counts.offer },
+    { label: "Closed", n: counts.closed },
   ];
   return (
     <div className="flex border-b border-neutral-100 bg-neutral-50/50">

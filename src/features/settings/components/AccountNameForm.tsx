@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { TEXT_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import {
@@ -34,10 +35,7 @@ export const AccountNameForm = () => {
       <div className="space-y-1.5">
         <label className="block text-[12.5px] font-medium text-neutral-700">Full name</label>
         <div className="flex items-center gap-2">
-          <input
-            className="rounded-10 focus:border-brand-500 w-full border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-100"
-            {...register("name")}
-          />
+          <input className={TEXT_INPUT_CLASS} {...register("name")} />
           {isDirty && (
             <button
               className="rounded-10 flex-shrink-0 bg-brand-600 px-3 py-2.5 text-[12.5px] font-medium text-white hover:bg-brand-700 disabled:opacity-60"
