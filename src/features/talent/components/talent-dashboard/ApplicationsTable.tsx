@@ -114,9 +114,7 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
       <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
         <h3 className="text-[14px] font-semibold text-neutral-900">
           Your applications{" "}
-          <span className="font-normal text-neutral-400">
-            · {grouped.notClosedCount} active
-          </span>
+          <span className="font-normal text-neutral-400">· {grouped.notClosedCount} active</span>
         </h3>
         <div className="flex items-center gap-0.5 rounded-8 bg-neutral-100 p-0.5">
           {tabs.map((t) => (
