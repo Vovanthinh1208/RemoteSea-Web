@@ -70,7 +70,8 @@ interface ApplicationsTableProps {
   applications: ApplicationWithJob[];
 }
 
-const isTabId = (v: string): v is TabId => (["all", "active", "offers", "closed"] as const).includes(v as TabId);
+const isTabId = (v: string): v is TabId =>
+  (["all", "active", "offers", "closed"] as const).includes(v as TabId);
 
 export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
   // URL-synced so reloading (or sharing the link) doesn't silently revert to "Active".

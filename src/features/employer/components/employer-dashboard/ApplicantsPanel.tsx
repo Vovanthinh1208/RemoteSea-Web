@@ -113,7 +113,11 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
   const runWithToast = useToastMutation();
   const updateStatusMutation = useUpdateApplicationStatus();
   // URL-synced so reloading (or sharing the link) doesn't silently revert to "All".
-  const [tab, setTab] = useSearchParamState<ApplicantTabId>("applicantTab", "all", isApplicantTabId);
+  const [tab, setTab] = useSearchParamState<ApplicantTabId>(
+    "applicantTab",
+    "all",
+    isApplicantTabId
+  );
 
   const tabs: { id: ApplicantTabId; label: string; count: number }[] = [
     { id: "all", label: "All", count: applicants.length },

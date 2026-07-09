@@ -30,7 +30,12 @@ export const useJobPostingSchema = (job: Job | undefined): void => {
       },
       jobLocationType: job.isRemote ? "TELECOMMUTE" : undefined,
       ...(job.country
-        ? { jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", addressCountry: job.country } } }
+        ? {
+            jobLocation: {
+              "@type": "Place",
+              address: { "@type": "PostalAddress", addressCountry: job.country },
+            },
+          }
         : {}),
       ...(job.salaryMin
         ? {

@@ -16,7 +16,8 @@ export const useDocumentTitle = (title: string, description?: string): void => {
 
     return () => {
       document.title = previousTitle;
-      if (metaTag && previousDescription !== null) metaTag.setAttribute("content", previousDescription);
+      if (metaTag && previousDescription !== null)
+        metaTag.setAttribute("content", previousDescription);
     };
   }, [title, description]);
 };
