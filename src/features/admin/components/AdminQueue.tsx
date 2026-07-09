@@ -14,12 +14,14 @@ import { SubmissionSummary } from "@/features/admin/components/admin-queue/Submi
 import { AutomatedChecks } from "@/features/admin/components/admin-queue/AutomatedChecks";
 import { ReviewerChecklist } from "@/features/admin/components/admin-queue/ReviewerChecklist";
 import { DecisionBar } from "@/features/admin/components/admin-queue/DecisionBar";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { Button } from "@/components/ui/button";
 
 const RESOLUTION_BANNER_DISPLAY_MS = 1200;
 
 export const AdminQueue = () => {
   const runWithToast = useToastMutation();
-  const { data, isLoading } = useAdminJobs("PENDING_REVIEW");
+  const { data, isLoading, isError, refetch } = useAdminJobs("PENDING_REVIEW");
   const reviewJobMutation = useReviewAdminJob();
 
   const [resolved, setResolved] = useState<Record<string, ResolutionKind>>({});
@@ -85,6 +87,22 @@ export const AdminQueue = () => {
 
   if (isLoading) {
     return <AdminQueueSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <div className="flex-1">
+        <EmptyState
+          action={
+            <Button size="sm" variant="outline" onClick={() => void refetch()}>
+              Try again
+            </Button>
+          }
+          description="Something went wrong loading the review queue."
+          title="Couldn't load the review queue"
+        />
+      </div>
+    );
   }
 
   if (queue.length === 0) {

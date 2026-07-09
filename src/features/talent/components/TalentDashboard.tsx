@@ -9,6 +9,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { ApplicationsTable } from "@/features/talent/components/talent-dashboard/ApplicationsTable";
 import { RecommendedJobs } from "@/features/talent/components/talent-dashboard/RecommendedJobs";
 import { ProfileSnapshot } from "@/features/talent/components/talent-dashboard/ProfileSnapshot";
+import { TalentDashboardSkeleton } from "@/features/talent/components/talent-dashboard/TalentDashboardSkeleton";
 import {
   STATUS_TO_BUCKET,
   missingProfileFields,
@@ -25,11 +26,16 @@ export const TalentDashboard = () => {
   const { user } = useAuth();
   const {
     data: applications = [],
+    isLoading: applicationsLoading,
     isError: applicationsErrored,
     refetch: refetchApplications,
   } = useMyApplications();
-  const { data: profile } = useMyTalentProfile();
-  const { data: savedJobs = [] } = useSavedJobs();
+  const { data: profile, isLoading: profileLoading } = useMyTalentProfile();
+  const { data: savedJobs = [], isLoading: savedJobsLoading } = useSavedJobs();
+
+  if (applicationsLoading || profileLoading || savedJobsLoading) {
+    return <TalentDashboardSkeleton />;
+  }
 
   if (applicationsErrored) {
     return (
