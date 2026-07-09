@@ -47,7 +47,9 @@ export class ErrorBoundary extends Component<Props, State> {
       const minHeight = this.props.scoped ? "min-h-[40vh]" : "min-h-[70vh]";
 
       return (
-        <div className={`mx-auto flex ${minHeight} max-w-md flex-col items-center justify-center px-6 text-center`}>
+        <div
+          className={`mx-auto flex ${minHeight} max-w-md flex-col items-center justify-center px-6 text-center`}
+        >
           <h1 className="text-2xl font-semibold text-neutral-900">
             {isChunkError ? "Updating…" : "Something went wrong"}
           </h1>

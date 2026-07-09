@@ -213,7 +213,9 @@ export const AdminEmployers = () => {
               employer={e}
               // Scoped to this row's id — a shared mutation instance would otherwise
               // disable every other row's buttons while one employer's update is in flight.
-              isPending={updateEmployerMutation.isPending && updateEmployerMutation.variables?.id === e.id}
+              isPending={
+                updateEmployerMutation.isPending && updateEmployerMutation.variables?.id === e.id
+              }
               key={e.id}
               maxSpend={maxSpend}
               onStatusChange={updateEmployerStatus}

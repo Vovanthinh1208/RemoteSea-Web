@@ -21,9 +21,7 @@ export const ProtectedRoute = ({ roles }: ProtectedRouteProps) => {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-6 text-center">
         <h1 className="text-lg font-semibold text-neutral-900">Couldn't confirm your session</h1>
-        <p className="mt-2 text-sm text-neutral-500">
-          Check your connection and try again.
-        </p>
+        <p className="mt-2 text-sm text-neutral-500">Check your connection and try again.</p>
         <Button className="mt-5" variant="primary" onClick={retrySession}>
           Retry
         </Button>
