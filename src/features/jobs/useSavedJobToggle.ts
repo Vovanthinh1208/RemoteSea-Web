@@ -3,6 +3,7 @@ import { useToast } from "@/components/ui/toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSavedJobs, useSaveJob, useUnsaveJob } from "@/features/saved/saved.queries";
 import { ROUTES } from "@/constants/routes";
+import { reportError } from "@/services/monitoring";
 
 interface UseSavedJobToggleResult {
   saved: boolean;
@@ -42,7 +43,8 @@ export const useSavedJobToggle = (
         await saveMutation.mutateAsync(jobId);
       }
       toast({ variant: "success", title: prev ? "Removed from saved" : "Saved to your list" });
-    } catch {
+    } catch (err) {
+      reportError(err);
       toast({ variant: "error", title: "Couldn't update saved jobs" });
     }
   };

@@ -19,3 +19,12 @@ export const formatRelativeTime = (
   if (hours >= 1) return `${hours}${suffix.hour}`;
   return suffix.now;
 };
+
+// The two suffix conventions used across the app: callers that append their own
+// "ago" in surrounding copy ("{timeAgoShort(x)} ago") vs. callers that render the
+// result standalone. Previously each feature defined its own near-identical wrapper.
+export const timeAgoShort = (dateString: string | null): string =>
+  formatRelativeTime(dateString, { day: "d", hour: "h", now: "just now" });
+
+export const timeAgoLong = (dateString: string | null): string =>
+  formatRelativeTime(dateString, { day: "d ago", hour: "h ago", now: "Just now" });

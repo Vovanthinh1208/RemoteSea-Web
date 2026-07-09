@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/components/ui/toast";
+import { TextField } from "@/components/shared/TextField";
+import { useToastMutation } from "@/hooks/useToastMutation";
 import { useChangeMyPassword } from "@/features/users/users.queries";
 import { applyFormSubmitError } from "@/utils/form-errors";
 import {
@@ -8,13 +9,10 @@ import {
   type ChangePasswordFormValues,
 } from "@/features/settings/settings.schemas";
 
-const INPUT_FIELD_CLASS =
-  "w-full rounded-10 border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 placeholder:text-neutral-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100";
-
 const UPDATE_FAILED_MESSAGE = "Could not update password. Please try again.";
 
 export const ChangePasswordForm = () => {
-  const { toast } = useToast();
+  const runWithToast = useToastMutation();
   const changePasswordMutation = useChangeMyPassword();
 
   const {
@@ -29,37 +27,38 @@ export const ChangePasswordForm = () => {
   });
 
   const onSubmit = async (values: ChangePasswordFormValues) => {
-    try {
-      await changePasswordMutation.mutateAsync(values);
-      toast({ variant: "success", title: "Password updated" });
-      reset();
-    } catch (err) {
-      const message = applyFormSubmitError(err, setError, UPDATE_FAILED_MESSAGE);
-      toast({ variant: "error", title: "Couldn't update password", description: message });
-    }
+    const ok = await runWithToast(() => changePasswordMutation.mutateAsync(values), {
+      success: "Password updated",
+      error: "Couldn't update password",
+      onError: (err) => applyFormSubmitError(err, setError, UPDATE_FAILED_MESSAGE),
+    });
+    if (ok) reset();
   };
 
   return (
     <form className="mb-5 max-w-sm space-y-2.5" onSubmit={handleSubmit(onSubmit)}>
-      <label className="block text-[12.5px] font-medium text-neutral-700">Change password</label>
-      <input
-        className={INPUT_FIELD_CLASS}
+      <TextField
+        error={errors.currentPassword?.message}
+        id="currentPassword"
+        label="Change password"
         placeholder="Current password"
+        registration={register("currentPassword")}
         type="password"
-        {...register("currentPassword")}
       />
-      {errors.currentPassword && (
-        <p className="text-[12px] text-red-600">{errors.currentPassword.message}</p>
-      )}
-      <input
-        className={INPUT_FIELD_CLASS}
+      <TextField
+        error={errors.newPassword?.message}
+        id="newPassword"
+        label="New password"
         placeholder="New password (min 8 characters)"
+        registration={register("newPassword")}
         type="password"
-        {...register("newPassword")}
       />
+<<<<<<< HEAD
       {errors.newPassword && (
         <p className="text-[12px] text-red-600">{errors.newPassword.message}</p>
       )}
+=======
+>>>>>>> f72df65 (Fix reliability gaps and consolidate duplicated UI/utils in remotesea-web)
       <button
         className="rounded-10 bg-brand-600 px-4 py-2.5 text-[12.5px] font-medium text-white hover:bg-brand-700 disabled:opacity-60"
         disabled={isSubmitting}

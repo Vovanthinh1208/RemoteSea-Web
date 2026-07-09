@@ -6,20 +6,52 @@ import {
   useEmployerJobs,
   useEmployerProfile,
 } from "@/features/employer/employer.queries";
-import { KpiCard } from "@/features/employer/components/employer-dashboard/KpiCard";
+import { StatCard } from "@/components/ui/stat-card";
 import { ListingsPanel } from "@/features/employer/components/employer-dashboard/ListingsPanel";
 import { ApplicantsPanel } from "@/features/employer/components/employer-dashboard/ApplicantsPanel";
 import { CompanyCard } from "@/features/employer/components/employer-dashboard/CompanyCard";
 import { FunnelPanel } from "@/features/employer/components/employer-dashboard/FunnelPanel";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { Button } from "@/components/ui/button";
 
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
 
 export const EmployerDashboard = () => {
   const { user } = useAuth();
-  const { data: profile } = useEmployerProfile();
-  const { data: jobsData } = useEmployerJobs();
-  const { applications, byJobId } = useEmployerApplicationsAggregate();
+  const { data: profile, isError: profileErrored, refetch: refetchProfile } = useEmployerProfile();
+  const { data: jobsData, isError: jobsErrored, refetch: refetchJobs } = useEmployerJobs();
+  const {
+    applications,
+    byJobId,
+    isError: applicationsErrored,
+    refetchAll: refetchApplications,
+  } = useEmployerApplicationsAggregate();
+
+  if (profileErrored || jobsErrored) {
+    return (
+      <div className="min-h-screen bg-[#F8F7F4]">
+        <div className="mx-auto max-w-[1240px] px-6 py-8">
+          <EmptyState
+            action={
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  void refetchProfile();
+                  void refetchJobs();
+                }}
+              >
+                Try again
+              </Button>
+            }
+            description="Something went wrong loading your dashboard."
+            title="Couldn't load your dashboard"
+          />
+        </div>
+      </div>
+    );
+  }
 
   const jobs = jobsData?.jobs ?? [];
   const stats = jobsData?.stats ?? { totalApps: 0, shortlisted: 0, avgTimeToHireInDays: 0 };
@@ -98,31 +130,26 @@ export const EmployerDashboard = () => {
 
         {/* KPIs */}
         <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          <KpiCard
-            icon={Briefcase}
-            label="Active listings"
-            sub={`${inReview} in review`}
-            value={String(activeListings)}
-          />
-          <KpiCard
-            icon={Users}
-            label="Total applications"
-            sub="all listings"
-            value={String(stats.totalApps)}
-          />
-          <KpiCard
-            icon={Star}
-            label="Shortlisted"
-            sub="across roles"
-            value={String(stats.shortlisted)}
-          />
-          <KpiCard
+          <StatCard icon={Briefcase} label="Active listings" size="lg" sub={`${inReview} in review`} value={activeListings} />
+          <StatCard icon={Users} label="Total applications" size="lg" sub="all listings" value={stats.totalApps} />
+          <StatCard icon={Star} label="Shortlisted" size="lg" sub="across roles" value={stats.shortlisted} />
+          <StatCard
             icon={Clock}
             label="Avg. time to hire"
+            size="lg"
             sub="from apply to offer"
             value={stats.avgTimeToHireInDays ? `${stats.avgTimeToHireInDays}d` : "—"}
           />
         </div>
+
+        {applicationsErrored && (
+          <div className="mb-6 flex items-center justify-between gap-4 rounded-16 border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] text-amber-800">
+            Some applicant data couldn't load, so counts below may be incomplete.
+            <Button size="sm" variant="outline" onClick={refetchApplications}>
+              Retry
+            </Button>
+          </div>
+        )}
 
         {/* Main grid */}
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">

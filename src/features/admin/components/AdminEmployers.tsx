@@ -4,6 +4,7 @@ import { VerifiedBadge } from "@/components/shared/VerifiedBadge";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { PillToggle } from "@/components/shared/PillToggle";
 import { CompanyLogo } from "@/components/ui/company-logo";
+import { StatCard } from "@/components/ui/stat-card";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { AdminEmployersSkeleton } from "@/features/admin/components/AdminEmployersSkeleton";
 import { useAdminEmployers, useUpdateAdminEmployer } from "@/features/admin/admin.queries";
@@ -143,39 +144,20 @@ export const AdminEmployers = () => {
 
       {/* KPIs */}
       <div className="mb-6 grid grid-cols-3 gap-3">
-        {[
-          {
-            icon: <Building size={14} />,
-            label: "Total employers",
-            val: employers.length,
-            sub: "all time",
-          },
-          {
-            icon: <Shield size={14} />,
-            label: "Unverified",
-            val: counts.unverified,
-            sub: "need review",
-            warn: counts.unverified > 0,
-          },
-          {
-            icon: <Wallet size={14} />,
-            label: "Total billed",
-            val: `$${(totalSpendCents / CENTS_PER_DOLLAR / DOLLARS_PER_THOUSAND).toFixed(1)}k`,
-            sub: "lifetime",
-          },
-        ].map((s) => (
-          <div className="rounded-12 border border-neutral-100 bg-white p-4" key={s.label}>
-            <div className="mb-2 flex items-center gap-1.5 text-[12px] text-neutral-400">
-              {s.icon} {s.label}
-            </div>
-            <div
-              className={`text-[22px] font-semibold ${s.warn ? "text-amber-600" : "text-neutral-900"}`}
-            >
-              {s.val}
-            </div>
-            <div className="mt-0.5 text-[11px] text-neutral-400">{s.sub}</div>
-          </div>
-        ))}
+        <StatCard icon={Building} label="Total employers" sub="all time" value={employers.length} />
+        <StatCard
+          icon={Shield}
+          label="Unverified"
+          sub="need review"
+          value={counts.unverified}
+          warn={counts.unverified > 0}
+        />
+        <StatCard
+          icon={Wallet}
+          label="Total billed"
+          sub="lifetime"
+          value={`$${(totalSpendCents / CENTS_PER_DOLLAR / DOLLARS_PER_THOUSAND).toFixed(1)}k`}
+        />
       </div>
 
       {/* Filter + search */}
@@ -229,7 +211,9 @@ export const AdminEmployers = () => {
           rows.map((e) => (
             <EmployerRow
               employer={e}
-              isPending={updateEmployerMutation.isPending}
+              // Scoped to this row's id — a shared mutation instance would otherwise
+              // disable every other row's buttons while one employer's update is in flight.
+              isPending={updateEmployerMutation.isPending && updateEmployerMutation.variables?.id === e.id}
               key={e.id}
               maxSpend={maxSpend}
               onStatusChange={updateEmployerStatus}

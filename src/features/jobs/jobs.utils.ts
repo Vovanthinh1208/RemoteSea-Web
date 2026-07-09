@@ -1,21 +1,7 @@
 import { pickColorFromString } from "@/utils/color";
-import { formatRelativeTime } from "@/utils/time";
-import type { ExperienceLevel, JobType } from "@/types/job";
+import { timeAgoShort } from "@/utils/time";
 
-export const LEVEL_LABELS: Record<ExperienceLevel, string> = {
-  ENTRY: "Entry",
-  MID: "Mid",
-  SENIOR: "Senior",
-  LEAD: "Lead",
-  EXECUTIVE: "Executive",
-};
-
-export const JOB_TYPE_LABELS: Record<JobType, string> = {
-  FULL_TIME: "Full-time",
-  PART_TIME: "Part-time",
-  CONTRACT: "Contract",
-  FREELANCE: "Freelance",
-};
+export { LEVEL_LABELS, JOB_TYPE_LABELS } from "@/utils/labels";
 
 const COUNTRY_FLAGS: Record<string, string> = {
   Singapore: "🇸🇬",
@@ -51,5 +37,4 @@ export const isAsyncTimezone = (timezone: string | null): boolean =>
 
 export const MS_PER_DAY = 86_400_000;
 
-export const timeAgo = (dateString: string | null): string =>
-  formatRelativeTime(dateString, { day: "d", hour: "h", now: "just now" });
+export const timeAgo = timeAgoShort;

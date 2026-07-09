@@ -12,6 +12,7 @@ import { useUpdateMyName } from "@/features/users/users.queries";
 import { useSkills } from "@/features/taxonomy/taxonomy.queries";
 import { ApiError } from "@/services/api-error";
 import { applyServerErrors } from "@/utils/form-errors";
+import { reportError } from "@/services/monitoring";
 import { PROF_SECTIONS } from "@/features/talent/components/profile-form/profile-form.constants";
 import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
 import { BasicsSection } from "@/features/talent/components/profile-form/BasicsSection";
@@ -40,7 +41,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useActiveSection(PROF_SECTIONS.map((s) => s.id));
   const [skills, setSkills] = useState<string[]>(profile?.skills.map((s) => s.skill.name) ?? []);
-  const { data: allSkills } = useSkills();
+  const { data: allSkills, isError: skillsErrored } = useSkills();
   const updateProfileMutation = useUpdateMyTalentProfile();
   const updateNameMutation = useUpdateMyName();
 
@@ -109,6 +110,14 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
   ]);
 
   const onSubmit = async (values: ProfileFormValues) => {
+    if (skills.length > 0 && !allSkills) {
+      toast({
+        variant: "error",
+        title: skillsErrored ? "Couldn't load the skills list" : "Still loading the skills list",
+        description: "Your selected skills can't be saved yet — please try again in a moment.",
+      });
+      return;
+    }
     const skillIndex = Object.fromEntries(
       (allSkills ?? []).map((s) => [s.name.toLowerCase(), s.id])
     );
@@ -117,9 +126,11 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
       .filter((id): id is string => Boolean(id))
       .map((skillId) => ({ skillId }));
 
+    let nameUpdated = false;
     try {
       if (values.name !== (profile?.user?.name ?? "")) {
         await updateNameMutation.mutateAsync(values.name);
+        nameUpdated = true;
       }
       await updateProfileMutation.mutateAsync({
         headline: values.headline || undefined,
@@ -139,8 +150,15 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
       });
       toast({ variant: "success", title: "Profile saved" });
     } catch (err) {
+      reportError(err);
       if (err instanceof ApiError) applyServerErrors(err, setError);
-      toast({ variant: "error", title: "Couldn't save profile", description: "Please try again." });
+      toast({
+        variant: "error",
+        title: "Couldn't save profile",
+        description: nameUpdated
+          ? "Your name was updated, but the rest of the profile didn't save. Please try again."
+          : "Please try again.",
+      });
     }
   };
 

@@ -17,12 +17,13 @@ export const AlertsManager = () => {
   const setActiveMutation = useSetAlertActive();
   const deleteAlertMutation = useDeleteAlert();
 
-  const handleCreate = (payload: CreateAlertPayload) =>
-    runWithToast(() => createAlertMutation.mutateAsync(payload), {
+  const handleCreate = async (payload: CreateAlertPayload): Promise<void> => {
+    await runWithToast(() => createAlertMutation.mutateAsync(payload), {
       success: "Alert created",
       successDescription: "We'll email you matching jobs.",
       error: "Couldn't create alert",
     });
+  };
 
   const handleToggleActive = (alert: JobAlert) =>
     runWithToast(() => setActiveMutation.mutateAsync({ id: alert.id, isActive: !alert.isActive }), {

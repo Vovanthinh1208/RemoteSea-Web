@@ -5,7 +5,7 @@ import { useMyApplications } from "@/features/applications/applications.queries"
 import { useMyTalentProfile } from "@/features/talent/talent.queries";
 import { useSavedJobs } from "@/features/saved/saved.queries";
 import { CompletionRing } from "@/features/talent/components/talent-dashboard/CompletionRing";
-import { KpiCard } from "@/features/talent/components/talent-dashboard/KpiCard";
+import { StatCard } from "@/components/ui/stat-card";
 import { ApplicationsTable } from "@/features/talent/components/talent-dashboard/ApplicationsTable";
 import { RecommendedJobs } from "@/features/talent/components/talent-dashboard/RecommendedJobs";
 import { ProfileSnapshot } from "@/features/talent/components/talent-dashboard/ProfileSnapshot";
@@ -15,15 +15,33 @@ import {
   profileCompletion,
 } from "@/features/talent/talent-dashboard.utils";
 import { ROUTES } from "@/constants/routes";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { Button } from "@/components/ui/button";
 
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
 
 export const TalentDashboard = () => {
   const { user } = useAuth();
-  const { data: applications = [] } = useMyApplications();
+  const { data: applications = [], isError: applicationsErrored, refetch: refetchApplications } = useMyApplications();
   const { data: profile } = useMyTalentProfile();
   const { data: savedJobs = [] } = useSavedJobs();
+
+  if (applicationsErrored) {
+    return (
+      <div className="mx-auto max-w-[1240px] px-6 py-10">
+        <EmptyState
+          action={
+            <Button size="sm" variant="outline" onClick={() => refetchApplications()}>
+              Try again
+            </Button>
+          }
+          description="Something went wrong loading your dashboard."
+          title="Couldn't load your dashboard"
+        />
+      </div>
+    );
+  }
 
   const hour = new Date().getHours();
   const greeting =
@@ -109,6 +127,7 @@ export const TalentDashboard = () => {
 
       {/* KPI tiles */}
       <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+<<<<<<< HEAD
         <KpiCard
           icon={Briefcase}
           label="Applications sent"
@@ -127,6 +146,11 @@ export const TalentDashboard = () => {
           sub="of submitted"
           value={`${interviewRate}%`}
         />
+=======
+        <StatCard icon={Briefcase} label="Applications sent" size="md" sub="all time" value={applications.length} />
+        <StatCard icon={Bookmark} label="Saved jobs" size="md" sub="current" value={savedJobs.length} />
+        <StatCard icon={TrendingUp} label="Interview rate" size="md" sub="of submitted" value={`${interviewRate}%`} />
+>>>>>>> f72df65 (Fix reliability gaps and consolidate duplicated UI/utils in remotesea-web)
       </div>
 
       {/* Main two-column grid */}

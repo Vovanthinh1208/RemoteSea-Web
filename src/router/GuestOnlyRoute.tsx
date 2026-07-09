@@ -14,9 +14,16 @@ import { ROUTES } from "@/constants/routes";
  */
 export const GuestOnlyRoute = () => {
   const { user, status } = useAuth();
+<<<<<<< HEAD
   const [decided, setDecided] = useState<boolean | null>(() =>
     status === "loading" ? null : !!user
   );
+=======
+  // "error" (session couldn't be confirmed) is treated like "unauthenticated" here:
+  // it's always safe to show a guest page (login/register) even if a stale token
+  // turns out to still be valid — the user can just sign in again.
+  const [decided, setDecided] = useState<boolean | null>(() => (status === "loading" ? null : !!user));
+>>>>>>> f72df65 (Fix reliability gaps and consolidate duplicated UI/utils in remotesea-web)
   const [lastStatus, setLastStatus] = useState(status);
 
   // Adjusting state during render (not in an effect) so the decision is locked in

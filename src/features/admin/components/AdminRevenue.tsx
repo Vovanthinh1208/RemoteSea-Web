@@ -1,5 +1,6 @@
 import { CreditCard, RefreshCw, TrendingUp, Wallet } from "lucide-react";
 import { EmptyRow } from "@/components/shared/EmptyRow";
+import { StatCard } from "@/components/ui/stat-card";
 import { AdminRevenueSkeleton } from "@/features/admin/components/AdminRevenueSkeleton";
 import { useAdminRevenue } from "@/features/admin/admin.queries";
 import type { RevenueMonthBucket } from "@/types/admin";
@@ -48,6 +49,7 @@ export const AdminRevenue = () => {
 
       {/* KPIs */}
       <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+<<<<<<< HEAD
         <div className="rounded-12 border border-neutral-100 bg-white p-4">
           <div className="mb-2 flex items-center gap-1.5 text-[12px] text-neutral-400">
             <Wallet size={14} /> Revenue all time
@@ -76,6 +78,23 @@ export const AdminRevenue = () => {
               posts · {formatDollars(m.amount)}
             </div>
           </div>
+=======
+        <StatCard
+          icon={Wallet}
+          label="Revenue all time"
+          sub="across every paid listing"
+          value={formatThousands(totals.allTime)}
+        />
+        <StatCard icon={TrendingUp} label="This month" sub="in progress" value={formatDollars(totals.thisMonth)} />
+        {mix.map((m) => (
+          <StatCard
+            icon={RefreshCw}
+            key={m.planType}
+            label={m.label}
+            sub={`posts · ${formatDollars(m.amount)}`}
+            value={m.count}
+          />
+>>>>>>> f72df65 (Fix reliability gaps and consolidate duplicated UI/utils in remotesea-web)
         ))}
       </div>
 

@@ -31,20 +31,38 @@ export const validateFile = (file: File, type: UploadType): string | null => {
   return null;
 };
 
-export const uploadViaPresign = async (file: File, type: UploadType): Promise<string> => {
-  const { data } = await apiClient.post<PresignResponse>("/uploads/presign", {
-    type,
-    filename: file.name,
-    contentType: file.type,
-    fileSize: file.size,
-  });
+const UPLOAD_TIMEOUT_MS = 60_000;
 
-  const response = await fetch(data.uploadUrl, {
-    method: "PUT",
-    body: file,
-    headers: { "Content-Type": file.type },
-  });
-  if (!response.ok) throw new Error("Upload failed");
+export const uploadViaPresign = async (
+  file: File,
+  type: UploadType,
+  options?: { signal?: AbortSignal }
+): Promise<string> => {
+  const { data } = await apiClient.post<PresignResponse>(
+    "/uploads/presign",
+    { type, filename: file.name, contentType: file.type, fileSize: file.size },
+    { signal: options?.signal }
+  );
 
-  return data.publicUrl;
+  // The presign call goes through apiClient (15s timeout, auto-retry), but the actual
+  // PUT to storage is a bare fetch with no built-in timeout — a stalled upload could
+  // otherwise hang forever. This also lets callers cancel on unmount via `signal`.
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(new Error("Upload timed out")), UPLOAD_TIMEOUT_MS);
+  const onExternalAbort = () => controller.abort(options?.signal?.reason);
+  options?.signal?.addEventListener("abort", onExternalAbort);
+
+  try {
+    const response = await fetch(data.uploadUrl, {
+      method: "PUT",
+      body: file,
+      headers: { "Content-Type": file.type },
+      signal: controller.signal,
+    });
+    if (!response.ok) throw new Error("Upload failed");
+    return data.publicUrl;
+  } finally {
+    clearTimeout(timeoutId);
+    options?.signal?.removeEventListener("abort", onExternalAbort);
+  }
 };

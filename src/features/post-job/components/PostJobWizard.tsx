@@ -4,6 +4,7 @@ import { ChevronRight, Check, Shield, Tag, Zap } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useToast } from "@/components/ui/toast";
 import { ApiError } from "@/services/api-error";
+import { reportError } from "@/services/monitoring";
 import { useCategories, useSkills } from "@/features/taxonomy/taxonomy.queries";
 import { useCreateEmployerProfile } from "@/features/employer/employer.queries";
 import { useCreateJob } from "@/features/jobs/jobs.queries";
@@ -45,7 +46,7 @@ export const PostJobWizard = () => {
   const [error, setError] = useState<string | null>(null);
 
   const { data: categories } = useCategories();
-  const { data: allSkills } = useSkills();
+  const { data: allSkills, isError: skillsErrored } = useSkills();
   const createProfileMutation = useCreateEmployerProfile();
   const createJobMutation = useCreateJob();
   const createCheckoutMutation = useCreateCheckoutSession();
@@ -80,6 +81,14 @@ export const PostJobWizard = () => {
       fail("Could not load job categories. Please try again.");
       return;
     }
+    if (form.jobSkills.length > 0 && !allSkills) {
+      fail(
+        skillsErrored
+          ? "Could not load the skills list, so your selected skills can't be attached. Please try again."
+          : "Still loading the skills list — please wait a moment and try again."
+      );
+      return;
+    }
 
     try {
       await createProfileMutation.mutateAsync({
@@ -92,6 +101,7 @@ export const PostJobWizard = () => {
     } catch (err) {
       // A 409 just means this employer already has a profile — fine, continue.
       if (!(err instanceof ApiError && err.status === PROFILE_ALREADY_EXISTS_STATUS)) {
+        reportError(err);
         fail("Could not save your company profile. Please try again.");
         return;
       }
@@ -122,7 +132,8 @@ export const PostJobWizard = () => {
         skillIds,
       });
       jobId = job.id;
-    } catch {
+    } catch (err) {
+      reportError(err);
       fail("Could not create the job. Check the required fields and try again.");
       return;
     }
@@ -133,8 +144,10 @@ export const PostJobWizard = () => {
         window.location.href = url;
         return;
       }
-    } catch {
+    } catch (err) {
       // Stripe not configured — job saved as DRAFT; show the honest fallback below.
+      // Still worth reporting since it may also mean Stripe *was* configured and failed.
+      reportError(err);
     }
 
     setPublishing(false);

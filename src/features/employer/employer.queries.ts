@@ -91,6 +91,9 @@ export const useEmployerApplicationsAggregate = () => {
   });
 
   const isLoading = results.some((r) => r.isLoading);
+  // A per-job fetch failing shouldn't be indistinguishable from "no applicants" —
+  // surface it so the dashboard can show a retry instead of silently under-reporting.
+  const isError = results.some((r) => r.isError);
   const byJobId = new Map<string, EmployerApplicant[]>();
   jobIds.forEach((jobId, i) => {
     byJobId.set(jobId, results[i]?.data?.applications ?? []);
@@ -101,7 +104,9 @@ export const useEmployerApplicationsAggregate = () => {
     return (byJobId.get(jobId) ?? []).map((a) => ({ ...a, jobId, jobTitle: job?.title ?? "" }));
   });
 
-  return { isLoading, applications: all, byJobId };
+  const refetchAll = () => results.forEach((r) => r.refetch());
+
+  return { isLoading, isError, applications: all, byJobId, refetchAll };
 };
 
 export const useUpdateApplicationStatus = () => {

@@ -1,15 +1,15 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Plus } from "lucide-react";
-import { cn } from "@/utils/cn";
 import { EmptyRow } from "@/components/shared/EmptyRow";
+import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { STATUS_GROUP, STATUS_LABEL, timeAgo } from "@/features/employer/employer-dashboard.utils";
 import type { EmployerApplicant, EmployerJobListItem } from "@/types/employer";
 
-const STATUS_MAP: Record<string, string> = {
-  review: "bg-amber-50 text-amber-700 border-amber-200",
-  live: "bg-brand-50 text-brand-700 border-brand-200",
-  closed: "bg-neutral-100 text-neutral-500 border-neutral-200",
+const STATUS_VARIANT: Record<string, BadgeVariant> = {
+  review: "warning",
+  live: "positive",
+  closed: "muted",
 };
 
 // Stable fallback so jobs with no applications don't break the row's memo
@@ -51,14 +51,9 @@ const ListingRow = memo(function ListingRow({ job: j, applications: apps }: List
         </div>
       </div>
 
-      <span
-        className={cn(
-          "inline-flex w-fit items-center rounded-full border px-2 py-0.5 text-[11px] font-medium",
-          STATUS_MAP[STATUS_GROUP[j.status]]
-        )}
-      >
+      <Badge className="w-fit px-2 py-0.5 text-[11px]" variant={STATUS_VARIANT[STATUS_GROUP[j.status]]}>
         {STATUS_LABEL[j.status]}
-      </span>
+      </Badge>
 
       {total > 0 ? (
         <div>

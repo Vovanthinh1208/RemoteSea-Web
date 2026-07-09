@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { EmptyState } from "@/components/shared/EmptyState";
+import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { cn } from "@/utils/cn";
 import { companyColor, countryFlag } from "@/features/jobs/jobs.utils";
 import { Pipeline } from "@/features/talent/components/talent-dashboard/Pipeline";
@@ -13,12 +14,12 @@ import {
 } from "@/features/talent/talent-dashboard.utils";
 import type { ApplicationWithJob } from "@/types/application";
 
-const STATUS_MAP: Record<AppStatusBucket, { label: string; cls: string }> = {
-  applied: { label: "Applied", cls: "bg-blue-50 text-blue-700 border border-blue-100" },
-  review: { label: "In review", cls: "bg-amber-50 text-amber-700 border border-amber-100" },
-  interview: { label: "Interviewing", cls: "bg-brand-50 text-brand-700 border border-brand-100" },
-  offer: { label: "Offer", cls: "bg-emerald-50 text-emerald-700 border border-emerald-100" },
-  closed: { label: "Closed", cls: "bg-neutral-100 text-neutral-500" },
+const STATUS_MAP: Record<AppStatusBucket, { label: string; variant: BadgeVariant }> = {
+  applied: { label: "Applied", variant: "info" },
+  review: { label: "In review", variant: "warning" },
+  interview: { label: "Interviewing", variant: "positive" },
+  offer: { label: "Offer", variant: "success" },
+  closed: { label: "Closed", variant: "muted" },
 };
 
 type TabId = "all" | "active" | "offers" | "closed";
@@ -50,6 +51,7 @@ const ApplicationRow = memo(function ApplicationRow({ application: a }: Applicat
           </p>
         </div>
       </div>
+<<<<<<< HEAD
       <span
         className={cn(
           "inline-flex w-[100px] items-center justify-center rounded-full px-2.5 py-0.5 text-[11.5px] font-medium",
@@ -61,6 +63,12 @@ const ApplicationRow = memo(function ApplicationRow({ application: a }: Applicat
       <span className="hidden w-[140px] text-[12px] text-neutral-500 md:block">
         {STAGE_LABEL[a.status]}
       </span>
+=======
+      <Badge className="w-[100px] justify-center px-2.5 py-0.5" variant={s.variant}>
+        {s.label}
+      </Badge>
+      <span className="hidden w-[140px] text-[12px] text-neutral-500 md:block">{STAGE_LABEL[a.status]}</span>
+>>>>>>> f72df65 (Fix reliability gaps and consolidate duplicated UI/utils in remotesea-web)
       <span className="hidden w-[72px] text-right text-[12px] text-neutral-400 md:block">
         {new Date(a.appliedAt).toLocaleDateString("en-US", { month: "short", day: "2-digit" })}
       </span>

@@ -2,6 +2,7 @@ import { memo, useCallback, useState } from "react";
 import { Check, X } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { EmptyRow } from "@/components/shared/EmptyRow";
+import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useUpdateApplicationStatus } from "@/features/employer/employer.queries";
 import {
@@ -19,11 +20,11 @@ type ApplicantTabId = "all" | "new" | "shortlisted";
 
 const RECENT_APPLICANTS_DISPLAY_COUNT = 8;
 
-const APPLICANT_STATUS_CLASS: Record<ApplicantStatusGroup, string> = {
-  new: "bg-blue-50 text-blue-700",
-  reviewing: "bg-brand-50 text-brand-700",
-  shortlisted: "bg-emerald-50 text-emerald-700",
-  archived: "bg-neutral-100 text-neutral-500",
+const APPLICANT_STATUS_VARIANT: Record<ApplicantStatusGroup, BadgeVariant> = {
+  new: "info",
+  reviewing: "positive",
+  shortlisted: "success",
+  archived: "muted",
 };
 
 const APPLICANT_STATUS_LABEL: Record<ApplicantStatusGroup, string> = {
@@ -68,14 +69,18 @@ const ApplicantRow = memo(function ApplicantRow({
       </div>
 
       <div className="flex-shrink-0 text-right">
+<<<<<<< HEAD
         <div
           className={cn(
             "rounded-full px-1.5 py-0.5 text-[10px] font-medium",
             APPLICANT_STATUS_CLASS[group]
           )}
         >
+=======
+        <Badge className="px-1.5 py-0.5 text-[10px]" variant={APPLICANT_STATUS_VARIANT[group]}>
+>>>>>>> f72df65 (Fix reliability gaps and consolidate duplicated UI/utils in remotesea-web)
           {APPLICANT_STATUS_LABEL[group]}
-        </div>
+        </Badge>
       </div>
 
       {nextStatus && a.status !== "REJECTED" ? (
@@ -179,7 +184,9 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
           {list.slice(0, RECENT_APPLICANTS_DISPLAY_COUNT).map((a) => (
             <ApplicantRow
               applicant={a}
-              isPending={updateStatusMutation.isPending}
+              // Scoped to this row's id — otherwise updating one applicant disables
+              // the action buttons on every other row in the list too.
+              isPending={updateStatusMutation.isPending && updateStatusMutation.variables?.id === a.id}
               key={a.id}
               onStatusChange={updateApplicantStatus}
             />

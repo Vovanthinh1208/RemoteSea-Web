@@ -1,4 +1,4 @@
-import { apiClient } from "@/services/api-client";
+import { apiClient, API_BASE_URL } from "@/services/api-client";
 import type { AuthUser, UserRole } from "@/types/user";
 
 export type LoginPayload = { email: string; password: string };
@@ -14,8 +14,6 @@ export type RegisterResponse = { id: string; email: string; name: string; role: 
 
 export type ResetPasswordPayload = { token: string; password: string };
 export type OAuthProvider = "google" | "github";
-
-const DEFAULT_API_URL = "http://localhost:4000";
 
 export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
   const { data } = await apiClient.post<LoginResponse>("/auth/login", payload);
@@ -44,7 +42,4 @@ export const resetPassword = async (
   return data;
 };
 
-export const oauthUrl = (provider: OAuthProvider): string => {
-  const base = import.meta.env.VITE_API_URL ?? DEFAULT_API_URL;
-  return `${base}/auth/${provider}`;
-};
+export const oauthUrl = (provider: OAuthProvider): string => `${API_BASE_URL}/auth/${provider}`;

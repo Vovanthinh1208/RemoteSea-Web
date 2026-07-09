@@ -1,5 +1,5 @@
 import { pickColorFromString } from "@/utils/color";
-import { formatRelativeTime } from "@/utils/time";
+import { timeAgoLong } from "@/utils/time";
 import type { ApplicationStatus } from "@/types/application";
 import type { JobStatus } from "@/types/job";
 
@@ -50,5 +50,4 @@ const COLORS = ["#1F8A3A", "#2684FF", "#E97560", "#7C3AED", "#0EA5E9", "#B45309"
 
 export const colorFor = (s: string): string => pickColorFromString(s, COLORS);
 
-export const timeAgo = (dateString: string | null): string =>
-  formatRelativeTime(dateString, { day: "d ago", hour: "h ago", now: "Just now" });
+export const timeAgo = timeAgoLong;

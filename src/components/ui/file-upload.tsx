@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, Upload } from "lucide-react";
 import { uploadViaPresign, validateFile, type UploadType } from "@/services/uploads.api";
+import { reportError } from "@/services/monitoring";
 
 type UploadState = "idle" | "uploading" | "done" | "error";
 
@@ -24,6 +25,11 @@ export const FileUpload = ({ type, accept, label, value, onUploaded }: FileUploa
   const inputRef = useRef<HTMLInputElement>(null);
   const [state, setState] = useState<UploadState>(value ? "done" : "idle");
   const [error, setError] = useState<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
+
+  // Cancel an in-flight upload if the user navigates away mid-upload, so it can't
+  // call setState on an unmounted component once it eventually resolves.
+  useEffect(() => () => abortRef.current?.abort(), []);
 
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -39,11 +45,15 @@ export const FileUpload = ({ type, accept, label, value, onUploaded }: FileUploa
 
     setState("uploading");
     setError(null);
+    const controller = new AbortController();
+    abortRef.current = controller;
     try {
-      const url = await uploadViaPresign(file, type);
+      const url = await uploadViaPresign(file, type, { signal: controller.signal });
       onUploaded(url);
       setState("done");
-    } catch {
+    } catch (err) {
+      if (controller.signal.aborted) return;
+      reportError(err);
       setState("error");
       setError(UPLOAD_FAILED_MESSAGE);
     }
