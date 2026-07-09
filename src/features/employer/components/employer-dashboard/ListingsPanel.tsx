@@ -51,7 +51,10 @@ const ListingRow = memo(function ListingRow({ job: j, applications: apps }: List
         </div>
       </div>
 
-      <Badge className="w-fit px-2 py-0.5 text-[11px]" variant={STATUS_VARIANT[STATUS_GROUP[j.status]]}>
+      <Badge
+        className="w-fit px-2 py-0.5 text-[11px]"
+        variant={STATUS_VARIANT[STATUS_GROUP[j.status]]}
+      >
         {STATUS_LABEL[j.status]}
       </Badge>
 

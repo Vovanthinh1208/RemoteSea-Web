@@ -145,7 +145,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   );
 
   const value = useMemo<AuthContextValue>(
-    () => ({ user, status, login, loginWithToken, registerAccount, logout, patchUser, retrySession }),
+    () => ({
+      user,
+      status,
+      login,
+      loginWithToken,
+      registerAccount,
+      logout,
+      patchUser,
+      retrySession,
+    }),
     [user, status, login, loginWithToken, registerAccount, logout, patchUser, retrySession]
   );
 

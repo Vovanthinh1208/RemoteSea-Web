@@ -130,9 +130,27 @@ export const EmployerDashboard = () => {
 
         {/* KPIs */}
         <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          <StatCard icon={Briefcase} label="Active listings" size="lg" sub={`${inReview} in review`} value={activeListings} />
-          <StatCard icon={Users} label="Total applications" size="lg" sub="all listings" value={stats.totalApps} />
-          <StatCard icon={Star} label="Shortlisted" size="lg" sub="across roles" value={stats.shortlisted} />
+          <StatCard
+            icon={Briefcase}
+            label="Active listings"
+            size="lg"
+            sub={`${inReview} in review`}
+            value={activeListings}
+          />
+          <StatCard
+            icon={Users}
+            label="Total applications"
+            size="lg"
+            sub="all listings"
+            value={stats.totalApps}
+          />
+          <StatCard
+            icon={Star}
+            label="Shortlisted"
+            size="lg"
+            sub="across roles"
+            value={stats.shortlisted}
+          />
           <StatCard
             icon={Clock}
             label="Avg. time to hire"

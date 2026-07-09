@@ -48,7 +48,10 @@ export const uploadViaPresign = async (
   // PUT to storage is a bare fetch with no built-in timeout — a stalled upload could
   // otherwise hang forever. This also lets callers cancel on unmount via `signal`.
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(new Error("Upload timed out")), UPLOAD_TIMEOUT_MS);
+  const timeoutId = setTimeout(
+    () => controller.abort(new Error("Upload timed out")),
+    UPLOAD_TIMEOUT_MS
+  );
   const onExternalAbort = () => controller.abort(options?.signal?.reason);
   options?.signal?.addEventListener("abort", onExternalAbort);
 
