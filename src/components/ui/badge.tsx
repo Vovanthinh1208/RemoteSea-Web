@@ -23,14 +23,9 @@ const badgeVariants = cva(
   }
 );
 
-<<<<<<< HEAD
-interface BadgeProps
-  extends React.HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badgeVariants> {}
-=======
 export type BadgeVariant = NonNullable<VariantProps<typeof badgeVariants>["variant"]>;
 
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badgeVariants> {}
->>>>>>> f72df65 (Fix reliability gaps and consolidate duplicated UI/utils in remotesea-web)
 
 export const Badge = ({ className, variant, ...props }: BadgeProps) => (
   <span className={cn(badgeVariants({ variant }), className)} {...props} />

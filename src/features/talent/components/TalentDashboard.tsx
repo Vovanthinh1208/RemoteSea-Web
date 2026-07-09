@@ -23,7 +23,11 @@ const AFTERNOON_END_HOUR = 18;
 
 export const TalentDashboard = () => {
   const { user } = useAuth();
-  const { data: applications = [], isError: applicationsErrored, refetch: refetchApplications } = useMyApplications();
+  const {
+    data: applications = [],
+    isError: applicationsErrored,
+    refetch: refetchApplications,
+  } = useMyApplications();
   const { data: profile } = useMyTalentProfile();
   const { data: savedJobs = [] } = useSavedJobs();
 
@@ -127,30 +131,27 @@ export const TalentDashboard = () => {
 
       {/* KPI tiles */}
       <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-<<<<<<< HEAD
-        <KpiCard
+        <StatCard
           icon={Briefcase}
           label="Applications sent"
+          size="md"
           sub="all time"
-          value={String(applications.length)}
+          value={applications.length}
         />
-        <KpiCard
+        <StatCard
           icon={Bookmark}
           label="Saved jobs"
+          size="md"
           sub="current"
-          value={String(savedJobs.length)}
+          value={savedJobs.length}
         />
-        <KpiCard
+        <StatCard
           icon={TrendingUp}
           label="Interview rate"
+          size="md"
           sub="of submitted"
           value={`${interviewRate}%`}
         />
-=======
-        <StatCard icon={Briefcase} label="Applications sent" size="md" sub="all time" value={applications.length} />
-        <StatCard icon={Bookmark} label="Saved jobs" size="md" sub="current" value={savedJobs.length} />
-        <StatCard icon={TrendingUp} label="Interview rate" size="md" sub="of submitted" value={`${interviewRate}%`} />
->>>>>>> f72df65 (Fix reliability gaps and consolidate duplicated UI/utils in remotesea-web)
       </div>
 
       {/* Main two-column grid */}

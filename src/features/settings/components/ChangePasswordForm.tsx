@@ -53,12 +53,6 @@ export const ChangePasswordForm = () => {
         registration={register("newPassword")}
         type="password"
       />
-<<<<<<< HEAD
-      {errors.newPassword && (
-        <p className="text-[12px] text-red-600">{errors.newPassword.message}</p>
-      )}
-=======
->>>>>>> f72df65 (Fix reliability gaps and consolidate duplicated UI/utils in remotesea-web)
       <button
         className="rounded-10 bg-brand-600 px-4 py-2.5 text-[12.5px] font-medium text-white hover:bg-brand-700 disabled:opacity-60"
         disabled={isSubmitting}

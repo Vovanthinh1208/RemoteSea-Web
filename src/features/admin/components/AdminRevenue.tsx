@@ -49,43 +49,18 @@ export const AdminRevenue = () => {
 
       {/* KPIs */}
       <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-<<<<<<< HEAD
-        <div className="rounded-12 border border-neutral-100 bg-white p-4">
-          <div className="mb-2 flex items-center gap-1.5 text-[12px] text-neutral-400">
-            <Wallet size={14} /> Revenue all time
-          </div>
-          <div className="text-[22px] font-semibold text-neutral-900">
-            {formatThousands(totals.allTime)}
-          </div>
-          <div className="mt-0.5 text-[11px] text-neutral-400">across every paid listing</div>
-        </div>
-        <div className="rounded-12 border border-neutral-100 bg-white p-4">
-          <div className="mb-2 flex items-center gap-1.5 text-[12px] text-neutral-400">
-            <TrendingUp size={14} /> This month
-          </div>
-          <div className="text-[22px] font-semibold text-neutral-900">
-            {formatDollars(totals.thisMonth)}
-          </div>
-          <div className="mt-0.5 text-[11px] text-neutral-400">in progress</div>
-        </div>
-        {mix.map((m) => (
-          <div className="rounded-12 border border-neutral-100 bg-white p-4" key={m.planType}>
-            <div className="mb-2 flex items-center gap-1.5 text-[12px] text-neutral-400">
-              <RefreshCw size={14} /> {m.label}
-            </div>
-            <div className="text-[22px] font-semibold text-neutral-900">{m.count}</div>
-            <div className="mt-0.5 text-[11px] text-neutral-400">
-              posts · {formatDollars(m.amount)}
-            </div>
-          </div>
-=======
         <StatCard
           icon={Wallet}
           label="Revenue all time"
           sub="across every paid listing"
           value={formatThousands(totals.allTime)}
         />
-        <StatCard icon={TrendingUp} label="This month" sub="in progress" value={formatDollars(totals.thisMonth)} />
+        <StatCard
+          icon={TrendingUp}
+          label="This month"
+          sub="in progress"
+          value={formatDollars(totals.thisMonth)}
+        />
         {mix.map((m) => (
           <StatCard
             icon={RefreshCw}
@@ -94,7 +69,6 @@ export const AdminRevenue = () => {
             sub={`posts · ${formatDollars(m.amount)}`}
             value={m.count}
           />
->>>>>>> f72df65 (Fix reliability gaps and consolidate duplicated UI/utils in remotesea-web)
         ))}
       </div>
 

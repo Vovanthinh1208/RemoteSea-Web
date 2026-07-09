@@ -51,24 +51,12 @@ const ApplicationRow = memo(function ApplicationRow({ application: a }: Applicat
           </p>
         </div>
       </div>
-<<<<<<< HEAD
-      <span
-        className={cn(
-          "inline-flex w-[100px] items-center justify-center rounded-full px-2.5 py-0.5 text-[11.5px] font-medium",
-          s.cls
-        )}
-      >
-        {s.label}
-      </span>
-      <span className="hidden w-[140px] text-[12px] text-neutral-500 md:block">
-        {STAGE_LABEL[a.status]}
-      </span>
-=======
       <Badge className="w-[100px] justify-center px-2.5 py-0.5" variant={s.variant}>
         {s.label}
       </Badge>
-      <span className="hidden w-[140px] text-[12px] text-neutral-500 md:block">{STAGE_LABEL[a.status]}</span>
->>>>>>> f72df65 (Fix reliability gaps and consolidate duplicated UI/utils in remotesea-web)
+      <span className="hidden w-[140px] text-[12px] text-neutral-500 md:block">
+        {STAGE_LABEL[a.status]}
+      </span>
       <span className="hidden w-[72px] text-right text-[12px] text-neutral-400 md:block">
         {new Date(a.appliedAt).toLocaleDateString("en-US", { month: "short", day: "2-digit" })}
       </span>

@@ -69,16 +69,7 @@ const ApplicantRow = memo(function ApplicantRow({
       </div>
 
       <div className="flex-shrink-0 text-right">
-<<<<<<< HEAD
-        <div
-          className={cn(
-            "rounded-full px-1.5 py-0.5 text-[10px] font-medium",
-            APPLICANT_STATUS_CLASS[group]
-          )}
-        >
-=======
         <Badge className="px-1.5 py-0.5 text-[10px]" variant={APPLICANT_STATUS_VARIANT[group]}>
->>>>>>> f72df65 (Fix reliability gaps and consolidate duplicated UI/utils in remotesea-web)
           {APPLICANT_STATUS_LABEL[group]}
         </Badge>
       </div>
@@ -186,7 +177,9 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
               applicant={a}
               // Scoped to this row's id — otherwise updating one applicant disables
               // the action buttons on every other row in the list too.
-              isPending={updateStatusMutation.isPending && updateStatusMutation.variables?.id === a.id}
+              isPending={
+                updateStatusMutation.isPending && updateStatusMutation.variables?.id === a.id
+              }
               key={a.id}
               onStatusChange={updateApplicantStatus}
             />
