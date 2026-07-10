@@ -29,30 +29,32 @@ export const AboutSection = ({ register, bioError, bioLength }: AboutSectionProp
     <div className="space-y-4">
       <div className="space-y-1.5">
         <div className="flex items-center justify-between">
-          <label className="text-[12.5px] font-medium text-neutral-700">
+          <label className="text-[12.5px] font-medium text-neutral-700" htmlFor="p-bio">
             Bio <span className="font-normal text-neutral-400">2–4 sentences</span>
           </label>
           <span className="text-[11px] text-neutral-400">
             {bioLength} / {MAX_BIO_LENGTH}
           </span>
         </div>
-        <textarea className={TEXTAREA_INPUT_CLASS} rows={4} {...register("bio")} />
+        <textarea className={TEXTAREA_INPUT_CLASS} id="p-bio" rows={4} {...register("bio")} />
         {bioError && <p className="text-[11.5px] text-red-600">{bioError}</p>}
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <label className="block text-[12.5px] font-medium text-neutral-700">Seniority</label>
-          <select className={SELECT_INPUT_CLASS} {...register("seniority")}>
+          <label className="block text-[12.5px] font-medium text-neutral-700" htmlFor="p-seniority">
+            Seniority
+          </label>
+          <select className={SELECT_INPUT_CLASS} id="p-seniority" {...register("seniority")}>
             {SENIORITY_OPTIONS.map((o) => (
               <option key={o}>{o}</option>
             ))}
           </select>
         </div>
         <div className="space-y-1.5">
-          <label className="block text-[12.5px] font-medium text-neutral-700">
+          <label className="block text-[12.5px] font-medium text-neutral-700" htmlFor="p-years">
             Years of experience
           </label>
-          <select className={SELECT_INPUT_CLASS} {...register("yearsBucket")}>
+          <select className={SELECT_INPUT_CLASS} id="p-years" {...register("yearsBucket")}>
             {YEARS_BUCKETS.map((o) => (
               <option key={o}>{o}</option>
             ))}

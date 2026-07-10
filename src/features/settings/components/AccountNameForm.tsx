@@ -33,9 +33,11 @@ export const AccountNameForm = () => {
   return (
     <form className="grid gap-4 sm:grid-cols-2" onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-1.5">
-        <label className="block text-[12.5px] font-medium text-neutral-700">Full name</label>
+        <label className="block text-[12.5px] font-medium text-neutral-700" htmlFor="acct-name">
+          Full name
+        </label>
         <div className="flex items-center gap-2">
-          <input className={TEXT_INPUT_CLASS} {...register("name")} />
+          <input className={TEXT_INPUT_CLASS} id="acct-name" {...register("name")} />
           {isDirty && (
             <button
               className="flex-shrink-0 rounded-10 bg-brand-600 px-3 py-2.5 text-[12.5px] font-medium text-white hover:bg-brand-700 disabled:opacity-60"
@@ -49,11 +51,12 @@ export const AccountNameForm = () => {
         {errors.name && <p className="text-[11.5px] text-red-600">{errors.name.message}</p>}
       </div>
       <div className="space-y-1.5">
-        <label className="block text-[12.5px] font-medium text-neutral-700">
+        <label className="block text-[12.5px] font-medium text-neutral-700" htmlFor="acct-email">
           Email <span className="font-normal text-neutral-400">Used to sign in</span>
         </label>
         <input
           className="w-full cursor-default rounded-10 border border-neutral-200 bg-neutral-50 px-3.5 py-2.5 text-[13.5px] text-neutral-900"
+          id="acct-email"
           readOnly
           value={user?.email ?? ""}
         />

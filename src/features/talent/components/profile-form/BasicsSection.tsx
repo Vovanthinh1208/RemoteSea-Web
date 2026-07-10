@@ -51,13 +51,16 @@ export const BasicsSection = ({
       </div>
       <div className="space-y-1.5 sm:col-span-2">
         <div className="flex items-center justify-between">
-          <label className="block text-[12.5px] font-medium text-neutral-700">Headline</label>
+          <label className="block text-[12.5px] font-medium text-neutral-700" htmlFor="p-headline">
+            Headline
+          </label>
           <span className="text-[11px] text-neutral-400">
             {headlineLength} / {MAX_HEADLINE_LENGTH}
           </span>
         </div>
         <input
           className={TEXT_INPUT_CLASS}
+          id="p-headline"
           placeholder="Role · timezone · standout signal"
           {...register("headline")}
         />

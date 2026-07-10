@@ -308,6 +308,7 @@ export const BlogPage = () => {
                 </p>
                 <form className="space-y-2" onSubmit={(e) => e.preventDefault()}>
                   <input
+                    aria-label="Email address"
                     className="h-10 w-full rounded-10 border border-neutral-200 bg-white px-3 text-sm outline-none placeholder:text-neutral-400 focus:border-brand-600"
                     placeholder="you@work.com"
                     type="email"
@@ -361,6 +362,7 @@ export const BlogPage = () => {
             onSubmit={(e) => e.preventDefault()}
           >
             <input
+              aria-label="Email address"
               className="h-12 flex-1 rounded-12 border border-neutral-200 bg-white px-4 text-sm outline-none placeholder:text-neutral-400 focus:border-brand-600 sm:max-w-xs"
               placeholder="you@work.com"
               type="email"

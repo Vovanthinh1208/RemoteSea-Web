@@ -44,6 +44,7 @@ export const PreferencesSection = ({
         <div>
           <p className="mb-1 text-[11px] text-neutral-400">Minimum</p>
           <input
+            aria-label="Minimum salary"
             className="w-full accent-brand-600"
             max={SALARY_MAX}
             min={SALARY_MIN}
@@ -56,6 +57,7 @@ export const PreferencesSection = ({
         <div>
           <p className="mb-1 text-[11px] text-neutral-400">Maximum</p>
           <input
+            aria-label="Maximum salary"
             className="w-full accent-brand-600"
             max={SALARY_MAX}
             min={SALARY_MIN}

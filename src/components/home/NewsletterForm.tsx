@@ -1,6 +1,7 @@
 export const NewsletterForm = () => (
   <form className="mx-auto flex max-w-sm items-center gap-2" onSubmit={(e) => e.preventDefault()}>
     <input
+      aria-label="Email address"
       className="h-11 flex-1 rounded-12 border border-neutral-200 bg-white px-4 text-sm outline-none transition-all focus:border-brand-600 focus:shadow-focus"
       placeholder="your@email.com"
       type="email"

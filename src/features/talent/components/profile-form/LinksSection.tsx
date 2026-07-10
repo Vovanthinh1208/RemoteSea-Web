@@ -65,9 +65,15 @@ export const LinksSection = ({ register, resumeUrl, onResumeUploaded }: LinksSec
             <Icon size={15} />
           </span>
           <div className="min-w-0 flex-1 space-y-0.5">
-            <label className="block text-[12px] font-medium text-neutral-700">{label}</label>
+            <label
+              className="block text-[12px] font-medium text-neutral-700"
+              htmlFor={`p-${field}`}
+            >
+              {label}
+            </label>
             <input
               className="focus:border-brand-500 w-full rounded-10 border border-neutral-200 bg-white px-3 py-2 text-[13px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+              id={`p-${field}`}
               placeholder={placeholder}
               {...register(field)}
             />
