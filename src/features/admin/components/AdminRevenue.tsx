@@ -191,13 +191,13 @@ export const AdminRevenue = () => {
       </div>
 
       {/* Transactions */}
-      <div className="overflow-hidden rounded-12 border border-neutral-100 bg-white">
+      <div className="overflow-x-auto rounded-12 border border-neutral-100 bg-white">
         <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-3">
           <h3 className="text-[14px] font-semibold text-neutral-900">Recent transactions</h3>
         </div>
         <div
           className="grid border-b border-neutral-50 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-400"
-          style={{ gridTemplateColumns: "1fr 140px 100px 90px" }}
+          style={{ gridTemplateColumns: "minmax(200px,1fr) 140px 100px 90px" }}
         >
           <span>Employer</span>
           <span>Plan</span>
@@ -211,7 +211,7 @@ export const AdminRevenue = () => {
             <div
               className="grid items-center border-b border-neutral-50 px-5 py-3.5 last:border-0"
               key={t.jobId}
-              style={{ gridTemplateColumns: "1fr 140px 100px 90px" }}
+              style={{ gridTemplateColumns: "minmax(200px,1fr) 140px 100px 90px" }}
             >
               <div className="min-w-0">
                 <div className="truncate text-[14px] font-medium text-neutral-900">

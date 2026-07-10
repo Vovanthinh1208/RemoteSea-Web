@@ -363,7 +363,7 @@ export const BlogPage = () => {
           >
             <input
               aria-label="Email address"
-              className="h-12 flex-1 rounded-12 border border-neutral-200 bg-white px-4 text-sm outline-none placeholder:text-neutral-400 focus:border-brand-600 sm:max-w-xs"
+              className="h-11 flex-1 rounded-12 border border-neutral-200 bg-white px-4 text-sm outline-none placeholder:text-neutral-400 focus:border-brand-600 sm:max-w-xs"
               placeholder="you@work.com"
               type="email"
             />

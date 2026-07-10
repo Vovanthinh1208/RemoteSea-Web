@@ -32,7 +32,7 @@ export const ConfirmAction = ({
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       <span className="text-[12px] text-neutral-600">{message}</span>
       <button
         className="rounded-8 bg-red-600 px-2.5 py-1 text-[12px] font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-60"

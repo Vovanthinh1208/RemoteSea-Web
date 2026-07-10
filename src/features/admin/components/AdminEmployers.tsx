@@ -229,7 +229,7 @@ export const AdminEmployers = () => {
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-12 border border-neutral-100 bg-white">
+      <div className="overflow-x-auto rounded-12 border border-neutral-100 bg-white">
         <div
           className="grid border-b border-neutral-100 px-5 py-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400"
           style={{ gridTemplateColumns: EMPLOYER_GRID_COLUMNS }}
