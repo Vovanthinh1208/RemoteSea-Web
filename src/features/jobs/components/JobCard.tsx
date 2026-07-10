@@ -18,10 +18,10 @@ import {
   timeAgo,
 } from "@/features/jobs/jobs.utils";
 import { ROUTES } from "@/constants/routes";
-import type { Job } from "@/types/job";
+import type { JobListItem } from "@/types/job";
 
 interface JobCardProps {
-  job: Job;
+  job: JobListItem;
 }
 
 export const JobCard = memo(function JobCard({ job }: JobCardProps) {

@@ -1,5 +1,5 @@
 import { apiClient } from "@/services/api-client";
-import type { ExperienceLevel, Job, JobFacets, JobType, PlanType } from "@/types/job";
+import type { ExperienceLevel, Job, JobFacets, JobListItem, JobType, PlanType } from "@/types/job";
 import type { PaginationMeta } from "@/types/api";
 import {
   JOBTYPE_TO_ENUMS,
@@ -9,7 +9,11 @@ import {
   type JobFilters,
 } from "@/features/jobs/job-filters";
 
-export type JobListResponse = { jobs: Job[]; pagination: PaginationMeta; facets: JobFacets };
+export type JobListResponse = {
+  jobs: JobListItem[];
+  pagination: PaginationMeta;
+  facets: JobFacets;
+};
 
 export type CreateJobPayload = {
   title: string;

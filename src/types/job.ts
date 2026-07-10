@@ -17,7 +17,7 @@ export type JobEmployerSummary = {
   companyName: string;
   logoUrl: string | null;
   slug: string;
-  isVerified?: boolean;
+  isVerified: boolean;
   size?: string | null;
   description?: string | null;
   hqCountry?: string | null;
@@ -48,6 +48,31 @@ export type Job = {
   expiresAt: string | null;
   createdAt: string;
   employer: JobEmployerSummary;
+  categories: { category: Category }[];
+  skills: { skill: Skill }[];
+};
+
+// GET /jobs (the paginated board) sends a deliberately narrower shape than the
+// single-job detail response — only what JobCard and RecommendedJobs actually
+// render. No description/requirements/benefits/currency/status/planType/counts,
+// which used to be sent (unused) for every card on every page of results.
+export type JobListItemEmployer = { companyName: string; isVerified: boolean };
+
+export type JobListItem = {
+  id: string;
+  title: string;
+  jobType: JobType;
+  level: ExperienceLevel;
+  salaryMin: number | null;
+  salaryMax: number | null;
+  isRemote: boolean;
+  timezone: string | null;
+  country: string | null;
+  isFeatured: boolean;
+  vnHireCount: number;
+  publishedAt: string | null;
+  createdAt: string;
+  employer: JobListItemEmployer;
   categories: { category: Category }[];
   skills: { skill: Skill }[];
 };
