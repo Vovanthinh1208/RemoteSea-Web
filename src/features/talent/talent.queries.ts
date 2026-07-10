@@ -3,21 +3,22 @@ import {
   getMyTalentProfile,
   getPublicTalentProfile,
   updateMyTalentProfile,
-} from "@/features/talent/talent.api";
+} from "@/features/talent/talent.service";
 import { useAuth } from "@/contexts/AuthContext";
 import { ApiError } from "@/services/api-error";
+import { talentKeys } from "@/core/query/query-keys";
 
 const NOT_FOUND_STATUS = 404;
 
-export const MY_TALENT_PROFILE_KEY = ["talent", "me"];
+export const MY_TALENT_PROFILE_KEY = talentKeys.mine();
 
 export const useMyTalentProfile = () => {
   const { user } = useAuth();
   return useQuery({
-    queryKey: MY_TALENT_PROFILE_KEY,
-    queryFn: async () => {
+    queryKey: talentKeys.mine(),
+    queryFn: async ({ signal }) => {
       try {
-        return await getMyTalentProfile();
+        return await getMyTalentProfile({ signal });
       } catch (err) {
         if (err instanceof ApiError && err.status === NOT_FOUND_STATUS) return null;
         throw err;
@@ -32,18 +33,18 @@ export const useUpdateMyTalentProfile = () => {
   return useMutation({
     mutationFn: updateMyTalentProfile,
     onSuccess: (profile) => {
-      queryClient.setQueryData(MY_TALENT_PROFILE_KEY, profile);
+      queryClient.setQueryData(talentKeys.mine(), profile);
       // The public profile page supports viewing your own profile — without
       // this, editing and then clicking through to your own public URL shows
       // stale data for up to staleTime.
-      queryClient.invalidateQueries({ queryKey: ["talent", "public", profile.slug] });
+      queryClient.invalidateQueries({ queryKey: talentKeys.public(profile.slug) });
     },
   });
 };
 
 export const usePublicTalentProfile = (slug: string | undefined) =>
   useQuery({
-    queryKey: ["talent", "public", slug],
-    queryFn: () => getPublicTalentProfile(slug as string),
+    queryKey: talentKeys.public(slug),
+    queryFn: ({ signal }) => getPublicTalentProfile(slug as string, { signal }),
     enabled: !!slug,
   });

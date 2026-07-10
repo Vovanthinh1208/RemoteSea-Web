@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { changeMyPassword, deleteMyAccount, updateMyName } from "@/features/users/users.api";
+import { changeMyPassword, deleteMyAccount, updateMyName } from "@/features/users/users.service";
 import { useAuth } from "@/contexts/AuthContext";
 
 export const useUpdateMyName = () => {

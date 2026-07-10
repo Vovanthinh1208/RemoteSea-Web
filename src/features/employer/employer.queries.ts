@@ -7,15 +7,17 @@ import {
   listJobApplications,
   updateApplicationStatus,
   updateEmployerProfile,
-} from "@/features/employer/employer.api";
+} from "@/features/employer/employer.service";
 import { ApiError } from "@/services/api-error";
 import { useAuth } from "@/contexts/AuthContext";
 import { MY_APPLICATIONS_KEY } from "@/features/applications/applications.queries";
+import { employerKeys } from "@/core/query/query-keys";
+import { TIER } from "@/core/query/query-client";
 import type { ApplicationStatus } from "@/types/application";
 import type { EmployerApplicant, EmployerProfileSummary } from "@/types/employer";
 
-export const EMPLOYER_PROFILE_KEY = ["employer", "profile"];
-export const EMPLOYER_JOBS_KEY = ["employer", "jobs"];
+export const EMPLOYER_PROFILE_KEY = employerKeys.profile();
+export const EMPLOYER_JOBS_KEY = employerKeys.jobs();
 
 const NOT_FOUND_STATUS = 404;
 const FORBIDDEN_STATUS = 403;
@@ -24,10 +26,10 @@ const APPLICATIONS_PER_JOB_LIMIT = 50;
 export const useEmployerProfile = () => {
   const { user } = useAuth();
   return useQuery({
-    queryKey: EMPLOYER_PROFILE_KEY,
-    queryFn: async () => {
+    queryKey: employerKeys.profile(),
+    queryFn: async ({ signal }) => {
       try {
-        return await getEmployerProfile();
+        return await getEmployerProfile({ signal });
       } catch (err) {
         if (
           err instanceof ApiError &&
@@ -47,7 +49,7 @@ export const useCreateEmployerProfile = () => {
   return useMutation({
     mutationFn: createEmployerProfile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: EMPLOYER_PROFILE_KEY });
+      queryClient.invalidateQueries({ queryKey: employerKeys.profile() });
     },
   });
 };
@@ -60,7 +62,7 @@ export const useUpdateEmployerProfile = () => {
       // The update response doesn't include _count/totalApplications (only GET
       // does) — merge into the existing cache instead of replacing it wholesale,
       // so those fields aren't silently dropped after every profile edit.
-      queryClient.setQueryData<EmployerProfileSummary | null>(EMPLOYER_PROFILE_KEY, (prev) =>
+      queryClient.setQueryData<EmployerProfileSummary | null>(employerKeys.profile(), (prev) =>
         prev ? { ...prev, ...profile } : prev
       );
     },
@@ -70,8 +72,8 @@ export const useUpdateEmployerProfile = () => {
 export const useEmployerJobs = () => {
   const { user } = useAuth();
   return useQuery({
-    queryKey: EMPLOYER_JOBS_KEY,
-    queryFn: () => listEmployerJobs(),
+    queryKey: employerKeys.jobs(),
+    queryFn: ({ signal }) => listEmployerJobs(undefined, { signal }),
     enabled: !!user && user.role === "EMPLOYER",
   });
 };
@@ -92,8 +94,10 @@ export const useEmployerApplicationsAggregate = () => {
 
   const results = useQueries({
     queries: jobIds.map((jobId) => ({
-      queryKey: ["employer", "job-applications", jobId],
-      queryFn: () => listJobApplications(jobId, { limit: APPLICATIONS_PER_JOB_LIMIT }),
+      queryKey: employerKeys.jobApplications(jobId),
+      queryFn: ({ signal }: { signal: AbortSignal }) =>
+        listJobApplications(jobId, { limit: APPLICATIONS_PER_JOB_LIMIT }, { signal }),
+      ...TIER.live,
     })),
   });
 
@@ -147,8 +151,8 @@ export const useUpdateApplicationStatus = () => {
       notes?: string;
     }) => updateApplicationStatus(id, status, notes),
     onSuccess: (_data, { jobId }) => {
-      queryClient.invalidateQueries({ queryKey: ["employer", "job-applications", jobId] });
-      queryClient.invalidateQueries({ queryKey: EMPLOYER_JOBS_KEY });
+      queryClient.invalidateQueries({ queryKey: employerKeys.jobApplications(jobId) });
+      queryClient.invalidateQueries({ queryKey: employerKeys.jobs() });
       // The talent side's own applications list reads the same status this
       // mutation changes — low-impact today since employer/talent are separate
       // sessions, but matches the cross-feature invalidation pattern used

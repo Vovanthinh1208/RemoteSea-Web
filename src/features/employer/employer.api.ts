@@ -1,58 +1,9 @@
-import { apiClient } from "@/services/api-client";
-import type { ApplicationStatus } from "@/types/application";
-import type { JobStatus } from "@/types/job";
-import type {
-  CreateEmployerProfilePayload,
-  EmployerJobApplicationsResponse,
-  EmployerJobsResponse,
-  EmployerProfile,
-  EmployerProfileSummary,
-  UpdateEmployerProfilePayload,
-} from "@/types/employer";
-
-export const createEmployerProfile = async (
-  payload: CreateEmployerProfilePayload
-): Promise<{ id: string; slug: string; companyName: string }> => {
-  const { data } = await apiClient.post("/employer/profile", payload);
-  return data;
-};
-
-export const getEmployerProfile = async (): Promise<EmployerProfileSummary> => {
-  const { data } = await apiClient.get<EmployerProfileSummary>("/employer/profile");
-  return data;
-};
-
-// The backend's update endpoint only returns EmployerProfile's fields — unlike
-// GET /employer/profile, it does not include _count/totalApplications.
-export const updateEmployerProfile = async (
-  payload: UpdateEmployerProfilePayload
-): Promise<EmployerProfile> => {
-  const { data } = await apiClient.patch<EmployerProfile>("/employer/profile", payload);
-  return data;
-};
-
-export const listEmployerJobs = async (status?: JobStatus): Promise<EmployerJobsResponse> => {
-  const { data } = await apiClient.get<EmployerJobsResponse>("/employer/jobs", {
-    params: status ? { status } : undefined,
-  });
-  return data;
-};
-
-export const listJobApplications = async (
-  jobId: string,
-  params: { status?: ApplicationStatus; page?: number; limit?: number } = {}
-): Promise<EmployerJobApplicationsResponse> => {
-  const { data } = await apiClient.get<EmployerJobApplicationsResponse>(
-    `/employer/jobs/${jobId}/applications`,
-    { params }
-  );
-  return data;
-};
-
-export const updateApplicationStatus = async (
-  applicationId: string,
-  status: ApplicationStatus,
-  notes?: string
-): Promise<void> => {
-  await apiClient.patch(`/employer/applications/${applicationId}`, { status, notes });
-};
+// Compat shim — the implementation now lives in employer.service.ts.
+export {
+  createEmployerProfile,
+  getEmployerProfile,
+  updateEmployerProfile,
+  listEmployerJobs,
+  listJobApplications,
+  updateApplicationStatus,
+} from "@/features/employer/employer.service";

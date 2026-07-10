@@ -5,13 +5,14 @@ import {
   listAdminJobs,
   reviewAdminJob,
   updateAdminEmployer,
-} from "@/features/admin/admin.api";
+} from "@/features/admin/admin.service";
 import { useAuth } from "@/contexts/AuthContext";
+import { adminKeys, jobKeys } from "@/core/query/query-keys";
 import type { JobStatus } from "@/types/job";
 
-export const ADMIN_JOBS_KEY = ["admin", "jobs"];
-export const ADMIN_EMPLOYERS_KEY = ["admin", "employers"];
-export const ADMIN_REVENUE_KEY = ["admin", "revenue"];
+export const ADMIN_JOBS_KEY = adminKeys.jobs();
+export const ADMIN_EMPLOYERS_KEY = adminKeys.employers();
+export const ADMIN_REVENUE_KEY = adminKeys.revenue();
 
 const ADMIN_LIST_LIMIT = 50;
 
@@ -24,8 +25,8 @@ const ADMIN_QUEUE_STALE_TIME_MS = 15_000;
 export const useAdminJobs = (status: JobStatus = "PENDING_REVIEW") => {
   const { user } = useAuth();
   return useQuery({
-    queryKey: [...ADMIN_JOBS_KEY, status],
-    queryFn: () => listAdminJobs({ status, limit: ADMIN_LIST_LIMIT }),
+    queryKey: adminKeys.jobs(status),
+    queryFn: ({ signal }) => listAdminJobs({ status, limit: ADMIN_LIST_LIMIT }, { signal }),
     enabled: !!user && user.role === "ADMIN",
     staleTime: ADMIN_QUEUE_STALE_TIME_MS,
     refetchOnWindowFocus: true,
@@ -35,8 +36,8 @@ export const useAdminJobs = (status: JobStatus = "PENDING_REVIEW") => {
 export const useAdminEmployers = () => {
   const { user } = useAuth();
   return useQuery({
-    queryKey: ADMIN_EMPLOYERS_KEY,
-    queryFn: () => listAdminEmployers({ limit: ADMIN_LIST_LIMIT }),
+    queryKey: adminKeys.employers(),
+    queryFn: ({ signal }) => listAdminEmployers({ limit: ADMIN_LIST_LIMIT }, { signal }),
     enabled: !!user && user.role === "ADMIN",
   });
 };
@@ -54,12 +55,12 @@ export const useReviewAdminJob = () => {
       note?: string;
     }) => reviewAdminJob(id, action, note),
     onSuccess: (_data, { id }) => {
-      queryClient.invalidateQueries({ queryKey: ADMIN_JOBS_KEY });
+      queryClient.invalidateQueries({ queryKey: adminKeys.jobs() });
       // A review changes the job's public status (e.g. approved -> live) — without
       // this, the public jobs list/detail can keep showing stale data for up to a
       // minute (default staleTime) after an approval.
-      queryClient.invalidateQueries({ queryKey: ["jobs"] });
-      queryClient.invalidateQueries({ queryKey: ["job", id] });
+      queryClient.invalidateQueries({ queryKey: jobKeys.all });
+      queryClient.invalidateQueries({ queryKey: jobKeys.detail(id) });
     },
   });
 };
@@ -70,11 +71,11 @@ export const useUpdateAdminEmployer = () => {
     mutationFn: ({ id, action }: { id: string; action: "verify" | "suspend" }) =>
       updateAdminEmployer(id, action),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ADMIN_EMPLOYERS_KEY });
+      queryClient.invalidateQueries({ queryKey: adminKeys.employers() });
       // employer.isVerified is denormalized into every job list/detail response
       // (drives the "Verified" badge) — same class of gap already fixed for job
       // approval above, just missed here.
-      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      queryClient.invalidateQueries({ queryKey: jobKeys.all });
       // NOT invalidating EMPLOYER_PROFILE_KEY here: that query is only enabled
       // for role:EMPLOYER sessions, and this mutation only ever runs in a
       // role:ADMIN session — invalidating it here can never reach the affected
@@ -90,8 +91,8 @@ export const useUpdateAdminEmployer = () => {
 export const useAdminRevenue = () => {
   const { user } = useAuth();
   return useQuery({
-    queryKey: ADMIN_REVENUE_KEY,
-    queryFn: getAdminRevenue,
+    queryKey: adminKeys.revenue(),
+    queryFn: ({ signal }) => getAdminRevenue({ signal }),
     enabled: !!user && user.role === "ADMIN",
   });
 };
