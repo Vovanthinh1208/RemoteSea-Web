@@ -38,6 +38,14 @@
       name="twitter:description"
       content="Curated remote jobs from Singapore, Australia & beyond — for Vietnam talent. Clear salary ranges, verified employers, sensible timezones."
     />
+    <!--
+      Same %VITE_API_URL% interpolation the CSP connect-src above already relies
+      on. The API origin gets its first request almost immediately on load (the
+      public jobs list, or the auth session check for a logged-in user) — this
+      lets the browser start DNS+TCP+TLS for it in parallel with the rest of the
+      page instead of paying that cost serially once the first request fires.
+    -->
+    <link rel="preconnect" href="%VITE_API_URL%" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
