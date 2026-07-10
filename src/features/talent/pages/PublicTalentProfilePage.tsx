@@ -179,7 +179,7 @@ export const PublicTalentProfilePage = () => {
                   <div className="space-y-1.5">
                     {links.map((l) => (
                       <a
-                        className="rounded-10 flex items-center gap-2.5 px-2 py-1.5 text-[13px] text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
+                        className="flex items-center gap-2.5 rounded-10 px-2 py-1.5 text-[13px] text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
                         href={l.href}
                         key={l.href}
                         rel="noopener noreferrer"

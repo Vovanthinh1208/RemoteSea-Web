@@ -318,7 +318,7 @@ export const CommunityPage = () => {
               <div className="space-y-1">
                 {CHANNELS.map((ch) => (
                   <div
-                    className="rounded-10 flex items-center gap-2.5 px-3 py-2.5 transition-colors hover:bg-neutral-50"
+                    className="flex items-center gap-2.5 rounded-10 px-3 py-2.5 transition-colors hover:bg-neutral-50"
                     key={ch.name}
                   >
                     <span className="text-[15px] font-bold" style={{ color: ch.color }}>
@@ -408,7 +408,7 @@ export const CommunityPage = () => {
                 key={i}
               >
                 <div
-                  className="rounded-10 flex w-14 flex-shrink-0 flex-col items-center border-t-2 bg-neutral-700 pt-2"
+                  className="flex w-14 flex-shrink-0 flex-col items-center rounded-10 border-t-2 bg-neutral-700 pt-2"
                   style={{ borderColor: e.color }}
                 >
                   <span className="text-[10px] font-semibold uppercase text-neutral-400">

@@ -69,7 +69,7 @@ export const FileUpload = ({ type, accept, label, value, onUploaded }: FileUploa
         onChange={handleChange}
       />
       <button
-        className="rounded-10 inline-flex items-center gap-2 border border-neutral-200 bg-white px-3.5 py-2 text-[13px] font-medium text-neutral-700 transition-colors hover:border-neutral-300 disabled:opacity-60"
+        className="inline-flex items-center gap-2 rounded-10 border border-neutral-200 bg-white px-3.5 py-2 text-[13px] font-medium text-neutral-700 transition-colors hover:border-neutral-300 disabled:opacity-60"
         disabled={state === "uploading"}
         type="button"
         onClick={() => inputRef.current?.click()}

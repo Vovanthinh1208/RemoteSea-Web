@@ -38,7 +38,7 @@ export const AccountNameForm = () => {
           <input className={TEXT_INPUT_CLASS} {...register("name")} />
           {isDirty && (
             <button
-              className="rounded-10 flex-shrink-0 bg-brand-600 px-3 py-2.5 text-[12.5px] font-medium text-white hover:bg-brand-700 disabled:opacity-60"
+              className="flex-shrink-0 rounded-10 bg-brand-600 px-3 py-2.5 text-[12.5px] font-medium text-white hover:bg-brand-700 disabled:opacity-60"
               disabled={isSubmitting}
               type="submit"
             >
@@ -53,7 +53,7 @@ export const AccountNameForm = () => {
           Email <span className="font-normal text-neutral-400">Used to sign in</span>
         </label>
         <input
-          className="rounded-10 w-full cursor-default border border-neutral-200 bg-neutral-50 px-3.5 py-2.5 text-[13.5px] text-neutral-900"
+          className="w-full cursor-default rounded-10 border border-neutral-200 bg-neutral-50 px-3.5 py-2.5 text-[13.5px] text-neutral-900"
           readOnly
           value={user?.email ?? ""}
         />

@@ -42,7 +42,7 @@ export const LinksSection = ({ register, resumeUrl, onResumeUploaded }: LinksSec
     />
     <div className="space-y-4">
       <div className="flex items-center gap-3">
-        <span className="rounded-10 flex h-9 w-9 flex-shrink-0 items-center justify-center bg-neutral-100 text-neutral-500">
+        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-neutral-100 text-neutral-500">
           <Briefcase size={15} />
         </span>
         <div className="min-w-0 flex-1 space-y-1">
@@ -61,13 +61,13 @@ export const LinksSection = ({ register, resumeUrl, onResumeUploaded }: LinksSec
 
       {LINK_FIELDS.map(({ icon: Icon, label, field, placeholder }) => (
         <div className="flex items-center gap-3" key={field}>
-          <span className="rounded-10 flex h-9 w-9 flex-shrink-0 items-center justify-center bg-neutral-100 text-neutral-500">
+          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-neutral-100 text-neutral-500">
             <Icon size={15} />
           </span>
           <div className="min-w-0 flex-1 space-y-0.5">
             <label className="block text-[12px] font-medium text-neutral-700">{label}</label>
             <input
-              className="rounded-10 focus:border-brand-500 w-full border border-neutral-200 bg-white px-3 py-2 text-[13px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+              className="focus:border-brand-500 w-full rounded-10 border border-neutral-200 bg-white px-3 py-2 text-[13px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
               placeholder={placeholder}
               {...register(field)}
             />

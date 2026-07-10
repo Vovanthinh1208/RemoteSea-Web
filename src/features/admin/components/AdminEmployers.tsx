@@ -216,7 +216,7 @@ export const AdminEmployers = () => {
             </PillToggle>
           ))}
         </div>
-        <div className="rounded-10 ml-auto flex h-9 items-center gap-2 border border-neutral-200 bg-white px-3 focus-within:border-brand-600 focus-within:shadow-focus">
+        <div className="ml-auto flex h-9 items-center gap-2 rounded-10 border border-neutral-200 bg-white px-3 focus-within:border-brand-600 focus-within:shadow-focus">
           <Search className="text-neutral-400" size={14} />
           <input
             aria-label="Search employers"

@@ -307,11 +307,11 @@ export const BlogPage = () => {
                 </p>
                 <form className="space-y-2" onSubmit={(e) => e.preventDefault()}>
                   <input
-                    className="rounded-10 h-10 w-full border border-neutral-200 bg-white px-3 text-sm outline-none placeholder:text-neutral-400 focus:border-brand-600"
+                    className="h-10 w-full rounded-10 border border-neutral-200 bg-white px-3 text-sm outline-none placeholder:text-neutral-400 focus:border-brand-600"
                     placeholder="you@work.com"
                     type="email"
                   />
-                  <button className="rounded-10 h-10 w-full bg-brand-600 text-sm font-medium text-white transition-colors hover:bg-brand-700">
+                  <button className="h-10 w-full rounded-10 bg-brand-600 text-sm font-medium text-white transition-colors hover:bg-brand-700">
                     Subscribe
                   </button>
                 </form>

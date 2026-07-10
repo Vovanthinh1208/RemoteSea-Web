@@ -200,7 +200,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
                 return (
                   <button
                     className={cn(
-                      "rounded-10 flex w-full items-center justify-between px-3 py-2 text-[13px] transition-all",
+                      "flex w-full items-center justify-between rounded-10 px-3 py-2 text-[13px] transition-all",
                       activeSection === s.id
                         ? "bg-white font-medium text-neutral-900 shadow-sm"
                         : "text-neutral-500 hover:bg-white/60 hover:text-neutral-700"
@@ -289,7 +289,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
                   {saving ? "Saving…" : "Save"}
                 </button>
                 <Link
-                  className="rounded-10 inline-flex items-center gap-1.5 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white hover:bg-brand-700"
+                  className="inline-flex items-center gap-1.5 rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white hover:bg-brand-700"
                   to={ROUTES.talent}
                 >
                   Done <ArrowRight size={13} />

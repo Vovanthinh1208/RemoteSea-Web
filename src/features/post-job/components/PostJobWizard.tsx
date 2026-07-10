@@ -235,7 +235,7 @@ export const PostJobWizard = () => {
 
           {error && (
             <p
-              className="rounded-10 mt-4 bg-red-50 px-3 py-2 text-[13px] text-red-600"
+              className="mt-4 rounded-10 bg-red-50 px-3 py-2 text-[13px] text-red-600"
               role="alert"
             >
               {error}
@@ -243,7 +243,7 @@ export const PostJobWizard = () => {
           )}
           {stepErrors.length > 0 && (
             <div
-              className="rounded-10 mt-4 bg-red-50 px-3 py-2.5 text-[13px] text-red-600"
+              className="mt-4 rounded-10 bg-red-50 px-3 py-2.5 text-[13px] text-red-600"
               role="alert"
             >
               {stepErrors.length === 1 ? (

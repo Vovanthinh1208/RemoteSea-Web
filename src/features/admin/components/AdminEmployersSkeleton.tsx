@@ -25,7 +25,7 @@ export const AdminEmployersSkeleton = () => (
           style={{ gridTemplateColumns: EMPLOYER_GRID_COLUMNS }}
         >
           <div className="flex items-center gap-3">
-            <Skeleton className="rounded-10 h-10 w-10 flex-shrink-0" />
+            <Skeleton className="h-10 w-10 flex-shrink-0 rounded-10" />
             <Skeleton className="h-4 w-32" />
           </div>
           <Skeleton className="h-4 w-10" />

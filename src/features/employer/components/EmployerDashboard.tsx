@@ -81,7 +81,7 @@ export const EmployerDashboard = () => {
               </p>
             </div>
             <Link
-              className="rounded-10 flex-shrink-0 bg-brand-600 px-3 py-1.5 text-[12.5px] font-medium text-white hover:bg-brand-700"
+              className="flex-shrink-0 rounded-10 bg-brand-600 px-3 py-1.5 text-[12.5px] font-medium text-white hover:bg-brand-700"
               to="/post-job"
             >
               Get started

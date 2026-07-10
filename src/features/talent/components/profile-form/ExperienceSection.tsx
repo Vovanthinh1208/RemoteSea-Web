@@ -46,7 +46,7 @@ export const ExperienceSection = () => (
       {SAMPLE_EXPERIENCE.map((exp) => (
         <div className="flex gap-4 py-4 first:pt-0" key={exp.company}>
           <div
-            className="rounded-10 flex h-10 w-10 flex-shrink-0 items-center justify-center text-[13px] font-bold text-white"
+            className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-10 text-[13px] font-bold text-white"
             style={{ background: exp.color }}
           >
             {exp.initials}

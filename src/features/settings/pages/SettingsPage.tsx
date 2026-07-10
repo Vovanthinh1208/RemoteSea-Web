@@ -73,7 +73,7 @@ export const SettingsPage = () => {
               title="Privacy"
             />
             <Link
-              className="rounded-10 inline-flex items-center gap-1.5 border border-neutral-200 bg-white px-3.5 py-2 text-[13px] font-medium text-neutral-700 hover:border-neutral-300"
+              className="inline-flex items-center gap-1.5 rounded-10 border border-neutral-200 bg-white px-3.5 py-2 text-[13px] font-medium text-neutral-700 hover:border-neutral-300"
               to={ROUTES.profile}
             >
               Manage in Profile setup

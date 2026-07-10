@@ -128,7 +128,7 @@ export const ListingsPanel = ({ jobs, applicationsByJob }: ListingsPanelProps) =
           Your listings <span className="font-normal text-neutral-400">· {active} active</span>
         </h3>
         <Link
-          className="rounded-10 inline-flex items-center gap-1.5 bg-brand-600 px-3 py-1.5 text-[12px] font-medium text-white hover:bg-brand-700"
+          className="inline-flex items-center gap-1.5 rounded-10 bg-brand-600 px-3 py-1.5 text-[12px] font-medium text-white hover:bg-brand-700"
           to="/post-job"
         >
           <Plus size={11} /> Post a job
