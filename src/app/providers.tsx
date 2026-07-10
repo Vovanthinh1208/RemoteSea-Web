@@ -8,13 +8,17 @@ interface AppProvidersProps {
 }
 
 const QUERY_STALE_TIME_MS = 60_000;
-const QUERY_RETRY_COUNT = 1;
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: QUERY_STALE_TIME_MS,
-      retry: QUERY_RETRY_COUNT,
+      // api-client.ts's response interceptor already retries retryable GETs
+      // (network errors / 5xx) with backoff before ever rejecting — a second
+      // retry layer here would compound into up to 6 attempts per query and
+      // would also blindly retry non-retryable errors (404s, etc.) that the
+      // interceptor correctly leaves alone.
+      retry: false,
       refetchOnWindowFocus: false,
     },
   },

@@ -17,6 +17,7 @@ import {
   type JobFilters,
   type SortKey,
 } from "@/features/jobs/job-filters";
+import { cn } from "@/utils/cn";
 
 interface JobsBoardProps {
   filters: JobFilters;
@@ -201,14 +202,15 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
               </button>
               {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
                 <button
-                  aria-current={n === query.page ? "page" : undefined}
-                  className={
-                    n === query.page
-                      ? "grid h-9 min-w-9 place-items-center rounded-8 bg-brand-600 px-2 text-sm font-medium text-white"
-                      : "grid h-9 min-w-9 place-items-center rounded-8 border border-neutral-200 bg-white px-2 text-sm text-neutral-600 transition-colors hover:bg-neutral-50"
-                  }
                   key={n}
+                  aria-current={n === query.page ? "page" : undefined}
                   onClick={() => goToPage(n)}
+                  className={cn(
+                    "grid h-9 min-w-9 place-items-center rounded-8 px-2 text-sm transition-colors",
+                    n === query.page
+                      ? "bg-brand-600 font-medium text-white"
+                      : "border border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50"
+                  )}
                 >
                   {n}
                 </button>

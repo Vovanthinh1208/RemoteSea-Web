@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,6 +7,7 @@ import { cn } from "@/utils/cn";
 import { useToast } from "@/components/ui/toast";
 import { SkillTagEditor } from "@/components/shared/SkillTagEditor";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import { useSyncedState } from "@/hooks/useSyncedState";
 import { useUpdateMyTalentProfile } from "@/features/talent/talent.queries";
 import { useUpdateMyName } from "@/features/users/users.queries";
 import { useSkills } from "@/features/taxonomy/taxonomy.queries";
@@ -40,7 +41,11 @@ interface ProfileFormProps {
 export const ProfileForm = ({ profile }: ProfileFormProps) => {
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useActiveSection(PROF_SECTIONS.map((s) => s.id));
-  const [skills, setSkills] = useState<string[]>(profile?.skills.map((s) => s.skill.name) ?? []);
+  // Memoized so its identity only changes when `profile` itself changes (a
+  // fresh save, a refetch) — not on every render — which is what lets
+  // useSyncedState tell "profile changed" apart from "component re-rendered".
+  const profileSkills = useMemo(() => profile?.skills.map((s) => s.skill.name) ?? [], [profile]);
+  const [skills, setSkills] = useSyncedState<string[]>(profileSkills);
   const { data: allSkills, isError: skillsErrored } = useSkills();
   const updateProfileMutation = useUpdateMyTalentProfile();
   const updateNameMutation = useUpdateMyName();
@@ -91,11 +96,11 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
       linkedinUrl: profile.linkedinUrl ?? "",
       portfolioUrl: profile.portfolioUrl ?? "",
     });
-    setSkills(profile.skills.map((s) => s.skill.name));
     // Depend on the whole `profile` object, not just its id: a successful save
     // writes the server's (possibly normalized) response into the cache under the
-    // same id, and the form/skill list should pick that up rather than keep
-    // showing the un-normalized values the user originally typed.
+    // same id, and the form should pick that up rather than keep showing the
+    // un-normalized values the user originally typed. (Skills sync separately,
+    // during render, via useSyncedState above.)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
