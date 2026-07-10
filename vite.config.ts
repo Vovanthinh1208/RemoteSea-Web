@@ -40,6 +40,7 @@ export default defineConfig(({ mode, command }) => {
               return "vendor-forms";
             }
             if (id.includes("node_modules/@sentry")) return "vendor-sentry";
+            if (id.includes("node_modules/axios")) return "vendor-axios";
             return undefined;
           },
         },

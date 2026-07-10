@@ -1,20 +1,7 @@
 import { pickColorFromString } from "@/utils/color";
 import type { AdminJob } from "@/types/admin";
 
-export const LEVEL_LABELS: Record<string, string> = {
-  ENTRY: "Entry",
-  MID: "Mid",
-  SENIOR: "Senior",
-  LEAD: "Lead",
-  EXECUTIVE: "Executive",
-};
-
-export const JOB_TYPE_LABELS: Record<string, string> = {
-  FULL_TIME: "Full-time",
-  PART_TIME: "Part-time",
-  CONTRACT: "Contract",
-  FREELANCE: "Freelance",
-};
+export { LEVEL_LABELS, JOB_TYPE_LABELS } from "@/utils/labels";
 
 export const PLAN_LABELS: Record<string, string> = {
   STANDARD: "Standard",
