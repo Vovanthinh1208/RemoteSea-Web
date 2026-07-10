@@ -138,11 +138,16 @@ export const useUpdateApplicationStatus = () => {
       notes,
     }: {
       id: string;
+      // Not sent to the API (the endpoint identifies the application by `id`
+      // alone) — carried through purely so onSuccess can invalidate just this
+      // job's applicants instead of every job's, which previously refetched
+      // every listing's applicant list on every single status change.
+      jobId: string;
       status: ApplicationStatus;
       notes?: string;
     }) => updateApplicationStatus(id, status, notes),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["employer", "job-applications"] });
+    onSuccess: (_data, { jobId }) => {
+      queryClient.invalidateQueries({ queryKey: ["employer", "job-applications", jobId] });
       queryClient.invalidateQueries({ queryKey: EMPLOYER_JOBS_KEY });
       // The talent side's own applications list reads the same status this
       // mutation changes — low-impact today since employer/talent are separate

@@ -50,7 +50,7 @@ const APPLICANT_ROW_STATUS_LABEL: Partial<Record<ApplicationStatus, string>> = {
 interface ApplicantRowProps {
   applicant: ApplicantWithJob;
   isPending: boolean;
-  onStatusChange: (id: string, status: ApplicationStatus) => void;
+  onStatusChange: (id: string, jobId: string, status: ApplicationStatus) => void;
 }
 
 const ApplicantRow = memo(function ApplicantRow({
@@ -93,7 +93,7 @@ const ApplicantRow = memo(function ApplicantRow({
             className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100 disabled:opacity-50"
             disabled={isPending}
             type="button"
-            onClick={() => onStatusChange(a.id, nextStatus)}
+            onClick={() => onStatusChange(a.id, a.jobId, nextStatus)}
           >
             <Check size={11} /> {NEXT_LABEL[a.status]}
           </button>
@@ -102,7 +102,7 @@ const ApplicantRow = memo(function ApplicantRow({
             className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
             disabled={isPending}
             type="button"
-            onClick={() => onStatusChange(a.id, "REJECTED")}
+            onClick={() => onStatusChange(a.id, a.jobId, "REJECTED")}
           >
             <X size={13} />
           </button>
@@ -146,8 +146,8 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
 
   const { mutateAsync: updateStatus } = updateStatusMutation;
   const updateApplicantStatus = useCallback(
-    (id: string, status: ApplicationStatus) =>
-      runWithToast(() => updateStatus({ id, status }), {
+    (id: string, jobId: string, status: ApplicationStatus) =>
+      runWithToast(() => updateStatus({ id, jobId, status }), {
         success: status === "REJECTED" ? "Applicant rejected" : "Applicant advanced",
         successVariant: status === "REJECTED" ? "info" : "success",
         error: "Couldn't update applicant",

@@ -75,6 +75,14 @@ export const useUpdateAdminEmployer = () => {
       // (drives the "Verified" badge) — same class of gap already fixed for job
       // approval above, just missed here.
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      // NOT invalidating EMPLOYER_PROFILE_KEY here: that query is only enabled
+      // for role:EMPLOYER sessions, and this mutation only ever runs in a
+      // role:ADMIN session — invalidating it here can never reach the affected
+      // employer's own (separate) browser session/QueryClient. Cross-session
+      // cache staleness like this isn't fixable via client-side invalidation;
+      // it needs server push (WebSocket/SSE) or a refetch interval, neither of
+      // which exists here — the employer dashboard just self-corrects on its
+      // next natural refetch (staleTime expiry, refocus, or remount).
     },
   });
 };
