@@ -1,5 +1,6 @@
 import { ArrowRight, MapPin, Briefcase, Users } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { Button } from "@/components/ui/button";
 
 const MEMBERS = [
   {
@@ -167,9 +168,9 @@ export const CommunityPage = () => {
               we&apos;re in the same city.
             </p>
             <div className="flex flex-wrap gap-3">
-              <button className="inline-flex h-[52px] items-center gap-2 rounded-12 bg-brand-600 px-6 text-[15px] font-medium text-white transition-colors hover:bg-brand-700">
+              <Button className="rounded-12 px-6" size="xl">
                 Request an invite <ArrowRight size={16} />
-              </button>
+              </Button>
               <button className="inline-flex h-[52px] items-center gap-2 rounded-12 border border-neutral-200 bg-white px-6 text-[15px] font-medium text-neutral-700 transition-colors hover:bg-neutral-50">
                 Watch the tour (2 min)
               </button>
@@ -497,9 +498,9 @@ export const CommunityPage = () => {
             ))}
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <button className="inline-flex h-[52px] items-center gap-2 rounded-12 bg-brand-600 px-6 text-[15px] font-medium text-white transition-colors hover:bg-brand-700">
+            <Button className="rounded-12 px-6" size="xl">
               Request invite <ArrowRight size={16} />
-            </button>
+            </Button>
             <button className="inline-flex h-[52px] items-center gap-2 rounded-12 border border-neutral-200 bg-white px-6 text-[15px] font-medium text-neutral-700 transition-colors hover:bg-neutral-50">
               Read the code of conduct
             </button>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { PillToggle } from "@/components/shared/PillToggle";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { Button } from "@/components/ui/button";
 
 const POSTS = [
   {
@@ -311,9 +312,9 @@ export const BlogPage = () => {
                     placeholder="you@work.com"
                     type="email"
                   />
-                  <button className="h-10 w-full rounded-10 bg-brand-600 text-sm font-medium text-white transition-colors hover:bg-brand-700">
+                  <Button className="w-full rounded-10" size="md">
                     Subscribe
-                  </button>
+                  </Button>
                 </form>
                 <p className="mt-3 text-[11px] text-neutral-400">
                   Joining 2,400+ readers · unsubscribe anytime
@@ -364,9 +365,9 @@ export const BlogPage = () => {
               placeholder="you@work.com"
               type="email"
             />
-            <button className="inline-flex h-12 items-center gap-2 rounded-12 bg-brand-600 px-6 text-sm font-medium text-white transition-colors hover:bg-brand-700">
+            <Button className="rounded-12 px-6" size="lg">
               Subscribe <ArrowRight size={14} />
-            </button>
+            </Button>
           </form>
           <p className="mt-4 text-[12px] text-neutral-400">
             2,400 readers · unsubscribe with one click · we don&apos;t sell emails, ever.

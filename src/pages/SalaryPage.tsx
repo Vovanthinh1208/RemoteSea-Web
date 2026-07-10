@@ -4,6 +4,7 @@ import { Zap, ShieldCheck, Users, RefreshCw, ArrowRight } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ROUTES } from "@/constants/routes";
+import { Button } from "@/components/ui/button";
 
 const SALARY_DATA = [
   {
@@ -529,9 +530,9 @@ const SubmitSection = () => {
             </div>
 
             <div className="flex gap-3">
-              <button className="inline-flex h-11 items-center gap-2 rounded-12 bg-brand-600 px-5 text-sm font-medium text-white transition-colors hover:bg-brand-700">
+              <Button className="rounded-12 px-5" size="lg">
                 Submit a data point <ArrowRight size={14} />
-              </button>
+              </Button>
               <Link
                 className="inline-flex h-11 items-center gap-2 px-5 text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900"
                 to={ROUTES.jobs}
