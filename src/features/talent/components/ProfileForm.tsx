@@ -3,10 +3,8 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight } from "lucide-react";
-import { cn } from "@/utils/cn";
 import { useToast } from "@/components/ui/toast";
 import { SkillTagEditor } from "@/components/shared/SkillTagEditor";
-import { useActiveSection } from "@/hooks/useActiveSection";
 import { useSyncedState } from "@/hooks/useSyncedState";
 import { useUpdateMyTalentProfile } from "@/features/talent/talent.queries";
 import { useUpdateMyName } from "@/features/users/users.queries";
@@ -14,8 +12,8 @@ import { useSkills } from "@/features/taxonomy/taxonomy.queries";
 import { ApiError } from "@/services/api-error";
 import { applyServerErrors } from "@/utils/form-errors";
 import { reportError } from "@/services/monitoring";
-import { PROF_SECTIONS } from "@/features/talent/components/profile-form/profile-form.constants";
 import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
+import { ProfileFormNav } from "@/features/talent/components/profile-form/ProfileFormNav";
 import { BasicsSection } from "@/features/talent/components/profile-form/BasicsSection";
 import { AboutSection } from "@/features/talent/components/profile-form/AboutSection";
 import { ExperienceSection } from "@/features/talent/components/profile-form/ExperienceSection";
@@ -40,7 +38,6 @@ interface ProfileFormProps {
 
 export const ProfileForm = ({ profile }: ProfileFormProps) => {
   const { toast } = useToast();
-  const [activeSection, setActiveSection] = useActiveSection(PROF_SECTIONS.map((s) => s.id));
   // Memoized so its identity only changes when `profile` itself changes (a
   // fresh save, a refetch) — not on every render — which is what lets
   // useSyncedState tell "profile changed" apart from "component re-rendered".
@@ -103,11 +100,6 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
     // during render, via useSyncedState above.)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
-
-  const scrollTo = (id: string) => {
-    setActiveSection(id);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
 
   const [headline, bio, salMin, salMax, isOpenToWork, resumeUrl] = watch([
     "headline",
@@ -197,32 +189,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
         </div>
 
         <form className="grid gap-8 lg:grid-cols-[180px_1fr]" onSubmit={handleSubmit(onSubmit)}>
-          {/* Sticky nav */}
-          <aside className="hidden lg:block">
-            <div className="sticky top-6 space-y-0.5">
-              {PROF_SECTIONS.map((s) => {
-                const Icon = s.icon;
-                return (
-                  <button
-                    className={cn(
-                      "flex w-full items-center justify-between rounded-10 px-3 py-2 text-[13px] transition-all",
-                      activeSection === s.id
-                        ? "bg-white font-medium text-neutral-900 shadow-sm"
-                        : "text-neutral-500 hover:bg-white/60 hover:text-neutral-700"
-                    )}
-                    key={s.id}
-                    type="button"
-                    onClick={() => scrollTo(s.id)}
-                  >
-                    <span className="flex items-center gap-2">
-                      <Icon size={13} />
-                      {s.label}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </aside>
+          <ProfileFormNav />
 
           {/* Sections */}
           <div className="space-y-2">
