@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { ArrowUpRight, ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { PillToggle } from "@/components/shared/PillToggle";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
-import { Button } from "@/components/ui/button";
+import { NewsletterForm } from "@/components/shared/NewsletterForm";
 
 const POSTS = [
   {
@@ -306,17 +306,7 @@ export const BlogPage = () => {
                 <p className="mb-4 text-[13px] text-neutral-500">
                   One essay every Tuesday. Honest, unpolished, no sponsors.
                 </p>
-                <form className="space-y-2" onSubmit={(e) => e.preventDefault()}>
-                  <input
-                    aria-label="Email address"
-                    className="h-10 w-full rounded-10 border border-neutral-200 bg-white px-3 text-sm outline-none placeholder:text-neutral-400 focus:border-brand-600"
-                    placeholder="you@work.com"
-                    type="email"
-                  />
-                  <Button className="w-full rounded-10" size="md">
-                    Subscribe
-                  </Button>
-                </form>
+                <NewsletterForm placeholder="you@work.com" variant="compact" />
                 <p className="mt-3 text-[11px] text-neutral-400">
                   Joining 2,400+ readers · unsubscribe anytime
                 </p>
@@ -357,20 +347,7 @@ export const BlogPage = () => {
             One thoughtful piece every Tuesday morning, written by working remote professionals. No
             marketing tricks, no &ldquo;tools we love&rdquo; affiliate roundups.
           </p>
-          <form
-            className="flex flex-col gap-3 sm:flex-row sm:justify-center"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <input
-              aria-label="Email address"
-              className="h-11 flex-1 rounded-12 border border-neutral-200 bg-white px-4 text-sm outline-none placeholder:text-neutral-400 focus:border-brand-600 sm:max-w-xs"
-              placeholder="you@work.com"
-              type="email"
-            />
-            <Button className="rounded-12 px-6" size="lg">
-              Subscribe <ArrowRight size={14} />
-            </Button>
-          </form>
+          <NewsletterForm placeholder="you@work.com" variant="wide" />
           <p className="mt-4 text-[12px] text-neutral-400">
             2,400 readers · unsubscribe with one click · we don&apos;t sell emails, ever.
           </p>

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Bell, ShieldCheck, Star } from "lucide-react";
 import { JobCard } from "@/features/jobs/components/JobCard";
-import { NewsletterForm } from "@/components/home/NewsletterForm";
+import { NewsletterForm } from "@/components/shared/NewsletterForm";
 import { SalaryBenchmark } from "@/components/home/SalaryBenchmark";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { SalaryBadge } from "@/components/ui/salary-badge";
