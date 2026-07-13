@@ -2,7 +2,8 @@ import { apiClient } from "@/core/http/http-client";
 import type { RequestOptions } from "@/core/http/request-config";
 import type {
   ApplicationDto,
-  ApplicationWithJobDto,
+  ApplicationListResponseDto,
+  ApplicationStatusCountsDto,
   ApplyRequestDto,
 } from "@/features/applications/applications.dto";
 
@@ -12,8 +13,20 @@ export const applicationsRepository = {
     return data;
   },
 
-  listMine: async (opts?: RequestOptions): Promise<ApplicationWithJobDto[]> => {
-    const { data } = await apiClient.get<ApplicationWithJobDto[]>("/applications", {
+  listMine: async (
+    page: number,
+    limit: number,
+    opts?: RequestOptions
+  ): Promise<ApplicationListResponseDto> => {
+    const { data } = await apiClient.get<ApplicationListResponseDto>("/applications", {
+      params: { page, limit },
+      signal: opts?.signal,
+    });
+    return data;
+  },
+
+  getStatusCounts: async (opts?: RequestOptions): Promise<ApplicationStatusCountsDto> => {
+    const { data } = await apiClient.get<ApplicationStatusCountsDto>("/applications/stats", {
       signal: opts?.signal,
     });
     return data;

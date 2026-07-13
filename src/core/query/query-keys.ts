@@ -26,7 +26,12 @@ export const alertKeys = {
 };
 
 export const applicationKeys = {
-  mine: () => ["applications", "me"] as const,
+  all: ["applications"] as const,
+  mine: (page: number, limit: number) => ["applications", "me", page, limit] as const,
+  // DB-computed status breakdown (total + per-status counts) — see TalentDashboard's
+  // KPI tiles, which need an accurate total/interviewing/offers count even beyond
+  // whatever page size `mine()` is fetched at.
+  stats: () => ["applications", "stats"] as const,
 };
 
 export const employerKeys = {
@@ -42,7 +47,11 @@ export const salaryKeys = {
 
 export const savedKeys = {
   all: ["saved"] as const,
-  jobs: () => ["saved", "jobs"] as const,
+  jobs: (page: number, limit: number) => ["saved", "jobs", page, limit] as const,
+  // Full membership set (job ids only) for client-side "is this job saved?" checks
+  // (e.g. the JobCard heart icon) — deliberately separate from the paginated
+  // display list above, which can't answer that question once paginated.
+  ids: () => ["saved", "ids"] as const,
 };
 
 export const talentKeys = {

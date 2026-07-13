@@ -1,10 +1,24 @@
 import { apiClient } from "@/core/http/http-client";
 import type { RequestOptions } from "@/core/http/request-config";
-import type { SavedJobDto } from "@/features/saved/saved.dto";
+import type { SavedJobIdsResponseDto, SavedJobListResponseDto } from "@/features/saved/saved.dto";
 
 export const savedRepository = {
-  list: async (opts?: RequestOptions): Promise<SavedJobDto[]> => {
-    const { data } = await apiClient.get<SavedJobDto[]>("/saved", { signal: opts?.signal });
+  list: async (
+    page: number,
+    limit: number,
+    opts?: RequestOptions
+  ): Promise<SavedJobListResponseDto> => {
+    const { data } = await apiClient.get<SavedJobListResponseDto>("/saved", {
+      params: { page, limit },
+      signal: opts?.signal,
+    });
+    return data;
+  },
+
+  listIds: async (opts?: RequestOptions): Promise<SavedJobIdsResponseDto> => {
+    const { data } = await apiClient.get<SavedJobIdsResponseDto>("/saved/ids", {
+      signal: opts?.signal,
+    });
     return data;
   },
 

@@ -11,7 +11,8 @@ const SAVED_JOBS_SKELETON_COUNT = 4;
 
 export const SavedJobsPage = () => {
   useDocumentTitle("Saved Jobs");
-  const { data: savedJobs = [], isLoading, isError, refetch } = useSavedJobs();
+  const { data, isLoading, isError, refetch } = useSavedJobs();
+  const savedJobs = data?.savedJobs ?? [];
 
   return (
     <div className="mx-auto max-w-[900px] px-6 py-10">
