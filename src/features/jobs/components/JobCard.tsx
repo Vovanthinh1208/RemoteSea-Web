@@ -8,7 +8,7 @@ import { SalaryBadge } from "@/components/ui/salary-badge";
 import { Tag } from "@/components/ui/tag";
 import { cn } from "@/utils/cn";
 import { useSavedJobToggle } from "@/features/jobs/useSavedJobToggle";
-import { getJob } from "@/features/jobs/jobs.api";
+import { prefetchJob } from "@/features/jobs/jobs.queries";
 import {
   JOB_TYPE_LABELS,
   LEVEL_LABELS,
@@ -31,8 +31,8 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
   // Job-board -> job-detail is the single most common navigation in the app;
   // prefetching on hover means the detail page's data is often already cached
   // by the time the click lands, instead of always showing a skeleton.
-  const prefetchJob = () => {
-    void queryClient.prefetchQuery({ queryKey: ["job", job.id], queryFn: () => getJob(job.id) });
+  const handlePrefetchJob = () => {
+    void prefetchJob(queryClient, job.id);
   };
 
   const country = job.country ?? "Remote";
@@ -87,7 +87,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
           <Link
             className="transition-colors after:absolute after:inset-0 group-hover:text-brand-700"
             to={`/jobs/${job.id}`}
-            onMouseEnter={prefetchJob}
+            onMouseEnter={handlePrefetchJob}
           >
             {job.title}
           </Link>

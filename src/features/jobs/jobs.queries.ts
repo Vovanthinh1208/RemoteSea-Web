@@ -1,20 +1,40 @@
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createJob, getJob, listJobs } from "@/features/jobs/jobs.api";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type QueryClient,
+} from "@tanstack/react-query";
+import { createJob, getJob, listJobs } from "@/features/jobs/jobs.service";
 import { JOB_LIMIT, type JobFilters } from "@/features/jobs/job-filters";
-import { EMPLOYER_JOBS_KEY } from "@/features/employer/employer.queries";
+import { jobKeys, employerKeys } from "@/core/query/query-keys";
+import { TIER } from "@/core/query/query-client";
 
 export const useJobsQuery = (filters: JobFilters, limit: number = JOB_LIMIT) =>
   useQuery({
-    queryKey: ["jobs", filters, limit],
-    queryFn: () => listJobs(filters, limit),
+    queryKey: jobKeys.list(filters, limit),
+    queryFn: ({ signal }) => listJobs(filters, limit, { signal }),
     placeholderData: keepPreviousData,
+    ...TIER.list,
   });
 
 export const useJobQuery = (id: string | undefined) =>
   useQuery({
-    queryKey: ["job", id],
-    queryFn: () => getJob(id as string),
+    queryKey: jobKeys.detail(id),
+    queryFn: ({ signal }) => getJob(id as string, { signal }),
     enabled: !!id,
+    ...TIER.list,
+  });
+
+// Job-board -> job-detail is the single most common navigation in the app; prefetching
+// on hover means the detail page's data is often already cached by the time the click
+// lands. Exported here (not called directly from JobCard.tsx) so components never need
+// to import the service layer just to prefetch.
+export const prefetchJob = (queryClient: QueryClient, id: string) =>
+  queryClient.prefetchQuery({
+    queryKey: jobKeys.detail(id),
+    queryFn: ({ signal }) => getJob(id, { signal }),
+    ...TIER.list,
   });
 
 export const useCreateJob = () => {
@@ -24,8 +44,8 @@ export const useCreateJob = () => {
     onSuccess: () => {
       // Without this, a newly-posted job can be missing from the employer's own
       // dashboard (if it was cached earlier this session) for up to staleTime.
-      queryClient.invalidateQueries({ queryKey: EMPLOYER_JOBS_KEY });
-      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      queryClient.invalidateQueries({ queryKey: employerKeys.jobs() });
+      queryClient.invalidateQueries({ queryKey: jobKeys.all });
     },
   });
 };

@@ -1,21 +1,33 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { listSavedJobs, saveJob, unsaveJob, type SavedJob } from "@/features/saved/saved.api";
+import { listSavedJobIds, listSavedJobs, saveJob, unsaveJob } from "@/features/saved/saved.service";
 import { useAuth } from "@/contexts/AuthContext";
+import { savedKeys } from "@/core/query/query-keys";
+import { TIER } from "@/core/query/query-client";
 
-// Hierarchical (matches the rest of the app's ["feature", "scope"] convention)
-// rather than a flat string, so a future feature can invalidate by ["saved"]
-// prefix if more saved-* queries are ever added.
-export const SAVED_JOBS_KEY = ["saved", "jobs"];
+// Matches the backend's paginationQuerySchema max — keeps SavedJobsPage's "shows
+// everything typical users have saved" feel without adding pager UI (a real
+// "load more" control is a follow-up if saved-job counts regularly exceed this).
+const SAVED_JOBS_LIST_LIMIT = 50;
 
-const SAVED_JOBS_STALE_TIME_MS = 30_000;
-
-export const useSavedJobs = () => {
+export const useSavedJobs = (page = 1, limit = SAVED_JOBS_LIST_LIMIT) => {
   const { user } = useAuth();
   return useQuery({
-    queryKey: SAVED_JOBS_KEY,
-    queryFn: listSavedJobs,
+    queryKey: savedKeys.jobs(page, limit),
+    queryFn: ({ signal }) => listSavedJobs(page, limit, { signal }),
     enabled: !!user,
-    staleTime: SAVED_JOBS_STALE_TIME_MS,
+    staleTime: TIER.live.staleTime,
+  });
+};
+
+// Full membership set (job ids only), for "is this job saved?" checks — see
+// useSavedJobToggle.ts. Deliberately not paginated; see savedKeys.ids()'s comment.
+export const useSavedJobIds = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: savedKeys.ids(),
+    queryFn: ({ signal }) => listSavedJobIds({ signal }),
+    enabled: !!user,
+    staleTime: TIER.live.staleTime,
   });
 };
 
@@ -24,22 +36,17 @@ export const useSaveJob = () => {
   return useMutation({
     mutationFn: saveJob,
     onMutate: async (jobId: string) => {
-      await queryClient.cancelQueries({ queryKey: SAVED_JOBS_KEY });
-      const previous = queryClient.getQueryData<SavedJob[]>(SAVED_JOBS_KEY);
-      // Placeholder only — mutationFn only gives us the jobId, not the full SavedJob
-      // shape. Safe because current consumers only read `.jobId` (membership) and
-      // `.length`; onSettled's invalidate replaces this with the real row shortly after.
-      queryClient.setQueryData<SavedJob[]>(SAVED_JOBS_KEY, (old) => [
-        ...(old ?? []),
-        { jobId } as SavedJob,
-      ]);
+      await queryClient.cancelQueries({ queryKey: savedKeys.ids() });
+      const previous = queryClient.getQueryData<string[]>(savedKeys.ids());
+      queryClient.setQueryData<string[]>(savedKeys.ids(), (old) => [...(old ?? []), jobId]);
       return { previous };
     },
     onError: (_err, _jobId, context) => {
-      if (context?.previous) queryClient.setQueryData(SAVED_JOBS_KEY, context.previous);
+      if (context?.previous) queryClient.setQueryData(savedKeys.ids(), context.previous);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: SAVED_JOBS_KEY });
+      // Prefix-invalidates both the ids set and every paginated saved-jobs list page.
+      queryClient.invalidateQueries({ queryKey: savedKeys.all });
     },
   });
 };
@@ -49,18 +56,18 @@ export const useUnsaveJob = () => {
   return useMutation({
     mutationFn: unsaveJob,
     onMutate: async (jobId: string) => {
-      await queryClient.cancelQueries({ queryKey: SAVED_JOBS_KEY });
-      const previous = queryClient.getQueryData<SavedJob[]>(SAVED_JOBS_KEY);
-      queryClient.setQueryData<SavedJob[]>(SAVED_JOBS_KEY, (old) =>
-        (old ?? []).filter((s) => s.jobId !== jobId)
+      await queryClient.cancelQueries({ queryKey: savedKeys.ids() });
+      const previous = queryClient.getQueryData<string[]>(savedKeys.ids());
+      queryClient.setQueryData<string[]>(savedKeys.ids(), (old) =>
+        (old ?? []).filter((id) => id !== jobId)
       );
       return { previous };
     },
     onError: (_err, _jobId, context) => {
-      if (context?.previous) queryClient.setQueryData(SAVED_JOBS_KEY, context.previous);
+      if (context?.previous) queryClient.setQueryData(savedKeys.ids(), context.previous);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: SAVED_JOBS_KEY });
+      queryClient.invalidateQueries({ queryKey: savedKeys.all });
     },
   });
 };

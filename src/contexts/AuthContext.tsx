@@ -4,6 +4,8 @@ import * as authApi from "@/features/auth/auth.api";
 import { registerUnauthorizedHandler } from "@/services/api-client";
 import { ApiError } from "@/services/api-error";
 import { clearAccessToken, getAccessToken, setAccessToken } from "@/services/token-storage";
+import { sessionKeys } from "@/core/query/query-keys";
+import { TIER } from "@/core/query/query-client";
 import type { AuthUser, UserRole } from "@/types/user";
 
 const UNAUTHORIZED_STATUS = 401;
@@ -41,7 +43,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 // The session is auth's own cache, not a regular feature query — kept here rather than
 // in a `.queries.ts` file since AuthContext is the single place that owns writes to it.
-const SESSION_KEY = ["session"];
+const SESSION_KEY = sessionKeys.all;
 
 // Only a confirmed 401 means "not logged in" — resolve to null so the caller can
 // treat it as a real logout. Any other failure (network blip, 5xx) is rethrown so
@@ -63,7 +65,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     queryKey: SESSION_KEY,
     queryFn: hydrateFromSession,
     enabled: hasToken,
-    staleTime: Infinity,
+    staleTime: TIER.session.staleTime,
     retry: SESSION_RETRY_COUNT,
   });
 

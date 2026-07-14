@@ -1,20 +1,19 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Bookmark, Briefcase, Search, TrendingUp } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useMyApplications } from "@/features/applications/applications.queries";
+import {
+  useMyApplications,
+  useMyApplicationStats,
+} from "@/features/applications/applications.queries";
 import { useMyTalentProfile } from "@/features/talent/talent.queries";
-import { useSavedJobs } from "@/features/saved/saved.queries";
+import { useSavedJobIds } from "@/features/saved/saved.queries";
 import { CompletionRing } from "@/features/talent/components/talent-dashboard/CompletionRing";
 import { StatCard } from "@/components/ui/stat-card";
 import { ApplicationsTable } from "@/features/talent/components/talent-dashboard/ApplicationsTable";
 import { RecommendedJobs } from "@/features/talent/components/talent-dashboard/RecommendedJobs";
 import { ProfileSnapshot } from "@/features/talent/components/talent-dashboard/ProfileSnapshot";
 import { TalentDashboardSkeleton } from "@/features/talent/components/talent-dashboard/TalentDashboardSkeleton";
-import {
-  STATUS_TO_BUCKET,
-  missingProfileFields,
-  profileCompletion,
-} from "@/features/talent/talent-dashboard.utils";
+import { missingProfileFields, profileCompletion } from "@/features/talent/talent-dashboard.utils";
 import { ROUTES } from "@/constants/routes";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button } from "@/components/ui/button";
@@ -22,18 +21,26 @@ import { Button } from "@/components/ui/button";
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
 
+// Matches saved-jobs' precedent: the backend's paginated max, so the table/
+// recommendations below still show a complete picture for the vast majority of
+// talents without needing pager UI on the dashboard itself. The KPI tiles above
+// them use useMyApplicationStats() instead, which is accurate beyond this cap.
+const DASHBOARD_APPLICATIONS_LIMIT = 50;
+
 export const TalentDashboard = () => {
   const { user } = useAuth();
   const {
-    data: applications = [],
+    data: applicationsData,
     isLoading: applicationsLoading,
     isError: applicationsErrored,
     refetch: refetchApplications,
-  } = useMyApplications();
+  } = useMyApplications(1, DASHBOARD_APPLICATIONS_LIMIT);
+  const applications = applicationsData?.applications ?? [];
+  const { data: stats, isLoading: statsLoading } = useMyApplicationStats();
   const { data: profile, isLoading: profileLoading } = useMyTalentProfile();
-  const { data: savedJobs = [], isLoading: savedJobsLoading } = useSavedJobs();
+  const { data: savedJobIds, isLoading: savedJobIdsLoading } = useSavedJobIds();
 
-  if (applicationsLoading || profileLoading || savedJobsLoading) {
+  if (applicationsLoading || statsLoading || profileLoading || savedJobIdsLoading) {
     return <TalentDashboardSkeleton />;
   }
 
@@ -60,14 +67,13 @@ export const TalentDashboard = () => {
       : hour < AFTERNOON_END_HOUR
         ? "Chào buổi chiều"
         : "Chào buổi tối";
-  const interviewing = applications.filter(
-    (a) => STATUS_TO_BUCKET[a.status] === "interview"
-  ).length;
-  const offers = applications.filter((a) => STATUS_TO_BUCKET[a.status] === "offer").length;
+  const totalApplications = stats?.total ?? 0;
+  const interviewing = stats?.byStatus.INTERVIEW ?? 0;
+  const offers = stats?.byStatus.OFFERED ?? 0;
   const completion = profileCompletion(profile);
   const missing = missingProfileFields(profile);
   const interviewRate =
-    applications.length > 0 ? Math.round(((interviewing + offers) / applications.length) * 100) : 0;
+    totalApplications > 0 ? Math.round(((interviewing + offers) / totalApplications) * 100) : 0;
 
   return (
     <div className="mx-auto max-w-[1240px] px-6 py-10">
@@ -142,14 +148,14 @@ export const TalentDashboard = () => {
           label="Applications sent"
           size="md"
           sub="all time"
-          value={applications.length}
+          value={totalApplications}
         />
         <StatCard
           icon={Bookmark}
           label="Saved jobs"
           size="md"
           sub="current"
-          value={savedJobs.length}
+          value={savedJobIds?.length ?? 0}
         />
         <StatCard
           icon={TrendingUp}

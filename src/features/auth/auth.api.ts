@@ -1,45 +1,18 @@
-import { apiClient, API_BASE_URL } from "@/services/api-client";
-import type { AuthUser, UserRole } from "@/types/user";
-
-export type LoginPayload = { email: string; password: string };
-export type LoginResponse = { accessToken: string };
-
-export type RegisterPayload = {
-  name: string;
-  email: string;
-  password: string;
-  role: Extract<UserRole, "TALENT" | "EMPLOYER">;
-};
-export type RegisterResponse = { id: string; email: string; name: string; role: UserRole };
-
-export type ResetPasswordPayload = { token: string; password: string };
-export type OAuthProvider = "google" | "github";
-
-export const login = async (payload: LoginPayload): Promise<LoginResponse> => {
-  const { data } = await apiClient.post<LoginResponse>("/auth/login", payload);
-  return data;
-};
-
-export const register = async (payload: RegisterPayload): Promise<RegisterResponse> => {
-  const { data } = await apiClient.post<RegisterResponse>("/auth/register", payload);
-  return data;
-};
-
-export const getSession = async (): Promise<AuthUser | null> => {
-  const { data } = await apiClient.get<{ user: AuthUser | null }>("/auth/session");
-  return data.user;
-};
-
-export const forgotPassword = async (email: string): Promise<{ message: string }> => {
-  const { data } = await apiClient.post<{ message: string }>("/auth/forgot-password", { email });
-  return data;
-};
-
-export const resetPassword = async (
-  payload: ResetPasswordPayload
-): Promise<{ message: string }> => {
-  const { data } = await apiClient.post<{ message: string }>("/auth/reset-password", payload);
-  return data;
-};
-
-export const oauthUrl = (provider: OAuthProvider): string => `${API_BASE_URL}/auth/${provider}`;
+// Compat shim — the implementation now lives in auth.service.ts (which composes
+// auth.repository.ts + auth.mapper.ts). Kept so any existing import of
+// "@/features/auth/auth.api" (AuthContext, ForgotPasswordForm, ResetPasswordForm,
+// OAuthButtons) keeps working unchanged.
+export {
+  login,
+  register,
+  getSession,
+  forgotPassword,
+  resetPassword,
+  oauthUrl,
+} from "@/features/auth/auth.service";
+export type {
+  LoginPayload,
+  RegisterPayload,
+  ResetPasswordPayload,
+  OAuthProvider,
+} from "@/features/auth/auth.service";
