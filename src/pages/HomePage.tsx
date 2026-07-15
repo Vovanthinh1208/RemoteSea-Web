@@ -9,7 +9,8 @@ import { Tag } from "@/components/ui/tag";
 import { useJobsQuery } from "@/features/jobs/jobs.queries";
 import { useSalaryBenchmarks } from "@/features/salary/salary.queries";
 import { DEFAULT_FILTERS_FETCH_LIMIT, DEFAULT_JOB_FILTERS } from "@/features/jobs/job-filters";
-import { LEVEL_LABELS, companyColor, countryFlag } from "@/features/jobs/jobs.utils";
+import { LEVEL_LABELS } from "@/features/jobs/jobs.utils";
+import { countryFlag } from "@/utils/color";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ROUTES } from "@/constants/routes";
 
@@ -156,11 +157,7 @@ export const HomePage = () => {
                   key={job.id}
                   style={{ animationDelay: `${100 + i * 120}ms` }}
                 >
-                  <CompanyLogo
-                    color={companyColor(job.employer.companyName)}
-                    initial={job.employer.companyName.charAt(0).toUpperCase()}
-                    size={36}
-                  />
+                  <CompanyLogo name={job.employer.companyName} size={36} />
                   <div className="min-w-0 flex-1">
                     <div className="mb-0.5 flex items-center gap-1.5 text-[12px] text-neutral-400">
                       {job.employer.isVerified && (
@@ -174,7 +171,7 @@ export const HomePage = () => {
                       <Tag>{LEVEL_LABELS[job.level]}</Tag>
                     </div>
                   </div>
-                  <SalaryBadge max={job.salaryMax ?? 0} min={job.salaryMin ?? 0} />
+                  <SalaryBadge max={job.salaryMax} min={job.salaryMin} />
                 </div>
               );
             })}

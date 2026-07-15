@@ -18,6 +18,7 @@ import {
   type SortKey,
 } from "@/features/jobs/job-filters";
 import { cn } from "@/utils/cn";
+import { formatSalaryRange } from "@/utils/format";
 
 interface JobsBoardProps {
   filters: JobFilters;
@@ -87,7 +88,7 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
   );
   if (filters.salaryMin > SALARY_FLOOR || filters.salaryMax < SALARY_CEIL) {
     activePills.push({
-      label: `$${filters.salaryMin.toLocaleString()}–$${filters.salaryMax.toLocaleString()}`,
+      label: formatSalaryRange(filters.salaryMin, filters.salaryMax) ?? "",
       clear: () => setFilters({ ...filters, salaryMin: SALARY_FLOOR, salaryMax: SALARY_CEIL }),
     });
   }

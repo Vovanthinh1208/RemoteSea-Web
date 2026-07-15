@@ -5,6 +5,7 @@ import { EmptyRow } from "@/components/shared/EmptyRow";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { STATUS_GROUP, STATUS_LABEL, timeAgo } from "@/features/employer/employer-dashboard.utils";
 import type { EmployerApplicant, EmployerJobListItem } from "@/types/employer";
+import { ROUTES } from "@/constants/routes";
 
 const STATUS_VARIANT: Record<string, BadgeVariant> = {
   review: "warning",
@@ -96,7 +97,7 @@ const ListingRow = memo(function ListingRow({ job: j, applications: apps }: List
     return (
       <Link
         className="grid cursor-pointer grid-cols-[1fr_80px_120px_60px_32px] items-center gap-3 rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50"
-        to={`/jobs/${j.id}`}
+        to={ROUTES.jobDetail(j.id)}
       >
         {rowContent}
       </Link>

@@ -1,6 +1,7 @@
 import { ApplyButton } from "@/features/jobs/components/ApplyButton";
 import { SaveJobButton } from "@/features/jobs/components/SaveJobButton";
 import { MS_PER_DAY, timeAgo } from "@/features/jobs/jobs.utils";
+import { formatSalaryRange } from "@/utils/format";
 import type { Job } from "@/types/job";
 
 const daysUntil = (dateString: string | null): number | null => {
@@ -16,12 +17,14 @@ interface ApplyCardProps {
 export const ApplyCard = ({ job }: ApplyCardProps) => {
   const country = job.country ?? job.employer.hqCountry ?? "Remote";
   const expiresInDays = daysUntil(job.expiresAt);
+  // Previously `(min ?? 0)–(max ?? 0)` — a job with no salary showed "$0–0 /mo".
+  const salary = formatSalaryRange(job.salaryMin, job.salaryMax);
 
   return (
     <div className="rounded-16 border border-brand-100 bg-brand-50 p-6">
       <div className="mb-1 font-mono text-[22px] font-semibold text-neutral-900">
-        ${(job.salaryMin ?? 0).toLocaleString()}–{(job.salaryMax ?? 0).toLocaleString()}
-        <span className="text-[14px] font-normal text-neutral-500"> /mo</span>
+        {salary ?? "Salary not specified"}
+        {salary && <span className="text-[14px] font-normal text-neutral-500"> /mo</span>}
       </div>
       <p className="mb-5 text-[12px] text-neutral-400">
         {job.currency} · paid via {country === "US" ? "Deel or Wise" : "Wise or local TT"}

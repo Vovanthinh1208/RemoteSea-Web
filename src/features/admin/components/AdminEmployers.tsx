@@ -41,11 +41,7 @@ const EmployerRow = memo(function EmployerRow({
       style={{ gridTemplateColumns: EMPLOYER_GRID_COLUMNS }}
     >
       <div className="flex min-w-0 items-center gap-3">
-        <CompanyLogo
-          color={colorFor(e.companyName)}
-          initial={e.companyName.charAt(0).toUpperCase()}
-          size={38}
-        />
+        <CompanyLogo color={colorFor(e.companyName)} name={e.companyName} size={38} />
 
         <div className="min-w-0">
           <div className="flex items-center gap-1.5 text-[14px] font-semibold text-neutral-900">

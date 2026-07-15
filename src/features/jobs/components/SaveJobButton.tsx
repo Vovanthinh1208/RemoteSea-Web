@@ -1,13 +1,14 @@
 import { Bookmark } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useSavedJobToggle } from "@/features/jobs/useSavedJobToggle";
+import { ROUTES } from "@/constants/routes";
 
 interface SaveJobButtonProps {
   jobId: string;
 }
 
 export const SaveJobButton = ({ jobId }: SaveJobButtonProps) => {
-  const { saved, statusUnknown, toggle } = useSavedJobToggle(jobId, `/jobs/${jobId}`);
+  const { saved, statusUnknown, toggle } = useSavedJobToggle(jobId, ROUTES.jobDetail(jobId));
 
   return (
     <button

@@ -17,11 +17,11 @@ import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useJobPostingSchema } from "@/hooks/useJobPostingSchema";
 import { LEVEL_LABELS, JOB_TYPE_LABELS } from "@/utils/labels";
 import { ROUTES } from "@/constants/routes";
+import { formatSalaryRange } from "@/utils/format";
 
 const jobMetaDescription = (job: NonNullable<ReturnType<typeof useJobQuery>["data"]>): string => {
-  const salary = job.salaryMin
-    ? ` · ${job.currency} ${job.salaryMin.toLocaleString()}${job.salaryMax ? `–${job.salaryMax.toLocaleString()}` : "+"}/mo`
-    : "";
+  const range = formatSalaryRange(job.salaryMin, job.salaryMax, { prefix: `${job.currency} ` });
+  const salary = range ? ` · ${range}/mo` : "";
   const location = job.isRemote ? "Remote" : (job.country ?? "Remote");
   return `${LEVEL_LABELS[job.level]} ${JOB_TYPE_LABELS[job.jobType]} role at ${job.employer.companyName} · ${location}${salary}. Apply on RemoteSEA.`;
 };

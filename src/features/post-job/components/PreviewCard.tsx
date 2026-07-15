@@ -1,6 +1,7 @@
 import { Clock, Globe, MapPin } from "lucide-react";
-import { companyColor } from "@/features/jobs/jobs.utils";
+import { companyColor } from "@/utils/color";
 import type { PostJobFormState } from "@/features/post-job/post-job.schemas";
+import { formatSalaryRange } from "@/utils/format";
 
 interface PreviewCardProps {
   form: PostJobFormState;
@@ -61,7 +62,7 @@ export const PreviewCard = ({ form }: PreviewCardProps) => {
       </div>
       <div className="mt-3 border-t border-neutral-50 pt-3 text-[12px]">
         <span className="font-semibold text-neutral-900">
-          ${form.salMin.toLocaleString()}–${form.salMax.toLocaleString()}
+          {formatSalaryRange(form.salMin, form.salMax)}
         </span>
         <span className="text-neutral-400">
           {" "}

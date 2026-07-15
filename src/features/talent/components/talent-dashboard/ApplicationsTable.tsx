@@ -6,7 +6,7 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { cn } from "@/utils/cn";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
-import { companyColor, countryFlag } from "@/features/jobs/jobs.utils";
+import { countryFlag } from "@/utils/color";
 import { Pipeline } from "@/features/talent/components/talent-dashboard/Pipeline";
 import {
   STAGE_LABEL,
@@ -14,6 +14,7 @@ import {
   type AppStatusBucket,
 } from "@/features/talent/talent-dashboard.utils";
 import type { ApplicationWithJob } from "@/types/application";
+import { ROUTES } from "@/constants/routes";
 
 const STATUS_MAP: Record<AppStatusBucket, { label: string; variant: BadgeVariant }> = {
   applied: { label: "Applied", variant: "info" },
@@ -37,14 +38,10 @@ const ApplicationRow = memo(function ApplicationRow({ application: a }: Applicat
   return (
     <Link
       className="grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-4 border-b border-neutral-50 px-5 py-3.5 transition-colors last:border-none hover:bg-neutral-50/60"
-      to={`/jobs/${a.jobId}`}
+      to={ROUTES.jobDetail(a.jobId)}
     >
       <div className="flex min-w-0 items-center gap-3">
-        <CompanyLogo
-          color={companyColor(company)}
-          initial={company.charAt(0).toUpperCase()}
-          size={36}
-        />
+        <CompanyLogo name={company} size={36} />
         <div className="min-w-0">
           <p className="truncate text-[13.5px] font-medium text-neutral-900">{a.job.title}</p>
           <p className="text-[12px] text-neutral-400">

@@ -3,6 +3,7 @@ import { ArrowRight, Briefcase, Clock, MapPin } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMyTalentProfile } from "@/features/talent/talent.queries";
 import { ROUTES } from "@/constants/routes";
+import { formatSalaryRange } from "@/utils/format";
 
 export const ProfileSnapshot = () => {
   const { user } = useAuth();
@@ -34,7 +35,7 @@ export const ProfileSnapshot = () => {
             label: "Expecting",
             value:
               profile?.desiredSalaryMin && profile.desiredSalaryMax
-                ? `$${profile.desiredSalaryMin.toLocaleString()}–${profile.desiredSalaryMax.toLocaleString()}/mo`
+                ? `${formatSalaryRange(profile.desiredSalaryMin, profile.desiredSalaryMax)}/mo`
                 : "—",
           },
         ].map(({ icon: Icon, label, value }) => (

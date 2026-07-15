@@ -26,7 +26,7 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
 
   const handleApply = async () => {
     if (!user) {
-      navigate(`${ROUTES.login}?callbackUrl=${encodeURIComponent(`/jobs/${jobId}`)}`);
+      navigate(`${ROUTES.login}?callbackUrl=${encodeURIComponent(ROUTES.jobDetail(jobId))}`);
       return;
     }
 

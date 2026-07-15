@@ -1,4 +1,5 @@
 import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
+import { formatSalaryRange } from "@/utils/format";
 
 const SALARY_MIN = 1000;
 const SALARY_MAX = 10000;
@@ -37,7 +38,7 @@ export const PreferencesSection = ({
         <span className="text-[11.5px] text-neutral-400">Visible only if open to work</span>
       </div>
       <p className="mb-4 text-[24px] font-semibold tracking-tight text-neutral-900">
-        ${salMin.toLocaleString()}–{salMax.toLocaleString()}
+        {formatSalaryRange(salMin, salMax)}
         <span className="ml-1 text-[14px] font-normal text-neutral-400">USD / month</span>
       </p>
       <div className="grid gap-4 sm:grid-cols-2">
