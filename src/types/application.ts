@@ -1,4 +1,4 @@
-import type { Job } from "@/types/job";
+import type { JobListItem } from "@/types/job";
 
 export type ApplicationStatus =
   "PENDING" | "REVIEWING" | "SHORTLISTED" | "INTERVIEW" | "OFFERED" | "REJECTED" | "WITHDRAWN";
@@ -15,4 +15,6 @@ export type Application = {
   updatedAt: string;
 };
 
-export type ApplicationWithJob = Application & { job: Job };
+// GET /applications embeds the same narrow "job card" shape as the /jobs list —
+// the dashboard rows only read title/country/employer.companyName from it.
+export type ApplicationWithJob = Application & { job: JobListItem };
