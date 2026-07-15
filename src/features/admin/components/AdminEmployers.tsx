@@ -3,6 +3,8 @@ import { Briefcase, Building, Search, Shield, Wallet } from "lucide-react";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { VerifiedBadge } from "@/components/shared/VerifiedBadge";
 import { EmptyRow } from "@/components/shared/EmptyRow";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { Button } from "@/components/ui/button";
 import { PillToggle } from "@/components/shared/PillToggle";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { CompanyLogo } from "@/components/ui/company-logo";
@@ -117,7 +119,7 @@ const EmployerRow = memo(function EmployerRow({
 
 export const AdminEmployers = () => {
   const runWithToast = useToastMutation();
-  const { data, isLoading } = useAdminEmployers();
+  const { data, isLoading, isError, refetch } = useAdminEmployers();
   const updateEmployerMutation = useUpdateAdminEmployer();
 
   // URL-synced (like JobsBoard) so a filtered/searched view survives a refresh and
@@ -159,6 +161,22 @@ export const AdminEmployers = () => {
   const maxSpend = Math.max(1, ...employers.map((e) => e.totalSpend));
 
   if (isLoading) return <AdminEmployersSkeleton />;
+  // A failed load used to fall through with employers=[] — $0 stat tiles plus a
+  // misleading "No employers match this filter" row, indistinguishable from a
+  // genuinely empty result. Same error treatment as the queue tab instead.
+  if (isError) {
+    return (
+      <EmptyState
+        action={
+          <Button size="sm" variant="outline" onClick={() => void refetch()}>
+            Try again
+          </Button>
+        }
+        description="Something went wrong loading employers."
+        title="Couldn't load employers"
+      />
+    );
+  }
 
   return (
     <div className="flex-1 overflow-hidden">

@@ -7,6 +7,7 @@ import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { cn } from "@/utils/cn";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { countryFlag } from "@/utils/color";
+import { timeAgoShort } from "@/utils/time";
 import { Pipeline } from "@/features/talent/components/talent-dashboard/Pipeline";
 import {
   STAGE_LABEL,
@@ -56,7 +57,9 @@ const ApplicationRow = memo(function ApplicationRow({ application: a }: Applicat
         {STAGE_LABEL[a.status]}
       </span>
       <span className="hidden w-[72px] text-right text-[12px] text-neutral-400 md:block">
-        {new Date(a.appliedAt).toLocaleDateString("en-US", { month: "short", day: "2-digit" })}
+        {/* Relative time, matching the employer side's applicant list — the two
+            dashboards used to show the same appliedAt in two different formats. */}
+        {timeAgoShort(a.appliedAt)}
       </span>
       <ChevronRight className="h-5 w-5 flex-shrink-0 text-neutral-300" />
     </Link>

@@ -8,6 +8,7 @@ import {
   changePasswordFormSchema,
   type ChangePasswordFormValues,
 } from "@/features/settings/settings.schemas";
+import { Button } from "@/components/ui/button";
 
 const UPDATE_FAILED_MESSAGE = "Could not update password. Please try again.";
 
@@ -53,13 +54,9 @@ export const ChangePasswordForm = () => {
         registration={register("newPassword")}
         type="password"
       />
-      <button
-        className="rounded-10 bg-brand-600 px-4 py-2.5 text-[12.5px] font-medium text-white hover:bg-brand-700 disabled:opacity-60"
-        disabled={isSubmitting}
-        type="submit"
-      >
+      <Button disabled={isSubmitting} size="sm" type="submit">
         {isSubmitting ? "Updating…" : "Update password"}
-      </button>
+      </Button>
     </form>
   );
 };

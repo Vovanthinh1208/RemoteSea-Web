@@ -1,5 +1,7 @@
 import { CreditCard, RefreshCw, TrendingUp, Wallet } from "lucide-react";
 import { EmptyRow } from "@/components/shared/EmptyRow";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { Button } from "@/components/ui/button";
 import { StatCard } from "@/components/ui/stat-card";
 import { AdminRevenueSkeleton } from "@/features/admin/components/AdminRevenueSkeleton";
 import { useAdminRevenue } from "@/features/admin/admin.queries";
@@ -23,10 +25,24 @@ const monthTotal = (month: RevenueMonthBucket): number =>
   month.standard + month.featured + month.handsOn;
 
 export const AdminRevenue = () => {
-  const { data, isLoading } = useAdminRevenue();
+  const { data, isLoading, isError, refetch } = useAdminRevenue();
 
   if (isLoading) return <AdminRevenueSkeleton />;
-  if (!data) return null;
+  // A failed load used to fall through to `return null` — a silently blank
+  // pane, while the sibling queue tab shows an error state with a retry.
+  if (isError || !data) {
+    return (
+      <EmptyState
+        action={
+          <Button size="sm" variant="outline" onClick={() => void refetch()}>
+            Try again
+          </Button>
+        }
+        description="Something went wrong loading revenue data."
+        title="Couldn't load revenue"
+      />
+    );
+  }
 
   const { months, mix, transactions, totals } = data;
   const peak = Math.max(...months.map(monthTotal), 1);

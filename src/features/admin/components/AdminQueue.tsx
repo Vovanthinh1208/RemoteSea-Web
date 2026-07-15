@@ -109,7 +109,10 @@ export const AdminQueue = () => {
     return (
       <div className="flex-1">
         <h1 className="text-[26px] font-semibold text-neutral-900">Review queue</h1>
-        <p className="mt-2 text-sm text-neutral-500">Nothing awaiting review. All caught up. ✅</p>
+        <EmptyState
+          description="Nothing awaiting review. All caught up. ✅"
+          title="Queue is clear"
+        />
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
 
 type NewsletterFormVariant = "inline" | "compact" | "wide";
 
@@ -31,28 +32,40 @@ const INPUT_CLASS: Record<NewsletterFormVariant, string> = {
 export const NewsletterForm = ({
   variant = "inline",
   placeholder = "your@email.com",
-}: NewsletterFormProps) => (
-  <form className={FORM_CLASS[variant]} onSubmit={(e) => e.preventDefault()}>
-    <input
-      aria-label="Email address"
-      className={INPUT_CLASS[variant]}
-      placeholder={placeholder}
-      type="email"
-    />
-    {variant === "compact" && (
-      <Button className="w-full rounded-10" size="md">
-        Subscribe
-      </Button>
-    )}
-    {variant === "wide" && (
-      <Button className="rounded-12 px-6" size="lg">
-        Subscribe <ArrowRight size={14} />
-      </Button>
-    )}
-    {variant === "inline" && (
-      <Button className="rounded-12 px-5" size="lg">
-        Subscribe
-      </Button>
-    )}
-  </form>
-);
+}: NewsletterFormProps) => {
+  const { toast } = useToast();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Newsletter is coming soon",
+      description: "Signups aren't open yet — check back shortly.",
+    });
+  };
+
+  return (
+    <form className={FORM_CLASS[variant]} onSubmit={handleSubmit}>
+      <input
+        aria-label="Email address"
+        className={INPUT_CLASS[variant]}
+        placeholder={placeholder}
+        type="email"
+      />
+      {variant === "compact" && (
+        <Button className="w-full rounded-10" size="md">
+          Subscribe
+        </Button>
+      )}
+      {variant === "wide" && (
+        <Button className="rounded-12 px-6" size="lg">
+          Subscribe <ArrowRight size={14} />
+        </Button>
+      )}
+      {variant === "inline" && (
+        <Button className="rounded-12 px-5" size="lg">
+          Subscribe
+        </Button>
+      )}
+    </form>
+  );
+};

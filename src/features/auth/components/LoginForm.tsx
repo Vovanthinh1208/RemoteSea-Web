@@ -11,6 +11,7 @@ import { useToast } from "@/components/ui/toast";
 import { applyFormSubmitError } from "@/utils/form-errors";
 import { isSafeInternalPath } from "@/utils/safe-redirect";
 import { ROUTES } from "@/constants/routes";
+import { Button } from "@/components/ui/button";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
@@ -86,13 +87,9 @@ export const LoginForm = () => {
 
         {formError && <p className="text-sm text-red-600">{formError}</p>}
 
-        <button
-          className="h-11 w-full rounded-12 bg-brand-600 text-sm font-medium text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
-          disabled={isSubmitting}
-          type="submit"
-        >
+        <Button className="w-full rounded-12" disabled={isSubmitting} size="lg" type="submit">
           {isSubmitting ? "Signing in…" : "Sign in"}
-        </button>
+        </Button>
       </form>
     </>
   );

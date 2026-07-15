@@ -11,22 +11,38 @@ import { ListingsPanel } from "@/features/employer/components/employer-dashboard
 import { ApplicantsPanel } from "@/features/employer/components/employer-dashboard/ApplicantsPanel";
 import { CompanyCard } from "@/features/employer/components/employer-dashboard/CompanyCard";
 import { FunnelPanel } from "@/features/employer/components/employer-dashboard/FunnelPanel";
+import { EmployerDashboardSkeleton } from "@/features/employer/components/employer-dashboard/EmployerDashboardSkeleton";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
 
 export const EmployerDashboard = () => {
   const { user } = useAuth();
-  const { data: profile, isError: profileErrored, refetch: refetchProfile } = useEmployerProfile();
-  const { data: jobsData, isError: jobsErrored, refetch: refetchJobs } = useEmployerJobs();
+  const {
+    data: profile,
+    isLoading: profileLoading,
+    isError: profileErrored,
+    refetch: refetchProfile,
+  } = useEmployerProfile();
+  const {
+    data: jobsData,
+    isLoading: jobsLoading,
+    isError: jobsErrored,
+    refetch: refetchJobs,
+  } = useEmployerJobs();
   const {
     applications,
     byJobId,
+    isLoading: applicationsLoading,
     isError: applicationsErrored,
     refetchAll: refetchApplications,
   } = useEmployerApplicationsAggregate();
+
+  if (profileLoading || jobsLoading || applicationsLoading) {
+    return <EmployerDashboardSkeleton />;
+  }
 
   if (profileErrored || jobsErrored) {
     return (
@@ -80,10 +96,7 @@ export const EmployerDashboard = () => {
                 Create your employer profile to post jobs and receive applications.
               </p>
             </div>
-            <Link
-              className="flex-shrink-0 rounded-10 bg-brand-600 px-3 py-1.5 text-[12.5px] font-medium text-white hover:bg-brand-700"
-              to="/post-job"
-            >
+            <Link className={buttonVariants({ size: "sm" })} to="/post-job">
               Get started
             </Link>
           </div>
@@ -118,10 +131,7 @@ export const EmployerDashboard = () => {
                   </span>
                 )}
               </div>
-              <Link
-                className="inline-flex items-center gap-1.5 rounded-12 bg-brand-600 px-4 py-2 text-[13.5px] font-medium text-white hover:bg-brand-700"
-                to="/post-job"
-              >
+              <Link className={buttonVariants()} to="/post-job">
                 <Plus size={13} /> Post a job
               </Link>
             </div>
