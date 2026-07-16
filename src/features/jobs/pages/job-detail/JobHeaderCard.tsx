@@ -1,10 +1,11 @@
-import { Clock, ShieldCheck, Users } from "lucide-react";
+import { Clock, Users } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { Badge } from "@/components/ui/badge";
 import { SalaryBadge } from "@/components/ui/salary-badge";
 import { Tag } from "@/components/ui/tag";
 import { JOB_TYPE_LABELS, LEVEL_LABELS, countryFlag, timeAgo } from "@/features/jobs/jobs.utils";
 import type { Job } from "@/types/job";
+import { VerifiedInline } from "@/components/shared/VerifiedInline";
 
 interface JobHeaderCardProps {
   job: Job;
@@ -20,9 +21,7 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
       <div className="flex-1">
         <div className="mb-1 flex items-center gap-2 text-sm text-neutral-400">
           {job.employer.isVerified && (
-            <span className="inline-flex items-center gap-1 text-brand-600">
-              <ShieldCheck size={13} /> Verified employer
-            </span>
+            <VerifiedInline className="gap-1" iconSize={13} label="Verified employer" />
           )}
           {job.employer.isVerified && <span>·</span>}
           <span>

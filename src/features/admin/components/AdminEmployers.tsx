@@ -14,6 +14,7 @@ import { AdminEmployersSkeleton } from "@/features/admin/components/AdminEmploye
 import { useAdminEmployers, useUpdateAdminEmployer } from "@/features/admin/admin.queries";
 import { colorFor } from "@/features/admin/admin.utils";
 import type { AdminEmployer } from "@/types/admin";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const FILTERS = [
   { id: "all", label: "All" },
@@ -181,9 +182,7 @@ export const AdminEmployers = () => {
   return (
     <div className="flex-1 overflow-hidden">
       <div className="mb-6">
-        <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-          Operations
-        </p>
+        <Eyebrow className="mb-0.5">Operations</Eyebrow>
         <h1 className="text-[26px] font-semibold text-neutral-900">Employers</h1>
         <p className="mt-1 text-sm text-neutral-500">
           {employers.length} companies · {totalListings} total listings · $

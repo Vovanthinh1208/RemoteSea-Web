@@ -5,6 +5,8 @@ import { cn } from "@/utils/cn";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
+import { Eyebrow } from "@/components/ui/eyebrow";
+import { PillToggle } from "@/components/shared/PillToggle";
 
 const SALARY_DATA = [
   {
@@ -203,19 +205,18 @@ interface ChipProps {
   children: React.ReactNode;
 }
 
+// Thin local preset over the shared PillToggle (the one chip that wasn't using
+// it) — also gains PillToggle's aria-pressed, which the hand-rolled button lacked.
 const Chip = ({ active, onClick, children }: ChipProps) => (
-  <button
-    className={cn(
-      "rounded-8 border px-3 py-1.5 text-[12.5px] font-medium transition-all",
-      active
-        ? "border-brand-600 bg-brand-50 text-brand-700"
-        : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300 hover:bg-neutral-50"
-    )}
-    type="button"
+  <PillToggle
+    active={active}
+    activeClassName="border-brand-600 bg-brand-50 text-brand-700"
+    className="rounded-8 border px-3 py-1.5 text-[12.5px] font-medium transition-all"
+    inactiveClassName="border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300 hover:bg-neutral-50"
     onClick={onClick}
   >
     {children}
-  </button>
+  </PillToggle>
 );
 
 interface SalaryBarProps {
@@ -296,9 +297,7 @@ const ExplorerSection = () => {
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-              Explorer
-            </p>
+            <Eyebrow className="mb-2">Explorer</Eyebrow>
             <h2 className="text-[28px] font-semibold tracking-tight text-neutral-900">
               Salary by <em className="font-serif-italic text-brand-700">role &amp; seniority</em>
             </h2>
@@ -403,9 +402,7 @@ const CountrySection = () => {
     <section className="border-y border-neutral-100 bg-white py-16">
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="mb-10 text-center">
-          <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-            By country
-          </p>
+          <Eyebrow className="mb-2">By country</Eyebrow>
           <h2 className="text-[28px] font-semibold tracking-tight text-neutral-900">
             Where the <em className="font-serif-italic text-brand-700">money</em> lives
           </h2>
@@ -449,9 +446,7 @@ const DistributionSection = () => {
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-              Distribution
-            </p>
+            <Eyebrow className="mb-2">Distribution</Eyebrow>
             <h2 className="mb-3 text-[28px] font-semibold tracking-tight text-white">
               The <em className="font-serif-italic text-brand-400">shape</em> of remote pay.
             </h2>
@@ -505,9 +500,7 @@ const SubmitSection = () => {
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-              Contribute
-            </p>
+            <Eyebrow className="mb-2">Contribute</Eyebrow>
             <h2 className="mb-3 text-[28px] font-semibold tracking-tight text-neutral-900">
               Submit your salary, <em className="font-serif-italic text-brand-700">anonymously</em>.
             </h2>

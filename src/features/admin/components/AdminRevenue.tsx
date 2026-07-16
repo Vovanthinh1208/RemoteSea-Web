@@ -6,6 +6,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { AdminRevenueSkeleton } from "@/features/admin/components/AdminRevenueSkeleton";
 import { useAdminRevenue } from "@/features/admin/admin.queries";
 import type { RevenueMonthBucket } from "@/types/admin";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const CENTS_PER_DOLLAR = 100;
 const DOLLARS_PER_THOUSAND = 1000;
@@ -55,9 +56,7 @@ export const AdminRevenue = () => {
     <div className="flex-1 overflow-hidden">
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-            Finance
-          </p>
+          <Eyebrow className="mb-0.5">Finance</Eyebrow>
           <h1 className="text-[26px] font-semibold text-neutral-900">Revenue</h1>
           <p className="mt-1 text-sm text-neutral-500">Per-post billing · all amounts in USD</p>
         </div>

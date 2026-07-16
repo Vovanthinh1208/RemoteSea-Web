@@ -1,3 +1,6 @@
+import { GradientInitial } from "@/components/ui/gradient-initial";
+import { Eyebrow } from "@/components/ui/eyebrow";
+
 const CASE_STUDY_STATS = [
   { num: "11 days", label: "List to offer" },
   { num: "42", label: "Total applies" },
@@ -15,9 +18,7 @@ export const CaseStudySection = () => (
         />
         <div className="relative z-10 grid gap-12 md:grid-cols-[1.1fr_1fr]">
           <div>
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-              Case study
-            </p>
+            <Eyebrow className="mb-3">Case study</Eyebrow>
             <h2
               className="mb-4 font-serif text-[38px] leading-[1.15] tracking-tight text-neutral-900"
               style={{ fontFamily: "var(--font-serif)" }}
@@ -51,9 +52,7 @@ export const CaseStudySection = () => (
           <div className="flex items-center">
             <div className="w-full rounded-24 border border-neutral-200 bg-neutral-50 p-6">
               <div className="mb-4 flex items-center gap-3">
-                <div className="grid h-12 w-12 place-items-center rounded-12 bg-gradient-to-br from-brand-400 to-brand-700 text-lg font-semibold text-white">
-                  F
-                </div>
+                <GradientInitial className="h-12 w-12 rounded-12 text-lg">F</GradientInitial>
                 <div>
                   <div className="text-[15px] font-semibold text-neutral-900">Finch Labs</div>
                   <div className="text-[12.5px] text-neutral-400">SG · Series A · 22 people</div>

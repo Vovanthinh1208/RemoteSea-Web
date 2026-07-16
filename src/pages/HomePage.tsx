@@ -13,6 +13,7 @@ import { LEVEL_LABELS } from "@/features/jobs/jobs.utils";
 import { countryFlag } from "@/utils/color";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ROUTES } from "@/constants/routes";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const STATS = [
   { value: "47", label: "Jobs live" },
@@ -197,9 +198,7 @@ export const HomePage = () => {
       <section className="py-20">
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="mb-12 text-center">
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-              How it works
-            </p>
+            <Eyebrow className="mb-3">How it works</Eyebrow>
             <h2 className="text-[36px] font-semibold tracking-tight text-neutral-900">
               Simple. Curated.{" "}
               <em className="font-serif" style={{ fontFamily: "var(--font-serif)" }}>
@@ -227,9 +226,7 @@ export const HomePage = () => {
       <section className="pb-16">
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="mb-8">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-              Categories
-            </p>
+            <Eyebrow className="mb-2">Categories</Eyebrow>
             <h2 className="text-[28px] font-semibold text-neutral-900">
               Find roles in{" "}
               <em className="font-serif" style={{ fontFamily: "var(--font-serif)" }}>
@@ -266,9 +263,7 @@ export const HomePage = () => {
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="mb-6 flex items-end justify-between">
             <div>
-              <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-                Live now
-              </p>
+              <Eyebrow className="mb-2">Live now</Eyebrow>
               <h2 className="text-[28px] font-semibold text-neutral-900">
                 Jobs open{" "}
                 <em className="font-serif" style={{ fontFamily: "var(--font-serif)" }}>
@@ -359,9 +354,7 @@ export const HomePage = () => {
       <section className="border-y border-neutral-100 bg-white py-16">
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="mb-10 text-center">
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-              Talent stories
-            </p>
+            <Eyebrow className="mb-3">Talent stories</Eyebrow>
             <h2 className="text-[32px] font-semibold text-neutral-900">
               From{" "}
               <em className="font-serif" style={{ fontFamily: "var(--font-serif)" }}>
@@ -404,9 +397,7 @@ export const HomePage = () => {
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="flex flex-col items-center gap-10 rounded-24 bg-neutral-900 p-10 md:flex-row">
             <div className="flex-1">
-              <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-                For employers
-              </p>
+              <Eyebrow className="mb-3">For employers</Eyebrow>
               <h2 className="mb-3 text-[28px] font-semibold leading-tight text-white">
                 Looking for remote talent in Vietnam?
               </h2>

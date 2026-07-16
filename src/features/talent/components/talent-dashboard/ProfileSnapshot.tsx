@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useMyTalentProfile } from "@/features/talent/talent.queries";
 import { ROUTES } from "@/constants/routes";
 import { formatSalaryRange } from "@/utils/format";
+import { GradientInitial } from "@/components/ui/gradient-initial";
 
 export const ProfileSnapshot = () => {
   const { user } = useAuth();
@@ -12,9 +13,9 @@ export const ProfileSnapshot = () => {
   return (
     <div className="mb-5 overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">
       <div className="flex flex-col items-center p-5 text-center">
-        <div className="mb-3 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 text-lg font-semibold text-white">
+        <GradientInitial className="mb-3 h-14 w-14 rounded-full text-lg">
           {(user?.name ?? "?").charAt(0).toUpperCase()}
-        </div>
+        </GradientInitial>
         <h3 className="text-[15px] font-semibold text-neutral-900">{user?.name}</h3>
         <p className="mt-0.5 text-[12.5px] text-neutral-400">
           {profile?.headline || "No headline yet"}

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Briefcase, Clock, Plus, ShieldCheck, Star, Users } from "lucide-react";
+import { Briefcase, Clock, Plus, Star, Users } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   useEmployerApplicationsAggregate,
@@ -14,6 +14,9 @@ import { FunnelPanel } from "@/features/employer/components/employer-dashboard/F
 import { EmployerDashboardSkeleton } from "@/features/employer/components/employer-dashboard/EmployerDashboardSkeleton";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { GradientInitial } from "@/components/ui/gradient-initial";
+import { ROUTES } from "@/constants/routes";
+import { VerifiedInline } from "@/components/shared/VerifiedInline";
 
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
@@ -96,7 +99,7 @@ export const EmployerDashboard = () => {
                 Create your employer profile to post jobs and receive applications.
               </p>
             </div>
-            <Link className={buttonVariants({ size: "sm" })} to="/post-job">
+            <Link className={buttonVariants({ size: "sm" })} to={ROUTES.postJob}>
               Get started
             </Link>
           </div>
@@ -121,17 +124,13 @@ export const EmployerDashboard = () => {
           {profile && (
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-[12.5px] font-medium text-neutral-700">
-                <div className="flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 text-[10px] font-bold text-white">
+                <GradientInitial className="h-5 w-5 rounded-full text-[10px]">
                   {profile.companyName.charAt(0).toUpperCase()}
-                </div>
+                </GradientInitial>
                 {profile.companyName}
-                {profile.isVerified && (
-                  <span className="flex items-center gap-0.5 text-brand-600">
-                    <ShieldCheck size={11} /> Verified
-                  </span>
-                )}
+                {profile.isVerified && <VerifiedInline />}
               </div>
-              <Link className={buttonVariants()} to="/post-job">
+              <Link className={buttonVariants()} to={ROUTES.postJob}>
                 <Plus size={13} /> Post a job
               </Link>
             </div>

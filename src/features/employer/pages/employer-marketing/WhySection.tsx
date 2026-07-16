@@ -1,3 +1,4 @@
+import { Eyebrow } from "@/components/ui/eyebrow";
 const WHY = [
   {
     num: "3.5×",
@@ -20,9 +21,7 @@ export const WhySection = () => (
   <section className="py-20">
     <div className="mx-auto max-w-[1240px] px-6">
       <div className="mb-12 text-center">
-        <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-          Why post here
-        </p>
+        <Eyebrow className="mb-3">Why post here</Eyebrow>
         <h2 className="text-[36px] font-semibold tracking-tight text-neutral-900">
           Smaller pool. <em className="font-serif-italic text-brand-700">Higher signal.</em>
         </h2>

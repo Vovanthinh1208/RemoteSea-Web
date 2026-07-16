@@ -16,6 +16,7 @@ import { ReviewerChecklist } from "@/features/admin/components/admin-queue/Revie
 import { DecisionBar } from "@/features/admin/components/admin-queue/DecisionBar";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button } from "@/components/ui/button";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const RESOLUTION_BANNER_DISPLAY_MS = 1200;
 
@@ -133,9 +134,7 @@ export const AdminQueue = () => {
     <div className="flex-1 overflow-hidden">
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-            Operations
-          </p>
+          <Eyebrow className="mb-0.5">Operations</Eyebrow>
           <h1 className="text-[26px] font-semibold text-neutral-900">Review queue</h1>
           <p className="mt-1 text-sm text-neutral-500">
             Every job is human-reviewed before it goes live · {active.length} awaiting

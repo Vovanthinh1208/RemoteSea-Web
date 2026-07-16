@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Check } from "lucide-react";
 import { ROUTES } from "@/constants/routes";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 interface PricingTier {
   name: string;
@@ -93,9 +94,7 @@ export const PricingSection = () => {
     <section className="py-20">
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="mb-12 text-center">
-          <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-            Pricing
-          </p>
+          <Eyebrow className="mb-3">Pricing</Eyebrow>
           <h2 className="text-[36px] font-semibold tracking-tight text-neutral-900">
             One-time, not <em className="font-serif-italic text-brand-700">subscription.</em>
           </h2>

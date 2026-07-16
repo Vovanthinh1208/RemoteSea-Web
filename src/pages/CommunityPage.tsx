@@ -1,6 +1,7 @@
 import { ArrowRight, MapPin, Briefcase, Users } from "lucide-react";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { Button } from "@/components/ui/button";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const MEMBERS = [
   {
@@ -240,9 +241,7 @@ export const CommunityPage = () => {
       <section className="py-16">
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="mb-10 text-center">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-              Members
-            </p>
+            <Eyebrow className="mb-2">Members</Eyebrow>
             <h2 className="mb-3 text-[32px] font-semibold text-neutral-900">
               The people{" "}
               <em className="font-serif text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>
@@ -295,9 +294,7 @@ export const CommunityPage = () => {
       <section className="pb-16">
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="mb-10 text-center">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-              Inside
-            </p>
+            <Eyebrow className="mb-2">Inside</Eyebrow>
             <h2 className="mb-3 text-[32px] font-semibold text-neutral-900">
               What people{" "}
               <em className="font-serif text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>
@@ -454,9 +451,7 @@ export const CommunityPage = () => {
       {/* Join CTA */}
       <section className="py-20">
         <div className="mx-auto max-w-[720px] px-6 text-center">
-          <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-            Apply
-          </p>
+          <Eyebrow className="mb-3">Apply</Eyebrow>
           <h2 className="mb-4 text-[36px] font-semibold text-neutral-900">
             Ready to join the{" "}
             <em className="font-serif text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>

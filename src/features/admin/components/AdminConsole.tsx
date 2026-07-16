@@ -4,6 +4,7 @@ import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { AdminQueue } from "@/features/admin/components/AdminQueue";
 import { AdminEmployers } from "@/features/admin/components/AdminEmployers";
 import { AdminRevenue } from "@/features/admin/components/AdminRevenue";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const TABS = [
   { id: "queue", label: "Review queue", icon: Briefcase },
@@ -27,9 +28,7 @@ export const AdminConsole = () => {
       <div className="mx-auto flex max-w-[1240px] gap-6 px-6 py-8">
         <aside className="w-[180px] flex-shrink-0">
           <div className="mb-6">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-              RemoteSEA
-            </p>
+            <Eyebrow>RemoteSEA</Eyebrow>
             <p className="text-[15px] font-semibold text-neutral-900">Ops console</p>
           </div>
           <nav aria-label="Ops console sections" className="space-y-0.5">

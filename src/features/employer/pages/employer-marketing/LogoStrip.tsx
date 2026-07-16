@@ -1,3 +1,4 @@
+import { Eyebrow } from "@/components/ui/eyebrow";
 const COMPANIES = [
   "Finch Labs",
   "Brackish",
@@ -12,9 +13,7 @@ const COMPANIES = [
 export const LogoStrip = () => (
   <div className="border-y border-neutral-100 bg-neutral-50 py-8">
     <div className="mx-auto max-w-[1240px] px-6">
-      <p className="mb-5 text-center text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-        Trusted by hiring teams at
-      </p>
+      <Eyebrow className="mb-5 text-center">Trusted by hiring teams at</Eyebrow>
       <div className="flex flex-wrap justify-center gap-x-14 gap-y-3">
         {COMPANIES.map((name) => (
           <span

@@ -1,4 +1,5 @@
 import { Check, Minus } from "lucide-react";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const COMPARE = [
   { f: "VN-specific talent pool", us: true, li: false, ro: false, up: "partial" },
@@ -44,9 +45,7 @@ const CompareCell = ({ v, highlight }: CompareCellProps) => {
 export const CompareSection = () => (
   <section className="pb-20">
     <div className="mx-auto max-w-[1240px] px-6">
-      <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-        Side by side
-      </p>
+      <Eyebrow className="mb-3">Side by side</Eyebrow>
       <h2 className="mb-8 text-[32px] font-semibold tracking-tight text-neutral-900">
         Versus the <em className="font-serif-italic">alternatives.</em>
       </h2>
