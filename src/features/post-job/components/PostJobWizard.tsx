@@ -38,10 +38,33 @@ const MAX_SKILL_IDS = 15;
 const MAX_BENEFITS = 10;
 const PROFILE_ALREADY_EXISTS_STATUS = 409;
 
+const DRAFT_STORAGE_KEY = "remotesea:post-job-draft";
+
+type StoredDraft = { form: PostJobFormState; step: number };
+
+// Merging over INITIAL_FORM_STATE keeps an old draft usable after the form
+// gains new fields; a corrupt entry just means starting fresh.
+const loadDraft = (): StoredDraft | null => {
+  try {
+    const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<StoredDraft>;
+    if (!parsed.form) return null;
+    return {
+      form: { ...INITIAL_FORM_STATE, ...parsed.form },
+      step: typeof parsed.step === "number" ? parsed.step : 1,
+    };
+  } catch {
+    return null;
+  }
+};
+
 export const PostJobWizard = () => {
   const { toast } = useToast();
-  const [step, setStep] = useState(1);
-  const [form, setForm] = useState<PostJobFormState>(INITIAL_FORM_STATE);
+  // Restore any saved draft synchronously so the first render already shows it.
+  const [draft] = useState(loadDraft);
+  const [step, setStep] = useState(draft?.step ?? 1);
+  const [form, setForm] = useState<PostJobFormState>(draft?.form ?? INITIAL_FORM_STATE);
   const [publishedJobId, setPublishedJobId] = useState<string | null>(null);
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,27 +73,37 @@ export const PostJobWizard = () => {
   // just revealed the next in a whack-a-mole loop.
   const [stepErrors, setStepErrors] = useState<string[]>([]);
 
-  // The wizard has no draft persistence — closing the tab or hitting refresh
-  // three steps in used to lose everything with zero warning. Arm the native
-  // leave-confirmation whenever the user has actually entered something and
-  // nothing has been published yet. jobCategoryId is excluded from the dirty
-  // check: the wizard auto-defaults it as soon as categories load, which is
-  // not user input and must not arm the warning on a pristine form.
-  const isDirty =
-    !publishedJobId &&
-    (step > 1 ||
-      JSON.stringify({ ...form, jobCategoryId: "" }) !==
-        JSON.stringify({ ...INITIAL_FORM_STATE, jobCategoryId: "" }));
   useEffect(() => {
-    if (!isDirty) return;
-    const warn = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      // Required by some browsers for the dialog to appear.
-      e.returnValue = "";
-    };
-    window.addEventListener("beforeunload", warn);
-    return () => window.removeEventListener("beforeunload", warn);
-  }, [isDirty]);
+    if (draft) {
+      toast({
+        title: "Draft restored",
+        description: "Picked up where you left off. Publishing clears the draft.",
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Autosave replaces the earlier beforeunload warning: with the draft written
+  // on every change, closing the tab loses nothing — so warning about it would
+  // be pure friction. jobCategoryId alone doesn't count as user input (the
+  // wizard auto-defaults it when categories load); skip writing until
+  // something real differs, so a pristine visit never plants a draft.
+  const hasUserInput =
+    step > 1 ||
+    JSON.stringify({ ...form, jobCategoryId: "" }) !==
+      JSON.stringify({ ...INITIAL_FORM_STATE, jobCategoryId: "" });
+  useEffect(() => {
+    if (publishedJobId) {
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      return;
+    }
+    if (!hasUserInput) return;
+    try {
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({ form, step }));
+    } catch {
+      // Storage full/blocked — the wizard still works, just without autosave.
+    }
+  }, [form, step, publishedJobId, hasUserInput]);
 
   const { data: categories } = useCategories();
   const { data: allSkills, isError: skillsErrored } = useSkills();
