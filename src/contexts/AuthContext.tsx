@@ -3,9 +3,15 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import * as authApi from "@/features/auth/auth.api";
 import { registerUnauthorizedHandler } from "@/services/api-client";
 import { ApiError } from "@/services/api-error";
-import { clearAccessToken, getAccessToken, setAccessToken } from "@/services/token-storage";
+import {
+  ACCESS_TOKEN_STORAGE_KEY,
+  clearAccessToken,
+  getAccessToken,
+  setAccessToken,
+} from "@/services/token-storage";
 import { sessionKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
+import { useToast } from "@/components/ui/toast";
 import type { AuthUser, UserRole } from "@/types/user";
 
 const UNAUTHORIZED_STATUS = 401;
@@ -59,6 +65,7 @@ const hydrateFromSession = async (): Promise<AuthUser | null> => {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   const [hasToken, setHasToken] = useState(() => !!getAccessToken());
 
   const sessionQuery = useQuery({
@@ -92,11 +99,46 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(
     () =>
       registerUnauthorizedHandler(() => {
+        // Only a real session expiring deserves a toast — anonymous 401s
+        // (someone poking a protected endpoint logged-out) stay silent.
+        const hadSession = !!getAccessToken();
+        // Clear storage too (mirrors logout()) — previously the dead token
+        // survived a reload and re-failed the session check every visit.
+        clearAccessToken();
         queryClient.setQueryData(SESSION_KEY, null);
         setHasToken(false);
+        if (hadSession) {
+          toast({
+            variant: "error",
+            title: "Session expired",
+            description: "Please sign in again to continue.",
+          });
+        }
       }),
-    [queryClient]
+    [queryClient, toast]
   );
+
+  // Cross-tab session sync: logging out (or in) in one tab updates every other
+  // tab immediately, instead of leaving them showing an authenticated UI until
+  // their next request 401s. `storage` events fire only in OTHER tabs and only
+  // for localStorage — sessionStorage ("don't remember me") tokens are
+  // per-tab by design, so there is nothing to sync for them.
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key !== ACCESS_TOKEN_STORAGE_KEY) return;
+      if (e.newValue === null) {
+        queryClient.setQueryData(SESSION_KEY, null);
+        setHasToken(false);
+      } else {
+        // A login elsewhere: mark the token present and let the session query
+        // (re)fetch the user for this tab.
+        setHasToken(true);
+        void queryClient.invalidateQueries({ queryKey: SESSION_KEY });
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, [queryClient]);
 
   const loginWithToken = useCallback(
     async (token: string, remember = true) => {

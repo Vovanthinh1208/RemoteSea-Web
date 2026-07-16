@@ -11,7 +11,7 @@ const EMPLOYER_POINTS = [
 ];
 
 export const EmployerCtaSection = () => (
-  <section className="py-16">
+  <section className="py-16 [contain-intrinsic-size:auto_44rem] [content-visibility:auto]">
     <div className="mx-auto max-w-[1240px] px-6">
       <div className="flex flex-col items-center gap-10 rounded-24 bg-neutral-900 p-10 md:flex-row">
         <div className="flex-1">

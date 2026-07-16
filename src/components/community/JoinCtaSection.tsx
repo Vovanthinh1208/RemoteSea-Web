@@ -21,7 +21,7 @@ const JOIN_STEPS = [
 ];
 
 export const JoinCtaSection = () => (
-  <section className="py-20">
+  <section className="py-20 [contain-intrinsic-size:auto_44rem] [content-visibility:auto]">
     <div className="mx-auto max-w-[720px] px-6 text-center">
       <Eyebrow className="mb-3">Apply</Eyebrow>
       <h2 className="mb-4 text-[36px] font-semibold text-neutral-900">

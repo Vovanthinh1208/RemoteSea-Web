@@ -3,6 +3,7 @@ import { Bell, Bookmark } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useAuth } from "@/contexts/AuthContext";
 import { ROUTES } from "@/constants/routes";
+import { prefetchRoute } from "@/router/route-prefetch";
 
 const NAV_LINKS = [
   { href: "/jobs", label: "Jobs" },
@@ -57,6 +58,8 @@ export const Navbar = () => {
               )}
               key={href}
               to={href}
+              onFocus={() => prefetchRoute(href)}
+              onMouseEnter={() => prefetchRoute(href)}
             >
               {label}
             </Link>

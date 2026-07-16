@@ -30,6 +30,9 @@ export const useJobQuery = (id: string | undefined) =>
 // on hover means the detail page's data is often already cached by the time the click
 // lands. Exported here (not called directly from JobCard.tsx) so components never need
 // to import the service layer just to prefetch.
+// The route *chunk* prefetch lives in router/route-prefetch.ts (JobCard calls
+// both) — importing the page from here made the data layer depend on the view
+// layer and created a queries -> page -> queries cycle.
 export const prefetchJob = (queryClient: QueryClient, id: string) =>
   queryClient.prefetchQuery({
     queryKey: jobKeys.detail(id),

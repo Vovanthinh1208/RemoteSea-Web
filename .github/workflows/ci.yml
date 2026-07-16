@@ -8,6 +8,11 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    # Job-level on purpose: this used to sit on the build step, and inserting a
+    # new step after `npm run build` silently detached it (YAML attached env to
+    # the new last step) — the build then failed with "VITE_API_URL is not set".
+    env:
+      VITE_API_URL: https://example.com
     steps:
       - uses: actions/checkout@v4
       # Node 22 to match remotesea-api's CI and Docker base image.
@@ -19,7 +24,6 @@ jobs:
       - run: npm run lint
       - run: npm run format:check
       - run: npm run type-check
+      - run: npm run depcruise
       - run: npm run test
       - run: npm run build
-        env:
-          VITE_API_URL: https://example.com

@@ -91,6 +91,7 @@ export const RegisterForm = () => {
           id="name"
           label="Full name"
           placeholder="Phạm Tuấn"
+          autoComplete="name"
           registration={register("name")}
         />
 
@@ -99,6 +100,7 @@ export const RegisterForm = () => {
           id="email"
           label="Email"
           placeholder="you@example.com"
+          autoComplete="email"
           registration={register("email")}
           type="email"
         />
@@ -108,6 +110,7 @@ export const RegisterForm = () => {
           id="password"
           label="Password"
           placeholder="At least 8 characters"
+          autoComplete="new-password"
           registration={register("password")}
           type="password"
         />

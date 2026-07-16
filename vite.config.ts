@@ -10,12 +10,21 @@ export default defineConfig(({ mode, command }) => {
     // an unset var ships a literal "%VITE_API_URL%" token in production, which
     // the browser ignores as an invalid CSP source and blocks all API requests.
     throw new Error(
-      "VITE_API_URL is not set. It must point at the deployed remotesea-api origin at build time."
+      "VITE_API_URL is not set. It must point at the deployed remotesea-api origin at build time. " +
+        "In GitHub Actions set it as job-level `env:` in the workflow (see .github/workflows/ci.yml) " +
+        "or as a repository variable; locally put it in .env / .env.production."
     );
   }
 
   return {
     plugins: [react()],
+    // Release identifier for Sentry (error <-> deploy correlation). CI passes
+    // the commit SHA via GITHUB_SHA; local builds fall back to "dev".
+    define: {
+      __APP_VERSION__: JSON.stringify(
+        process.env.GITHUB_SHA?.slice(0, 12) ?? env.VITE_APP_VERSION ?? "dev"
+      ),
+    },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
@@ -25,6 +34,10 @@ export default defineConfig(({ mode, command }) => {
       port: 3000,
     },
     build: {
+      // Generated but not referenced from the bundles ("hidden") — stack traces
+      // stay symbolicable (locally, or uploaded to Sentry in a release step)
+      // without advertising map URLs to every visitor's devtools.
+      sourcemap: "hidden",
       rollupOptions: {
         output: {
           manualChunks(id: string) {

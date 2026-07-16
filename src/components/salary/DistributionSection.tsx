@@ -14,7 +14,7 @@ const HISTOGRAM_BUCKETS = [
 export const DistributionSection = () => {
   const maxPct = Math.max(...HISTOGRAM_BUCKETS.map((b) => b.pct));
   return (
-    <section className="bg-neutral-900 py-16">
+    <section className="bg-neutral-900 py-16 [contain-intrinsic-size:auto_44rem] [content-visibility:auto]">
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>

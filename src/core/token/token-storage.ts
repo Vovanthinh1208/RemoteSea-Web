@@ -1,4 +1,6 @@
-const STORAGE_KEY = "remotesea_access_token";
+// Exported so AuthContext can watch cross-tab `storage` events for this key.
+export const ACCESS_TOKEN_STORAGE_KEY = "remotesea_access_token";
+const STORAGE_KEY = ACCESS_TOKEN_STORAGE_KEY;
 
 export const getAccessToken = (): string | null =>
   localStorage.getItem(STORAGE_KEY) ?? sessionStorage.getItem(STORAGE_KEY);

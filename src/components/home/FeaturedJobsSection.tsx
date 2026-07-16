@@ -10,7 +10,7 @@ interface FeaturedJobsSectionProps {
 }
 
 export const FeaturedJobsSection = ({ featuredJobs }: FeaturedJobsSectionProps) => (
-  <section className="pb-16">
+  <section className="pb-16 [contain-intrinsic-size:auto_44rem] [content-visibility:auto]">
     <div className="mx-auto max-w-[1240px] px-6">
       <div className="mb-6 flex items-end justify-between">
         <div>

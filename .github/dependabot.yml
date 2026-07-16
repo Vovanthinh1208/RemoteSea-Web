@@ -1,0 +1,18 @@
+# Keeps the toolchain from silently aging — the repo is currently on the
+# latest majors across the board (React 19 / Vite 8 / TS 6 / ESLint 10), and
+# staying there in small weekly steps is far cheaper than periodic big-bang
+# upgrades. Minor+patch updates arrive grouped as one PR to keep noise down;
+# majors stay individual so their breaking changes get reviewed alone.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

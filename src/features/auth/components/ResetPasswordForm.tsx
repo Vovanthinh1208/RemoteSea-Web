@@ -63,6 +63,7 @@ export const ResetPasswordForm = () => {
         id="password"
         label="New password"
         placeholder="At least 8 characters"
+        autoComplete="new-password"
         registration={register("password")}
         type="password"
       />
@@ -72,6 +73,7 @@ export const ResetPasswordForm = () => {
         id="confirmPassword"
         label="Confirm new password"
         placeholder="Repeat your password"
+        autoComplete="new-password"
         registration={register("confirmPassword")}
         type="password"
       />

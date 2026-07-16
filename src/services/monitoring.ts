@@ -9,6 +9,7 @@ export const initMonitoring = (): void => {
   if (!dsn || !import.meta.env.PROD) return; // no-op without a DSN, and never in dev
   Sentry.init({
     dsn,
+    release: __APP_VERSION__,
     integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
     tracesSampleRate: TRACES_SAMPLE_RATE,
     replaysSessionSampleRate: REPLAY_SESSION_SAMPLE_RATE,
