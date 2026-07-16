@@ -1,5 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { listSavedJobIds, listSavedJobs, saveJob, unsaveJob } from "@/features/saved/saved.service";
+import {
+  listSavedJobIds,
+  listSavedJobs,
+  saveJob,
+  unsaveJob,
+  type SavedJobListResponse,
+} from "@/features/saved/saved.service";
 import { useAuth } from "@/contexts/AuthContext";
 import { savedKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
@@ -57,23 +63,61 @@ export const useSaveJob = () => {
 
 export const useUnsaveJob = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: unsaveJob,
+
     onMutate: async (jobId: string) => {
-      await queryClient.cancelQueries({ queryKey: savedKeys.ids() });
-      const previous = queryClient.getQueryData<string[]>(savedKeys.ids());
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: savedKeys.ids() }),
+        queryClient.cancelQueries({ queryKey: savedKeys.jobsPrefix }),
+      ]);
+
+      const previousIds = queryClient.getQueryData<string[]>(savedKeys.ids());
+      const previousLists = queryClient.getQueriesData<SavedJobListResponse>({
+        queryKey: savedKeys.jobsPrefix,
+      });
+
       queryClient.setQueryData<string[]>(savedKeys.ids(), (old) =>
         (old ?? []).filter((id) => id !== jobId)
       );
-      return { previous };
+
+      queryClient.setQueriesData<SavedJobListResponse>(
+        { queryKey: savedKeys.jobsPrefix },
+        (old) => {
+          if (!old) return old;
+
+          const newSavedJobs = old.savedJobs.filter((job) => job.jobId !== jobId);
+
+          return {
+            ...old,
+            savedJobs: newSavedJobs,
+            pagination: {
+              ...old.pagination,
+              total: old.pagination.total - 1,
+            },
+          };
+        }
+      );
+
+      return { previousIds, previousLists };
     },
+
     onError: (_err, _jobId, context) => {
-      if (context?.previous) queryClient.setQueryData(savedKeys.ids(), context.previous);
+      if (!context) return;
+
+      queryClient.setQueryData(savedKeys.ids(), context.previousIds);
+
+      context.previousLists.forEach(([queryKey, data]) => {
+        queryClient.setQueryData(queryKey, data);
+      });
     },
-    // Same invalidation policy as useSaveJob — see the comment there.
+
     onSettled: (_data, error) => {
-      if (error) void queryClient.invalidateQueries({ queryKey: savedKeys.ids() });
-      void queryClient.invalidateQueries({ queryKey: savedKeys.jobsPrefix });
+      if (error) {
+        void queryClient.invalidateQueries({ queryKey: savedKeys.ids() });
+        void queryClient.invalidateQueries({ queryKey: savedKeys.jobsPrefix });
+      }
     },
   });
 };
