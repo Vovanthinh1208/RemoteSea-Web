@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import type { SalaryBenchmark as SalaryBenchmarkData } from "@/features/salary/salary.api";
+import type { SalaryBenchmark as SalaryBenchmarkData } from "@/features/salary/salary.queries";
 import { BenchBar } from "@/components/home/BenchBar";
 import { ROUTES } from "@/constants/routes";
 

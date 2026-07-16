@@ -15,6 +15,18 @@ module.exports = {
       to: { circular: true },
     },
     {
+      name: "features-dont-import-page-map",
+      severity: "error",
+      comment:
+        "Feature code importing the router's page map (route-prefetch) creates " +
+        "component -> router -> pages -> component cycles (caught once already). " +
+        "A feature that wants to warm its own page chunk owns a local prefetch " +
+        "module instead (see features/jobs/prefetch-detail-chunk.ts). The layout " +
+        "shell (Navbar) is the sanctioned consumer.",
+      from: { path: "^src/features" },
+      to: { path: "^src/router/route-prefetch" },
+    },
+    {
       name: "no-orphans",
       severity: "warn",
       comment: "A module nothing imports is either dead code or a missing wire-up.",

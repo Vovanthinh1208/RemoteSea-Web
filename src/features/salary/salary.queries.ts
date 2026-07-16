@@ -9,3 +9,7 @@ export const useSalaryBenchmarks = () =>
     queryFn: ({ signal }) => listSalaryBenchmarks({ signal }),
     ...TIER.reference,
   });
+
+// Public surface for the domain type too — cross-feature consumers import
+// from here, not from the feature's inner service/api layers.
+export type { SalaryBenchmark } from "@/features/salary/salary.service";
