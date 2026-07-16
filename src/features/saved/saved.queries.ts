@@ -44,9 +44,13 @@ export const useSaveJob = () => {
     onError: (_err, _jobId, context) => {
       if (context?.previous) queryClient.setQueryData(savedKeys.ids(), context.previous);
     },
-    onSettled: () => {
-      // Prefix-invalidates both the ids set and every paginated saved-jobs list page.
-      queryClient.invalidateQueries({ queryKey: savedKeys.all });
+    // Only the display lists (full job rows) need a refetch — the ids set was
+    // optimistically set to exactly what the server now holds (both endpoints
+    // are idempotent), so refetching it was a wasted request on every single
+    // heart click. On error the rollback restores it and a refetch confirms.
+    onSettled: (_data, error) => {
+      if (error) void queryClient.invalidateQueries({ queryKey: savedKeys.ids() });
+      void queryClient.invalidateQueries({ queryKey: savedKeys.jobsPrefix });
     },
   });
 };
@@ -66,8 +70,10 @@ export const useUnsaveJob = () => {
     onError: (_err, _jobId, context) => {
       if (context?.previous) queryClient.setQueryData(savedKeys.ids(), context.previous);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: savedKeys.all });
+    // Same invalidation policy as useSaveJob — see the comment there.
+    onSettled: (_data, error) => {
+      if (error) void queryClient.invalidateQueries({ queryKey: savedKeys.ids() });
+      void queryClient.invalidateQueries({ queryKey: savedKeys.jobsPrefix });
     },
   });
 };
