@@ -3,6 +3,8 @@ import { Briefcase, Building, Search, Shield, Wallet } from "lucide-react";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { VerifiedBadge } from "@/components/shared/VerifiedBadge";
 import { EmptyRow } from "@/components/shared/EmptyRow";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { Button } from "@/components/ui/button";
 import { PillToggle } from "@/components/shared/PillToggle";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { CompanyLogo } from "@/components/ui/company-logo";
@@ -12,6 +14,7 @@ import { AdminEmployersSkeleton } from "@/features/admin/components/AdminEmploye
 import { useAdminEmployers, useUpdateAdminEmployer } from "@/features/admin/admin.queries";
 import { colorFor } from "@/features/admin/admin.utils";
 import type { AdminEmployer } from "@/types/admin";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const FILTERS = [
   { id: "all", label: "All" },
@@ -41,11 +44,7 @@ const EmployerRow = memo(function EmployerRow({
       style={{ gridTemplateColumns: EMPLOYER_GRID_COLUMNS }}
     >
       <div className="flex min-w-0 items-center gap-3">
-        <CompanyLogo
-          color={colorFor(e.companyName)}
-          initial={e.companyName.charAt(0).toUpperCase()}
-          size={38}
-        />
+        <CompanyLogo color={colorFor(e.companyName)} name={e.companyName} size={38} />
 
         <div className="min-w-0">
           <div className="flex items-center gap-1.5 text-[14px] font-semibold text-neutral-900">
@@ -121,7 +120,7 @@ const EmployerRow = memo(function EmployerRow({
 
 export const AdminEmployers = () => {
   const runWithToast = useToastMutation();
-  const { data, isLoading } = useAdminEmployers();
+  const { data, isLoading, isError, refetch } = useAdminEmployers();
   const updateEmployerMutation = useUpdateAdminEmployer();
 
   // URL-synced (like JobsBoard) so a filtered/searched view survives a refresh and
@@ -163,13 +162,27 @@ export const AdminEmployers = () => {
   const maxSpend = Math.max(1, ...employers.map((e) => e.totalSpend));
 
   if (isLoading) return <AdminEmployersSkeleton />;
+  // A failed load used to fall through with employers=[] — $0 stat tiles plus a
+  // misleading "No employers match this filter" row, indistinguishable from a
+  // genuinely empty result. Same error treatment as the queue tab instead.
+  if (isError) {
+    return (
+      <EmptyState
+        action={
+          <Button size="sm" variant="outline" onClick={() => void refetch()}>
+            Try again
+          </Button>
+        }
+        description="Something went wrong loading employers."
+        title="Couldn't load employers"
+      />
+    );
+  }
 
   return (
     <div className="flex-1 overflow-hidden">
       <div className="mb-6">
-        <p className="mb-0.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-          Operations
-        </p>
+        <Eyebrow className="mb-0.5">Operations</Eyebrow>
         <h1 className="text-[26px] font-semibold text-neutral-900">Employers</h1>
         <p className="mt-1 text-sm text-neutral-500">
           {employers.length} companies · {totalListings} total listings · $

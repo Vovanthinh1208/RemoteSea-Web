@@ -12,6 +12,7 @@ import { ApiError } from "@/services/api-error";
 import { applyFormSubmitError } from "@/utils/form-errors";
 import { ROUTES } from "@/constants/routes";
 import { cn } from "@/utils/cn";
+import { Button } from "@/components/ui/button";
 
 const ROLE_OPTIONS = [
   { value: "TALENT", label: "I'm looking for work" },
@@ -113,13 +114,9 @@ export const RegisterForm = () => {
 
         {formError && <p className="text-sm text-red-600">{formError}</p>}
 
-        <button
-          className="h-11 w-full rounded-12 bg-brand-600 text-sm font-medium text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
-          disabled={isSubmitting}
-          type="submit"
-        >
+        <Button className="w-full rounded-12" disabled={isSubmitting} size="lg" type="submit">
           {isSubmitting ? "Creating account…" : "Create account"}
-        </button>
+        </Button>
         <p className="text-center text-[12px] text-neutral-400">
           By signing up you agree to our{" "}
           <Link className="text-neutral-600 hover:underline" to="/terms">

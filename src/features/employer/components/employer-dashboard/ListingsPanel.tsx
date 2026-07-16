@@ -5,6 +5,8 @@ import { EmptyRow } from "@/components/shared/EmptyRow";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { STATUS_GROUP, STATUS_LABEL, timeAgo } from "@/features/employer/employer-dashboard.utils";
 import type { EmployerApplicant, EmployerJobListItem } from "@/types/employer";
+import { ROUTES } from "@/constants/routes";
+import { buttonVariants } from "@/components/ui/button";
 
 const STATUS_VARIANT: Record<string, BadgeVariant> = {
   review: "warning",
@@ -96,7 +98,7 @@ const ListingRow = memo(function ListingRow({ job: j, applications: apps }: List
     return (
       <Link
         className="grid cursor-pointer grid-cols-[1fr_80px_120px_60px_32px] items-center gap-3 rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50"
-        to={`/jobs/${j.id}`}
+        to={ROUTES.jobDetail(j.id)}
       >
         {rowContent}
       </Link>
@@ -127,10 +129,7 @@ export const ListingsPanel = ({ jobs, applicationsByJob }: ListingsPanelProps) =
         <h3 className="text-[14px] font-semibold text-neutral-900">
           Your listings <span className="font-normal text-neutral-400">· {active} active</span>
         </h3>
-        <Link
-          className="inline-flex items-center gap-1.5 rounded-10 bg-brand-600 px-3 py-1.5 text-[12px] font-medium text-white hover:bg-brand-700"
-          to="/post-job"
-        >
+        <Link className={buttonVariants({ size: "sm" })} to={ROUTES.postJob}>
           <Plus size={11} /> Post a job
         </Link>
       </div>

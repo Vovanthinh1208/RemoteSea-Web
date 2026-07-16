@@ -5,7 +5,7 @@ import { SalaryBadge } from "@/components/ui/salary-badge";
 import { Tag } from "@/components/ui/tag";
 import { useJobsQuery } from "@/features/jobs/jobs.queries";
 import { DEFAULT_FILTERS_FETCH_LIMIT, DEFAULT_JOB_FILTERS } from "@/features/jobs/job-filters";
-import { companyColor, countryFlag } from "@/features/jobs/jobs.utils";
+import { countryFlag } from "@/utils/color";
 import { ROUTES } from "@/constants/routes";
 import type { ApplicationWithJob } from "@/types/application";
 
@@ -52,13 +52,9 @@ export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
             <Link
               className="flex items-center gap-4 border-b border-neutral-50 px-5 py-4 transition-colors last:border-none hover:bg-neutral-50/60"
               key={job.id}
-              to={`/jobs/${job.id}`}
+              to={ROUTES.jobDetail(job.id)}
             >
-              <CompanyLogo
-                color={companyColor(job.employer.companyName)}
-                initial={job.employer.companyName.charAt(0).toUpperCase()}
-                size={40}
-              />
+              <CompanyLogo name={job.employer.companyName} size={40} />
               <div className="min-w-0 flex-1">
                 <div className="mb-0.5 flex items-center gap-1.5 text-[11.5px] text-neutral-400">
                   <span>{job.employer.companyName}</span>
@@ -77,7 +73,7 @@ export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
               <div className="hidden flex-shrink-0 flex-col items-end gap-1.5 md:flex">
                 <span className="text-right text-[11px] text-neutral-400">{why}</span>
               </div>
-              <SalaryBadge max={job.salaryMax ?? 0} min={job.salaryMin ?? 0} />
+              <SalaryBadge max={job.salaryMax} min={job.salaryMin} />
             </Link>
           );
         })}

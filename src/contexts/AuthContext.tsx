@@ -80,9 +80,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           ? "error"
           : "unauthenticated";
 
+  // Depends on `refetch` (stable identity in TanStack v5), not the whole
+  // `sessionQuery` result object (new every render) — with the object as the
+  // dep, retrySession got a new identity each render, which re-memoized the
+  // context value and re-rendered every consumer on any provider render.
+  const { refetch: refetchSession } = sessionQuery;
   const retrySession = useCallback(() => {
-    void sessionQuery.refetch();
-  }, [sessionQuery]);
+    void refetchSession();
+  }, [refetchSession]);
 
   useEffect(
     () =>

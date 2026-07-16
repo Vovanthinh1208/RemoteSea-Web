@@ -6,6 +6,7 @@ export const ROUTES = {
   resetPassword: "/reset-password",
   authCallback: "/auth/callback",
   jobs: "/jobs",
+  jobDetail: (id: string) => `/jobs/${id}`,
   salary: "/salary",
   blog: "/blog",
   community: "/community",

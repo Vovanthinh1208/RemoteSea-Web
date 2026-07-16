@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { ArrowRight } from "lucide-react";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const PROCESS = [
   {
@@ -39,9 +40,7 @@ const LAST_STEP_INDEX = PROCESS.length - 1;
 export const ProcessSection = () => (
   <section className="border-y border-neutral-100 bg-white py-20">
     <div className="mx-auto max-w-[1240px] px-6">
-      <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-        The process
-      </p>
+      <Eyebrow className="mb-3">The process</Eyebrow>
       <h2 className="mb-10 text-[32px] font-semibold tracking-tight text-neutral-900">
         List → review → <em className="font-serif-italic text-brand-700">match.</em>
       </h2>

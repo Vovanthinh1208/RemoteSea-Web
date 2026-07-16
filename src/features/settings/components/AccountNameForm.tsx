@@ -8,6 +8,7 @@ import {
   type AccountNameFormValues,
 } from "@/features/settings/settings.schemas";
 import { useUpdateMyName } from "@/features/users/users.queries";
+import { Button } from "@/components/ui/button";
 
 export const AccountNameForm = () => {
   const { user } = useAuth();
@@ -39,13 +40,9 @@ export const AccountNameForm = () => {
         <div className="flex items-center gap-2">
           <input className={TEXT_INPUT_CLASS} id="acct-name" {...register("name")} />
           {isDirty && (
-            <button
-              className="flex-shrink-0 rounded-10 bg-brand-600 px-3 py-2.5 text-[12.5px] font-medium text-white hover:bg-brand-700 disabled:opacity-60"
-              disabled={isSubmitting}
-              type="submit"
-            >
+            <Button className="flex-shrink-0" disabled={isSubmitting} size="sm" type="submit">
               Save
-            </button>
+            </Button>
           )}
         </div>
         {errors.name && <p className="text-[11.5px] text-red-600">{errors.name.message}</p>}

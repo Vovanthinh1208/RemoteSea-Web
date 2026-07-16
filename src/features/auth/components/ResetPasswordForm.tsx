@@ -8,6 +8,7 @@ import { TextField } from "@/components/shared/TextField";
 import { useToast } from "@/components/ui/toast";
 import { applyFormSubmitError } from "@/utils/form-errors";
 import { ROUTES } from "@/constants/routes";
+import { Button } from "@/components/ui/button";
 
 const MISSING_TOKEN_MESSAGE = "This reset link is missing its token. Request a new one.";
 
@@ -77,13 +78,9 @@ export const ResetPasswordForm = () => {
 
       {formError && <p className="text-sm text-red-600">{formError}</p>}
 
-      <button
-        className="h-11 w-full rounded-12 bg-brand-600 text-sm font-medium text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
-        disabled={isSubmitting}
-        type="submit"
-      >
+      <Button className="w-full rounded-12" disabled={isSubmitting} size="lg" type="submit">
         {isSubmitting ? "Updating…" : "Update password"}
-      </button>
+      </Button>
     </form>
   );
 };

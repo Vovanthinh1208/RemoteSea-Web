@@ -12,7 +12,6 @@ import { prefetchJob } from "@/features/jobs/jobs.queries";
 import {
   JOB_TYPE_LABELS,
   LEVEL_LABELS,
-  companyColor,
   countryFlag,
   isAsyncTimezone,
   timeAgo,
@@ -53,11 +52,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
         job.isFeatured && "border-l-2 border-l-amber-400"
       )}
     >
-      <CompanyLogo
-        color={companyColor(job.employer.companyName)}
-        initial={job.employer.companyName.charAt(0).toUpperCase()}
-        size={44}
-      />
+      <CompanyLogo name={job.employer.companyName} size={44} />
 
       <div className="min-w-0 flex-1">
         {/* Row 1 — company + badges */}
@@ -86,7 +81,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
         <h3 className="mb-2 text-[15px] font-semibold leading-snug text-neutral-900">
           <Link
             className="transition-colors after:absolute after:inset-0 group-hover:text-brand-700"
-            to={`/jobs/${job.id}`}
+            to={ROUTES.jobDetail(job.id)}
             onMouseEnter={handlePrefetchJob}
           >
             {job.title}
@@ -108,7 +103,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
 
       {/* Right side */}
       <div className="flex flex-shrink-0 flex-col items-end gap-2">
-        <SalaryBadge max={job.salaryMax ?? 0} min={job.salaryMin ?? 0} />
+        <SalaryBadge max={job.salaryMax} min={job.salaryMin} />
         <span className="text-[12px] text-neutral-400">
           {timeAgo(job.publishedAt ?? job.createdAt)} ago
         </span>

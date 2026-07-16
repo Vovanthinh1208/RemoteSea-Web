@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { PillToggle } from "@/components/shared/PillToggle";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { NewsletterForm } from "@/components/shared/NewsletterForm";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const POSTS = [
   {
@@ -210,9 +211,7 @@ export const BlogPage = () => {
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="mb-1 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-                Recent
-              </p>
+              <Eyebrow className="mb-1">Recent</Eyebrow>
               <h2 className="text-[28px] font-semibold text-neutral-900">
                 The{" "}
                 <em

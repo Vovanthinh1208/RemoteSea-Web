@@ -5,6 +5,7 @@ import { forgotPasswordSchema, type ForgotPasswordFormValues } from "@/features/
 import { forgotPassword } from "@/features/auth/auth.api";
 import { TextField } from "@/components/shared/TextField";
 import { applyFormSubmitError } from "@/utils/form-errors";
+import { Button } from "@/components/ui/button";
 
 export const ForgotPasswordForm = () => {
   const [isSent, setIsSent] = useState(false);
@@ -51,13 +52,9 @@ export const ForgotPasswordForm = () => {
 
       {formError && <p className="text-sm text-red-600">{formError}</p>}
 
-      <button
-        className="h-11 w-full rounded-12 bg-brand-600 text-sm font-medium text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
-        disabled={isSubmitting}
-        type="submit"
-      >
+      <Button className="w-full rounded-12" disabled={isSubmitting} size="lg" type="submit">
         {isSubmitting ? "Sending…" : "Send reset link"}
-      </button>
+      </Button>
     </form>
   );
 };

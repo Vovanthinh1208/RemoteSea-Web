@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Building2, ShieldCheck } from "lucide-react";
+import { GradientInitial } from "@/components/ui/gradient-initial";
 
 const APPLICANTS = [
   { name: "Phạm Tuấn", role: "Sr. Frontend · 6 yrs", loc: "Đà Nẵng, VN", match: 94 },
@@ -134,9 +135,9 @@ export const HeroSection = () => (
                 className="flex items-center gap-3 rounded-12 px-3 py-2.5 transition-colors hover:bg-neutral-50"
                 key={a.name}
               >
-                <div className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 text-xs font-semibold text-white">
+                <GradientInitial className="h-8 w-8 rounded-full text-xs">
                   {a.name.trim().split(" ").pop()?.[0] ?? "?"}
-                </div>
+                </GradientInitial>
                 <div className="min-w-0 flex-1">
                   <div className="text-[13.5px] font-semibold text-neutral-900">{a.name}</div>
                   <div className="text-[11.5px] text-neutral-400">

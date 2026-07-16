@@ -40,7 +40,7 @@ export const JobSummaryHeader = ({ job }: JobSummaryHeaderProps) => {
       <div className="flex items-start gap-4">
         <CompanyLogo
           color={colorFor(job.employer.companyName)}
-          initial={job.employer.companyName.charAt(0).toUpperCase()}
+          name={job.employer.companyName}
           size={46}
         />
         <div className="flex-1">

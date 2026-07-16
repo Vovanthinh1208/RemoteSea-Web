@@ -16,6 +16,7 @@ import { usePublicTalentProfile } from "@/features/talent/talent.queries";
 import { useAuth } from "@/contexts/AuthContext";
 import { LEVEL_TO_LABEL } from "@/features/talent/talent.constants";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { formatSalaryRange } from "@/utils/format";
 import { ROUTES } from "@/constants/routes";
 
 export const PublicTalentProfilePage = () => {
@@ -129,8 +130,7 @@ export const PublicTalentProfilePage = () => {
                 Expecting
               </p>
               <p className="text-[26px] font-semibold leading-tight tracking-tight text-neutral-900">
-                ${(profile.desiredSalaryMin ?? 0).toLocaleString()}–$
-                {(profile.desiredSalaryMax ?? 0).toLocaleString()}
+                {formatSalaryRange(profile.desiredSalaryMin, profile.desiredSalaryMax)}
                 <span className="ml-1 text-[14px] font-normal text-neutral-400"> / mo</span>
               </p>
               <p className="text-[12px] text-neutral-500">{profile.currency}</p>

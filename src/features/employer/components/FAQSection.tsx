@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const ITEMS = [
   {
@@ -36,9 +37,7 @@ export const FAQSection = () => {
   return (
     <section className="py-16">
       <div className="mx-auto max-w-[760px] px-6">
-        <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-          FAQ
-        </p>
+        <Eyebrow className="mb-3">FAQ</Eyebrow>
         <h2 className="mb-10 text-[32px] font-semibold tracking-tight text-neutral-900">
           Honest <em className="font-serif-italic text-brand-700">answers.</em>
         </h2>

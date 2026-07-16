@@ -25,7 +25,7 @@ const QueueListRow = memo(function QueueListRow({ job: j, selected, onSelect }: 
     >
       <CompanyLogo
         color={colorFor(j.employer.companyName)}
-        initial={j.employer.companyName.charAt(0).toUpperCase()}
+        name={j.employer.companyName}
         size={34}
       />
       <div className="min-w-0 flex-1">
