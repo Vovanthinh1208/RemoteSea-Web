@@ -47,6 +47,10 @@ export const salaryKeys = {
 
 export const savedKeys = {
   all: ["saved"] as const,
+  // Prefix for every paginated saved-jobs list page — lets mutations invalidate
+  // the display lists without also refetching the ids set (which optimistic
+  // updates keep exact on their own).
+  jobsPrefix: ["saved", "jobs"] as const,
   jobs: (page: number, limit: number) => ["saved", "jobs", page, limit] as const,
   // Full membership set (job ids only) for client-side "is this job saved?" checks
   // (e.g. the JobCard heart icon) — deliberately separate from the paginated
