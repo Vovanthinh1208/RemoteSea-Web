@@ -10,15 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Node 22 to match remotesea-api's CI and Docker base image.
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run lint
       - run: npm run format:check
       - run: npm run type-check
       - run: npm run test
+      - run: npx prettier --check .
       - run: npm run build
         env:
           VITE_API_URL: https://example.com

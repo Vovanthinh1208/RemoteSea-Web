@@ -91,7 +91,10 @@ export const MeetupsSection = () => (
                   ))}
                   <span className="ml-1 text-[11px] text-neutral-400">{e.attendees} going</span>
                 </div>
-                <button className="text-[12px] font-medium transition-colors" style={{ color: e.color }}>
+                <button
+                  className="text-[12px] font-medium transition-colors"
+                  style={{ color: e.color }}
+                >
                   RSVP →
                 </button>
               </div>
