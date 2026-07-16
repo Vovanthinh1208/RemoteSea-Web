@@ -9,6 +9,7 @@ import { Tag } from "@/components/ui/tag";
 import { cn } from "@/utils/cn";
 import { useSavedJobToggle } from "@/features/jobs/useSavedJobToggle";
 import { prefetchJob } from "@/features/jobs/jobs.queries";
+import { prefetchJobDetailChunk } from "@/features/jobs/prefetch-detail-chunk";
 import {
   JOB_TYPE_LABELS,
   LEVEL_LABELS,
@@ -32,6 +33,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
   // by the time the click lands, instead of always showing a skeleton.
   const handlePrefetchJob = () => {
     void prefetchJob(queryClient, job.id);
+    prefetchJobDetailChunk();
   };
 
   const country = job.country ?? "Remote";
