@@ -10,7 +10,9 @@ export default defineConfig(({ mode, command }) => {
     // an unset var ships a literal "%VITE_API_URL%" token in production, which
     // the browser ignores as an invalid CSP source and blocks all API requests.
     throw new Error(
-      "VITE_API_URL is not set. It must point at the deployed remotesea-api origin at build time."
+      "VITE_API_URL is not set. It must point at the deployed remotesea-api origin at build time. " +
+        "In GitHub Actions set it as job-level `env:` in the workflow (see .github/workflows/ci.yml) " +
+        "or as a repository variable; locally put it in .env / .env.production."
     );
   }
 
