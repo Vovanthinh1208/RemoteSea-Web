@@ -46,6 +46,7 @@ export const ForgotPasswordForm = () => {
         id="email"
         label="Email"
         placeholder="you@example.com"
+        autoComplete="email"
         registration={register("email")}
         type="email"
       />

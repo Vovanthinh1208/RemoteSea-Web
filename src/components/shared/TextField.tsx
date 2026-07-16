@@ -8,6 +8,8 @@ interface TextFieldProps {
   placeholder?: string;
   error?: string;
   labelSlot?: React.ReactNode;
+  /** Password managers/autofill need this ("email", "current-password", "new-password", …). */
+  autoComplete?: string;
 }
 
 export const TextField = ({
@@ -18,6 +20,7 @@ export const TextField = ({
   placeholder,
   error,
   labelSlot,
+  autoComplete,
 }: TextFieldProps) => {
   const errorId = `${id}-error`;
 
@@ -32,6 +35,7 @@ export const TextField = ({
       <input
         aria-describedby={error ? errorId : undefined}
         aria-invalid={!!error}
+        autoComplete={autoComplete}
         className="h-11 w-full rounded-12 border border-neutral-200 bg-white px-4 text-sm outline-none transition-all placeholder:text-neutral-400 focus:border-brand-600 focus:shadow-focus"
         id={id}
         placeholder={placeholder}

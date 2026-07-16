@@ -30,12 +30,19 @@ export const useJobQuery = (id: string | undefined) =>
 // on hover means the detail page's data is often already cached by the time the click
 // lands. Exported here (not called directly from JobCard.tsx) so components never need
 // to import the service layer just to prefetch.
-export const prefetchJob = (queryClient: QueryClient, id: string) =>
-  queryClient.prefetchQuery({
+export const prefetchJob = (queryClient: QueryClient, id: string) => {
+  // Warm the route chunk too: JobDetailPage is lazy-loaded, so without this the
+  // click still paid a network round-trip for the page's JS even when the data
+  // prefetch below had already filled the cache. Same import specifier as the
+  // router's lazy() — Vite resolves both to one chunk, and repeat hovers hit
+  // the module cache for free.
+  void import("@/features/jobs/pages/JobDetailPage");
+  return queryClient.prefetchQuery({
     queryKey: jobKeys.detail(id),
     queryFn: ({ signal }) => getJob(id, { signal }),
     ...TIER.list,
   });
+};
 
 export const useCreateJob = () => {
   const queryClient = useQueryClient();

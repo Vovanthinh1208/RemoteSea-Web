@@ -55,6 +55,7 @@ export const LoginForm = () => {
           id="email"
           label="Email"
           placeholder="you@example.com"
+          autoComplete="email"
           registration={register("email")}
           type="email"
         />
@@ -72,6 +73,7 @@ export const LoginForm = () => {
             </Link>
           }
           placeholder="••••••••"
+          autoComplete="current-password"
           registration={register("password")}
           type="password"
         />

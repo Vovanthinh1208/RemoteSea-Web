@@ -39,7 +39,7 @@ const JOB_LIST_SKELETON_COUNT = 6;
 export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) => {
   const [search, setSearch] = useSyncedState(query.q);
   const firstRender = useRef(true);
-  const { data, isLoading, isError, refetch } = useJobsQuery(query);
+  const { data, isLoading, isError, isPlaceholderData, refetch } = useJobsQuery(query);
   const { data: categories } = useCategories();
 
   // Debounced search → filters
@@ -155,7 +155,9 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
             </div>
           )}
 
-          {/* Job list */}
+          {/* Job list — dimmed while a filter/page change is fetching over
+              kept-previous data, so the click visibly "took" instead of the old
+              results sitting there unchanged with no feedback. */}
           {isLoading ? (
             <div className="space-y-2">
               {Array.from({ length: JOB_LIST_SKELETON_COUNT }, (_, i) => (
@@ -183,7 +185,12 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
               title="No jobs match these filters"
             />
           ) : (
-            <div className="space-y-2">
+            <div
+              className={cn(
+                "space-y-2 transition-opacity duration-150",
+                isPlaceholderData && "pointer-events-none opacity-60"
+              )}
+            >
               {jobs.map((job) => (
                 <JobCard job={job} key={job.id} />
               ))}

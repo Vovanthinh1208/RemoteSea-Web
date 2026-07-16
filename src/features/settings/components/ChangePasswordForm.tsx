@@ -43,6 +43,7 @@ export const ChangePasswordForm = () => {
         id="currentPassword"
         label="Change password"
         placeholder="Current password"
+        autoComplete="current-password"
         registration={register("currentPassword")}
         type="password"
       />
@@ -51,6 +52,7 @@ export const ChangePasswordForm = () => {
         id="newPassword"
         label="New password"
         placeholder="New password (min 8 characters)"
+        autoComplete="new-password"
         registration={register("newPassword")}
         type="password"
       />
