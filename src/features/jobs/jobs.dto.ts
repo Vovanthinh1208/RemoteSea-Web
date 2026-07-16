@@ -79,7 +79,9 @@ const jobEmployerSummarySchema = z.object({
   hqCountry: z.string().nullable().optional(),
 });
 
-export const jobListItemSchema: ZodType<JobListItemDto> = z.object({
+// Internal — only consumed by jobListResponseSchema below (was exported with
+// no outside importers).
+const jobListItemSchema: ZodType<JobListItemDto> = z.object({
   id: z.string(),
   title: z.string(),
   jobType: jobTypeSchema,

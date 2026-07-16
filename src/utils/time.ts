@@ -7,10 +7,7 @@ export interface RelativeTimeSuffix {
   now: string;
 }
 
-export const formatRelativeTime = (
-  dateString: string | null,
-  suffix: RelativeTimeSuffix
-): string => {
+const formatRelativeTime = (dateString: string | null, suffix: RelativeTimeSuffix): string => {
   if (!dateString) return suffix.now;
   const diff = Date.now() - new Date(dateString).getTime();
   const days = Math.floor(diff / MS_PER_DAY);
