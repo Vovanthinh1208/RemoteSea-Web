@@ -20,13 +20,18 @@ utils            src/utils/   (cn, color, format, time, labels, form-errors)
   config in `.dependency-cruiser.cjs`, runs in CI): no circular imports, no
   orphan modules.
 - Cross-feature imports are allowed **only through another feature's public
-  surface** (its `*.queries.ts` hooks, exported components). If two features
-  need the same util, it moves to `src/utils` (precedent: `companyColor`,
-  `countryFlag`, `formatSalaryRange`).
-- Components never import the router's page map (`src/router/route-prefetch.ts`).
-  A feature that wants to warm its own page chunk owns a tiny prefetch module
-  (see `features/jobs/prefetch-detail-chunk.ts`) — this is what keeps the
-  component → router → pages → component cycle impossible.
+  surface**: its `*.queries.ts` hooks (which also re-export domain types for
+  outside consumers), exported components, and the constants its hooks take as
+  arguments (e.g. `jobs/job-filters`). Inner layers (`*.api/dto/mapper/
+repository/service`) are feature-private. If two features need the same
+  util, it moves to `src/utils` (precedent: `companyColor`, `countryFlag`,
+  `formatSalaryRange`).
+- Feature code never imports the router's page map
+  (`src/router/route-prefetch.ts`) — enforced by the
+  `features-dont-import-page-map` dependency-cruiser rule. A feature that
+  wants to warm its own page chunk owns a tiny prefetch module (see
+  `features/jobs/prefetch-detail-chunk.ts`). The layout shell (Navbar) is the
+  sanctioned consumer of the page map.
 
 ## Feature module anatomy
 
@@ -51,7 +56,9 @@ directly (verified: zero direct `useQuery` calls outside queries files).
   data, no sync-with-effect (`src/hooks/useSyncedState.ts` is the sanctioned
   render-time pattern for local editable copies).
 - `staleTime`/`gcTime` come from the `TIER` table in
-  `src/core/query/query-client.ts` — never inline numbers.
+  `src/core/query/query-client.ts`. The only escape hatch is a **named,
+  commented constant** (precedent: `ADMIN_QUEUE_STALE_TIME_MS`) — never a bare
+  inline number.
 - `retry: false` at the client level is deliberate: the axios layer
   (`src/core/http/http-client.ts`) already retries retryable GETs with backoff;
   a second layer would compound.

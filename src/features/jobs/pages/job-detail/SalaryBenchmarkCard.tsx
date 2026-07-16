@@ -1,4 +1,4 @@
-import type { SalaryBenchmark } from "@/features/salary/salary.api";
+import type { SalaryBenchmark } from "@/features/salary/salary.queries";
 import type { Job } from "@/types/job";
 
 const MIN_PERCENTILE = 5;
