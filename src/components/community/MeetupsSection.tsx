@@ -40,7 +40,7 @@ const EVENTS = [
 ];
 
 export const MeetupsSection = () => (
-  <section className="bg-neutral-900 py-16">
+  <section className="bg-neutral-900 py-16 [contain-intrinsic-size:auto_44rem] [content-visibility:auto]">
     <div className="mx-auto max-w-[1240px] px-6">
       <div className="mb-10 text-center">
         <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-500">

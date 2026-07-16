@@ -9,7 +9,7 @@ const FOUNDER_STATS = [
 ];
 
 export const FounderStorySection = () => (
-  <section className="py-16">
+  <section className="py-16 [contain-intrinsic-size:auto_44rem] [content-visibility:auto]">
     <div className="mx-auto max-w-[1240px] px-6">
       <Eyebrow className="mb-3">The story</Eyebrow>
       <h2 className="mb-10 text-[32px] font-semibold tracking-tight text-neutral-900">

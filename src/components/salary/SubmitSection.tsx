@@ -7,7 +7,7 @@ import { ROUTES } from "@/constants/routes";
 
 export const SubmitSection = () => {
   return (
-    <section className="py-16">
+    <section className="py-16 [contain-intrinsic-size:auto_44rem] [content-visibility:auto]">
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>

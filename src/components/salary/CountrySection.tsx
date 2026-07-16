@@ -38,7 +38,7 @@ const COUNTRY_BANDS = [
 
 export const CountrySection = () => {
   return (
-    <section className="border-y border-neutral-100 bg-white py-16">
+    <section className="border-y border-neutral-100 bg-white py-16 [contain-intrinsic-size:auto_44rem] [content-visibility:auto]">
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="mb-10 text-center">
           <Eyebrow className="mb-2">By country</Eyebrow>

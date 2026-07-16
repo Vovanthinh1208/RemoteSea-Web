@@ -47,7 +47,7 @@ const MEMBERS = [
 ];
 
 export const MembersSection = () => (
-  <section className="py-16">
+  <section className="py-16 [contain-intrinsic-size:auto_44rem] [content-visibility:auto]">
     <div className="mx-auto max-w-[1240px] px-6">
       <div className="mb-10 text-center">
         <Eyebrow className="mb-2">Members</Eyebrow>

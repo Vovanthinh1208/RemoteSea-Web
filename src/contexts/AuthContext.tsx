@@ -3,7 +3,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import * as authApi from "@/features/auth/auth.api";
 import { registerUnauthorizedHandler } from "@/services/api-client";
 import { ApiError } from "@/services/api-error";
-import { clearAccessToken, getAccessToken, setAccessToken } from "@/services/token-storage";
+import {
+  ACCESS_TOKEN_STORAGE_KEY,
+  clearAccessToken,
+  getAccessToken,
+  setAccessToken,
+} from "@/services/token-storage";
 import { sessionKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 import { useToast } from "@/components/ui/toast";
@@ -112,6 +117,28 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }),
     [queryClient, toast]
   );
+
+  // Cross-tab session sync: logging out (or in) in one tab updates every other
+  // tab immediately, instead of leaving them showing an authenticated UI until
+  // their next request 401s. `storage` events fire only in OTHER tabs and only
+  // for localStorage — sessionStorage ("don't remember me") tokens are
+  // per-tab by design, so there is nothing to sync for them.
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key !== ACCESS_TOKEN_STORAGE_KEY) return;
+      if (e.newValue === null) {
+        queryClient.setQueryData(SESSION_KEY, null);
+        setHasToken(false);
+      } else {
+        // A login elsewhere: mark the token present and let the session query
+        // (re)fetch the user for this tab.
+        setHasToken(true);
+        void queryClient.invalidateQueries({ queryKey: SESSION_KEY });
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, [queryClient]);
 
   const loginWithToken = useCallback(
     async (token: string, remember = true) => {

@@ -19,7 +19,7 @@ const HOW_IT_WORKS = [
 ];
 
 export const HowItWorksSection = () => (
-  <section className="py-20">
+  <section className="py-20 [contain-intrinsic-size:auto_44rem] [content-visibility:auto]">
     <div className="mx-auto max-w-[1240px] px-6">
       <div className="mb-12 text-center">
         <Eyebrow className="mb-3">How it works</Eyebrow>
