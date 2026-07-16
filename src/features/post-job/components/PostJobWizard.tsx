@@ -40,6 +40,10 @@ const PROFILE_ALREADY_EXISTS_STATUS = 409;
 
 const DRAFT_STORAGE_KEY = "remotesea:post-job-draft";
 
+// The pristine-form comparison target never changes — serialized once at module
+// load instead of on every keystroke render.
+const PRISTINE_FORM_JSON = JSON.stringify({ ...INITIAL_FORM_STATE, jobCategoryId: "" });
+
 type StoredDraft = { form: PostJobFormState; step: number };
 
 // Merging over INITIAL_FORM_STATE keeps an old draft usable after the form
@@ -89,20 +93,25 @@ export const PostJobWizard = () => {
   // wizard auto-defaults it when categories load); skip writing until
   // something real differs, so a pristine visit never plants a draft.
   const hasUserInput =
-    step > 1 ||
-    JSON.stringify({ ...form, jobCategoryId: "" }) !==
-      JSON.stringify({ ...INITIAL_FORM_STATE, jobCategoryId: "" });
+    step > 1 || JSON.stringify({ ...form, jobCategoryId: "" }) !== PRISTINE_FORM_JSON;
   useEffect(() => {
     if (publishedJobId) {
       localStorage.removeItem(DRAFT_STORAGE_KEY);
       return;
     }
     if (!hasUserInput) return;
-    try {
-      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({ form, step }));
-    } catch {
-      // Storage full/blocked — the wizard still works, just without autosave.
-    }
+    // Debounced: the first version wrote synchronously on every keystroke —
+    // a JSON.stringify + blocking localStorage write per character typed into
+    // the description field. 400ms of trailing quiet keeps typing free of
+    // main-thread IO; a hard tab-close can lose at most that last window.
+    const timer = setTimeout(() => {
+      try {
+        localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({ form, step }));
+      } catch {
+        // Storage full/blocked — the wizard still works, just without autosave.
+      }
+    }, 400);
+    return () => clearTimeout(timer);
   }, [form, step, publishedJobId, hasUserInput]);
 
   const { data: categories } = useCategories();
