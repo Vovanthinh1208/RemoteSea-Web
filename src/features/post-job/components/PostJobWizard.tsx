@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Check, Shield, Tag, Zap } from "lucide-react";
 import { cn } from "@/utils/cn";
@@ -49,6 +49,28 @@ export const PostJobWizard = () => {
   // several invalid fields at once, and showing only the first meant fixing one
   // just revealed the next in a whack-a-mole loop.
   const [stepErrors, setStepErrors] = useState<string[]>([]);
+
+  // The wizard has no draft persistence — closing the tab or hitting refresh
+  // three steps in used to lose everything with zero warning. Arm the native
+  // leave-confirmation whenever the user has actually entered something and
+  // nothing has been published yet. jobCategoryId is excluded from the dirty
+  // check: the wizard auto-defaults it as soon as categories load, which is
+  // not user input and must not arm the warning on a pristine form.
+  const isDirty =
+    !publishedJobId &&
+    (step > 1 ||
+      JSON.stringify({ ...form, jobCategoryId: "" }) !==
+        JSON.stringify({ ...INITIAL_FORM_STATE, jobCategoryId: "" }));
+  useEffect(() => {
+    if (!isDirty) return;
+    const warn = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      // Required by some browsers for the dialog to appear.
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [isDirty]);
 
   const { data: categories } = useCategories();
   const { data: allSkills, isError: skillsErrored } = useSkills();

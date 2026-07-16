@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useRef } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigationType } from "react-router-dom";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -7,20 +7,28 @@ import { FullPageLoader } from "@/components/ui/spinner";
 
 export const RootLayout = () => {
   const { pathname } = useLocation();
+  const navigationType = useNavigationType();
   const mainRef = useRef<HTMLElement>(null);
 
   // Without this, a screen-reader user clicking a nav link gets no indication
   // navigation happened — focus stays wherever it was on the old page. Skipped
   // on the very first render (pathname's initial value) so we don't steal focus
   // from the URL bar / whatever the browser already focused on page load.
+  //
+  // preventScroll matters: a bare focus() scrolls the element into view, which
+  // silently destroyed the browser's scroll restoration on Back/Forward — going
+  // back from a job detail dumped you at the top of the board instead of where
+  // you left off. New (PUSH/REPLACE) navigations still start at the top, now
+  // done explicitly instead of as a focus side effect.
   const isFirstRender = useRef(true);
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-    mainRef.current?.focus();
-  }, [pathname]);
+    if (navigationType !== "POP") window.scrollTo(0, 0);
+    mainRef.current?.focus({ preventScroll: true });
+  }, [pathname, navigationType]);
 
   return (
     <>
