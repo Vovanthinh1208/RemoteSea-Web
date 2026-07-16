@@ -16,6 +16,13 @@ export default defineConfig(({ mode, command }) => {
 
   return {
     plugins: [react()],
+    // Release identifier for Sentry (error <-> deploy correlation). CI passes
+    // the commit SHA via GITHUB_SHA; local builds fall back to "dev".
+    define: {
+      __APP_VERSION__: JSON.stringify(
+        process.env.GITHUB_SHA?.slice(0, 12) ?? env.VITE_APP_VERSION ?? "dev"
+      ),
+    },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
@@ -25,6 +32,10 @@ export default defineConfig(({ mode, command }) => {
       port: 3000,
     },
     build: {
+      // Generated but not referenced from the bundles ("hidden") — stack traces
+      // stay symbolicable (locally, or uploaded to Sentry in a release step)
+      // without advertising map URLs to every visitor's devtools.
+      sourcemap: "hidden",
       rollupOptions: {
         output: {
           manualChunks(id: string) {

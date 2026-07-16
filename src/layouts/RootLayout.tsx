@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { FullPageLoader } from "@/components/ui/spinner";
+import { OfflineBanner } from "@/components/shared/OfflineBanner";
 
 export const RootLayout = () => {
   const { pathname } = useLocation();
@@ -40,6 +41,7 @@ export const RootLayout = () => {
       >
         Skip to main content
       </a>
+      <OfflineBanner />
       <Navbar />
       <main className="flex-1" id="main-content" ref={mainRef} tabIndex={-1}>
         {/* Scoped so a crash on one page doesn't take the whole shell (nav/footer) down,
