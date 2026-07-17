@@ -6,7 +6,6 @@ import {
   listEmployerJobs,
   listJobApplications,
   updateApplicationStatus,
-  updateEmployerProfile,
 } from "@/features/employer/employer.service";
 import { ApiError } from "@/services/api-error";
 import { useAuth } from "@/contexts/AuthContext";
@@ -14,7 +13,7 @@ import { MY_APPLICATIONS_KEY } from "@/features/applications/applications.querie
 import { employerKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 import type { ApplicationStatus } from "@/types/application";
-import type { EmployerApplicant, EmployerProfileSummary } from "@/types/employer";
+import type { EmployerApplicant } from "@/types/employer";
 
 export const EMPLOYER_PROFILE_KEY = employerKeys.profile();
 export const EMPLOYER_JOBS_KEY = employerKeys.jobs();
@@ -50,21 +49,6 @@ export const useCreateEmployerProfile = () => {
     mutationFn: createEmployerProfile,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: employerKeys.profile() });
-    },
-  });
-};
-
-export const useUpdateEmployerProfile = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: updateEmployerProfile,
-    onSuccess: (profile) => {
-      // The update response doesn't include _count/totalApplications (only GET
-      // does) — merge into the existing cache instead of replacing it wholesale,
-      // so those fields aren't silently dropped after every profile edit.
-      queryClient.setQueryData<EmployerProfileSummary | null>(employerKeys.profile(), (prev) =>
-        prev ? { ...prev, ...profile } : prev
-      );
     },
   });
 };

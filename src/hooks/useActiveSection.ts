@@ -37,8 +37,12 @@ export const useActiveSection = (ids: string[]): [string, Dispatch<SetStateActio
 
     return () => observer.disconnect();
 
+    // Keyed on the joined ids (not the array reference, which is a fresh
+    // literal every render) — static callers behave like [] did, and a caller
+    // whose section list genuinely changes now re-observes instead of silently
+    // watching stale elements.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [ids.join(",")]);
 
   return [activeId, setActiveId];
 };
