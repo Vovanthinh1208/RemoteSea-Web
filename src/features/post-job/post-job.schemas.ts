@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { ExperienceLevel, JobType, PlanType } from "@/types/job";
+import { PLAN_PRICES_USD } from "@/constants/plans";
 
 export const COMPANY_SIZE_OPTIONS = ["1–10", "11–50", "51–200", "201–500", "500+"] as const;
 
@@ -102,13 +103,12 @@ export type Tier = {
   highlight: boolean;
 };
 
-// Prices match PLAN_PRICES in remotesea-api (cents: STANDARD=15000, FEATURED=35000, HANDS_ON=120000).
 export const TIERS: Tier[] = [
   {
     id: "standard",
     name: "Standard",
     planType: "STANDARD",
-    price: 150,
+    price: PLAN_PRICES_USD.STANDARD,
     desc: "Listed for 30 days, basic search placement.",
     features: ["30-day listing", "Search results", "Email apply"],
     ribbon: null,
@@ -118,7 +118,7 @@ export const TIERS: Tier[] = [
     id: "featured",
     name: "Featured",
     planType: "FEATURED",
-    price: 350,
+    price: PLAN_PRICES_USD.FEATURED,
     desc: "Top of search, highlighted card, pushed to newsletter.",
     features: ["60-day listing", "Top placement", "Newsletter blast", "Social share"],
     ribbon: "Popular",
@@ -128,7 +128,7 @@ export const TIERS: Tier[] = [
     id: "handson",
     name: "Hands-on",
     planType: "HANDS_ON",
-    price: 1200,
+    price: PLAN_PRICES_USD.HANDS_ON,
     desc: "We source & screen candidates for you.",
     features: ["Unlimited listing", "Priority placement", "Sourcing by team", "Slack channel"],
     ribbon: null,
