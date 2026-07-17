@@ -4,6 +4,7 @@ import { ArrowRight, Check } from "lucide-react";
 import { ROUTES } from "@/constants/routes";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { PLAN_DISPLAY_NAMES, PLAN_PRICES_USD } from "@/constants/plans";
+import { formatUsd } from "@/utils/format";
 
 interface PricingTier {
   name: string;
@@ -72,7 +73,7 @@ const TierPrice = ({ tier, annual }: TierPriceProps) => {
   if (annual && tier.annualPrice) {
     return (
       <>
-        ${tier.annualPrice.toLocaleString()}
+        {formatUsd(tier.annualPrice)}
         <span className="ml-1 font-sans text-[16px] text-neutral-400">/yr</span>
       </>
     );
@@ -82,7 +83,7 @@ const TierPrice = ({ tier, annual }: TierPriceProps) => {
   }
   return (
     <>
-      ${tier.price.toLocaleString()}
+      {formatUsd(tier.price)}
       <span className="ml-1 font-sans text-[16px] text-neutral-400">/post</span>
     </>
   );

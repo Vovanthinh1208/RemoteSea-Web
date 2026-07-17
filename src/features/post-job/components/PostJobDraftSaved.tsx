@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
 import type { PostJobFormState } from "@/features/post-job/post-job.schemas";
 import { TIERS } from "@/features/post-job/post-job.schemas";
+import { formatUsd } from "@/utils/format";
 
 interface PostJobDraftSavedProps {
   form: PostJobFormState;
@@ -35,7 +36,7 @@ export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
           Job details
         </p>
         {[
-          { k: "Plan selected", v: `${tier.name} ($${tier.price})` },
+          { k: "Plan selected", v: `${tier.name} (${formatUsd(tier.price)})` },
           { k: "Company", v: form.coName || "—" },
           { k: "Role", v: form.jobTitle || "—" },
           { k: "Reference", v: jobId },

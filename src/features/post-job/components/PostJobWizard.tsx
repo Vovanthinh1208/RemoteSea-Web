@@ -30,6 +30,7 @@ import {
   usePostJobDraftPersistence,
 } from "@/features/post-job/use-post-job-draft";
 import { ROUTES } from "@/constants/routes";
+import { formatUsd } from "@/utils/format";
 
 const STEPS = [
   { id: 1, label: "Company" },
@@ -317,11 +318,11 @@ export const PostJobWizard = () => {
               <div className="space-y-2 text-[13px]">
                 <div className="flex justify-between text-neutral-600">
                   <span>{selectedTier.name}</span>
-                  <span>${selectedTier.price}</span>
+                  <span>{formatUsd(selectedTier.price)}</span>
                 </div>
                 <div className="flex justify-between border-t border-neutral-100 pt-2 font-semibold text-neutral-900">
                   <span>Total</span>
-                  <span>${selectedTier.price}</span>
+                  <span>{formatUsd(selectedTier.price)}</span>
                 </div>
               </div>
             </div>

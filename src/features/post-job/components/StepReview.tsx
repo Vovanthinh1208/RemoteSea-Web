@@ -1,5 +1,6 @@
 import { Shield } from "lucide-react";
 import { TIERS, type PostJobFormState } from "@/features/post-job/post-job.schemas";
+import { formatUsd } from "@/utils/format";
 
 interface StepReviewProps {
   form: PostJobFormState;
@@ -28,7 +29,7 @@ export const StepReview = ({ form }: StepReviewProps) => {
           </div>
           <div className="flex justify-between border-t border-neutral-200 pt-2 font-semibold text-neutral-900">
             <span>{tier.name} listing</span>
-            <span>${tier.price}</span>
+            <span>{formatUsd(tier.price)}</span>
           </div>
         </div>
         <p className="mt-3 flex items-center gap-1.5 text-[11.5px] text-neutral-400">
