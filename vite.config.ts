@@ -40,6 +40,13 @@ export default defineConfig(({ mode, command }) => {
       sourcemap: "hidden",
       rollupOptions: {
         output: {
+          // Only node_modules gets manual grouping (stable vendor chunks). App
+          // code is left to Rollup's automatic shared-chunk splitting: it emits
+          // many small shared chunks, one per module shared across lazy routes,
+          // so each route pulls only the shared code it needs — and Vite's
+          // injected modulepreload fetches them in parallel, not in a waterfall.
+          // (Bundling them into one "app-shared" chunk was measured worse: it
+          // forced 275KB / 87KB gzip onto the initial load.)
           manualChunks(id: string) {
             if (!id.includes("node_modules")) return undefined;
             if (/[\\/]node_modules[\\/](react|react-dom)[\\/]/.test(id)) return "vendor-react";
