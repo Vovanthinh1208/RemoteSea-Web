@@ -10,7 +10,10 @@ import { FinalCtaSection } from "@/features/employer/pages/employer-marketing/Fi
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export const EmployerMarketingPage = () => {
-  useDocumentTitle("For Employers — Hire Vietnam Remote Talent");
+  useDocumentTitle(
+    "For Employers — Hire Vietnam Remote Talent",
+    "Hire vetted remote talent in Vietnam — verified listings, salary range required, and results in two weeks or your money back."
+  );
 
   return (
     <>

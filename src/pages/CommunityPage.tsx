@@ -11,7 +11,10 @@ import { JoinCtaSection } from "@/components/community/JoinCtaSection";
 // employer-marketing/*).
 
 export const CommunityPage = () => {
-  useDocumentTitle("Community — RemoteSEA");
+  useDocumentTitle(
+    "Community — RemoteSEA",
+    "500+ remote-working Vietnamese professionals in one community — trade offer letters, debug async culture, and meet up in person."
+  );
   return (
     <>
       <CommunityHeroSection />
