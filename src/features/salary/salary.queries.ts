@@ -3,10 +3,13 @@ import { listSalaryBenchmarks } from "@/features/salary/salary.service";
 import { salaryKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 
-export const useSalaryBenchmarks = () =>
+// `enabled` lets callers that only need benchmarks conditionally (e.g. the job
+// detail's salary card, meaningless for a job with no salary) skip the fetch.
+export const useSalaryBenchmarks = (enabled = true) =>
   useQuery({
     queryKey: salaryKeys.benchmarks(),
     queryFn: ({ signal }) => listSalaryBenchmarks({ signal }),
+    enabled,
     ...TIER.reference,
   });
 
