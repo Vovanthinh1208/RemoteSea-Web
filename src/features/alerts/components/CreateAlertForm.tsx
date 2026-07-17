@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PillToggle } from "@/components/shared/PillToggle";
+import { SELECT_INPUT_CLASS, TEXT_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useCategories } from "@/features/taxonomy/taxonomy.queries";
 import {
   createAlertFormSchema,
@@ -16,9 +17,6 @@ import type { CreateAlertPayload } from "@/types/alert";
 interface CreateAlertFormProps {
   onCreate: (payload: CreateAlertPayload) => Promise<void>;
 }
-
-const INPUT_FIELD_CLASS =
-  "h-10 w-full rounded-10 border border-neutral-200 bg-white px-3 text-[13.5px] text-neutral-900 outline-none focus:border-brand-600";
 
 const DEFAULT_FORM_VALUES: CreateAlertFormValues = {
   name: "",
@@ -79,7 +77,7 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
         <div>
           <input
             aria-label="Alert name"
-            className={INPUT_FIELD_CLASS}
+            className={TEXT_INPUT_CLASS}
             placeholder="Alert name (e.g. Senior remote engineering)"
             {...register("name")}
           />
@@ -87,11 +85,11 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
         </div>
         <input
           aria-label="Keywords"
-          className={INPUT_FIELD_CLASS}
+          className={TEXT_INPUT_CLASS}
           placeholder="Keywords (optional)"
           {...register("keywords")}
         />
-        <select aria-label="Job type" className={INPUT_FIELD_CLASS} {...register("jobType")}>
+        <select aria-label="Job type" className={SELECT_INPUT_CLASS} {...register("jobType")}>
           <option value="">Any job type</option>
           {JOB_TYPES.map((jobType) => (
             <option key={jobType} value={jobType}>
@@ -99,7 +97,7 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
             </option>
           ))}
         </select>
-        <select aria-label="Seniority level" className={INPUT_FIELD_CLASS} {...register("level")}>
+        <select aria-label="Seniority level" className={SELECT_INPUT_CLASS} {...register("level")}>
           <option value="">Any level</option>
           {LEVELS.map((level) => (
             <option key={level} value={level}>
@@ -109,7 +107,7 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
         </select>
         <input
           aria-label="Minimum salary"
-          className={INPUT_FIELD_CLASS}
+          className={TEXT_INPUT_CLASS}
           min={0}
           placeholder="Min salary (USD/mo, optional)"
           type="number"
@@ -117,7 +115,7 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
         />
         <select
           aria-label="Notification frequency"
-          className={INPUT_FIELD_CLASS}
+          className={SELECT_INPUT_CLASS}
           {...register("frequency")}
         >
           {FREQUENCIES.map((frequency) => (
