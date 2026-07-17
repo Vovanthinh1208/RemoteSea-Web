@@ -112,7 +112,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
         <button
           aria-label={saved ? "Unsave job" : "Save job"}
           className={cn(
-            "relative z-10 grid h-8 w-8 place-items-center rounded-8 transition-colors",
+            "relative z-10 grid h-8 w-8 place-items-center rounded-8 transition-colors focus-visible:shadow-focus focus-visible:outline-none",
             statusUnknown
               ? "text-transparent"
               : saved

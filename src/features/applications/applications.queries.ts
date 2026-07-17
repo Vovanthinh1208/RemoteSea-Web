@@ -2,10 +2,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   applyToJob,
   getMyApplicationStats,
+  listMyApplicationIds,
   listMyApplications,
 } from "@/features/applications/applications.service";
+import { TIER } from "@/core/query/query-client";
 import { useAuth } from "@/contexts/AuthContext";
-import { applicationKeys } from "@/core/query/query-keys";
+import { applicationKeys, jobKeys } from "@/core/query/query-keys";
 
 // Prefix key — invalidating this covers every mine(page,limit) variant plus stats().
 export const MY_APPLICATIONS_KEY = applicationKeys.all;
@@ -33,12 +35,28 @@ export const useMyApplicationStats = () => {
   });
 };
 
+// Membership set for "already applied?" checks — lets ApplyButton derive its
+// state from the server instead of a local flag that reset on every revisit.
+export const useMyApplicationIds = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: applicationKeys.ids(),
+    queryFn: ({ signal }) => listMyApplicationIds({ signal }),
+    enabled: !!user,
+    staleTime: TIER.live.staleTime,
+  });
+};
+
 export const useApplyToJob = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: applyToJob,
-    onSuccess: () => {
+    onSuccess: (_data, { jobId }) => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.all });
+      // The backend increments job.applyCount on apply, and ApplyCard renders
+      // it ("Applicants so far") on the very page the user just applied from —
+      // refresh the cached detail so the count isn't stale in front of them.
+      queryClient.invalidateQueries({ queryKey: jobKeys.detail(jobId) });
     },
   });
 };

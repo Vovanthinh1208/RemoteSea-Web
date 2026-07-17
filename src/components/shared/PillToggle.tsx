@@ -19,7 +19,11 @@ export const PillToggle = ({
 }: PillToggleProps) => (
   <button
     aria-pressed={active}
-    className={cn("rounded-full", className, active ? activeClassName : inactiveClassName)}
+    className={cn(
+      "rounded-full focus-visible:shadow-focus focus-visible:outline-none",
+      className,
+      active ? activeClassName : inactiveClassName
+    )}
     type="button"
     onClick={onClick}
   >

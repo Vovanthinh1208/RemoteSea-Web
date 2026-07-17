@@ -20,7 +20,10 @@ import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 const FEATURED_JOBS_DISPLAY_COUNT = 4;
 
 export const HomePage = () => {
-  useDocumentTitle("Remote Jobs from SG, AU & beyond");
+  useDocumentTitle(
+    "Remote Jobs from SG, AU & beyond",
+    "Curated remote jobs from Singapore, Australia and beyond for Vietnamese talent — clear salary ranges, verified employers, and sensible timezones."
+  );
   const { data } = useJobsQuery(DEFAULT_JOB_FILTERS, DEFAULT_FILTERS_FETCH_LIMIT);
   const featuredJobs = (data?.jobs ?? []).slice(0, FEATURED_JOBS_DISPLAY_COUNT);
   const { data: salaryBenches } = useSalaryBenchmarks();

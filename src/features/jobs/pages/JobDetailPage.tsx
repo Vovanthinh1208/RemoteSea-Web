@@ -29,7 +29,10 @@ const jobMetaDescription = (job: NonNullable<ReturnType<typeof useJobQuery>["dat
 export const JobDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data: job, isLoading, isError } = useJobQuery(id);
-  const { data: benchmarks } = useSalaryBenchmarks();
+  // Only fetched/rendered when the job actually has a salary — the benchmark
+  // card compares against it, so it's meaningless (and shows $0) otherwise.
+  const hasSalary = job?.salaryMin != null;
+  const { data: benchmarks } = useSalaryBenchmarks(hasSalary);
   useDocumentTitle(
     job ? `${job.title} at ${job.employer.companyName}` : "Job",
     job ? jobMetaDescription(job) : undefined
@@ -82,7 +85,7 @@ export const JobDetailPage = () => {
           <div className="sticky top-6 space-y-4">
             <ApplyCard job={job} />
             <VnSignalCard companyName={job.employer.companyName} vnHireCount={job.vnHireCount} />
-            <SalaryBenchmarkCard benchmarks={benchmarks} job={job} />
+            {hasSalary && <SalaryBenchmarkCard benchmarks={benchmarks} job={job} />}
             <QuickFactsCard job={job} />
             <JobCompanyCard job={job} />
           </div>

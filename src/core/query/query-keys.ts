@@ -32,6 +32,9 @@ export const applicationKeys = {
   // KPI tiles, which need an accurate total/interviewing/offers count even beyond
   // whatever page size `mine()` is fetched at.
   stats: () => ["applications", "stats"] as const,
+  // Membership set (applied job ids) for "already applied?" checks — the
+  // ApplyButton twin of savedKeys.ids().
+  ids: () => ["applications", "ids"] as const,
 };
 
 export const employerKeys = {

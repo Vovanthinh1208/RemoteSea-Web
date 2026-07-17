@@ -16,3 +16,11 @@ export const formatSalaryRange = (
   if (max != null) return `Up to ${prefix}${max.toLocaleString()}`;
   return null;
 };
+
+/**
+ * A whole-dollar USD amount with a thousands separator — "$1,200". Plan prices
+ * were rendered as bare `${price}` in the post-job flow ("$1200") but
+ * toLocaleString'd on the pricing page ("$1,200"); the same number showed two
+ * ways. This is the one formatter for those.
+ */
+export const formatUsd = (amount: number): string => `$${amount.toLocaleString()}`;

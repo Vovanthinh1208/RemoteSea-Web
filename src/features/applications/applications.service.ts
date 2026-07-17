@@ -27,3 +27,6 @@ export const getMyApplicationStats = async (
   opts?: RequestOptions
 ): Promise<ApplicationStatusCounts> =>
   toApplicationStatusCounts(await applicationsRepository.getStatusCounts(opts));
+
+export const listMyApplicationIds = async (opts?: RequestOptions): Promise<string[]> =>
+  (await applicationsRepository.listMyApplicationIds(opts)).jobIds;

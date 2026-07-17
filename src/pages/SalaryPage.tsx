@@ -17,7 +17,10 @@ const HERO_STATS = [
 ];
 
 export const SalaryPage = () => {
-  useDocumentTitle("Remote Salary Guide — Vietnam Talent");
+  useDocumentTitle(
+    "Remote Salary Guide — Vietnam Talent",
+    "Real remote-salary data for Vietnamese professionals working for Singapore, Australia, and US companies — by role, seniority, and country."
+  );
   return (
     <>
       {/* Hero */}

@@ -24,7 +24,7 @@ const FOOTER_COLS = [
     links: [
       { label: "About", href: "#" },
       { label: "Founder story", href: "#" },
-      { label: "Contact", href: "#" },
+      { label: "Contact", href: "mailto:hello@remotesea.io" },
       { label: "Press", href: "#" },
     ],
   },

@@ -4,7 +4,10 @@ import { parseJobQuery, serializeJobQuery, type JobFilters } from "@/features/jo
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export const JobsPage = () => {
-  useDocumentTitle("Browse Remote Jobs");
+  useDocumentTitle(
+    "Browse Remote Jobs",
+    "Browse verified remote jobs hiring Vietnamese talent — filter by role, salary, timezone, and category. New listings reviewed before they go live."
+  );
   const [searchParams, setSearchParams] = useSearchParams();
   const filters = parseJobQuery(searchParams);
 

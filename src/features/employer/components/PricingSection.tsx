@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Check } from "lucide-react";
 import { ROUTES } from "@/constants/routes";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { PLAN_DISPLAY_NAMES, PLAN_PRICES_USD } from "@/constants/plans";
+import { formatUsd } from "@/utils/format";
 
 interface PricingTier {
   name: string;
@@ -16,9 +18,9 @@ interface PricingTier {
 
 const TIERS: PricingTier[] = [
   {
-    name: "Standard",
+    name: PLAN_DISPLAY_NAMES.STANDARD,
     tag: "For one-off roles",
-    price: 150,
+    price: PLAN_PRICES_USD.STANDARD,
     annualPrice: 1500,
     desc: "A clean 30-day listing on the board.",
     featured: false,
@@ -31,9 +33,9 @@ const TIERS: PricingTier[] = [
     ],
   },
   {
-    name: "Featured",
+    name: PLAN_DISPLAY_NAMES.FEATURED,
     tag: "Most popular",
-    price: 350,
+    price: PLAN_PRICES_USD.FEATURED,
     annualPrice: 3500,
     desc: "Front of the queue, amber highlight, alerts to subscribers.",
     featured: true,
@@ -46,9 +48,9 @@ const TIERS: PricingTier[] = [
     ],
   },
   {
-    name: "Hands-on",
+    name: PLAN_DISPLAY_NAMES.HANDS_ON,
     tag: "We do the work",
-    price: 1200,
+    price: PLAN_PRICES_USD.HANDS_ON,
     annualPrice: null,
     desc: "We screen the applicants. You see the top 5.",
     featured: false,
@@ -71,7 +73,7 @@ const TierPrice = ({ tier, annual }: TierPriceProps) => {
   if (annual && tier.annualPrice) {
     return (
       <>
-        ${tier.annualPrice.toLocaleString()}
+        {formatUsd(tier.annualPrice)}
         <span className="ml-1 font-sans text-[16px] text-neutral-400">/yr</span>
       </>
     );
@@ -81,7 +83,7 @@ const TierPrice = ({ tier, annual }: TierPriceProps) => {
   }
   return (
     <>
-      ${tier.price.toLocaleString()}
+      {formatUsd(tier.price)}
       <span className="ml-1 font-sans text-[16px] text-neutral-400">/post</span>
     </>
   );

@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { TIERS, type PostJobStepProps } from "@/features/post-job/post-job.schemas";
+import { formatUsd } from "@/utils/format";
 
 export const StepPlan = ({ form, set }: PostJobStepProps) => (
   <div className="space-y-6">
@@ -36,7 +37,9 @@ export const StepPlan = ({ form, set }: PostJobStepProps) => (
           )}
           <p className="mb-1 text-[15px] font-semibold text-neutral-900">{t.name}</p>
           <p className="mb-3 text-[22px] font-semibold text-neutral-900">
-            ${t.price}
+            {/* toLocaleString for the thousands separator — the Hands-on tier is
+                $1,200; the pricing page and salary figures format the same way. */}
+            {formatUsd(t.price)}
             <span className="ml-0.5 text-[13px] font-normal text-neutral-400">one-time</span>
           </p>
           <p className="mb-3 text-[12.5px] leading-relaxed text-neutral-500">{t.desc}</p>
