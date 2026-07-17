@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Building2, ShieldCheck } from "lucide-react";
 import { GradientInitial } from "@/components/ui/gradient-initial";
+import { personInitial } from "@/utils/name";
 
 const APPLICANTS = [
   { name: "Phạm Tuấn", role: "Sr. Frontend · 6 yrs", loc: "Đà Nẵng, VN", match: 94 },
@@ -136,7 +137,7 @@ export const HeroSection = () => (
                 key={a.name}
               >
                 <GradientInitial className="h-8 w-8 rounded-full text-xs">
-                  {a.name.trim().split(" ").pop()?.[0] ?? "?"}
+                  {personInitial(a.name)}
                 </GradientInitial>
                 <div className="min-w-0 flex-1">
                   <div className="text-[13.5px] font-semibold text-neutral-900">{a.name}</div>

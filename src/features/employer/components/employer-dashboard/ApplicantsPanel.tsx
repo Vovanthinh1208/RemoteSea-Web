@@ -16,6 +16,7 @@ import {
 } from "@/features/employer/employer-dashboard.utils";
 import type { ApplicantWithJob } from "@/features/employer/employer.queries";
 import type { ApplicationStatus } from "@/types/application";
+import { personInitial } from "@/utils/name";
 
 type ApplicantTabId = "all" | "new" | "shortlisted";
 
@@ -59,7 +60,7 @@ const ApplicantRow = memo(function ApplicantRow({
   onStatusChange,
 }: ApplicantRowProps) {
   const name = a.talent.user.name ?? "Candidate";
-  const initial = name.split(" ").slice(-1)[0]?.[0]?.toUpperCase() ?? "C";
+  const initial = personInitial(name);
   const group = APPLICANT_STATUS[a.status];
   const nextStatus = NEXT_STAGE[a.status];
   return (
