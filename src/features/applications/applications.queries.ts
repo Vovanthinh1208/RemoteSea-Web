@@ -2,8 +2,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   applyToJob,
   getMyApplicationStats,
+  listMyApplicationIds,
   listMyApplications,
 } from "@/features/applications/applications.service";
+import { TIER } from "@/core/query/query-client";
 import { useAuth } from "@/contexts/AuthContext";
 import { applicationKeys } from "@/core/query/query-keys";
 
@@ -30,6 +32,18 @@ export const useMyApplicationStats = () => {
     queryKey: applicationKeys.stats(),
     queryFn: ({ signal }) => getMyApplicationStats({ signal }),
     enabled: !!user,
+  });
+};
+
+// Membership set for "already applied?" checks — lets ApplyButton derive its
+// state from the server instead of a local flag that reset on every revisit.
+export const useMyApplicationIds = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: applicationKeys.ids(),
+    queryFn: ({ signal }) => listMyApplicationIds({ signal }),
+    enabled: !!user,
+    staleTime: TIER.live.staleTime,
   });
 };
 

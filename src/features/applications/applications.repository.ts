@@ -31,4 +31,11 @@ export const applicationsRepository = {
     });
     return data;
   },
+
+  listMyApplicationIds: async (opts?: RequestOptions): Promise<{ jobIds: string[] }> => {
+    const { data } = await apiClient.get<{ jobIds: string[] }>("/applications/ids", {
+      signal: opts?.signal,
+    });
+    return data;
+  },
 };

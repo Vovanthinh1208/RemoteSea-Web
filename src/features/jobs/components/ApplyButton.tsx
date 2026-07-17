@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Check } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { useApplyToJob } from "@/features/applications/applications.queries";
+import { useApplyToJob, useMyApplicationIds } from "@/features/applications/applications.queries";
 import { ApiError } from "@/services/api-error";
 import { ROUTES } from "@/constants/routes";
 
@@ -21,8 +21,15 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const applyToJobMutation = useApplyToJob();
+  const { data: appliedJobIds } = useMyApplicationIds();
   const [state, setState] = useState<ApplyState>("idle");
   const [message, setMessage] = useState<string | null>(null);
+
+  // Server-derived: previously "applied" was only a local flag, so leaving the
+  // page and coming back reset the button to "Apply now" until a click bounced
+  // off the 409. The ids query is the source of truth; local state remains the
+  // immediate post-click fast path before the invalidated query refetches.
+  const applied = state === "applied" || (appliedJobIds?.includes(jobId) ?? false);
 
   const handleApply = async () => {
     if (!user) {
@@ -63,7 +70,7 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
     }
   };
 
-  if (state === "applied") {
+  if (applied) {
     return (
       <div className="mb-2.5 flex w-full items-center justify-center gap-2 rounded-12 border border-brand-200 bg-brand-50 py-3 text-[15px] font-medium text-brand-700">
         <Check size={16} /> Application sent
