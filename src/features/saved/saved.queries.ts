@@ -37,6 +37,22 @@ export const useSavedJobIds = () => {
   });
 };
 
+// Fine-grained membership subscription for a single card: `select` narrows the
+// cached ids array down to one boolean, so React Query only re-renders this
+// observer when *its own* saved-state flips. Subscribing to the raw array (as
+// useSavedJobIds does) re-rendered every JobCard on the board on every toggle,
+// because the array identity changes for all of them at once.
+export const useIsJobSaved = (jobId: string) => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: savedKeys.ids(),
+    queryFn: ({ signal }) => listSavedJobIds({ signal }),
+    enabled: !!user,
+    staleTime: TIER.live.staleTime,
+    select: (ids) => ids.includes(jobId),
+  });
+};
+
 export const useSaveJob = () => {
   const queryClient = useQueryClient();
   return useMutation({

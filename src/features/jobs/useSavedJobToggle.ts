@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { useSavedJobIds, useSaveJob, useUnsaveJob } from "@/features/saved/saved.queries";
+import { useIsJobSaved, useSaveJob, useUnsaveJob } from "@/features/saved/saved.queries";
 import { ROUTES } from "@/constants/routes";
 import { reportError } from "@/services/monitoring";
 
@@ -23,12 +23,12 @@ export const useSavedJobToggle = (
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { data: savedJobIds, isLoading: savedStatusLoading } = useSavedJobIds();
+  const { data: isSaved, isLoading: savedStatusLoading } = useIsJobSaved(jobId);
   const saveMutation = useSaveJob();
   const unsaveMutation = useUnsaveJob();
 
   const statusUnknown = !!user && savedStatusLoading;
-  const saved = savedJobIds?.includes(jobId) ?? false;
+  const saved = isSaved ?? false;
 
   // Guards against a rapid double-click firing a second toggle before the first's
   // optimistic update/rollback has settled — without this, `prev` in the second
