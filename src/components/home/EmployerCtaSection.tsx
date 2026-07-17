@@ -30,12 +30,14 @@ export const EmployerCtaSection = () => (
             >
               Post a job — from $150 <ArrowRight size={14} />
             </Link>
-            <Link
+            {/* Same mailto the employer-marketing CTAs use — this was a dead
+                to="#" link that just scrolled to the top. */}
+            <a
               className="inline-flex h-11 items-center px-5 text-sm font-medium text-neutral-300 transition-colors hover:text-white"
-              to="#"
+              href="mailto:hello@remotesea.io"
             >
               Talk to founder
-            </Link>
+            </a>
           </div>
         </div>
         <div className="space-y-3">
