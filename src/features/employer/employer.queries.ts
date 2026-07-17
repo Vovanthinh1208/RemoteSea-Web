@@ -103,10 +103,17 @@ export const useEmployerApplicationsAggregate = () => {
       byJobId.set(jobId, results[i]?.data?.applications ?? []);
     });
 
-    const all: ApplicantWithJob[] = jobIds.flatMap((jobId) => {
-      const job = jobs.find((j) => j.id === jobId);
-      return (byJobId.get(jobId) ?? []).map((a) => ({ ...a, jobId, jobTitle: job?.title ?? "" }));
-    });
+    // Index jobs by id once (O(jobs)) instead of jobs.find per jobId inside the
+    // flatMap, which was O(jobs × jobIds) — quadratic for an employer with many
+    // listings that all have applicants.
+    const titleById = new Map(jobs.map((j) => [j.id, j.title]));
+    const all: ApplicantWithJob[] = jobIds.flatMap((jobId) =>
+      (byJobId.get(jobId) ?? []).map((a) => ({
+        ...a,
+        jobId,
+        jobTitle: titleById.get(jobId) ?? "",
+      }))
+    );
 
     return { byJobId, all };
     // eslint-disable-next-line react-hooks/exhaustive-deps
