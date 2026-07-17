@@ -16,6 +16,7 @@ import { usePublicTalentProfile } from "@/features/talent/talent.queries";
 import { useAuth } from "@/contexts/AuthContext";
 import { LEVEL_TO_LABEL } from "@/features/talent/talent.constants";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { safeExternalUrl } from "@/utils/safe-url";
 import { formatSalaryRange } from "@/utils/format";
 import { ROUTES } from "@/constants/routes";
 
@@ -58,16 +59,17 @@ export const PublicTalentProfilePage = () => {
     .toUpperCase();
   const isOwnProfile = !!user && profile.userId === user.id;
 
+  // Each href is user-supplied and only backend-validated with Zod .url(),
+  // which accepts javascript:/data: — safeExternalUrl drops anything that
+  // isn't http(s)/mailto so a malicious link can't reach the <a href> below.
   const links = [
-    profile.githubUrl && { icon: Code2, label: profile.githubUrl, href: profile.githubUrl },
-    profile.linkedinUrl && { icon: User, label: profile.linkedinUrl, href: profile.linkedinUrl },
-    profile.portfolioUrl && {
-      icon: Globe,
-      label: profile.portfolioUrl,
-      href: profile.portfolioUrl,
-    },
-    profile.resumeUrl && { icon: FileText, label: "Resume / CV", href: profile.resumeUrl },
-  ].filter((l): l is { icon: typeof Code2; label: string; href: string } => Boolean(l));
+    { icon: Code2, label: profile.githubUrl, href: safeExternalUrl(profile.githubUrl) },
+    { icon: User, label: profile.linkedinUrl, href: safeExternalUrl(profile.linkedinUrl) },
+    { icon: Globe, label: profile.portfolioUrl, href: safeExternalUrl(profile.portfolioUrl) },
+    { icon: FileText, label: "Resume / CV", href: safeExternalUrl(profile.resumeUrl) },
+  ].filter((l): l is { icon: typeof Code2; label: string; href: string } =>
+    Boolean(l.href && l.label)
+  );
 
   return (
     <div className="min-h-screen bg-[#F8F7F4]">
