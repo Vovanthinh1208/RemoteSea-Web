@@ -27,7 +27,7 @@ interface LinksSectionProps {
 }
 
 export const LinksSection = ({ register, resumeUrl, onResumeUploaded }: LinksSectionProps) => (
-  <section className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7" id="links">
+  <section className="scroll-mt-6 rounded-20 border border-neutral-100 bg-white p-7" id="links">
     <SectionHead
       eyebrow="06 · Where to look"
       help="Attach your CV and a couple of links. Hiring managers want to read your writing or code."

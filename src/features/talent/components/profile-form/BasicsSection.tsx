@@ -19,7 +19,7 @@ export const BasicsSection = ({
   headlineError,
   headlineLength,
 }: BasicsSectionProps) => (
-  <section className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7" id="basics">
+  <section className="scroll-mt-6 rounded-20 border border-neutral-100 bg-white p-7" id="basics">
     <SectionHead
       eyebrow="01 · Identity"
       help="Your name, headline, location and timezone. This appears at the top of your profile."

@@ -46,6 +46,11 @@ const config: Config = {
         "10": "10px",
         "12": "12px",
         "16": "16px",
+        // 20 was missing from the scale but `rounded-20` is used in ~29 places
+        // (cards across settings, post-job, employer, talent) — the class
+        // generated no CSS, so those corners rendered square. Restores the
+        // intended 20px radius.
+        "20": "20px",
         "24": "24px",
       },
       boxShadow: {

@@ -161,8 +161,8 @@ export const BlogPage = () => {
           </p>
 
           {/* Featured */}
-          <article className="rounded-20 grid gap-8 overflow-hidden border border-neutral-100 bg-white shadow-card transition-shadow hover:shadow-[0_4px_24px_rgba(26,25,23,0.10)] lg:grid-cols-[420px_1fr]">
-            <div className="rounded-l-20 overflow-hidden">
+          <article className="grid gap-8 overflow-hidden rounded-20 border border-neutral-100 bg-white shadow-card transition-shadow hover:shadow-[0_4px_24px_rgba(26,25,23,0.10)] lg:grid-cols-[420px_1fr]">
+            <div className="overflow-hidden rounded-l-20">
               <div
                 className="h-full min-h-[260px] w-full"
                 style={{ background: featured.bg, aspectRatio: "4/3" }}

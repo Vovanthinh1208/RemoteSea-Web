@@ -31,7 +31,7 @@ export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
         review yet.
       </p>
 
-      <div className="rounded-20 mb-8 w-full max-w-md border border-neutral-200 bg-white p-6 text-left shadow-card">
+      <div className="mb-8 w-full max-w-md rounded-20 border border-neutral-200 bg-white p-6 text-left shadow-card">
         <p className="mb-4 text-[12px] font-semibold uppercase tracking-widest text-neutral-400">
           Job details
         </p>

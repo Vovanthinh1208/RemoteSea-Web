@@ -19,7 +19,7 @@ export const PreferencesSection = ({
   onMinChange,
   onMaxChange,
 }: PreferencesSectionProps) => (
-  <section className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7" id="prefs">
+  <section className="scroll-mt-6 rounded-20 border border-neutral-100 bg-white p-7" id="prefs">
     <SectionHead
       eyebrow="05 · What you want"
       help="Your salary expectation. Only shown to employers if you're open to work."
