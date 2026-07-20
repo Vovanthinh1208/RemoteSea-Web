@@ -17,7 +17,7 @@ export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
   const tier = TIERS.find((t) => t.id === form.tier) ?? TIERS[0];
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#F8F7F4] px-6 py-16 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-neutral-50 px-6 py-16 text-center">
       <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-brand-100">
         <BadgeCheck className="text-brand-600" size={40} />
       </div>
@@ -31,7 +31,7 @@ export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
         review yet.
       </p>
 
-      <div className="rounded-20 mb-8 w-full max-w-md border border-neutral-200 bg-white p-6 text-left shadow-card">
+      <div className="mb-8 w-full max-w-md rounded-20 border border-neutral-200 bg-white p-6 text-left shadow-card">
         <p className="mb-4 text-[12px] font-semibold uppercase tracking-widest text-neutral-400">
           Job details
         </p>

@@ -39,7 +39,7 @@ const CheckRow = ({ checked, label, count, onToggle }: CheckRowProps) => (
     <span
       aria-hidden="true"
       className={cn(
-        "grid h-4 w-4 flex-shrink-0 place-items-center rounded-[4px] border transition-all",
+        "grid h-4 w-4 flex-shrink-0 place-items-center rounded-4 border transition-all",
         "peer-focus-visible:shadow-focus",
         checked ? "border-brand-600 bg-brand-600" : "border-neutral-300 bg-white"
       )}

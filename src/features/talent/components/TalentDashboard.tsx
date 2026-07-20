@@ -17,6 +17,7 @@ import { missingProfileFields, profileCompletion } from "@/features/talent/talen
 import { ROUTES } from "@/constants/routes";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button } from "@/components/ui/button";
+import { percent } from "@/utils/percent";
 
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
@@ -38,9 +39,14 @@ export const TalentDashboard = () => {
   const applications = applicationsData?.applications ?? [];
   const { data: stats, isLoading: statsLoading } = useMyApplicationStats();
   const { data: profile, isLoading: profileLoading } = useMyTalentProfile();
-  const { data: savedJobIds, isLoading: savedJobIdsLoading } = useSavedJobIds();
+  const { data: savedJobIds } = useSavedJobIds();
 
-  if (applicationsLoading || statsLoading || profileLoading || savedJobIdsLoading) {
+  // savedJobIds feeds only the secondary "Saved jobs" count stat, so it's kept
+  // out of the blocking gate — the core dashboard (greeting, application stats,
+  // profile, applications table) renders as soon as those three queries are
+  // ready, and the saved count streams in on its own (shows "—" until then)
+  // instead of the whole page waiting on it.
+  if (applicationsLoading || statsLoading || profileLoading) {
     return <TalentDashboardSkeleton />;
   }
 
@@ -72,8 +78,7 @@ export const TalentDashboard = () => {
   const offers = stats?.byStatus.OFFERED ?? 0;
   const completion = profileCompletion(profile);
   const missing = missingProfileFields(profile);
-  const interviewRate =
-    totalApplications > 0 ? Math.round(((interviewing + offers) / totalApplications) * 100) : 0;
+  const interviewRate = percent(interviewing + offers, totalApplications);
 
   return (
     <div className="mx-auto max-w-[1240px] px-6 py-10">
@@ -155,7 +160,9 @@ export const TalentDashboard = () => {
           label="Saved jobs"
           size="md"
           sub="current"
-          value={savedJobIds?.length ?? 0}
+          // "—" while its query streams in (it's no longer in the loading gate),
+          // rather than flashing a wrong "0" before the real count arrives.
+          value={savedJobIds === undefined ? "—" : savedJobIds.length}
         />
         <StatCard
           icon={TrendingUp}

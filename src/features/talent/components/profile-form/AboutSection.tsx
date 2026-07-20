@@ -13,7 +13,7 @@ interface AboutSectionProps {
 const MAX_BIO_LENGTH = 320;
 
 export const AboutSection = ({ register, bioError, bioLength }: AboutSectionProps) => (
-  <section className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7" id="about">
+  <section className="scroll-mt-6 rounded-20 border border-neutral-100 bg-white p-7" id="about">
     <SectionHead
       eyebrow="02 · Story"
       help="A short, plain-English summary. No buzzwords — write like you'd describe yourself in an email."

@@ -8,7 +8,7 @@ const ROW_SKELETON_COUNT = 5;
 // gate the dashboard rendered real UI with fake data during load ("0
 // applicants across 0 live roles") and then snapped to the real numbers.
 export const EmployerDashboardSkeleton = () => (
-  <div className="min-h-screen bg-[#F8F7F4]">
+  <div className="min-h-screen bg-neutral-50">
     <div className="mx-auto max-w-[1240px] px-6 py-8">
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>

@@ -166,7 +166,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
   const saving = isSubmitting || updateProfileMutation.isPending || updateNameMutation.isPending;
 
   return (
-    <div className="min-h-screen bg-[#F8F7F4]">
+    <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-[1100px] px-6 py-10">
         <div className="mb-8">
           <div className="mb-3 flex items-center gap-1.5 text-[12px] text-neutral-500">
@@ -209,7 +209,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
             <ExperienceSection />
 
             <section
-              className="rounded-20 scroll-mt-6 border border-neutral-100 bg-white p-7"
+              className="scroll-mt-6 rounded-20 border border-neutral-100 bg-white p-7"
               id="skills"
             >
               <SectionHead
@@ -247,7 +247,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
             />
 
             {/* Save bar */}
-            <div className="rounded-20 sticky bottom-0 flex items-center justify-between border border-neutral-200 bg-white/90 px-5 py-3 shadow-card backdrop-blur-sm">
+            <div className="sticky bottom-0 flex items-center justify-between rounded-20 border border-neutral-200 bg-white/90 px-5 py-3 shadow-card backdrop-blur-sm">
               <span className="flex items-center gap-2 text-[12.5px] text-neutral-500">
                 <span className="bg-brand-500 h-2 w-2 rounded-full" />
                 {saving ? "Saving…" : "Save your changes"}

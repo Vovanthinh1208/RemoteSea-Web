@@ -24,7 +24,7 @@ export const AdminConsole = () => {
   const [tab, setTab] = useSearchParamState<AdminTabId>("tab", "queue", isAdminTabId);
 
   return (
-    <div className="min-h-screen bg-[#F8F7F4]">
+    <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto flex max-w-[1240px] gap-6 px-6 py-8">
         <aside className="w-[180px] flex-shrink-0">
           <div className="mb-6">

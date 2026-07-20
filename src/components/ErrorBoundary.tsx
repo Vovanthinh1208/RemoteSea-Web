@@ -29,9 +29,20 @@ export class ErrorBoundary extends Component<Props, State> {
     console.error("Unhandled UI error:", error, info.componentStack);
     reportError(error, info.componentStack ?? undefined);
 
-    if (CHUNK_ERROR_PATTERN.test(error.message) && !sessionStorage.getItem(CHUNK_RELOAD_FLAG)) {
-      sessionStorage.setItem(CHUNK_RELOAD_FLAG, "1");
-      window.location.reload();
+    if (CHUNK_ERROR_PATTERN.test(error.message)) {
+      // sessionStorage throws (not returns null) when storage is disabled
+      // (Safari private mode, locked-down browsers) — and this runs *inside*
+      // error handling, so an unguarded throw here would break the recovery
+      // path itself. On failure, skip the one-shot auto-reload; the manual
+      // Reload button in the fallback still works.
+      try {
+        if (!sessionStorage.getItem(CHUNK_RELOAD_FLAG)) {
+          sessionStorage.setItem(CHUNK_RELOAD_FLAG, "1");
+          window.location.reload();
+        }
+      } catch {
+        // Storage unavailable — fall through to the manual-reload fallback.
+      }
     }
   }
 

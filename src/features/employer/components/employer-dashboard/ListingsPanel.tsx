@@ -7,6 +7,7 @@ import { STATUS_GROUP, STATUS_LABEL, timeAgo } from "@/features/employer/employe
 import type { EmployerApplicant, EmployerJobListItem } from "@/types/employer";
 import { ROUTES } from "@/constants/routes";
 import { buttonVariants } from "@/components/ui/button";
+import { percent } from "@/utils/percent";
 
 const STATUS_VARIANT: Record<string, BadgeVariant> = {
   review: "warning",
@@ -28,8 +29,8 @@ const ListingRow = memo(function ListingRow({ job: j, applications: apps }: List
   const reviewed = apps.filter((a) => a.status !== "PENDING").length;
   const shortlisted = apps.filter((a) => a.status === "SHORTLISTED").length;
   const newApps = apps.filter((a) => a.status === "PENDING").length;
-  const reviewPct = total ? Math.round((reviewed / total) * 100) : 0;
-  const shortPct = total ? Math.round((shortlisted / total) * 100) : 0;
+  const reviewPct = percent(reviewed, total);
+  const shortPct = percent(shortlisted, total);
 
   // The public job detail page only serves ACTIVE listings (drafts, pending
   // review, closed, and rejected jobs 404 there by design) — so only link an

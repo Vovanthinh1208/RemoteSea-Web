@@ -189,7 +189,7 @@ export const PostJobWizard = () => {
   const selectedTier = TIERS.find((t) => t.id === form.tier) ?? TIERS[0];
 
   return (
-    <div className="min-h-screen bg-[#F8F7F4]">
+    <div className="min-h-screen bg-neutral-50">
       {/* Top bar */}
       <div className="border-b border-neutral-200 bg-white px-6 py-4">
         <h1 className="sr-only">Post a job</h1>

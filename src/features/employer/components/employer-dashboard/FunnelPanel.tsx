@@ -1,5 +1,6 @@
 import { cn } from "@/utils/cn";
 import type { ApplicantWithJob } from "@/features/employer/employer.queries";
+import { percent } from "@/utils/percent";
 
 interface FunnelPanelProps {
   applicants: ApplicantWithJob[];
@@ -22,25 +23,25 @@ export const FunnelPanel = ({ applicants }: FunnelPanelProps) => {
     {
       label: "Reviewed",
       n: reviewed,
-      pct: total ? Math.round((reviewed / total) * 100) : 0,
+      pct: percent(reviewed, total),
       amber: false,
     },
     {
       label: "Shortlisted",
       n: shortlisted,
-      pct: total ? Math.round((shortlisted / total) * 100) : 0,
+      pct: percent(shortlisted, total),
       amber: true,
     },
     {
       label: "Interviewing",
       n: interviewing,
-      pct: total ? Math.round((interviewing / total) * 100) : 0,
+      pct: percent(interviewing, total),
       amber: true,
     },
     {
       label: "Offers",
       n: offers,
-      pct: total ? Math.round((offers / total) * 100) : 0,
+      pct: percent(offers, total),
       amber: false,
     },
   ];
