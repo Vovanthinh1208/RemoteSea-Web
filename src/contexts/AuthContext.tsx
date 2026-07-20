@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import * as authApi from "@/features/auth/auth.api";
+import * as authService from "@/features/auth/auth.service";
 import { registerUnauthorizedHandler } from "@/services/api-client";
 import { ApiError } from "@/services/api-error";
 import {
@@ -56,7 +56,7 @@ const SESSION_KEY = sessionKeys.all;
 // TanStack Query retries it and surfaces it as `isError` instead of a false logout.
 const hydrateFromSession = async (): Promise<AuthUser | null> => {
   try {
-    return await authApi.getSession();
+    return await authService.getSession();
   } catch (err) {
     if (err instanceof ApiError && err.status === UNAUTHORIZED_STATUS) return null;
     throw err;
@@ -164,7 +164,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = useCallback(
     async (email: string, password: string, remember = true) => {
-      const { accessToken } = await authApi.login({ email, password });
+      const { accessToken } = await authService.login({ email, password });
       return loginWithToken(accessToken, remember);
     },
     [loginWithToken]
@@ -172,7 +172,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const registerAccount = useCallback(
     async (input: RegisterInput) => {
-      await authApi.register(input);
+      await authService.register(input);
       return login(input.email, input.password, true);
     },
     [login]

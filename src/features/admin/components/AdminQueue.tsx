@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useAdminJobs, useReviewAdminJob } from "@/features/admin/admin.queries";
 import { hoursSince, REVIEW_CHECKLIST, URGENT_WAIT_HOURS } from "@/features/admin/admin.utils";
@@ -32,7 +32,13 @@ export const AdminQueue = () => {
   const [selId, setSelId] = useState<string | null>(null);
 
   const queue = data?.jobs ?? [];
-  const active = queue.filter((j) => !resolved[j.id]);
+  // Memoized so its identity is stable across the reviewer's typing/selection
+  // state changes — `active` is the `jobs` prop of the memo'd QueueListPane, and
+  // rebuilding the array every render (on every keystroke in the notes field,
+  // every banner tick) silently defeated that memo and re-rendered the whole
+  // pending-jobs list. Now the list only re-renders when the queue or a
+  // resolution actually changes.
+  const active = useMemo(() => queue.filter((j) => !resolved[j.id]), [queue, resolved]);
   // Keep showing the just-decided job (even though `decide()` already removed it
   // from `active`) ONLY if the reviewer hasn't since selected something else —
   // otherwise this used to force the view back to the decided job's banner even
