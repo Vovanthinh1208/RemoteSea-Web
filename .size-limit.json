@@ -1,0 +1,20 @@
+[
+  {
+    "name": "entry (index) — loads on every visit",
+    "path": "dist/assets/index-*.js",
+    "limit": "28 kB",
+    "gzip": true
+  },
+  {
+    "name": "vendor-react — boot-critical",
+    "path": "dist/assets/vendor-react-*.js",
+    "limit": "62 kB",
+    "gzip": true
+  },
+  {
+    "name": "vendor-forms — lazy, form routes only",
+    "path": "dist/assets/vendor-forms-*.js",
+    "limit": "36 kB",
+    "gzip": true
+  }
+]

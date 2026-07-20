@@ -40,3 +40,6 @@ jobs:
       - run: npm run depcruise
       - run: npm run test
       - run: npm run build
+      # Fails the build if a chunk blows its gzip budget (.size-limit.json) —
+      # catches an accidental heavy import before it ships.
+      - run: npm run size
