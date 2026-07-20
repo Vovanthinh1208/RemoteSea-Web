@@ -20,13 +20,16 @@ export const AlertsManager = () => {
   const setActiveMutation = useSetAlertActive();
   const deleteAlertMutation = useDeleteAlert();
 
-  const handleCreate = async (payload: CreateAlertPayload): Promise<void> => {
-    await runWithToast(() => createAlertMutation.mutateAsync(payload), {
+  // Returns success so the form only resets when the alert was actually
+  // created — runWithToast swallows the error (into a toast) and never throws,
+  // so without this the form reset unconditionally and wiped the user's input
+  // even on failure.
+  const handleCreate = (payload: CreateAlertPayload): Promise<boolean> =>
+    runWithToast(() => createAlertMutation.mutateAsync(payload), {
       success: "Alert created",
       successDescription: "We'll email you matching jobs.",
       error: "Couldn't create alert",
     });
-  };
 
   const handleToggleActive = (alert: JobAlert) =>
     runWithToast(() => setActiveMutation.mutateAsync({ id: alert.id, isActive: !alert.isActive }), {

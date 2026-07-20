@@ -15,7 +15,7 @@ import {
 import type { CreateAlertPayload } from "@/types/alert";
 
 interface CreateAlertFormProps {
-  onCreate: (payload: CreateAlertPayload) => Promise<void>;
+  onCreate: (payload: CreateAlertPayload) => Promise<boolean>;
 }
 
 const DEFAULT_FORM_VALUES: CreateAlertFormValues = {
@@ -55,7 +55,7 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
   };
 
   const onSubmit = async (values: CreateAlertFormValues) => {
-    await onCreate({
+    const created = await onCreate({
       name: values.name,
       keywords: values.keywords || undefined,
       jobType: values.jobType || undefined,
@@ -64,7 +64,9 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
       frequency: values.frequency,
       categoryIds: values.categoryIds.length ? values.categoryIds : undefined,
     });
-    reset();
+    // Only clear the form if the alert was actually created — on failure the
+    // user keeps their input to retry (the error toast already fired).
+    if (created) reset();
   };
 
   return (
