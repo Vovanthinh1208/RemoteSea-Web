@@ -8,7 +8,7 @@ import { OrDivider } from "@/features/auth/components/OrDivider";
 import { TextField } from "@/components/shared/TextField";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/toast";
-import { ApiError } from "@/services/api-error";
+import { ApiError } from "@/core/errors/api-error";
 import { applyFormSubmitError } from "@/utils/form-errors";
 import { ROUTES } from "@/constants/routes";
 import { cn } from "@/utils/cn";

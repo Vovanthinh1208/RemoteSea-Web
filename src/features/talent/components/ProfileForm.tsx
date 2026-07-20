@@ -9,7 +9,7 @@ import { useSyncedState } from "@/hooks/useSyncedState";
 import { useUpdateMyTalentProfile } from "@/features/talent/talent.queries";
 import { useUpdateMyName } from "@/features/users/users.queries";
 import { useSkills } from "@/features/taxonomy/taxonomy.queries";
-import { ApiError } from "@/services/api-error";
+import { ApiError } from "@/core/errors/api-error";
 import { applyServerErrors } from "@/utils/form-errors";
 import { reportError } from "@/services/monitoring";
 import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";

@@ -7,7 +7,7 @@ import {
   listJobApplications,
   updateApplicationStatus,
 } from "@/features/employer/employer.service";
-import { ApiError } from "@/services/api-error";
+import { ApiError } from "@/core/errors/api-error";
 import { useAuth } from "@/contexts/AuthContext";
 import { MY_APPLICATIONS_KEY } from "@/features/applications/applications.queries";
 import { employerKeys } from "@/core/query/query-keys";

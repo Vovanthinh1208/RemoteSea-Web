@@ -5,7 +5,7 @@ import {
   updateMyTalentProfile,
 } from "@/features/talent/talent.service";
 import { useAuth } from "@/contexts/AuthContext";
-import { ApiError } from "@/services/api-error";
+import { ApiError } from "@/core/errors/api-error";
 import { talentKeys } from "@/core/query/query-keys";
 
 const NOT_FOUND_STATUS = 404;
