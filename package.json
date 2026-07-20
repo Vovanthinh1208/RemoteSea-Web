@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "size": "size-limit",
-    "lint": "eslint .",
+    "lint": "eslint . --cache --cache-location .cache/eslint/",
     "depcruise": "depcruise src --config .dependency-cruiser.cjs",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
