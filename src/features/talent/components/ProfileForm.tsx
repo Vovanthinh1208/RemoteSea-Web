@@ -36,6 +36,29 @@ interface ProfileFormProps {
   profile: TalentProfile | null;
 }
 
+// Single source for the profile → form-values mapping, used both to seed
+// `defaultValues` and to `reset()` when a fresh/normalized profile arrives from
+// the cache. It was previously written out twice (14 fields each) and had already
+// drifted — one copy fell back to "MID"/`true`, the other to "Mid"/nothing —
+// which only stayed harmless because the reset copy runs under an `if (profile)`
+// guard. The null-safe form here is a strict superset of both.
+const profileToFormValues = (profile: TalentProfile | null): ProfileFormValues => ({
+  name: profile?.user?.name ?? "",
+  headline: profile?.headline ?? "",
+  location: profile?.location ?? "",
+  timezone: profile?.timezone ?? TIMEZONE_OPTIONS[0],
+  bio: profile?.bio ?? "",
+  seniority: LEVEL_TO_LABEL[profile?.level ?? "MID"],
+  yearsBucket: yearsToBucket(profile?.yearsExperience ?? null),
+  desiredSalaryMin: profile?.desiredSalaryMin ?? 1000,
+  desiredSalaryMax: profile?.desiredSalaryMax ?? 3000,
+  isOpenToWork: profile?.isOpenToWork ?? true,
+  resumeUrl: profile?.resumeUrl ?? "",
+  githubUrl: profile?.githubUrl ?? "",
+  linkedinUrl: profile?.linkedinUrl ?? "",
+  portfolioUrl: profile?.portfolioUrl ?? "",
+});
+
 export const ProfileForm = ({ profile }: ProfileFormProps) => {
   const { toast } = useToast();
   // Memoized so its identity only changes when `profile` itself changes (a
@@ -57,42 +80,12 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
     formState: { errors, isSubmitting },
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues: {
-      name: profile?.user?.name ?? "",
-      headline: profile?.headline ?? "",
-      location: profile?.location ?? "",
-      timezone: profile?.timezone ?? TIMEZONE_OPTIONS[0],
-      bio: profile?.bio ?? "",
-      seniority: LEVEL_TO_LABEL[profile?.level ?? "MID"],
-      yearsBucket: yearsToBucket(profile?.yearsExperience ?? null),
-      desiredSalaryMin: profile?.desiredSalaryMin ?? 1000,
-      desiredSalaryMax: profile?.desiredSalaryMax ?? 3000,
-      isOpenToWork: profile?.isOpenToWork ?? true,
-      resumeUrl: profile?.resumeUrl ?? "",
-      githubUrl: profile?.githubUrl ?? "",
-      linkedinUrl: profile?.linkedinUrl ?? "",
-      portfolioUrl: profile?.portfolioUrl ?? "",
-    },
+    defaultValues: profileToFormValues(profile),
   });
 
   useEffect(() => {
     if (!profile) return;
-    reset({
-      name: profile.user?.name ?? "",
-      headline: profile.headline ?? "",
-      location: profile.location ?? "",
-      timezone: profile.timezone ?? TIMEZONE_OPTIONS[0],
-      bio: profile.bio ?? "",
-      seniority: LEVEL_TO_LABEL[profile.level] ?? "Mid",
-      yearsBucket: yearsToBucket(profile.yearsExperience),
-      desiredSalaryMin: profile.desiredSalaryMin ?? 1000,
-      desiredSalaryMax: profile.desiredSalaryMax ?? 3000,
-      isOpenToWork: profile.isOpenToWork,
-      resumeUrl: profile.resumeUrl ?? "",
-      githubUrl: profile.githubUrl ?? "",
-      linkedinUrl: profile.linkedinUrl ?? "",
-      portfolioUrl: profile.portfolioUrl ?? "",
-    });
+    reset(profileToFormValues(profile));
     // Depend on the whole `profile` object, not just its id: a successful save
     // writes the server's (possibly normalized) response into the cache under the
     // same id, and the form should pick that up rather than keep showing the
