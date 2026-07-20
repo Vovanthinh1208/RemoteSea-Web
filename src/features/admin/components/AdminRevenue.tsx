@@ -5,22 +5,15 @@ import { Button } from "@/components/ui/button";
 import { StatCard } from "@/components/ui/stat-card";
 import { AdminRevenueSkeleton } from "@/features/admin/components/AdminRevenueSkeleton";
 import { useAdminRevenue } from "@/features/admin/admin.queries";
+import { formatCents, formatCentsCompact } from "@/features/admin/admin.utils";
 import type { RevenueMonthBucket } from "@/types/admin";
 import { Eyebrow } from "@/components/ui/eyebrow";
-
-const CENTS_PER_DOLLAR = 100;
-const DOLLARS_PER_THOUSAND = 1000;
 
 const PLAN_BAR_COLOR: Record<string, string> = {
   STANDARD: "#4ade80",
   FEATURED: "#2E9B52",
   HANDS_ON: "#0D3D1F",
 };
-
-const formatDollars = (cents: number): string => `$${(cents / CENTS_PER_DOLLAR).toLocaleString()}`;
-
-const formatThousands = (cents: number): string =>
-  `$${(cents / CENTS_PER_DOLLAR / DOLLARS_PER_THOUSAND).toFixed(1)}k`;
 
 const monthTotal = (month: RevenueMonthBucket): number =>
   month.standard + month.featured + month.handsOn;
@@ -68,20 +61,20 @@ export const AdminRevenue = () => {
           icon={Wallet}
           label="Revenue all time"
           sub="across every paid listing"
-          value={formatThousands(totals.allTime)}
+          value={formatCentsCompact(totals.allTime)}
         />
         <StatCard
           icon={TrendingUp}
           label="This month"
           sub="in progress"
-          value={formatDollars(totals.thisMonth)}
+          value={formatCents(totals.thisMonth)}
         />
         {mix.map((m) => (
           <StatCard
             icon={RefreshCw}
             key={m.planType}
             label={m.label}
-            sub={`posts · ${formatDollars(m.amount)}`}
+            sub={`posts · ${formatCents(m.amount)}`}
             value={m.count}
           />
         ))}
@@ -93,7 +86,7 @@ export const AdminRevenue = () => {
           <div className="mb-4 flex items-end justify-between">
             <div>
               <div className="text-[22px] font-semibold text-neutral-900">
-                {formatThousands(totals.allTime)}
+                {formatCentsCompact(totals.allTime)}
               </div>
               <div className="text-[12px] text-neutral-400">
                 Monthly revenue · last {months.length} months
@@ -131,7 +124,7 @@ export const AdminRevenue = () => {
                   <div
                     className="flex w-full flex-col-reverse overflow-hidden rounded-t-4"
                     style={{ height: `${(sum / peak) * 140}px` }}
-                    title={`${month.label}: ${formatDollars(sum)}`}
+                    title={`${month.label}: ${formatCents(sum)}`}
                   >
                     {sum > 0 && (
                       <>
@@ -192,12 +185,12 @@ export const AdminRevenue = () => {
                 <span className="flex-1 text-[13px] text-neutral-700">
                   {m.label}{" "}
                   <span className="font-mono text-[11px] text-neutral-400">
-                    {formatDollars(m.price)}
+                    {formatCents(m.price)}
                   </span>
                 </span>
                 <span className="text-[12px] text-neutral-400">{m.count} posts</span>
                 <span className="font-mono text-[13px] font-semibold text-neutral-900">
-                  {formatThousands(m.amount)}
+                  {formatCentsCompact(m.amount)}
                 </span>
               </div>
             ))}
@@ -243,7 +236,7 @@ export const AdminRevenue = () => {
                     : "Standard"}
               </span>
               <span className="font-mono text-[13px] font-semibold text-neutral-900">
-                {formatDollars(t.amount)}
+                {formatCents(t.amount)}
               </span>
               <span className="text-[13px] text-neutral-400">
                 {new Date(t.paidAt).toLocaleDateString("en-US", { month: "short", day: "2-digit" })}

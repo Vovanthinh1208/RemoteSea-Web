@@ -75,3 +75,16 @@ export const formatSalary = (min: number | null, max: number | null, currency = 
   const fmt = (n: number) => n.toLocaleString();
   return max ? `${currency} ${fmt(min)}–${fmt(max)}` : `${currency} ${fmt(min)}+`;
 };
+
+const CENTS_PER_DOLLAR = 100;
+const DOLLARS_PER_THOUSAND = 1000;
+
+// The admin money views deal in integer cents. These two formatters were
+// written out in AdminRevenue and re-implemented inline in AdminEmployers (with
+// their own copies of the cents/thousand constants) — one shared home instead.
+/** Integer cents → "$1,200". */
+export const formatCents = (cents: number): string =>
+  `$${(cents / CENTS_PER_DOLLAR).toLocaleString()}`;
+/** Integer cents → "$1.2k", the compact form used on KPI tiles. */
+export const formatCentsCompact = (cents: number): string =>
+  `$${(cents / CENTS_PER_DOLLAR / DOLLARS_PER_THOUSAND).toFixed(1)}k`;
