@@ -17,6 +17,7 @@ import { missingProfileFields, profileCompletion } from "@/features/talent/talen
 import { ROUTES } from "@/constants/routes";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button } from "@/components/ui/button";
+import { percent } from "@/utils/percent";
 
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
@@ -77,8 +78,7 @@ export const TalentDashboard = () => {
   const offers = stats?.byStatus.OFFERED ?? 0;
   const completion = profileCompletion(profile);
   const missing = missingProfileFields(profile);
-  const interviewRate =
-    totalApplications > 0 ? Math.round(((interviewing + offers) / totalApplications) * 100) : 0;
+  const interviewRate = percent(interviewing + offers, totalApplications);
 
   return (
     <div className="mx-auto max-w-[1240px] px-6 py-10">
