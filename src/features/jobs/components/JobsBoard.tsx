@@ -123,6 +123,7 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
             <div className="flex items-center gap-2 text-sm text-neutral-500">
               Sort by
               <select
+                aria-label="Sort jobs"
                 className="rounded-8 border border-neutral-200 bg-white px-2 py-1 text-sm text-neutral-700 outline-none focus:border-brand-600"
                 value={query.sort}
                 onChange={(e) => setSort(e.target.value as SortKey)}
