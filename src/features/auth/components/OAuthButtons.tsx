@@ -1,4 +1,4 @@
-import { oauthUrl } from "@/features/auth/auth.api";
+import { oauthUrl } from "@/features/auth/auth.service";
 
 const OAUTH_PROVIDERS = [
   { id: "google", label: "Continue with Google", bg: "#4285F4", icon: "G" },

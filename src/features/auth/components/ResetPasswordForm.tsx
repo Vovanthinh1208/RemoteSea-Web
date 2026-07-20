@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { resetPasswordSchema, type ResetPasswordFormValues } from "@/features/auth/auth.schemas";
-import { resetPassword } from "@/features/auth/auth.api";
+import { resetPassword } from "@/features/auth/auth.service";
 import { TextField } from "@/components/shared/TextField";
 import { useToast } from "@/components/ui/toast";
 import { applyFormSubmitError } from "@/utils/form-errors";
