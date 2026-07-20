@@ -72,7 +72,7 @@ export const PublicTalentProfilePage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#F8F7F4]">
+    <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-[1200px] px-6 py-10">
         {/* Hero */}
         <div className="mb-6 grid gap-6 rounded-24 border border-neutral-100 bg-white p-8 lg:grid-cols-[auto_1fr_auto]">

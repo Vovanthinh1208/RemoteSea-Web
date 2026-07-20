@@ -29,7 +29,7 @@ export const SettingsPage = () => {
   useDocumentTitle("Settings");
 
   return (
-    <div className="min-h-screen bg-[#F8F7F4]">
+    <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-[820px] px-6 py-10">
         <div className="mb-8">
           <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">

@@ -49,7 +49,7 @@ export const EmployerDashboard = () => {
 
   if (profileErrored || jobsErrored) {
     return (
-      <div className="min-h-screen bg-[#F8F7F4]">
+      <div className="min-h-screen bg-neutral-50">
         <div className="mx-auto max-w-[1240px] px-6 py-8">
           <EmptyState
             action={
@@ -87,7 +87,7 @@ export const EmployerDashboard = () => {
   const firstName = (user?.name ?? "there").split(" ").slice(-1)[0] ?? user?.name ?? "there";
 
   return (
-    <div className="min-h-screen bg-[#F8F7F4]">
+    <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-[1240px] px-6 py-8">
         {!profile && (
           <div className="rounded-20 mb-6 flex items-start gap-4 border border-amber-200 bg-amber-50 p-5">

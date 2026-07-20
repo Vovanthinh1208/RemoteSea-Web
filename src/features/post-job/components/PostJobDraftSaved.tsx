@@ -17,7 +17,7 @@ export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
   const tier = TIERS.find((t) => t.id === form.tier) ?? TIERS[0];
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#F8F7F4] px-6 py-16 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-neutral-50 px-6 py-16 text-center">
       <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-brand-100">
         <BadgeCheck className="text-brand-600" size={40} />
       </div>

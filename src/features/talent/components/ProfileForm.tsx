@@ -166,7 +166,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
   const saving = isSubmitting || updateProfileMutation.isPending || updateNameMutation.isPending;
 
   return (
-    <div className="min-h-screen bg-[#F8F7F4]">
+    <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-[1100px] px-6 py-10">
         <div className="mb-8">
           <div className="mb-3 flex items-center gap-1.5 text-[12px] text-neutral-500">
