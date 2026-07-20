@@ -38,9 +38,14 @@ export const TalentDashboard = () => {
   const applications = applicationsData?.applications ?? [];
   const { data: stats, isLoading: statsLoading } = useMyApplicationStats();
   const { data: profile, isLoading: profileLoading } = useMyTalentProfile();
-  const { data: savedJobIds, isLoading: savedJobIdsLoading } = useSavedJobIds();
+  const { data: savedJobIds } = useSavedJobIds();
 
-  if (applicationsLoading || statsLoading || profileLoading || savedJobIdsLoading) {
+  // savedJobIds feeds only the secondary "Saved jobs" count stat, so it's kept
+  // out of the blocking gate — the core dashboard (greeting, application stats,
+  // profile, applications table) renders as soon as those three queries are
+  // ready, and the saved count streams in on its own (shows "—" until then)
+  // instead of the whole page waiting on it.
+  if (applicationsLoading || statsLoading || profileLoading) {
     return <TalentDashboardSkeleton />;
   }
 
@@ -155,7 +160,9 @@ export const TalentDashboard = () => {
           label="Saved jobs"
           size="md"
           sub="current"
-          value={savedJobIds?.length ?? 0}
+          // "—" while its query streams in (it's no longer in the loading gate),
+          // rather than flashing a wrong "0" before the real count arrives.
+          value={savedJobIds === undefined ? "—" : savedJobIds.length}
         />
         <StatCard
           icon={TrendingUp}
