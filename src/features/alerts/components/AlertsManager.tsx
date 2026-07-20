@@ -1,4 +1,6 @@
 import { EmptyRow } from "@/components/shared/EmptyRow";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { AlertListItem } from "@/features/alerts/components/AlertListItem";
@@ -15,7 +17,7 @@ const ALERTS_SKELETON_COUNT = 3;
 
 export const AlertsManager = () => {
   const runWithToast = useToastMutation();
-  const { data: alerts, isLoading } = useAlerts();
+  const { data: alerts, isLoading, isError, refetch } = useAlerts();
   const createAlertMutation = useCreateAlert();
   const setActiveMutation = useSetAlertActive();
   const deleteAlertMutation = useDeleteAlert();
@@ -64,6 +66,19 @@ export const AlertsManager = () => {
           Array.from({ length: ALERTS_SKELETON_COUNT }, (_, i) => (
             <Skeleton className="h-[72px] rounded-16" key={i} />
           ))
+        ) : isError ? (
+          // Without this, a failed fetch fell through to the empty state below —
+          // telling the user "No alerts yet" when their alerts actually just
+          // failed to load, which could prompt them to recreate duplicates.
+          <EmptyState
+            action={
+              <Button size="sm" variant="outline" onClick={() => void refetch()}>
+                Try again
+              </Button>
+            }
+            description="Something went wrong loading your alerts."
+            title="Couldn't load alerts"
+          />
         ) : !alerts || alerts.length === 0 ? (
           <EmptyRow>No alerts yet. Create one above to start getting matched jobs.</EmptyRow>
         ) : (
