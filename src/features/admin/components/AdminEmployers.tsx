@@ -12,7 +12,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { AdminEmployersSkeleton } from "@/features/admin/components/AdminEmployersSkeleton";
 import { useAdminEmployers, useUpdateAdminEmployer } from "@/features/admin/admin.queries";
-import { colorFor } from "@/features/admin/admin.utils";
+import { colorFor, formatCents, formatCentsCompact } from "@/features/admin/admin.utils";
 import type { AdminEmployer } from "@/types/admin";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
@@ -22,7 +22,6 @@ const FILTERS = [
 ] as const;
 
 const CENTS_PER_DOLLAR = 100;
-const DOLLARS_PER_THOUSAND = 1000;
 
 interface EmployerRowProps {
   employer: AdminEmployer;
@@ -65,7 +64,7 @@ const EmployerRow = memo(function EmployerRow({
 
       <div>
         <div className="mb-1 font-mono text-[13px] font-semibold text-neutral-900">
-          ${(e.totalSpend / CENTS_PER_DOLLAR).toLocaleString()}
+          {formatCents(e.totalSpend)}
         </div>
 
         <div className="h-1 overflow-hidden rounded-full bg-neutral-100">
@@ -204,7 +203,7 @@ export const AdminEmployers = () => {
           icon={Wallet}
           label="Total billed"
           sub="lifetime"
-          value={`$${(totalSpendCents / CENTS_PER_DOLLAR / DOLLARS_PER_THOUSAND).toFixed(1)}k`}
+          value={formatCentsCompact(totalSpendCents)}
         />
       </div>
 

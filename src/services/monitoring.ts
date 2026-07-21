@@ -4,6 +4,16 @@ const TRACES_SAMPLE_RATE = 0.2;
 const REPLAY_SESSION_SAMPLE_RATE = 0.1; // 10% of normal sessions
 const REPLAY_ERROR_SAMPLE_RATE = 1.0; // 100% of sessions that hit an error
 
+// The auth flows carry live credentials in the query string —
+// /auth/callback?token=<accessToken> (a working access token) and
+// /reset-password?token=<resetToken>. Sentry attaches the page URL to every
+// error event and to navigation/fetch breadcrumbs (which Session Replay also
+// records), so without this a single error while one of those routes is open
+// would ship a usable token to a third-party service. Redact the sensitive
+// params everywhere a URL can reach Sentry.
+const SENSITIVE_URL_PARAM = /(^|[?&])((?:token|access_token|refresh_token|code|password)=)[^&#]*/gi;
+export const scrubUrl = (url: string): string => url.replace(SENSITIVE_URL_PARAM, "$1$2[REDACTED]");
+
 export const initMonitoring = (): void => {
   const dsn = import.meta.env.VITE_SENTRY_DSN;
   if (!dsn || !import.meta.env.PROD) return; // no-op without a DSN, and never in dev
@@ -14,6 +24,23 @@ export const initMonitoring = (): void => {
     tracesSampleRate: TRACES_SAMPLE_RATE,
     replaysSessionSampleRate: REPLAY_SESSION_SAMPLE_RATE,
     replaysOnErrorSampleRate: REPLAY_ERROR_SAMPLE_RATE,
+    beforeSend(event) {
+      if (event.request?.url) event.request.url = scrubUrl(event.request.url);
+      if (typeof event.request?.query_string === "string") {
+        event.request.query_string = scrubUrl(event.request.query_string);
+      }
+      return event;
+    },
+    beforeBreadcrumb(breadcrumb) {
+      const { data } = breadcrumb;
+      if (data) {
+        // `url` on fetch/xhr crumbs; `to`/`from` on navigation crumbs.
+        for (const key of ["url", "to", "from"] as const) {
+          if (typeof data[key] === "string") data[key] = scrubUrl(data[key]);
+        }
+      }
+      return breadcrumb;
+    },
   });
 };
 

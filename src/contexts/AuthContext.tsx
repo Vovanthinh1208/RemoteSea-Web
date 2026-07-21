@@ -1,14 +1,14 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import * as authService from "@/features/auth/auth.service";
-import { registerUnauthorizedHandler } from "@/services/api-client";
-import { ApiError } from "@/services/api-error";
+import { registerUnauthorizedHandler } from "@/core/http/http-client";
+import { ApiError } from "@/core/errors/api-error";
 import {
   ACCESS_TOKEN_STORAGE_KEY,
   clearAccessToken,
   getAccessToken,
   setAccessToken,
-} from "@/services/token-storage";
+} from "@/core/token/token-storage";
 import { sessionKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 import { useToast } from "@/components/ui/toast";

@@ -12,9 +12,9 @@
     "gzip": true
   },
   {
-    "name": "vendor-forms — lazy, form routes only",
-    "path": "dist/assets/vendor-forms-*.js",
-    "limit": "36 kB",
+    "name": "vendor-zod — eager, validates every API response",
+    "path": "dist/assets/vendor-zod-*.js",
+    "limit": "20 kB",
     "gzip": true
   }
 ]

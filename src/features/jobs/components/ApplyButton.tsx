@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useApplyToJob, useMyApplicationIds } from "@/features/applications/applications.queries";
-import { ApiError } from "@/services/api-error";
+import { ApiError } from "@/core/errors/api-error";
 import { ROUTES } from "@/constants/routes";
 
 const ALREADY_APPLIED_STATUS = 409;

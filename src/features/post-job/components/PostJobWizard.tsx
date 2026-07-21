@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ChevronRight, Check, Shield, Tag, Zap } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useToast } from "@/components/ui/toast";
-import { ApiError } from "@/services/api-error";
+import { ApiError } from "@/core/errors/api-error";
 import { reportError } from "@/services/monitoring";
 import { useCategories, useSkills } from "@/features/taxonomy/taxonomy.queries";
 import { useCreateEmployerProfile } from "@/features/employer/employer.queries";

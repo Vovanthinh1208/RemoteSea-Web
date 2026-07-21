@@ -52,13 +52,17 @@ export default defineConfig(({ mode, command }) => {
             if (/[\\/]node_modules[\\/](react|react-dom)[\\/]/.test(id)) return "vendor-react";
             if (/[\\/]node_modules[\\/]react-router(-dom)?[\\/]/.test(id)) return "vendor-router";
             if (id.includes("node_modules/@tanstack/react-query")) return "vendor-query";
-            if (
-              id.includes("node_modules/react-hook-form") ||
-              id.includes("node_modules/@hookform/resolvers") ||
-              id.includes("node_modules/zod")
-            ) {
-              return "vendor-forms";
-            }
+            // zod gets its own chunk; react-hook-form / @hookform deliberately do NOT.
+            // A manual vendor chunk is hoisted to a static import of the entry and
+            // modulepreloaded on first paint. That's what we want for zod — the DTOs
+            // validate every API response, so it's needed eagerly (session check +
+            // public jobs list on first paint) and a named chunk keeps it out of the
+            // entry bundle. But react-hook-form is used only by form routes (all lazy),
+            // so giving it a manual chunk forced ~16KB gzip of form library onto the
+            // initial load of pages with no forms. Left unnamed, Rollup auto-splits it
+            // into a shared chunk imported only by those lazy route chunks — off the
+            // critical path until a form route is actually opened.
+            if (id.includes("node_modules/zod")) return "vendor-zod";
             if (id.includes("node_modules/@sentry")) return "vendor-sentry";
             if (id.includes("node_modules/axios")) return "vendor-axios";
             return undefined;
