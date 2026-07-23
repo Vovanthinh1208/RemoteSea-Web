@@ -10,8 +10,11 @@ export const DEFAULT_FILTERS_FETCH_LIMIT = 20;
 export const SALARY_FLOOR = 500;
 export const SALARY_CEIL = 8000;
 
-export type SortKey = "recent" | "salary" | "featured";
-const SORTS: SortKey[] = ["recent", "salary", "featured"];
+// "relevance" only makes sense combined with a search query — the API applies
+// it automatically when `q` is set and `sort` is omitted, but it's also a
+// real, distinct sort a caller (or this UI) can request explicitly.
+export type SortKey = "recent" | "salary" | "featured" | "relevance";
+const SORTS: SortKey[] = ["recent", "salary", "featured", "relevance"];
 
 // UI-facing filter vocabulary, ported from remotesea/src/lib/job-filters.ts —
 // GET /jobs now accepts arrays (repeated query keys) + salaryMin/salaryMax +

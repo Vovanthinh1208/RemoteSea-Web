@@ -49,7 +49,16 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
       return;
     }
     const t = setTimeout(() => {
-      if (search !== query.q) onFiltersChange({ ...query, q: search, page: 1 });
+      if (search !== query.q) {
+        // Mirrors the API's own default: ranks by relevance once a search
+        // starts (unless the user already picked a different sort), and
+        // reverts to recency once the search is cleared — never overrides an
+        // explicit choice like "salary"/"featured".
+        let sort = query.sort;
+        if (search && query.sort === "recent") sort = "relevance";
+        if (!search && query.sort === "relevance") sort = "recent";
+        onFiltersChange({ ...query, q: search, sort, page: 1 });
+      }
     }, SEARCH_DEBOUNCE_MS);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -128,6 +137,7 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
                 value={query.sort}
                 onChange={(e) => setSort(e.target.value as SortKey)}
               >
+                {query.q && <option value="relevance">Best match</option>}
                 <option value="recent">Most recent</option>
                 <option value="salary">Highest salary</option>
                 <option value="featured">Featured first</option>

@@ -35,7 +35,12 @@ export const buildJobListParams = (query: JobFilters, limit: number): JobListQue
     timezone: filters.timezone.length ? filters.timezone : undefined,
     salaryMin: hasSalaryRange ? filters.salaryMin : undefined,
     salaryMax: hasSalaryRange ? filters.salaryMax : undefined,
-    sort: query.sort !== "recent" ? query.sort : undefined,
+    // Always sent explicitly now — "recent" used to be omittable because it
+    // matched the API's unset-sort default (featured-first), but the API now
+    // treats "recent" as a distinct order (publishedAt desc only), so
+    // omitting it would silently request featured-first while the UI shows
+    // "Most recent" selected.
+    sort: query.sort,
     page: query.page,
     limit,
   };
