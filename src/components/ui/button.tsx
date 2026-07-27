@@ -1,8 +1,10 @@
+import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/utils/cn";
+import { Spinner } from "./spinner";
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 font-medium text-sm leading-none border rounded-8 transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:shadow-focus active:translate-y-px whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-60",
+  "relative inline-flex items-center justify-center gap-2 font-medium text-sm leading-none border rounded-8 transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:shadow-focus active:translate-y-px whitespace-nowrap disabled:cursor-not-allowed disabled:opacity-60",
   {
     variants: {
       variant: {
@@ -14,7 +16,7 @@ export const buttonVariants = cva(
         soft: "bg-neutral-100 text-neutral-900 border-neutral-200 hover:bg-white hover:border-neutral-300",
       },
       size: {
-        sm: "h-8  px-3 text-[13px]",
+        sm: "h-8 px-3 text-[13px]",
         md: "h-[38px] px-4",
         lg: "h-11 px-5 text-[15px]",
         xl: "h-[52px] px-6 text-base",
@@ -27,9 +29,47 @@ export const buttonVariants = cva(
   }
 );
 
-interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {}
+const spinnerVariants = cva("absolute inset-y-0 flex items-center", {
+  variants: {
+    size: {
+      sm: "right-3",
+      md: "right-4",
+      lg: "right-5",
+      xl: "right-6",
+    },
+  },
+  defaultVariants: {
+    size: "md",
+  },
+});
 
-export const Button = ({ className, variant, size, ...props }: ButtonProps) => (
-  <button className={cn(buttonVariants({ variant, size }), className)} {...props} />
-);
+interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
+  isLoading?: boolean;
+}
+
+export const Button = ({
+  className,
+  variant,
+  size,
+  isLoading = false,
+  children,
+  disabled,
+  ...props
+}: ButtonProps) => {
+  return (
+    <button
+      className={cn(buttonVariants({ variant, size }), className)}
+      disabled={disabled || isLoading}
+      {...props}
+    >
+      <span className="flex items-center justify-center">{children}</span>
+
+      {isLoading && (
+        <span className={spinnerVariants({ size })}>
+          <Spinner className="h-4 w-4" />
+        </span>
+      )}
+    </button>
+  );
+};

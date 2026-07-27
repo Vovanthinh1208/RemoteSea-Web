@@ -22,6 +22,7 @@ export const LoginForm = () => {
   const { login } = useAuth();
   const { toast } = useToast();
   const [formError, setFormError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -35,12 +36,15 @@ export const LoginForm = () => {
 
   const onSubmit = async (values: LoginFormValues) => {
     setFormError(null);
+    setIsLoading(true);
     try {
       await login(values.email, values.password, values.remember);
       navigate(callbackUrl, { replace: true });
     } catch (err) {
       setFormError(applyFormSubmitError(err, setError, "Something went wrong. Please try again."));
       toast({ title: "Sign in failed", variant: "error" });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -89,8 +93,14 @@ export const LoginForm = () => {
 
         {formError && <p className="text-sm text-red-600">{formError}</p>}
 
-        <Button className="w-full rounded-12" disabled={isSubmitting} size="lg" type="submit">
-          {isSubmitting ? "Signing in…" : "Sign in"}
+        <Button
+          className="w-full rounded-12"
+          disabled={isSubmitting}
+          size="lg"
+          type="submit"
+          isLoading={isLoading}
+        >
+          Sign in
         </Button>
       </form>
     </>

@@ -18,7 +18,7 @@ export const ResetPasswordForm = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const [formError, setFormError] = useState<string | null>(null);
-
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -35,6 +35,7 @@ export const ResetPasswordForm = () => {
       return;
     }
     setFormError(null);
+    setIsLoading(true);
     try {
       await resetPassword({ token, password: values.password });
       toast({
@@ -45,6 +46,8 @@ export const ResetPasswordForm = () => {
       navigate(ROUTES.login, { replace: true });
     } catch (err) {
       setFormError(applyFormSubmitError(err, setError, "Something went wrong. Please try again."));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -80,8 +83,14 @@ export const ResetPasswordForm = () => {
 
       {formError && <p className="text-sm text-red-600">{formError}</p>}
 
-      <Button className="w-full rounded-12" disabled={isSubmitting} size="lg" type="submit">
-        {isSubmitting ? "Updating…" : "Update password"}
+      <Button
+        className="w-full rounded-12"
+        disabled={isSubmitting || isLoading}
+        size="lg"
+        type="submit"
+        isLoading={isLoading}
+      >
+        Update password
       </Button>
     </form>
   );
