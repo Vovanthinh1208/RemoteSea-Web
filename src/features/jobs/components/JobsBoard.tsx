@@ -1,13 +1,15 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { SearchBar } from "@/features/jobs/components/SearchBar";
 import { FilterSidebar } from "@/features/jobs/components/FilterSidebar";
 import { JobCard } from "@/features/jobs/components/JobCard";
 import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { useSyncedState } from "@/hooks/useSyncedState";
-import { useJobsQuery } from "@/features/jobs/jobs.queries";
+import { useJobsQuery, prefetchJobsList } from "@/features/jobs/jobs.queries";
 import { useCategories } from "@/features/taxonomy/taxonomy.queries";
 import {
   DEFAULT_FILTERS,
@@ -19,6 +21,8 @@ import {
 } from "@/features/jobs/job-filters";
 import { cn } from "@/utils/cn";
 import { formatSalaryRange } from "@/utils/format";
+import { Spinner } from "@/components/ui/spinner";
+import { ROUTES } from "@/constants/routes";
 
 interface JobsBoardProps {
   filters: JobFilters;
@@ -39,8 +43,19 @@ const JOB_LIST_SKELETON_COUNT = 6;
 export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) => {
   const [search, setSearch] = useSyncedState(query.q);
   const firstRender = useRef(true);
-  const { data, isLoading, isError, isPlaceholderData, refetch } = useJobsQuery(query);
+  const queryClient = useQueryClient();
+  const { data, isLoading, isFetching, isError, isPlaceholderData, refetch } = useJobsQuery(query);
   const { data: categories } = useCategories();
+
+  // Once a page's results are in, warm the cache for the next page — if the
+  // user does click "next," it's often already there instead of triggering a
+  // fresh fetch. Deliberately not the previous page: paging forward is far
+  // more common than paging back.
+  useEffect(() => {
+    if (!data || query.page >= data.pagination.pages) return;
+    void prefetchJobsList(queryClient, { ...query, page: query.page + 1 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, queryClient]);
 
   // Debounced search → filters
   useEffect(() => {
@@ -118,17 +133,33 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
         <div className="min-w-0 flex-1">
           {/* Toolbar */}
           <div className="mb-3 flex items-center justify-between">
-            <p className="text-sm text-neutral-600">
+            {/* div, not p: Spinner renders a <div>, and a <div> can't be a
+                descendant of <p> per the HTML spec (React flags this as a
+                hydration-mismatch warning) — this line was never actual prose,
+                just a status line, so div loses nothing semantically. */}
+            <div className="flex items-center gap-2 text-sm text-neutral-600">
               {isLoading ? (
-                "Loading jobs…"
+                <>
+                  <span className="text-neutral-900">Loading jobs… </span>
+                  <Spinner className="h-3 w-3" />
+                </>
               ) : (
                 <>
                   <strong className="text-neutral-900">{total}</strong>{" "}
                   {total === 1 ? "job" : "jobs"}
                   <span className="text-neutral-400"> matching your filters</span>
+                  {/* Background refetch (filter/sort/page change) over data
+                      that's already on screen — isLoading only ever covers the
+                      very first load, so this is the only signal for "still
+                      showing the old page, new one's on its way." Spinner
+                      alone, no "Updating…" label: the count/filters text right
+                      next to it already reads as a full sentence, and a second
+                      label crammed onto the same line just adds clutter the
+                      spinner alone doesn't need. */}
+                  {isFetching && <Spinner className="h-3 w-3" />}
                 </>
               )}
-            </p>
+            </div>
             <div className="flex items-center gap-2 text-sm text-neutral-500">
               Sort by
               <select
@@ -166,9 +197,12 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
             </div>
           )}
 
-          {/* Job list — dimmed while a filter/page change is fetching over
-              kept-previous data, so the click visibly "took" instead of the old
-              results sitting there unchanged with no feedback. */}
+          {/* Job list — a filter/page/sort change keeps showing the previous
+              page's results (keepPreviousData) while the new ones load, only
+              lightly dimmed and still interactive (see the "Updating…"
+              indicator above for the actual loading signal) instead of
+              locking the whole list, so a click that lands mid-refetch still
+              does something instead of hitting a dead area. */}
           {isLoading ? (
             <div className="space-y-2">
               {Array.from({ length: JOB_LIST_SKELETON_COUNT }, (_, i) => (
@@ -188,18 +222,26 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
           ) : jobs.length === 0 ? (
             <EmptyState
               action={
-                <Button size="sm" variant="outline" onClick={() => setFilters(DEFAULT_FILTERS)}>
-                  Clear filters
-                </Button>
+                <div className="flex items-center justify-center gap-2">
+                  <Button size="sm" variant="outline" onClick={() => setFilters(DEFAULT_FILTERS)}>
+                    Clear filters
+                  </Button>
+                  <Link
+                    className={buttonVariants({ size: "sm", variant: "ghost" })}
+                    to={ROUTES.alerts}
+                  >
+                    Create a job alert instead
+                  </Link>
+                </div>
               }
-              description="Try removing a filter or set up an alert for when something fits."
+              description="Try removing a filter, or get notified the moment a matching job goes live."
               title="No jobs match these filters"
             />
           ) : (
             <div
               className={cn(
-                "space-y-2 transition-opacity duration-150",
-                isPlaceholderData && "pointer-events-none opacity-60"
+                "space-y-2 transition-opacity duration-300",
+                isPlaceholderData && "opacity-70"
               )}
             >
               {jobs.map((job) => (

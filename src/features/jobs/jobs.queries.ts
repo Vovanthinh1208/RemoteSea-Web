@@ -40,6 +40,21 @@ export const prefetchJob = (queryClient: QueryClient, id: string) =>
     ...TIER.list,
   });
 
+// JobsBoard calls this once a page's results have loaded, for the next page
+// only (not previous — a user paging forward is far more likely than paging
+// back). Same cache the click itself would read from, so if the prefetch
+// wins the race the click resolves instantly instead of showing a spinner.
+export const prefetchJobsList = (
+  queryClient: QueryClient,
+  filters: JobFilters,
+  limit: number = JOB_LIMIT
+) =>
+  queryClient.prefetchQuery({
+    queryKey: jobKeys.list(filters, limit),
+    queryFn: ({ signal }) => listJobs(filters, limit, { signal }),
+    ...TIER.list,
+  });
+
 export const useCreateJob = () => {
   const queryClient = useQueryClient();
   return useMutation({

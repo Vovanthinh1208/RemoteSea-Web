@@ -13,6 +13,7 @@ export const ROUTES = {
   employer: "/employer",
   talent: "/talent",
   saved: "/saved",
+  alerts: "/alerts",
   employerDashboard: "/employer-dashboard",
   profile: "/profile",
   postJob: "/post-job",

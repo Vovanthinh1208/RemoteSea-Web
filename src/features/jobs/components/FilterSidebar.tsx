@@ -107,7 +107,7 @@ export const FilterSidebar = ({ filters, onChange, facets }: FilterSidebarProps)
 
   return (
     <aside className="w-full flex-shrink-0 sm:w-[220px]">
-      <div className="mb-1 flex items-center justify-between py-2">
+      <div className="flex items-center justify-between">
         <h3 className="flex items-center gap-2 text-[15px] font-semibold text-neutral-900">
           Filters
           {activeCount > 0 && (
@@ -116,16 +116,17 @@ export const FilterSidebar = ({ filters, onChange, facets }: FilterSidebarProps)
             </span>
           )}
         </h3>
-        {activeCount > 0 && (
-          <button
-            className="text-[12px] text-brand-600 transition-colors hover:text-brand-700"
-            onClick={() => onChange(DEFAULT_FILTERS)}
-          >
-            Clear all
-          </button>
-        )}
+        <button
+          type="button"
+          className={cn(
+            "text-[12px] text-brand-600 transition-colors hover:text-brand-700",
+            activeCount > 0 ? "visible pt-[3px]" : "invisible"
+          )}
+          onClick={() => onChange(DEFAULT_FILTERS)}
+        >
+          Clear all
+        </button>
       </div>
-
       <FilterGroup label="Job type">
         {FILTER_OPTIONS.jobType.map((v) => (
           <CheckRow
