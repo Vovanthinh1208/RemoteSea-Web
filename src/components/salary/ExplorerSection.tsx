@@ -200,13 +200,13 @@ const SalaryBar = ({ row, globalMax, fmt }: SalaryBarProps) => {
           />
           {/* Min */}
           <span
-            className="absolute top-0 h-2 w-1 -translate-x-1/2 rounded-sm bg-neutral-300"
+            className="absolute top-0 h-2 w-1 -translate-x-1/2 rounded-4 bg-neutral-300"
             style={{ left: pct(row.min) }}
             title={`Min ${fmt(row.min)}`}
           />
           {/* Max */}
           <span
-            className="absolute top-0 h-2 w-1 -translate-x-1/2 rounded-sm bg-neutral-400"
+            className="absolute top-0 h-2 w-1 -translate-x-1/2 rounded-4 bg-neutral-400"
             style={{ left: pct(row.max) }}
             title={`Max ${fmt(row.max)}`}
           />
@@ -312,7 +312,7 @@ export const ExplorerSection = () => {
               Median
             </div>
             <div className="flex items-center gap-2 text-[11.5px] text-neutral-400">
-              <span className="h-2 w-1 rounded-sm bg-neutral-400" />
+              <span className="h-2 w-1 rounded-4 bg-neutral-400" />
               Min / max
             </div>
           </div>

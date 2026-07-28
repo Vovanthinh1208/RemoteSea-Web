@@ -10,7 +10,14 @@ const config: Config = {
           50: "#F0F9F4",
           100: "#DCEFDF",
           200: "#B8DFC0",
+          // 300 and 500 were missing from the scale but referenced at 11 call
+          // sites (progress fills, status dots, focus/hover states) — since
+          // "brand" isn't a built-in Tailwind color name, those utilities had
+          // no fallback and generated no CSS at all (same failure mode as the
+          // rounded-20 gap below). Interpolated to fit the existing progression.
+          300: "#93CFA1",
           400: "#6DBF82",
+          500: "#4EAD6A",
           600: "#2E9B52",
           700: "#1F7A3D",
           900: "#0D3D1F",
@@ -57,6 +64,11 @@ const config: Config = {
         card: "0 2px 4px rgba(26,25,23,0.04), 0 6px 16px rgba(26,25,23,0.06)",
         "card-lg": "0 8px 24px rgba(26,25,23,0.10)",
         focus: "0 0 0 3px rgba(46,155,82,0.20)",
+        // The recurring "active tab/segment" pill background (6 call sites)
+        // was reaching for Tailwind's default shadow-sm instead of a named
+        // token — naming it here keeps that pattern inside the app's own
+        // 4-shadow scale instead of a stray 5th unnamed shadow.
+        chip: "0 1px 2px rgba(26,25,23,0.05)",
       },
       keyframes: {
         "fade-up": {

@@ -50,6 +50,7 @@ export const AdminRevenue = () => {
       <div className="mb-6 flex items-start justify-between">
         <div>
           <Eyebrow className="mb-0.5">Finance</Eyebrow>
+          {/* 26px — matches the ops console's denser page-title size (see AdminEmployers.tsx). */}
           <h1 className="text-[26px] font-semibold text-neutral-900">Revenue</h1>
           <p className="mt-1 text-sm text-neutral-500">Per-post billing · all amounts in USD</p>
         </div>

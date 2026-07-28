@@ -15,7 +15,7 @@ export const RegisterPage = () => {
         style={{ background: "linear-gradient(160deg, #0D3D1F 0%, #1F7A3D 100%)" }}
       >
         <div className="flex items-center gap-2 text-lg font-semibold">
-          <span className="grid h-7 w-7 place-items-center rounded-[7px] bg-white/10 pb-0.5 font-serif text-xl italic leading-none">
+          <span className="grid h-7 w-7 place-items-center rounded-8 bg-white/10 pb-0.5 font-serif text-xl italic leading-none">
             R
           </span>
           RemoteSEA
@@ -89,6 +89,8 @@ export const RegisterPage = () => {
           <span className="text-[12px] text-neutral-400">Your account</span>
         </div>
 
+        {/* 36px — larger than the app-wide 32px page title; intentional for
+            this standalone, hero-like auth screen (matches LoginPage.tsx). */}
         <h1 className="mb-1 text-[36px] font-semibold tracking-tight text-neutral-900">
           Join RemoteSEA.
         </h1>

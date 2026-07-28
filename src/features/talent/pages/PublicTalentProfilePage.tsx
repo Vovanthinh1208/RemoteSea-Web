@@ -80,7 +80,7 @@ export const PublicTalentProfilePage = () => {
             <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-brand-600 text-[26px] font-bold text-white">
               {initials}
               {profile.isOpenToWork && (
-                <span className="bg-brand-500 absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-white" />
+                <span className="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-white bg-brand-500" />
               )}
             </div>
           </div>
@@ -89,7 +89,7 @@ export const PublicTalentProfilePage = () => {
             <div className="mb-2 flex flex-wrap items-center gap-2">
               {profile.isOpenToWork && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-100 bg-brand-50 px-2.5 py-0.5 text-[11.5px] font-medium text-brand-700">
-                  <span className="bg-brand-500 h-1.5 w-1.5 rounded-full" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
                   Open to opportunities
                 </span>
               )}

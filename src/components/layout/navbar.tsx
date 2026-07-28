@@ -32,7 +32,7 @@ export const Navbar = () => {
           to={ROUTES.home}
         >
           <span
-            className="grid h-[26px] w-[26px] place-items-center rounded-[7px] pb-0.5 font-serif text-lg italic leading-none text-white"
+            className="grid h-[26px] w-[26px] place-items-center rounded-8 pb-0.5 font-serif text-lg italic leading-none text-white"
             style={{
               background: "linear-gradient(140deg, #2E9B52, #1F7A3D)",
               boxShadow: "inset 0 1px 0 rgba(255,255,255,0.15)",

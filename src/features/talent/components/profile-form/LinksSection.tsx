@@ -2,6 +2,7 @@ import type { UseFormRegister } from "react-hook-form";
 import { Briefcase, Code2, Globe, User } from "lucide-react";
 import { FileUpload } from "@/components/ui/file-upload";
 import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
+import { TEXT_INPUT_CLASS } from "@/components/shared/input-styles";
 import type { ProfileFormValues } from "@/features/talent/talent.schemas";
 
 const LINK_FIELDS = [
@@ -72,7 +73,7 @@ export const LinksSection = ({ register, resumeUrl, onResumeUploaded }: LinksSec
               {label}
             </label>
             <input
-              className="focus:border-brand-500 w-full rounded-10 border border-neutral-200 bg-white px-3 py-2 text-[13px] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+              className={TEXT_INPUT_CLASS}
               id={`p-${field}`}
               placeholder={placeholder}
               {...register(field)}

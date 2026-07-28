@@ -242,7 +242,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
             {/* Save bar */}
             <div className="sticky bottom-0 flex items-center justify-between rounded-20 border border-neutral-200 bg-white/90 px-5 py-3 shadow-card backdrop-blur-sm">
               <span className="flex items-center gap-2 text-[12.5px] text-neutral-500">
-                <span className="bg-brand-500 h-2 w-2 rounded-full" />
+                <span className="h-2 w-2 rounded-full bg-brand-500" />
                 {saving ? "Saving…" : "Save your changes"}
               </span>
               <div className="flex items-center gap-2">

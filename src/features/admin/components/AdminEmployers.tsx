@@ -182,6 +182,8 @@ export const AdminEmployers = () => {
     <div className="flex-1 overflow-hidden">
       <div className="mb-6">
         <Eyebrow className="mb-0.5">Operations</Eyebrow>
+        {/* 26px, smaller than the app-wide 32px page title — intentional for
+            the denser, list-heavy ops console, shared by AdminQueue/AdminRevenue. */}
         <h1 className="text-[26px] font-semibold text-neutral-900">Employers</h1>
         <p className="mt-1 text-sm text-neutral-500">
           {employers.length} companies · {totalListings} total listings · $

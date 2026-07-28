@@ -167,7 +167,7 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
               className={cn(
                 "rounded-6 px-2.5 py-1 text-[11.5px] font-medium transition-all",
                 tab === t.id
-                  ? "bg-white text-neutral-900 shadow-sm"
+                  ? "bg-white text-neutral-900 shadow-chip"
                   : "text-neutral-500 hover:text-neutral-700"
               )}
               key={t.id}

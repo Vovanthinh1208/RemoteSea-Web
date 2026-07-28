@@ -26,7 +26,7 @@ export const ProfileFormNav = () => {
               className={cn(
                 "flex w-full items-center justify-between rounded-10 px-3 py-2 text-[13px] transition-all",
                 activeSection === s.id
-                  ? "bg-white font-medium text-neutral-900 shadow-sm"
+                  ? "bg-white font-medium text-neutral-900 shadow-chip"
                   : "text-neutral-500 hover:bg-white/60 hover:text-neutral-700"
               )}
               key={s.id}

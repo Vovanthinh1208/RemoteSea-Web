@@ -77,7 +77,7 @@ const ListingRow = memo(function ListingRow({ job: j, applications: apps }: List
               style={{ width: `${reviewPct}%` }}
             />
             <span
-              className="bg-brand-500 absolute h-full rounded-full"
+              className="absolute h-full rounded-full bg-brand-500"
               style={{ width: `${shortPct}%` }}
             />
           </div>

@@ -141,6 +141,7 @@ export const AdminQueue = () => {
       <div className="mb-6 flex items-start justify-between">
         <div>
           <Eyebrow className="mb-0.5">Operations</Eyebrow>
+          {/* 26px — matches the ops console's denser page-title size (see AdminEmployers.tsx). */}
           <h1 className="text-[26px] font-semibold text-neutral-900">Review queue</h1>
           <p className="mt-1 text-sm text-neutral-500">
             Every job is human-reviewed before it goes live · {active.length} awaiting

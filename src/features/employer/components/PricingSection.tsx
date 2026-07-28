@@ -110,7 +110,7 @@ export const PricingSection = () => {
           <div className="inline-flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-100 p-1">
             <button
               className={`rounded-full px-5 py-2 text-[13.5px] font-medium transition-all ${
-                !annual ? "bg-white text-neutral-900 shadow-sm" : "text-neutral-500"
+                !annual ? "bg-white text-neutral-900 shadow-chip" : "text-neutral-500"
               }`}
               onClick={() => setAnnual(false)}
             >
@@ -118,7 +118,7 @@ export const PricingSection = () => {
             </button>
             <button
               className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-[13.5px] font-medium transition-all ${
-                annual ? "bg-white text-neutral-900 shadow-sm" : "text-neutral-500"
+                annual ? "bg-white text-neutral-900 shadow-chip" : "text-neutral-500"
               }`}
               onClick={() => setAnnual(true)}
             >

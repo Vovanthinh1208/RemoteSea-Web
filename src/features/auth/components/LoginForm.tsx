@@ -84,7 +84,7 @@ export const LoginForm = () => {
 
         <label className="flex items-center gap-2 text-sm text-neutral-600">
           <input
-            className="h-4 w-4 rounded border-neutral-300 text-brand-600 focus:ring-brand-600"
+            className="h-4 w-4 rounded border-neutral-300 text-brand-600 focus-visible:shadow-focus focus-visible:outline-none"
             type="checkbox"
             {...register("remember")}
           />

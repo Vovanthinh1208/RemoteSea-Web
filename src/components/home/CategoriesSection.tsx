@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
+// Design/Marketing intentionally reach outside the brand/neutral/amber/blue
+// tokens used elsewhere in the app — six categories need visually distinct
+// tags, and purple/rose are otherwise unused anywhere else in the codebase.
 const CATEGORIES = [
   { label: "Engineering", count: 31, color: "bg-brand-50 text-brand-700" },
   { label: "Design", count: 8, color: "bg-purple-50 text-purple-700" },

@@ -1,5 +1,10 @@
 import { Flag, Shield } from "lucide-react";
 
+// One of three "verified" renderings in the app, alongside Badge
+// variant="verified" (components/ui/badge.tsx, job cards) and VerifiedInline
+// (no-pill inline mark). Reach for this one specifically when you need the
+// unverified state too (e.g. the admin review pill) — otherwise prefer
+// Badge/VerifiedInline.
 type VerifiedBadgeSize = "sm" | "md";
 
 interface VerifiedBadgeProps {

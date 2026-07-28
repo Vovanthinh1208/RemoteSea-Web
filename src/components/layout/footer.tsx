@@ -47,7 +47,7 @@ export const Footer = () => {
           <div className="col-span-2">
             <div className="mb-3 flex items-center gap-2 text-[15px] font-semibold text-neutral-900">
               <span
-                className="grid h-[26px] w-[26px] place-items-center rounded-[7px] pb-0.5 font-serif text-lg italic leading-none text-white"
+                className="grid h-[26px] w-[26px] place-items-center rounded-8 pb-0.5 font-serif text-lg italic leading-none text-white"
                 style={{ background: "linear-gradient(140deg, #2E9B52, #1F7A3D)" }}
               >
                 R

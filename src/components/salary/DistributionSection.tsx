@@ -40,7 +40,7 @@ export const DistributionSection = () => {
                 </>,
               ].map((item, i) => (
                 <li className="flex items-start gap-2.5 text-[13.5px] text-neutral-400" key={i}>
-                  <span className="bg-brand-500 mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full" />
+                  <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" />
                   {item}
                 </li>
               ))}

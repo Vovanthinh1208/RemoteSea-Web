@@ -6,6 +6,11 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
+        // One of three "verified" renderings in the app, alongside
+        // components/shared/VerifiedBadge.tsx (admin pill with an unverified
+        // state) and VerifiedInline.tsx (no-pill inline mark). Use this one
+        // for a static, always-verified pill (e.g. job cards) — reach for
+        // VerifiedBadge if you also need to render "unverified".
         verified: "bg-brand-50 text-brand-700",
         featured: "bg-amber-100 text-amber-700",
         vn: "bg-blue-50 text-blue-700",

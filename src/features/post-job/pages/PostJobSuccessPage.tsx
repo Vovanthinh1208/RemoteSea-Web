@@ -14,7 +14,9 @@ export const PostJobSuccessPage = () => {
   return (
     <div className="mx-auto flex max-w-xl flex-col items-center px-4 py-24 text-center">
       <CheckCircle2 className="h-14 w-14 text-brand-600" />
-      <h1 className="mt-6 text-2xl font-semibold text-neutral-900">Thanks for your submission</h1>
+      <h1 className="mt-6 text-[24px] font-semibold text-neutral-900">
+        Thanks for your submission
+      </h1>
       <p className="mt-3 text-neutral-600">
         Your job is under review. We&apos;ll email you within 24 hours once it&apos;s live.
       </p>

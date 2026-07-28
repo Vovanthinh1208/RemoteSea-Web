@@ -45,6 +45,16 @@
   }
 }
 
+/* Text sizes are set with arbitrary values (text-[13px], not a fontSize
+   scale) throughout the app, deliberately — but that means there's nothing
+   to check a new value against. These are the sizes already in sustained use;
+   treat them as the de facto scale rather than picking a nearby half-pixel:
+   10 · 10.5 · 11 · 11.5 · 12 · 12.5 · 13 · 13.5 · 14 · 14.5 · 15 · 16 · 17
+   18 · 19 · 20 · 22 · 24 · 26 · 28 · 30 · 32 · 36 · 38 · 40 · 44 · 48 · 52 · 64
+   Half-pixel steps (11/11.5, 12/12.5, 13/13.5, 14/14.5) are intentional
+   micro-adjustments between dense UI chrome and slightly larger body text —
+   not a typo of the whole-pixel neighbor. */
+
 @layer utilities {
   .font-serif-italic {
     font-family: var(--font-serif);
