@@ -15,7 +15,11 @@ const { buildJobListParams, listJobs, getJob } = await import("@/features/jobs/j
 const { ValidationError } = await import("@/core/errors/error-types");
 
 describe("buildJobListParams", () => {
-  it("drops all filter params when filters are at their defaults", () => {
+  it("drops all filter params when filters are at their defaults, but always sends sort", () => {
+    // sort is deliberately never dropped, even at its "recent" default — see
+    // the comment in buildJobListParams: the API's own unset-sort default is
+    // featured-first, not recent, so omitting it here would silently request
+    // the wrong order while the UI shows "Most recent" selected.
     expect(buildJobListParams(DEFAULT_JOB_FILTERS, 12)).toEqual({
       q: undefined,
       type: undefined,
@@ -24,7 +28,7 @@ describe("buildJobListParams", () => {
       timezone: undefined,
       salaryMin: undefined,
       salaryMax: undefined,
-      sort: undefined,
+      sort: "recent",
       page: 1,
       limit: 12,
     });
