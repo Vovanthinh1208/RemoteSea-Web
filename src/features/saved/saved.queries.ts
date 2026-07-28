@@ -21,7 +21,7 @@ export const useSavedJobs = (page = 1, limit = SAVED_JOBS_LIST_LIMIT) => {
     queryKey: savedKeys.jobs(page, limit),
     queryFn: ({ signal }) => listSavedJobs(page, limit, { signal }),
     enabled: !!user,
-    staleTime: TIER.live.staleTime,
+    ...TIER.live,
   });
 };
 
@@ -33,7 +33,7 @@ export const useSavedJobIds = () => {
     queryKey: savedKeys.ids(),
     queryFn: ({ signal }) => listSavedJobIds({ signal }),
     enabled: !!user,
-    staleTime: TIER.live.staleTime,
+    ...TIER.live,
   });
 };
 
@@ -48,7 +48,7 @@ export const useIsJobSaved = (jobId: string) => {
     queryKey: savedKeys.ids(),
     queryFn: ({ signal }) => listSavedJobIds({ signal }),
     enabled: !!user,
-    staleTime: TIER.live.staleTime,
+    ...TIER.live,
     select: (ids) => ids.includes(jobId),
   });
 };

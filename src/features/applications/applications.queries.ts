@@ -43,7 +43,7 @@ export const useMyApplicationIds = () => {
     queryKey: applicationKeys.ids(),
     queryFn: ({ signal }) => listMyApplicationIds({ signal }),
     enabled: !!user,
-    staleTime: TIER.live.staleTime,
+    ...TIER.live,
   });
 };
 

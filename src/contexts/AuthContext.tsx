@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     queryKey: SESSION_KEY,
     queryFn: hydrateFromSession,
     enabled: hasToken,
-    staleTime: TIER.session.staleTime,
+    ...TIER.session,
     retry: SESSION_RETRY_COUNT,
   });
 
