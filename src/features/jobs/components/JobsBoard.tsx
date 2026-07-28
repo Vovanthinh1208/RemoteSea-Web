@@ -1,26 +1,25 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { X } from "lucide-react";
 import { SearchBar } from "@/features/jobs/components/SearchBar";
 import { FilterSidebar } from "@/features/jobs/components/FilterSidebar";
 import { JobCard } from "@/features/jobs/components/JobCard";
 import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
+import { Pagination } from "@/features/jobs/components/Pagination";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { useSyncedState } from "@/hooks/useSyncedState";
 import { useJobsQuery, prefetchJobsList } from "@/features/jobs/jobs.queries";
 import { useCategories } from "@/features/taxonomy/taxonomy.queries";
+import { buildActivePills } from "@/features/jobs/jobs.utils";
 import {
   DEFAULT_FILTERS,
-  SALARY_CEIL,
-  SALARY_FLOOR,
   type Filters,
   type JobFilters,
   type SortKey,
 } from "@/features/jobs/job-filters";
 import { cn } from "@/utils/cn";
-import { formatSalaryRange } from "@/utils/format";
 import { Spinner } from "@/components/ui/spinner";
 import { ROUTES } from "@/constants/routes";
 
@@ -28,14 +27,6 @@ interface JobsBoardProps {
   filters: JobFilters;
   onFiltersChange: (filters: JobFilters) => void;
 }
-
-const TIMEZONE_LABELS: Record<string, string> = {
-  sea: "SEA / APAC",
-  async: "Async-friendly",
-  SG: "SG-based",
-  AU: "AU-based",
-  US: "US-based",
-};
 
 const SEARCH_DEBOUNCE_MS = 400;
 const JOB_LIST_SKELETON_COUNT = 6;
@@ -85,37 +76,7 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
   const goToPage = (page: number) => onFiltersChange({ ...query, q: search, page });
 
   const { filters } = query;
-  const activePills: { label: string; clear: () => void }[] = [];
-  filters.jobType.forEach((v) =>
-    activePills.push({
-      label: v,
-      clear: () => setFilters({ ...filters, jobType: filters.jobType.filter((x) => x !== v) }),
-    })
-  );
-  filters.seniority.forEach((v) =>
-    activePills.push({
-      label: v,
-      clear: () => setFilters({ ...filters, seniority: filters.seniority.filter((x) => x !== v) }),
-    })
-  );
-  filters.timezone.forEach((v) =>
-    activePills.push({
-      label: TIMEZONE_LABELS[v] ?? v,
-      clear: () => setFilters({ ...filters, timezone: filters.timezone.filter((x) => x !== v) }),
-    })
-  );
-  filters.category.forEach((slug) =>
-    activePills.push({
-      label: categories?.find((c) => c.slug === slug)?.name ?? slug,
-      clear: () => setFilters({ ...filters, category: filters.category.filter((x) => x !== slug) }),
-    })
-  );
-  if (filters.salaryMin > SALARY_FLOOR || filters.salaryMax < SALARY_CEIL) {
-    activePills.push({
-      label: formatSalaryRange(filters.salaryMin, filters.salaryMax) ?? "",
-      clear: () => setFilters({ ...filters, salaryMin: SALARY_FLOOR, salaryMax: SALARY_CEIL }),
-    });
-  }
+  const activePills = buildActivePills(filters, categories, setFilters);
 
   const jobs = data?.jobs ?? [];
   const total = data?.pagination.total ?? 0;
@@ -250,42 +211,7 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
             </div>
           )}
 
-          {/* Pagination */}
-          {!isLoading && pages > 1 && (
-            <div className="mt-8 flex items-center justify-center gap-1.5">
-              <button
-                aria-label="Previous page"
-                className="grid h-9 w-9 place-items-center rounded-8 border border-neutral-200 bg-white text-neutral-600 transition-colors hover:bg-neutral-50 disabled:opacity-40"
-                disabled={query.page <= 1}
-                onClick={() => goToPage(query.page - 1)}
-              >
-                <ChevronLeft size={16} />
-              </button>
-              {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
-                <button
-                  key={n}
-                  aria-current={n === query.page ? "page" : undefined}
-                  onClick={() => goToPage(n)}
-                  className={cn(
-                    "grid h-9 min-w-9 place-items-center rounded-8 px-2 text-sm transition-colors",
-                    n === query.page
-                      ? "bg-brand-600 font-medium text-white"
-                      : "border border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50"
-                  )}
-                >
-                  {n}
-                </button>
-              ))}
-              <button
-                aria-label="Next page"
-                className="grid h-9 w-9 place-items-center rounded-8 border border-neutral-200 bg-white text-neutral-600 transition-colors hover:bg-neutral-50 disabled:opacity-40"
-                disabled={query.page >= pages}
-                onClick={() => goToPage(query.page + 1)}
-              >
-                <ChevronRight size={16} />
-              </button>
-            </div>
-          )}
+          {!isLoading && <Pagination page={query.page} pages={pages} onPageChange={goToPage} />}
         </div>
       </div>
     </div>
