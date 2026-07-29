@@ -74,3 +74,15 @@ export const taxonomyKeys = {
 export const sessionKeys = {
   all: ["session"] as const,
 };
+
+export const authKeys = {
+  twoFactorStatus: () => ["auth", "2fa", "status"] as const,
+};
+
+export const usersKeys = {
+  account: () => ["users", "me", "account"] as const,
+  notificationPreferences: () => ["users", "me", "notification-preferences"] as const,
+  pauseState: () => ["users", "me", "pause"] as const,
+  connections: () => ["users", "me", "connections"] as const,
+  sessions: () => ["users", "me", "sessions"] as const,
+};

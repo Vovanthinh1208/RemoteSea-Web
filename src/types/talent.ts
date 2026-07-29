@@ -1,5 +1,7 @@
 import type { ExperienceLevel, Skill } from "@/types/job";
 
+export type TalentVisibility = "PUBLIC" | "VERIFIED_EMPLOYERS";
+
 export type TalentSkill = {
   talentId: string;
   skillId: string;
@@ -23,6 +25,7 @@ export type TalentProfile = {
   githubUrl: string | null;
   linkedinUrl: string | null;
   isOpenToWork: boolean;
+  visibility: TalentVisibility;
   // Omitted entirely (not null) by GET /talent/:slug when isOpenToWork is false.
   desiredSalaryMin?: number | null;
   desiredSalaryMax?: number | null;
@@ -46,6 +49,7 @@ export type UpdateTalentProfilePayload = Partial<{
   githubUrl: string;
   linkedinUrl: string;
   isOpenToWork: boolean;
+  visibility: TalentVisibility;
   desiredSalaryMin: number;
   desiredSalaryMax: number;
   skills: { skillId: string; yearsExp?: number }[];

@@ -5,6 +5,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { loginSchema, type LoginFormValues } from "@/features/auth/auth.schemas";
 import { OAuthButtons } from "@/features/auth/components/OAuthButtons";
 import { OrDivider } from "@/features/auth/components/OrDivider";
+import { TwoFactorChallengeForm } from "@/features/auth/components/TwoFactorChallengeForm";
 import { TextField } from "@/components/shared/TextField";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/toast";
@@ -23,6 +24,9 @@ export const LoginForm = () => {
   const { toast } = useToast();
   const [formError, setFormError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [challenge, setChallenge] = useState<{ challengeToken: string; remember: boolean } | null>(
+    null
+  );
 
   const {
     register,
@@ -38,7 +42,11 @@ export const LoginForm = () => {
     setFormError(null);
     setIsLoading(true);
     try {
-      await login(values.email, values.password, values.remember);
+      const result = await login(values.email, values.password, values.remember);
+      if (result.status === "two_factor_required") {
+        setChallenge({ challengeToken: result.challengeToken, remember: values.remember });
+        return;
+      }
       navigate(callbackUrl, { replace: true });
     } catch (err) {
       setFormError(applyFormSubmitError(err, setError, "Something went wrong. Please try again."));
@@ -47,6 +55,17 @@ export const LoginForm = () => {
       setIsLoading(false);
     }
   };
+
+  if (challenge) {
+    return (
+      <TwoFactorChallengeForm
+        challengeToken={challenge.challengeToken}
+        remember={challenge.remember}
+        onBack={() => setChallenge(null)}
+        onSuccess={() => navigate(callbackUrl, { replace: true })}
+      />
+    );
+  }
 
   return (
     <>

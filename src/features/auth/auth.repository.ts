@@ -8,11 +8,50 @@ import type {
   RegisterResponseDto,
   ResetPasswordPayload,
   SessionResponseDto,
+  TwoFactorChallengePayload,
+  TwoFactorChallengeResponseDto,
+  TwoFactorDisablePayload,
+  TwoFactorSetupDto,
+  TwoFactorStatusDto,
+  TwoFactorVerifyPayload,
+  TwoFactorVerifyResponseDto,
 } from "@/features/auth/auth.dto";
 
 export const authRepository = {
   login: async (payload: LoginPayload): Promise<LoginResponseDto> => {
     const { data } = await apiClient.post<LoginResponseDto>("/auth/login", payload);
+    return data;
+  },
+
+  completeTwoFactorChallenge: async (
+    payload: TwoFactorChallengePayload
+  ): Promise<TwoFactorChallengeResponseDto> => {
+    const { data } = await apiClient.post<TwoFactorChallengeResponseDto>(
+      "/auth/2fa/challenge",
+      payload
+    );
+    return data;
+  },
+
+  getTwoFactorStatus: async (): Promise<TwoFactorStatusDto> => {
+    const { data } = await apiClient.get<TwoFactorStatusDto>("/auth/2fa/status");
+    return data;
+  },
+
+  setupTwoFactor: async (): Promise<TwoFactorSetupDto> => {
+    const { data } = await apiClient.post<TwoFactorSetupDto>("/auth/2fa/setup");
+    return data;
+  },
+
+  verifyTwoFactorSetup: async (
+    payload: TwoFactorVerifyPayload
+  ): Promise<TwoFactorVerifyResponseDto> => {
+    const { data } = await apiClient.post<TwoFactorVerifyResponseDto>("/auth/2fa/verify", payload);
+    return data;
+  },
+
+  disableTwoFactor: async (payload: TwoFactorDisablePayload): Promise<{ message: string }> => {
+    const { data } = await apiClient.post<{ message: string }>("/auth/2fa/disable", payload);
     return data;
   },
 

@@ -1,6 +1,20 @@
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
+
+// index.html's CSP meta tag has no 'unsafe-inline'/nonce for script-src, which
+// is right for the built production bundle but blocks the unnonced inline
+// module script the Vite dev server injects for the React Refresh preamble —
+// every component's `$RefreshSig$()` call then throws ReferenceError on
+// import, before anything renders. `ctx.server` is only set while serving
+// (never during `vite build`), so this only loosens the dev-server response.
+const relaxCspForDev = (): Plugin => ({
+  name: "relax-csp-for-dev",
+  transformIndexHtml(html, ctx) {
+    if (!ctx.server) return html;
+    return html.replace(/(script-src 'self')/, "$1 'unsafe-inline'");
+  },
+});
 
 export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd(), "VITE_");
@@ -17,7 +31,7 @@ export default defineConfig(({ mode, command }) => {
   }
 
   return {
-    plugins: [react()],
+    plugins: [react(), relaxCspForDev()],
     // Release identifier for Sentry (error <-> deploy correlation). CI passes
     // the commit SHA via GITHUB_SHA; local builds fall back to "dev".
     define: {
@@ -31,7 +45,7 @@ export default defineConfig(({ mode, command }) => {
       },
     },
     server: {
-      port: 3000,
+      port: 3001,
     },
     build: {
       // Generated but not referenced from the bundles ("hidden") — stack traces

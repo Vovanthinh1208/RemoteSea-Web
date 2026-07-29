@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Bell, Bookmark } from "lucide-react";
+import { Bell, Bookmark, Settings } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useAuth } from "@/contexts/AuthContext";
 import { ROUTES } from "@/constants/routes";
@@ -101,6 +101,13 @@ export const Navbar = () => {
                   Admin
                 </Link>
               )}
+              <Link
+                aria-label="Settings"
+                className="grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+                to={ROUTES.settings}
+              >
+                <Settings size={17} />
+              </Link>
               <button
                 className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
                 type="button"

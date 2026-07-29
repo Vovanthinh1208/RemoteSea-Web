@@ -30,10 +30,21 @@ type RegisterInput = {
   role: Extract<UserRole, "TALENT" | "EMPLOYER">;
 };
 
+// A 2FA-enabled account's login doesn't get a real session yet — the caller
+// (LoginForm) must collect a code and call completeTwoFactorChallenge with
+// the returned challengeToken before it gets one.
+export type LoginResult =
+  { status: "success"; user: AuthUser } | { status: "two_factor_required"; challengeToken: string };
+
 type AuthContextValue = {
   user: AuthUser | null;
   status: AuthStatus;
-  login: (email: string, password: string, remember?: boolean) => Promise<AuthUser>;
+  login: (email: string, password: string, remember?: boolean) => Promise<LoginResult>;
+  completeTwoFactorChallenge: (
+    challengeToken: string,
+    code: string,
+    remember?: boolean
+  ) => Promise<AuthUser>;
   loginWithToken: (token: string) => Promise<AuthUser>;
   registerAccount: (input: RegisterInput) => Promise<AuthUser>;
   logout: () => void;
@@ -163,8 +174,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   );
 
   const login = useCallback(
-    async (email: string, password: string, remember = true) => {
-      const { accessToken } = await authService.login({ email, password });
+    async (email: string, password: string, remember = true): Promise<LoginResult> => {
+      const result = await authService.login({ email, password });
+      if ("twoFactorRequired" in result) {
+        return { status: "two_factor_required", challengeToken: result.challengeToken };
+      }
+      const user = await loginWithToken(result.accessToken, remember);
+      return { status: "success", user };
+    },
+    [loginWithToken]
+  );
+
+  const completeTwoFactorChallenge = useCallback(
+    async (challengeToken: string, code: string, remember = true) => {
+      const { accessToken } = await authService.completeTwoFactorChallenge({
+        challengeToken,
+        code,
+      });
       return loginWithToken(accessToken, remember);
     },
     [loginWithToken]
@@ -173,7 +199,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const registerAccount = useCallback(
     async (input: RegisterInput) => {
       await authService.register(input);
-      return login(input.email, input.password, true);
+      // A brand-new account never has 2FA enabled yet, so this is always the
+      // "success" branch — but login()'s return type doesn't know that.
+      const result = await login(input.email, input.password, true);
+      if (result.status !== "success") {
+        throw new Error("Unexpected two-factor challenge right after registration");
+      }
+      return result.user;
     },
     [login]
   );
@@ -198,13 +230,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       user,
       status,
       login,
+      completeTwoFactorChallenge,
       loginWithToken,
       registerAccount,
       logout,
       patchUser,
       retrySession,
     }),
-    [user, status, login, loginWithToken, registerAccount, logout, patchUser, retrySession]
+    [
+      user,
+      status,
+      login,
+      completeTwoFactorChallenge,
+      loginWithToken,
+      registerAccount,
+      logout,
+      patchUser,
+      retrySession,
+    ]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

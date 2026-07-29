@@ -14,6 +14,7 @@ export const ROUTES = {
   talent: "/talent",
   saved: "/saved",
   alerts: "/alerts",
+  settings: "/settings",
   employerDashboard: "/employer-dashboard",
   profile: "/profile",
   postJob: "/post-job",

@@ -5,16 +5,42 @@ import { toAuthUser } from "@/features/auth/auth.mapper";
 import { sessionResponseSchema } from "@/features/auth/auth.dto";
 import type {
   LoginPayload,
+  LoginResponseDto,
   OAuthProvider,
   RegisterPayload,
   ResetPasswordPayload,
+  TwoFactorChallengePayload,
+  TwoFactorChallengeResponseDto,
+  TwoFactorDisablePayload,
+  TwoFactorSetupDto,
+  TwoFactorStatusDto,
+  TwoFactorVerifyPayload,
+  TwoFactorVerifyResponseDto,
 } from "@/features/auth/auth.dto";
 import type { AuthUser } from "@/types/user";
 
 export type { LoginPayload, RegisterPayload, ResetPasswordPayload, OAuthProvider };
 
-export const login = async (payload: LoginPayload): Promise<{ accessToken: string }> =>
+export const login = async (payload: LoginPayload): Promise<LoginResponseDto> =>
   authRepository.login(payload);
+
+export const completeTwoFactorChallenge = async (
+  payload: TwoFactorChallengePayload
+): Promise<TwoFactorChallengeResponseDto> => authRepository.completeTwoFactorChallenge(payload);
+
+export const getTwoFactorStatus = async (): Promise<TwoFactorStatusDto> =>
+  authRepository.getTwoFactorStatus();
+
+export const setupTwoFactor = async (): Promise<TwoFactorSetupDto> =>
+  authRepository.setupTwoFactor();
+
+export const verifyTwoFactorSetup = async (
+  payload: TwoFactorVerifyPayload
+): Promise<TwoFactorVerifyResponseDto> => authRepository.verifyTwoFactorSetup(payload);
+
+export const disableTwoFactor = async (
+  payload: TwoFactorDisablePayload
+): Promise<{ message: string }> => authRepository.disableTwoFactor(payload);
 
 export const register = async (
   payload: RegisterPayload
