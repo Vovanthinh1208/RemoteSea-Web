@@ -3,6 +3,7 @@ import { oauthUrl } from "@/features/auth/auth.service";
 const OAUTH_PROVIDERS = [
   { id: "google", label: "Continue with Google", bg: "#4285F4", icon: "G" },
   { id: "github", label: "Continue with GitHub", bg: "#24292F", icon: "GH" },
+  { id: "linkedin", label: "Continue with LinkedIn", bg: "#0A66C2", icon: "in" },
 ] as const;
 
 export const OAuthButtons = () => {

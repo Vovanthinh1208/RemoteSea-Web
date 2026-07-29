@@ -1,4 +1,4 @@
-import { Globe, Laptop } from "lucide-react";
+import { Ban, Globe, Laptop } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
 import { ChangePasswordForm } from "@/features/settings/components/ChangePasswordForm";
@@ -80,7 +80,9 @@ export const SecuritySection = () => {
                     </span>
                   )}
                 </p>
-                <p className="text-[12px] text-neutral-400">{s.ip ?? "Unknown location"}</p>
+                <p className="text-[12px] text-neutral-400">
+                  {s.location ?? s.ip ?? "Unknown location"}
+                </p>
               </div>
               <span className="flex-shrink-0 text-[12px] text-neutral-400">
                 {s.current ? "Active now" : timeAgoLong(s.lastSeenAt)}
@@ -100,11 +102,12 @@ export const SecuritySection = () => {
         })}
       </div>
       <button
-        className="flex items-center gap-2 text-[13px] font-medium text-red-600 hover:text-red-700 disabled:opacity-60"
+        className="flex w-full items-center gap-2 rounded-12 border border-dashed border-red-200 px-4 py-3 text-[13px] font-medium text-red-600 transition-colors hover:border-red-300 hover:bg-red-50/50 disabled:opacity-60"
         disabled={!hasOtherSessions || revokeOthersMutation.isPending}
         type="button"
         onClick={revokeAllOthers}
       >
+        <Ban size={15} />
         Sign out of all other sessions
       </button>
     </section>

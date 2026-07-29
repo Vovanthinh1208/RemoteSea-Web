@@ -6,6 +6,7 @@ import { sessionResponseSchema } from "@/features/auth/auth.dto";
 import type {
   LoginPayload,
   LoginResponseDto,
+  OAuthLinkUrlDto,
   OAuthProvider,
   RegisterPayload,
   ResetPasswordPayload,
@@ -60,3 +61,6 @@ export const resetPassword = async (payload: ResetPasswordPayload): Promise<{ me
   authRepository.resetPassword(payload);
 
 export const oauthUrl = (provider: OAuthProvider): string => authRepository.oauthUrl(provider);
+
+export const getOAuthLinkUrl = async (provider: OAuthProvider): Promise<OAuthLinkUrlDto> =>
+  authRepository.getOAuthLinkUrl(provider);

@@ -23,7 +23,9 @@ export type RegisterPayload = {
 export type RegisterResponseDto = { id: string; email: string; name: string; role: UserRole };
 
 export type ResetPasswordPayload = { token: string; password: string };
-export type OAuthProvider = "google" | "github";
+export type OAuthProvider = "google" | "github" | "linkedin";
+
+export type OAuthLinkUrlDto = { url: string };
 
 // Wire shape of GET /auth/session — identical to AuthUser today (see auth.mapper.ts).
 export type AuthUserDto = AuthUser;

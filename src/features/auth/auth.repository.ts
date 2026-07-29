@@ -3,6 +3,7 @@ import type { RequestOptions } from "@/core/http/request-config";
 import type {
   LoginPayload,
   LoginResponseDto,
+  OAuthLinkUrlDto,
   OAuthProvider,
   RegisterPayload,
   RegisterResponseDto,
@@ -80,4 +81,14 @@ export const authRepository = {
   },
 
   oauthUrl: (provider: OAuthProvider): string => `${API_BASE_URL}/auth/${provider}`,
+
+  // Unlike oauthUrl above (a plain <a href>, used for sign-in), this is a
+  // real authenticated request — Settings > Connected accounts "Connect"
+  // can't just link to /auth/:provider/link directly, since a top-level
+  // browser navigation can't carry the Authorization header. The frontend
+  // fetches the URL here first, then navigates to it itself.
+  getOAuthLinkUrl: async (provider: OAuthProvider): Promise<OAuthLinkUrlDto> => {
+    const { data } = await apiClient.get<OAuthLinkUrlDto>(`/auth/${provider}/link`);
+    return data;
+  },
 };

@@ -45,6 +45,7 @@ export type SessionDto = {
   id: string;
   device: string;
   ip: string | null;
+  location: string | null;
   createdAt: string;
   lastSeenAt: string;
   current: boolean;
