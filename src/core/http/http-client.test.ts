@@ -9,12 +9,16 @@ const tokenStorage = vi.hoisted(() => ({
 vi.mock("@/core/token/token-storage", () => tokenStorage);
 
 // Imported after the mock so http-client.ts picks up the mocked token storage.
-const { apiClient, registerUnauthorizedHandler } = await import("@/core/http/http-client");
-const { UnauthorizedError, NotFoundError } = await import("@/core/errors/error-types");
+const { apiClient, registerUnauthorizedHandler } =
+  await import("@/core/http/http-client");
+const { UnauthorizedError, NotFoundError } =
+  await import("@/core/errors/error-types");
 
 const rejectedHandler = () => {
-  const handler = apiClient.interceptors.response.handlers?.[0]?.rejected;
-  if (!handler) throw new Error("response interceptor not registered");
+  const handler =
+    apiClient.interceptors.response.handlers?.[0]?.rejected;
+  if (!handler)
+    throw new Error("response interceptor not registered");
   return handler;
 };
 
@@ -43,7 +47,9 @@ describe("http-client response interceptor", () => {
       response: { status: 401, data: { error: "Unauthorized" } },
     });
 
-    await expect(rejectedHandler()(error)).rejects.toBeInstanceOf(UnauthorizedError);
+    await expect(rejectedHandler()(error)).rejects.toBeInstanceOf(
+      UnauthorizedError
+    );
     expect(tokenStorage.clearAccessToken).toHaveBeenCalledOnce();
     expect(onUnauthorized).toHaveBeenCalledOnce();
 
@@ -56,6 +62,8 @@ describe("http-client response interceptor", () => {
       response: { status: 404, data: { error: "Not found" } },
     });
 
-    await expect(rejectedHandler()(error)).rejects.toBeInstanceOf(NotFoundError);
+    await expect(rejectedHandler()(error)).rejects.toBeInstanceOf(
+      NotFoundError
+    );
   });
 });

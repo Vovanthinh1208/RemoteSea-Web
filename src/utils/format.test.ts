@@ -20,6 +20,8 @@ describe("formatSalaryRange", () => {
   });
 
   it("supports a currency-word prefix", () => {
-    expect(formatSalaryRange(1000, 2000, { prefix: "USD " })).toBe("USD 1,000–2,000");
+    expect(formatSalaryRange(1000, 2000, { prefix: "USD " })).toBe(
+      "USD 1,000–2,000"
+    );
   });
 });

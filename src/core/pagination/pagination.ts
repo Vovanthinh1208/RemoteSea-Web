@@ -12,4 +12,7 @@ export type PagedResult<T> = {
 
 export type PageParams = { page: number; limit: number };
 
-export const buildPageParams = ({ page, limit }: PageParams): PageParams => ({ page, limit });
+export const buildPageParams = ({
+  page,
+  limit,
+}: PageParams): PageParams => ({ page, limit });

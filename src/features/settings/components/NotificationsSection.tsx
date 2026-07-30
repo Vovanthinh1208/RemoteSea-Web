@@ -1,4 +1,7 @@
-import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
+import {
+  SectionHead,
+  EMPHASIS_STYLE,
+} from "@/features/talent/components/profile-form/SectionHead";
 import { ToggleRow } from "@/features/settings/components/ToggleRow";
 import {
   useMyNotificationPreferences,
@@ -7,7 +10,10 @@ import {
 import { useToastMutation } from "@/hooks/useToastMutation";
 import type { NotificationPreferencesDto } from "@/features/users/users.dto";
 
-type ToggleField = keyof Omit<NotificationPreferencesDto, "id" | "userId" | "updatedAt">;
+type ToggleField = keyof Omit<
+  NotificationPreferencesDto,
+  "id" | "userId" | "updatedAt"
+>;
 
 export const NotificationsSection = () => {
   const runWithToast = useToastMutation();
@@ -15,9 +21,12 @@ export const NotificationsSection = () => {
   const updatePrefsMutation = useUpdateMyNotificationPreferences();
 
   const toggle = (field: ToggleField, value: boolean) =>
-    runWithToast(() => updatePrefsMutation.mutateAsync({ [field]: value }), {
-      error: "Couldn't update notification preference",
-    });
+    runWithToast(
+      () => updatePrefsMutation.mutateAsync({ [field]: value }),
+      {
+        error: "Couldn't update notification preference",
+      }
+    );
 
   return (
     <section
@@ -28,7 +37,10 @@ export const NotificationsSection = () => {
         eyebrow="04 · What reaches you"
         help="Choose what lands in your inbox. Critical security emails are always sent."
         title={
-          <em className="font-serif italic text-brand-700" style={EMPHASIS_STYLE}>
+          <em
+            className="font-serif italic text-brand-700"
+            style={EMPHASIS_STYLE}
+          >
             Notifications.
           </em>
         }
@@ -61,7 +73,9 @@ export const NotificationsSection = () => {
           title={
             <>
               Weekly digest{" "}
-              <span className="font-mono text-[12px] text-neutral-400">· Monday 9am</span>
+              <span className="font-mono text-[12px] text-neutral-400">
+                · Monday 9am
+              </span>
             </>
           }
           onChange={(v) => toggle("weeklyDigest", v)}

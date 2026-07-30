@@ -1,7 +1,13 @@
 import type { JobListItem } from "@/types/job";
 
 export type ApplicationStatus =
-  "PENDING" | "REVIEWING" | "SHORTLISTED" | "INTERVIEW" | "OFFERED" | "REJECTED" | "WITHDRAWN";
+  | "PENDING"
+  | "REVIEWING"
+  | "SHORTLISTED"
+  | "INTERVIEW"
+  | "OFFERED"
+  | "REJECTED"
+  | "WITHDRAWN";
 
 // No `notes` here — that field is the employer's private note on the candidate
 // (PATCH /employer/applications/:id) and the API never sends it to the talent.

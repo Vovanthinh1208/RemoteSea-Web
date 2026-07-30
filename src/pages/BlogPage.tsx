@@ -10,7 +10,8 @@ const POSTS = [
     id: "p1",
     featured: true,
     category: "Negotiation",
-    title: "Why your offer is probably 22% too low — and the exact 4 sentences that fix it.",
+    title:
+      "Why your offer is probably 22% too low — and the exact 4 sentences that fix it.",
     excerpt:
       "We analyzed 142 offers from Singaporean and Australian companies hiring Vietnamese talent. The gap between what's offered and what's possible is bigger than you think.",
     author: "Linh Nguyen",
@@ -24,7 +25,8 @@ const POSTS = [
   {
     id: "p2",
     category: "Async Work",
-    title: "The 5pm shutdown ritual that saved my marriage (and my Loom usage).",
+    title:
+      "The 5pm shutdown ritual that saved my marriage (and my Loom usage).",
     excerpt:
       "Working with a Sydney team meant my Slack stayed warm until 11pm. Here's the boundary system that actually held.",
     author: "Minh Trần",
@@ -38,7 +40,8 @@ const POSTS = [
   {
     id: "p3",
     category: "Salary",
-    title: "What 612 remote offers told us about senior frontend pay.",
+    title:
+      "What 612 remote offers told us about senior frontend pay.",
     excerpt:
       "Median: $4,800. Top decile: $7,200+. The full breakdown by company size, country, and seniority.",
     author: "Hà Phạm",
@@ -52,7 +55,8 @@ const POSTS = [
   {
     id: "p4",
     category: "Interview",
-    title: "I bombed 7 Stripe-loop interviews. Then I figured out the system.",
+    title:
+      "I bombed 7 Stripe-loop interviews. Then I figured out the system.",
     excerpt:
       "The system design rounds at top-tier companies follow a pattern. Memorize the pattern, ace the round.",
     author: "Khang Lê",
@@ -66,7 +70,8 @@ const POSTS = [
   {
     id: "p5",
     category: "Career",
-    title: "Why I left a 6-figure FAANG offer to join a 22-person SG startup.",
+    title:
+      "Why I left a 6-figure FAANG offer to join a 22-person SG startup.",
     excerpt:
       "On paper it looked nuts. In practice, the equity math, the learning curve, and the timezone alignment made it the obvious move.",
     author: "Tâm Đặng",
@@ -94,7 +99,8 @@ const POSTS = [
   {
     id: "p7",
     category: "Salary",
-    title: "Equity, RSUs, options — a Vietnamese employee's tax guide.",
+    title:
+      "Equity, RSUs, options — a Vietnamese employee's tax guide.",
     excerpt:
       "Written with a Singapore-based tax lawyer. What you actually owe, what you actually keep, and the 3 mistakes everyone makes.",
     author: "Quân Lý",
@@ -108,7 +114,8 @@ const POSTS = [
   {
     id: "p8",
     category: "Tools",
-    title: "My async stack: Notion + Linear + Loom, and the glue between them.",
+    title:
+      "My async stack: Notion + Linear + Loom, and the glue between them.",
     excerpt:
       "How I run product design for a remote-first team across 6 timezones with three tools and a Friday ritual.",
     author: "Sương Bùi",
@@ -128,7 +135,15 @@ const POPULAR = [
   "Async standups: the exact template our 8-person team uses",
 ];
 
-const CATEGORIES = ["All", "Negotiation", "Salary", "Async Work", "Interview", "Career", "Tools"];
+const CATEGORIES = [
+  "All",
+  "Negotiation",
+  "Salary",
+  "Async Work",
+  "Interview",
+  "Career",
+  "Tools",
+];
 
 export const BlogPage = () => {
   useDocumentTitle("Field Notes — RemoteSEA Blog");
@@ -136,7 +151,10 @@ export const BlogPage = () => {
 
   const featured = POSTS.find((p) => p.featured) ?? POSTS[0];
   const rest = POSTS.filter((p) => !p.featured);
-  const filtered = activeCat === "All" ? rest : rest.filter((p) => p.category === activeCat);
+  const filtered =
+    activeCat === "All"
+      ? rest
+      : rest.filter((p) => p.category === activeCat);
 
   return (
     <>
@@ -149,15 +167,19 @@ export const BlogPage = () => {
           </div>
           <h1 className="mb-3 max-w-2xl text-[44px] font-semibold leading-[1.1] tracking-tight text-neutral-900 lg:text-[52px]">
             Field notes from{" "}
-            <em className="font-serif text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>
+            <em
+              className="font-serif text-brand-700"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
               remote work
             </em>
             , written by the people doing it.
           </h1>
           <p className="mb-10 max-w-xl text-[17px] leading-relaxed text-neutral-500">
-            No SEO sludge, no &ldquo;10 tips for productivity.&rdquo; Just honest essays on
-            negotiation, async culture, timezone math, and tax law — written by Vietnamese
-            professionals working for companies abroad.
+            No SEO sludge, no &ldquo;10 tips for productivity.&rdquo;
+            Just honest essays on negotiation, async culture, timezone
+            math, and tax law — written by Vietnamese professionals
+            working for companies abroad.
           </p>
 
           {/* Featured */}
@@ -165,12 +187,18 @@ export const BlogPage = () => {
             <div className="overflow-hidden rounded-l-20">
               <div
                 className="h-full min-h-[260px] w-full"
-                style={{ background: featured.bg, aspectRatio: "4/3" }}
+                style={{
+                  background: featured.bg,
+                  aspectRatio: "4/3",
+                }}
               />
             </div>
             <div className="flex flex-col justify-center p-8">
               <div className="mb-3 flex items-center gap-2 text-[13px] text-neutral-400">
-                <span className="font-semibold" style={{ color: featured.accent }}>
+                <span
+                  className="font-semibold"
+                  style={{ color: featured.accent }}
+                >
                   {featured.category}
                 </span>
                 <span>·</span>
@@ -195,7 +223,9 @@ export const BlogPage = () => {
                   <div className="text-[13px] font-semibold text-neutral-900">
                     {featured.author}
                   </div>
-                  <div className="text-[12px] text-neutral-400">Senior FE · 7yrs remote</div>
+                  <div className="text-[12px] text-neutral-400">
+                    Senior FE · 7yrs remote
+                  </div>
                 </div>
                 <span className="ml-auto inline-flex items-center gap-1 text-[13px] font-medium text-brand-600">
                   Read essay <ArrowUpRight size={14} />
@@ -246,10 +276,16 @@ export const BlogPage = () => {
                   className="group overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card transition-shadow hover:shadow-[0_4px_20px_rgba(26,25,23,0.08)]"
                   key={p.id}
                 >
-                  <div className="h-40 w-full" style={{ background: p.bg, aspectRatio: "16/10" }} />
+                  <div
+                    className="h-40 w-full"
+                    style={{ background: p.bg, aspectRatio: "16/10" }}
+                  />
                   <div className="p-5">
                     <div className="mb-2 flex items-center gap-2 text-[12px] text-neutral-400">
-                      <span className="font-semibold" style={{ color: p.accent }}>
+                      <span
+                        className="font-semibold"
+                        style={{ color: p.accent }}
+                      >
                         {p.category}
                       </span>
                       <span>·</span>
@@ -272,7 +308,9 @@ export const BlogPage = () => {
                         <div className="text-[12.5px] font-semibold text-neutral-900">
                           {p.author}
                         </div>
-                        <div className="text-[11px] text-neutral-400">{p.date}</div>
+                        <div className="text-[11px] text-neutral-400">
+                          {p.date}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -292,7 +330,9 @@ export const BlogPage = () => {
                       <span className="flex-shrink-0 font-mono text-[11px] font-semibold text-brand-600">
                         0{i + 1}
                       </span>
-                      <span className="text-[13px] leading-snug text-neutral-700">{t}</span>
+                      <span className="text-[13px] leading-snug text-neutral-700">
+                        {t}
+                      </span>
                     </li>
                   ))}
                 </ol>
@@ -303,9 +343,13 @@ export const BlogPage = () => {
                   Field notes, in your inbox.
                 </h4>
                 <p className="mb-4 text-[13px] text-neutral-500">
-                  One essay every Tuesday. Honest, unpolished, no sponsors.
+                  One essay every Tuesday. Honest, unpolished, no
+                  sponsors.
                 </p>
-                <NewsletterForm placeholder="you@work.com" variant="compact" />
+                <NewsletterForm
+                  placeholder="you@work.com"
+                  variant="compact"
+                />
                 <p className="mt-3 text-[11px] text-neutral-400">
                   Joining 2,400+ readers · unsubscribe anytime
                 </p>
@@ -316,8 +360,9 @@ export const BlogPage = () => {
                   Write for us
                 </h4>
                 <p className="mb-3 text-[13px] leading-relaxed text-neutral-600">
-                  If you&apos;ve negotiated a tough offer, navigated a hard timezone, or built an
-                  async ritual that works — we&apos;d love your story.
+                  If you&apos;ve negotiated a tough offer, navigated a
+                  hard timezone, or built an async ritual that works —
+                  we&apos;d love your story.
                 </p>
                 <a
                   className="inline-flex items-center gap-1 text-[13px] font-medium text-brand-600 hover:text-brand-700"
@@ -337,18 +382,23 @@ export const BlogPage = () => {
         <div className="mx-auto max-w-[640px] px-6 text-center">
           <h2 className="mb-3 text-[32px] font-semibold text-neutral-900">
             Get the next{" "}
-            <em className="font-serif text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>
+            <em
+              className="font-serif text-brand-700"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
               essay
             </em>
             , before it hits the site.
           </h2>
           <p className="mb-8 text-[15px] leading-relaxed text-neutral-500">
-            One thoughtful piece every Tuesday morning, written by working remote professionals. No
-            marketing tricks, no &ldquo;tools we love&rdquo; affiliate roundups.
+            One thoughtful piece every Tuesday morning, written by
+            working remote professionals. No marketing tricks, no
+            &ldquo;tools we love&rdquo; affiliate roundups.
           </p>
           <NewsletterForm placeholder="you@work.com" variant="wide" />
           <p className="mt-4 text-[12px] text-neutral-400">
-            2,400 readers · unsubscribe with one click · we don&apos;t sell emails, ever.
+            2,400 readers · unsubscribe with one click · we don&apos;t
+            sell emails, ever.
           </p>
         </div>
       </section>

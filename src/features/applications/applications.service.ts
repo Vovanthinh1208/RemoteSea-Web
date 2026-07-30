@@ -13,7 +13,9 @@ import type { Application } from "@/types/application";
 export type ApplyPayload = ApplyRequestDto;
 export type { ApplicationListResponse, ApplicationStatusCounts };
 
-export const applyToJob = async (payload: ApplyPayload): Promise<Application> =>
+export const applyToJob = async (
+  payload: ApplyPayload
+): Promise<Application> =>
   toApplication(await applicationsRepository.apply(payload));
 
 export const listMyApplications = async (
@@ -21,12 +23,18 @@ export const listMyApplications = async (
   limit: number,
   opts?: RequestOptions
 ): Promise<ApplicationListResponse> =>
-  toApplicationListResponse(await applicationsRepository.listMine(page, limit, opts));
+  toApplicationListResponse(
+    await applicationsRepository.listMine(page, limit, opts)
+  );
 
 export const getMyApplicationStats = async (
   opts?: RequestOptions
 ): Promise<ApplicationStatusCounts> =>
-  toApplicationStatusCounts(await applicationsRepository.getStatusCounts(opts));
+  toApplicationStatusCounts(
+    await applicationsRepository.getStatusCounts(opts)
+  );
 
-export const listMyApplicationIds = async (opts?: RequestOptions): Promise<string[]> =>
+export const listMyApplicationIds = async (
+  opts?: RequestOptions
+): Promise<string[]> =>
   (await applicationsRepository.listMyApplicationIds(opts)).jobIds;

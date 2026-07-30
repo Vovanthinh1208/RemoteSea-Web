@@ -8,11 +8,14 @@ import { ROUTES } from "@/constants/routes";
 const SECTION_IDS = SET_SECTIONS.map((s) => s.id);
 
 export const SettingsNav = () => {
-  const [activeSection, setActiveSection] = useActiveSection(SECTION_IDS);
+  const [activeSection, setActiveSection] =
+    useActiveSection(SECTION_IDS);
 
   const scrollTo = (id: string) => {
     setActiveSection(id);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document
+      .getElementById(id)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (

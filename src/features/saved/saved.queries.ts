@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   listSavedJobIds,
   listSavedJobs,
@@ -15,7 +19,10 @@ import { TIER } from "@/core/query/query-client";
 // "load more" control is a follow-up if saved-job counts regularly exceed this).
 const SAVED_JOBS_LIST_LIMIT = 50;
 
-export const useSavedJobs = (page = 1, limit = SAVED_JOBS_LIST_LIMIT) => {
+export const useSavedJobs = (
+  page = 1,
+  limit = SAVED_JOBS_LIST_LIMIT
+) => {
   const { user } = useAuth();
   return useQuery({
     queryKey: savedKeys.jobs(page, limit),
@@ -59,20 +66,31 @@ export const useSaveJob = () => {
     mutationFn: saveJob,
     onMutate: async (jobId: string) => {
       await queryClient.cancelQueries({ queryKey: savedKeys.ids() });
-      const previous = queryClient.getQueryData<string[]>(savedKeys.ids());
-      queryClient.setQueryData<string[]>(savedKeys.ids(), (old) => [...(old ?? []), jobId]);
+      const previous = queryClient.getQueryData<string[]>(
+        savedKeys.ids()
+      );
+      queryClient.setQueryData<string[]>(savedKeys.ids(), (old) => [
+        ...(old ?? []),
+        jobId,
+      ]);
       return { previous };
     },
     onError: (_err, _jobId, context) => {
-      if (context?.previous) queryClient.setQueryData(savedKeys.ids(), context.previous);
+      if (context?.previous)
+        queryClient.setQueryData(savedKeys.ids(), context.previous);
     },
     // Only the display lists (full job rows) need a refetch — the ids set was
     // optimistically set to exactly what the server now holds (both endpoints
     // are idempotent), so refetching it was a wasted request on every single
     // heart click. On error the rollback restores it and a refetch confirms.
     onSettled: (_data, error) => {
-      if (error) void queryClient.invalidateQueries({ queryKey: savedKeys.ids() });
-      void queryClient.invalidateQueries({ queryKey: savedKeys.jobsPrefix });
+      if (error)
+        void queryClient.invalidateQueries({
+          queryKey: savedKeys.ids(),
+        });
+      void queryClient.invalidateQueries({
+        queryKey: savedKeys.jobsPrefix,
+      });
     },
   });
 };
@@ -89,10 +107,13 @@ export const useUnsaveJob = () => {
         queryClient.cancelQueries({ queryKey: savedKeys.jobsPrefix }),
       ]);
 
-      const previousIds = queryClient.getQueryData<string[]>(savedKeys.ids());
-      const previousLists = queryClient.getQueriesData<SavedJobListResponse>({
-        queryKey: savedKeys.jobsPrefix,
-      });
+      const previousIds = queryClient.getQueryData<string[]>(
+        savedKeys.ids()
+      );
+      const previousLists =
+        queryClient.getQueriesData<SavedJobListResponse>({
+          queryKey: savedKeys.jobsPrefix,
+        });
 
       queryClient.setQueryData<string[]>(savedKeys.ids(), (old) =>
         (old ?? []).filter((id) => id !== jobId)
@@ -103,7 +124,9 @@ export const useUnsaveJob = () => {
         (old) => {
           if (!old) return old;
 
-          const newSavedJobs = old.savedJobs.filter((job) => job.jobId !== jobId);
+          const newSavedJobs = old.savedJobs.filter(
+            (job) => job.jobId !== jobId
+          );
 
           return {
             ...old,
@@ -131,8 +154,12 @@ export const useUnsaveJob = () => {
 
     onSettled: (_data, error) => {
       if (error) {
-        void queryClient.invalidateQueries({ queryKey: savedKeys.ids() });
-        void queryClient.invalidateQueries({ queryKey: savedKeys.jobsPrefix });
+        void queryClient.invalidateQueries({
+          queryKey: savedKeys.ids(),
+        });
+        void queryClient.invalidateQueries({
+          queryKey: savedKeys.jobsPrefix,
+        });
       }
     },
   });

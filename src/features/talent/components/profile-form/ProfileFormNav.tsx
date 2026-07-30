@@ -1,3 +1,4 @@
+import { ArrowUpRight, Check, Eye, Minus } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { PROF_SECTIONS } from "@/features/talent/components/profile-form/profile-form.constants";
@@ -9,11 +10,14 @@ const SECTION_IDS = PROF_SECTIONS.map((s) => s.id);
 // aren't memoized — every IntersectionObserver tick used to re-render the whole
 // form for state none of those sections care about.
 export const ProfileFormNav = () => {
-  const [activeSection, setActiveSection] = useActiveSection(SECTION_IDS);
+  const [activeSection, setActiveSection] =
+    useActiveSection(SECTION_IDS);
 
   const scrollTo = (id: string) => {
     setActiveSection(id);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document
+      .getElementById(id)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
@@ -37,9 +41,30 @@ export const ProfileFormNav = () => {
                 <Icon size={13} />
                 {s.label}
               </span>
+              <span
+                className={cn(
+                  "flex h-4 w-4 items-center justify-center rounded-full",
+                  s.done
+                    ? "bg-brand-100 text-brand-700"
+                    : "bg-neutral-100 text-neutral-400"
+                )}
+              >
+                {s.done ? <Check size={9} /> : <Minus size={9} />}
+              </span>
             </button>
           );
         })}
+        <div className="my-2 border-t border-neutral-200" />
+        <button
+          className="flex w-full items-center justify-between rounded-10 px-3 py-2 text-[13px] text-neutral-500 hover:bg-white/60 hover:text-neutral-700"
+          type="button"
+        >
+          <span className="flex items-center gap-2">
+            <Eye size={13} />
+            Preview as recruiter
+          </span>
+          <ArrowUpRight size={11} />
+        </button>
       </div>
     </aside>
   );

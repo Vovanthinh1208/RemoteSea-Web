@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { forgotPasswordSchema, type ForgotPasswordFormValues } from "@/features/auth/auth.schemas";
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordFormValues,
+} from "@/features/auth/auth.schemas";
 import { forgotPassword } from "@/features/auth/auth.service";
 import { TextField } from "@/components/shared/TextField";
 import { applyFormSubmitError } from "@/utils/form-errors";
@@ -28,14 +31,21 @@ export const ForgotPasswordForm = () => {
       await forgotPassword(values.email);
       setIsSent(true);
     } catch (err) {
-      setFormError(applyFormSubmitError(err, setError, "Something went wrong. Please try again."));
+      setFormError(
+        applyFormSubmitError(
+          err,
+          setError,
+          "Something went wrong. Please try again."
+        )
+      );
     }
   };
 
   if (isSent) {
     return (
       <div className="rounded-12 border border-brand-200 bg-brand-50 p-4 text-sm text-brand-700">
-        If that email exists, we&apos;ve sent a reset link. Check your inbox.
+        If that email exists, we&apos;ve sent a reset link. Check your
+        inbox.
       </div>
     );
   }
@@ -52,7 +62,9 @@ export const ForgotPasswordForm = () => {
         type="email"
       />
 
-      {formError && <p className="text-sm text-red-600">{formError}</p>}
+      {formError && (
+        <p className="text-sm text-red-600">{formError}</p>
+      )}
 
       <Button
         className="w-full rounded-12"

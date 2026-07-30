@@ -23,9 +23,15 @@ import { ROUTES } from "@/constants/routes";
 export const PublicTalentProfilePage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
-  const { data: profile, isLoading, isError } = usePublicTalentProfile(slug);
+  const {
+    data: profile,
+    isLoading,
+    isError,
+  } = usePublicTalentProfile(slug);
   useDocumentTitle(
-    profile?.user?.name ? `${profile.user.name} — Talent Profile` : "Talent Profile"
+    profile?.user?.name
+      ? `${profile.user.name} — Talent Profile`
+      : "Talent Profile"
   );
 
   if (isLoading) {
@@ -39,7 +45,9 @@ export const PublicTalentProfilePage = () => {
   if (isError || !profile) {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-md flex-col items-center justify-center px-6 text-center">
-        <h1 className="text-2xl font-semibold text-neutral-900">Profile not found</h1>
+        <h1 className="text-2xl font-semibold text-neutral-900">
+          Profile not found
+        </h1>
         <p className="mt-2 text-sm text-neutral-500">
           This talent profile doesn&apos;t exist or was removed.
         </p>
@@ -63,12 +71,29 @@ export const PublicTalentProfilePage = () => {
   // which accepts javascript:/data: — safeExternalUrl drops anything that
   // isn't http(s)/mailto so a malicious link can't reach the <a href> below.
   const links = [
-    { icon: Code2, label: profile.githubUrl, href: safeExternalUrl(profile.githubUrl) },
-    { icon: User, label: profile.linkedinUrl, href: safeExternalUrl(profile.linkedinUrl) },
-    { icon: Globe, label: profile.portfolioUrl, href: safeExternalUrl(profile.portfolioUrl) },
-    { icon: FileText, label: "Resume / CV", href: safeExternalUrl(profile.resumeUrl) },
-  ].filter((l): l is { icon: typeof Code2; label: string; href: string } =>
-    Boolean(l.href && l.label)
+    {
+      icon: Code2,
+      label: profile.githubUrl,
+      href: safeExternalUrl(profile.githubUrl),
+    },
+    {
+      icon: User,
+      label: profile.linkedinUrl,
+      href: safeExternalUrl(profile.linkedinUrl),
+    },
+    {
+      icon: Globe,
+      label: profile.portfolioUrl,
+      href: safeExternalUrl(profile.portfolioUrl),
+    },
+    {
+      icon: FileText,
+      label: "Resume / CV",
+      href: safeExternalUrl(profile.resumeUrl),
+    },
+  ].filter(
+    (l): l is { icon: typeof Code2; label: string; href: string } =>
+      Boolean(l.href && l.label)
   );
 
   return (
@@ -98,29 +123,43 @@ export const PublicTalentProfilePage = () => {
               {name}
             </h1>
             {profile.headline && (
-              <p className="mb-3 text-[16px] text-neutral-500">{profile.headline}</p>
+              <p className="mb-3 text-[16px] text-neutral-500">
+                {profile.headline}
+              </p>
             )}
             <div className="flex flex-wrap gap-x-5 gap-y-1.5">
               {profile.location && (
                 <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
-                  <MapPin className="flex-shrink-0 text-neutral-400" size={12} />
+                  <MapPin
+                    className="flex-shrink-0 text-neutral-400"
+                    size={12}
+                  />
                   {profile.location}
                 </span>
               )}
               {profile.timezone && (
                 <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
-                  <Clock className="flex-shrink-0 text-neutral-400" size={12} />
+                  <Clock
+                    className="flex-shrink-0 text-neutral-400"
+                    size={12}
+                  />
                   {profile.timezone}
                 </span>
               )}
               {profile.yearsExperience !== null && (
                 <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
-                  <Briefcase className="flex-shrink-0 text-neutral-400" size={12} />
+                  <Briefcase
+                    className="flex-shrink-0 text-neutral-400"
+                    size={12}
+                  />
                   {profile.yearsExperience}+ yrs experience
                 </span>
               )}
               <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
-                <ShieldCheck className="flex-shrink-0 text-neutral-400" size={12} />
+                <ShieldCheck
+                  className="flex-shrink-0 text-neutral-400"
+                  size={12}
+                />
                 {LEVEL_TO_LABEL[profile.level] ?? profile.level}
               </span>
             </div>
@@ -132,10 +171,18 @@ export const PublicTalentProfilePage = () => {
                 Expecting
               </p>
               <p className="text-[26px] font-semibold leading-tight tracking-tight text-neutral-900">
-                {formatSalaryRange(profile.desiredSalaryMin, profile.desiredSalaryMax)}
-                <span className="ml-1 text-[14px] font-normal text-neutral-400"> / mo</span>
+                {formatSalaryRange(
+                  profile.desiredSalaryMin,
+                  profile.desiredSalaryMax
+                )}
+                <span className="ml-1 text-[14px] font-normal text-neutral-400">
+                  {" "}
+                  / mo
+                </span>
               </p>
-              <p className="text-[12px] text-neutral-500">{profile.currency}</p>
+              <p className="text-[12px] text-neutral-500">
+                {profile.currency}
+              </p>
             </div>
           )}
         </div>
@@ -144,14 +191,20 @@ export const PublicTalentProfilePage = () => {
           <div className="space-y-2">
             {profile.bio && (
               <section className="rounded-20 border border-neutral-100 bg-white p-7">
-                <h2 className="mb-4 text-[17px] font-semibold text-neutral-900">About</h2>
-                <p className="text-[14px] leading-relaxed text-neutral-600">{profile.bio}</p>
+                <h2 className="mb-4 text-[17px] font-semibold text-neutral-900">
+                  About
+                </h2>
+                <p className="text-[14px] leading-relaxed text-neutral-600">
+                  {profile.bio}
+                </p>
               </section>
             )}
 
             {profile.skills.length > 0 && (
               <section className="rounded-20 border border-neutral-100 bg-white p-7">
-                <h2 className="mb-5 text-[17px] font-semibold text-neutral-900">Skills</h2>
+                <h2 className="mb-5 text-[17px] font-semibold text-neutral-900">
+                  Skills
+                </h2>
                 <div className="flex flex-wrap gap-1.5">
                   {profile.skills.map(({ skill, yearsExp }) => (
                     <span
@@ -177,7 +230,9 @@ export const PublicTalentProfilePage = () => {
             <div className="space-y-4 lg:sticky lg:top-6">
               {links.length > 0 && (
                 <div className="rounded-20 border border-neutral-100 bg-white p-5">
-                  <h4 className="mb-3 text-[13px] font-semibold text-neutral-800">Links</h4>
+                  <h4 className="mb-3 text-[13px] font-semibold text-neutral-800">
+                    Links
+                  </h4>
                   <div className="space-y-1.5">
                     {links.map((l) => (
                       <a
@@ -187,8 +242,13 @@ export const PublicTalentProfilePage = () => {
                         rel="noopener noreferrer"
                         target="_blank"
                       >
-                        <l.icon className="flex-shrink-0 text-neutral-400" size={14} />
-                        <span className="flex-1 truncate">{l.label}</span>
+                        <l.icon
+                          className="flex-shrink-0 text-neutral-400"
+                          size={14}
+                        />
+                        <span className="flex-1 truncate">
+                          {l.label}
+                        </span>
                       </a>
                     ))}
                   </div>

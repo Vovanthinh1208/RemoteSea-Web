@@ -1,4 +1,11 @@
-import { AlertTriangle, Bell, Lock, Share2, ShieldCheck, User } from "lucide-react";
+import {
+  AlertTriangle,
+  Bell,
+  Lock,
+  Share2,
+  ShieldCheck,
+  User,
+} from "lucide-react";
 
 export const SET_SECTIONS = [
   { id: "account", label: "Account", icon: User },

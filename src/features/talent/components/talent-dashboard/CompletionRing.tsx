@@ -28,7 +28,10 @@ export const CompletionRing = ({ pct }: CompletionRingProps) => {
           strokeDashoffset={offset}
           strokeLinecap="round"
           strokeWidth="5"
-          style={{ transformOrigin: "center", transform: "rotate(-90deg)" }}
+          style={{
+            transformOrigin: "center",
+            transform: "rotate(-90deg)",
+          }}
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center font-mono text-[13px] font-semibold text-neutral-900">

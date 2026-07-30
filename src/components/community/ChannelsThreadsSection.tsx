@@ -2,12 +2,42 @@ import { Users } from "lucide-react";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
 const CHANNELS = [
-  { name: "introductions", topic: "New members say hi", count: 487, color: "#2E9B52" },
-  { name: "offer-negotiations", topic: "Help with your counter", count: 142, color: "#B45309" },
-  { name: "async-rituals", topic: "How teams actually work", count: 98, color: "#2563EB" },
-  { name: "equity-explained", topic: "Stock options, RSUs, vesting", count: 76, color: "#1F7A3D" },
-  { name: "parents-who-remote", topic: "WFH with kids around", count: 64, color: "#7C3AED" },
-  { name: "coliving-da-nang", topic: "The unofficial HQ", count: 53, color: "#0EA5E9" },
+  {
+    name: "introductions",
+    topic: "New members say hi",
+    count: 487,
+    color: "#2E9B52",
+  },
+  {
+    name: "offer-negotiations",
+    topic: "Help with your counter",
+    count: 142,
+    color: "#B45309",
+  },
+  {
+    name: "async-rituals",
+    topic: "How teams actually work",
+    count: 98,
+    color: "#2563EB",
+  },
+  {
+    name: "equity-explained",
+    topic: "Stock options, RSUs, vesting",
+    count: 76,
+    color: "#1F7A3D",
+  },
+  {
+    name: "parents-who-remote",
+    topic: "WFH with kids around",
+    count: 64,
+    color: "#7C3AED",
+  },
+  {
+    name: "coliving-da-nang",
+    topic: "The unofficial HQ",
+    count: 53,
+    color: "#0EA5E9",
+  },
 ];
 
 const THREADS = [
@@ -50,14 +80,18 @@ export const ChannelsThreadsSection = () => (
         <Eyebrow className="mb-2">Inside</Eyebrow>
         <h2 className="mb-3 text-[32px] font-semibold text-neutral-900">
           What people{" "}
-          <em className="font-serif text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>
+          <em
+            className="font-serif text-brand-700"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
             actually
           </em>{" "}
           talk about.
         </h2>
         <p className="mx-auto max-w-lg text-neutral-500">
-          A peek at the channels and a few threads from this week. Names redacted out of respect —
-          when you join, the full archive is yours.
+          A peek at the channels and a few threads from this week.
+          Names redacted out of respect — when you join, the full
+          archive is yours.
         </p>
       </div>
       <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
@@ -72,12 +106,19 @@ export const ChannelsThreadsSection = () => (
                 className="flex items-center gap-2.5 rounded-10 px-3 py-2.5 transition-colors hover:bg-neutral-50"
                 key={ch.name}
               >
-                <span className="text-[15px] font-bold" style={{ color: ch.color }}>
+                <span
+                  className="text-[15px] font-bold"
+                  style={{ color: ch.color }}
+                >
                   #
                 </span>
                 <div className="min-w-0 flex-1">
-                  <div className="text-[13px] font-medium text-neutral-800">{ch.name}</div>
-                  <div className="text-[11px] text-neutral-400">{ch.topic}</div>
+                  <div className="text-[13px] font-medium text-neutral-800">
+                    {ch.name}
+                  </div>
+                  <div className="text-[11px] text-neutral-400">
+                    {ch.topic}
+                  </div>
                 </div>
                 <span className="flex-shrink-0 font-mono text-[11px] text-neutral-400">
                   {ch.count}
@@ -85,7 +126,9 @@ export const ChannelsThreadsSection = () => (
               </div>
             ))}
           </div>
-          <div className="mt-3 px-3 text-[12px] text-neutral-400">+ 24 more</div>
+          <div className="mt-3 px-3 text-[12px] text-neutral-400">
+            + 24 more
+          </div>
         </div>
 
         {/* Threads */}
@@ -103,14 +146,20 @@ export const ChannelsThreadsSection = () => (
                   {t.initial}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="text-[13px] font-semibold text-neutral-900">{t.name}</span>
+                  <span className="text-[13px] font-semibold text-neutral-900">
+                    {t.name}
+                  </span>
                   <span className="mx-1.5 rounded-full bg-neutral-100 px-2 py-0.5 text-[11px] text-neutral-500">
                     {t.channel}
                   </span>
-                  <span className="text-[12px] text-neutral-400">{t.time}</span>
+                  <span className="text-[12px] text-neutral-400">
+                    {t.time}
+                  </span>
                 </div>
               </div>
-              <p className="mb-3 text-[14px] leading-relaxed text-neutral-700">{t.text}</p>
+              <p className="mb-3 text-[14px] leading-relaxed text-neutral-700">
+                {t.text}
+              </p>
               <div className="flex items-center justify-between">
                 <div className="flex gap-1.5">
                   {t.reactions.map((r) => (

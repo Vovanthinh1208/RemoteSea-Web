@@ -1,4 +1,8 @@
-import type { AdminEmployersResponse, AdminJobsResponse, RevenueResponse } from "@/types/admin";
+import type {
+  AdminEmployersResponse,
+  AdminJobsResponse,
+  RevenueResponse,
+} from "@/types/admin";
 
 export type AdminJobsResponseDto = AdminJobsResponse;
 export type AdminEmployersResponseDto = AdminEmployersResponse;

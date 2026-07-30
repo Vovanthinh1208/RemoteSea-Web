@@ -11,8 +11,10 @@ const REPLAY_ERROR_SAMPLE_RATE = 1.0; // 100% of sessions that hit an error
 // records), so without this a single error while one of those routes is open
 // would ship a usable token to a third-party service. Redact the sensitive
 // params everywhere a URL can reach Sentry.
-const SENSITIVE_URL_PARAM = /(^|[?&])((?:token|access_token|refresh_token|code|password)=)[^&#]*/gi;
-export const scrubUrl = (url: string): string => url.replace(SENSITIVE_URL_PARAM, "$1$2[REDACTED]");
+const SENSITIVE_URL_PARAM =
+  /(^|[?&])((?:token|access_token|refresh_token|code|password)=)[^&#]*/gi;
+export const scrubUrl = (url: string): string =>
+  url.replace(SENSITIVE_URL_PARAM, "$1$2[REDACTED]");
 
 export const initMonitoring = (): void => {
   const dsn = import.meta.env.VITE_SENTRY_DSN;
@@ -20,14 +22,20 @@ export const initMonitoring = (): void => {
   Sentry.init({
     dsn,
     release: __APP_VERSION__,
-    integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+    integrations: [
+      Sentry.browserTracingIntegration(),
+      Sentry.replayIntegration(),
+    ],
     tracesSampleRate: TRACES_SAMPLE_RATE,
     replaysSessionSampleRate: REPLAY_SESSION_SAMPLE_RATE,
     replaysOnErrorSampleRate: REPLAY_ERROR_SAMPLE_RATE,
     beforeSend(event) {
-      if (event.request?.url) event.request.url = scrubUrl(event.request.url);
+      if (event.request?.url)
+        event.request.url = scrubUrl(event.request.url);
       if (typeof event.request?.query_string === "string") {
-        event.request.query_string = scrubUrl(event.request.query_string);
+        event.request.query_string = scrubUrl(
+          event.request.query_string
+        );
       }
       return event;
     },
@@ -36,7 +44,8 @@ export const initMonitoring = (): void => {
       if (data) {
         // `url` on fetch/xhr crumbs; `to`/`from` on navigation crumbs.
         for (const key of ["url", "to", "from"] as const) {
-          if (typeof data[key] === "string") data[key] = scrubUrl(data[key]);
+          if (typeof data[key] === "string")
+            data[key] = scrubUrl(data[key]);
         }
       }
       return breadcrumb;
@@ -44,9 +53,14 @@ export const initMonitoring = (): void => {
   });
 };
 
-export const reportError = (error: unknown, componentStack?: string): void => {
+export const reportError = (
+  error: unknown,
+  componentStack?: string
+): void => {
   Sentry.captureException(
     error,
-    componentStack ? { contexts: { react: { componentStack } } } : undefined
+    componentStack
+      ? { contexts: { react: { componentStack } } }
+      : undefined
   );
 };

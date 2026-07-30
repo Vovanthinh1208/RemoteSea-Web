@@ -14,7 +14,12 @@ export const SALARY_CEIL = 8000;
 // it automatically when `q` is set and `sort` is omitted, but it's also a
 // real, distinct sort a caller (or this UI) can request explicitly.
 export type SortKey = "recent" | "salary" | "featured" | "relevance";
-const SORTS: SortKey[] = ["recent", "salary", "featured", "relevance"];
+const SORTS: SortKey[] = [
+  "recent",
+  "salary",
+  "featured",
+  "relevance",
+];
 
 // UI-facing filter vocabulary, ported from remotesea/src/lib/job-filters.ts —
 // GET /jobs now accepts arrays (repeated query keys) + salaryMin/salaryMax +
@@ -37,7 +42,12 @@ export const DEFAULT_FILTERS: Filters = {
   salaryMax: SALARY_CEIL,
 };
 
-export type JobFilters = { filters: Filters; q: string; sort: SortKey; page: number };
+export type JobFilters = {
+  filters: Filters;
+  q: string;
+  sort: SortKey;
+  page: number;
+};
 
 export const DEFAULT_JOB_FILTERS: JobFilters = {
   filters: DEFAULT_FILTERS,
@@ -53,11 +63,12 @@ export const JOBTYPE_TO_ENUMS: Record<string, JobType[]> = {
   "Part-time": ["PART_TIME"],
 };
 
-export const SENIORITY_TO_LEVELS: Record<string, ExperienceLevel[]> = {
-  Entry: ["ENTRY"],
-  Mid: ["MID"],
-  Senior: ["SENIOR", "LEAD", "EXECUTIVE"],
-};
+export const SENIORITY_TO_LEVELS: Record<string, ExperienceLevel[]> =
+  {
+    Entry: ["ENTRY"],
+    Mid: ["MID"],
+    Senior: ["SENIOR", "LEAD", "EXECUTIVE"],
+  };
 
 export const FILTER_OPTIONS = {
   jobType: ["Full-time", "Contract", "Part-time"],
@@ -66,9 +77,12 @@ export const FILTER_OPTIONS = {
   category: ["Engineering", "Design", "Data", "Product", "Marketing"],
 };
 
-const toArray = (value: string[] | undefined): string[] => value ?? [];
+const toArray = (value: string[] | undefined): string[] =>
+  value ?? [];
 
-export const parseJobQuery = (params: URLSearchParams): JobFilters => {
+export const parseJobQuery = (
+  params: URLSearchParams
+): JobFilters => {
   const sortRaw = params.get("sort") as SortKey | null;
   const salaryMin = Number(params.get("salaryMin")) || SALARY_FLOOR;
   const salaryMax = Number(params.get("salaryMax")) || SALARY_CEIL;
@@ -95,8 +109,10 @@ export const serializeJobQuery = (query: JobFilters): string => {
   query.filters.timezone.forEach((v) => p.append("tz", v));
   query.filters.seniority.forEach((v) => p.append("level", v));
   query.filters.category.forEach((v) => p.append("category", v));
-  if (query.filters.salaryMin > SALARY_FLOOR) p.set("salaryMin", String(query.filters.salaryMin));
-  if (query.filters.salaryMax < SALARY_CEIL) p.set("salaryMax", String(query.filters.salaryMax));
+  if (query.filters.salaryMin > SALARY_FLOOR)
+    p.set("salaryMin", String(query.filters.salaryMin));
+  if (query.filters.salaryMax < SALARY_CEIL)
+    p.set("salaryMax", String(query.filters.salaryMax));
   if (query.sort !== "recent") p.set("sort", query.sort);
   if (query.page > 1) p.set("page", String(query.page));
   return p.toString();
@@ -107,4 +123,6 @@ export const countActiveFilters = (filters: Filters): number =>
   filters.timezone.length +
   filters.category.length +
   filters.seniority.length +
-  (filters.salaryMin > SALARY_FLOOR || filters.salaryMax < SALARY_CEIL ? 1 : 0);
+  (filters.salaryMin > SALARY_FLOOR || filters.salaryMax < SALARY_CEIL
+    ? 1
+    : 0);

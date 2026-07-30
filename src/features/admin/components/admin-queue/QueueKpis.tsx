@@ -1,6 +1,9 @@
 import { Ban, Check, Clock, Inbox } from "lucide-react";
 import { StatCard } from "@/components/ui/stat-card";
-import { URGENT_WAIT_HOURS, waitFmt } from "@/features/admin/admin.utils";
+import {
+  URGENT_WAIT_HOURS,
+  waitFmt,
+} from "@/features/admin/admin.utils";
 
 interface QueueKpisProps {
   activeCount: number;
@@ -18,7 +21,12 @@ export const QueueKpis = ({
   rejectedCount,
 }: QueueKpisProps) => {
   const tiles = [
-    { icon: Inbox, label: "In queue", val: activeCount, sub: `${overdueCount} over SLA` },
+    {
+      icon: Inbox,
+      label: "In queue",
+      val: activeCount,
+      sub: `${overdueCount} over SLA`,
+    },
     {
       icon: Clock,
       label: "Avg. wait",
@@ -26,7 +34,12 @@ export const QueueKpis = ({
       sub: "SLA 24h",
       warn: avgWaitHours >= URGENT_WAIT_HOURS,
     },
-    { icon: Check, label: "Approved this session", val: approvedCount, sub: "+ live now" },
+    {
+      icon: Check,
+      label: "Approved this session",
+      val: approvedCount,
+      sub: "+ live now",
+    },
     {
       icon: Ban,
       label: "Rejected this session",

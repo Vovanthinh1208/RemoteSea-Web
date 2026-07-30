@@ -31,7 +31,8 @@ export const GuestOnlyRoute = () => {
     }
   }
 
-  if (status === "loading" || decided === null) return <FullPageLoader />;
+  if (status === "loading" || decided === null)
+    return <FullPageLoader />;
   if (decided) return <Navigate replace to={ROUTES.home} />;
 
   return <Outlet />;

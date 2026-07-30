@@ -1,13 +1,19 @@
 import { useEffect } from "react";
 import { useToast } from "@/components/ui/toast";
-import { INITIAL_FORM_STATE, type PostJobFormState } from "@/features/post-job/post-job.schemas";
+import {
+  INITIAL_FORM_STATE,
+  type PostJobFormState,
+} from "@/features/post-job/post-job.schemas";
 
 const DRAFT_STORAGE_KEY = "remotesea:post-job-draft";
 const AUTOSAVE_DEBOUNCE_MS = 400;
 
 // The pristine-form comparison target never changes — serialized once at module
 // load instead of on every keystroke render.
-const PRISTINE_FORM_JSON = JSON.stringify({ ...INITIAL_FORM_STATE, jobCategoryId: "" });
+const PRISTINE_FORM_JSON = JSON.stringify({
+  ...INITIAL_FORM_STATE,
+  jobCategoryId: "",
+});
 
 export type StoredDraft = { form: PostJobFormState; step: number };
 
@@ -51,7 +57,8 @@ export const usePostJobDraftPersistence = (
     if (restoredFromDraft) {
       toast({
         title: "Draft restored",
-        description: "Picked up where you left off. Publishing clears the draft.",
+        description:
+          "Picked up where you left off. Publishing clears the draft.",
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,7 +68,9 @@ export const usePostJobDraftPersistence = (
   // when categories load); skip writing until something real differs, so a
   // pristine visit never plants a draft.
   const hasUserInput =
-    step > 1 || JSON.stringify({ ...form, jobCategoryId: "" }) !== PRISTINE_FORM_JSON;
+    step > 1 ||
+    JSON.stringify({ ...form, jobCategoryId: "" }) !==
+      PRISTINE_FORM_JSON;
 
   useEffect(() => {
     if (published) {
@@ -78,7 +87,10 @@ export const usePostJobDraftPersistence = (
     // lose at most this last window.
     const timer = setTimeout(() => {
       try {
-        localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({ form, step }));
+        localStorage.setItem(
+          DRAFT_STORAGE_KEY,
+          JSON.stringify({ form, step })
+        );
       } catch {
         // Storage full/blocked — the wizard still works, just without autosave.
       }

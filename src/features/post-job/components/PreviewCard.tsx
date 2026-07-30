@@ -46,14 +46,16 @@ export const PreviewCard = ({ form }: PreviewCardProps) => {
         ))}
       </div>
       <div className="flex flex-wrap gap-1">
-        {form.jobSkills.slice(0, PREVIEW_SKILLS_DISPLAY_COUNT).map((s) => (
-          <span
-            className="rounded-full bg-brand-50 px-2 py-0.5 text-[10.5px] font-medium text-brand-700"
-            key={s}
-          >
-            {s}
-          </span>
-        ))}
+        {form.jobSkills
+          .slice(0, PREVIEW_SKILLS_DISPLAY_COUNT)
+          .map((s) => (
+            <span
+              className="rounded-full bg-brand-50 px-2 py-0.5 text-[10.5px] font-medium text-brand-700"
+              key={s}
+            >
+              {s}
+            </span>
+          ))}
         {form.jobSkills.length > PREVIEW_SKILLS_DISPLAY_COUNT && (
           <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10.5px] text-neutral-400">
             +{form.jobSkills.length - PREVIEW_SKILLS_DISPLAY_COUNT}

@@ -5,7 +5,9 @@ import { useState, type Dispatch, type SetStateAction } from "react";
  * value changes underneath it (e.g. a "clear filters" click or browser
  * back/forward) — without needing an effect.
  */
-export const useSyncedState = <T>(externalValue: T): [T, Dispatch<SetStateAction<T>>] => {
+export const useSyncedState = <T>(
+  externalValue: T
+): [T, Dispatch<SetStateAction<T>>] => {
   const [value, setValue] = useState(externalValue);
   const [synced, setSynced] = useState(externalValue);
 

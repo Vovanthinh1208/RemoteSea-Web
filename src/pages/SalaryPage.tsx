@@ -38,23 +38,31 @@ export const SalaryPage = () => {
             Updated weekly · 612 data points from 2026
           </div>
           <h1 className="mb-4 max-w-2xl text-[clamp(32px,4.5vw,52px)] font-semibold leading-[1.1] tracking-tight text-neutral-900">
-            What should you <em className="font-serif-italic text-brand-700">actually</em> earn
-            working remotely?
+            What should you{" "}
+            <em className="font-serif-italic text-brand-700">
+              actually
+            </em>{" "}
+            earn working remotely?
           </h1>
           <p className="mb-10 max-w-xl text-[16px] leading-relaxed text-neutral-500">
-            Real numbers from real offers — submitted by Vietnamese professionals working for
-            Singapore, Australia &amp; US companies. No &ldquo;competitive salary&rdquo; nonsense.
+            Real numbers from real offers — submitted by Vietnamese
+            professionals working for Singapore, Australia &amp; US
+            companies. No &ldquo;competitive salary&rdquo; nonsense.
           </p>
 
           <div className="flex flex-wrap gap-x-10 gap-y-5">
             {HERO_STATS.map((s, i) => (
               <div className="flex items-center gap-4" key={s.label}>
-                {i > 0 && <div className="hidden h-8 w-px bg-neutral-200 sm:block" />}
+                {i > 0 && (
+                  <div className="hidden h-8 w-px bg-neutral-200 sm:block" />
+                )}
                 <div>
                   <p className="text-[26px] font-semibold tracking-tight text-neutral-900">
                     {s.num}
                   </p>
-                  <p className="text-[12px] text-neutral-400">{s.label}</p>
+                  <p className="text-[12px] text-neutral-400">
+                    {s.label}
+                  </p>
                 </div>
               </div>
             ))}

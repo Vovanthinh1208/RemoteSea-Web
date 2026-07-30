@@ -10,7 +10,8 @@ import {
 } from "@/features/settings/settings.schemas";
 import { Button } from "@/components/ui/button";
 
-const UPDATE_FAILED_MESSAGE = "Could not update password. Please try again.";
+const UPDATE_FAILED_MESSAGE =
+  "Could not update password. Please try again.";
 
 export const ChangePasswordForm = () => {
   const runWithToast = useToastMutation();
@@ -28,16 +29,23 @@ export const ChangePasswordForm = () => {
   });
 
   const onSubmit = async (values: ChangePasswordFormValues) => {
-    const ok = await runWithToast(() => changePasswordMutation.mutateAsync(values), {
-      success: "Password updated",
-      error: "Couldn't update password",
-      onError: (err) => applyFormSubmitError(err, setError, UPDATE_FAILED_MESSAGE),
-    });
+    const ok = await runWithToast(
+      () => changePasswordMutation.mutateAsync(values),
+      {
+        success: "Password updated",
+        error: "Couldn't update password",
+        onError: (err) =>
+          applyFormSubmitError(err, setError, UPDATE_FAILED_MESSAGE),
+      }
+    );
     if (ok) reset();
   };
 
   return (
-    <form className="mb-5 max-w-sm space-y-2.5" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="mb-5 max-w-sm space-y-2.5"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <TextField
         error={errors.currentPassword?.message}
         id="currentPassword"

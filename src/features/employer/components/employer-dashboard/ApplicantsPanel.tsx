@@ -21,11 +21,16 @@ import { personInitial } from "@/utils/name";
 type ApplicantTabId = "all" | "new" | "shortlisted";
 
 const isApplicantTabId = (v: string): v is ApplicantTabId =>
-  (["all", "new", "shortlisted"] as const).includes(v as ApplicantTabId);
+  (["all", "new", "shortlisted"] as const).includes(
+    v as ApplicantTabId
+  );
 
 const RECENT_APPLICANTS_DISPLAY_COUNT = 8;
 
-const APPLICANT_STATUS_VARIANT: Record<ApplicantStatusGroup, BadgeVariant> = {
+const APPLICANT_STATUS_VARIANT: Record<
+  ApplicantStatusGroup,
+  BadgeVariant
+> = {
   new: "info",
   reviewing: "positive",
   shortlisted: "success",
@@ -43,7 +48,9 @@ const APPLICANT_STATUS_LABEL: Record<ApplicantStatusGroup, string> = {
 // purposes, but showing "Archived" on the row badge right after an employer
 // clicks reject (with a toast that says "Applicant rejected") reads as if the
 // action didn't register. The badge shows the real, specific status instead.
-const APPLICANT_ROW_STATUS_LABEL: Partial<Record<ApplicationStatus, string>> = {
+const APPLICANT_ROW_STATUS_LABEL: Partial<
+  Record<ApplicationStatus, string>
+> = {
   REJECTED: "Rejected",
   WITHDRAWN: "Withdrawn",
 };
@@ -51,7 +58,11 @@ const APPLICANT_ROW_STATUS_LABEL: Partial<Record<ApplicationStatus, string>> = {
 interface ApplicantRowProps {
   applicant: ApplicantWithJob;
   isPending: boolean;
-  onStatusChange: (id: string, jobId: string, status: ApplicationStatus) => void;
+  onStatusChange: (
+    id: string,
+    jobId: string,
+    status: ApplicationStatus
+  ) => void;
 }
 
 const ApplicantRow = memo(function ApplicantRow({
@@ -74,17 +85,26 @@ const ApplicantRow = memo(function ApplicantRow({
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
-          <span className="text-[13.5px] font-medium text-neutral-900">{name}</span>
+          <span className="text-[13.5px] font-medium text-neutral-900">
+            {name}
+          </span>
         </div>
         <div className="text-[11.5px] text-neutral-400">
           {a.talent.headline ?? a.talent.level}
-          <span className="text-neutral-300"> · for {a.jobTitle}</span>
+          <span className="text-neutral-300">
+            {" "}
+            · for {a.jobTitle}
+          </span>
         </div>
       </div>
 
       <div className="flex-shrink-0 text-right">
-        <Badge className="px-1.5 py-0.5 text-[10px]" variant={APPLICANT_STATUS_VARIANT[group]}>
-          {APPLICANT_ROW_STATUS_LABEL[a.status] ?? APPLICANT_STATUS_LABEL[group]}
+        <Badge
+          className="px-1.5 py-0.5 text-[10px]"
+          variant={APPLICANT_STATUS_VARIANT[group]}
+        >
+          {APPLICANT_ROW_STATUS_LABEL[a.status] ??
+            APPLICANT_STATUS_LABEL[group]}
         </Badge>
       </div>
 
@@ -109,7 +129,9 @@ const ApplicantRow = memo(function ApplicantRow({
           </button>
         </div>
       ) : (
-        <div className="flex-shrink-0 text-[11px] text-neutral-400">{timeAgo(a.appliedAt)}</div>
+        <div className="flex-shrink-0 text-[11px] text-neutral-400">
+          {timeAgo(a.appliedAt)}
+        </div>
       )}
     </div>
   );
@@ -119,7 +141,9 @@ interface ApplicantsPanelProps {
   applicants: ApplicantWithJob[];
 }
 
-export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
+export const ApplicantsPanel = ({
+  applicants,
+}: ApplicantsPanelProps) => {
   const runWithToast = useToastMutation();
   const updateStatusMutation = useUpdateApplicationStatus();
   // URL-synced so reloading (or sharing the link) doesn't silently revert to "All".
@@ -129,27 +153,37 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
     isApplicantTabId
   );
 
-  const tabs: { id: ApplicantTabId; label: string; count: number }[] = [
-    { id: "all", label: "All", count: applicants.length },
-    {
-      id: "new",
-      label: "New",
-      count: applicants.filter((a) => APPLICANT_STATUS[a.status] === "new").length,
-    },
-    {
-      id: "shortlisted",
-      label: "Shortlisted",
-      count: applicants.filter((a) => APPLICANT_STATUS[a.status] === "shortlisted").length,
-    },
-  ];
+  const tabs: { id: ApplicantTabId; label: string; count: number }[] =
+    [
+      { id: "all", label: "All", count: applicants.length },
+      {
+        id: "new",
+        label: "New",
+        count: applicants.filter(
+          (a) => APPLICANT_STATUS[a.status] === "new"
+        ).length,
+      },
+      {
+        id: "shortlisted",
+        label: "Shortlisted",
+        count: applicants.filter(
+          (a) => APPLICANT_STATUS[a.status] === "shortlisted"
+        ).length,
+      },
+    ];
   const list =
-    tab === "all" ? applicants : applicants.filter((a) => APPLICANT_STATUS[a.status] === tab);
+    tab === "all"
+      ? applicants
+      : applicants.filter((a) => APPLICANT_STATUS[a.status] === tab);
 
   const { mutateAsync: updateStatus } = updateStatusMutation;
   const updateApplicantStatus = useCallback(
     (id: string, jobId: string, status: ApplicationStatus) =>
       runWithToast(() => updateStatus({ id, jobId, status }), {
-        success: status === "REJECTED" ? "Applicant rejected" : "Applicant advanced",
+        success:
+          status === "REJECTED"
+            ? "Applicant rejected"
+            : "Applicant advanced",
         successVariant: status === "REJECTED" ? "info" : "success",
         error: "Couldn't update applicant",
       }),
@@ -159,7 +193,9 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
   return (
     <div className="rounded-20 border border-neutral-100 bg-white p-5">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-[14px] font-semibold text-neutral-900">Recent applicants</h3>
+        <h3 className="text-[14px] font-semibold text-neutral-900">
+          Recent applicants
+        </h3>
         <div className="flex gap-0.5 rounded-8 border border-neutral-200 bg-neutral-50 p-0.5">
           {tabs.map((t) => (
             <button
@@ -178,7 +214,9 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
               <span
                 className={cn(
                   "ml-1 rounded-full px-1 py-0.5 text-[10px]",
-                  tab === t.id ? "bg-brand-100 text-brand-700" : "bg-neutral-100 text-neutral-400"
+                  tab === t.id
+                    ? "bg-brand-100 text-brand-700"
+                    : "bg-neutral-100 text-neutral-400"
                 )}
               >
                 {t.count}
@@ -198,7 +236,8 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
               // Scoped to this row's id — otherwise updating one applicant disables
               // the action buttons on every other row in the list too.
               isPending={
-                updateStatusMutation.isPending && updateStatusMutation.variables?.id === a.id
+                updateStatusMutation.isPending &&
+                updateStatusMutation.variables?.id === a.id
               }
               key={a.id}
               onStatusChange={updateApplicantStatus}

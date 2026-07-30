@@ -17,15 +17,21 @@ export const JobCompanyCard = ({ job }: JobCompanyCardProps) => {
       <div className="mb-3 flex items-center gap-3">
         <CompanyLogo name={job.employer.companyName} size={40} />
         <div>
-          <p className="text-[14px] font-semibold text-neutral-900">{job.employer.companyName}</p>
+          <p className="text-[14px] font-semibold text-neutral-900">
+            {job.employer.companyName}
+          </p>
           <p className="text-[12px] text-neutral-400">
             {countryFlag(job.country)} {country}
-            {job.employer.size ? ` · ${job.employer.size} employees` : ""}
+            {job.employer.size
+              ? ` · ${job.employer.size} employees`
+              : ""}
           </p>
         </div>
       </div>
       {job.employer.description && (
-        <p className="text-[13px] leading-relaxed text-neutral-500">{job.employer.description}</p>
+        <p className="text-[13px] leading-relaxed text-neutral-500">
+          {job.employer.description}
+        </p>
       )}
     </div>
   );

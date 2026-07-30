@@ -1,7 +1,13 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { Bookmark, Clock, RefreshCw, ShieldCheck, Star } from "lucide-react";
+import {
+  Bookmark,
+  Clock,
+  RefreshCw,
+  ShieldCheck,
+  Star,
+} from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { Badge } from "@/components/ui/badge";
 import { SalaryBadge } from "@/components/ui/salary-badge";
@@ -25,7 +31,10 @@ interface JobCardProps {
 }
 
 export const JobCard = memo(function JobCard({ job }: JobCardProps) {
-  const { saved, statusUnknown, toggle } = useSavedJobToggle(job.id, ROUTES.jobs);
+  const { saved, statusUnknown, toggle } = useSavedJobToggle(
+    job.id,
+    ROUTES.jobs
+  );
   const queryClient = useQueryClient();
 
   // Job-board -> job-detail is the single most common navigation in the app;
@@ -37,7 +46,8 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
   };
 
   const country = job.country ?? "Remote";
-  const timezone = job.timezone ?? (job.isRemote ? "Remote" : country);
+  const timezone =
+    job.timezone ?? (job.isRemote ? "Remote" : country);
   const isAsync = isAsyncTimezone(timezone);
   const category = job.categories[0]?.category.name ?? "Other";
 
@@ -99,7 +109,9 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
             {isAsync ? <RefreshCw size={11} /> : <Clock size={11} />}
             {timezone}
           </Tag>
-          {job.vnHireCount > 0 && <Badge variant="vn">🇻🇳 {job.vnHireCount} VN here</Badge>}
+          {job.vnHireCount > 0 && (
+            <Badge variant="vn">🇻🇳 {job.vnHireCount} VN here</Badge>
+          )}
         </div>
       </div>
 
@@ -122,7 +134,10 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
           disabled={statusUnknown}
           onClick={toggle}
         >
-          <Bookmark fill={saved ? "currentColor" : "none"} size={15} />
+          <Bookmark
+            fill={saved ? "currentColor" : "none"}
+            size={15}
+          />
         </button>
       </div>
     </article>

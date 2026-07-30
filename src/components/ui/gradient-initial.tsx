@@ -13,7 +13,10 @@ interface GradientInitialProps {
  * (employer dashboard chip, company card, profile snapshot, and two marketing
  * sections) with only size/shape differing.
  */
-export const GradientInitial = ({ children, className }: GradientInitialProps) => (
+export const GradientInitial = ({
+  children,
+  className,
+}: GradientInitialProps) => (
   <div
     aria-hidden="true"
     className={cn(

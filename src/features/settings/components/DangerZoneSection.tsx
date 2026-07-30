@@ -1,4 +1,7 @@
-import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
+import {
+  SectionHead,
+  EMPHASIS_STYLE,
+} from "@/features/talent/components/profile-form/SectionHead";
 import { DeleteAccountButton } from "@/features/settings/components/DeleteAccountButton";
 import {
   useMyPauseState,
@@ -14,25 +17,37 @@ export const DangerZoneSection = () => {
   const reactivateMutation = useReactivateMyAccount();
 
   const isPaused = pauseState?.isPaused ?? false;
-  const isPending = pauseMutation.isPending || reactivateMutation.isPending;
+  const isPending =
+    pauseMutation.isPending || reactivateMutation.isPending;
 
   const togglePause = () =>
     runWithToast(
-      () => (isPaused ? reactivateMutation.mutateAsync() : pauseMutation.mutateAsync()),
+      () =>
+        isPaused
+          ? reactivateMutation.mutateAsync()
+          : pauseMutation.mutateAsync(),
       {
         success: isPaused ? "Account reactivated" : "Account paused",
-        error: isPaused ? "Couldn't reactivate account" : "Couldn't pause account",
+        error: isPaused
+          ? "Couldn't reactivate account"
+          : "Couldn't pause account",
       }
     );
 
   return (
-    <section className="scroll-mt-6 rounded-20 border border-red-100 bg-white p-7" id="danger">
+    <section
+      className="scroll-mt-6 rounded-20 border border-red-100 bg-white p-7"
+      id="danger"
+    >
       <SectionHead
         eyebrow="06 · Careful now"
         help="Reversible and irreversible actions. Pausing is safe — deleting is not."
         title={
           <>
-            <em className="font-serif italic text-red-600" style={EMPHASIS_STYLE}>
+            <em
+              className="font-serif italic text-red-600"
+              style={EMPHASIS_STYLE}
+            >
               Danger
             </em>{" "}
             zone.
@@ -62,10 +77,12 @@ export const DangerZoneSection = () => {
         </div>
         <div className="flex items-center justify-between rounded-16 border border-red-200 bg-red-50/40 px-5 py-4">
           <div>
-            <p className="text-[13.5px] font-semibold text-neutral-900">Delete account</p>
+            <p className="text-[13.5px] font-semibold text-neutral-900">
+              Delete account
+            </p>
             <p className="text-[12.5px] text-neutral-500">
-              Permanently remove your profile, applications, and message history. This cannot be
-              undone.
+              Permanently remove your profile, applications, and
+              message history. This cannot be undone.
             </p>
           </div>
           <div className="ml-6 flex-shrink-0">

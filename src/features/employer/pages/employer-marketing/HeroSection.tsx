@@ -4,15 +4,45 @@ import { GradientInitial } from "@/components/ui/gradient-initial";
 import { personInitial } from "@/utils/name";
 
 const APPLICANTS = [
-  { name: "Phạm Tuấn", role: "Sr. Frontend · 6 yrs", loc: "Đà Nẵng, VN", match: 94 },
-  { name: "Nguyễn Anh", role: "Frontend / Design Eng · 5 yrs", loc: "Hà Nội, VN", match: 88 },
-  { name: "Lê Hoàng", role: "Sr. Frontend · 7 yrs", loc: "TP.HCM, VN", match: 82 },
+  {
+    name: "Phạm Tuấn",
+    role: "Sr. Frontend · 6 yrs",
+    loc: "Đà Nẵng, VN",
+    match: 94,
+  },
+  {
+    name: "Nguyễn Anh",
+    role: "Frontend / Design Eng · 5 yrs",
+    loc: "Hà Nội, VN",
+    match: 88,
+  },
+  {
+    name: "Lê Hoàng",
+    role: "Sr. Frontend · 7 yrs",
+    loc: "TP.HCM, VN",
+    match: 82,
+  },
 ];
 
 const DASHBOARD_STATS = [
-  { num: "142", label: "Views", bars: [3, 5, 4, 6, 8, 7, 9, 11, 10, 14], color: "bg-brand-600" },
-  { num: "28", label: "Applications", bars: [1, 2, 2, 3, 3, 4, 5, 4, 6, 8], color: "bg-amber-400" },
-  { num: "7", label: "Shortlisted", bars: [0, 0, 1, 1, 2, 2, 3, 4, 5, 7], color: "bg-blue-400" },
+  {
+    num: "142",
+    label: "Views",
+    bars: [3, 5, 4, 6, 8, 7, 9, 11, 10, 14],
+    color: "bg-brand-600",
+  },
+  {
+    num: "28",
+    label: "Applications",
+    bars: [1, 2, 2, 3, 3, 4, 5, 4, 6, 8],
+    color: "bg-amber-400",
+  },
+  {
+    num: "7",
+    label: "Shortlisted",
+    bars: [0, 0, 1, 1, 2, 2, 3, 4, 5, 7],
+    color: "bg-blue-400",
+  },
 ];
 
 const BAR_HEIGHT_SCALE = 2;
@@ -34,7 +64,8 @@ export const HeroSection = () => (
         backgroundImage:
           "linear-gradient(#EFEDE8 1px, transparent 1px), linear-gradient(90deg, #EFEDE8 1px, transparent 1px)",
         backgroundSize: "72px 72px",
-        maskImage: "radial-gradient(ellipse 100% 70% at 30% 30%, black, transparent 70%)",
+        maskImage:
+          "radial-gradient(ellipse 100% 70% at 30% 30%, black, transparent 70%)",
       }}
     />
 
@@ -54,8 +85,9 @@ export const HeroSection = () => (
         </h1>
 
         <p className="mb-8 text-[17px] leading-relaxed text-neutral-500">
-          500+ qualified VN/SEA professionals. Verified employers only. Salary range required. The
-          signal-to-noise ratio of LinkedIn at a fraction of the cost.
+          500+ qualified VN/SEA professionals. Verified employers
+          only. Salary range required. The signal-to-noise ratio of
+          LinkedIn at a fraction of the cost.
         </p>
 
         <div className="mb-5 flex flex-wrap gap-3">
@@ -104,7 +136,10 @@ export const HeroSection = () => (
 
           <div className="mb-5 grid grid-cols-3 gap-3">
             {DASHBOARD_STATS.map((stat) => (
-              <div className="flex flex-col gap-1 rounded-12 bg-neutral-50 p-3" key={stat.label}>
+              <div
+                className="flex flex-col gap-1 rounded-12 bg-neutral-50 p-3"
+                key={stat.label}
+              >
                 <div
                   className="font-serif text-[28px] leading-none tracking-tight text-neutral-900"
                   style={{ fontFamily: "var(--font-serif)" }}
@@ -119,7 +154,10 @@ export const HeroSection = () => (
                     <span
                       className={`flex-1 rounded-sm opacity-65 ${stat.color}`}
                       key={i}
-                      style={{ height: `${h * BAR_HEIGHT_SCALE}px`, minHeight: MIN_BAR_HEIGHT }}
+                      style={{
+                        height: `${h * BAR_HEIGHT_SCALE}px`,
+                        minHeight: MIN_BAR_HEIGHT,
+                      }}
                     />
                   ))}
                 </div>
@@ -140,7 +178,9 @@ export const HeroSection = () => (
                   {personInitial(a.name)}
                 </GradientInitial>
                 <div className="min-w-0 flex-1">
-                  <div className="text-[13.5px] font-semibold text-neutral-900">{a.name}</div>
+                  <div className="text-[13.5px] font-semibold text-neutral-900">
+                    {a.name}
+                  </div>
                   <div className="text-[11.5px] text-neutral-400">
                     {a.role} · {a.loc}
                   </div>

@@ -3,13 +3,21 @@ import type { AuthUser, UserRole } from "@/types/user";
 
 export type LoginPayload = { email: string; password: string };
 export type LoginResponseDto =
-  { accessToken: string } | { twoFactorRequired: true; challengeToken: string };
+  | { accessToken: string }
+  | { twoFactorRequired: true; challengeToken: string };
 
-export type TwoFactorChallengePayload = { challengeToken: string; code: string };
+export type TwoFactorChallengePayload = {
+  challengeToken: string;
+  code: string;
+};
 export type TwoFactorChallengeResponseDto = { accessToken: string };
 
 export type TwoFactorStatusDto = { enabled: boolean };
-export type TwoFactorSetupDto = { secret: string; otpauthUrl: string; qrCodeDataUrl: string };
+export type TwoFactorSetupDto = {
+  secret: string;
+  otpauthUrl: string;
+  qrCodeDataUrl: string;
+};
 export type TwoFactorVerifyPayload = { token: string };
 export type TwoFactorVerifyResponseDto = { backupCodes: string[] };
 export type TwoFactorDisablePayload = { password: string };
@@ -20,9 +28,17 @@ export type RegisterPayload = {
   password: string;
   role: Extract<UserRole, "TALENT" | "EMPLOYER">;
 };
-export type RegisterResponseDto = { id: string; email: string; name: string; role: UserRole };
+export type RegisterResponseDto = {
+  id: string;
+  email: string;
+  name: string;
+  role: UserRole;
+};
 
-export type ResetPasswordPayload = { token: string; password: string };
+export type ResetPasswordPayload = {
+  token: string;
+  password: string;
+};
 export type OAuthProvider = "google" | "github" | "linkedin";
 
 export type OAuthLinkUrlDto = { url: string };
@@ -44,6 +60,7 @@ const authUserSchema: ZodType<AuthUserDto> = z.object({
   role: z.enum(["TALENT", "EMPLOYER", "ADMIN"]),
 });
 
-export const sessionResponseSchema: ZodType<SessionResponseDto> = z.object({
-  user: authUserSchema.nullable(),
-});
+export const sessionResponseSchema: ZodType<SessionResponseDto> =
+  z.object({
+    user: authUserSchema.nullable(),
+  });

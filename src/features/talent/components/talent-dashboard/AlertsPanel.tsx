@@ -24,7 +24,9 @@ export const AlertsPanel = () => {
   return (
     <div className="mb-5 overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">
       <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
-        <h3 className="text-[14px] font-semibold text-neutral-900">Saved searches</h3>
+        <h3 className="text-[14px] font-semibold text-neutral-900">
+          Saved searches
+        </h3>
         <Link
           className="inline-flex items-center gap-1 text-[12px] font-medium text-brand-600 hover:text-brand-700"
           to={ROUTES.alerts}
@@ -34,7 +36,9 @@ export const AlertsPanel = () => {
       </div>
       <div>
         {visible.length === 0 ? (
-          <p className="px-5 py-4 text-[12.5px] text-neutral-400">No saved searches yet.</p>
+          <p className="px-5 py-4 text-[12.5px] text-neutral-400">
+            No saved searches yet.
+          </p>
         ) : (
           visible.map((alert) => (
             <div
@@ -42,13 +46,19 @@ export const AlertsPanel = () => {
               key={alert.id}
             >
               <div className="min-w-0">
-                <p className="truncate text-[13px] font-medium text-neutral-900">{alert.name}</p>
-                <p className="truncate text-[11.5px] text-neutral-400">{summarizeAlert(alert)}</p>
+                <p className="truncate text-[13px] font-medium text-neutral-900">
+                  {alert.name}
+                </p>
+                <p className="truncate text-[11.5px] text-neutral-400">
+                  {summarizeAlert(alert)}
+                </p>
               </div>
               <span
                 className={cn(
                   "flex-shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold",
-                  alert.isActive ? "bg-brand-50 text-brand-700" : "bg-neutral-100 text-neutral-400"
+                  alert.isActive
+                    ? "bg-brand-50 text-brand-700"
+                    : "bg-neutral-100 text-neutral-400"
                 )}
               >
                 {alert.isActive ? "Active" : "Paused"}

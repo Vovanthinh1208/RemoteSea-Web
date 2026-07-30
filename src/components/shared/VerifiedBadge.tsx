@@ -15,7 +15,13 @@ interface VerifiedBadgeProps {
 
 const SIZE_CLASSES: Record<
   VerifiedBadgeSize,
-  { gap: string; padding: string; text: string; verifiedIcon: number; unverifiedIcon: number }
+  {
+    gap: string;
+    padding: string;
+    text: string;
+    verifiedIcon: number;
+    unverifiedIcon: number;
+  }
 > = {
   sm: {
     gap: "gap-0.5",
@@ -24,11 +30,22 @@ const SIZE_CLASSES: Record<
     verifiedIcon: 9,
     unverifiedIcon: 8,
   },
-  md: { gap: "gap-1", padding: "px-2", text: "text-[11px]", verifiedIcon: 10, unverifiedIcon: 9 },
+  md: {
+    gap: "gap-1",
+    padding: "px-2",
+    text: "text-[11px]",
+    verifiedIcon: 10,
+    unverifiedIcon: 9,
+  },
 };
 
-export const VerifiedBadge = ({ isVerified, label, size = "sm" }: VerifiedBadgeProps) => {
-  const { gap, padding, text, verifiedIcon, unverifiedIcon } = SIZE_CLASSES[size];
+export const VerifiedBadge = ({
+  isVerified,
+  label,
+  size = "sm",
+}: VerifiedBadgeProps) => {
+  const { gap, padding, text, verifiedIcon, unverifiedIcon } =
+    SIZE_CLASSES[size];
 
   if (isVerified) {
     return (

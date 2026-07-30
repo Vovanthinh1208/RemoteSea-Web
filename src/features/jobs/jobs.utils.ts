@@ -1,6 +1,10 @@
 import { timeAgoShort } from "@/utils/time";
 import { formatSalaryRange } from "@/utils/format";
-import { SALARY_CEIL, SALARY_FLOOR, type Filters } from "@/features/jobs/job-filters";
+import {
+  SALARY_CEIL,
+  SALARY_FLOOR,
+  type Filters,
+} from "@/features/jobs/job-filters";
 import type { Category } from "@/types/job";
 
 export { LEVEL_LABELS, JOB_TYPE_LABELS } from "@/utils/labels";
@@ -38,31 +42,56 @@ export const buildActivePills = (
   filters.jobType.forEach((v) =>
     pills.push({
       label: v,
-      clear: () => onChange({ ...filters, jobType: filters.jobType.filter((x) => x !== v) }),
+      clear: () =>
+        onChange({
+          ...filters,
+          jobType: filters.jobType.filter((x) => x !== v),
+        }),
     })
   );
   filters.seniority.forEach((v) =>
     pills.push({
       label: v,
-      clear: () => onChange({ ...filters, seniority: filters.seniority.filter((x) => x !== v) }),
+      clear: () =>
+        onChange({
+          ...filters,
+          seniority: filters.seniority.filter((x) => x !== v),
+        }),
     })
   );
   filters.timezone.forEach((v) =>
     pills.push({
       label: TIMEZONE_LABELS[v] ?? v,
-      clear: () => onChange({ ...filters, timezone: filters.timezone.filter((x) => x !== v) }),
+      clear: () =>
+        onChange({
+          ...filters,
+          timezone: filters.timezone.filter((x) => x !== v),
+        }),
     })
   );
   filters.category.forEach((slug) =>
     pills.push({
       label: categories?.find((c) => c.slug === slug)?.name ?? slug,
-      clear: () => onChange({ ...filters, category: filters.category.filter((x) => x !== slug) }),
+      clear: () =>
+        onChange({
+          ...filters,
+          category: filters.category.filter((x) => x !== slug),
+        }),
     })
   );
-  if (filters.salaryMin > SALARY_FLOOR || filters.salaryMax < SALARY_CEIL) {
+  if (
+    filters.salaryMin > SALARY_FLOOR ||
+    filters.salaryMax < SALARY_CEIL
+  ) {
     pills.push({
-      label: formatSalaryRange(filters.salaryMin, filters.salaryMax) ?? "",
-      clear: () => onChange({ ...filters, salaryMin: SALARY_FLOOR, salaryMax: SALARY_CEIL }),
+      label:
+        formatSalaryRange(filters.salaryMin, filters.salaryMax) ?? "",
+      clear: () =>
+        onChange({
+          ...filters,
+          salaryMin: SALARY_FLOOR,
+          salaryMax: SALARY_CEIL,
+        }),
     });
   }
 

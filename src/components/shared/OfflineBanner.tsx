@@ -30,7 +30,8 @@ export const OfflineBanner = () => {
       role="status"
     >
       <WifiOff size={13} />
-      You&apos;re offline — changes and new results will load once you reconnect.
+      You&apos;re offline — changes and new results will load once you
+      reconnect.
     </div>
   );
 };

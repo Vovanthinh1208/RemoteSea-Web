@@ -2,7 +2,11 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { useIsJobSaved, useSaveJob, useUnsaveJob } from "@/features/saved/saved.queries";
+import {
+  useIsJobSaved,
+  useSaveJob,
+  useUnsaveJob,
+} from "@/features/saved/saved.queries";
 import { ROUTES } from "@/constants/routes";
 import { reportError } from "@/services/monitoring";
 
@@ -23,7 +27,8 @@ export const useSavedJobToggle = (
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { data: isSaved, isLoading: savedStatusLoading } = useIsJobSaved(jobId);
+  const { data: isSaved, isLoading: savedStatusLoading } =
+    useIsJobSaved(jobId);
   const saveMutation = useSaveJob();
   const unsaveMutation = useUnsaveJob();
 
@@ -38,7 +43,9 @@ export const useSavedJobToggle = (
   const toggle = async (e?: React.MouseEvent) => {
     e?.preventDefault();
     if (!user) {
-      navigate(`${ROUTES.login}?callbackUrl=${encodeURIComponent(loginCallbackUrl)}`);
+      navigate(
+        `${ROUTES.login}?callbackUrl=${encodeURIComponent(loginCallbackUrl)}`
+      );
       return;
     }
     if (togglingRef.current) return;
@@ -50,10 +57,16 @@ export const useSavedJobToggle = (
       } else {
         await saveMutation.mutateAsync(jobId);
       }
-      toast({ variant: "success", title: prev ? "Removed from saved" : "Saved to your list" });
+      toast({
+        variant: "success",
+        title: prev ? "Removed from saved" : "Saved to your list",
+      });
     } catch (err) {
       reportError(err);
-      toast({ variant: "error", title: "Couldn't update saved jobs" });
+      toast({
+        variant: "error",
+        title: "Couldn't update saved jobs",
+      });
     } finally {
       togglingRef.current = false;
     }

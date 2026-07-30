@@ -30,10 +30,16 @@ export const clearAccessToken = (): void => {
   }
 };
 
-export const setAccessToken = (token: string, remember: boolean): void => {
+export const setAccessToken = (
+  token: string,
+  remember: boolean
+): void => {
   clearAccessToken();
   try {
-    (remember ? localStorage : sessionStorage).setItem(STORAGE_KEY, token);
+    (remember ? localStorage : sessionStorage).setItem(
+      STORAGE_KEY,
+      token
+    );
   } catch {
     // Storage blocked/full — the caller still holds the token in memory for
     // this session; it just won't survive a reload.

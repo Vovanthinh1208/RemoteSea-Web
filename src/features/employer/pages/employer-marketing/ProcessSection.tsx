@@ -42,7 +42,8 @@ export const ProcessSection = () => (
     <div className="mx-auto max-w-[1240px] px-6">
       <Eyebrow className="mb-3">The process</Eyebrow>
       <h2 className="mb-10 text-[32px] font-semibold tracking-tight text-neutral-900">
-        List → review → <em className="font-serif-italic text-brand-700">match.</em>
+        List → review →{" "}
+        <em className="font-serif-italic text-brand-700">match.</em>
       </h2>
       <div className="grid items-stretch gap-4 md:grid-cols-[1fr_auto_1fr_auto_1fr]">
         {PROCESS.map((step, i) => (
@@ -58,10 +59,15 @@ export const ProcessSection = () => (
                 <h3 className="mb-2 text-[18px] font-semibold tracking-tight text-neutral-900">
                   {step.title}
                 </h3>
-                <p className="mb-3 text-[14px] leading-relaxed text-neutral-500">{step.desc}</p>
+                <p className="mb-3 text-[14px] leading-relaxed text-neutral-500">
+                  {step.desc}
+                </p>
                 <ul className="space-y-1.5">
                   {step.items.map((item) => (
-                    <li className="flex items-center gap-2 text-[13px] text-neutral-700" key={item}>
+                    <li
+                      className="flex items-center gap-2 text-[13px] text-neutral-700"
+                      key={item}
+                    >
                       <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-600" />
                       {item}
                     </li>

@@ -26,6 +26,10 @@ export type TalentProfile = {
   linkedinUrl: string | null;
   isOpenToWork: boolean;
   visibility: TalentVisibility;
+  primaryRole?: PrimaryRole | null;
+  rightToWork?: RightToWork | null;
+  employmentTypes: EmploymentType[];
+  timezoneOverlap: TimezoneOverlap[];
   // Omitted entirely (not null) by GET /talent/:slug when isOpenToWork is false.
   desiredSalaryMin?: number | null;
   desiredSalaryMax?: number | null;
@@ -35,6 +39,24 @@ export type TalentProfile = {
   skills: TalentSkill[];
   user?: { name: string | null; image?: string | null };
 };
+
+export type PrimaryRole =
+  | "Software Engineer · Frontend"
+  | "Software Engineer · Backend"
+  | "Software Engineer · Full-stack"
+  | "Product Designer"
+  | "Product Manager"
+  | "Data Analyst";
+
+export type RightToWork =
+  | "Vietnam only"
+  | "Vietnam + Singapore"
+  | "Vietnam + Australia"
+  | "Open to relocation / sponsorship";
+
+export type EmploymentType = "FULL_TIME" | "CONTRACT" | "PART_TIME";
+
+export type TimezoneOverlap = "SG_HOURS" | "AU_HOURS" | "ASYNC_ONLY";
 
 export type UpdateTalentProfilePayload = Partial<{
   headline: string;
@@ -50,6 +72,10 @@ export type UpdateTalentProfilePayload = Partial<{
   linkedinUrl: string;
   isOpenToWork: boolean;
   visibility: TalentVisibility;
+  primaryRole: PrimaryRole;
+  rightToWork: RightToWork;
+  employmentTypes: EmploymentType[];
+  timezoneOverlap: TimezoneOverlap[];
   desiredSalaryMin: number;
   desiredSalaryMax: number;
   skills: { skillId: string; yearsExp?: number }[];

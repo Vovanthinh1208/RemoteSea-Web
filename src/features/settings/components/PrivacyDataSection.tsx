@@ -1,14 +1,22 @@
 import { useState } from "react";
 import { Download, Eye } from "lucide-react";
-import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
+import {
+  SectionHead,
+  EMPHASIS_STYLE,
+} from "@/features/talent/components/profile-form/SectionHead";
 import { ToggleRow } from "@/features/settings/components/ToggleRow";
 import { Toggle } from "@/features/talent/components/profile-form/Toggle";
-import { useMyTalentProfile, useUpdateMyTalentProfile } from "@/features/talent/talent.queries";
+import {
+  useMyTalentProfile,
+  useUpdateMyTalentProfile,
+} from "@/features/talent/talent.queries";
 import { useExportMyData } from "@/features/users/users.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
 
 const downloadJson = (data: unknown, filename: string) => {
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json",
+  });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
@@ -42,18 +50,27 @@ export const PrivacyDataSection = () => {
         const result = await exportMutation.mutateAsync();
         downloadJson(result, "remotesea-data-export.json");
       },
-      { success: "Export downloaded", error: "Couldn't export your data" }
+      {
+        success: "Export downloaded",
+        error: "Couldn't export your data",
+      }
     );
 
   return (
-    <section className="scroll-mt-6 rounded-20 border border-neutral-100 bg-white p-7" id="data">
+    <section
+      className="scroll-mt-6 rounded-20 border border-neutral-100 bg-white p-7"
+      id="data"
+    >
       <SectionHead
         eyebrow="05 · Your data"
         help="Control how visible you are and take your data with you whenever you want."
         title={
           <>
             Privacy &amp;{" "}
-            <em className="font-serif italic text-brand-700" style={EMPHASIS_STYLE}>
+            <em
+              className="font-serif italic text-brand-700"
+              style={EMPHASIS_STYLE}
+            >
               data.
             </em>
           </>
@@ -66,11 +83,15 @@ export const PrivacyDataSection = () => {
               <Eye size={16} />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-[13.5px] font-medium text-neutral-900">Profile visibility</p>
+              <p className="text-[13.5px] font-medium text-neutral-900">
+                Profile visibility
+              </p>
               <p className="text-[12px] text-neutral-500">
                 Currently{" "}
                 <strong className="text-neutral-800">
-                  {isRestricted ? "Verified employers only" : "Public"}
+                  {isRestricted
+                    ? "Verified employers only"
+                    : "Public"}
                 </strong>
               </p>
             </div>
@@ -82,9 +103,12 @@ export const PrivacyDataSection = () => {
             <Download size={16} />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-[13.5px] font-medium text-neutral-900">Download your data</p>
+            <p className="text-[13.5px] font-medium text-neutral-900">
+              Download your data
+            </p>
             <p className="text-[12px] text-neutral-400">
-              Your profile, applications, and job alerts as a JSON export.
+              Your profile, applications, and job alerts as a JSON
+              export.
             </p>
           </div>
           <button

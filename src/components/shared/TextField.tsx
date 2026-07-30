@@ -27,7 +27,10 @@ export const TextField = ({
   return (
     <div>
       <div className="mb-1.5 flex items-center justify-between">
-        <label className="block text-sm font-medium text-neutral-700" htmlFor={id}>
+        <label
+          className="block text-sm font-medium text-neutral-700"
+          htmlFor={id}
+        >
           {label}
         </label>
         {labelSlot}
@@ -43,7 +46,11 @@ export const TextField = ({
         {...registration}
       />
       {error && (
-        <p className="mt-1 text-xs text-red-600" id={errorId} role="alert">
+        <p
+          className="mt-1 text-xs text-red-600"
+          id={errorId}
+          role="alert"
+        >
           {error}
         </p>
       )}

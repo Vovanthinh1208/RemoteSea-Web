@@ -1,6 +1,9 @@
 import { useMemo } from "react";
 import { cn } from "@/utils/cn";
-import { STATUS_TO_BUCKET, type AppStatusBucket } from "@/features/talent/talent-dashboard.utils";
+import {
+  STATUS_TO_BUCKET,
+  type AppStatusBucket,
+} from "@/features/talent/talent-dashboard.utils";
 import type { ApplicationWithJob } from "@/types/application";
 
 interface PipelineProps {
@@ -49,7 +52,9 @@ export const Pipeline = ({ applications }: PipelineProps) => {
           <span
             className={cn(
               "text-[11px]",
-              s.active ? "font-medium text-brand-600" : "text-neutral-400"
+              s.active
+                ? "font-medium text-brand-600"
+                : "text-neutral-400"
             )}
           >
             {s.label}

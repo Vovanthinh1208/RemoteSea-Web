@@ -5,7 +5,10 @@ import { cn } from "@/utils/cn";
 import { useToast } from "@/components/ui/toast";
 import { ApiError } from "@/core/errors/api-error";
 import { reportError } from "@/services/monitoring";
-import { useCategories, useSkills } from "@/features/taxonomy/taxonomy.queries";
+import {
+  useCategories,
+  useSkills,
+} from "@/features/taxonomy/taxonomy.queries";
 import { useCreateEmployerProfile } from "@/features/employer/employer.queries";
 import { useCreateJob } from "@/features/jobs/jobs.queries";
 import { useCreateCheckoutSession } from "@/features/billing/billing.queries";
@@ -48,8 +51,12 @@ export const PostJobWizard = () => {
   // Restore any saved draft synchronously so the first render already shows it.
   const [draft] = useState(loadPostJobDraft);
   const [step, setStep] = useState(draft?.step ?? 1);
-  const [form, setForm] = useState<PostJobFormState>(draft?.form ?? INITIAL_FORM_STATE);
-  const [publishedJobId, setPublishedJobId] = useState<string | null>(null);
+  const [form, setForm] = useState<PostJobFormState>(
+    draft?.form ?? INITIAL_FORM_STATE
+  );
+  const [publishedJobId, setPublishedJobId] = useState<string | null>(
+    null
+  );
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // Separate from `error` (a single final-publish failure) — a step can have
@@ -71,16 +78,24 @@ export const PostJobWizard = () => {
   if (!categoryDefaulted && categories && categories.length > 0) {
     setCategoryDefaulted(true);
     if (!form.jobCategoryId) {
-      setForm((prev) => ({ ...prev, jobCategoryId: categories[0].id }));
+      setForm((prev) => ({
+        ...prev,
+        jobCategoryId: categories[0].id,
+      }));
     }
   }
 
-  const set = (k: keyof PostJobFormState, v: unknown) => setForm((prev) => ({ ...prev, [k]: v }));
+  const set = (k: keyof PostJobFormState, v: unknown) =>
+    setForm((prev) => ({ ...prev, [k]: v }));
 
   const fail = (msg: string) => {
     setError(msg);
     setPublishing(false);
-    toast({ variant: "error", title: "Couldn't publish job", description: msg });
+    toast({
+      variant: "error",
+      title: "Couldn't publish job",
+      description: msg,
+    });
   };
 
   const goToStep = (nextStep: number) => {
@@ -104,7 +119,9 @@ export const PostJobWizard = () => {
     setStepErrors([]);
 
     if (form.jobDesc.trim().length < MIN_JOB_DESCRIPTION_LENGTH) {
-      fail(`Job description must be at least ${MIN_JOB_DESCRIPTION_LENGTH} characters.`);
+      fail(
+        `Job description must be at least ${MIN_JOB_DESCRIPTION_LENGTH} characters.`
+      );
       return;
     }
     if (!form.jobCategoryId) {
@@ -130,9 +147,14 @@ export const PostJobWizard = () => {
       });
     } catch (err) {
       // A 409 just means this employer already has a profile — fine, continue.
-      if (!(err instanceof ApiError && err.status === PROFILE_ALREADY_EXISTS_STATUS)) {
+      if (!(
+        err instanceof ApiError &&
+        err.status === PROFILE_ALREADY_EXISTS_STATUS
+      )) {
         reportError(err);
-        fail("Could not save your company profile. Please try again.");
+        fail(
+          "Could not save your company profile. Please try again."
+        );
         return;
       }
     }
@@ -157,14 +179,18 @@ export const PostJobWizard = () => {
         timezone: form.jobTz || undefined,
         country: hqToCountry(form.coHq),
         benefits: form.benefits.slice(0, MAX_BENEFITS),
-        planType: TIERS.find((t) => t.id === form.tier)?.planType ?? "STANDARD",
+        planType:
+          TIERS.find((t) => t.id === form.tier)?.planType ??
+          "STANDARD",
         categoryIds: [form.jobCategoryId],
         skillIds,
       });
       jobId = job.id;
     } catch (err) {
       reportError(err);
-      fail("Could not create the job. Check the required fields and try again.");
+      fail(
+        "Could not create the job. Check the required fields and try again."
+      );
       return;
     }
 
@@ -184,9 +210,11 @@ export const PostJobWizard = () => {
     setPublishedJobId(jobId);
   };
 
-  if (publishedJobId) return <PostJobDraftSaved form={form} jobId={publishedJobId} />;
+  if (publishedJobId)
+    return <PostJobDraftSaved form={form} jobId={publishedJobId} />;
 
-  const selectedTier = TIERS.find((t) => t.id === form.tier) ?? TIERS[0];
+  const selectedTier =
+    TIERS.find((t) => t.id === form.tier) ?? TIERS[0];
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -194,7 +222,10 @@ export const PostJobWizard = () => {
       <div className="border-b border-neutral-200 bg-white px-6 py-4">
         <h1 className="sr-only">Post a job</h1>
         <div className="mx-auto flex max-w-[1200px] items-center justify-between">
-          <Link className="text-[15px] font-semibold text-neutral-900" to={ROUTES.home}>
+          <Link
+            className="text-[15px] font-semibold text-neutral-900"
+            to={ROUTES.home}
+          >
             RemoteSEA
           </Link>
           <div className="flex items-center gap-1">
@@ -219,12 +250,19 @@ export const PostJobWizard = () => {
                 <span
                   className={cn(
                     "hidden text-[12px] font-medium sm:inline",
-                    step === s.id ? "text-neutral-900" : "text-neutral-400"
+                    step === s.id
+                      ? "text-neutral-900"
+                      : "text-neutral-400"
                   )}
                 >
                   {s.label}
                 </span>
-                {i < STEPS.length - 1 && <ChevronRight className="text-neutral-300" size={14} />}
+                {i < STEPS.length - 1 && (
+                  <ChevronRight
+                    className="text-neutral-300"
+                    size={14}
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -294,7 +332,8 @@ export const PostJobWizard = () => {
                 type="button"
                 onClick={handlePublish}
               >
-                <Zap size={14} /> {publishing ? "Processing…" : "Pay & publish"}
+                <Zap size={14} />{" "}
+                {publishing ? "Processing…" : "Pay & publish"}
               </button>
             )}
           </div>
@@ -328,7 +367,10 @@ export const PostJobWizard = () => {
             </div>
 
             <div className="flex items-center gap-2 rounded-12 border border-neutral-100 bg-white p-3 text-[12px] text-neutral-400">
-              <Shield className="flex-shrink-0 text-brand-500" size={13} />
+              <Shield
+                className="flex-shrink-0 text-brand-500"
+                size={13}
+              />
               Secured by Stripe · SSL encrypted
             </div>
           </div>

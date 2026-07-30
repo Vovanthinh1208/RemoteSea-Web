@@ -9,15 +9,26 @@ export const PLAN_LABELS: Record<string, string> = {
   HANDS_ON: "Hands-on",
 };
 
-const COLORS = ["#16766F", "#0EA5E9", "#2563EB", "#7C3AED", "#2E9B52", "#EE4D2D", "#00B14F"];
+const COLORS = [
+  "#16766F",
+  "#0EA5E9",
+  "#2563EB",
+  "#7C3AED",
+  "#2E9B52",
+  "#EE4D2D",
+  "#00B14F",
+];
 
-export const colorFor = (s: string): string => pickColorFromString(s, COLORS);
+export const colorFor = (s: string): string =>
+  pickColorFromString(s, COLORS);
 
 const MS_PER_HOUR = 3_600_000;
 const HOURS_PER_DAY = 24;
 
 export const hoursSince = (dateString: string): number =>
-  Math.floor((Date.now() - new Date(dateString).getTime()) / MS_PER_HOUR);
+  Math.floor(
+    (Date.now() - new Date(dateString).getTime()) / MS_PER_HOUR
+  );
 
 export const waitFmt = (h: number): string => {
   if (h < HOURS_PER_DAY) return `${h}h`;
@@ -42,7 +53,10 @@ const MIN_DESCRIPTION_LENGTH = 100;
 
 export const autoChecks = (job: AdminJob): AutoCheck[] => [
   {
-    state: job.description.length >= MIN_DESCRIPTION_LENGTH ? "pass" : "fail",
+    state:
+      job.description.length >= MIN_DESCRIPTION_LENGTH
+        ? "pass"
+        : "fail",
     t: "Description length",
     d: `${job.description.length} characters`,
   },
@@ -59,21 +73,41 @@ export const autoChecks = (job: AdminJob): AutoCheck[] => [
   {
     state: job.employer.isVerified ? "pass" : "warn",
     t: "Employer verified",
-    d: job.employer.isVerified ? "Verified company" : "Not yet verified",
+    d: job.employer.isVerified
+      ? "Verified company"
+      : "Not yet verified",
   },
 ];
 
 export const REVIEW_CHECKLIST = [
-  { label: "Role is genuinely remote", hint: "Not hybrid mislabeled as remote." },
-  { label: "Salary within market band", hint: "Compare against benchmark." },
-  { label: "No discriminatory language", hint: "Requirements read clean." },
-  { label: "Company looks legitimate", hint: "Website + contact check out." },
+  {
+    label: "Role is genuinely remote",
+    hint: "Not hybrid mislabeled as remote.",
+  },
+  {
+    label: "Salary within market band",
+    hint: "Compare against benchmark.",
+  },
+  {
+    label: "No discriminatory language",
+    hint: "Requirements read clean.",
+  },
+  {
+    label: "Company looks legitimate",
+    hint: "Website + contact check out.",
+  },
 ];
 
-export const formatSalary = (min: number | null, max: number | null, currency = "USD"): string => {
+export const formatSalary = (
+  min: number | null,
+  max: number | null,
+  currency = "USD"
+): string => {
   if (!min) return "Not specified";
   const fmt = (n: number) => n.toLocaleString();
-  return max ? `${currency} ${fmt(min)}–${fmt(max)}` : `${currency} ${fmt(min)}+`;
+  return max
+    ? `${currency} ${fmt(min)}–${fmt(max)}`
+    : `${currency} ${fmt(min)}+`;
 };
 
 const CENTS_PER_DOLLAR = 100;

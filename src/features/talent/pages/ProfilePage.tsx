@@ -7,7 +7,12 @@ import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export const ProfilePage = () => {
   useDocumentTitle("Profile Setup");
-  const { data: profile, isLoading, isError, refetch } = useMyTalentProfile();
+  const {
+    data: profile,
+    isLoading,
+    isError,
+    refetch,
+  } = useMyTalentProfile();
 
   if (isLoading) return <FullPageLoader />;
 
@@ -18,7 +23,11 @@ export const ProfilePage = () => {
     return (
       <EmptyState
         action={
-          <Button size="sm" variant="outline" onClick={() => refetch()}>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => refetch()}
+          >
             Try again
           </Button>
         }

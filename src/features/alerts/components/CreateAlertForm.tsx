@@ -3,7 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PillToggle } from "@/components/shared/PillToggle";
-import { SELECT_INPUT_CLASS, TEXT_INPUT_CLASS } from "@/components/shared/input-styles";
+import {
+  SELECT_INPUT_CLASS,
+  TEXT_INPUT_CLASS,
+} from "@/components/shared/input-styles";
 import { useCategories } from "@/features/taxonomy/taxonomy.queries";
 import {
   createAlertFormSchema,
@@ -28,7 +31,9 @@ const DEFAULT_FORM_VALUES: CreateAlertFormValues = {
   categoryIds: [],
 };
 
-export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
+export const CreateAlertForm = ({
+  onCreate,
+}: CreateAlertFormProps) => {
   const { data: categories } = useCategories();
 
   const {
@@ -60,9 +65,13 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
       keywords: values.keywords || undefined,
       jobType: values.jobType || undefined,
       level: values.level || undefined,
-      salaryMin: values.salaryMin ? Number(values.salaryMin) : undefined,
+      salaryMin: values.salaryMin
+        ? Number(values.salaryMin)
+        : undefined,
       frequency: values.frequency,
-      categoryIds: values.categoryIds.length ? values.categoryIds : undefined,
+      categoryIds: values.categoryIds.length
+        ? values.categoryIds
+        : undefined,
     });
     // Only clear the form if the alert was actually created — on failure the
     // user keeps their input to retry (the error toast already fired).
@@ -74,7 +83,9 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
       className="mb-8 space-y-4 rounded-16 border border-neutral-100 bg-white p-5 shadow-card"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h2 className="text-[14px] font-semibold text-neutral-900">Create a new alert</h2>
+      <h2 className="text-[14px] font-semibold text-neutral-900">
+        Create a new alert
+      </h2>
       <div className="grid gap-3 sm:grid-cols-2">
         <div>
           <input
@@ -83,7 +94,11 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
             placeholder="Alert name (e.g. Senior remote engineering)"
             {...register("name")}
           />
-          {errors.name && <p className="mt-1 text-[12px] text-red-600">{errors.name.message}</p>}
+          {errors.name && (
+            <p className="mt-1 text-[12px] text-red-600">
+              {errors.name.message}
+            </p>
+          )}
         </div>
         <input
           aria-label="Keywords"
@@ -91,7 +106,11 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
           placeholder="Keywords (optional)"
           {...register("keywords")}
         />
-        <select aria-label="Job type" className={SELECT_INPUT_CLASS} {...register("jobType")}>
+        <select
+          aria-label="Job type"
+          className={SELECT_INPUT_CLASS}
+          {...register("jobType")}
+        >
           <option value="">Any job type</option>
           {JOB_TYPES.map((jobType) => (
             <option key={jobType} value={jobType}>
@@ -99,7 +118,11 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
             </option>
           ))}
         </select>
-        <select aria-label="Seniority level" className={SELECT_INPUT_CLASS} {...register("level")}>
+        <select
+          aria-label="Seniority level"
+          className={SELECT_INPUT_CLASS}
+          {...register("level")}
+        >
           <option value="">Any level</option>
           {LEVELS.map((level) => (
             <option key={level} value={level}>
@@ -149,7 +172,8 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
       )}
 
       <Button disabled={isSubmitting} type="submit">
-        <Plus size={14} /> {isSubmitting ? "Creating…" : "Create alert"}
+        <Plus size={14} />{" "}
+        {isSubmitting ? "Creating…" : "Create alert"}
       </Button>
     </form>
   );

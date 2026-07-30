@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, Upload } from "lucide-react";
-import { uploadViaPresign, validateFile, type UploadType } from "@/services/uploads.api";
+import {
+  uploadViaPresign,
+  validateFile,
+  type UploadType,
+} from "@/services/uploads.api";
 import { reportError } from "@/services/monitoring";
 
 type UploadState = "idle" | "uploading" | "done" | "error";
@@ -15,15 +19,26 @@ interface FileUploadProps {
 
 const UPLOAD_FAILED_MESSAGE = "Upload failed. Try again.";
 
-const getButtonLabel = (state: UploadState, label: string): string => {
+const getButtonLabel = (
+  state: UploadState,
+  label: string
+): string => {
   if (state === "uploading") return "Uploading…";
   if (state === "done") return `${label} uploaded`;
   return label;
 };
 
-export const FileUpload = ({ type, accept, label, value, onUploaded }: FileUploadProps) => {
+export const FileUpload = ({
+  type,
+  accept,
+  label,
+  value,
+  onUploaded,
+}: FileUploadProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [state, setState] = useState<UploadState>(value ? "done" : "idle");
+  const [state, setState] = useState<UploadState>(
+    value ? "done" : "idle"
+  );
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -31,7 +46,9 @@ export const FileUpload = ({ type, accept, label, value, onUploaded }: FileUploa
   // call setState on an unmounted component once it eventually resolves.
   useEffect(() => () => abortRef.current?.abort(), []);
 
-  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -48,7 +65,9 @@ export const FileUpload = ({ type, accept, label, value, onUploaded }: FileUploa
     const controller = new AbortController();
     abortRef.current = controller;
     try {
-      const url = await uploadViaPresign(file, type, { signal: controller.signal });
+      const url = await uploadViaPresign(file, type, {
+        signal: controller.signal,
+      });
       onUploaded(url);
       setState("done");
     } catch (err) {
@@ -74,7 +93,11 @@ export const FileUpload = ({ type, accept, label, value, onUploaded }: FileUploa
         type="button"
         onClick={() => inputRef.current?.click()}
       >
-        {state === "done" ? <Check className="text-brand-600" size={14} /> : <Upload size={14} />}
+        {state === "done" ? (
+          <Check className="text-brand-600" size={14} />
+        ) : (
+          <Upload size={14} />
+        )}
         {getButtonLabel(state, label)}
       </button>
       {error && <p className="text-[12px] text-red-600">{error}</p>}

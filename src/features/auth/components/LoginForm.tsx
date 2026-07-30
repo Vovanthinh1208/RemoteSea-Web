@@ -2,7 +2,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { loginSchema, type LoginFormValues } from "@/features/auth/auth.schemas";
+import {
+  loginSchema,
+  type LoginFormValues,
+} from "@/features/auth/auth.schemas";
 import { OAuthButtons } from "@/features/auth/components/OAuthButtons";
 import { OrDivider } from "@/features/auth/components/OrDivider";
 import { TwoFactorChallengeForm } from "@/features/auth/components/TwoFactorChallengeForm";
@@ -19,14 +22,17 @@ export const LoginForm = () => {
   const [searchParams] = useSearchParams();
   const rawCallbackUrl = searchParams.get("callbackUrl");
   const callbackUrl =
-    rawCallbackUrl && isSafeInternalPath(rawCallbackUrl) ? rawCallbackUrl : ROUTES.jobs;
+    rawCallbackUrl && isSafeInternalPath(rawCallbackUrl)
+      ? rawCallbackUrl
+      : ROUTES.jobs;
   const { login } = useAuth();
   const { toast } = useToast();
   const [formError, setFormError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [challenge, setChallenge] = useState<{ challengeToken: string; remember: boolean } | null>(
-    null
-  );
+  const [challenge, setChallenge] = useState<{
+    challengeToken: string;
+    remember: boolean;
+  } | null>(null);
 
   const {
     register,
@@ -42,14 +48,27 @@ export const LoginForm = () => {
     setFormError(null);
     setIsLoading(true);
     try {
-      const result = await login(values.email, values.password, values.remember);
+      const result = await login(
+        values.email,
+        values.password,
+        values.remember
+      );
       if (result.status === "two_factor_required") {
-        setChallenge({ challengeToken: result.challengeToken, remember: values.remember });
+        setChallenge({
+          challengeToken: result.challengeToken,
+          remember: values.remember,
+        });
         return;
       }
       navigate(callbackUrl, { replace: true });
     } catch (err) {
-      setFormError(applyFormSubmitError(err, setError, "Something went wrong. Please try again."));
+      setFormError(
+        applyFormSubmitError(
+          err,
+          setError,
+          "Something went wrong. Please try again."
+        )
+      );
       toast({ title: "Sign in failed", variant: "error" });
     } finally {
       setIsLoading(false);
@@ -110,7 +129,9 @@ export const LoginForm = () => {
           Remember me
         </label>
 
-        {formError && <p className="text-sm text-red-600">{formError}</p>}
+        {formError && (
+          <p className="text-sm text-red-600">{formError}</p>
+        )}
 
         <Button
           className="w-full rounded-12"

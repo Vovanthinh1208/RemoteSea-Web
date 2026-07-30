@@ -2,7 +2,11 @@ import { GradientInitial } from "@/components/ui/gradient-initial";
 import { VerifiedInline } from "@/components/shared/VerifiedInline";
 
 interface CompanyCardProps {
-  company: { companyName: string; isVerified: boolean; hqCountry: string | null };
+  company: {
+    companyName: string;
+    isVerified: boolean;
+    hqCountry: string | null;
+  };
 }
 
 export const CompanyCard = ({ company }: CompanyCardProps) => (
@@ -12,7 +16,9 @@ export const CompanyCard = ({ company }: CompanyCardProps) => (
         {company.companyName.charAt(0).toUpperCase()}
       </GradientInitial>
       <div>
-        <p className="text-[15px] font-semibold text-neutral-900">{company.companyName}</p>
+        <p className="text-[15px] font-semibold text-neutral-900">
+          {company.companyName}
+        </p>
         <div className="flex items-center gap-1.5 text-[12px] text-neutral-500">
           {company.isVerified && <VerifiedInline />}
           {company.hqCountry && <span>· {company.hqCountry}</span>}

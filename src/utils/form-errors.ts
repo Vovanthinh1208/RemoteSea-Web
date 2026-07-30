@@ -1,4 +1,8 @@
-import type { FieldValues, Path, UseFormSetError } from "react-hook-form";
+import type {
+  FieldValues,
+  Path,
+  UseFormSetError,
+} from "react-hook-form";
 import { ApiError } from "@/core/errors/api-error";
 
 export const applyServerErrors = <T extends FieldValues>(
@@ -9,7 +13,10 @@ export const applyServerErrors = <T extends FieldValues>(
 
   for (const [field, messages] of Object.entries(error.fieldErrors)) {
     if (messages?.[0]) {
-      setError(field as Path<T>, { type: "server", message: messages[0] });
+      setError(field as Path<T>, {
+        type: "server",
+        message: messages[0],
+      });
     }
   }
 };

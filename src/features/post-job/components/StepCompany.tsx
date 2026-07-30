@@ -1,4 +1,9 @@
-import { Field, Input, Select, Textarea } from "@/features/post-job/components/form-primitives";
+import {
+  Field,
+  Input,
+  Select,
+  Textarea,
+} from "@/features/post-job/components/form-primitives";
 import {
   COMPANY_SIZE_OPTIONS,
   HQ_OPTIONS,
@@ -8,14 +13,20 @@ import {
 export const StepCompany = ({ form, set }: PostJobStepProps) => (
   <div className="space-y-6">
     <div>
-      <h2 className="text-[22px] font-semibold text-neutral-900">About your company</h2>
+      <h2 className="text-[22px] font-semibold text-neutral-900">
+        About your company
+      </h2>
       <p className="mt-1 text-sm text-neutral-500">
         This builds the employer card candidates see on your listing.
       </p>
     </div>
     <div className="grid gap-4 sm:grid-cols-2">
       <Field label="Company name" required>
-        <Input placeholder="Acme Corp" value={form.coName} onChange={(v) => set("coName", v)} />
+        <Input
+          placeholder="Acme Corp"
+          value={form.coName}
+          onChange={(v) => set("coName", v)}
+        />
       </Field>
       <Field label="Website">
         <Input
@@ -28,7 +39,10 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => (
     <div className="grid gap-4 sm:grid-cols-2">
       <Field label="Company size">
         <Select
-          options={COMPANY_SIZE_OPTIONS.map((o) => ({ value: o, label: o }))}
+          options={COMPANY_SIZE_OPTIONS.map((o) => ({
+            value: o,
+            label: o,
+          }))}
           value={form.coSize}
           onChange={(v) => set("coSize", v)}
         />
@@ -41,7 +55,10 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => (
         />
       </Field>
     </div>
-    <Field hint="Max 80 chars, shown under company name" label="One-line tagline">
+    <Field
+      hint="Max 80 chars, shown under company name"
+      label="One-line tagline"
+    >
       <Input
         placeholder="We build tools that help developers ship faster."
         value={form.coTag}
@@ -63,7 +80,11 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => (
       </h3>
       <div className="grid gap-4 sm:grid-cols-3">
         <Field label="Full name" required>
-          <Input placeholder="Alex Chen" value={form.recName} onChange={(v) => set("recName", v)} />
+          <Input
+            placeholder="Alex Chen"
+            value={form.recName}
+            onChange={(v) => set("recName", v)}
+          />
         </Field>
         <Field label="Role">
           <Input

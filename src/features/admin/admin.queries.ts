@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   getAdminRevenue,
   listAdminEmployers,
@@ -22,11 +26,14 @@ const ADMIN_LIST_LIMIT = 50;
 // invalidate this key.
 const ADMIN_QUEUE_STALE_TIME_MS = 15_000;
 
-export const useAdminJobs = (status: JobStatus = "PENDING_REVIEW") => {
+export const useAdminJobs = (
+  status: JobStatus = "PENDING_REVIEW"
+) => {
   const { user } = useAuth();
   return useQuery({
     queryKey: adminKeys.jobs(status),
-    queryFn: ({ signal }) => listAdminJobs({ status, limit: ADMIN_LIST_LIMIT }, { signal }),
+    queryFn: ({ signal }) =>
+      listAdminJobs({ status, limit: ADMIN_LIST_LIMIT }, { signal }),
     enabled: !!user && user.role === "ADMIN",
     staleTime: ADMIN_QUEUE_STALE_TIME_MS,
     refetchOnWindowFocus: true,
@@ -37,7 +44,8 @@ export const useAdminEmployers = () => {
   const { user } = useAuth();
   return useQuery({
     queryKey: adminKeys.employers(),
-    queryFn: ({ signal }) => listAdminEmployers({ limit: ADMIN_LIST_LIMIT }, { signal }),
+    queryFn: ({ signal }) =>
+      listAdminEmployers({ limit: ADMIN_LIST_LIMIT }, { signal }),
     enabled: !!user && user.role === "ADMIN",
   });
 };
@@ -68,10 +76,17 @@ export const useReviewAdminJob = () => {
 export const useUpdateAdminEmployer = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, action }: { id: string; action: "verify" | "suspend" }) =>
-      updateAdminEmployer(id, action),
+    mutationFn: ({
+      id,
+      action,
+    }: {
+      id: string;
+      action: "verify" | "suspend";
+    }) => updateAdminEmployer(id, action),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: adminKeys.employers() });
+      queryClient.invalidateQueries({
+        queryKey: adminKeys.employers(),
+      });
       // employer.isVerified is denormalized into every job list/detail response
       // (drives the "Verified" badge) — same class of gap already fixed for job
       // approval above, just missed here.

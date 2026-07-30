@@ -36,7 +36,9 @@ export default defineConfig(({ mode, command }) => {
     // the commit SHA via GITHUB_SHA; local builds fall back to "dev".
     define: {
       __APP_VERSION__: JSON.stringify(
-        process.env.GITHUB_SHA?.slice(0, 12) ?? env.VITE_APP_VERSION ?? "dev"
+        process.env.GITHUB_SHA?.slice(0, 12) ??
+          env.VITE_APP_VERSION ??
+          "dev"
       ),
     },
     resolve: {
@@ -63,9 +65,18 @@ export default defineConfig(({ mode, command }) => {
           // forced 275KB / 87KB gzip onto the initial load.)
           manualChunks(id: string) {
             if (!id.includes("node_modules")) return undefined;
-            if (/[\\/]node_modules[\\/](react|react-dom)[\\/]/.test(id)) return "vendor-react";
-            if (/[\\/]node_modules[\\/]react-router(-dom)?[\\/]/.test(id)) return "vendor-router";
-            if (id.includes("node_modules/@tanstack/react-query")) return "vendor-query";
+            if (
+              /[\\/]node_modules[\\/](react|react-dom)[\\/]/.test(id)
+            )
+              return "vendor-react";
+            if (
+              /[\\/]node_modules[\\/]react-router(-dom)?[\\/]/.test(
+                id
+              )
+            )
+              return "vendor-router";
+            if (id.includes("node_modules/@tanstack/react-query"))
+              return "vendor-query";
             // zod gets its own chunk; react-hook-form / @hookform deliberately do NOT.
             // A manual vendor chunk is hoisted to a static import of the entry and
             // modulepreloaded on first paint. That's what we want for zod — the DTOs
@@ -77,8 +88,10 @@ export default defineConfig(({ mode, command }) => {
             // into a shared chunk imported only by those lazy route chunks — off the
             // critical path until a form route is actually opened.
             if (id.includes("node_modules/zod")) return "vendor-zod";
-            if (id.includes("node_modules/@sentry")) return "vendor-sentry";
-            if (id.includes("node_modules/axios")) return "vendor-axios";
+            if (id.includes("node_modules/@sentry"))
+              return "vendor-sentry";
+            if (id.includes("node_modules/axios"))
+              return "vendor-axios";
             return undefined;
           },
         },

@@ -1,7 +1,18 @@
 import { z } from "zod";
 
-export const JOB_TYPES = ["FULL_TIME", "PART_TIME", "CONTRACT", "FREELANCE"] as const;
-export const LEVELS = ["ENTRY", "MID", "SENIOR", "LEAD", "EXECUTIVE"] as const;
+export const JOB_TYPES = [
+  "FULL_TIME",
+  "PART_TIME",
+  "CONTRACT",
+  "FREELANCE",
+] as const;
+export const LEVELS = [
+  "ENTRY",
+  "MID",
+  "SENIOR",
+  "LEAD",
+  "EXECUTIVE",
+] as const;
 export const FREQUENCIES = ["IMMEDIATE", "DAILY", "WEEKLY"] as const;
 
 export const createAlertFormSchema = z.object({
@@ -13,4 +24,6 @@ export const createAlertFormSchema = z.object({
   frequency: z.enum(FREQUENCIES),
   categoryIds: z.array(z.string()),
 });
-export type CreateAlertFormValues = z.infer<typeof createAlertFormSchema>;
+export type CreateAlertFormValues = z.infer<
+  typeof createAlertFormSchema
+>;

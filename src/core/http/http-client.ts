@@ -1,6 +1,9 @@
 import axios from "axios";
 import { mapErrorToApiError } from "@/core/errors/map-error";
-import { clearAccessToken, getAccessToken } from "@/core/token/token-storage";
+import {
+  clearAccessToken,
+  getAccessToken,
+} from "@/core/token/token-storage";
 import {
   computeBackoffMs,
   isRetryableError,
@@ -46,7 +49,9 @@ apiClient.interceptors.request.use((config) => {
 
 let onUnauthorized: (() => void) | null = null;
 
-export const registerUnauthorizedHandler = (handler: () => void): (() => void) => {
+export const registerUnauthorizedHandler = (
+  handler: () => void
+): (() => void) => {
   onUnauthorized = handler;
   return () => {
     if (onUnauthorized === handler) onUnauthorized = null;
@@ -68,7 +73,10 @@ apiClient.interceptors.response.use(
     const status = error.response?.status;
     const isNetworkError = !error.response;
 
-    if (isRetryableError(config?.method, status, isNetworkError) && config) {
+    if (
+      isRetryableError(config?.method, status, isNetworkError) &&
+      config
+    ) {
       config.__retryCount = (config.__retryCount ?? 0) + 1;
       if (config.__retryCount <= MAX_RETRIES) {
         await wait(computeBackoffMs(config.__retryCount));
@@ -81,6 +89,8 @@ apiClient.interceptors.response.use(
       onUnauthorized?.();
     }
 
-    return Promise.reject(mapErrorToApiError(status, error.response?.data));
+    return Promise.reject(
+      mapErrorToApiError(status, error.response?.data)
+    );
   }
 );

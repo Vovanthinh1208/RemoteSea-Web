@@ -1,6 +1,9 @@
 import { Ban, Globe, Laptop } from "lucide-react";
 import { cn } from "@/utils/cn";
-import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
+import {
+  SectionHead,
+  EMPHASIS_STYLE,
+} from "@/features/talent/components/profile-form/SectionHead";
 import { ChangePasswordForm } from "@/features/settings/components/ChangePasswordForm";
 import { TwoFactorSection } from "@/features/settings/components/TwoFactorSection";
 import {
@@ -26,7 +29,8 @@ export const SecuritySection = () => {
   const revoke = (id: string) =>
     runWithToast(() => revokeMutation.mutateAsync(id), {
       error: "Couldn't revoke session",
-      onError: (err) => (err instanceof ApiError ? err.message : undefined),
+      onError: (err) =>
+        err instanceof ApiError ? err.message : undefined,
     });
 
   const revokeAllOthers = () =>
@@ -46,7 +50,10 @@ export const SecuritySection = () => {
         eyebrow="02 · Access"
         help="Keep your account locked down. We'll email you whenever a new device signs in."
         title={
-          <em className="font-serif italic text-brand-700" style={EMPHASIS_STYLE}>
+          <em
+            className="font-serif italic text-brand-700"
+            style={EMPHASIS_STYLE}
+          >
             Security.
           </em>
         }
@@ -62,11 +69,16 @@ export const SecuritySection = () => {
         {sessions?.map((s) => {
           const Icon = isMobileDevice(s.device) ? Globe : Laptop;
           return (
-            <div className="flex items-center gap-3 px-4 py-3" key={s.id}>
+            <div
+              className="flex items-center gap-3 px-4 py-3"
+              key={s.id}
+            >
               <span
                 className={cn(
                   "flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10",
-                  s.current ? "bg-brand-100 text-brand-700" : "bg-neutral-100 text-neutral-500"
+                  s.current
+                    ? "bg-brand-100 text-brand-700"
+                    : "bg-neutral-100 text-neutral-500"
                 )}
               >
                 <Icon size={16} />

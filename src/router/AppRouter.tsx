@@ -5,23 +5,37 @@ import { GuestOnlyRoute } from "@/router/GuestOnlyRoute";
 import { ProtectedRoute } from "@/router/ProtectedRoute";
 import { useAnalyticsPageview } from "@/hooks/useAnalyticsPageview";
 
-const HomePage = lazy(() => import("@/pages/HomePage").then((m) => ({ default: m.HomePage })));
+const HomePage = lazy(() =>
+  import("@/pages/HomePage").then((m) => ({ default: m.HomePage }))
+);
 const NotFoundPage = lazy(() =>
-  import("@/pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage }))
+  import("@/pages/NotFoundPage").then((m) => ({
+    default: m.NotFoundPage,
+  }))
 );
 const SalaryPage = lazy(() =>
-  import("@/pages/SalaryPage").then((m) => ({ default: m.SalaryPage }))
+  import("@/pages/SalaryPage").then((m) => ({
+    default: m.SalaryPage,
+  }))
 );
-const BlogPage = lazy(() => import("@/pages/BlogPage").then((m) => ({ default: m.BlogPage })));
+const BlogPage = lazy(() =>
+  import("@/pages/BlogPage").then((m) => ({ default: m.BlogPage }))
+);
 const CommunityPage = lazy(() =>
-  import("@/pages/CommunityPage").then((m) => ({ default: m.CommunityPage }))
+  import("@/pages/CommunityPage").then((m) => ({
+    default: m.CommunityPage,
+  }))
 );
 
 const LoginPage = lazy(() =>
-  import("@/features/auth/pages/LoginPage").then((m) => ({ default: m.LoginPage }))
+  import("@/features/auth/pages/LoginPage").then((m) => ({
+    default: m.LoginPage,
+  }))
 );
 const RegisterPage = lazy(() =>
-  import("@/features/auth/pages/RegisterPage").then((m) => ({ default: m.RegisterPage }))
+  import("@/features/auth/pages/RegisterPage").then((m) => ({
+    default: m.RegisterPage,
+  }))
 );
 const ForgotPasswordPage = lazy(() =>
   import("@/features/auth/pages/ForgotPasswordPage").then((m) => ({
@@ -29,21 +43,31 @@ const ForgotPasswordPage = lazy(() =>
   }))
 );
 const ResetPasswordPage = lazy(() =>
-  import("@/features/auth/pages/ResetPasswordPage").then((m) => ({ default: m.ResetPasswordPage }))
+  import("@/features/auth/pages/ResetPasswordPage").then((m) => ({
+    default: m.ResetPasswordPage,
+  }))
 );
 const AuthCallbackPage = lazy(() =>
-  import("@/features/auth/pages/AuthCallbackPage").then((m) => ({ default: m.AuthCallbackPage }))
+  import("@/features/auth/pages/AuthCallbackPage").then((m) => ({
+    default: m.AuthCallbackPage,
+  }))
 );
 
 const JobsPage = lazy(() =>
-  import("@/features/jobs/pages/JobsPage").then((m) => ({ default: m.JobsPage }))
+  import("@/features/jobs/pages/JobsPage").then((m) => ({
+    default: m.JobsPage,
+  }))
 );
 const JobDetailPage = lazy(() =>
-  import("@/features/jobs/pages/JobDetailPage").then((m) => ({ default: m.JobDetailPage }))
+  import("@/features/jobs/pages/JobDetailPage").then((m) => ({
+    default: m.JobDetailPage,
+  }))
 );
 
 const ProfilePage = lazy(() =>
-  import("@/features/talent/pages/ProfilePage").then((m) => ({ default: m.ProfilePage }))
+  import("@/features/talent/pages/ProfilePage").then((m) => ({
+    default: m.ProfilePage,
+  }))
 );
 const TalentDashboardPage = lazy(() =>
   import("@/features/talent/pages/TalentDashboardPage").then((m) => ({
@@ -51,44 +75,62 @@ const TalentDashboardPage = lazy(() =>
   }))
 );
 const PublicTalentProfilePage = lazy(() =>
-  import("@/features/talent/pages/PublicTalentProfilePage").then((m) => ({
-    default: m.PublicTalentProfilePage,
-  }))
+  import("@/features/talent/pages/PublicTalentProfilePage").then(
+    (m) => ({
+      default: m.PublicTalentProfilePage,
+    })
+  )
 );
 
 const EmployerMarketingPage = lazy(() =>
-  import("@/features/employer/pages/EmployerMarketingPage").then((m) => ({
-    default: m.EmployerMarketingPage,
-  }))
+  import("@/features/employer/pages/EmployerMarketingPage").then(
+    (m) => ({
+      default: m.EmployerMarketingPage,
+    })
+  )
 );
 const EmployerDashboardPage = lazy(() =>
-  import("@/features/employer/pages/EmployerDashboardPage").then((m) => ({
-    default: m.EmployerDashboardPage,
-  }))
+  import("@/features/employer/pages/EmployerDashboardPage").then(
+    (m) => ({
+      default: m.EmployerDashboardPage,
+    })
+  )
 );
 const PostJobPage = lazy(() =>
-  import("@/features/post-job/pages/PostJobPage").then((m) => ({ default: m.PostJobPage }))
+  import("@/features/post-job/pages/PostJobPage").then((m) => ({
+    default: m.PostJobPage,
+  }))
 );
 const PostJobSuccessPage = lazy(() =>
-  import("@/features/post-job/pages/PostJobSuccessPage").then((m) => ({
-    default: m.PostJobSuccessPage,
-  }))
+  import("@/features/post-job/pages/PostJobSuccessPage").then(
+    (m) => ({
+      default: m.PostJobSuccessPage,
+    })
+  )
 );
 
 const AlertsPage = lazy(() =>
-  import("@/features/alerts/pages/AlertsPage").then((m) => ({ default: m.AlertsPage }))
+  import("@/features/alerts/pages/AlertsPage").then((m) => ({
+    default: m.AlertsPage,
+  }))
 );
 
 const SavedJobsPage = lazy(() =>
-  import("@/features/saved/pages/SavedJobsPage").then((m) => ({ default: m.SavedJobsPage }))
+  import("@/features/saved/pages/SavedJobsPage").then((m) => ({
+    default: m.SavedJobsPage,
+  }))
 );
 
 const SettingsPage = lazy(() =>
-  import("@/features/settings/pages/SettingsPage").then((m) => ({ default: m.SettingsPage }))
+  import("@/features/settings/pages/SettingsPage").then((m) => ({
+    default: m.SettingsPage,
+  }))
 );
 
 const AdminPage = lazy(() =>
-  import("@/features/admin/pages/AdminPage").then((m) => ({ default: m.AdminPage }))
+  import("@/features/admin/pages/AdminPage").then((m) => ({
+    default: m.AdminPage,
+  }))
 );
 
 export const AppRouter = () => {
@@ -102,8 +144,14 @@ export const AppRouter = () => {
         <Route element={<GuestOnlyRoute />}>
           <Route element={<LoginPage />} path="login" />
           <Route element={<RegisterPage />} path="register" />
-          <Route element={<ForgotPasswordPage />} path="forgot-password" />
-          <Route element={<ResetPasswordPage />} path="reset-password" />
+          <Route
+            element={<ForgotPasswordPage />}
+            path="forgot-password"
+          />
+          <Route
+            element={<ResetPasswordPage />}
+            path="reset-password"
+          />
         </Route>
 
         <Route element={<AuthCallbackPage />} path="auth/callback" />
@@ -116,8 +164,14 @@ export const AppRouter = () => {
         <Route element={<CommunityPage />} path="community" />
 
         <Route element={<EmployerMarketingPage />} path="employer" />
-        <Route element={<PostJobSuccessPage />} path="post-job/success" />
-        <Route element={<PublicTalentProfilePage />} path="talent/:slug" />
+        <Route
+          element={<PostJobSuccessPage />}
+          path="post-job/success"
+        />
+        <Route
+          element={<PublicTalentProfilePage />}
+          path="talent/:slug"
+        />
 
         {/* post-job/alerts/settings are intentionally role-agnostic: creating an
             employer profile via the post-job wizard is how a user *becomes* an
@@ -135,7 +189,10 @@ export const AppRouter = () => {
         </Route>
 
         <Route element={<ProtectedRoute roles={["EMPLOYER"]} />}>
-          <Route element={<EmployerDashboardPage />} path="employer-dashboard" />
+          <Route
+            element={<EmployerDashboardPage />}
+            path="employer-dashboard"
+          />
         </Route>
 
         <Route element={<ProtectedRoute roles={["ADMIN"]} />}>

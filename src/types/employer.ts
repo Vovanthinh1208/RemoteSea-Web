@@ -33,10 +33,11 @@ export type CreateEmployerProfilePayload = {
   hqCity?: string;
 };
 
-export type UpdateEmployerProfilePayload = Partial<CreateEmployerProfilePayload> & {
-  founded?: number;
-  logoUrl?: string;
-};
+export type UpdateEmployerProfilePayload =
+  Partial<CreateEmployerProfilePayload> & {
+    founded?: number;
+    logoUrl?: string;
+  };
 
 export type EmployerJobListItem = {
   id: string;
@@ -54,7 +55,11 @@ export type EmployerJobListItem = {
 
 export type EmployerJobsResponse = {
   jobs: EmployerJobListItem[];
-  stats: { totalApps: number; shortlisted: number; avgTimeToHireInDays: number };
+  stats: {
+    totalApps: number;
+    shortlisted: number;
+    avgTimeToHireInDays: number;
+  };
 };
 
 export type EmployerApplicant = {
@@ -74,5 +79,10 @@ export type EmployerApplicant = {
 
 export type EmployerJobApplicationsResponse = {
   applications: EmployerApplicant[];
-  pagination: { page: number; limit: number; total: number; pages: number };
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
 };

@@ -34,8 +34,9 @@ export const HeroSection = ({ featuredJobs }: HeroSectionProps) => (
         </h1>
 
         <p className="mb-8 max-w-xl text-[17px] leading-relaxed text-neutral-500">
-          Việt Nam has talent. The world has jobs. We connect both — with clear salary ranges,
-          sensible timezones, and employers we&apos;ve actually vetted.
+          Việt Nam has talent. The world has jobs. We connect both —
+          with clear salary ranges, sensible timezones, and employers
+          we&apos;ve actually vetted.
         </p>
 
         <div className="mb-8 flex items-center gap-3">
@@ -57,13 +58,17 @@ export const HeroSection = ({ featuredJobs }: HeroSectionProps) => (
 
         <div className="flex items-center gap-3 text-sm text-neutral-400">
           <div className="flex -space-x-1.5">
-            {["#F59E0B", "#2E9B52", "#2563EB", "#9B9690"].map((c, i) => (
-              <span
-                className="h-7 w-7 rounded-full border-2 border-neutral-50"
-                key={i}
-                style={{ background: `linear-gradient(135deg, ${c}, ${c}dd)` }}
-              />
-            ))}
+            {["#F59E0B", "#2E9B52", "#2563EB", "#9B9690"].map(
+              (c, i) => (
+                <span
+                  className="h-7 w-7 rounded-full border-2 border-neutral-50"
+                  key={i}
+                  style={{
+                    background: `linear-gradient(135deg, ${c}, ${c}dd)`,
+                  }}
+                />
+              )
+            )}
           </div>
           Free for talent · 500+ VN professionals already on board
         </div>
@@ -73,20 +78,32 @@ export const HeroSection = ({ featuredJobs }: HeroSectionProps) => (
       <div className="hidden flex-col gap-3 lg:flex">
         {featuredJobs.map((job, i) => {
           const country = job.country ?? "Remote";
-          const timezone = job.timezone ?? (job.isRemote ? "Remote" : country);
+          const timezone =
+            job.timezone ?? (job.isRemote ? "Remote" : country);
           return (
             <div
               className="flex animate-fade-up items-center gap-3 rounded-12 border border-neutral-100 bg-white p-4 shadow-card"
               key={job.id}
               style={{ animationDelay: `${100 + i * 120}ms` }}
             >
-              <CompanyLogo name={job.employer.companyName} size={36} />
+              <CompanyLogo
+                name={job.employer.companyName}
+                size={36}
+              />
               <div className="min-w-0 flex-1">
                 <div className="mb-0.5 flex items-center gap-1.5 text-[12px] text-neutral-400">
-                  {job.employer.isVerified && <ShieldCheck className="text-brand-600" size={11} />}
-                  {job.employer.companyName} · {countryFlag(job.country)} {country}
+                  {job.employer.isVerified && (
+                    <ShieldCheck
+                      className="text-brand-600"
+                      size={11}
+                    />
+                  )}
+                  {job.employer.companyName} ·{" "}
+                  {countryFlag(job.country)} {country}
                 </div>
-                <p className="truncate text-sm font-semibold text-neutral-900">{job.title}</p>
+                <p className="truncate text-sm font-semibold text-neutral-900">
+                  {job.title}
+                </p>
                 <div className="mt-1 flex gap-1.5">
                   <Tag>{timezone}</Tag>
                   <Tag>{LEVEL_LABELS[job.level]}</Tag>

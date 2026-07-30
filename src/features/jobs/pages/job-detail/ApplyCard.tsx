@@ -24,10 +24,16 @@ export const ApplyCard = ({ job }: ApplyCardProps) => {
     <div className="rounded-16 border border-brand-100 bg-brand-50 p-6">
       <div className="mb-1 font-mono text-[22px] font-semibold text-neutral-900">
         {salary ?? "Salary not specified"}
-        {salary && <span className="text-[14px] font-normal text-neutral-500"> /mo</span>}
+        {salary && (
+          <span className="text-[14px] font-normal text-neutral-500">
+            {" "}
+            /mo
+          </span>
+        )}
       </div>
       <p className="mb-5 text-[12px] text-neutral-400">
-        {job.currency} · paid via {country === "US" ? "Deel or Wise" : "Wise or local TT"}
+        {job.currency} · paid via{" "}
+        {country === "US" ? "Deel or Wise" : "Wise or local TT"}
       </p>
       <ApplyButton jobId={job.id} />
       <SaveJobButton jobId={job.id} />
@@ -40,12 +46,16 @@ export const ApplyCard = ({ job }: ApplyCardProps) => {
         </div>
         <div className="flex items-center justify-between text-[13px]">
           <span className="text-neutral-400">Applicants so far</span>
-          <span className="font-medium text-neutral-700">{job.applyCount}</span>
+          <span className="font-medium text-neutral-700">
+            {job.applyCount}
+          </span>
         </div>
         {expiresInDays !== null && (
           <div className="flex items-center justify-between text-[13px]">
             <span className="text-neutral-400">Expires in</span>
-            <span className="font-medium text-neutral-700">{expiresInDays} days</span>
+            <span className="font-medium text-neutral-700">
+              {expiresInDays} days
+            </span>
           </div>
         )}
       </div>

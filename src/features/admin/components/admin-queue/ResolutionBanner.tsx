@@ -20,12 +20,17 @@ const BANNER_ICON: Record<ResolutionKind, React.ReactNode> = {
 };
 
 const BANNER_MESSAGE: Record<ResolutionKind, string> = {
-  approved: "Approved — job is now live and the employer has been notified.",
+  approved:
+    "Approved — job is now live and the employer has been notified.",
   changes: "Sent back to the employer with your notes.",
-  rejected: "Rejected — the employer has been notified with a reason.",
+  rejected:
+    "Rejected — the employer has been notified with a reason.",
 };
 
-export const ResolutionBanner = ({ banner, jobId }: ResolutionBannerProps) => {
+export const ResolutionBanner = ({
+  banner,
+  jobId,
+}: ResolutionBannerProps) => {
   if (!banner || banner.id !== jobId) return null;
 
   return (

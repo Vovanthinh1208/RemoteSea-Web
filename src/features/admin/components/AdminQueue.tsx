@@ -1,7 +1,14 @@
 import { useMemo, useState } from "react";
 import { useToastMutation } from "@/hooks/useToastMutation";
-import { useAdminJobs, useReviewAdminJob } from "@/features/admin/admin.queries";
-import { hoursSince, REVIEW_CHECKLIST, URGENT_WAIT_HOURS } from "@/features/admin/admin.utils";
+import {
+  useAdminJobs,
+  useReviewAdminJob,
+} from "@/features/admin/admin.queries";
+import {
+  hoursSince,
+  REVIEW_CHECKLIST,
+  URGENT_WAIT_HOURS,
+} from "@/features/admin/admin.utils";
 import { AdminQueueSkeleton } from "@/features/admin/components/admin-queue/AdminQueueSkeleton";
 import { QueueKpis } from "@/features/admin/components/admin-queue/QueueKpis";
 import { QueueListPane } from "@/features/admin/components/admin-queue/QueueListPane";
@@ -22,13 +29,21 @@ const RESOLUTION_BANNER_DISPLAY_MS = 1200;
 
 export const AdminQueue = () => {
   const runWithToast = useToastMutation();
-  const { data, isLoading, isError, refetch } = useAdminJobs("PENDING_REVIEW");
+  const { data, isLoading, isError, refetch } =
+    useAdminJobs("PENDING_REVIEW");
   const reviewJobMutation = useReviewAdminJob();
 
-  const [resolved, setResolved] = useState<Record<string, ResolutionKind>>({});
-  const [checked, setChecked] = useState<Record<string, Set<number>>>({});
+  const [resolved, setResolved] = useState<
+    Record<string, ResolutionKind>
+  >({});
+  const [checked, setChecked] = useState<Record<string, Set<number>>>(
+    {}
+  );
   const [notes, setNotes] = useState<Record<string, string>>({});
-  const [banner, setBanner] = useState<{ id: string; kind: ResolutionKind } | null>(null);
+  const [banner, setBanner] = useState<{
+    id: string;
+    kind: ResolutionKind;
+  } | null>(null);
   const [selId, setSelId] = useState<string | null>(null);
 
   const queue = data?.jobs ?? [];
@@ -38,18 +53,23 @@ export const AdminQueue = () => {
   // every banner tick) silently defeated that memo and re-rendered the whole
   // pending-jobs list. Now the list only re-renders when the queue or a
   // resolution actually changes.
-  const active = useMemo(() => queue.filter((j) => !resolved[j.id]), [queue, resolved]);
+  const active = useMemo(
+    () => queue.filter((j) => !resolved[j.id]),
+    [queue, resolved]
+  );
   // Keep showing the just-decided job (even though `decide()` already removed it
   // from `active`) ONLY if the reviewer hasn't since selected something else —
   // otherwise this used to force the view back to the decided job's banner even
   // after the reviewer had already moved on to reviewing a different one.
   const effectiveSelId =
-    selId && (active.some((j) => j.id === selId) || banner?.id === selId)
+    selId &&
+    (active.some((j) => j.id === selId) || banner?.id === selId)
       ? selId
       : (active[0]?.id ?? null);
   const sel = queue.find((j) => j.id === effectiveSelId);
   const isResolved = sel && resolved[sel.id];
-  const selChecked = (effectiveSelId && checked[effectiveSelId]) || new Set<number>();
+  const selChecked =
+    (effectiveSelId && checked[effectiveSelId]) || new Set<number>();
 
   const toggleChecklistItem = (i: number) => {
     if (!effectiveSelId) return;
@@ -85,7 +105,10 @@ export const AdminQueue = () => {
         }, RESOLUTION_BANNER_DISPLAY_MS);
       },
       {
-        success: kind === "approved" ? "Job approved & published" : "Job sent back to employer",
+        success:
+          kind === "approved"
+            ? "Job approved & published"
+            : "Job sent back to employer",
         successVariant: kind === "approved" ? "success" : "info",
         error: "Couldn't submit review",
       }
@@ -101,7 +124,11 @@ export const AdminQueue = () => {
       <div className="flex-1">
         <EmptyState
           action={
-            <Button size="sm" variant="outline" onClick={() => void refetch()}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => void refetch()}
+            >
               Try again
             </Button>
           }
@@ -115,7 +142,9 @@ export const AdminQueue = () => {
   if (queue.length === 0) {
     return (
       <div className="flex-1">
-        <h1 className="text-[26px] font-semibold text-neutral-900">Review queue</h1>
+        <h1 className="text-[26px] font-semibold text-neutral-900">
+          Review queue
+        </h1>
         <EmptyState
           description="Nothing awaiting review. All caught up. ✅"
           title="Queue is clear"
@@ -129,12 +158,21 @@ export const AdminQueue = () => {
   const reqCount = REVIEW_CHECKLIST.length;
   const doneCount = selChecked.size;
   const allDone = doneCount === reqCount;
-  const overdue = active.filter((j) => hoursSince(j.createdAt) >= URGENT_WAIT_HOURS).length;
+  const overdue = active.filter(
+    (j) => hoursSince(j.createdAt) >= URGENT_WAIT_HOURS
+  ).length;
   const avgWait = active.length
-    ? Math.round(active.reduce((a, j) => a + hoursSince(j.createdAt), 0) / active.length)
+    ? Math.round(
+        active.reduce((a, j) => a + hoursSince(j.createdAt), 0) /
+          active.length
+      )
     : 0;
-  const approvedCount = Object.values(resolved).filter((v) => v === "approved").length;
-  const rejectedCount = Object.values(resolved).filter((v) => v !== "approved").length;
+  const approvedCount = Object.values(resolved).filter(
+    (v) => v === "approved"
+  ).length;
+  const rejectedCount = Object.values(resolved).filter(
+    (v) => v !== "approved"
+  ).length;
 
   return (
     <div className="flex-1 overflow-hidden">
@@ -142,9 +180,12 @@ export const AdminQueue = () => {
         <div>
           <Eyebrow className="mb-0.5">Operations</Eyebrow>
           {/* 26px — matches the ops console's denser page-title size (see AdminEmployers.tsx). */}
-          <h1 className="text-[26px] font-semibold text-neutral-900">Review queue</h1>
+          <h1 className="text-[26px] font-semibold text-neutral-900">
+            Review queue
+          </h1>
           <p className="mt-1 text-sm text-neutral-500">
-            Every job is human-reviewed before it goes live · {active.length} awaiting
+            Every job is human-reviewed before it goes live ·{" "}
+            {active.length} awaiting
           </p>
         </div>
       </div>
@@ -157,14 +198,24 @@ export const AdminQueue = () => {
         rejectedCount={rejectedCount}
       />
 
-      <div className="grid gap-4" style={{ gridTemplateColumns: "280px 1fr" }}>
-        <QueueListPane jobs={active} onSelect={setSelId} selectedId={effectiveSelId} />
+      <div
+        className="grid gap-4"
+        style={{ gridTemplateColumns: "280px 1fr" }}
+      >
+        <QueueListPane
+          jobs={active}
+          onSelect={setSelId}
+          selectedId={effectiveSelId}
+        />
 
         <div className="overflow-hidden rounded-12 border border-neutral-100 bg-white">
           <ResolutionBanner banner={banner} jobId={sel.id} />
           <JobSummaryHeader job={sel} />
 
-          <div className="overflow-y-auto p-5" style={{ maxHeight: "calc(100vh - 440px)" }}>
+          <div
+            className="overflow-y-auto p-5"
+            style={{ maxHeight: "calc(100vh - 440px)" }}
+          >
             <SubmissionSummary job={sel} />
             <AutomatedChecks job={sel} />
             <ReviewerChecklist
@@ -178,7 +229,9 @@ export const AdminQueue = () => {
               note={notes[sel.id] ?? ""}
               resolution={isResolved}
               onApprove={() => decide("approved")}
-              onNoteChange={(value) => setNotes((prev) => ({ ...prev, [sel.id]: value }))}
+              onNoteChange={(value) =>
+                setNotes((prev) => ({ ...prev, [sel.id]: value }))
+              }
               onReject={() => decide("rejected")}
               onRequestChanges={() => decide("changes")}
             />

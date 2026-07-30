@@ -1,7 +1,10 @@
 import type { AuthUser } from "@/types/user";
 
 export type UpdatedUserDto = Pick<AuthUser, "id" | "name" | "email">;
-export type ChangePasswordRequestDto = { currentPassword: string; newPassword: string };
+export type ChangePasswordRequestDto = {
+  currentPassword: string;
+  newPassword: string;
+};
 
 export type AccountFieldsDto = {
   id: string;
@@ -9,6 +12,7 @@ export type AccountFieldsDto = {
   language: string;
   region: string;
   currencyDisplay: string;
+  image: string | null;
 };
 
 export type UpdateAccountPayload = Partial<{
@@ -16,6 +20,7 @@ export type UpdateAccountPayload = Partial<{
   language: string;
   region: string;
   currencyDisplay: string;
+  image: string | null;
 }>;
 
 export type NotificationPreferencesDto = {
@@ -35,11 +40,20 @@ export type UpdateNotificationPreferencesPayload = Partial<
   Omit<NotificationPreferencesDto, "id" | "userId" | "updatedAt">
 >;
 
-export type PauseStateDto = { isPaused: boolean; pausedAt?: string | null };
+export type PauseStateDto = {
+  isPaused: boolean;
+  pausedAt?: string | null;
+};
 
-export type ConnectionDto = { provider: string; providerAccountId: string };
+export type ConnectionDto = {
+  provider: string;
+  providerAccountId: string;
+};
 
-export type ExportDataDto = { exportedAt: string; account: Record<string, unknown> };
+export type ExportDataDto = {
+  exportedAt: string;
+  account: Record<string, unknown>;
+};
 
 export type SessionDto = {
   id: string;

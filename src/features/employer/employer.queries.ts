@@ -1,5 +1,10 @@
 import { useMemo } from "react";
-import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   createEmployerProfile,
   getEmployerProfile,
@@ -32,7 +37,8 @@ export const useEmployerProfile = () => {
       } catch (err) {
         if (
           err instanceof ApiError &&
-          (err.status === NOT_FOUND_STATUS || err.status === FORBIDDEN_STATUS)
+          (err.status === NOT_FOUND_STATUS ||
+            err.status === FORBIDDEN_STATUS)
         ) {
           return null;
         }
@@ -48,7 +54,9 @@ export const useCreateEmployerProfile = () => {
   return useMutation({
     mutationFn: createEmployerProfile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: employerKeys.profile() });
+      queryClient.invalidateQueries({
+        queryKey: employerKeys.profile(),
+      });
     },
   });
 };
@@ -62,7 +70,10 @@ export const useEmployerJobs = () => {
   });
 };
 
-export type ApplicantWithJob = EmployerApplicant & { jobId: string; jobTitle: string };
+export type ApplicantWithJob = EmployerApplicant & {
+  jobId: string;
+  jobTitle: string;
+};
 
 /**
  * GET /employer/jobs only returns a total application count per job, not a status
@@ -74,13 +85,19 @@ export type ApplicantWithJob = EmployerApplicant & { jobId: string; jobTitle: st
 export const useEmployerApplicationsAggregate = () => {
   const { data: jobsData } = useEmployerJobs();
   const jobs = jobsData?.jobs ?? [];
-  const jobIds = jobs.filter((j) => j._count.applications > 0).map((j) => j.id);
+  const jobIds = jobs
+    .filter((j) => j._count.applications > 0)
+    .map((j) => j.id);
 
   const results = useQueries({
     queries: jobIds.map((jobId) => ({
       queryKey: employerKeys.jobApplications(jobId),
       queryFn: ({ signal }: { signal: AbortSignal }) =>
-        listJobApplications(jobId, { limit: APPLICATIONS_PER_JOB_LIMIT }, { signal }),
+        listJobApplications(
+          jobId,
+          { limit: APPLICATIONS_PER_JOB_LIMIT },
+          { signal }
+        ),
       ...TIER.live,
     })),
   });
@@ -121,7 +138,13 @@ export const useEmployerApplicationsAggregate = () => {
 
   const refetchAll = () => results.forEach((r) => r.refetch());
 
-  return { isLoading, isError, applications: all, byJobId, refetchAll };
+  return {
+    isLoading,
+    isError,
+    applications: all,
+    byJobId,
+    refetchAll,
+  };
 };
 
 export const useUpdateApplicationStatus = () => {
@@ -142,13 +165,19 @@ export const useUpdateApplicationStatus = () => {
       notes?: string;
     }) => updateApplicationStatus(id, status, notes),
     onSuccess: (_data, { jobId }) => {
-      queryClient.invalidateQueries({ queryKey: employerKeys.jobApplications(jobId) });
-      queryClient.invalidateQueries({ queryKey: employerKeys.jobs() });
+      queryClient.invalidateQueries({
+        queryKey: employerKeys.jobApplications(jobId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: employerKeys.jobs(),
+      });
       // The talent side's own applications list reads the same status this
       // mutation changes — low-impact today since employer/talent are separate
       // sessions, but matches the cross-feature invalidation pattern used
       // elsewhere and matters the moment any shared-session view exists.
-      queryClient.invalidateQueries({ queryKey: MY_APPLICATIONS_KEY });
+      queryClient.invalidateQueries({
+        queryKey: MY_APPLICATIONS_KEY,
+      });
     },
   });
 };

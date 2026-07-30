@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   createAlert,
   deleteAlert,
@@ -35,21 +39,27 @@ export const useCreateAlert = () => {
 export const useSetAlertActive = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, isActive }: SetAlertActivePayload) => setAlertActive(id, isActive),
+    mutationFn: ({ id, isActive }: SetAlertActivePayload) =>
+      setAlertActive(id, isActive),
     // Optimistic — flip the Active/Paused pill immediately rather than waiting a
     // full round-trip for the invalidated list to refetch (the toggle looked
     // unresponsive otherwise). Mirrors the saved-jobs toggle pattern; rollback
     // on error, then confirm via the settle invalidation.
     onMutate: async ({ id, isActive }) => {
       await queryClient.cancelQueries({ queryKey: alertKeys.all });
-      const previous = queryClient.getQueryData<JobAlert[]>(alertKeys.all);
+      const previous = queryClient.getQueryData<JobAlert[]>(
+        alertKeys.all
+      );
       queryClient.setQueryData<JobAlert[]>(alertKeys.all, (old) =>
-        old?.map((alert) => (alert.id === id ? { ...alert, isActive } : alert))
+        old?.map((alert) =>
+          alert.id === id ? { ...alert, isActive } : alert
+        )
       );
       return { previous };
     },
     onError: (_err, _payload, context) => {
-      if (context?.previous) queryClient.setQueryData(alertKeys.all, context.previous);
+      if (context?.previous)
+        queryClient.setQueryData(alertKeys.all, context.previous);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: alertKeys.all });

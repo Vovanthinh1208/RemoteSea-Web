@@ -39,28 +39,41 @@ export const FAQSection = () => {
       <div className="mx-auto max-w-[760px] px-6">
         <Eyebrow className="mb-3">FAQ</Eyebrow>
         <h2 className="mb-10 text-[32px] font-semibold tracking-tight text-neutral-900">
-          Honest <em className="font-serif-italic text-brand-700">answers.</em>
+          Honest{" "}
+          <em className="font-serif-italic text-brand-700">
+            answers.
+          </em>
         </h2>
 
         <div className="flex flex-col gap-2">
           {ITEMS.map((item, i) => (
             <div
               className={`rounded-12 border bg-white transition-colors ${
-                openIndex === i ? "border-neutral-200" : "border-neutral-100"
+                openIndex === i
+                  ? "border-neutral-200"
+                  : "border-neutral-100"
               }`}
               key={item.q}
             >
               <button
                 className="flex w-full items-center justify-between gap-4 px-6 py-[18px] text-left"
-                onClick={() => setOpenIndex(openIndex === i ? NO_ITEM_OPEN : i)}
+                onClick={() =>
+                  setOpenIndex(openIndex === i ? NO_ITEM_OPEN : i)
+                }
               >
                 <span className="text-[15px] font-medium tracking-tight text-neutral-900">
                   {item.q}
                 </span>
                 {openIndex === i ? (
-                  <Minus className="flex-shrink-0 text-neutral-400" size={16} />
+                  <Minus
+                    className="flex-shrink-0 text-neutral-400"
+                    size={16}
+                  />
                 ) : (
-                  <Plus className="flex-shrink-0 text-neutral-400" size={16} />
+                  <Plus
+                    className="flex-shrink-0 text-neutral-400"
+                    size={16}
+                  />
                 )}
               </button>
               {openIndex === i && (

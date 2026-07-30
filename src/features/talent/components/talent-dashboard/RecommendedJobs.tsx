@@ -4,7 +4,10 @@ import { CompanyLogo } from "@/components/ui/company-logo";
 import { SalaryBadge } from "@/components/ui/salary-badge";
 import { Tag } from "@/components/ui/tag";
 import { useJobsQuery } from "@/features/jobs/jobs.queries";
-import { DEFAULT_FILTERS_FETCH_LIMIT, DEFAULT_JOB_FILTERS } from "@/features/jobs/job-filters";
+import {
+  DEFAULT_FILTERS_FETCH_LIMIT,
+  DEFAULT_JOB_FILTERS,
+} from "@/features/jobs/job-filters";
 import { countryFlag } from "@/utils/color";
 import { ROUTES } from "@/constants/routes";
 import type { ApplicationWithJob } from "@/types/application";
@@ -17,8 +20,13 @@ interface RecommendedJobsProps {
   applications: ApplicationWithJob[];
 }
 
-export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
-  const { data } = useJobsQuery(DEFAULT_JOB_FILTERS, DEFAULT_FILTERS_FETCH_LIMIT);
+export const RecommendedJobs = ({
+  applications,
+}: RecommendedJobsProps) => {
+  const { data } = useJobsQuery(
+    DEFAULT_JOB_FILTERS,
+    DEFAULT_FILTERS_FETCH_LIMIT
+  );
   const appliedIds = new Set(applications.map((a) => a.jobId));
   const recommended = (data?.jobs ?? [])
     .filter((j) => !appliedIds.has(j.id))
@@ -31,7 +39,9 @@ export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
       <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
         <h3 className="text-[14px] font-semibold text-neutral-900">
           Picked for you{" "}
-          <span className="font-normal text-neutral-400">· newest &amp; featured</span>
+          <span className="font-normal text-neutral-400">
+            · newest &amp; featured
+          </span>
         </h3>
         <Link
           className="inline-flex items-center gap-1 text-[12px] font-medium text-brand-600 hover:text-brand-700"
@@ -54,7 +64,10 @@ export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
               key={job.id}
               to={ROUTES.jobDetail(job.id)}
             >
-              <CompanyLogo name={job.employer.companyName} size={40} />
+              <CompanyLogo
+                name={job.employer.companyName}
+                size={40}
+              />
               <div className="min-w-0 flex-1">
                 <div className="mb-0.5 flex items-center gap-1.5 text-[11.5px] text-neutral-400">
                   <span>{job.employer.companyName}</span>
@@ -63,15 +76,21 @@ export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
                     {countryFlag(job.country)} {country}
                   </span>
                 </div>
-                <p className="mb-1 text-[13.5px] font-medium text-neutral-900">{job.title}</p>
+                <p className="mb-1 text-[13.5px] font-medium text-neutral-900">
+                  {job.title}
+                </p>
                 <div className="flex flex-wrap gap-1">
-                  {job.skills.slice(0, TAGS_DISPLAY_COUNT).map(({ skill }) => (
-                    <Tag key={skill.id}>{skill.name}</Tag>
-                  ))}
+                  {job.skills
+                    .slice(0, TAGS_DISPLAY_COUNT)
+                    .map(({ skill }) => (
+                      <Tag key={skill.id}>{skill.name}</Tag>
+                    ))}
                 </div>
               </div>
               <div className="hidden flex-shrink-0 flex-col items-end gap-1.5 md:flex">
-                <span className="text-right text-[11px] text-neutral-400">{why}</span>
+                <span className="text-right text-[11px] text-neutral-400">
+                  {why}
+                </span>
               </div>
               <SalaryBadge max={job.salaryMax} min={job.salaryMin} />
             </Link>

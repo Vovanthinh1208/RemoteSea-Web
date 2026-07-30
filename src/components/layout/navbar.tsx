@@ -16,7 +16,10 @@ export const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const dashboardHref = user?.role === "EMPLOYER" ? ROUTES.employerDashboard : ROUTES.talent;
+  const dashboardHref =
+    user?.role === "EMPLOYER"
+      ? ROUTES.employerDashboard
+      : ROUTES.talent;
 
   const handleSignOut = () => {
     logout();

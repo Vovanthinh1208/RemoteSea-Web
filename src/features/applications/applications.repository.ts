@@ -8,8 +8,13 @@ import type {
 } from "@/features/applications/applications.dto";
 
 export const applicationsRepository = {
-  apply: async (payload: ApplyRequestDto): Promise<ApplicationDto> => {
-    const { data } = await apiClient.post<ApplicationDto>("/applications", payload);
+  apply: async (
+    payload: ApplyRequestDto
+  ): Promise<ApplicationDto> => {
+    const { data } = await apiClient.post<ApplicationDto>(
+      "/applications",
+      payload
+    );
     return data;
   },
 
@@ -18,24 +23,37 @@ export const applicationsRepository = {
     limit: number,
     opts?: RequestOptions
   ): Promise<ApplicationListResponseDto> => {
-    const { data } = await apiClient.get<ApplicationListResponseDto>("/applications", {
-      params: { page, limit },
-      signal: opts?.signal,
-    });
+    const { data } = await apiClient.get<ApplicationListResponseDto>(
+      "/applications",
+      {
+        params: { page, limit },
+        signal: opts?.signal,
+      }
+    );
     return data;
   },
 
-  getStatusCounts: async (opts?: RequestOptions): Promise<ApplicationStatusCountsDto> => {
-    const { data } = await apiClient.get<ApplicationStatusCountsDto>("/applications/stats", {
-      signal: opts?.signal,
-    });
+  getStatusCounts: async (
+    opts?: RequestOptions
+  ): Promise<ApplicationStatusCountsDto> => {
+    const { data } = await apiClient.get<ApplicationStatusCountsDto>(
+      "/applications/stats",
+      {
+        signal: opts?.signal,
+      }
+    );
     return data;
   },
 
-  listMyApplicationIds: async (opts?: RequestOptions): Promise<{ jobIds: string[] }> => {
-    const { data } = await apiClient.get<{ jobIds: string[] }>("/applications/ids", {
-      signal: opts?.signal,
-    });
+  listMyApplicationIds: async (
+    opts?: RequestOptions
+  ): Promise<{ jobIds: string[] }> => {
+    const { data } = await apiClient.get<{ jobIds: string[] }>(
+      "/applications/ids",
+      {
+        signal: opts?.signal,
+      }
+    );
     return data;
   },
 };

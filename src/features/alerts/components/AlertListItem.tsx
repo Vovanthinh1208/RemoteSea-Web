@@ -33,8 +33,12 @@ export const AlertListItem = ({
       <Bell size={15} />
     </span>
     <div className="min-w-0 flex-1">
-      <p className="text-[14px] font-medium text-neutral-900">{alert.name}</p>
-      <p className="truncate text-[12px] text-neutral-400">{summarizeAlert(alert)}</p>
+      <p className="text-[14px] font-medium text-neutral-900">
+        {alert.name}
+      </p>
+      <p className="truncate text-[12px] text-neutral-400">
+        {summarizeAlert(alert)}
+      </p>
     </div>
     <PillToggle
       active={alert.isActive}

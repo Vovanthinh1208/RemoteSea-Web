@@ -10,7 +10,11 @@ import { ValidationError } from "@/core/errors/error-types";
  * Scoped to auth/billing/jobs only (see refactor plan) — not applied to every DTO,
  * since hand-derived schemas with no OpenAPI source drift from the backend over time.
  */
-export const parseOrThrow = <T>(schema: ZodType<T>, data: unknown, context: string): T => {
+export const parseOrThrow = <T>(
+  schema: ZodType<T>,
+  data: unknown,
+  context: string
+): T => {
   const result = schema.safeParse(data);
   if (!result.success) {
     throw new ValidationError(0, {

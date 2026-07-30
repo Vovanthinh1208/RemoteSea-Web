@@ -10,7 +10,10 @@ import { EmployerCtaSection } from "@/components/home/EmployerCtaSection";
 import { NewsletterCtaSection } from "@/components/home/NewsletterCtaSection";
 import { useJobsQuery } from "@/features/jobs/jobs.queries";
 import { useSalaryBenchmarks } from "@/features/salary/salary.queries";
-import { DEFAULT_FILTERS_FETCH_LIMIT, DEFAULT_JOB_FILTERS } from "@/features/jobs/job-filters";
+import {
+  DEFAULT_FILTERS_FETCH_LIMIT,
+  DEFAULT_JOB_FILTERS,
+} from "@/features/jobs/job-filters";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 // Sections live in components/home/* (one file per section with its own data,
@@ -24,8 +27,14 @@ export const HomePage = () => {
     "Remote Jobs from SG, AU & beyond",
     "Curated remote jobs from Singapore, Australia and beyond for Vietnamese talent — clear salary ranges, verified employers, and sensible timezones."
   );
-  const { data } = useJobsQuery(DEFAULT_JOB_FILTERS, DEFAULT_FILTERS_FETCH_LIMIT);
-  const featuredJobs = (data?.jobs ?? []).slice(0, FEATURED_JOBS_DISPLAY_COUNT);
+  const { data } = useJobsQuery(
+    DEFAULT_JOB_FILTERS,
+    DEFAULT_FILTERS_FETCH_LIMIT
+  );
+  const featuredJobs = (data?.jobs ?? []).slice(
+    0,
+    FEATURED_JOBS_DISPLAY_COUNT
+  );
   const { data: salaryBenches } = useSalaryBenchmarks();
 
   return (

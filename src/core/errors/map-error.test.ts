@@ -29,6 +29,8 @@ describe("mapErrorToApiError", () => {
   });
 
   it("maps a missing status (no response) to NetworkError", () => {
-    expect(mapErrorToApiError(undefined, {})).toBeInstanceOf(NetworkError);
+    expect(mapErrorToApiError(undefined, {})).toBeInstanceOf(
+      NetworkError
+    );
   });
 });

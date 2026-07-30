@@ -1,6 +1,13 @@
 import { z, type ZodType } from "zod";
 import type { PaginationMeta } from "@/core/pagination/pagination";
-import type { Job, JobFacets, JobListItem, JobType, ExperienceLevel, PlanType } from "@/types/job";
+import type {
+  Job,
+  JobFacets,
+  JobListItem,
+  JobType,
+  ExperienceLevel,
+  PlanType,
+} from "@/types/job";
 
 // Wire-shape types for GET /jobs, GET /jobs/:id, POST /jobs. Currently identical to
 // the domain types in types/job.ts — kept as distinct aliases (not merged) so a future
@@ -47,16 +54,37 @@ export type CreateJobRequestDto = {
   skillIds?: string[];
 };
 
-export type CreateJobResponseDto = { id: string; slug: string; status: string };
+export type CreateJobResponseDto = {
+  id: string;
+  slug: string;
+  status: string;
+};
 
 // Response validation — scoped to jobs as the pilot feature (see refactor plan §Validation).
 // zod's default "strip" mode silently drops unrecognized keys instead of failing on them,
 // so additive backend fields never break validation. z.enum (not z.string) on the literal
 // union fields is what lets the `: ZodType<...>` annotations below typecheck exactly
 // against jobs.dto's plain TS types — a real compile-time guard against the two drifting.
-const jobTypeSchema = z.enum(["FULL_TIME", "PART_TIME", "CONTRACT", "FREELANCE"]);
-const experienceLevelSchema = z.enum(["ENTRY", "MID", "SENIOR", "LEAD", "EXECUTIVE"]);
-const jobStatusSchema = z.enum(["DRAFT", "PENDING_REVIEW", "ACTIVE", "CLOSED", "REJECTED"]);
+const jobTypeSchema = z.enum([
+  "FULL_TIME",
+  "PART_TIME",
+  "CONTRACT",
+  "FREELANCE",
+]);
+const experienceLevelSchema = z.enum([
+  "ENTRY",
+  "MID",
+  "SENIOR",
+  "LEAD",
+  "EXECUTIVE",
+]);
+const jobStatusSchema = z.enum([
+  "DRAFT",
+  "PENDING_REVIEW",
+  "ACTIVE",
+  "CLOSED",
+  "REJECTED",
+]);
 const planTypeSchema = z.enum(["STANDARD", "FEATURED", "HANDS_ON"]);
 
 const categorySchema = z.object({
@@ -65,9 +93,16 @@ const categorySchema = z.object({
   slug: z.string(),
   icon: z.string().nullable(),
 });
-const skillSchema = z.object({ id: z.string(), name: z.string(), slug: z.string() });
+const skillSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  slug: z.string(),
+});
 
-const jobListItemEmployerSchema = z.object({ companyName: z.string(), isVerified: z.boolean() });
+const jobListItemEmployerSchema = z.object({
+  companyName: z.string(),
+  isVerified: z.boolean(),
+});
 
 const jobEmployerSummarySchema = z.object({
   companyName: z.string(),
@@ -114,11 +149,12 @@ const jobFacetsSchema = z.object({
   category: z.record(z.string(), z.number()),
 });
 
-export const jobListResponseSchema: ZodType<JobListResponseDto> = z.object({
-  jobs: z.array(jobListItemSchema),
-  pagination: paginationSchema,
-  facets: jobFacetsSchema,
-});
+export const jobListResponseSchema: ZodType<JobListResponseDto> =
+  z.object({
+    jobs: z.array(jobListItemSchema),
+    pagination: paginationSchema,
+    facets: jobFacetsSchema,
+  });
 
 export const jobSchema: ZodType<JobDto> = z.object({
   id: z.string(),

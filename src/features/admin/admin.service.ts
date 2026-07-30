@@ -6,23 +6,35 @@ import {
   toRevenueResponse,
 } from "@/features/admin/admin.mapper";
 import type { JobStatus } from "@/types/job";
-import type { AdminEmployersResponse, AdminJobsResponse, RevenueResponse } from "@/types/admin";
+import type {
+  AdminEmployersResponse,
+  AdminJobsResponse,
+  RevenueResponse,
+} from "@/types/admin";
 
 export const listAdminEmployers = async (
-  params: { verified?: "true" | "false"; page?: number; limit?: number } = {},
+  params: {
+    verified?: "true" | "false";
+    page?: number;
+    limit?: number;
+  } = {},
   opts?: RequestOptions
 ): Promise<AdminEmployersResponse> =>
-  toAdminEmployersResponse(await adminRepository.listEmployers(params, opts));
+  toAdminEmployersResponse(
+    await adminRepository.listEmployers(params, opts)
+  );
 
 export const updateAdminEmployer = async (
   id: string,
   action: "verify" | "suspend"
-): Promise<{ success: true }> => adminRepository.updateEmployer(id, action);
+): Promise<{ success: true }> =>
+  adminRepository.updateEmployer(id, action);
 
 export const listAdminJobs = async (
   params: { status?: JobStatus; page?: number; limit?: number } = {},
   opts?: RequestOptions
-): Promise<AdminJobsResponse> => toAdminJobsResponse(await adminRepository.listJobs(params, opts));
+): Promise<AdminJobsResponse> =>
+  toAdminJobsResponse(await adminRepository.listJobs(params, opts));
 
 export const reviewAdminJob = async (
   id: string,
@@ -31,5 +43,7 @@ export const reviewAdminJob = async (
 ): Promise<{ status: JobStatus; publishedAt: string | null }> =>
   adminRepository.reviewJob(id, action, note);
 
-export const getAdminRevenue = async (opts?: RequestOptions): Promise<RevenueResponse> =>
+export const getAdminRevenue = async (
+  opts?: RequestOptions
+): Promise<RevenueResponse> =>
   toRevenueResponse(await adminRepository.getRevenue(opts));

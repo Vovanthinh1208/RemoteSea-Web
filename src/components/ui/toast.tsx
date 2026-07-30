@@ -1,12 +1,27 @@
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { AlertCircle, CheckCircle2, Info, X } from "lucide-react";
 import { cn } from "@/utils/cn";
 
 type Variant = "success" | "error" | "info";
 
-type ToastItem = { id: number; title: string; description?: string; variant: Variant };
+type ToastItem = {
+  id: number;
+  title: string;
+  description?: string;
+  variant: Variant;
+};
 
-type ToastInput = { title: string; description?: string; variant?: Variant };
+type ToastInput = {
+  title: string;
+  description?: string;
+  variant?: Variant;
+};
 
 type ToastContextValue = { toast: (input: ToastInput) => void };
 
@@ -40,7 +55,10 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
   const toast = useCallback(
     ({ title, description, variant = "info" }: ToastInput) => {
       const id = Date.now() + Math.random();
-      setToasts((prev) => [...prev, { id, title, description, variant }]);
+      setToasts((prev) => [
+        ...prev,
+        { id, title, description, variant },
+      ]);
       setTimeout(() => remove(id), TOAST_DURATION_MS);
     },
     [remove]
@@ -48,7 +66,10 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
 
   // ToastProvider wraps the whole app; an unmemoized value here would re-render
   // every useToast() consumer whenever any toast fires or auto-dismisses anywhere.
-  const value = useMemo<ToastContextValue>(() => ({ toast }), [toast]);
+  const value = useMemo<ToastContextValue>(
+    () => ({ toast }),
+    [toast]
+  );
 
   return (
     <ToastContext.Provider value={value}>
@@ -62,9 +83,17 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
               key={t.id}
               role={t.variant === "error" ? "alert" : "status"}
             >
-              <Icon className={cn("mt-0.5 flex-shrink-0", ACCENT[t.variant])} size={17} />
+              <Icon
+                className={cn(
+                  "mt-0.5 flex-shrink-0",
+                  ACCENT[t.variant]
+                )}
+                size={17}
+              />
               <div className="min-w-0 flex-1">
-                <p className="text-[13.5px] font-medium text-neutral-900">{t.title}</p>
+                <p className="text-[13.5px] font-medium text-neutral-900">
+                  {t.title}
+                </p>
                 {t.description && (
                   <p className="mt-0.5 text-[12.5px] leading-relaxed text-neutral-500">
                     {t.description}
@@ -88,6 +117,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
 
 export const useToast = (): ToastContextValue => {
   const ctx = useContext(ToastContext);
-  if (!ctx) throw new Error("useToast must be used within ToastProvider");
+  if (!ctx)
+    throw new Error("useToast must be used within ToastProvider");
   return ctx;
 };

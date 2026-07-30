@@ -24,10 +24,13 @@ export const FinalCtaSection = () => (
           >
             Post your role today.
             <br />
-            <em className="italic text-[#8FC52A]">Get applies by Friday.</em>
+            <em className="italic text-[#8FC52A]">
+              Get applies by Friday.
+            </em>
           </h2>
           <p className="mb-8 text-[17px] text-white/75">
-            Fifteen minutes to list. Eight hours to publish. Two weeks to hire.
+            Fifteen minutes to list. Eight hours to publish. Two weeks
+            to hire.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link

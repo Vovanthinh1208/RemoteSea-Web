@@ -20,7 +20,8 @@ const submittedLabel = (dateString: string): string => {
   return `${Math.floor(h / HOURS_PER_DAY)}d ago`;
 };
 
-const jobRegion = (j: AdminJob): string => j.country ?? (j.isRemote ? "Remote" : "—");
+const jobRegion = (j: AdminJob): string =>
+  j.country ?? (j.isRemote ? "Remote" : "—");
 
 interface JobSummaryHeaderProps {
   job: AdminJob;
@@ -45,13 +46,20 @@ export const JobSummaryHeader = ({ job }: JobSummaryHeaderProps) => {
         />
         <div className="flex-1">
           <div className="mb-1 flex flex-wrap items-center gap-2">
-            <span className="text-[13px] text-neutral-500">Submitted by</span>
+            <span className="text-[13px] text-neutral-500">
+              Submitted by
+            </span>
             <span className="text-[13px] font-semibold text-neutral-900">
               {job.employer.companyName}
             </span>
-            <VerifiedBadge isVerified={job.employer.isVerified} size="md" />
+            <VerifiedBadge
+              isVerified={job.employer.isVerified}
+              size="md"
+            />
           </div>
-          <h2 className="mb-2 text-[18px] font-semibold text-neutral-900">{job.title}</h2>
+          <h2 className="mb-2 text-[18px] font-semibold text-neutral-900">
+            {job.title}
+          </h2>
           <div className="flex flex-wrap gap-1.5">
             {tags.map((t) => (
               <span
@@ -65,10 +73,15 @@ export const JobSummaryHeader = ({ job }: JobSummaryHeaderProps) => {
         </div>
         <div className="text-right">
           <div className="font-mono text-[17px] font-semibold text-neutral-900">
-            {formatSalary(job.salaryMin, job.salaryMax, job.currency)}/mo
+            {formatSalary(job.salaryMin, job.salaryMax, job.currency)}
+            /mo
           </div>
-          <div className="text-[12px] text-neutral-400">{submittedLabel(job.createdAt)}</div>
-          <span className={`mt-1 inline-block font-mono text-[12px] ${waitCls(waitHours)}`}>
+          <div className="text-[12px] text-neutral-400">
+            {submittedLabel(job.createdAt)}
+          </div>
+          <span
+            className={`mt-1 inline-block font-mono text-[12px] ${waitCls(waitHours)}`}
+          >
             waited {waitFmt(waitHours)}
           </span>
         </div>

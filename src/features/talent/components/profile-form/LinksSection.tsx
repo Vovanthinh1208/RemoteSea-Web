@@ -1,12 +1,20 @@
 import type { UseFormRegister } from "react-hook-form";
 import { Briefcase, Code2, Globe, User } from "lucide-react";
 import { FileUpload } from "@/components/ui/file-upload";
-import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
+import {
+  SectionHead,
+  EMPHASIS_STYLE,
+} from "@/features/talent/components/profile-form/SectionHead";
 import { TEXT_INPUT_CLASS } from "@/components/shared/input-styles";
 import type { ProfileFormValues } from "@/features/talent/talent.schemas";
 
 const LINK_FIELDS = [
-  { icon: Code2, label: "GitHub", field: "githubUrl" as const, placeholder: "github.com/you" },
+  {
+    icon: Code2,
+    label: "GitHub",
+    field: "githubUrl" as const,
+    placeholder: "github.com/you",
+  },
   {
     icon: User,
     label: "LinkedIn",
@@ -27,15 +35,25 @@ interface LinksSectionProps {
   onResumeUploaded: (url: string) => void;
 }
 
-export const LinksSection = ({ register, resumeUrl, onResumeUploaded }: LinksSectionProps) => (
-  <section className="scroll-mt-6 rounded-20 border border-neutral-100 bg-white p-7" id="links">
+export const LinksSection = ({
+  register,
+  resumeUrl,
+  onResumeUploaded,
+}: LinksSectionProps) => (
+  <section
+    className="scroll-mt-6 rounded-20 border border-neutral-100 bg-white p-7"
+    id="links"
+  >
     <SectionHead
       eyebrow="06 · Where to look"
       help="Attach your CV and a couple of links. Hiring managers want to read your writing or code."
       title={
         <>
           Links &amp;{" "}
-          <em className="font-serif italic text-brand-700" style={EMPHASIS_STYLE}>
+          <em
+            className="font-serif italic text-brand-700"
+            style={EMPHASIS_STYLE}
+          >
             CV.
           </em>
         </>
@@ -60,27 +78,29 @@ export const LinksSection = ({ register, resumeUrl, onResumeUploaded }: LinksSec
         </div>
       </div>
 
-      {LINK_FIELDS.map(({ icon: Icon, label, field, placeholder }) => (
-        <div className="flex items-center gap-3" key={field}>
-          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-neutral-100 text-neutral-500">
-            <Icon size={15} />
-          </span>
-          <div className="min-w-0 flex-1 space-y-0.5">
-            <label
-              className="block text-[12px] font-medium text-neutral-700"
-              htmlFor={`p-${field}`}
-            >
-              {label}
-            </label>
-            <input
-              className={TEXT_INPUT_CLASS}
-              id={`p-${field}`}
-              placeholder={placeholder}
-              {...register(field)}
-            />
+      {LINK_FIELDS.map(
+        ({ icon: Icon, label, field, placeholder }) => (
+          <div className="flex items-center gap-3" key={field}>
+            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-neutral-100 text-neutral-500">
+              <Icon size={15} />
+            </span>
+            <div className="min-w-0 flex-1 space-y-0.5">
+              <label
+                className="block text-[12px] font-medium text-neutral-700"
+                htmlFor={`p-${field}`}
+              >
+                {label}
+              </label>
+              <input
+                className={TEXT_INPUT_CLASS}
+                id={`p-${field}`}
+                placeholder={placeholder}
+                {...register(field)}
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        )
+      )}
     </div>
   </section>
 );

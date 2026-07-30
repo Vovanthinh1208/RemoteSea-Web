@@ -2,7 +2,13 @@ import { z } from "zod";
 import type { ExperienceLevel, JobType, PlanType } from "@/types/job";
 import { PLAN_PRICES_USD } from "@/constants/plans";
 
-export const COMPANY_SIZE_OPTIONS = ["1–10", "11–50", "51–200", "201–500", "500+"] as const;
+export const COMPANY_SIZE_OPTIONS = [
+  "1–10",
+  "11–50",
+  "51–200",
+  "201–500",
+  "500+",
+] as const;
 
 export const HQ_OPTIONS = [
   "🇸🇬 Singapore",
@@ -28,7 +34,10 @@ export const SENIORITY_OPTIONS = [
   "Head",
 ] as const;
 
-export const SENIORITY_TO_LEVEL: Record<(typeof SENIORITY_OPTIONS)[number], ExperienceLevel> = {
+export const SENIORITY_TO_LEVEL: Record<
+  (typeof SENIORITY_OPTIONS)[number],
+  ExperienceLevel
+> = {
   Intern: "ENTRY",
   Junior: "ENTRY",
   Mid: "MID",
@@ -38,16 +47,27 @@ export const SENIORITY_TO_LEVEL: Record<(typeof SENIORITY_OPTIONS)[number], Expe
   Head: "EXECUTIVE",
 };
 
-export const JOB_TYPE_OPTIONS = ["full", "part", "contract", "freelance"] as const;
+export const JOB_TYPE_OPTIONS = [
+  "full",
+  "part",
+  "contract",
+  "freelance",
+] as const;
 
-export const JOB_TYPE_LABELS: Record<(typeof JOB_TYPE_OPTIONS)[number], string> = {
+export const JOB_TYPE_LABELS: Record<
+  (typeof JOB_TYPE_OPTIONS)[number],
+  string
+> = {
   full: "Full-time",
   part: "Part-time",
   contract: "Contract",
   freelance: "Freelance",
 };
 
-export const JOB_TYPE_TO_ENUM: Record<(typeof JOB_TYPE_OPTIONS)[number], JobType> = {
+export const JOB_TYPE_TO_ENUM: Record<
+  (typeof JOB_TYPE_OPTIONS)[number],
+  JobType
+> = {
   full: "FULL_TIME",
   part: "PART_TIME",
   contract: "CONTRACT",
@@ -63,11 +83,25 @@ export const TIMEZONE_OPTIONS = [
   "Async-first",
 ] as const;
 
-export const LOCATION_OPTIONS = ["remote", "hybrid", "onsite"] as const;
+export const LOCATION_OPTIONS = [
+  "remote",
+  "hybrid",
+  "onsite",
+] as const;
 
-export const CURRENCY_OPTIONS = ["USD", "SGD", "AUD", "EUR", "GBP"] as const;
+export const CURRENCY_OPTIONS = [
+  "USD",
+  "SGD",
+  "AUD",
+  "EUR",
+  "GBP",
+] as const;
 
-export const PERIOD_OPTIONS = ["/ month", "/ year", "/ hour"] as const;
+export const PERIOD_OPTIONS = [
+  "/ month",
+  "/ year",
+  "/ hour",
+] as const;
 
 export const BENEFIT_OPTIONS = [
   "Health insurance",
@@ -120,7 +154,12 @@ export const TIERS: Tier[] = [
     planType: "FEATURED",
     price: PLAN_PRICES_USD.FEATURED,
     desc: "Top of search, highlighted card, pushed to newsletter.",
-    features: ["60-day listing", "Top placement", "Newsletter blast", "Social share"],
+    features: [
+      "60-day listing",
+      "Top placement",
+      "Newsletter blast",
+      "Social share",
+    ],
     ribbon: "Popular",
     highlight: true,
   },
@@ -130,7 +169,12 @@ export const TIERS: Tier[] = [
     planType: "HANDS_ON",
     price: PLAN_PRICES_USD.HANDS_ON,
     desc: "We source & screen candidates for you.",
-    features: ["Unlimited listing", "Priority placement", "Sourcing by team", "Slack channel"],
+    features: [
+      "Unlimited listing",
+      "Priority placement",
+      "Sourcing by team",
+      "Slack channel",
+    ],
     ribbon: null,
     highlight: false,
   },
@@ -203,8 +247,15 @@ export const MIN_JOB_DESCRIPTION_LENGTH = 100;
 // until the server call at the very end.
 const stepCompanySchema = z.object({
   coName: z.string().trim().min(1, "Company name is required."),
-  recName: z.string().trim().min(1, "Recruiter/hiring manager name is required."),
-  recEmail: z.string().trim().min(1, "Work email is required.").email("Enter a valid work email."),
+  recName: z
+    .string()
+    .trim()
+    .min(1, "Recruiter/hiring manager name is required."),
+  recEmail: z
+    .string()
+    .trim()
+    .min(1, "Work email is required.")
+    .email("Enter a valid work email."),
 });
 
 const stepRoleSchema = z
@@ -237,7 +288,10 @@ const STEP_SCHEMAS: Partial<Record<number, z.ZodType<unknown>>> = {
  * required fields blank sees all three at once instead of a "Continue" ->
  * fix-one -> "Continue" -> fix-the-next whack-a-mole loop.
  */
-export const validateStep = (step: number, form: PostJobFormState): string[] => {
+export const validateStep = (
+  step: number,
+  form: PostJobFormState
+): string[] => {
   const schema = STEP_SCHEMAS[step];
   if (!schema) return [];
   const result = schema.safeParse(form);

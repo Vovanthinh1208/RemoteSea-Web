@@ -1,6 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { toJob, toJobListItem, toJobListResponse } from "@/features/jobs/jobs.mapper";
-import type { JobDto, JobListItemDto, JobListResponseDto } from "@/features/jobs/jobs.dto";
+import {
+  toJob,
+  toJobListItem,
+  toJobListResponse,
+} from "@/features/jobs/jobs.mapper";
+import type {
+  JobDto,
+  JobListItemDto,
+  JobListResponseDto,
+} from "@/features/jobs/jobs.dto";
 
 const jobDto = {
   id: "job-1",
@@ -26,7 +34,12 @@ const jobDto = {
   publishedAt: null,
   expiresAt: null,
   createdAt: "2026-01-01T00:00:00.000Z",
-  employer: { companyName: "Acme", logoUrl: null, slug: "acme", isVerified: true },
+  employer: {
+    companyName: "Acme",
+    logoUrl: null,
+    slug: "acme",
+    isVerified: true,
+  },
   categories: [],
   skills: [],
 } satisfies JobDto;
@@ -52,7 +65,12 @@ describe("jobs.mapper", () => {
     const responseDto: JobListResponseDto = {
       jobs: [listItem],
       pagination: { page: 1, limit: 12, total: 1, pages: 1 },
-      facets: { jobType: {}, timezone: {}, seniority: {}, category: {} },
+      facets: {
+        jobType: {},
+        timezone: {},
+        seniority: {},
+        category: {},
+      },
     };
 
     const result = toJobListResponse(responseDto);

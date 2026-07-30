@@ -26,14 +26,18 @@ export const CommunityHeroSection = () => (
         </div>
         <h1 className="mb-4 text-[44px] font-semibold leading-[1.1] tracking-tight text-neutral-900 lg:text-[52px]">
           500+ remote-working Vietnamese,{" "}
-          <em className="font-serif text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>
+          <em
+            className="font-serif text-brand-700"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
             one Slack
           </em>
           .
         </h1>
         <p className="mb-8 max-w-lg text-[17px] leading-relaxed text-neutral-500">
-          Engineers, designers, marketers, ops people — all working remotely for companies abroad.
-          We trade offer letters, debug async culture, and meet up in person when we&apos;re in the
+          Engineers, designers, marketers, ops people — all working
+          remotely for companies abroad. We trade offer letters, debug
+          async culture, and meet up in person when we&apos;re in the
           same city.
         </p>
         <div className="flex flex-wrap gap-3">
@@ -45,8 +49,8 @@ export const CommunityHeroSection = () => (
           </button>
         </div>
         <p className="mt-5 text-[13px] text-neutral-400">
-          Vetted by current members. We look for senior craft and good-faith participation — not
-          vibes.
+          Vetted by current members. We look for senior craft and
+          good-faith participation — not vibes.
         </p>
       </div>
 
@@ -59,12 +63,54 @@ export const CommunityHeroSection = () => (
             height="460"
             width="380"
           >
-            <line stroke="#E5E5E3" strokeWidth="1" x1="110" x2="232" y1="48" y2="70" />
-            <line stroke="#E5E5E3" strokeWidth="1" x1="232" x2="186" y1="70" y2="200" />
-            <line stroke="#E5E5E3" strokeWidth="1" x1="186" x2="68" y1="200" y2="165" />
-            <line stroke="#E5E5E3" strokeWidth="1" x1="186" x2="310" y1="200" y2="160" />
-            <line stroke="#E5E5E3" strokeWidth="1" x1="186" x2="252" y1="200" y2="300" />
-            <line stroke="#E5E5E3" strokeWidth="1" x1="186" x2="118" y1="200" y2="280" />
+            <line
+              stroke="#E5E5E3"
+              strokeWidth="1"
+              x1="110"
+              x2="232"
+              y1="48"
+              y2="70"
+            />
+            <line
+              stroke="#E5E5E3"
+              strokeWidth="1"
+              x1="232"
+              x2="186"
+              y1="70"
+              y2="200"
+            />
+            <line
+              stroke="#E5E5E3"
+              strokeWidth="1"
+              x1="186"
+              x2="68"
+              y1="200"
+              y2="165"
+            />
+            <line
+              stroke="#E5E5E3"
+              strokeWidth="1"
+              x1="186"
+              x2="310"
+              y1="200"
+              y2="160"
+            />
+            <line
+              stroke="#E5E5E3"
+              strokeWidth="1"
+              x1="186"
+              x2="252"
+              y1="200"
+              y2="300"
+            />
+            <line
+              stroke="#E5E5E3"
+              strokeWidth="1"
+              x1="186"
+              x2="118"
+              y1="200"
+              y2="280"
+            />
           </svg>
           {AVATAR_CLOUD.map((a, i) => (
             <div

@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   disableTwoFactor,
   getTwoFactorStatus,
@@ -17,14 +21,17 @@ export const useTwoFactorStatus = () => {
   });
 };
 
-export const useSetupTwoFactor = () => useMutation({ mutationFn: setupTwoFactor });
+export const useSetupTwoFactor = () =>
+  useMutation({ mutationFn: setupTwoFactor });
 
 export const useVerifyTwoFactorSetup = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: verifyTwoFactorSetup,
     onSuccess: () => {
-      queryClient.setQueryData(authKeys.twoFactorStatus(), { enabled: true });
+      queryClient.setQueryData(authKeys.twoFactorStatus(), {
+        enabled: true,
+      });
     },
   });
 };
@@ -34,7 +41,9 @@ export const useDisableTwoFactor = () => {
   return useMutation({
     mutationFn: disableTwoFactor,
     onSuccess: () => {
-      queryClient.setQueryData(authKeys.twoFactorStatus(), { enabled: false });
+      queryClient.setQueryData(authKeys.twoFactorStatus(), {
+        enabled: false,
+      });
     },
   });
 };

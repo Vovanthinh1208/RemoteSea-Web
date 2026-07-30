@@ -20,24 +20,33 @@ export const SkillTagEditor = ({
 
   const addSkill = (skill: string) => {
     const trimmed = skill.trim();
-    if (trimmed && !skills.includes(trimmed)) setSkills([...skills, trimmed]);
+    if (trimmed && !skills.includes(trimmed))
+      setSkills([...skills, trimmed]);
     setInputValue("");
   };
 
   const removeLastSkill = () => setSkills(skills.slice(0, -1));
 
-  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleInputKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (event.key === "Enter" || event.key === ",") {
       event.preventDefault();
       addSkill(inputValue);
       return;
     }
-    if (event.key === "Backspace" && inputValue === "" && skills.length > 0) {
+    if (
+      event.key === "Backspace" &&
+      inputValue === "" &&
+      skills.length > 0
+    ) {
       removeLastSkill();
     }
   };
 
-  const suggestedSkills = suggestions.filter((name) => !skills.includes(name));
+  const suggestedSkills = suggestions.filter(
+    (name) => !skills.includes(name)
+  );
 
   return (
     <div className="space-y-3">
@@ -52,7 +61,11 @@ export const SkillTagEditor = ({
               aria-label={`Remove skill: ${skill}`}
               className="text-neutral-400 hover:text-neutral-700"
               type="button"
-              onClick={() => setSkills(skills.filter((existing) => existing !== skill))}
+              onClick={() =>
+                setSkills(
+                  skills.filter((existing) => existing !== skill)
+                )
+              }
             >
               <X size={10} />
             </button>
@@ -61,7 +74,11 @@ export const SkillTagEditor = ({
         <input
           className="min-w-[120px] flex-1 px-1.5 py-0.5 text-[13px] text-neutral-700 placeholder:text-neutral-400 focus:outline-none"
           id={id}
-          placeholder={skills.length === 0 ? "Type a skill and press Enter…" : "Add another…"}
+          placeholder={
+            skills.length === 0
+              ? "Type a skill and press Enter…"
+              : "Add another…"
+          }
           value={inputValue}
           onBlur={() => {
             if (inputValue.trim()) addSkill(inputValue);
@@ -72,7 +89,9 @@ export const SkillTagEditor = ({
       </div>
       {suggestedSkills.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[11.5px] text-neutral-400">Suggested:</span>
+          <span className="text-[11.5px] text-neutral-400">
+            Suggested:
+          </span>
           {suggestedSkills.slice(0, MAX_SUGGESTIONS).map((skill) => (
             <button
               className="rounded-full border border-neutral-200 px-2.5 py-0.5 text-[11.5px] text-neutral-600 hover:border-brand-300 hover:text-brand-700"

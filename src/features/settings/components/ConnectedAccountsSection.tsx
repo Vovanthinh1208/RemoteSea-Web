@@ -2,8 +2,14 @@ import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { cn } from "@/utils/cn";
-import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
-import { useMyConnections, useDisconnectMyConnection } from "@/features/users/users.queries";
+import {
+  SectionHead,
+  EMPHASIS_STYLE,
+} from "@/features/talent/components/profile-form/SectionHead";
+import {
+  useMyConnections,
+  useDisconnectMyConnection,
+} from "@/features/users/users.queries";
 import { getOAuthLinkUrl } from "@/features/auth/auth.service";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useToast } from "@/components/ui/toast";
@@ -17,7 +23,8 @@ const PROVIDERS = [
 ] as const;
 
 const CONNECTION_ERROR_REASONS: Record<string, string> = {
-  already_linked: "That account is already connected to a different RemoteSEA account.",
+  already_linked:
+    "That account is already connected to a different RemoteSEA account.",
   unknown: "Something went wrong. Please try again.",
 };
 
@@ -50,13 +57,17 @@ export const ConnectedAccountsSection = () => {
 
     if (connected) {
       toast({ variant: "success", title: `${connected} connected` });
-      void queryClient.invalidateQueries({ queryKey: usersKeys.connections() });
+      void queryClient.invalidateQueries({
+        queryKey: usersKeys.connections(),
+      });
     } else if (connectionError) {
       const reason = searchParams.get("reason") ?? "unknown";
       toast({
         variant: "error",
         title: `Couldn't connect ${connectionError}`,
-        description: CONNECTION_ERROR_REASONS[reason] ?? CONNECTION_ERROR_REASONS.unknown,
+        description:
+          CONNECTION_ERROR_REASONS[reason] ??
+          CONNECTION_ERROR_REASONS.unknown,
       });
     }
 
@@ -73,10 +84,13 @@ export const ConnectedAccountsSection = () => {
   const disconnect = (provider: string) =>
     runWithToast(() => disconnectMutation.mutateAsync(provider), {
       error: "Couldn't disconnect",
-      onError: (err) => (err instanceof ApiError ? err.message : undefined),
+      onError: (err) =>
+        err instanceof ApiError ? err.message : undefined,
     });
 
-  const connect = async (provider: (typeof PROVIDERS)[number]["id"]) => {
+  const connect = async (
+    provider: (typeof PROVIDERS)[number]["id"]
+  ) => {
     try {
       const { url } = await getOAuthLinkUrl(provider);
       navigateTo(url);
@@ -84,7 +98,8 @@ export const ConnectedAccountsSection = () => {
       toast({
         variant: "error",
         title: `Couldn't start connecting ${provider}`,
-        description: err instanceof ApiError ? err.message : undefined,
+        description:
+          err instanceof ApiError ? err.message : undefined,
       });
     }
   };
@@ -99,7 +114,10 @@ export const ConnectedAccountsSection = () => {
         help="Providers linked for one-tap sign-in. You can sign in with any connected account."
         title={
           <>
-            <em className="font-serif italic text-brand-700" style={EMPHASIS_STYLE}>
+            <em
+              className="font-serif italic text-brand-700"
+              style={EMPHASIS_STYLE}
+            >
               Connected
             </em>{" "}
             accounts.
@@ -108,9 +126,14 @@ export const ConnectedAccountsSection = () => {
       />
       <div className="divide-y divide-neutral-50 overflow-hidden rounded-16 border border-neutral-100">
         {PROVIDERS.map(({ id, name, bg, initial }) => {
-          const connection = connections?.find((c) => c.provider === id);
+          const connection = connections?.find(
+            (c) => c.provider === id
+          );
           return (
-            <div className="flex items-center gap-3 px-4 py-3.5" key={id}>
+            <div
+              className="flex items-center gap-3 px-4 py-3.5"
+              key={id}
+            >
               <span
                 className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-10 text-[11px] font-bold text-white"
                 style={{ background: bg }}
@@ -118,14 +141,20 @@ export const ConnectedAccountsSection = () => {
                 {initial}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-[13.5px] font-medium text-neutral-900">{name}</p>
+                <p className="text-[13.5px] font-medium text-neutral-900">
+                  {name}
+                </p>
                 <p
                   className={cn(
                     "truncate text-[12px]",
-                    connection ? "font-mono text-neutral-500" : "text-neutral-400"
+                    connection
+                      ? "font-mono text-neutral-500"
+                      : "text-neutral-400"
                   )}
                 >
-                  {connection ? connection.providerAccountId : "Not connected"}
+                  {connection
+                    ? connection.providerAccountId
+                    : "Not connected"}
                 </p>
               </div>
               {connection ? (

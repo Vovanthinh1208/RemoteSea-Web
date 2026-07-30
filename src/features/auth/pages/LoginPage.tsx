@@ -29,7 +29,10 @@ export const LoginPage = () => {
       {/* Left panel */}
       <div
         className="hidden flex-col justify-between p-12 text-white lg:flex"
-        style={{ background: "linear-gradient(160deg, #0D3D1F 0%, #1F7A3D 100%)" }}
+        style={{
+          background:
+            "linear-gradient(160deg, #0D3D1F 0%, #1F7A3D 100%)",
+        }}
       >
         <div className="flex items-center gap-2 text-lg font-semibold">
           <span className="grid h-7 w-7 place-items-center rounded-8 bg-white/10 pb-0.5 font-serif text-xl italic leading-none">
@@ -53,7 +56,8 @@ export const LoginPage = () => {
             you left off.
           </p>
           <p className="mb-8 text-sm leading-relaxed text-white/60">
-            New jobs went live this week. Two match your saved filters.
+            New jobs went live this week. Two match your saved
+            filters.
           </p>
 
           <div className="mb-6 grid grid-cols-3 gap-4 rounded-16 border border-white/10 bg-white/5 p-5">
@@ -84,8 +88,12 @@ export const LoginPage = () => {
                   {j.initial}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm font-medium">{j.title}</div>
-                  <div className="text-[12px] text-white/50">{j.company}</div>
+                  <div className="truncate text-sm font-medium">
+                    {j.title}
+                  </div>
+                  <div className="text-[12px] text-white/50">
+                    {j.company}
+                  </div>
                 </div>
                 <span className="whitespace-nowrap rounded-8 bg-amber-400/10 px-2 py-0.5 font-mono text-[11px] text-amber-300">
                   {j.salary}
@@ -95,7 +103,9 @@ export const LoginPage = () => {
           </div>
         </div>
 
-        <p className="text-xs text-white/30">© 2026 RemoteSEA · Made in Đà Nẵng, Vietnam 🇻🇳</p>
+        <p className="text-xs text-white/30">
+          © 2026 RemoteSEA · Made in Đà Nẵng, Vietnam 🇻🇳
+        </p>
       </div>
 
       {/* Right panel (form) */}
@@ -123,7 +133,9 @@ export const LoginPage = () => {
         <h1 className="mb-1 text-[36px] font-semibold tracking-tight text-neutral-900">
           Sign in to RemoteSEA.
         </h1>
-        <p className="mb-8 text-sm text-neutral-500">Continue your search where you left off.</p>
+        <p className="mb-8 text-sm text-neutral-500">
+          Continue your search where you left off.
+        </p>
 
         <LoginForm />
       </div>

@@ -1,4 +1,11 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import * as authService from "@/features/auth/auth.service";
 import { registerUnauthorizedHandler } from "@/core/http/http-client";
@@ -21,7 +28,8 @@ const SESSION_RETRY_COUNT = 2;
 // call kept failing for a reason other than a confirmed 401 (network/5xx) — the
 // user may still be logged in, so callers should offer a retry rather than
 // treating this the same as "unauthenticated".
-type AuthStatus = "loading" | "authenticated" | "unauthenticated" | "error";
+type AuthStatus =
+  "loading" | "authenticated" | "unauthenticated" | "error";
 
 type RegisterInput = {
   name: string;
@@ -34,12 +42,17 @@ type RegisterInput = {
 // (LoginForm) must collect a code and call completeTwoFactorChallenge with
 // the returned challengeToken before it gets one.
 export type LoginResult =
-  { status: "success"; user: AuthUser } | { status: "two_factor_required"; challengeToken: string };
+  | { status: "success"; user: AuthUser }
+  | { status: "two_factor_required"; challengeToken: string };
 
 type AuthContextValue = {
   user: AuthUser | null;
   status: AuthStatus;
-  login: (email: string, password: string, remember?: boolean) => Promise<LoginResult>;
+  login: (
+    email: string,
+    password: string,
+    remember?: boolean
+  ) => Promise<LoginResult>;
   completeTwoFactorChallenge: (
     challengeToken: string,
     code: string,
@@ -69,7 +82,8 @@ const hydrateFromSession = async (): Promise<AuthUser | null> => {
   try {
     return await authService.getSession();
   } catch (err) {
-    if (err instanceof ApiError && err.status === UNAUTHORIZED_STATUS) return null;
+    if (err instanceof ApiError && err.status === UNAUTHORIZED_STATUS)
+      return null;
     throw err;
   }
 };
@@ -156,7 +170,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setAccessToken(token, remember);
       try {
         const sessionUser = await hydrateFromSession();
-        if (!sessionUser) throw new Error("Could not load session after authentication");
+        if (!sessionUser)
+          throw new Error(
+            "Could not load session after authentication"
+          );
         queryClient.setQueryData(SESSION_KEY, sessionUser);
         setHasToken(true);
         return sessionUser;
@@ -174,10 +191,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   );
 
   const login = useCallback(
-    async (email: string, password: string, remember = true): Promise<LoginResult> => {
+    async (
+      email: string,
+      password: string,
+      remember = true
+    ): Promise<LoginResult> => {
       const result = await authService.login({ email, password });
       if ("twoFactorRequired" in result) {
-        return { status: "two_factor_required", challengeToken: result.challengeToken };
+        return {
+          status: "two_factor_required",
+          challengeToken: result.challengeToken,
+        };
       }
       const user = await loginWithToken(result.accessToken, remember);
       return { status: "success", user };
@@ -187,10 +211,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const completeTwoFactorChallenge = useCallback(
     async (challengeToken: string, code: string, remember = true) => {
-      const { accessToken } = await authService.completeTwoFactorChallenge({
-        challengeToken,
-        code,
-      });
+      const { accessToken } =
+        await authService.completeTwoFactorChallenge({
+          challengeToken,
+          code,
+        });
       return loginWithToken(accessToken, remember);
     },
     [loginWithToken]
@@ -203,7 +228,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       // "success" branch — but login()'s return type doesn't know that.
       const result = await login(input.email, input.password, true);
       if (result.status !== "success") {
-        throw new Error("Unexpected two-factor challenge right after registration");
+        throw new Error(
+          "Unexpected two-factor challenge right after registration"
+        );
       }
       return result.user;
     },
@@ -218,8 +245,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const patchUser = useCallback(
     (partial: Partial<AuthUser>) => {
-      queryClient.setQueryData<AuthUser | null>(SESSION_KEY, (prev) =>
-        prev ? { ...prev, ...partial } : prev
+      queryClient.setQueryData<AuthUser | null>(
+        SESSION_KEY,
+        (prev) => (prev ? { ...prev, ...partial } : prev)
       );
     },
     [queryClient]
@@ -250,11 +278,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     ]
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = (): AuthContextValue => {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  if (!ctx)
+    throw new Error("useAuth must be used within AuthProvider");
   return ctx;
 };

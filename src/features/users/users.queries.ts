@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   changeMyPassword,
   deleteMyAccount,
@@ -30,7 +34,8 @@ export const useUpdateMyName = () => {
   });
 };
 
-export const useChangeMyPassword = () => useMutation({ mutationFn: changeMyPassword });
+export const useChangeMyPassword = () =>
+  useMutation({ mutationFn: changeMyPassword });
 
 export const useDeleteMyAccount = () => {
   const { logout } = useAuth();
@@ -44,7 +49,11 @@ export const useDeleteMyAccount = () => {
 
 export const useMyAccount = () => {
   const { user } = useAuth();
-  return useQuery({ queryKey: usersKeys.account(), queryFn: getMyAccount, enabled: !!user });
+  return useQuery({
+    queryKey: usersKeys.account(),
+    queryFn: getMyAccount,
+    enabled: !!user,
+  });
 };
 
 export const useUpdateMyAccount = () => {
@@ -71,14 +80,21 @@ export const useUpdateMyNotificationPreferences = () => {
   return useMutation({
     mutationFn: updateMyNotificationPreferences,
     onSuccess: (result) => {
-      queryClient.setQueryData(usersKeys.notificationPreferences(), result);
+      queryClient.setQueryData(
+        usersKeys.notificationPreferences(),
+        result
+      );
     },
   });
 };
 
 export const useMyPauseState = () => {
   const { user } = useAuth();
-  return useQuery({ queryKey: usersKeys.pauseState(), queryFn: getMyPauseState, enabled: !!user });
+  return useQuery({
+    queryKey: usersKeys.pauseState(),
+    queryFn: getMyPauseState,
+    enabled: !!user,
+  });
 };
 
 export const usePauseMyAccount = () => {
@@ -103,7 +119,8 @@ export const useReactivateMyAccount = () => {
 
 // Not cached as a query — triggered on demand by the "Request" button, and
 // re-fetching the same export data on every window refocus would be wasteful.
-export const useExportMyData = () => useMutation({ mutationFn: exportMyData });
+export const useExportMyData = () =>
+  useMutation({ mutationFn: exportMyData });
 
 export const useMyConnections = () => {
   const { user } = useAuth();
@@ -119,7 +136,9 @@ export const useDisconnectMyConnection = () => {
   return useMutation({
     mutationFn: disconnectMyConnection,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: usersKeys.connections() });
+      queryClient.invalidateQueries({
+        queryKey: usersKeys.connections(),
+      });
     },
   });
 };
@@ -138,7 +157,9 @@ export const useRevokeMySession = () => {
   return useMutation({
     mutationFn: revokeMySession,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: usersKeys.sessions() });
+      queryClient.invalidateQueries({
+        queryKey: usersKeys.sessions(),
+      });
     },
   });
 };
@@ -148,7 +169,9 @@ export const useRevokeMyOtherSessions = () => {
   return useMutation({
     mutationFn: revokeMyOtherSessions,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: usersKeys.sessions() });
+      queryClient.invalidateQueries({
+        queryKey: usersKeys.sessions(),
+      });
     },
   });
 };

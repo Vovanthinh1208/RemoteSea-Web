@@ -19,7 +19,9 @@ export const ResetPasswordPage = () => {
       <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
         Choose a new password.
       </h1>
-      <p className="mb-8 text-sm text-neutral-500">Make it at least 8 characters.</p>
+      <p className="mb-8 text-sm text-neutral-500">
+        Make it at least 8 characters.
+      </p>
 
       <ResetPasswordForm />
     </div>

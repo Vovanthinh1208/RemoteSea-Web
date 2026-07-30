@@ -8,7 +8,9 @@
  */
 const SAFE_PROTOCOLS = new Set(["http:", "https:", "mailto:"]);
 
-export const safeExternalUrl = (raw: string | null | undefined): string | null => {
+export const safeExternalUrl = (
+  raw: string | null | undefined
+): string | null => {
   if (!raw) return null;
   try {
     const url = new URL(raw);

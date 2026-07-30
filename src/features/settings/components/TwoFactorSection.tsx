@@ -22,7 +22,10 @@ export const TwoFactorSection = () => {
   const disableMutation = useDisableTwoFactor();
 
   const [step, setStep] = useState<Step>("idle");
-  const [setup, setSetup] = useState<{ secret: string; qrCodeDataUrl: string } | null>(null);
+  const [setup, setSetup] = useState<{
+    secret: string;
+    qrCodeDataUrl: string;
+  } | null>(null);
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
@@ -33,7 +36,10 @@ export const TwoFactorSection = () => {
   const startSetup = async () => {
     setError(null);
     const result = await setupMutation.mutateAsync();
-    setSetup({ secret: result.secret, qrCodeDataUrl: result.qrCodeDataUrl });
+    setSetup({
+      secret: result.secret,
+      qrCodeDataUrl: result.qrCodeDataUrl,
+    });
     setStep("setting_up");
   };
 
@@ -47,13 +53,19 @@ export const TwoFactorSection = () => {
   const confirmSetup = async () => {
     setError(null);
     try {
-      const result = await verifyMutation.mutateAsync({ token: code });
+      const result = await verifyMutation.mutateAsync({
+        token: code,
+      });
       setBackupCodes(result.backupCodes);
       setStep("backup_codes");
       setSetup(null);
       setCode("");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Something went wrong.");
+      setError(
+        err instanceof ApiError
+          ? err.message
+          : "Something went wrong."
+      );
     }
   };
 
@@ -84,7 +96,8 @@ export const TwoFactorSection = () => {
       {
         success: "Two-factor authentication disabled",
         error: "Couldn't disable two-factor authentication",
-        onError: (err) => (err instanceof ApiError ? err.message : undefined),
+        onError: (err) =>
+          err instanceof ApiError ? err.message : undefined,
       }
     );
 
@@ -99,8 +112,8 @@ export const TwoFactorSection = () => {
             </span>
           </p>
           <p className="mt-0.5 text-[12.5px] text-neutral-500">
-            Require a code from your authenticator app at sign-in. Strongest protection against
-            takeovers.
+            Require a code from your authenticator app at sign-in.
+            Strongest protection against takeovers.
           </p>
         </div>
         <Toggle
@@ -115,8 +128,9 @@ export const TwoFactorSection = () => {
       {step === "setting_up" && setup && (
         <div className="space-y-3 py-4">
           <p className="text-[12.5px] text-neutral-600">
-            Scan this QR code with your authenticator app (Google Authenticator, 1Password, Authy…),
-            then enter the 6-digit code it shows.
+            Scan this QR code with your authenticator app (Google
+            Authenticator, 1Password, Authy…), then enter the 6-digit
+            code it shows.
           </p>
           <img
             alt="Two-factor authentication QR code"
@@ -134,7 +148,9 @@ export const TwoFactorSection = () => {
             value={code}
             onChange={(e) => setCode(e.target.value)}
           />
-          {error && <p className="text-[11.5px] text-red-600">{error}</p>}
+          {error && (
+            <p className="text-[11.5px] text-red-600">{error}</p>
+          )}
           <div className="flex gap-2">
             <Button
               disabled={code.length !== 6}
@@ -154,11 +170,13 @@ export const TwoFactorSection = () => {
       {step === "backup_codes" && (
         <div className="space-y-3 py-4">
           <p className="flex items-center gap-1.5 text-[13px] font-medium text-neutral-900">
-            <Check className="text-brand-600" size={14} /> Two-factor authentication enabled
+            <Check className="text-brand-600" size={14} /> Two-factor
+            authentication enabled
           </p>
           <p className="text-[12.5px] text-neutral-600">
-            Save these backup codes somewhere safe — each works once if you lose access to your
-            authenticator app. They won't be shown again.
+            Save these backup codes somewhere safe — each works once
+            if you lose access to your authenticator app. They won't
+            be shown again.
           </p>
           <div className="grid grid-cols-2 gap-2 rounded-10 border border-neutral-200 bg-neutral-50 p-3 font-mono text-[13px] text-neutral-800">
             {backupCodes.map((c) => (
@@ -168,12 +186,18 @@ export const TwoFactorSection = () => {
           <Button
             size="sm"
             onClick={() => {
-              void navigator.clipboard.writeText(backupCodes.join("\n"));
+              void navigator.clipboard.writeText(
+                backupCodes.join("\n")
+              );
             }}
           >
             <Copy size={12} /> Copy codes
           </Button>
-          <Button size="sm" variant="outline" onClick={finishBackupCodes}>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={finishBackupCodes}
+          >
             I've saved these
           </Button>
         </div>
@@ -202,7 +226,11 @@ export const TwoFactorSection = () => {
             >
               Disable
             </Button>
-            <Button size="sm" variant="outline" onClick={cancelDisable}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={cancelDisable}
+            >
               Cancel
             </Button>
           </div>

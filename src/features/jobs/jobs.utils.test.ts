@@ -4,7 +4,9 @@ import { DEFAULT_FILTERS } from "@/features/jobs/job-filters";
 
 describe("buildActivePills", () => {
   it("returns no pills when filters are at their defaults", () => {
-    expect(buildActivePills(DEFAULT_FILTERS, undefined, vi.fn())).toEqual([]);
+    expect(
+      buildActivePills(DEFAULT_FILTERS, undefined, vi.fn())
+    ).toEqual([]);
   });
 
   it("builds one pill per active jobType/seniority/timezone value, with timezone using its display label", () => {
@@ -17,7 +19,11 @@ describe("buildActivePills", () => {
 
     const pills = buildActivePills(filters, undefined, vi.fn());
 
-    expect(pills.map((p) => p.label)).toEqual(["Full-time", "Senior", "SEA / APAC"]);
+    expect(pills.map((p) => p.label)).toEqual([
+      "Full-time",
+      "Senior",
+      "SEA / APAC",
+    ]);
   });
 
   it("resolves a category slug to its display name via the categories list", () => {
@@ -26,7 +32,9 @@ describe("buildActivePills", () => {
 
     const pills = buildActivePills(filters, categories, vi.fn());
 
-    expect(pills).toEqual([expect.objectContaining({ label: "Engineering" })]);
+    expect(pills).toEqual([
+      expect.objectContaining({ label: "Engineering" }),
+    ]);
   });
 
   it("falls back to the raw slug when categories haven't loaded yet", () => {
@@ -38,7 +46,11 @@ describe("buildActivePills", () => {
   });
 
   it("adds a salary pill only once the range is off its default floor/ceiling", () => {
-    const atDefault = buildActivePills(DEFAULT_FILTERS, undefined, vi.fn());
+    const atDefault = buildActivePills(
+      DEFAULT_FILTERS,
+      undefined,
+      vi.fn()
+    );
     expect(atDefault).toEqual([]);
 
     const narrowed = buildActivePills(
@@ -51,11 +63,17 @@ describe("buildActivePills", () => {
 
   it("clearing a pill calls onChange with that value removed and everything else intact", () => {
     const onChange = vi.fn();
-    const filters = { ...DEFAULT_FILTERS, jobType: ["Full-time", "Contract"] };
+    const filters = {
+      ...DEFAULT_FILTERS,
+      jobType: ["Full-time", "Contract"],
+    };
 
     const pills = buildActivePills(filters, undefined, onChange);
     pills.find((p) => p.label === "Full-time")?.clear();
 
-    expect(onChange).toHaveBeenCalledWith({ ...filters, jobType: ["Contract"] });
+    expect(onChange).toHaveBeenCalledWith({
+      ...filters,
+      jobType: ["Contract"],
+    });
   });
 });

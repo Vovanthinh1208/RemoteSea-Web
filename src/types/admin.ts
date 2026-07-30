@@ -1,4 +1,10 @@
-import type { Category, ExperienceLevel, JobStatus, JobType, PlanType } from "@/types/job";
+import type {
+  Category,
+  ExperienceLevel,
+  JobStatus,
+  JobType,
+  PlanType,
+} from "@/types/job";
 
 export type AdminJob = {
   id: string;
@@ -28,13 +34,22 @@ export type AdminJob = {
   expiresAt: string | null;
   createdAt: string;
   updatedAt: string;
-  employer: { companyName: string; isVerified: boolean; slug: string };
+  employer: {
+    companyName: string;
+    isVerified: boolean;
+    slug: string;
+  };
   categories: { category: Category }[];
 };
 
 export type AdminJobsResponse = {
   jobs: AdminJob[];
-  pagination: { page: number; limit: number; total: number; pages: number };
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
 };
 
 export type AdminEmployer = {
@@ -61,7 +76,12 @@ export type AdminEmployer = {
 
 export type AdminEmployersResponse = {
   employers: AdminEmployer[];
-  pagination: { page: number; limit: number; total: number; pages: number };
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
 };
 
 export type RevenueMonthBucket = {
