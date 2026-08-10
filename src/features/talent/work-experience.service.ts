@@ -12,14 +12,12 @@ export const listWorkExperience = (
 
 export const createWorkExperience = (
   payload: CreateWorkExperiencePayload
-): Promise<WorkExperience> =>
-  workExperienceRepository.create(payload);
+): Promise<WorkExperience> => workExperienceRepository.create(payload);
 
 export const updateWorkExperience = (
   id: string,
   payload: UpdateWorkExperiencePayload
-): Promise<WorkExperience> =>
-  workExperienceRepository.update(id, payload);
+): Promise<WorkExperience> => workExperienceRepository.update(id, payload);
 
 export const deleteWorkExperience = (id: string): Promise<void> =>
   workExperienceRepository.delete(id);

@@ -19,10 +19,7 @@ interface FileUploadProps {
 
 const UPLOAD_FAILED_MESSAGE = "Upload failed. Try again.";
 
-const getButtonLabel = (
-  state: UploadState,
-  label: string
-): string => {
+const getButtonLabel = (state: UploadState, label: string): string => {
   if (state === "uploading") return "Uploading…";
   if (state === "done") return `${label} uploaded`;
   return label;
@@ -36,9 +33,7 @@ export const FileUpload = ({
   onUploaded,
 }: FileUploadProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [state, setState] = useState<UploadState>(
-    value ? "done" : "idle"
-  );
+  const [state, setState] = useState<UploadState>(value ? "done" : "idle");
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -46,9 +41,7 @@ export const FileUpload = ({
   // call setState on an unmounted component once it eventually resolves.
   useEffect(() => () => abortRef.current?.abort(), []);
 
-  const handleChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 

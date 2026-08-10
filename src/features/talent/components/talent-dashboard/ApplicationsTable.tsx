@@ -81,19 +81,11 @@ interface ApplicationsTableProps {
 }
 
 const isTabId = (v: string): v is TabId =>
-  (["all", "active", "offers", "closed"] as const).includes(
-    v as TabId
-  );
+  (["all", "active", "offers", "closed"] as const).includes(v as TabId);
 
-export const ApplicationsTable = ({
-  applications,
-}: ApplicationsTableProps) => {
+export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
   // URL-synced so reloading (or sharing the link) doesn't silently revert to "Active".
-  const [tab, setTab] = useSearchParamState<TabId>(
-    "appTab",
-    "active",
-    isTabId
-  );
+  const [tab, setTab] = useSearchParamState<TabId>("appTab", "active", isTabId);
 
   // Single O(n) bucketing pass instead of re-filtering `applications` once per tab
   // count plus once for the visible rows (previously 6 separate .filter() passes
@@ -106,16 +98,11 @@ export const ApplicationsTable = ({
       offer: [],
       closed: [],
     };
-    for (const a of applications)
-      buckets[STATUS_TO_BUCKET[a.status]].push(a);
+    for (const a of applications) buckets[STATUS_TO_BUCKET[a.status]].push(a);
 
     const byTab: Record<TabId, ApplicationWithJob[]> = {
       all: applications,
-      active: [
-        ...buckets.applied,
-        ...buckets.review,
-        ...buckets.interview,
-      ],
+      active: [...buckets.applied, ...buckets.review, ...buckets.interview],
       offers: buckets.offer,
       closed: buckets.closed,
     };
@@ -170,9 +157,7 @@ export const ApplicationsTable = ({
               onClick={() => setTab(t.id)}
             >
               {t.label}{" "}
-              <span className="ml-0.5 text-neutral-400">
-                {t.count}
-              </span>
+              <span className="ml-0.5 text-neutral-400">{t.count}</span>
             </button>
           ))}
         </div>
@@ -192,9 +177,7 @@ export const ApplicationsTable = ({
             <span>Role &amp; company</span>
             <span className="w-[100px] text-center">Status</span>
             <span className="hidden w-[140px] md:block">Stage</span>
-            <span className="hidden w-[72px] text-right md:block">
-              Applied
-            </span>
+            <span className="hidden w-[72px] text-right md:block">Applied</span>
             <span className="w-5" />
           </div>
           {filtered.map((a) => (

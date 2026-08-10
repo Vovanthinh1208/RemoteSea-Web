@@ -121,9 +121,7 @@ export const VisibilitySection = ({
             <p className="mb-1 flex items-center gap-1.5 text-[13.5px] font-semibold text-neutral-900">
               <Icon
                 className={
-                  selected === id
-                    ? "text-brand-600"
-                    : "text-neutral-500"
+                  selected === id ? "text-brand-600" : "text-neutral-500"
                 }
                 size={14}
               />

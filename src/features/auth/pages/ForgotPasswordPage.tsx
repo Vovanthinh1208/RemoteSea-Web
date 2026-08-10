@@ -20,8 +20,7 @@ export const ForgotPasswordPage = () => {
         Reset your password.
       </h1>
       <p className="mb-8 text-sm text-neutral-500">
-        Enter the email on your account and we&apos;ll send you a
-        reset link.
+        Enter the email on your account and we&apos;ll send you a reset link.
       </p>
 
       <ForgotPasswordForm />

@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getAdminRevenue,
   listAdminEmployers,
@@ -26,9 +22,7 @@ const ADMIN_LIST_LIMIT = 50;
 // invalidate this key.
 const ADMIN_QUEUE_STALE_TIME_MS = 15_000;
 
-export const useAdminJobs = (
-  status: JobStatus = "PENDING_REVIEW"
-) => {
+export const useAdminJobs = (status: JobStatus = "PENDING_REVIEW") => {
   const { user } = useAuth();
   return useQuery({
     queryKey: adminKeys.jobs(status),

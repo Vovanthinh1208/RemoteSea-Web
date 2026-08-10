@@ -246,8 +246,7 @@ export const ExplorerSection = () => {
     () =>
       SALARY_DATA.filter(
         (r) =>
-          r.role === role &&
-          (seniority === "All" || r.seniority === seniority)
+          r.role === role && (seniority === "All" || r.seniority === seniority)
       ),
     [role, seniority]
   );
@@ -291,11 +290,7 @@ export const ExplorerSection = () => {
           </p>
           <div className="flex flex-wrap gap-2">
             {ROLES.map((r) => (
-              <Chip
-                active={role === r}
-                key={r}
-                onClick={() => setRole(r)}
-              >
+              <Chip active={role === r} key={r} onClick={() => setRole(r)}>
                 {r}
               </Chip>
             ))}
@@ -359,13 +354,10 @@ export const ExplorerSection = () => {
 
         {/* Disclaimer */}
         <div className="mt-5 flex items-start gap-2 rounded-12 bg-neutral-50 px-4 py-3 text-[12.5px] text-neutral-500">
-          <Zap
-            className="mt-0.5 flex-shrink-0 text-amber-500"
-            size={14}
-          />
-          All figures are gross monthly salary in USD unless toggled.
-          Bonuses &amp; equity excluded. Submit your offer anonymously
-          to help refine these numbers.
+          <Zap className="mt-0.5 flex-shrink-0 text-amber-500" size={14} />
+          All figures are gross monthly salary in USD unless toggled. Bonuses
+          &amp; equity excluded. Submit your offer anonymously to help refine
+          these numbers.
         </div>
       </div>
     </section>

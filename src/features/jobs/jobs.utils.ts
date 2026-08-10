@@ -79,13 +79,9 @@ export const buildActivePills = (
         }),
     })
   );
-  if (
-    filters.salaryMin > SALARY_FLOOR ||
-    filters.salaryMax < SALARY_CEIL
-  ) {
+  if (filters.salaryMin > SALARY_FLOOR || filters.salaryMax < SALARY_CEIL) {
     pills.push({
-      label:
-        formatSalaryRange(filters.salaryMin, filters.salaryMax) ?? "",
+      label: formatSalaryRange(filters.salaryMin, filters.salaryMax) ?? "",
       clear: () =>
         onChange({
           ...filters,

@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  dropUndefined,
-  toArrayParam,
-} from "@/core/query-params/query-params";
+import { dropUndefined, toArrayParam } from "@/core/query-params/query-params";
 
 describe("dropUndefined", () => {
   it("removes keys whose value is undefined", () => {

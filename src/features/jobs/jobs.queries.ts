@@ -5,22 +5,12 @@ import {
   useQueryClient,
   type QueryClient,
 } from "@tanstack/react-query";
-import {
-  createJob,
-  getJob,
-  listJobs,
-} from "@/features/jobs/jobs.service";
-import {
-  JOB_LIMIT,
-  type JobFilters,
-} from "@/features/jobs/job-filters";
+import { createJob, getJob, listJobs } from "@/features/jobs/jobs.service";
+import { JOB_LIMIT, type JobFilters } from "@/features/jobs/job-filters";
 import { jobKeys, employerKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 
-export const useJobsQuery = (
-  filters: JobFilters,
-  limit: number = JOB_LIMIT
-) =>
+export const useJobsQuery = (filters: JobFilters, limit: number = JOB_LIMIT) =>
   useQuery({
     queryKey: jobKeys.list(filters, limit),
     queryFn: ({ signal }) => listJobs(filters, limit, { signal }),

@@ -20,10 +20,7 @@ const syncMeta = (
 // otherwise every route shares the same site-wide copy, which is a real gap for
 // pages like job postings that need distinct, indexable, shareable copy when a
 // link is pasted into Slack/LinkedIn/Twitter.
-export const useDocumentTitle = (
-  title: string,
-  description?: string
-): void => {
+export const useDocumentTitle = (title: string, description?: string): void => {
   useEffect(() => {
     const previousTitle = document.title;
     const fullTitle = `${title} | RemoteSEA`;

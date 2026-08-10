@@ -13,8 +13,7 @@ export const NotFoundPage = () => {
         Page not found
       </h1>
       <p className="mt-2 text-sm text-neutral-500">
-        The page you&apos;re looking for doesn&apos;t exist or has
-        moved.
+        The page you&apos;re looking for doesn&apos;t exist or has moved.
       </p>
       <Link className="mt-6" to={ROUTES.home}>
         <Button variant="primary">Back to home</Button>

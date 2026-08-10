@@ -14,12 +14,7 @@ export const SALARY_CEIL = 8000;
 // it automatically when `q` is set and `sort` is omitted, but it's also a
 // real, distinct sort a caller (or this UI) can request explicitly.
 export type SortKey = "recent" | "salary" | "featured" | "relevance";
-const SORTS: SortKey[] = [
-  "recent",
-  "salary",
-  "featured",
-  "relevance",
-];
+const SORTS: SortKey[] = ["recent", "salary", "featured", "relevance"];
 
 // UI-facing filter vocabulary, ported from remotesea/src/lib/job-filters.ts —
 // GET /jobs now accepts arrays (repeated query keys) + salaryMin/salaryMax +
@@ -63,12 +58,11 @@ export const JOBTYPE_TO_ENUMS: Record<string, JobType[]> = {
   "Part-time": ["PART_TIME"],
 };
 
-export const SENIORITY_TO_LEVELS: Record<string, ExperienceLevel[]> =
-  {
-    Entry: ["ENTRY"],
-    Mid: ["MID"],
-    Senior: ["SENIOR", "LEAD", "EXECUTIVE"],
-  };
+export const SENIORITY_TO_LEVELS: Record<string, ExperienceLevel[]> = {
+  Entry: ["ENTRY"],
+  Mid: ["MID"],
+  Senior: ["SENIOR", "LEAD", "EXECUTIVE"],
+};
 
 export const FILTER_OPTIONS = {
   jobType: ["Full-time", "Contract", "Part-time"],
@@ -77,12 +71,9 @@ export const FILTER_OPTIONS = {
   category: ["Engineering", "Design", "Data", "Product", "Marketing"],
 };
 
-const toArray = (value: string[] | undefined): string[] =>
-  value ?? [];
+const toArray = (value: string[] | undefined): string[] => value ?? [];
 
-export const parseJobQuery = (
-  params: URLSearchParams
-): JobFilters => {
+export const parseJobQuery = (params: URLSearchParams): JobFilters => {
   const sortRaw = params.get("sort") as SortKey | null;
   const salaryMin = Number(params.get("salaryMin")) || SALARY_FLOOR;
   const salaryMax = Number(params.get("salaryMax")) || SALARY_CEIL;
@@ -123,6 +114,4 @@ export const countActiveFilters = (filters: Filters): number =>
   filters.timezone.length +
   filters.category.length +
   filters.seniority.length +
-  (filters.salaryMin > SALARY_FLOOR || filters.salaryMax < SALARY_CEIL
-    ? 1
-    : 0);
+  (filters.salaryMin > SALARY_FLOOR || filters.salaryMax < SALARY_CEIL ? 1 : 0);

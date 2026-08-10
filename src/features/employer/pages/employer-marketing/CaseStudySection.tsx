@@ -15,8 +15,7 @@ export const CaseStudySection = () => (
         <div
           className="pointer-events-none absolute right-0 top-0 h-96 w-96 opacity-40"
           style={{
-            background:
-              "radial-gradient(circle, #DCEFDF 0%, transparent 60%)",
+            background: "radial-gradient(circle, #DCEFDF 0%, transparent 60%)",
           }}
         />
         <div className="relative z-10 grid gap-12 md:grid-cols-[1.1fr_1fr]">
@@ -27,13 +26,13 @@ export const CaseStudySection = () => (
               style={{ fontFamily: "var(--font-serif)" }}
             >
               &quot;We hired our founding engineer in{" "}
-              <em className="italic text-brand-700">11 days</em>{" "}
-              through RemoteSEA.&quot;
+              <em className="italic text-brand-700">11 days</em> through
+              RemoteSEA.&quot;
             </h2>
             <p className="mb-8 text-[14.5px] leading-relaxed text-neutral-500">
-              Finch Labs (SG) needed a full-stack engineer for
-              cross-border payments rails — Series A, 22 people,
-              looking for someone with Postgres scars.
+              Finch Labs (SG) needed a full-stack engineer for cross-border
+              payments rails — Series A, 22 people, looking for someone with
+              Postgres scars.
             </p>
             <div className="grid grid-cols-2 gap-4">
               {CASE_STUDY_STATS.map((stat) => (
@@ -73,9 +72,9 @@ export const CaseStudySection = () => (
                 className="mb-5 font-serif text-[19px] italic leading-snug text-neutral-800"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                &quot;LinkedIn was sending us 200 applies, mostly
-                noise. RemoteSEA sent 42 — and 12 of those were
-                genuinely strong. We hired #4.&quot;
+                &quot;LinkedIn was sending us 200 applies, mostly noise.
+                RemoteSEA sent 42 — and 12 of those were genuinely strong. We
+                hired #4.&quot;
               </p>
               <div className="flex items-center gap-2.5 border-t border-neutral-200 pt-4">
                 <div className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-xs font-semibold text-white">

@@ -7,10 +7,7 @@ import {
 } from "@/features/post-job/components/form-primitives";
 import { SkillTagEditor } from "@/components/shared/SkillTagEditor";
 import { PillToggle } from "@/components/shared/PillToggle";
-import {
-  useCategories,
-  useSkills,
-} from "@/features/taxonomy/taxonomy.queries";
+import { useCategories, useSkills } from "@/features/taxonomy/taxonomy.queries";
 import {
   BENEFIT_OPTIONS,
   CURRENCY_OPTIONS,
@@ -109,9 +106,7 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
         required
       >
         <Textarea
-          placeholder={
-            "What you'll do...\n\nWhat we're looking for..."
-          }
+          placeholder={"What you'll do...\n\nWhat we're looking for..."}
           rows={8}
           value={form.jobDesc}
           onChange={(v) => set("jobDesc", v)}

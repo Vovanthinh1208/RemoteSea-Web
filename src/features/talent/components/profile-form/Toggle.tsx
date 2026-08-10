@@ -14,9 +14,7 @@ export const Toggle = ({ on, onChange }: ToggleProps) => (
     className={cn(
       "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border transition-colors duration-200",
       "focus-visible:shadow-focus focus-visible:outline-none",
-      on
-        ? "border-brand-600 bg-brand-600"
-        : "border-neutral-300 bg-neutral-100"
+      on ? "border-brand-600 bg-brand-600" : "border-neutral-300 bg-neutral-100"
     )}
   >
     <span

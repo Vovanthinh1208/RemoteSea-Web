@@ -4,10 +4,7 @@ import type { TalentProfile } from "@/types/talent";
 export type AppStatusBucket =
   "applied" | "review" | "interview" | "offer" | "closed";
 
-export const STATUS_TO_BUCKET: Record<
-  ApplicationStatus,
-  AppStatusBucket
-> = {
+export const STATUS_TO_BUCKET: Record<ApplicationStatus, AppStatusBucket> = {
   PENDING: "applied",
   REVIEWING: "review",
   SHORTLISTED: "review",
@@ -55,8 +52,7 @@ export const missingProfileFields = (
   if (!profile.headline) missing.push("a headline");
   if (!profile.bio) missing.push("a bio");
   if (profile.skills.length === 0) missing.push("skills");
-  if (!profile.desiredSalaryMin)
-    missing.push("your salary expectation");
+  if (!profile.desiredSalaryMin) missing.push("your salary expectation");
   if (!profile.resumeUrl) missing.push("your CV");
   return missing;
 };

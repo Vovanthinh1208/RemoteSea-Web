@@ -30,24 +30,21 @@ export const authRepository = {
   completeTwoFactorChallenge: async (
     payload: TwoFactorChallengePayload
   ): Promise<TwoFactorChallengeResponseDto> => {
-    const { data } =
-      await apiClient.post<TwoFactorChallengeResponseDto>(
-        "/auth/2fa/challenge",
-        payload
-      );
-    return data;
-  },
-
-  getTwoFactorStatus: async (): Promise<TwoFactorStatusDto> => {
-    const { data } = await apiClient.get<TwoFactorStatusDto>(
-      "/auth/2fa/status"
+    const { data } = await apiClient.post<TwoFactorChallengeResponseDto>(
+      "/auth/2fa/challenge",
+      payload
     );
     return data;
   },
 
-  setupTwoFactor: async (): Promise<TwoFactorSetupDto> => {
+  getTwoFactorStatus: async (): Promise<TwoFactorStatusDto> => {
     const { data } =
-      await apiClient.post<TwoFactorSetupDto>("/auth/2fa/setup");
+      await apiClient.get<TwoFactorStatusDto>("/auth/2fa/status");
+    return data;
+  },
+
+  setupTwoFactor: async (): Promise<TwoFactorSetupDto> => {
+    const { data } = await apiClient.post<TwoFactorSetupDto>("/auth/2fa/setup");
     return data;
   },
 
@@ -71,9 +68,7 @@ export const authRepository = {
     return data;
   },
 
-  register: async (
-    payload: RegisterPayload
-  ): Promise<RegisterResponseDto> => {
+  register: async (payload: RegisterPayload): Promise<RegisterResponseDto> => {
     const { data } = await apiClient.post<RegisterResponseDto>(
       "/auth/register",
       payload
@@ -81,21 +76,14 @@ export const authRepository = {
     return data;
   },
 
-  getSession: async (
-    opts?: RequestOptions
-  ): Promise<SessionResponseDto> => {
-    const { data } = await apiClient.get<SessionResponseDto>(
-      "/auth/session",
-      {
-        signal: opts?.signal,
-      }
-    );
+  getSession: async (opts?: RequestOptions): Promise<SessionResponseDto> => {
+    const { data } = await apiClient.get<SessionResponseDto>("/auth/session", {
+      signal: opts?.signal,
+    });
     return data;
   },
 
-  forgotPassword: async (
-    email: string
-  ): Promise<{ message: string }> => {
+  forgotPassword: async (email: string): Promise<{ message: string }> => {
     const { data } = await apiClient.post<{ message: string }>(
       "/auth/forgot-password",
       {

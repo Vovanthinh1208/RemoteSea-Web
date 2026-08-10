@@ -57,8 +57,8 @@ export const MeetupsSection = () => (
           bandwidth.
         </h2>
         <p className="mx-auto max-w-lg text-neutral-400">
-          Members organize meetups whenever 5+ folks are in the same
-          city. Free, low-key, and the wifi is always passable.
+          Members organize meetups whenever 5+ folks are in the same city. Free,
+          low-key, and the wifi is always passable.
         </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -77,9 +77,7 @@ export const MeetupsSection = () => (
               <span className="text-[22px] font-semibold text-white">
                 {e.date.split(" ")[1]}
               </span>
-              <span className="text-[10px] text-neutral-400">
-                {e.day}
-              </span>
+              <span className="text-[10px] text-neutral-400">{e.day}</span>
             </div>
             <div className="min-w-0 flex-1">
               <div className="mb-1 flex items-center gap-1 text-[11px] text-neutral-400">

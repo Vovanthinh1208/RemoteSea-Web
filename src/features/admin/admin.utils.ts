@@ -19,16 +19,13 @@ const COLORS = [
   "#00B14F",
 ];
 
-export const colorFor = (s: string): string =>
-  pickColorFromString(s, COLORS);
+export const colorFor = (s: string): string => pickColorFromString(s, COLORS);
 
 const MS_PER_HOUR = 3_600_000;
 const HOURS_PER_DAY = 24;
 
 export const hoursSince = (dateString: string): number =>
-  Math.floor(
-    (Date.now() - new Date(dateString).getTime()) / MS_PER_HOUR
-  );
+  Math.floor((Date.now() - new Date(dateString).getTime()) / MS_PER_HOUR);
 
 export const waitFmt = (h: number): string => {
   if (h < HOURS_PER_DAY) return `${h}h`;
@@ -53,10 +50,7 @@ const MIN_DESCRIPTION_LENGTH = 100;
 
 export const autoChecks = (job: AdminJob): AutoCheck[] => [
   {
-    state:
-      job.description.length >= MIN_DESCRIPTION_LENGTH
-        ? "pass"
-        : "fail",
+    state: job.description.length >= MIN_DESCRIPTION_LENGTH ? "pass" : "fail",
     t: "Description length",
     d: `${job.description.length} characters`,
   },
@@ -73,9 +67,7 @@ export const autoChecks = (job: AdminJob): AutoCheck[] => [
   {
     state: job.employer.isVerified ? "pass" : "warn",
     t: "Employer verified",
-    d: job.employer.isVerified
-      ? "Verified company"
-      : "Not yet verified",
+    d: job.employer.isVerified ? "Verified company" : "Not yet verified",
   },
 ];
 

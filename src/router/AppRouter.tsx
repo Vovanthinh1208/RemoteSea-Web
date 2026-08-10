@@ -75,26 +75,20 @@ const TalentDashboardPage = lazy(() =>
   }))
 );
 const PublicTalentProfilePage = lazy(() =>
-  import("@/features/talent/pages/PublicTalentProfilePage").then(
-    (m) => ({
-      default: m.PublicTalentProfilePage,
-    })
-  )
+  import("@/features/talent/pages/PublicTalentProfilePage").then((m) => ({
+    default: m.PublicTalentProfilePage,
+  }))
 );
 
 const EmployerMarketingPage = lazy(() =>
-  import("@/features/employer/pages/EmployerMarketingPage").then(
-    (m) => ({
-      default: m.EmployerMarketingPage,
-    })
-  )
+  import("@/features/employer/pages/EmployerMarketingPage").then((m) => ({
+    default: m.EmployerMarketingPage,
+  }))
 );
 const EmployerDashboardPage = lazy(() =>
-  import("@/features/employer/pages/EmployerDashboardPage").then(
-    (m) => ({
-      default: m.EmployerDashboardPage,
-    })
-  )
+  import("@/features/employer/pages/EmployerDashboardPage").then((m) => ({
+    default: m.EmployerDashboardPage,
+  }))
 );
 const PostJobPage = lazy(() =>
   import("@/features/post-job/pages/PostJobPage").then((m) => ({
@@ -102,11 +96,9 @@ const PostJobPage = lazy(() =>
   }))
 );
 const PostJobSuccessPage = lazy(() =>
-  import("@/features/post-job/pages/PostJobSuccessPage").then(
-    (m) => ({
-      default: m.PostJobSuccessPage,
-    })
-  )
+  import("@/features/post-job/pages/PostJobSuccessPage").then((m) => ({
+    default: m.PostJobSuccessPage,
+  }))
 );
 
 const AlertsPage = lazy(() =>
@@ -144,14 +136,8 @@ export const AppRouter = () => {
         <Route element={<GuestOnlyRoute />}>
           <Route element={<LoginPage />} path="login" />
           <Route element={<RegisterPage />} path="register" />
-          <Route
-            element={<ForgotPasswordPage />}
-            path="forgot-password"
-          />
-          <Route
-            element={<ResetPasswordPage />}
-            path="reset-password"
-          />
+          <Route element={<ForgotPasswordPage />} path="forgot-password" />
+          <Route element={<ResetPasswordPage />} path="reset-password" />
         </Route>
 
         <Route element={<AuthCallbackPage />} path="auth/callback" />
@@ -164,14 +150,8 @@ export const AppRouter = () => {
         <Route element={<CommunityPage />} path="community" />
 
         <Route element={<EmployerMarketingPage />} path="employer" />
-        <Route
-          element={<PostJobSuccessPage />}
-          path="post-job/success"
-        />
-        <Route
-          element={<PublicTalentProfilePage />}
-          path="talent/:slug"
-        />
+        <Route element={<PostJobSuccessPage />} path="post-job/success" />
+        <Route element={<PublicTalentProfilePage />} path="talent/:slug" />
 
         {/* post-job/alerts/settings are intentionally role-agnostic: creating an
             employer profile via the post-job wizard is how a user *becomes* an

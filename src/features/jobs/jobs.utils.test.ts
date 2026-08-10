@@ -4,9 +4,7 @@ import { DEFAULT_FILTERS } from "@/features/jobs/job-filters";
 
 describe("buildActivePills", () => {
   it("returns no pills when filters are at their defaults", () => {
-    expect(
-      buildActivePills(DEFAULT_FILTERS, undefined, vi.fn())
-    ).toEqual([]);
+    expect(buildActivePills(DEFAULT_FILTERS, undefined, vi.fn())).toEqual([]);
   });
 
   it("builds one pill per active jobType/seniority/timezone value, with timezone using its display label", () => {
@@ -32,9 +30,7 @@ describe("buildActivePills", () => {
 
     const pills = buildActivePills(filters, categories, vi.fn());
 
-    expect(pills).toEqual([
-      expect.objectContaining({ label: "Engineering" }),
-    ]);
+    expect(pills).toEqual([expect.objectContaining({ label: "Engineering" })]);
   });
 
   it("falls back to the raw slug when categories haven't loaded yet", () => {
@@ -46,11 +42,7 @@ describe("buildActivePills", () => {
   });
 
   it("adds a salary pill only once the range is off its default floor/ceiling", () => {
-    const atDefault = buildActivePills(
-      DEFAULT_FILTERS,
-      undefined,
-      vi.fn()
-    );
+    const atDefault = buildActivePills(DEFAULT_FILTERS, undefined, vi.fn());
     expect(atDefault).toEqual([]);
 
     const narrowed = buildActivePills(

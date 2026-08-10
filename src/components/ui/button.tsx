@@ -66,9 +66,7 @@ export const Button = ({
       disabled={disabled || isLoading}
       {...props}
     >
-      <span className="flex items-center justify-center">
-        {children}
-      </span>
+      <span className="flex items-center justify-center">{children}</span>
 
       {isLoading && (
         <span className={spinnerVariants({ size })}>

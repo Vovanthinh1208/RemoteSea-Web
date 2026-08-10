@@ -60,10 +60,7 @@ export const StepPlan = ({ form, set }: PostJobStepProps) => (
                 className="flex items-center gap-2 text-[12px] text-neutral-600"
                 key={f}
               >
-                <Check
-                  className="flex-shrink-0 text-brand-600"
-                  size={11}
-                />
+                <Check className="flex-shrink-0 text-brand-600" size={11} />
                 {f}
               </li>
             ))}

@@ -32,8 +32,7 @@ const MEMBERS = [
     years: 9,
     initial: "H",
     color: "linear-gradient(135deg,#2563EB,#1D4ED8)",
-    quote:
-      "Six timezones, zero standups. The PRs and docs do all the talking.",
+    quote: "Six timezones, zero standups. The PRs and docs do all the talking.",
   },
   {
     name: "Khang Lê",
@@ -64,9 +63,9 @@ export const MembersSection = () => (
           in here.
         </h2>
         <p className="mx-auto max-w-lg text-neutral-500">
-          A small slice of who you&apos;ll meet. Everyone&apos;s
-          vetted, everyone&apos;s remote, everyone&apos;s working for
-          a company outside Vietnam.
+          A small slice of who you&apos;ll meet. Everyone&apos;s vetted,
+          everyone&apos;s remote, everyone&apos;s working for a company outside
+          Vietnam.
         </p>
       </div>
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -86,9 +85,7 @@ export const MembersSection = () => (
                 <div className="text-[14px] font-semibold text-neutral-900">
                   {m.name}
                 </div>
-                <div className="text-[12px] text-neutral-500">
-                  {m.role}
-                </div>
+                <div className="text-[12px] text-neutral-500">{m.role}</div>
                 <div className="text-[12px] text-neutral-400">
                   @ {m.company}
                 </div>

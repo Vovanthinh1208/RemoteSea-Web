@@ -49,8 +49,6 @@ describe("getSession", () => {
     repository.authRepository.getSession.mockResolvedValueOnce({
       user: { email: "a@b.com", name: "Ada" },
     });
-    await expect(getSession()).rejects.toBeInstanceOf(
-      ValidationError
-    );
+    await expect(getSession()).rejects.toBeInstanceOf(ValidationError);
   });
 });

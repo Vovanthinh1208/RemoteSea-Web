@@ -5,6 +5,7 @@ import {
   Share2,
   ShieldCheck,
   SlidersHorizontal,
+  Sparkles,
   User,
 } from "lucide-react";
 
@@ -27,6 +28,12 @@ export const PROF_SECTIONS = [
     icon: SlidersHorizontal,
   },
   { id: "links", label: "Links & CV", done: false, icon: Share2 },
+  {
+    id: "highlights",
+    label: "Highlights",
+    done: false,
+    icon: Sparkles,
+  },
   {
     id: "visibility",
     label: "Visibility",

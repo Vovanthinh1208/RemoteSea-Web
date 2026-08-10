@@ -19,10 +19,7 @@ export const VerifiedInline = ({
   className,
 }: VerifiedInlineProps) => (
   <span
-    className={cn(
-      "inline-flex items-center gap-0.5 text-brand-600",
-      className
-    )}
+    className={cn("inline-flex items-center gap-0.5 text-brand-600", className)}
   >
     <ShieldCheck size={iconSize} /> {label}
   </span>

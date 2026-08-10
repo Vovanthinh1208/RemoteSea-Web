@@ -69,12 +69,15 @@ export const savedKeys = {
 
 export const talentKeys = {
   mine: () => ["talent", "me"] as const,
-  public: (slug: string | undefined) =>
-    ["talent", "public", slug] as const,
+  public: (slug: string | undefined) => ["talent", "public", slug] as const,
 };
 
 export const workExperienceKeys = {
   mine: () => ["talent", "me", "experience"] as const,
+};
+
+export const profileHighlightKeys = {
+  mine: () => ["talent", "me", "highlights"] as const,
 };
 
 export const taxonomyKeys = {

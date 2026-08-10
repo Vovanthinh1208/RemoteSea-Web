@@ -15,14 +15,12 @@ import type {
 
 export type ChangePasswordPayload = ChangePasswordRequestDto;
 
-export const updateMyName = async (
-  name: string
-): Promise<UpdatedUserDto> => usersRepository.updateMyName(name);
+export const updateMyName = async (name: string): Promise<UpdatedUserDto> =>
+  usersRepository.updateMyName(name);
 
 export const changeMyPassword = async (
   payload: ChangePasswordPayload
-): Promise<{ message: string }> =>
-  usersRepository.changeMyPassword(payload);
+): Promise<{ message: string }> => usersRepository.changeMyPassword(payload);
 
 export const deleteMyAccount = async (): Promise<{
   success: boolean;
@@ -33,8 +31,7 @@ export const getMyAccount = async (): Promise<AccountFieldsDto> =>
 
 export const updateMyAccount = async (
   payload: UpdateAccountPayload
-): Promise<AccountFieldsDto> =>
-  usersRepository.updateAccount(payload);
+): Promise<AccountFieldsDto> => usersRepository.updateAccount(payload);
 
 export const getMyNotificationPreferences =
   async (): Promise<NotificationPreferencesDto> =>

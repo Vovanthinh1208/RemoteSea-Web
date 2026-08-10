@@ -35,9 +35,9 @@ export const JoinCtaSection = () => (
         ?
       </h2>
       <p className="mb-10 text-[15px] leading-relaxed text-neutral-500">
-        One form, 4 questions, ~5 minutes. We review applications
-        every Friday and reply by the following Tuesday — yes, even if
-        the answer is &ldquo;not yet.&rdquo;
+        One form, 4 questions, ~5 minutes. We review applications every Friday
+        and reply by the following Tuesday — yes, even if the answer is
+        &ldquo;not yet.&rdquo;
       </p>
       <div className="mb-10 grid gap-6 text-left sm:grid-cols-3">
         {JOIN_STEPS.map((s) => (
@@ -49,9 +49,7 @@ export const JoinCtaSection = () => (
               <div className="mb-1 text-[15px] font-semibold text-neutral-900">
                 {s.title}
               </div>
-              <div className="text-[13px] text-neutral-500">
-                {s.desc}
-              </div>
+              <div className="text-[13px] text-neutral-500">{s.desc}</div>
             </div>
           </div>
         ))}

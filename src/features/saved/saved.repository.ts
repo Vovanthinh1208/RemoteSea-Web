@@ -11,32 +11,22 @@ export const savedRepository = {
     limit: number,
     opts?: RequestOptions
   ): Promise<SavedJobListResponseDto> => {
-    const { data } = await apiClient.get<SavedJobListResponseDto>(
-      "/saved",
-      {
-        params: { page, limit },
-        signal: opts?.signal,
-      }
-    );
+    const { data } = await apiClient.get<SavedJobListResponseDto>("/saved", {
+      params: { page, limit },
+      signal: opts?.signal,
+    });
     return data;
   },
 
-  listIds: async (
-    opts?: RequestOptions
-  ): Promise<SavedJobIdsResponseDto> => {
-    const { data } = await apiClient.get<SavedJobIdsResponseDto>(
-      "/saved/ids",
-      {
-        signal: opts?.signal,
-      }
-    );
+  listIds: async (opts?: RequestOptions): Promise<SavedJobIdsResponseDto> => {
+    const { data } = await apiClient.get<SavedJobIdsResponseDto>("/saved/ids", {
+      signal: opts?.signal,
+    });
     return data;
   },
 
   save: async (jobId: string): Promise<{ saved: boolean }> => {
-    const { data } = await apiClient.put<{ saved: boolean }>(
-      `/saved/${jobId}`
-    );
+    const { data } = await apiClient.put<{ saved: boolean }>(`/saved/${jobId}`);
     return data;
   },
 

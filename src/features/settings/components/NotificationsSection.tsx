@@ -21,12 +21,9 @@ export const NotificationsSection = () => {
   const updatePrefsMutation = useUpdateMyNotificationPreferences();
 
   const toggle = (field: ToggleField, value: boolean) =>
-    runWithToast(
-      () => updatePrefsMutation.mutateAsync({ [field]: value }),
-      {
-        error: "Couldn't update notification preference",
-      }
-    );
+    runWithToast(() => updatePrefsMutation.mutateAsync({ [field]: value }), {
+      error: "Couldn't update notification preference",
+    });
 
   return (
     <section

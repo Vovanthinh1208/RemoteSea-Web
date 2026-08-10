@@ -26,9 +26,7 @@ export const useJobPostingSchema = (job: Job | undefined): void => {
       hiringOrganization: {
         "@type": "Organization",
         name: job.employer.companyName,
-        ...(job.employer.logoUrl
-          ? { logo: job.employer.logoUrl }
-          : {}),
+        ...(job.employer.logoUrl ? { logo: job.employer.logoUrl } : {}),
       },
       jobLocationType: job.isRemote ? "TELECOMMUTE" : undefined,
       ...(job.country

@@ -51,9 +51,7 @@ export const FunnelPanel = ({ applicants }: FunnelPanelProps) => {
     <div className="rounded-20 border border-neutral-100 bg-white p-5">
       <h3 className="mb-4 text-[14px] font-semibold text-neutral-900">
         Hiring funnel{" "}
-        <span className="font-normal text-neutral-400">
-          · all listings
-        </span>
+        <span className="font-normal text-neutral-400">· all listings</span>
       </h3>
       <div className="space-y-2.5">
         {funnel.map((f) => (

@@ -22,10 +22,12 @@ import { AboutSection } from "@/features/talent/components/profile-form/AboutSec
 import { ExperienceSection } from "@/features/talent/components/profile-form/ExperienceSection";
 import { PreferencesSection } from "@/features/talent/components/profile-form/PreferencesSection";
 import { LinksSection } from "@/features/talent/components/profile-form/LinksSection";
+import { HighlightsSection } from "@/features/talent/components/profile-form/HighlightsSection";
 import { VisibilitySection } from "@/features/talent/components/profile-form/VisibilitySection";
 import {
   LABEL_TO_LEVEL,
   LEVEL_TO_LABEL,
+  NOTICE_PERIOD_OPTIONS,
   PRIMARY_ROLE_OPTIONS,
   RIGHT_TO_WORK_OPTIONS,
   TIMEZONE_OPTIONS,
@@ -70,6 +72,7 @@ const profileToFormValues = (
   visibility: profile?.visibility ?? "PUBLIC",
   primaryRole: profile?.primaryRole ?? PRIMARY_ROLE_OPTIONS[0],
   rightToWork: profile?.rightToWork ?? RIGHT_TO_WORK_OPTIONS[0],
+  noticePeriod: profile?.noticePeriod ?? NOTICE_PERIOD_OPTIONS[0],
   resumeUrl: profile?.resumeUrl ?? "",
   githubUrl: profile?.githubUrl ?? "",
   linkedinUrl: profile?.linkedinUrl ?? "",
@@ -187,6 +190,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
         visibility: values.visibility,
         primaryRole: values.primaryRole,
         rightToWork: values.rightToWork,
+        noticePeriod: values.noticePeriod,
         employmentTypes,
         timezoneOverlap,
         resumeUrl: normalizeUrl(values.resumeUrl ?? ""),
@@ -219,10 +223,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
       <div className="mx-auto max-w-[1100px] px-6 py-10">
         <div className="mb-8">
           <div className="mb-3 flex items-center gap-1.5 text-[12px] text-neutral-500">
-            <Link
-              className="hover:text-neutral-700"
-              to={ROUTES.talent}
-            >
+            <Link className="hover:text-neutral-700" to={ROUTES.talent}>
               ← Dashboard
             </Link>
             <span>·</span>
@@ -238,9 +239,8 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
             </em>
           </h1>
           <p className="text-[15px] text-neutral-500">
-            Your profile is what gets surfaced to founders and hiring
-            managers. Keep it honest, keep it short — they read dozens
-            a day.
+            Your profile is what gets surfaced to founders and hiring managers.
+            Keep it honest, keep it short — they read dozens a day.
           </p>
         </div>
 
@@ -307,6 +307,8 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
               register={register}
               resumeUrl={resumeUrl ?? ""}
             />
+
+            <HighlightsSection />
 
             <VisibilitySection
               isOpenToWork={isOpenToWork}

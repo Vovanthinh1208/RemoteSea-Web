@@ -44,8 +44,7 @@ export const ForgotPasswordForm = () => {
   if (isSent) {
     return (
       <div className="rounded-12 border border-brand-200 bg-brand-50 p-4 text-sm text-brand-700">
-        If that email exists, we&apos;ve sent a reset link. Check your
-        inbox.
+        If that email exists, we&apos;ve sent a reset link. Check your inbox.
       </div>
     );
   }
@@ -62,9 +61,7 @@ export const ForgotPasswordForm = () => {
         type="email"
       />
 
-      {formError && (
-        <p className="text-sm text-red-600">{formError}</p>
-      )}
+      {formError && <p className="text-sm text-red-600">{formError}</p>}
 
       <Button
         className="w-full rounded-12"

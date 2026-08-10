@@ -19,10 +19,5 @@ export const JobsPage = () => {
     setSearchParams(serializeJobQuery(next));
   };
 
-  return (
-    <JobsBoard
-      filters={filters}
-      onFiltersChange={handleFiltersChange}
-    />
-  );
+  return <JobsBoard filters={filters} onFiltersChange={handleFiltersChange} />;
 };

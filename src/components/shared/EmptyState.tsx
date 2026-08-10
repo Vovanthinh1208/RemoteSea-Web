@@ -13,16 +13,9 @@ export const EmptyState = ({
   action,
   className,
 }: EmptyStateProps) => (
-  <div
-    className={cn(
-      "text-center text-neutral-500",
-      className ?? "py-16"
-    )}
-  >
+  <div className={cn("text-center text-neutral-500", className ?? "py-16")}>
     <p className="mb-1 font-medium text-neutral-900">{title}</p>
-    <p className={action ? "mb-4 text-sm" : "text-sm"}>
-      {description}
-    </p>
+    <p className={action ? "mb-4 text-sm" : "text-sm"}>{description}</p>
     {action}
   </div>
 );

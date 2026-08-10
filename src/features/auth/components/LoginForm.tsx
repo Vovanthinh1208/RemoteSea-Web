@@ -129,9 +129,7 @@ export const LoginForm = () => {
           Remember me
         </label>
 
-        {formError && (
-          <p className="text-sm text-red-600">{formError}</p>
-        )}
+        {formError && <p className="text-sm text-red-600">{formError}</p>}
 
         <Button
           className="w-full rounded-12"

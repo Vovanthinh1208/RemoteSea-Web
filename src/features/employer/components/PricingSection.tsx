@@ -3,10 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Check } from "lucide-react";
 import { ROUTES } from "@/constants/routes";
 import { Eyebrow } from "@/components/ui/eyebrow";
-import {
-  PLAN_DISPLAY_NAMES,
-  PLAN_PRICES_USD,
-} from "@/constants/plans";
+import { PLAN_DISPLAY_NAMES, PLAN_PRICES_USD } from "@/constants/plans";
 import { formatUsd } from "@/utils/format";
 
 interface PricingTier {
@@ -77,9 +74,7 @@ const TierPrice = ({ tier, annual }: TierPriceProps) => {
     return (
       <>
         {formatUsd(tier.annualPrice)}
-        <span className="ml-1 font-sans text-[16px] text-neutral-400">
-          /yr
-        </span>
+        <span className="ml-1 font-sans text-[16px] text-neutral-400">/yr</span>
       </>
     );
   }
@@ -89,9 +84,7 @@ const TierPrice = ({ tier, annual }: TierPriceProps) => {
   return (
     <>
       {formatUsd(tier.price)}
-      <span className="ml-1 font-sans text-[16px] text-neutral-400">
-        /post
-      </span>
+      <span className="ml-1 font-sans text-[16px] text-neutral-400">/post</span>
     </>
   );
 };
@@ -106,13 +99,11 @@ export const PricingSection = () => {
           <Eyebrow className="mb-3">Pricing</Eyebrow>
           <h2 className="text-[36px] font-semibold tracking-tight text-neutral-900">
             One-time, not{" "}
-            <em className="font-serif-italic text-brand-700">
-              subscription.
-            </em>
+            <em className="font-serif-italic text-brand-700">subscription.</em>
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm text-neutral-500">
-            No &quot;talent network access fees.&quot; No seats. Pay
-            per role, only when you&apos;re hiring.
+            No &quot;talent network access fees.&quot; No seats. Pay per role,
+            only when you&apos;re hiring.
           </p>
         </div>
 
@@ -218,8 +209,7 @@ export const PricingSection = () => {
         <div className="mt-8 flex justify-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-brand-100 bg-brand-50 px-5 py-3 text-[13.5px] text-brand-700">
             <Check size={15} />
-            30-day money-back guarantee. Qualified applications or
-            full refund.
+            30-day money-back guarantee. Qualified applications or full refund.
           </div>
         </div>
       </div>

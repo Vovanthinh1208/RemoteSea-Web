@@ -23,12 +23,9 @@ export const AdminRevenueSkeleton = () => (
 
     <div className="overflow-hidden rounded-12 border border-neutral-100 bg-white p-5">
       <div className="space-y-3">
-        {Array.from(
-          { length: TRANSACTION_ROW_SKELETON_COUNT },
-          (_, i) => (
-            <Skeleton className="h-10 w-full rounded-8" key={i} />
-          )
-        )}
+        {Array.from({ length: TRANSACTION_ROW_SKELETON_COUNT }, (_, i) => (
+          <Skeleton className="h-10 w-full rounded-8" key={i} />
+        ))}
       </div>
     </div>
   </div>

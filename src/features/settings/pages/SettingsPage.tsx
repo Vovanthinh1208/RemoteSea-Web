@@ -29,10 +29,7 @@ export const SettingsPage = () => {
         {/* Page header */}
         <div className="mb-8">
           <div className="mb-3 flex items-center gap-1.5 text-[12px] text-neutral-500">
-            <Link
-              className="hover:text-neutral-700"
-              to={dashboardRoute}
-            >
+            <Link className="hover:text-neutral-700" to={dashboardRoute}>
               ← Dashboard
             </Link>
             <span>·</span>
@@ -40,13 +37,11 @@ export const SettingsPage = () => {
           </div>
           <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
             Your account,{" "}
-            <em className="font-serif-italic text-brand-700">
-              your rules.
-            </em>
+            <em className="font-serif-italic text-brand-700">your rules.</em>
           </h1>
           <p className="text-[15px] text-neutral-500">
-            Sign-in, security, and how RemoteSEA talks to you. Profile
-            content lives under{" "}
+            Sign-in, security, and how RemoteSEA talks to you. Profile content
+            lives under{" "}
             <Link
               className="text-brand-600 hover:text-brand-700"
               to={ROUTES.profile}

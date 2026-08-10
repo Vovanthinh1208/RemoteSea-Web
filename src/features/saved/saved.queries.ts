@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   listSavedJobIds,
   listSavedJobs,
@@ -19,10 +15,7 @@ import { TIER } from "@/core/query/query-client";
 // "load more" control is a follow-up if saved-job counts regularly exceed this).
 const SAVED_JOBS_LIST_LIMIT = 50;
 
-export const useSavedJobs = (
-  page = 1,
-  limit = SAVED_JOBS_LIST_LIMIT
-) => {
+export const useSavedJobs = (page = 1, limit = SAVED_JOBS_LIST_LIMIT) => {
   const { user } = useAuth();
   return useQuery({
     queryKey: savedKeys.jobs(page, limit),
@@ -66,9 +59,7 @@ export const useSaveJob = () => {
     mutationFn: saveJob,
     onMutate: async (jobId: string) => {
       await queryClient.cancelQueries({ queryKey: savedKeys.ids() });
-      const previous = queryClient.getQueryData<string[]>(
-        savedKeys.ids()
-      );
+      const previous = queryClient.getQueryData<string[]>(savedKeys.ids());
       queryClient.setQueryData<string[]>(savedKeys.ids(), (old) => [
         ...(old ?? []),
         jobId,
@@ -107,13 +98,10 @@ export const useUnsaveJob = () => {
         queryClient.cancelQueries({ queryKey: savedKeys.jobsPrefix }),
       ]);
 
-      const previousIds = queryClient.getQueryData<string[]>(
-        savedKeys.ids()
-      );
-      const previousLists =
-        queryClient.getQueriesData<SavedJobListResponse>({
-          queryKey: savedKeys.jobsPrefix,
-        });
+      const previousIds = queryClient.getQueryData<string[]>(savedKeys.ids());
+      const previousLists = queryClient.getQueriesData<SavedJobListResponse>({
+        queryKey: savedKeys.jobsPrefix,
+      });
 
       queryClient.setQueryData<string[]>(savedKeys.ids(), (old) =>
         (old ?? []).filter((id) => id !== jobId)

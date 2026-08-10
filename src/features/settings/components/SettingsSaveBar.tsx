@@ -8,9 +8,7 @@ interface SettingsSaveBarProps {
 // Nothing on this page has a single "save" action (each section persists
 // independently, or doesn't persist at all) — this bar is decorative,
 // matching the remotesea design reference.
-export const SettingsSaveBar = ({
-  dashboardRoute,
-}: SettingsSaveBarProps) => (
+export const SettingsSaveBar = ({ dashboardRoute }: SettingsSaveBarProps) => (
   <div className="sticky bottom-0 flex items-center justify-between rounded-20 border border-neutral-200 bg-white/90 px-5 py-3 shadow-card backdrop-blur-sm">
     <span className="flex items-center gap-2 text-[12.5px] text-neutral-500">
       <span className="h-2 w-2 rounded-full bg-brand-500" />

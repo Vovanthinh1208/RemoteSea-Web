@@ -10,19 +10,12 @@ interface BenchBarProps {
 const MIN_BAR_WIDTH_PCT = 2;
 const FULL_WIDTH_PCT = 100;
 
-export const BenchBar = ({
-  min,
-  mid,
-  max,
-  globalMax,
-}: BenchBarProps) => {
+export const BenchBar = ({ min, mid, max, globalMax }: BenchBarProps) => {
   const [hovered, setHovered] = useState(false);
   const left = (min / globalMax) * FULL_WIDTH_PCT;
   const width = ((max - min) / globalMax) * FULL_WIDTH_PCT;
   const midPos =
-    max > min
-      ? ((mid - min) / (max - min)) * FULL_WIDTH_PCT
-      : FULL_WIDTH_PCT;
+    max > min ? ((mid - min) / (max - min)) * FULL_WIDTH_PCT : FULL_WIDTH_PCT;
 
   return (
     <div className="relative h-3 w-full">

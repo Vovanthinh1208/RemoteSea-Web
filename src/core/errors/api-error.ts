@@ -9,16 +9,10 @@ export type ApiErrorBody = {
   error: string | ZodFlattenedError;
 };
 
-const isZodFlattenedError = (
-  value: unknown
-): value is ZodFlattenedError =>
-  typeof value === "object" &&
-  value !== null &&
-  "fieldErrors" in value;
+const isZodFlattenedError = (value: unknown): value is ZodFlattenedError =>
+  typeof value === "object" && value !== null && "fieldErrors" in value;
 
-const firstFieldError = (
-  fieldErrors: FieldErrors
-): string | undefined => {
+const firstFieldError = (fieldErrors: FieldErrors): string | undefined => {
   const firstKey = Object.keys(fieldErrors)[0];
   return firstKey ? fieldErrors[firstKey]?.[0] : undefined;
 };

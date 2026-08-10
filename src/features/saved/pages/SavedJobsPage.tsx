@@ -25,21 +25,14 @@ export const SavedJobsPage = () => {
 
       {isLoading ? (
         <div className="space-y-2">
-          {Array.from(
-            { length: SAVED_JOBS_SKELETON_COUNT },
-            (_, i) => (
-              <JobCardSkeleton key={i} />
-            )
-          )}
+          {Array.from({ length: SAVED_JOBS_SKELETON_COUNT }, (_, i) => (
+            <JobCardSkeleton key={i} />
+          ))}
         </div>
       ) : isError ? (
         <EmptyState
           action={
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => refetch()}
-            >
+            <Button size="sm" variant="outline" onClick={() => refetch()}>
               Try again
             </Button>
           }

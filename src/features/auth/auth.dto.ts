@@ -3,8 +3,7 @@ import type { AuthUser, UserRole } from "@/types/user";
 
 export type LoginPayload = { email: string; password: string };
 export type LoginResponseDto =
-  | { accessToken: string }
-  | { twoFactorRequired: true; challengeToken: string };
+  { accessToken: string } | { twoFactorRequired: true; challengeToken: string };
 
 export type TwoFactorChallengePayload = {
   challengeToken: string;
@@ -60,7 +59,6 @@ const authUserSchema: ZodType<AuthUserDto> = z.object({
   role: z.enum(["TALENT", "EMPLOYER", "ADMIN"]),
 });
 
-export const sessionResponseSchema: ZodType<SessionResponseDto> =
-  z.object({
-    user: authUserSchema.nullable(),
-  });
+export const sessionResponseSchema: ZodType<SessionResponseDto> = z.object({
+  user: authUserSchema.nullable(),
+});

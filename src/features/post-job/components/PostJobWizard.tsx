@@ -5,10 +5,7 @@ import { cn } from "@/utils/cn";
 import { useToast } from "@/components/ui/toast";
 import { ApiError } from "@/core/errors/api-error";
 import { reportError } from "@/services/monitoring";
-import {
-  useCategories,
-  useSkills,
-} from "@/features/taxonomy/taxonomy.queries";
+import { useCategories, useSkills } from "@/features/taxonomy/taxonomy.queries";
 import { useCreateEmployerProfile } from "@/features/employer/employer.queries";
 import { useCreateJob } from "@/features/jobs/jobs.queries";
 import { useCreateCheckoutSession } from "@/features/billing/billing.queries";
@@ -54,9 +51,7 @@ export const PostJobWizard = () => {
   const [form, setForm] = useState<PostJobFormState>(
     draft?.form ?? INITIAL_FORM_STATE
   );
-  const [publishedJobId, setPublishedJobId] = useState<string | null>(
-    null
-  );
+  const [publishedJobId, setPublishedJobId] = useState<string | null>(null);
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // Separate from `error` (a single final-publish failure) — a step can have
@@ -148,13 +143,10 @@ export const PostJobWizard = () => {
     } catch (err) {
       // A 409 just means this employer already has a profile — fine, continue.
       if (!(
-        err instanceof ApiError &&
-        err.status === PROFILE_ALREADY_EXISTS_STATUS
+        err instanceof ApiError && err.status === PROFILE_ALREADY_EXISTS_STATUS
       )) {
         reportError(err);
-        fail(
-          "Could not save your company profile. Please try again."
-        );
+        fail("Could not save your company profile. Please try again.");
         return;
       }
     }
@@ -179,9 +171,7 @@ export const PostJobWizard = () => {
         timezone: form.jobTz || undefined,
         country: hqToCountry(form.coHq),
         benefits: form.benefits.slice(0, MAX_BENEFITS),
-        planType:
-          TIERS.find((t) => t.id === form.tier)?.planType ??
-          "STANDARD",
+        planType: TIERS.find((t) => t.id === form.tier)?.planType ?? "STANDARD",
         categoryIds: [form.jobCategoryId],
         skillIds,
       });
@@ -213,8 +203,7 @@ export const PostJobWizard = () => {
   if (publishedJobId)
     return <PostJobDraftSaved form={form} jobId={publishedJobId} />;
 
-  const selectedTier =
-    TIERS.find((t) => t.id === form.tier) ?? TIERS[0];
+  const selectedTier = TIERS.find((t) => t.id === form.tier) ?? TIERS[0];
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -250,18 +239,13 @@ export const PostJobWizard = () => {
                 <span
                   className={cn(
                     "hidden text-[12px] font-medium sm:inline",
-                    step === s.id
-                      ? "text-neutral-900"
-                      : "text-neutral-400"
+                    step === s.id ? "text-neutral-900" : "text-neutral-400"
                   )}
                 >
                   {s.label}
                 </span>
                 {i < STEPS.length - 1 && (
-                  <ChevronRight
-                    className="text-neutral-300"
-                    size={14}
-                  />
+                  <ChevronRight className="text-neutral-300" size={14} />
                 )}
               </div>
             ))}
@@ -332,8 +316,7 @@ export const PostJobWizard = () => {
                 type="button"
                 onClick={handlePublish}
               >
-                <Zap size={14} />{" "}
-                {publishing ? "Processing…" : "Pay & publish"}
+                <Zap size={14} /> {publishing ? "Processing…" : "Pay & publish"}
               </button>
             )}
           </div>
@@ -367,10 +350,7 @@ export const PostJobWizard = () => {
             </div>
 
             <div className="flex items-center gap-2 rounded-12 border border-neutral-100 bg-white p-3 text-[12px] text-neutral-400">
-              <Shield
-                className="flex-shrink-0 text-brand-500"
-                size={13}
-              />
+              <Shield className="flex-shrink-0 text-brand-500" size={13} />
               Secured by Stripe · SSL encrypted
             </div>
           </div>

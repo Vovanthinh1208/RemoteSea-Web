@@ -27,8 +27,7 @@ export const useSavedJobToggle = (
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { data: isSaved, isLoading: savedStatusLoading } =
-    useIsJobSaved(jobId);
+  const { data: isSaved, isLoading: savedStatusLoading } = useIsJobSaved(jobId);
   const saveMutation = useSaveJob();
   const unsaveMutation = useUnsaveJob();
 

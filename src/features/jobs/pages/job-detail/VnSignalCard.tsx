@@ -17,9 +17,8 @@ export const VnSignalCard = ({
           {vnHireCount} Vietnamese already work at {companyName}
         </h5>
         <p className="text-[12px] leading-relaxed text-neutral-500">
-          You can connect with them through your application —
-          they&apos;re often happy to refer or share what the
-          team&apos;s actually like.
+          You can connect with them through your application — they&apos;re
+          often happy to refer or share what the team&apos;s actually like.
         </p>
       </div>
     </div>

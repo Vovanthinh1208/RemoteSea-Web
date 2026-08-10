@@ -52,9 +52,7 @@ export const Pipeline = ({ applications }: PipelineProps) => {
           <span
             className={cn(
               "text-[11px]",
-              s.active
-                ? "font-medium text-brand-600"
-                : "text-neutral-400"
+              s.active ? "font-medium text-brand-600" : "text-neutral-400"
             )}
           >
             {s.label}

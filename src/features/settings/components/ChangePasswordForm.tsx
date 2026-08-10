@@ -10,8 +10,7 @@ import {
 } from "@/features/settings/settings.schemas";
 import { Button } from "@/components/ui/button";
 
-const UPDATE_FAILED_MESSAGE =
-  "Could not update password. Please try again.";
+const UPDATE_FAILED_MESSAGE = "Could not update password. Please try again.";
 
 export const ChangePasswordForm = () => {
   const runWithToast = useToastMutation();

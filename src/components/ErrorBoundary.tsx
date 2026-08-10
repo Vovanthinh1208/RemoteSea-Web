@@ -47,22 +47,15 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (
-      this.state.error &&
-      prevProps.resetKey !== this.props.resetKey
-    ) {
+    if (this.state.error && prevProps.resetKey !== this.props.resetKey) {
       this.setState({ error: null });
     }
   }
 
   render() {
     if (this.state.error) {
-      const isChunkError = CHUNK_ERROR_PATTERN.test(
-        this.state.error.message
-      );
-      const minHeight = this.props.scoped
-        ? "min-h-[40vh]"
-        : "min-h-[70vh]";
+      const isChunkError = CHUNK_ERROR_PATTERN.test(this.state.error.message);
+      const minHeight = this.props.scoped ? "min-h-[40vh]" : "min-h-[70vh]";
 
       return (
         <div

@@ -73,9 +73,7 @@ export const TestimonialsSection = () => (
                 <div className="text-[13px] font-semibold text-neutral-900">
                   {t.name}
                 </div>
-                <div className="text-[12px] text-neutral-400">
-                  {t.title}
-                </div>
+                <div className="text-[12px] text-neutral-400">{t.title}</div>
                 <div className="mt-0.5 font-mono text-[11px] text-amber-700">
                   {t.meta}
                 </div>

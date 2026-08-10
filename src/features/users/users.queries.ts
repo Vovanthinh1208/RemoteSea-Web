@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   changeMyPassword,
   deleteMyAccount,
@@ -80,10 +76,7 @@ export const useUpdateMyNotificationPreferences = () => {
   return useMutation({
     mutationFn: updateMyNotificationPreferences,
     onSuccess: (result) => {
-      queryClient.setQueryData(
-        usersKeys.notificationPreferences(),
-        result
-      );
+      queryClient.setQueryData(usersKeys.notificationPreferences(), result);
     },
   });
 };
@@ -119,8 +112,7 @@ export const useReactivateMyAccount = () => {
 
 // Not cached as a query — triggered on demand by the "Request" button, and
 // re-fetching the same export data on every window refocus would be wasteful.
-export const useExportMyData = () =>
-  useMutation({ mutationFn: exportMyData });
+export const useExportMyData = () => useMutation({ mutationFn: exportMyData });
 
 export const useMyConnections = () => {
   const { user } = useAuth();

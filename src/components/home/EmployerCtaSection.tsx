@@ -20,9 +20,8 @@ export const EmployerCtaSection = () => (
             Looking for remote talent in Vietnam?
           </h2>
           <p className="mb-6 max-w-sm text-sm leading-relaxed text-neutral-400">
-            Post your job and reach 500+ qualified VN professionals.
-            Verified listings, salary range required, results in two
-            weeks or money back.
+            Post your job and reach 500+ qualified VN professionals. Verified
+            listings, salary range required, results in two weeks or money back.
           </p>
           <div className="flex gap-3">
             <Link

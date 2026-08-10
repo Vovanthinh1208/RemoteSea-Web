@@ -1,11 +1,5 @@
 import { memo, useCallback } from "react";
-import {
-  Briefcase,
-  Building,
-  Search,
-  Shield,
-  Wallet,
-} from "lucide-react";
+import { Briefcase, Building, Search, Shield, Wallet } from "lucide-react";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { VerifiedBadge } from "@/components/shared/VerifiedBadge";
 import { EmptyRow } from "@/components/shared/EmptyRow";
@@ -43,8 +37,7 @@ interface EmployerRowProps {
   onStatusChange: (id: string, action: "verify" | "suspend") => void;
 }
 
-const EMPLOYER_GRID_COLUMNS =
-  "minmax(260px, 1fr) 90px 140px 100px 88px";
+const EMPLOYER_GRID_COLUMNS = "minmax(260px, 1fr) 90px 140px 100px 88px";
 const EmployerRow = memo(function EmployerRow({
   employer: e,
   maxSpend,
@@ -142,9 +135,7 @@ export const AdminEmployers = () => {
 
   // URL-synced (like JobsBoard) so a filtered/searched view survives a refresh and
   // can be shared/deep-linked, instead of silently resetting to "All" on reload.
-  const isFilterId = (
-    v: string
-  ): v is (typeof FILTERS)[number]["id"] =>
+  const isFilterId = (v: string): v is (typeof FILTERS)[number]["id"] =>
     FILTERS.some((f) => f.id === v);
   const [filter, setFilter] = useSearchParamState<
     (typeof FILTERS)[number]["id"]
@@ -158,9 +149,7 @@ export const AdminEmployers = () => {
     (id: string, action: "verify" | "suspend") =>
       runWithToast(() => updateEmployer({ id, action }), {
         success:
-          action === "verify"
-            ? "Employer verified"
-            : "Employer suspended",
+          action === "verify" ? "Employer verified" : "Employer suspended",
         successVariant: action === "verify" ? "success" : "info",
         error: "Couldn't update employer",
       }),
@@ -169,10 +158,7 @@ export const AdminEmployers = () => {
 
   const rows = employers.filter((e) => {
     if (filter === "unverified" && e.isVerified) return false;
-    if (
-      search &&
-      !e.companyName.toLowerCase().includes(search.toLowerCase())
-    )
+    if (search && !e.companyName.toLowerCase().includes(search.toLowerCase()))
       return false;
     return true;
   });
@@ -181,10 +167,7 @@ export const AdminEmployers = () => {
     all: employers.length,
     unverified: employers.filter((e) => !e.isVerified).length,
   };
-  const totalSpendCents = employers.reduce(
-    (a, e) => a + e.totalSpend,
-    0
-  );
+  const totalSpendCents = employers.reduce((a, e) => a + e.totalSpend, 0);
   const totalListings = employers.reduce((a, e) => a + e.jobCount, 0);
   const maxSpend = Math.max(1, ...employers.map((e) => e.totalSpend));
 
@@ -196,11 +179,7 @@ export const AdminEmployers = () => {
     return (
       <EmptyState
         action={
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => void refetch()}
-          >
+          <Button size="sm" variant="outline" onClick={() => void refetch()}>
             Try again
           </Button>
         }
@@ -220,10 +199,8 @@ export const AdminEmployers = () => {
           Employers
         </h1>
         <p className="mt-1 text-sm text-neutral-500">
-          {employers.length} companies · {totalListings} total
-          listings · $
-          {(totalSpendCents / CENTS_PER_DOLLAR).toLocaleString()}{" "}
-          billed
+          {employers.length} companies · {totalListings} total listings · $
+          {(totalSpendCents / CENTS_PER_DOLLAR).toLocaleString()} billed
         </p>
       </div>
 

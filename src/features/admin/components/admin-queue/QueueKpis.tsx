@@ -1,9 +1,6 @@
 import { Ban, Check, Clock, Inbox } from "lucide-react";
 import { StatCard } from "@/components/ui/stat-card";
-import {
-  URGENT_WAIT_HOURS,
-  waitFmt,
-} from "@/features/admin/admin.utils";
+import { URGENT_WAIT_HOURS, waitFmt } from "@/features/admin/admin.utils";
 
 interface QueueKpisProps {
   activeCount: number;

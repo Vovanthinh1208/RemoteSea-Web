@@ -13,18 +13,14 @@ export const listSavedJobs = async (
   limit: number,
   opts?: RequestOptions
 ): Promise<SavedJobListResponse> =>
-  toSavedJobListResponse(
-    await savedRepository.list(page, limit, opts)
-  );
+  toSavedJobListResponse(await savedRepository.list(page, limit, opts));
 
 export const listSavedJobIds = async (
   opts?: RequestOptions
 ): Promise<string[]> => (await savedRepository.listIds(opts)).jobIds;
 
-export const saveJob = async (
-  jobId: string
-): Promise<{ saved: boolean }> => savedRepository.save(jobId);
+export const saveJob = async (jobId: string): Promise<{ saved: boolean }> =>
+  savedRepository.save(jobId);
 
-export const unsaveJob = async (
-  jobId: string
-): Promise<{ saved: boolean }> => savedRepository.unsave(jobId);
+export const unsaveJob = async (jobId: string): Promise<{ saved: boolean }> =>
+  savedRepository.unsave(jobId);

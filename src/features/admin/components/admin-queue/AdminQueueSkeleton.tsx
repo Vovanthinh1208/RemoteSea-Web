@@ -16,10 +16,7 @@ export const AdminQueueSkeleton = () => (
       ))}
     </div>
 
-    <div
-      className="grid gap-4"
-      style={{ gridTemplateColumns: "280px 1fr" }}
-    >
+    <div className="grid gap-4" style={{ gridTemplateColumns: "280px 1fr" }}>
       <div className="space-y-2 rounded-12 border border-neutral-100 bg-white p-4">
         {Array.from({ length: ROW_SKELETON_COUNT }, (_, i) => (
           <Skeleton className="h-16 rounded-10" key={i} />

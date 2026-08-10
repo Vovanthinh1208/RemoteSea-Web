@@ -51,14 +51,11 @@ export const TalentDashboard = () => {
     refetch: refetchApplications,
   } = useMyApplications(1, DASHBOARD_APPLICATIONS_LIMIT);
   const applications = applicationsData?.applications ?? [];
-  const { data: stats, isLoading: statsLoading } =
-    useMyApplicationStats();
-  const { data: profile, isLoading: profileLoading } =
-    useMyTalentProfile();
+  const { data: stats, isLoading: statsLoading } = useMyApplicationStats();
+  const { data: profile, isLoading: profileLoading } = useMyTalentProfile();
   const { data: savedJobIds } = useSavedJobIds();
   const { data: alerts } = useAlerts();
-  const activeAlertsCount =
-    alerts?.filter((a) => a.isActive).length ?? 0;
+  const activeAlertsCount = alerts?.filter((a) => a.isActive).length ?? 0;
 
   // savedJobIds feeds only the secondary "Saved jobs" count stat, so it's kept
   // out of the blocking gate — the core dashboard (greeting, application stats,
@@ -101,10 +98,7 @@ export const TalentDashboard = () => {
   const offers = stats?.byStatus.OFFERED ?? 0;
   const completion = profileCompletion(profile);
   const missing = missingProfileFields(profile);
-  const interviewRate = percent(
-    interviewing + offers,
-    totalApplications
-  );
+  const interviewRate = percent(interviewing + offers, totalApplications);
 
   return (
     <div className="mx-auto max-w-[1240px] px-6 py-10">
@@ -125,12 +119,10 @@ export const TalentDashboard = () => {
           <p className="text-[14px] text-neutral-500">
             You have{" "}
             <strong className="font-semibold text-neutral-800">
-              {interviewing}{" "}
-              {interviewing === 1 ? "interview" : "interviews"} in
-              progress
+              {interviewing} {interviewing === 1 ? "interview" : "interviews"}{" "}
+              in progress
             </strong>{" "}
-            and {offers} {offers === 1 ? "offer" : "offers"} on the
-            table.
+            and {offers} {offers === 1 ? "offer" : "offers"} on the table.
           </p>
         </div>
         <div className="flex gap-2">

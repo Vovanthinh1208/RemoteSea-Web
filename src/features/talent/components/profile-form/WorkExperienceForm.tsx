@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  AlertCircle,
-  Briefcase,
-  Building2,
-  MapPin,
-} from "lucide-react";
+import { AlertCircle, Briefcase, Building2, MapPin } from "lucide-react";
 import { Toggle } from "@/features/talent/components/profile-form/Toggle";
 import {
   TEXT_INPUT_CLASS,
@@ -45,10 +40,7 @@ const MONTHS = [
 const CURRENT_YEAR = new Date().getUTCFullYear();
 // A career spanning up to 60 years back covers this app's users; a couple of
 // years ahead allows an already-scheduled future start date.
-const YEARS = Array.from(
-  { length: 62 },
-  (_, i) => CURRENT_YEAR + 1 - i
-);
+const YEARS = Array.from({ length: 62 }, (_, i) => CURRENT_YEAR + 1 - i);
 
 interface MonthYearSelectProps {
   value: string; // "YYYY-MM", or "" when incomplete
@@ -72,9 +64,7 @@ const MonthYearSelect = ({
   ariaLabelPrefix,
   autoFocus,
 }: MonthYearSelectProps) => {
-  const [initialYear, initialMonth] = value
-    ? value.split("-")
-    : ["", ""];
+  const [initialYear, initialMonth] = value ? value.split("-") : ["", ""];
   const [month, setMonth] = useState(initialMonth);
   const [year, setYear] = useState(initialYear);
 
@@ -249,9 +239,7 @@ export const WorkExperienceForm = ({
             ariaLabelPrefix="End"
             disabled={isCurrent}
             value={isCurrent ? "" : (endMonth ?? "")}
-            onChange={(v) =>
-              setValue("endMonth", v, { shouldValidate: true })
-            }
+            onChange={(v) => setValue("endMonth", v, { shouldValidate: true })}
           />
           <FieldError message={errors.endMonth?.message} />
         </div>
@@ -264,9 +252,7 @@ export const WorkExperienceForm = ({
             htmlFor="we-description"
           >
             What did you work on?{" "}
-            <span className="font-normal text-neutral-400">
-              (optional)
-            </span>
+            <span className="font-normal text-neutral-400">(optional)</span>
           </label>
           <span className="text-[11px] text-neutral-400">
             {description?.length ?? 0} / {MAX_DESCRIPTION_LENGTH}
@@ -287,11 +273,7 @@ export const WorkExperienceForm = ({
           disabled={isSubmitting}
           type="submit"
         >
-          {isSubmitting
-            ? "Saving…"
-            : initial
-              ? "Save changes"
-              : "Add role"}
+          {isSubmitting ? "Saving…" : initial ? "Save changes" : "Add role"}
         </button>
         <button
           className="rounded-10 border border-neutral-200 bg-white px-4 py-2 text-[13px] font-medium text-neutral-600 transition-colors hover:border-neutral-300"

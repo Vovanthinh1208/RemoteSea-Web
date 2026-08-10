@@ -26,9 +26,7 @@ const jobMetaDescription = (
     prefix: `${job.currency} `,
   });
   const salary = range ? ` · ${range}/mo` : "";
-  const location = job.isRemote
-    ? "Remote"
-    : (job.country ?? "Remote");
+  const location = job.isRemote ? "Remote" : (job.country ?? "Remote");
   return `${LEVEL_LABELS[job.level]} ${JOB_TYPE_LABELS[job.jobType]} role at ${job.employer.companyName} · ${location}${salary}. Apply on RemoteSEA.`;
 };
 
@@ -97,10 +95,7 @@ export const JobDetailPage = () => {
               vnHireCount={job.vnHireCount}
             />
             {hasSalary && (
-              <SalaryBenchmarkCard
-                benchmarks={benchmarks}
-                job={job}
-              />
+              <SalaryBenchmarkCard benchmarks={benchmarks} job={job} />
             )}
             <QuickFactsCard job={job} />
             <JobCompanyCard job={job} />

@@ -8,6 +8,7 @@ import {
   TEXTAREA_INPUT_CLASS,
 } from "@/components/shared/input-styles";
 import {
+  NOTICE_PERIOD_OPTIONS,
   PRIMARY_ROLE_OPTIONS,
   RIGHT_TO_WORK_OPTIONS,
   SENIORITY_OPTIONS,
@@ -55,9 +56,7 @@ export const AboutSection = ({
             htmlFor="p-bio"
           >
             Bio{" "}
-            <span className="font-normal text-neutral-400">
-              2–4 sentences
-            </span>
+            <span className="font-normal text-neutral-400">2–4 sentences</span>
           </label>
           <span className="text-[11px] text-neutral-400">
             {bioLength} / {MAX_BIO_LENGTH}
@@ -69,9 +68,7 @@ export const AboutSection = ({
           rows={4}
           {...register("bio")}
         />
-        {bioError && (
-          <p className="text-[11.5px] text-red-600">{bioError}</p>
-        )}
+        {bioError && <p className="text-[11.5px] text-red-600">{bioError}</p>}
       </div>
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="space-y-1.5">
@@ -140,6 +137,23 @@ export const AboutSection = ({
             {...register("rightToWork")}
           >
             {RIGHT_TO_WORK_OPTIONS.map((o) => (
+              <option key={o}>{o}</option>
+            ))}
+          </select>
+        </div>
+        <div className="space-y-1.5">
+          <label
+            className="block text-[12.5px] font-medium text-neutral-700"
+            htmlFor="p-notice"
+          >
+            Notice period
+          </label>
+          <select
+            className={SELECT_INPUT_CLASS}
+            id="p-notice"
+            {...register("noticePeriod")}
+          >
+            {NOTICE_PERIOD_OPTIONS.map((o) => (
               <option key={o}>{o}</option>
             ))}
           </select>

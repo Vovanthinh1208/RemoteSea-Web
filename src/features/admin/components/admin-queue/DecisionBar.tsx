@@ -61,9 +61,7 @@ export const DecisionBar = ({
             className="inline-flex h-9 items-center gap-1.5 rounded-10 border border-amber-200 bg-amber-50 px-4 text-sm font-medium text-amber-700 transition-colors hover:bg-amber-100 disabled:opacity-60"
             disabled={isPending || !hasNote}
             title={
-              hasNote
-                ? undefined
-                : "Add a note explaining what needs to change"
+              hasNote ? undefined : "Add a note explaining what needs to change"
             }
             onClick={onRequestChanges}
           >
@@ -72,11 +70,7 @@ export const DecisionBar = ({
           <button
             className="inline-flex h-9 items-center gap-1.5 rounded-10 border border-red-200 bg-red-50 px-4 text-sm font-medium text-red-600 transition-colors hover:bg-red-100 disabled:opacity-60"
             disabled={isPending || !hasNote}
-            title={
-              hasNote
-                ? undefined
-                : "Add a note explaining the rejection"
-            }
+            title={hasNote ? undefined : "Add a note explaining the rejection"}
             onClick={onReject}
           >
             <Ban size={14} /> Reject

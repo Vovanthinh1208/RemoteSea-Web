@@ -35,10 +35,9 @@ export const CommunityHeroSection = () => (
           .
         </h1>
         <p className="mb-8 max-w-lg text-[17px] leading-relaxed text-neutral-500">
-          Engineers, designers, marketers, ops people — all working
-          remotely for companies abroad. We trade offer letters, debug
-          async culture, and meet up in person when we&apos;re in the
-          same city.
+          Engineers, designers, marketers, ops people — all working remotely for
+          companies abroad. We trade offer letters, debug async culture, and
+          meet up in person when we&apos;re in the same city.
         </p>
         <div className="flex flex-wrap gap-3">
           <Button className="rounded-12 px-6" size="xl">
@@ -49,8 +48,8 @@ export const CommunityHeroSection = () => (
           </button>
         </div>
         <p className="mt-5 text-[13px] text-neutral-400">
-          Vetted by current members. We look for senior craft and
-          good-faith participation — not vibes.
+          Vetted by current members. We look for senior craft and good-faith
+          participation — not vibes.
         </p>
       </div>
 

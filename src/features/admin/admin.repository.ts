@@ -47,13 +47,10 @@ export const adminRepository = {
     } = {},
     opts?: RequestOptions
   ): Promise<AdminJobsResponseDto> => {
-    const { data } = await apiClient.get<AdminJobsResponseDto>(
-      "/admin/jobs",
-      {
-        params,
-        signal: opts?.signal,
-      }
-    );
+    const { data } = await apiClient.get<AdminJobsResponseDto>("/admin/jobs", {
+      params,
+      signal: opts?.signal,
+    });
     return data;
   },
 
@@ -69,15 +66,10 @@ export const adminRepository = {
     return data;
   },
 
-  getRevenue: async (
-    opts?: RequestOptions
-  ): Promise<RevenueResponseDto> => {
-    const { data } = await apiClient.get<RevenueResponseDto>(
-      "/admin/revenue",
-      {
-        signal: opts?.signal,
-      }
-    );
+  getRevenue: async (opts?: RequestOptions): Promise<RevenueResponseDto> => {
+    const { data } = await apiClient.get<RevenueResponseDto>("/admin/revenue", {
+      signal: opts?.signal,
+    });
     return data;
   },
 };

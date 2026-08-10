@@ -17,8 +17,7 @@ export const DangerZoneSection = () => {
   const reactivateMutation = useReactivateMyAccount();
 
   const isPaused = pauseState?.isPaused ?? false;
-  const isPending =
-    pauseMutation.isPending || reactivateMutation.isPending;
+  const isPending = pauseMutation.isPending || reactivateMutation.isPending;
 
   const togglePause = () =>
     runWithToast(
@@ -81,8 +80,8 @@ export const DangerZoneSection = () => {
               Delete account
             </p>
             <p className="text-[12.5px] text-neutral-500">
-              Permanently remove your profile, applications, and
-              message history. This cannot be undone.
+              Permanently remove your profile, applications, and message
+              history. This cannot be undone.
             </p>
           </div>
           <div className="ml-6 flex-shrink-0">

@@ -15,10 +15,8 @@ const { UnauthorizedError, NotFoundError } =
   await import("@/core/errors/error-types");
 
 const rejectedHandler = () => {
-  const handler =
-    apiClient.interceptors.response.handlers?.[0]?.rejected;
-  if (!handler)
-    throw new Error("response interceptor not registered");
+  const handler = apiClient.interceptors.response.handlers?.[0]?.rejected;
+  if (!handler) throw new Error("response interceptor not registered");
   return handler;
 };
 

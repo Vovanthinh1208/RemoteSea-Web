@@ -15,9 +15,7 @@ export const useSearchParamState = <T extends string>(
   const [searchParams, setSearchParams] = useSearchParams();
   const raw = searchParams.get(key);
   const value =
-    raw !== null && (!isValid || isValid(raw))
-      ? (raw as T)
-      : defaultValue;
+    raw !== null && (!isValid || isValid(raw)) ? (raw as T) : defaultValue;
 
   const setValue = (next: T) => {
     setSearchParams(

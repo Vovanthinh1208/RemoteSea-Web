@@ -34,9 +34,7 @@ export const AuthCallbackPage = () => {
     loginWithToken(token)
       .then((user) => {
         navigate(
-          user.role === "EMPLOYER"
-            ? ROUTES.employerDashboard
-            : ROUTES.talent,
+          user.role === "EMPLOYER" ? ROUTES.employerDashboard : ROUTES.talent,
           {
             replace: true,
           }

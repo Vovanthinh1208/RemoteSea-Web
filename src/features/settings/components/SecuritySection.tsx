@@ -29,8 +29,7 @@ export const SecuritySection = () => {
   const revoke = (id: string) =>
     runWithToast(() => revokeMutation.mutateAsync(id), {
       error: "Couldn't revoke session",
-      onError: (err) =>
-        err instanceof ApiError ? err.message : undefined,
+      onError: (err) => (err instanceof ApiError ? err.message : undefined),
     });
 
   const revokeAllOthers = () =>
@@ -69,10 +68,7 @@ export const SecuritySection = () => {
         {sessions?.map((s) => {
           const Icon = isMobileDevice(s.device) ? Globe : Laptop;
           return (
-            <div
-              className="flex items-center gap-3 px-4 py-3"
-              key={s.id}
-            >
+            <div className="flex items-center gap-3 px-4 py-3" key={s.id}>
               <span
                 className={cn(
                   "flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10",

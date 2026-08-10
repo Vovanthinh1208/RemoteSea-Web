@@ -29,9 +29,7 @@ export const SalaryBenchmarkCard = ({
     };
   const jobMid = (salaryMin + salaryMax) / 2;
   const benchRange = bench.max - bench.min;
-  const benchPos = benchRange
-    ? ((jobMid - bench.min) / benchRange) * 100
-    : 50;
+  const benchPos = benchRange ? ((jobMid - bench.min) / benchRange) * 100 : 50;
   const percentile = Math.max(
     MIN_PERCENTILE,
     Math.min(MAX_PERCENTILE, Math.round(benchPos))
@@ -80,11 +78,8 @@ export const SalaryBenchmarkCard = ({
       </div>
       <p className="mt-3 text-[12px] leading-relaxed text-neutral-400">
         This offer sits at the{" "}
-        <strong className="text-neutral-700">
-          {percentile}th percentile
-        </strong>{" "}
-        for {bench.role.toLowerCase()}s based on {bench.count} VN data
-        points.
+        <strong className="text-neutral-700">{percentile}th percentile</strong>{" "}
+        for {bench.role.toLowerCase()}s based on {bench.count} VN data points.
       </p>
     </div>
   );

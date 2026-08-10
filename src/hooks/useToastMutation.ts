@@ -38,8 +38,7 @@ export const useToastMutation = () => {
         toast({
           variant: "error",
           title: messages.error,
-          description:
-            dynamicDescription ?? messages.errorDescription,
+          description: dynamicDescription ?? messages.errorDescription,
         });
         return false;
       }

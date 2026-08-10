@@ -13,24 +13,15 @@ export const alertsRepository = {
     return data;
   },
 
-  create: async (
-    payload: CreateAlertRequestDto
-  ): Promise<JobAlertDto> => {
-    const { data } = await apiClient.post<JobAlertDto>(
-      "/alerts",
-      payload
-    );
+  create: async (payload: CreateAlertRequestDto): Promise<JobAlertDto> => {
+    const { data } = await apiClient.post<JobAlertDto>("/alerts", payload);
     return data;
   },
 
-  setActive: async (
-    id: string,
-    isActive: boolean
-  ): Promise<JobAlertDto> => {
-    const { data } = await apiClient.patch<JobAlertDto>(
-      `/alerts/${id}`,
-      { isActive }
-    );
+  setActive: async (id: string, isActive: boolean): Promise<JobAlertDto> => {
+    const { data } = await apiClient.patch<JobAlertDto>(`/alerts/${id}`, {
+      isActive,
+    });
     return data;
   },
 

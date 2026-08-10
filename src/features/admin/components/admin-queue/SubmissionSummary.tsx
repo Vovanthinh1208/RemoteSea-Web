@@ -10,9 +10,7 @@ interface SubmissionSummaryProps {
   job: AdminJob;
 }
 
-export const SubmissionSummary = ({
-  job,
-}: SubmissionSummaryProps) => {
+export const SubmissionSummary = ({ job }: SubmissionSummaryProps) => {
   const facts = [
     {
       k: "Salary",

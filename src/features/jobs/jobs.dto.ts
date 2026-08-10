@@ -149,12 +149,11 @@ const jobFacetsSchema = z.object({
   category: z.record(z.string(), z.number()),
 });
 
-export const jobListResponseSchema: ZodType<JobListResponseDto> =
-  z.object({
-    jobs: z.array(jobListItemSchema),
-    pagination: paginationSchema,
-    facets: jobFacetsSchema,
-  });
+export const jobListResponseSchema: ZodType<JobListResponseDto> = z.object({
+  jobs: z.array(jobListItemSchema),
+  pagination: paginationSchema,
+  facets: jobFacetsSchema,
+});
 
 export const jobSchema: ZodType<JobDto> = z.object({
   id: z.string(),

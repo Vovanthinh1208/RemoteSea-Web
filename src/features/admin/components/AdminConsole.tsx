@@ -38,10 +38,7 @@ export const AdminConsole = () => {
               Ops console
             </p>
           </div>
-          <nav
-            aria-label="Ops console sections"
-            className="space-y-0.5"
-          >
+          <nav aria-label="Ops console sections" className="space-y-0.5">
             {TABS.map((t) => (
               <button
                 aria-current={tab === t.id ? "page" : undefined}

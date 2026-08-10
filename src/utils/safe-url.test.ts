@@ -3,9 +3,7 @@ import { safeExternalUrl } from "./safe-url";
 
 describe("safeExternalUrl", () => {
   it("passes http(s) and mailto through unchanged", () => {
-    expect(safeExternalUrl("https://janedoe.dev")).toBe(
-      "https://janedoe.dev"
-    );
+    expect(safeExternalUrl("https://janedoe.dev")).toBe("https://janedoe.dev");
     expect(safeExternalUrl("http://example.com/x")).toBe(
       "http://example.com/x"
     );
@@ -15,9 +13,7 @@ describe("safeExternalUrl", () => {
   });
 
   it("drops javascript: and data: payloads (the XSS the backend url() would store)", () => {
-    expect(
-      safeExternalUrl("javascript:alert(document.cookie)")
-    ).toBeNull();
+    expect(safeExternalUrl("javascript:alert(document.cookie)")).toBeNull();
     expect(
       safeExternalUrl("data:text/html,<script>alert(1)</script>")
     ).toBeNull();

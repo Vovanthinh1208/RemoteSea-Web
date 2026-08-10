@@ -30,8 +30,7 @@ const AVATAR_COLORS = [
 
 const colorForCompany = (company: string): string => {
   let hash = 0;
-  for (const char of company)
-    hash = (hash * 31 + char.charCodeAt(0)) | 0;
+  for (const char of company) hash = (hash * 31 + char.charCodeAt(0)) | 0;
   return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
 };
 
@@ -53,9 +52,7 @@ const formatMonthYear = (iso: string): string =>
   });
 
 type EditorMode =
-  | { type: "none" }
-  | { type: "create" }
-  | { type: "edit"; id: string };
+  { type: "none" } | { type: "create" } | { type: "edit"; id: string };
 
 const RowSkeleton = () => (
   <div className="flex animate-pulse gap-4 py-4 first:pt-0">
@@ -76,8 +73,7 @@ const EmptyState = ({ onAdd }: { onAdd: () => void }) => (
       No roles added yet
     </p>
     <p className="max-w-[280px] text-[12px] leading-relaxed text-neutral-400">
-      Add your most recent role first — it's the one recruiters read
-      first.
+      Add your most recent role first — it's the one recruiters read first.
     </p>
     <button
       className="mt-1 flex items-center gap-1.5 rounded-10 bg-brand-600 px-3.5 py-2 text-[12.5px] font-medium text-white transition-colors hover:bg-brand-700"
@@ -201,8 +197,8 @@ export const ExperienceSection = () => {
           </h2>
         </div>
         <p className="text-[13px] leading-relaxed text-neutral-500">
-          List up to 5 roles. Recruiters skim — the most recent two
-          get 80% of attention.
+          List up to 5 roles. Recruiters skim — the most recent two get 80% of
+          attention.
         </p>
       </div>
 
@@ -219,9 +215,7 @@ export const ExperienceSection = () => {
                 <WorkExperienceForm
                   initial={experience}
                   onCancel={() => setMode({ type: "none" })}
-                  onSubmit={(values) =>
-                    handleUpdate(experience.id, values)
-                  }
+                  onSubmit={(values) => handleUpdate(experience.id, values)}
                 />
               </div>
             ) : (
@@ -274,9 +268,7 @@ export const ExperienceSection = () => {
                     aria-label="Edit role"
                     className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700"
                     type="button"
-                    onClick={() =>
-                      setMode({ type: "edit", id: experience.id })
-                    }
+                    onClick={() => setMode({ type: "edit", id: experience.id })}
                   >
                     <SlidersHorizontal size={12} />
                   </button>
@@ -316,18 +308,15 @@ export const ExperienceSection = () => {
         <EmptyState onAdd={() => setMode({ type: "create" })} />
       )}
 
-      {!isLoading &&
-        mode.type !== "create" &&
-        list.length > 0 &&
-        !atCap && (
-          <button
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-12 border border-dashed border-neutral-300 py-3 text-[13px] text-neutral-500 transition-colors hover:border-brand-300 hover:text-brand-700"
-            type="button"
-            onClick={() => setMode({ type: "create" })}
-          >
-            <Plus size={13} /> Add another role
-          </button>
-        )}
+      {!isLoading && mode.type !== "create" && list.length > 0 && !atCap && (
+        <button
+          className="mt-2 flex w-full items-center justify-center gap-2 rounded-12 border border-dashed border-neutral-300 py-3 text-[13px] text-neutral-500 transition-colors hover:border-brand-300 hover:text-brand-700"
+          type="button"
+          onClick={() => setMode({ type: "create" })}
+        >
+          <Plus size={13} /> Add another role
+        </button>
+      )}
 
       {!isLoading && atCap && mode.type !== "create" && (
         <p className="mt-2 text-center text-[12px] text-neutral-400">

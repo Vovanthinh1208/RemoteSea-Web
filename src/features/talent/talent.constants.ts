@@ -79,6 +79,13 @@ export const TIMEZONE_OVERLAP_KEYS = [
   "ASYNC_ONLY",
 ] as const;
 
+export const NOTICE_PERIOD_OPTIONS = [
+  "Immediate",
+  "2 weeks",
+  "1 month",
+  "2+ months",
+] as const;
+
 export const TIMEZONE_OPTIONS = [
   "UTC+7 (Hanoi · Bangkok · Jakarta)",
   "UTC+8 (Singapore · Manila · KL)",
@@ -89,7 +96,5 @@ export const TIMEZONE_OPTIONS = [
 export const normalizeUrl = (value: string): string | undefined => {
   const trimmed = value.trim();
   if (!trimmed) return undefined;
-  return /^https?:\/\//i.test(trimmed)
-    ? trimmed
-    : `https://${trimmed}`;
+  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
 };

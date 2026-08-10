@@ -18,8 +18,7 @@ export type JobListResponse = {
 // seam, not wasted code: if the wire shape ever diverges from what the UI needs
 // (renamed field, date-string -> Date, etc.), only this file changes.
 export const toJob = (dto: JobDto): Job => dto;
-export const toJobListItem = (dto: JobListItemDto): JobListItem =>
-  dto;
+export const toJobListItem = (dto: JobListItemDto): JobListItem => dto;
 
 export const toJobListResponse = (
   dto: JobListResponseDto

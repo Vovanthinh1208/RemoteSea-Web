@@ -14,9 +14,8 @@ import type {
 export const toEmployerProfileSummary = (
   dto: EmployerProfileSummaryDto
 ): EmployerProfileSummary => dto;
-export const toEmployerProfile = (
-  dto: EmployerProfileDto
-): EmployerProfile => dto;
+export const toEmployerProfile = (dto: EmployerProfileDto): EmployerProfile =>
+  dto;
 export const toEmployerJobsResponse = (
   dto: EmployerJobsResponseDto
 ): EmployerJobsResponse => dto;

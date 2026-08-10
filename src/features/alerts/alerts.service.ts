@@ -3,15 +3,12 @@ import { alertsRepository } from "@/features/alerts/alerts.repository";
 import { toJobAlert } from "@/features/alerts/alerts.mapper";
 import type { CreateAlertPayload, JobAlert } from "@/types/alert";
 
-export const listAlerts = async (
-  opts?: RequestOptions
-): Promise<JobAlert[]> =>
+export const listAlerts = async (opts?: RequestOptions): Promise<JobAlert[]> =>
   (await alertsRepository.list(opts)).map(toJobAlert);
 
 export const createAlert = async (
   payload: CreateAlertPayload
-): Promise<JobAlert> =>
-  toJobAlert(await alertsRepository.create(payload));
+): Promise<JobAlert> => toJobAlert(await alertsRepository.create(payload));
 
 export const setAlertActive = async (
   id: string,

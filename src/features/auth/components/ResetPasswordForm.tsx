@@ -64,8 +64,8 @@ export const ResetPasswordForm = () => {
   if (!token) {
     return (
       <div className="rounded-12 border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-        This reset link is invalid or missing its token. Please
-        request a new one.
+        This reset link is invalid or missing its token. Please request a new
+        one.
       </div>
     );
   }
@@ -92,9 +92,7 @@ export const ResetPasswordForm = () => {
         type="password"
       />
 
-      {formError && (
-        <p className="text-sm text-red-600">{formError}</p>
-      )}
+      {formError && <p className="text-sm text-red-600">{formError}</p>}
 
       <Button
         className="w-full rounded-12"

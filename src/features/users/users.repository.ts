@@ -15,10 +15,9 @@ import type {
 
 export const usersRepository = {
   updateMyName: async (name: string): Promise<UpdatedUserDto> => {
-    const { data } = await apiClient.patch<UpdatedUserDto>(
-      "/users/me",
-      { name }
-    );
+    const { data } = await apiClient.patch<UpdatedUserDto>("/users/me", {
+      name,
+    });
     return data;
   },
 
@@ -33,16 +32,12 @@ export const usersRepository = {
   },
 
   deleteMyAccount: async (): Promise<{ success: boolean }> => {
-    const { data } = await apiClient.delete<{ success: boolean }>(
-      "/users/me"
-    );
+    const { data } = await apiClient.delete<{ success: boolean }>("/users/me");
     return data;
   },
 
   getAccount: async (): Promise<AccountFieldsDto> => {
-    const { data } = await apiClient.get<AccountFieldsDto>(
-      "/users/me/account"
-    );
+    const { data } = await apiClient.get<AccountFieldsDto>("/users/me/account");
     return data;
   },
 
@@ -56,35 +51,30 @@ export const usersRepository = {
     return data;
   },
 
-  getNotificationPreferences:
-    async (): Promise<NotificationPreferencesDto> => {
-      const { data } =
-        await apiClient.get<NotificationPreferencesDto>(
-          "/users/me/notification-preferences"
-        );
-      return data;
-    },
+  getNotificationPreferences: async (): Promise<NotificationPreferencesDto> => {
+    const { data } = await apiClient.get<NotificationPreferencesDto>(
+      "/users/me/notification-preferences"
+    );
+    return data;
+  },
 
   updateNotificationPreferences: async (
     payload: UpdateNotificationPreferencesPayload
   ): Promise<NotificationPreferencesDto> => {
-    const { data } =
-      await apiClient.patch<NotificationPreferencesDto>(
-        "/users/me/notification-preferences",
-        payload
-      );
+    const { data } = await apiClient.patch<NotificationPreferencesDto>(
+      "/users/me/notification-preferences",
+      payload
+    );
     return data;
   },
 
   getPauseState: async (): Promise<PauseStateDto> => {
-    const { data } =
-      await apiClient.get<PauseStateDto>("/users/me/pause");
+    const { data } = await apiClient.get<PauseStateDto>("/users/me/pause");
     return data;
   },
 
   pauseAccount: async (): Promise<PauseStateDto> => {
-    const { data } =
-      await apiClient.post<PauseStateDto>("/users/me/pause");
+    const { data } = await apiClient.post<PauseStateDto>("/users/me/pause");
     return data;
   },
 
@@ -96,9 +86,7 @@ export const usersRepository = {
   },
 
   exportData: async (): Promise<ExportDataDto> => {
-    const { data } = await apiClient.get<ExportDataDto>(
-      "/users/me/export"
-    );
+    const { data } = await apiClient.get<ExportDataDto>("/users/me/export");
     return data;
   },
 
@@ -119,27 +107,22 @@ export const usersRepository = {
   },
 
   listSessions: async (): Promise<SessionDto[]> => {
-    const { data } = await apiClient.get<SessionDto[]>(
-      "/users/me/sessions"
-    );
+    const { data } = await apiClient.get<SessionDto[]>("/users/me/sessions");
     return data;
   },
 
-  revokeSession: async (
-    id: string
-  ): Promise<{ success: boolean }> => {
+  revokeSession: async (id: string): Promise<{ success: boolean }> => {
     const { data } = await apiClient.delete<{ success: boolean }>(
       `/users/me/sessions/${id}`
     );
     return data;
   },
 
-  revokeOtherSessions:
-    async (): Promise<RevokeOtherSessionsResponseDto> => {
-      const { data } =
-        await apiClient.delete<RevokeOtherSessionsResponseDto>(
-          "/users/me/sessions"
-        );
-      return data;
-    },
+  revokeOtherSessions: async (): Promise<RevokeOtherSessionsResponseDto> => {
+    const { data } =
+      await apiClient.delete<RevokeOtherSessionsResponseDto>(
+        "/users/me/sessions"
+      );
+    return data;
+  },
 };

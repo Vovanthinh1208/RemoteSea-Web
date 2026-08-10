@@ -26,11 +26,7 @@ export const ProtectedRoute = ({ roles }: ProtectedRouteProps) => {
         <p className="mt-2 text-sm text-neutral-500">
           Check your connection and try again.
         </p>
-        <Button
-          className="mt-5"
-          variant="primary"
-          onClick={retrySession}
-        >
+        <Button className="mt-5" variant="primary" onClick={retrySession}>
           Retry
         </Button>
       </div>
@@ -38,14 +34,9 @@ export const ProtectedRoute = ({ roles }: ProtectedRouteProps) => {
   }
 
   if (!user) {
-    const callbackUrl = encodeURIComponent(
-      location.pathname + location.search
-    );
+    const callbackUrl = encodeURIComponent(location.pathname + location.search);
     return (
-      <Navigate
-        replace
-        to={`${ROUTES.login}?callbackUrl=${callbackUrl}`}
-      />
+      <Navigate replace to={`${ROUTES.login}?callbackUrl=${callbackUrl}`} />
     );
   }
 

@@ -56,10 +56,7 @@ const QueueListRow = memo(function QueueListRow({
             </span>
           )}
           {!j.employer.isVerified && (
-            <VerifiedBadge
-              isVerified={false}
-              label="Unverified employer"
-            />
+            <VerifiedBadge isVerified={false} label="Unverified employer" />
           )}
         </div>
       </div>

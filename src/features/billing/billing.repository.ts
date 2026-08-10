@@ -5,13 +5,12 @@ export const billingRepository = {
   createCheckoutSession: async (
     jobId: string
   ): Promise<CreateCheckoutSessionResponseDto> => {
-    const { data } =
-      await apiClient.post<CreateCheckoutSessionResponseDto>(
-        "/billing/checkout",
-        {
-          jobId,
-        }
-      );
+    const { data } = await apiClient.post<CreateCheckoutSessionResponseDto>(
+      "/billing/checkout",
+      {
+        jobId,
+      }
+    );
     return data;
   },
 };

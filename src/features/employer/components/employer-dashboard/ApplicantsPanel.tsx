@@ -21,16 +21,11 @@ import { personInitial } from "@/utils/name";
 type ApplicantTabId = "all" | "new" | "shortlisted";
 
 const isApplicantTabId = (v: string): v is ApplicantTabId =>
-  (["all", "new", "shortlisted"] as const).includes(
-    v as ApplicantTabId
-  );
+  (["all", "new", "shortlisted"] as const).includes(v as ApplicantTabId);
 
 const RECENT_APPLICANTS_DISPLAY_COUNT = 8;
 
-const APPLICANT_STATUS_VARIANT: Record<
-  ApplicantStatusGroup,
-  BadgeVariant
-> = {
+const APPLICANT_STATUS_VARIANT: Record<ApplicantStatusGroup, BadgeVariant> = {
   new: "info",
   reviewing: "positive",
   shortlisted: "success",
@@ -48,9 +43,7 @@ const APPLICANT_STATUS_LABEL: Record<ApplicantStatusGroup, string> = {
 // purposes, but showing "Archived" on the row badge right after an employer
 // clicks reject (with a toast that says "Applicant rejected") reads as if the
 // action didn't register. The badge shows the real, specific status instead.
-const APPLICANT_ROW_STATUS_LABEL: Partial<
-  Record<ApplicationStatus, string>
-> = {
+const APPLICANT_ROW_STATUS_LABEL: Partial<Record<ApplicationStatus, string>> = {
   REJECTED: "Rejected",
   WITHDRAWN: "Withdrawn",
 };
@@ -91,10 +84,7 @@ const ApplicantRow = memo(function ApplicantRow({
         </div>
         <div className="text-[11.5px] text-neutral-400">
           {a.talent.headline ?? a.talent.level}
-          <span className="text-neutral-300">
-            {" "}
-            · for {a.jobTitle}
-          </span>
+          <span className="text-neutral-300"> · for {a.jobTitle}</span>
         </div>
       </div>
 
@@ -141,9 +131,7 @@ interface ApplicantsPanelProps {
   applicants: ApplicantWithJob[];
 }
 
-export const ApplicantsPanel = ({
-  applicants,
-}: ApplicantsPanelProps) => {
+export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
   const runWithToast = useToastMutation();
   const updateStatusMutation = useUpdateApplicationStatus();
   // URL-synced so reloading (or sharing the link) doesn't silently revert to "All".
@@ -153,24 +141,22 @@ export const ApplicantsPanel = ({
     isApplicantTabId
   );
 
-  const tabs: { id: ApplicantTabId; label: string; count: number }[] =
-    [
-      { id: "all", label: "All", count: applicants.length },
-      {
-        id: "new",
-        label: "New",
-        count: applicants.filter(
-          (a) => APPLICANT_STATUS[a.status] === "new"
-        ).length,
-      },
-      {
-        id: "shortlisted",
-        label: "Shortlisted",
-        count: applicants.filter(
-          (a) => APPLICANT_STATUS[a.status] === "shortlisted"
-        ).length,
-      },
-    ];
+  const tabs: { id: ApplicantTabId; label: string; count: number }[] = [
+    { id: "all", label: "All", count: applicants.length },
+    {
+      id: "new",
+      label: "New",
+      count: applicants.filter((a) => APPLICANT_STATUS[a.status] === "new")
+        .length,
+    },
+    {
+      id: "shortlisted",
+      label: "Shortlisted",
+      count: applicants.filter(
+        (a) => APPLICANT_STATUS[a.status] === "shortlisted"
+      ).length,
+    },
+  ];
   const list =
     tab === "all"
       ? applicants
@@ -181,9 +167,7 @@ export const ApplicantsPanel = ({
     (id: string, jobId: string, status: ApplicationStatus) =>
       runWithToast(() => updateStatus({ id, jobId, status }), {
         success:
-          status === "REJECTED"
-            ? "Applicant rejected"
-            : "Applicant advanced",
+          status === "REJECTED" ? "Applicant rejected" : "Applicant advanced",
         successVariant: status === "REJECTED" ? "info" : "success",
         error: "Couldn't update applicant",
       }),

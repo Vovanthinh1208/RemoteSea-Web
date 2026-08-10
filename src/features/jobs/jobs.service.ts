@@ -37,8 +37,7 @@ export const buildJobListParams = (
     (label) => SENIORITY_TO_LEVELS[label] ?? []
   );
   const hasSalaryRange =
-    filters.salaryMin > SALARY_FLOOR ||
-    filters.salaryMax < SALARY_CEIL;
+    filters.salaryMin > SALARY_FLOOR || filters.salaryMax < SALARY_CEIL;
 
   return {
     q: query.q || undefined,
@@ -64,10 +63,7 @@ export const listJobs = async (
   limit: number,
   opts?: RequestOptions
 ): Promise<JobListResponse> => {
-  const dto = await jobsRepository.list(
-    buildJobListParams(query, limit),
-    opts
-  );
+  const dto = await jobsRepository.list(buildJobListParams(query, limit), opts);
   return toJobListResponse(
     parseOrThrow(jobListResponseSchema, dto, "GET /jobs")
   );

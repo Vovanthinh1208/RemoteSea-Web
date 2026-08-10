@@ -53,12 +53,7 @@ const COMPARE = [
   },
 ];
 
-const COMPARE_COLUMNS = [
-  "RemoteSEA",
-  "LinkedIn",
-  "RemoteOK",
-  "Upwork",
-];
+const COMPARE_COLUMNS = ["RemoteSEA", "LinkedIn", "RemoteOK", "Upwork"];
 
 type CellValue = boolean | "partial";
 
@@ -96,8 +91,7 @@ export const CompareSection = () => (
     <div className="mx-auto max-w-[1240px] px-6">
       <Eyebrow className="mb-3">Side by side</Eyebrow>
       <h2 className="mb-8 text-[32px] font-semibold tracking-tight text-neutral-900">
-        Versus the{" "}
-        <em className="font-serif-italic">alternatives.</em>
+        Versus the <em className="font-serif-italic">alternatives.</em>
       </h2>
       <div className="overflow-hidden rounded-24 border border-neutral-100 bg-white">
         <div className="grid grid-cols-[1.4fr_repeat(4,1fr)] border-b border-neutral-100 bg-neutral-50">

@@ -39,9 +39,7 @@ describe("computeBackoffMs", () => {
     ] as const) {
       expect(computeBackoffMs(attempt, lo)).toBe(window / 2);
       expect(computeBackoffMs(attempt, hi)).toBeLessThan(window);
-      expect(computeBackoffMs(attempt, hi)).toBeGreaterThanOrEqual(
-        window / 2
-      );
+      expect(computeBackoffMs(attempt, hi)).toBeGreaterThanOrEqual(window / 2);
     }
   });
 

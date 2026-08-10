@@ -1,7 +1,10 @@
+import { Link } from "react-router-dom";
 import { ArrowUpRight, Check, Eye, Minus } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import { useMyTalentProfile } from "@/features/talent/talent.queries";
 import { PROF_SECTIONS } from "@/features/talent/components/profile-form/profile-form.constants";
+import { ROUTES } from "@/constants/routes";
 
 const SECTION_IDS = PROF_SECTIONS.map((s) => s.id);
 
@@ -10,8 +13,10 @@ const SECTION_IDS = PROF_SECTIONS.map((s) => s.id);
 // aren't memoized — every IntersectionObserver tick used to re-render the whole
 // form for state none of those sections care about.
 export const ProfileFormNav = () => {
-  const [activeSection, setActiveSection] =
-    useActiveSection(SECTION_IDS);
+  const [activeSection, setActiveSection] = useActiveSection(SECTION_IDS);
+  // Cache-shared with ProfileForm's own useMyTalentProfile() call — React
+  // Query dedupes it, so this doesn't cost a second request.
+  const { data: profile } = useMyTalentProfile();
 
   const scrollTo = (id: string) => {
     setActiveSection(id);
@@ -55,16 +60,33 @@ export const ProfileFormNav = () => {
           );
         })}
         <div className="my-2 border-t border-neutral-200" />
-        <button
-          className="flex w-full items-center justify-between rounded-10 px-3 py-2 text-[13px] text-neutral-500 hover:bg-white/60 hover:text-neutral-700"
-          type="button"
-        >
-          <span className="flex items-center gap-2">
-            <Eye size={13} />
-            Preview as recruiter
+        {profile ? (
+          <Link
+            className="flex w-full items-center justify-between rounded-10 px-3 py-2 text-[13px] text-neutral-500 hover:bg-white/60 hover:text-neutral-700"
+            target="_blank"
+            to={{
+              pathname: ROUTES.talentProfile(profile.slug),
+              search: "?preview=recruiter",
+            }}
+          >
+            <span className="flex items-center gap-2">
+              <Eye size={13} />
+              Preview as recruiter
+            </span>
+            <ArrowUpRight size={11} />
+          </Link>
+        ) : (
+          <span
+            className="flex w-full cursor-not-allowed items-center justify-between rounded-10 px-3 py-2 text-[13px] text-neutral-300"
+            title="Save your profile first"
+          >
+            <span className="flex items-center gap-2">
+              <Eye size={13} />
+              Preview as recruiter
+            </span>
+            <ArrowUpRight size={11} />
           </span>
-          <ArrowUpRight size={11} />
-        </button>
+        )}
       </div>
     </aside>
   );

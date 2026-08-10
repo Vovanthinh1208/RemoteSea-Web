@@ -8,8 +8,8 @@ const FEED = [
     kind: "amber",
     body: (
       <>
-        Canva moved your application to the{" "}
-        <strong>final round</strong>. Schedule with their hiring team.
+        Canva moved your application to the <strong>final round</strong>.
+        Schedule with their hiring team.
       </>
     ),
     time: "2h ago",
@@ -18,8 +18,7 @@ const FEED = [
     kind: "brand",
     body: (
       <>
-        Finch Labs viewed your profile.{" "}
-        <strong>4 views this week.</strong>
+        Finch Labs viewed your profile. <strong>4 views this week.</strong>
       </>
     ),
     time: "yesterday",
@@ -37,8 +36,8 @@ const FEED = [
     kind: "brand",
     body: (
       <>
-        You added <strong>Postgres</strong> and <strong>WebGL</strong>{" "}
-        to your skills.
+        You added <strong>Postgres</strong> and <strong>WebGL</strong> to your
+        skills.
       </>
     ),
     time: "3d ago",
@@ -47,8 +46,7 @@ const FEED = [
     kind: "plain",
     body: (
       <>
-        Stripe reached out about{" "}
-        <strong>Support Engineer — APAC</strong>.
+        Stripe reached out about <strong>Support Engineer — APAC</strong>.
       </>
     ),
     time: "5d ago",
@@ -64,18 +62,12 @@ const BULLET_CLS = {
 export const ActivityFeed = () => (
   <div className="overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">
     <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
-      <h3 className="text-[14px] font-semibold text-neutral-900">
-        Activity
-      </h3>
+      <h3 className="text-[14px] font-semibold text-neutral-900">Activity</h3>
     </div>
     <div className="p-3">
       {FEED.map((f, i) => {
         const FeedIcon =
-          f.kind === "amber"
-            ? Bell
-            : f.kind === "brand"
-              ? User
-              : Bookmark;
+          f.kind === "amber" ? Bell : f.kind === "brand" ? User : Bookmark;
         return (
           <div className="flex gap-3 rounded-8 px-2 py-2.5" key={i}>
             <span
@@ -90,9 +82,7 @@ export const ActivityFeed = () => (
               <p className="text-[12.5px] leading-relaxed text-neutral-700">
                 {f.body}
               </p>
-              <span className="text-[11px] text-neutral-400">
-                {f.time}
-              </span>
+              <span className="text-[11px] text-neutral-400">{f.time}</span>
             </div>
           </div>
         );

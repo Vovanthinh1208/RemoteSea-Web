@@ -46,11 +46,7 @@ export const TextField = ({
         {...registration}
       />
       {error && (
-        <p
-          className="mt-1 text-xs text-red-600"
-          id={errorId}
-          role="alert"
-        >
+        <p className="mt-1 text-xs text-red-600" id={errorId} role="alert">
           {error}
         </p>
       )}

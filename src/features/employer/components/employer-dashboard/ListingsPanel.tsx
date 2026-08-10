@@ -8,10 +8,7 @@ import {
   STATUS_LABEL,
   timeAgo,
 } from "@/features/employer/employer-dashboard.utils";
-import type {
-  EmployerApplicant,
-  EmployerJobListItem,
-} from "@/types/employer";
+import type { EmployerApplicant, EmployerJobListItem } from "@/types/employer";
 import { ROUTES } from "@/constants/routes";
 import { buttonVariants } from "@/components/ui/button";
 import { percent } from "@/utils/percent";
@@ -37,9 +34,7 @@ const ListingRow = memo(function ListingRow({
 }: ListingRowProps) {
   const total = j._count.applications;
   const reviewed = apps.filter((a) => a.status !== "PENDING").length;
-  const shortlisted = apps.filter(
-    (a) => a.status === "SHORTLISTED"
-  ).length;
+  const shortlisted = apps.filter((a) => a.status === "SHORTLISTED").length;
   const newApps = apps.filter((a) => a.status === "PENDING").length;
   const reviewPct = percent(reviewed, total);
   const shortPct = percent(shortlisted, total);
@@ -99,9 +94,7 @@ const ListingRow = memo(function ListingRow({
           </div>
         </div>
       ) : (
-        <span className="text-[12px] italic text-neutral-400">
-          Awaiting
-        </span>
+        <span className="text-[12px] italic text-neutral-400">Awaiting</span>
       )}
 
       <div className="text-center">
@@ -149,9 +142,7 @@ export const ListingsPanel = ({
   jobs,
   applicationsByJob,
 }: ListingsPanelProps) => {
-  const active = jobs.filter(
-    (j) => STATUS_GROUP[j.status] !== "closed"
-  ).length;
+  const active = jobs.filter((j) => STATUS_GROUP[j.status] !== "closed").length;
 
   return (
     <div className="rounded-20 border border-neutral-100 bg-white p-5">
@@ -162,10 +153,7 @@ export const ListingsPanel = ({
             · {active} active
           </span>
         </h3>
-        <Link
-          className={buttonVariants({ size: "sm" })}
-          to={ROUTES.postJob}
-        >
+        <Link className={buttonVariants({ size: "sm" })} to={ROUTES.postJob}>
           <Plus size={11} /> Post a job
         </Link>
       </div>
@@ -187,9 +175,7 @@ export const ListingsPanel = ({
           <div className="divide-y divide-neutral-50">
             {jobs.map((j) => (
               <ListingRow
-                applications={
-                  applicationsByJob.get(j.id) ?? EMPTY_APPLICATIONS
-                }
+                applications={applicationsByJob.get(j.id) ?? EMPTY_APPLICATIONS}
                 job={j}
                 key={j.id}
               />

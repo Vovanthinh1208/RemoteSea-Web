@@ -107,9 +107,9 @@ describe("listJobs", () => {
     repository.jobsRepository.list.mockResolvedValueOnce({
       jobs: "not-an-array",
     });
-    await expect(
-      listJobs(DEFAULT_JOB_FILTERS, 12)
-    ).rejects.toBeInstanceOf(ValidationError);
+    await expect(listJobs(DEFAULT_JOB_FILTERS, 12)).rejects.toBeInstanceOf(
+      ValidationError
+    );
   });
 });
 
@@ -152,11 +152,8 @@ describe("getJob", () => {
 
     await getJob("job-1", { signal: controller.signal });
 
-    expect(repository.jobsRepository.getById).toHaveBeenCalledWith(
-      "job-1",
-      {
-        signal: controller.signal,
-      }
-    );
+    expect(repository.jobsRepository.getById).toHaveBeenCalledWith("job-1", {
+      signal: controller.signal,
+    });
   });
 });

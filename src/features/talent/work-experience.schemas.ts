@@ -20,21 +20,16 @@ export const workExperienceFormSchema = z
   })
   .refine(
     (data) =>
-      data.isCurrent ||
-      !data.endMonth ||
-      data.endMonth >= data.startMonth,
+      data.isCurrent || !data.endMonth || data.endMonth >= data.startMonth,
     {
       message: "End date must be on or after start date",
       path: ["endMonth"],
     }
   );
 
-export type WorkExperienceFormValues = z.infer<
-  typeof workExperienceFormSchema
->;
+export type WorkExperienceFormValues = z.infer<typeof workExperienceFormSchema>;
 
 export const monthToIsoDate = (month: string): string =>
   new Date(`${month}-01T00:00:00.000Z`).toISOString();
 
-export const isoDateToMonth = (iso: string): string =>
-  iso.slice(0, 7);
+export const isoDateToMonth = (iso: string): string => iso.slice(0, 7);

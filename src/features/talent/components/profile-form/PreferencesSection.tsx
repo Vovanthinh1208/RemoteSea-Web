@@ -54,8 +54,7 @@ export const PreferencesSection = ({
   // per toggle, not deferred to this page's Save button.
   const runWithToast = useToastMutation();
   const { data: notificationPrefs } = useMyNotificationPreferences();
-  const updateNotificationPrefsMutation =
-    useUpdateMyNotificationPreferences();
+  const updateNotificationPrefsMutation = useUpdateMyNotificationPreferences();
   const toggleNotification = (
     field: "weeklyDigest" | "instantMatchAlerts",
     value: boolean
@@ -108,16 +107,13 @@ export const PreferencesSection = ({
         </p>
         <p className="mb-4 text-[12.5px] text-neutral-500">
           Median for Senior Frontend in VN:{" "}
-          <strong className="text-brand-700">$2,800 / mo</strong> ·
-          You&apos;re asking{" "}
-          <strong className="text-brand-700">+30%</strong> above
-          median, in line with SG market.
+          <strong className="text-brand-700">$2,800 / mo</strong> · You&apos;re
+          asking <strong className="text-brand-700">+30%</strong> above median,
+          in line with SG market.
         </p>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <p className="mb-1 text-[11px] text-neutral-400">
-              Minimum
-            </p>
+            <p className="mb-1 text-[11px] text-neutral-400">Minimum</p>
             <input
               aria-label="Minimum salary"
               className="w-full accent-brand-600"
@@ -128,18 +124,13 @@ export const PreferencesSection = ({
               value={salMin}
               onChange={(e) =>
                 onMinChange(
-                  Math.min(
-                    Number(e.target.value),
-                    salMax - SALARY_GAP
-                  )
+                  Math.min(Number(e.target.value), salMax - SALARY_GAP)
                 )
               }
             />
           </div>
           <div>
-            <p className="mb-1 text-[11px] text-neutral-400">
-              Maximum
-            </p>
+            <p className="mb-1 text-[11px] text-neutral-400">Maximum</p>
             <input
               aria-label="Maximum salary"
               className="w-full accent-brand-600"
@@ -150,10 +141,7 @@ export const PreferencesSection = ({
               value={salMax}
               onChange={(e) =>
                 onMaxChange(
-                  Math.max(
-                    Number(e.target.value),
-                    salMin + SALARY_GAP
-                  )
+                  Math.max(Number(e.target.value), salMin + SALARY_GAP)
                 )
               }
             />
@@ -244,9 +232,7 @@ export const PreferencesSection = ({
           desc="Email when a role scores 90%+ against your profile. Usually 1–2 a month."
           on={notificationPrefs?.instantMatchAlerts ?? true}
           title="Instant high-match alerts"
-          onChange={(v) =>
-            toggleNotification("instantMatchAlerts", v)
-          }
+          onChange={(v) => toggleNotification("instantMatchAlerts", v)}
         />
       </div>
     </section>

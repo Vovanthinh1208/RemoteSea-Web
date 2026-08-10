@@ -1,10 +1,4 @@
-import {
-  Clock,
-  FileText,
-  MapPin,
-  Monitor,
-  Users,
-} from "lucide-react";
+import { Clock, FileText, MapPin, Monitor, Users } from "lucide-react";
 import { JOB_TYPE_LABELS } from "@/features/jobs/jobs.utils";
 import type { Job } from "@/types/job";
 
@@ -16,8 +10,7 @@ interface QuickFactsCardProps {
 
 export const QuickFactsCard = ({ job }: QuickFactsCardProps) => {
   const country = job.country ?? job.employer.hqCountry ?? "Remote";
-  const timezone =
-    job.timezone ?? (job.isRemote ? "Remote" : country);
+  const timezone = job.timezone ?? (job.isRemote ? "Remote" : country);
   const hasEquipmentBenefit = job.benefits.some((b) =>
     b.toLowerCase().includes("equipment")
   );
@@ -60,9 +53,7 @@ export const QuickFactsCard = ({ job }: QuickFactsCardProps) => {
             <span className="flex items-center gap-1.5 text-neutral-400">
               {r.icon} {r.k}
             </span>
-            <span className="font-medium text-neutral-700">
-              {r.v}
-            </span>
+            <span className="font-medium text-neutral-700">{r.v}</span>
           </div>
         ))}
       </div>

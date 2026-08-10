@@ -20,15 +20,12 @@ export const listAdminEmployers = async (
   } = {},
   opts?: RequestOptions
 ): Promise<AdminEmployersResponse> =>
-  toAdminEmployersResponse(
-    await adminRepository.listEmployers(params, opts)
-  );
+  toAdminEmployersResponse(await adminRepository.listEmployers(params, opts));
 
 export const updateAdminEmployer = async (
   id: string,
   action: "verify" | "suspend"
-): Promise<{ success: true }> =>
-  adminRepository.updateEmployer(id, action);
+): Promise<{ success: true }> => adminRepository.updateEmployer(id, action);
 
 export const listAdminJobs = async (
   params: { status?: JobStatus; page?: number; limit?: number } = {},

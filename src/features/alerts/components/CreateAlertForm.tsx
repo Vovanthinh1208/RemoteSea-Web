@@ -31,9 +31,7 @@ const DEFAULT_FORM_VALUES: CreateAlertFormValues = {
   categoryIds: [],
 };
 
-export const CreateAlertForm = ({
-  onCreate,
-}: CreateAlertFormProps) => {
+export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
   const { data: categories } = useCategories();
 
   const {
@@ -65,13 +63,9 @@ export const CreateAlertForm = ({
       keywords: values.keywords || undefined,
       jobType: values.jobType || undefined,
       level: values.level || undefined,
-      salaryMin: values.salaryMin
-        ? Number(values.salaryMin)
-        : undefined,
+      salaryMin: values.salaryMin ? Number(values.salaryMin) : undefined,
       frequency: values.frequency,
-      categoryIds: values.categoryIds.length
-        ? values.categoryIds
-        : undefined,
+      categoryIds: values.categoryIds.length ? values.categoryIds : undefined,
     });
     // Only clear the form if the alert was actually created — on failure the
     // user keeps their input to retry (the error toast already fired).
@@ -172,8 +166,7 @@ export const CreateAlertForm = ({
       )}
 
       <Button disabled={isSubmitting} type="submit">
-        <Plus size={14} />{" "}
-        {isSubmitting ? "Creating…" : "Create alert"}
+        <Plus size={14} /> {isSubmitting ? "Creating…" : "Create alert"}
       </Button>
     </form>
   );

@@ -31,10 +31,7 @@ export const HomePage = () => {
     DEFAULT_JOB_FILTERS,
     DEFAULT_FILTERS_FETCH_LIMIT
   );
-  const featuredJobs = (data?.jobs ?? []).slice(
-    0,
-    FEATURED_JOBS_DISPLAY_COUNT
-  );
+  const featuredJobs = (data?.jobs ?? []).slice(0, FEATURED_JOBS_DISPLAY_COUNT);
   const { data: salaryBenches } = useSalaryBenchmarks();
 
   return (

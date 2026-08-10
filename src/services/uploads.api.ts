@@ -25,10 +25,7 @@ export const MAX_FILE_SIZE_BYTES: Record<UploadType, number> = {
   resume: 10 * BYTES_PER_MB,
 };
 
-export const validateFile = (
-  file: File,
-  type: UploadType
-): string | null => {
+export const validateFile = (file: File, type: UploadType): string | null => {
   if (!CONTENT_TYPES[type].includes(file.type)) {
     return type === "resume"
       ? "Must be a PDF file."
@@ -66,8 +63,7 @@ export const uploadViaPresign = async (
     () => controller.abort(new Error("Upload timed out")),
     UPLOAD_TIMEOUT_MS
   );
-  const onExternalAbort = () =>
-    controller.abort(options?.signal?.reason);
+  const onExternalAbort = () => controller.abort(options?.signal?.reason);
   options?.signal?.addEventListener("abort", onExternalAbort);
 
   try {

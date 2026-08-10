@@ -37,8 +37,7 @@ export const useEmployerProfile = () => {
       } catch (err) {
         if (
           err instanceof ApiError &&
-          (err.status === NOT_FOUND_STATUS ||
-            err.status === FORBIDDEN_STATUS)
+          (err.status === NOT_FOUND_STATUS || err.status === FORBIDDEN_STATUS)
         ) {
           return null;
         }
@@ -85,9 +84,7 @@ export type ApplicantWithJob = EmployerApplicant & {
 export const useEmployerApplicationsAggregate = () => {
   const { data: jobsData } = useEmployerJobs();
   const jobs = jobsData?.jobs ?? [];
-  const jobIds = jobs
-    .filter((j) => j._count.applications > 0)
-    .map((j) => j.id);
+  const jobIds = jobs.filter((j) => j._count.applications > 0).map((j) => j.id);
 
   const results = useQueries({
     queries: jobIds.map((jobId) => ({

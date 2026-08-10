@@ -78,29 +78,27 @@ export const LinksSection = ({
         </div>
       </div>
 
-      {LINK_FIELDS.map(
-        ({ icon: Icon, label, field, placeholder }) => (
-          <div className="flex items-center gap-3" key={field}>
-            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-neutral-100 text-neutral-500">
-              <Icon size={15} />
-            </span>
-            <div className="min-w-0 flex-1 space-y-0.5">
-              <label
-                className="block text-[12px] font-medium text-neutral-700"
-                htmlFor={`p-${field}`}
-              >
-                {label}
-              </label>
-              <input
-                className={TEXT_INPUT_CLASS}
-                id={`p-${field}`}
-                placeholder={placeholder}
-                {...register(field)}
-              />
-            </div>
+      {LINK_FIELDS.map(({ icon: Icon, label, field, placeholder }) => (
+        <div className="flex items-center gap-3" key={field}>
+          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-neutral-100 text-neutral-500">
+            <Icon size={15} />
+          </span>
+          <div className="min-w-0 flex-1 space-y-0.5">
+            <label
+              className="block text-[12px] font-medium text-neutral-700"
+              htmlFor={`p-${field}`}
+            >
+              {label}
+            </label>
+            <input
+              className={TEXT_INPUT_CLASS}
+              id={`p-${field}`}
+              placeholder={placeholder}
+              {...register(field)}
+            />
           </div>
-        )
-      )}
+        </div>
+      ))}
     </div>
   </section>
 );

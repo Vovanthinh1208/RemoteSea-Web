@@ -14,9 +14,7 @@ export const StatsBand = () => (
           <div className="text-[26px] font-semibold tracking-tight text-neutral-900">
             {s.value}
           </div>
-          <div className="mt-0.5 text-[13px] text-neutral-400">
-            {s.label}
-          </div>
+          <div className="mt-0.5 text-[13px] text-neutral-400">{s.label}</div>
         </div>
       ))}
     </div>

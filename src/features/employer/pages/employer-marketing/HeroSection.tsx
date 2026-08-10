@@ -85,9 +85,9 @@ export const HeroSection = () => (
         </h1>
 
         <p className="mb-8 text-[17px] leading-relaxed text-neutral-500">
-          500+ qualified VN/SEA professionals. Verified employers
-          only. Salary range required. The signal-to-noise ratio of
-          LinkedIn at a fraction of the cost.
+          500+ qualified VN/SEA professionals. Verified employers only. Salary
+          range required. The signal-to-noise ratio of LinkedIn at a fraction of
+          the cost.
         </p>
 
         <div className="mb-5 flex flex-wrap gap-3">

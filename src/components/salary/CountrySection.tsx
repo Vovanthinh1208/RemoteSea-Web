@@ -44,14 +44,11 @@ export const CountrySection = () => {
           <Eyebrow className="mb-2">By country</Eyebrow>
           <h2 className="text-[28px] font-semibold tracking-tight text-neutral-900">
             Where the{" "}
-            <em className="font-serif-italic text-brand-700">
-              money
-            </em>{" "}
-            lives
+            <em className="font-serif-italic text-brand-700">money</em> lives
           </h2>
           <p className="mx-auto mt-2 max-w-lg text-sm text-neutral-500">
-            Median compensation for mid-level remote roles, by where
-            the company is headquartered.
+            Median compensation for mid-level remote roles, by where the company
+            is headquartered.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -60,9 +57,7 @@ export const CountrySection = () => {
               className="rounded-20 border border-neutral-100 bg-white p-6 text-center transition-shadow hover:shadow-card"
               key={c.country}
             >
-              <div className="mb-2 text-[36px] leading-none">
-                {c.flag}
-              </div>
+              <div className="mb-2 text-[36px] leading-none">{c.flag}</div>
               <p className="mb-3 text-[13.5px] font-medium text-neutral-700">
                 {c.country}
               </p>

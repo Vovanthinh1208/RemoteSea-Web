@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   applyToJob,
   getMyApplicationStats,
@@ -25,8 +21,7 @@ export const useMyApplications = (
   const { user } = useAuth();
   return useQuery({
     queryKey: applicationKeys.mine(page, limit),
-    queryFn: ({ signal }) =>
-      listMyApplications(page, limit, { signal }),
+    queryFn: ({ signal }) => listMyApplications(page, limit, { signal }),
     enabled: !!user,
   });
 };

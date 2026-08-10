@@ -30,12 +30,9 @@ export const initMonitoring = (): void => {
     replaysSessionSampleRate: REPLAY_SESSION_SAMPLE_RATE,
     replaysOnErrorSampleRate: REPLAY_ERROR_SAMPLE_RATE,
     beforeSend(event) {
-      if (event.request?.url)
-        event.request.url = scrubUrl(event.request.url);
+      if (event.request?.url) event.request.url = scrubUrl(event.request.url);
       if (typeof event.request?.query_string === "string") {
-        event.request.query_string = scrubUrl(
-          event.request.query_string
-        );
+        event.request.query_string = scrubUrl(event.request.query_string);
       }
       return event;
     },
@@ -44,8 +41,7 @@ export const initMonitoring = (): void => {
       if (data) {
         // `url` on fetch/xhr crumbs; `to`/`from` on navigation crumbs.
         for (const key of ["url", "to", "from"] as const) {
-          if (typeof data[key] === "string")
-            data[key] = scrubUrl(data[key]);
+          if (typeof data[key] === "string") data[key] = scrubUrl(data[key]);
         }
       }
       return breadcrumb;
@@ -53,14 +49,9 @@ export const initMonitoring = (): void => {
   });
 };
 
-export const reportError = (
-  error: unknown,
-  componentStack?: string
-): void => {
+export const reportError = (error: unknown, componentStack?: string): void => {
   Sentry.captureException(
     error,
-    componentStack
-      ? { contexts: { react: { componentStack } } }
-      : undefined
+    componentStack ? { contexts: { react: { componentStack } } } : undefined
   );
 };

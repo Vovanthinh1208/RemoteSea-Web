@@ -5,9 +5,7 @@
  * that had already drifted (one uppercased and fell back to "C", the other did
  * neither and fell back "?").
  */
-export const personInitial = (
-  name: string | null | undefined
-): string => {
+export const personInitial = (name: string | null | undefined): string => {
   const last = name?.trim().split(/\s+/).pop();
   return last?.[0]?.toUpperCase() ?? "?";
 };

@@ -61,9 +61,7 @@ export const RegisterForm = () => {
     try {
       const user = await registerAccount(values);
       navigate(
-        user.role === "EMPLOYER"
-          ? ROUTES.employerDashboard
-          : "/profile",
+        user.role === "EMPLOYER" ? ROUTES.employerDashboard : "/profile",
         { replace: true }
       );
     } catch (err) {
@@ -134,9 +132,7 @@ export const RegisterForm = () => {
           type="password"
         />
 
-        {formError && (
-          <p className="text-sm text-red-600">{formError}</p>
-        )}
+        {formError && <p className="text-sm text-red-600">{formError}</p>}
 
         <Button
           className="w-full rounded-12"
@@ -149,17 +145,11 @@ export const RegisterForm = () => {
         </Button>
         <p className="text-center text-[12px] text-neutral-400">
           By signing up you agree to our{" "}
-          <Link
-            className="text-neutral-600 hover:underline"
-            to="/terms"
-          >
+          <Link className="text-neutral-600 hover:underline" to="/terms">
             Terms
           </Link>{" "}
           and{" "}
-          <Link
-            className="text-neutral-600 hover:underline"
-            to="/privacy"
-          >
+          <Link className="text-neutral-600 hover:underline" to="/privacy">
             Privacy Policy
           </Link>
           .

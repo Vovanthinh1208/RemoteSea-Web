@@ -1,4 +1,6 @@
 import type { ExperienceLevel, Skill } from "@/types/job";
+import type { WorkExperience } from "@/types/work-experience";
+import type { ProfileHighlight } from "@/types/profile-highlight";
 
 export type TalentVisibility = "PUBLIC" | "VERIFIED_EMPLOYERS";
 
@@ -26,10 +28,11 @@ export type TalentProfile = {
   linkedinUrl: string | null;
   isOpenToWork: boolean;
   visibility: TalentVisibility;
-  primaryRole?: PrimaryRole | null;
-  rightToWork?: RightToWork | null;
+  primaryRole: PrimaryRole | null;
+  rightToWork: RightToWork | null;
   employmentTypes: EmploymentType[];
   timezoneOverlap: TimezoneOverlap[];
+  noticePeriod: NoticePeriod | null;
   // Omitted entirely (not null) by GET /talent/:slug when isOpenToWork is false.
   desiredSalaryMin?: number | null;
   desiredSalaryMax?: number | null;
@@ -37,6 +40,8 @@ export type TalentProfile = {
   createdAt: string;
   updatedAt: string;
   skills: TalentSkill[];
+  workExperiences: WorkExperience[];
+  profileHighlights: ProfileHighlight[];
   user?: { name: string | null; image?: string | null };
 };
 
@@ -58,6 +63,8 @@ export type EmploymentType = "FULL_TIME" | "CONTRACT" | "PART_TIME";
 
 export type TimezoneOverlap = "SG_HOURS" | "AU_HOURS" | "ASYNC_ONLY";
 
+export type NoticePeriod = "Immediate" | "2 weeks" | "1 month" | "2+ months";
+
 export type UpdateTalentProfilePayload = Partial<{
   headline: string;
   bio: string;
@@ -76,6 +83,7 @@ export type UpdateTalentProfilePayload = Partial<{
   rightToWork: RightToWork;
   employmentTypes: EmploymentType[];
   timezoneOverlap: TimezoneOverlap[];
+  noticePeriod: NoticePeriod;
   desiredSalaryMin: number;
   desiredSalaryMax: number;
   skills: { skillId: string; yearsExp?: number }[];

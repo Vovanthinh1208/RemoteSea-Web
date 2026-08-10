@@ -89,9 +89,8 @@ export const ChannelsThreadsSection = () => (
           talk about.
         </h2>
         <p className="mx-auto max-w-lg text-neutral-500">
-          A peek at the channels and a few threads from this week.
-          Names redacted out of respect — when you join, the full
-          archive is yours.
+          A peek at the channels and a few threads from this week. Names
+          redacted out of respect — when you join, the full archive is yours.
         </p>
       </div>
       <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
@@ -116,9 +115,7 @@ export const ChannelsThreadsSection = () => (
                   <div className="text-[13px] font-medium text-neutral-800">
                     {ch.name}
                   </div>
-                  <div className="text-[11px] text-neutral-400">
-                    {ch.topic}
-                  </div>
+                  <div className="text-[11px] text-neutral-400">{ch.topic}</div>
                 </div>
                 <span className="flex-shrink-0 font-mono text-[11px] text-neutral-400">
                   {ch.count}
@@ -152,9 +149,7 @@ export const ChannelsThreadsSection = () => (
                   <span className="mx-1.5 rounded-full bg-neutral-100 px-2 py-0.5 text-[11px] text-neutral-500">
                     {t.channel}
                   </span>
-                  <span className="text-[12px] text-neutral-400">
-                    {t.time}
-                  </span>
+                  <span className="text-[12px] text-neutral-400">{t.time}</span>
                 </div>
               </div>
               <p className="mb-3 text-[14px] leading-relaxed text-neutral-700">

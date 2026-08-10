@@ -8,12 +8,10 @@ import { JobCard } from "@/features/jobs/components/JobCard";
 import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
 import { Pagination } from "@/features/jobs/components/Pagination";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { Dropdown } from "@/components/ui/dropdown";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { useSyncedState } from "@/hooks/useSyncedState";
-import {
-  useJobsQuery,
-  prefetchJobsList,
-} from "@/features/jobs/jobs.queries";
+import { useJobsQuery, prefetchJobsList } from "@/features/jobs/jobs.queries";
 import { useCategories } from "@/features/taxonomy/taxonomy.queries";
 import { buildActivePills } from "@/features/jobs/jobs.utils";
 import {
@@ -34,6 +32,13 @@ interface JobsBoardProps {
 const SEARCH_DEBOUNCE_MS = 400;
 const JOB_LIST_SKELETON_COUNT = 6;
 
+const SORT_OPTIONS = [
+  { value: "relevance", label: "Best match" },
+  { value: "recent", label: "Most recent" },
+  { value: "salary", label: "Highest salary" },
+  { value: "featured", label: "Featured first" },
+] as const satisfies readonly { value: SortKey; label: string }[];
+
 export const JobsBoard = ({
   filters: query,
   onFiltersChange,
@@ -41,14 +46,8 @@ export const JobsBoard = ({
   const [search, setSearch] = useSyncedState(query.q);
   const firstRender = useRef(true);
   const queryClient = useQueryClient();
-  const {
-    data,
-    isLoading,
-    isFetching,
-    isError,
-    isPlaceholderData,
-    refetch,
-  } = useJobsQuery(query);
+  const { data, isLoading, isFetching, isError, isPlaceholderData, refetch } =
+    useJobsQuery(query);
   const { data: categories } = useCategories();
 
   // Once a page's results are in, warm the cache for the next page — if the
@@ -94,11 +93,7 @@ export const JobsBoard = ({
     onFiltersChange({ ...query, q: search, page });
 
   const { filters } = query;
-  const activePills = buildActivePills(
-    filters,
-    categories,
-    setFilters
-  );
+  const activePills = buildActivePills(filters, categories, setFilters);
 
   const jobs = data?.jobs ?? [];
   const total = data?.pagination.total ?? 0;
@@ -132,16 +127,12 @@ export const JobsBoard = ({
             <div className="flex items-center gap-2 text-sm text-neutral-600">
               {isLoading ? (
                 <>
-                  <span className="text-neutral-900">
-                    Loading jobs…{" "}
-                  </span>
+                  <span className="text-neutral-900">Loading jobs… </span>
                   <Spinner className="h-3 w-3" />
                 </>
               ) : (
                 <>
-                  <strong className="text-neutral-900">
-                    {total}
-                  </strong>{" "}
+                  <strong className="text-neutral-900">{total}</strong>{" "}
                   {total === 1 ? "job" : "jobs"}
                   <span className="text-neutral-400">
                     {" "}
@@ -161,19 +152,16 @@ export const JobsBoard = ({
             </div>
             <div className="flex items-center gap-2 text-sm text-neutral-500">
               Sort by
-              <select
+              <Dropdown
                 aria-label="Sort jobs"
-                className="rounded-8 border border-neutral-200 bg-white px-2 py-1 text-sm text-neutral-700 outline-none focus:border-brand-600"
+                options={
+                  query.q
+                    ? SORT_OPTIONS
+                    : SORT_OPTIONS.filter((o) => o.value !== "relevance")
+                }
                 value={query.sort}
-                onChange={(e) => setSort(e.target.value as SortKey)}
-              >
-                {query.q && (
-                  <option value="relevance">Best match</option>
-                )}
-                <option value="recent">Most recent</option>
-                <option value="salary">Highest salary</option>
-                <option value="featured">Featured first</option>
-              </select>
+                onChange={(v) => setSort(v as SortKey)}
+              />
             </div>
           </div>
 
@@ -206,21 +194,14 @@ export const JobsBoard = ({
               does something instead of hitting a dead area. */}
           {isLoading ? (
             <div className="space-y-2">
-              {Array.from(
-                { length: JOB_LIST_SKELETON_COUNT },
-                (_, i) => (
-                  <JobCardSkeleton key={i} />
-                )
-              )}
+              {Array.from({ length: JOB_LIST_SKELETON_COUNT }, (_, i) => (
+                <JobCardSkeleton key={i} />
+              ))}
             </div>
           ) : isError ? (
             <EmptyState
               action={
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => refetch()}
-                >
+                <Button size="sm" variant="outline" onClick={() => refetch()}>
                   Try again
                 </Button>
               }

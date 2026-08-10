@@ -1,10 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  RefreshCw,
-  ShieldCheck,
-  Users,
-} from "lucide-react";
+import { ArrowRight, RefreshCw, ShieldCheck, Users } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { Button } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/eyebrow";
@@ -19,15 +14,11 @@ export const SubmitSection = () => {
             <Eyebrow className="mb-2">Contribute</Eyebrow>
             <h2 className="mb-3 text-[28px] font-semibold tracking-tight text-neutral-900">
               Submit your salary,{" "}
-              <em className="font-serif-italic text-brand-700">
-                anonymously
-              </em>
-              .
+              <em className="font-serif-italic text-brand-700">anonymously</em>.
             </h2>
             <p className="mb-6 text-sm leading-relaxed text-neutral-500">
-              It takes 90 seconds. No name, no email required. Your
-              data point makes the next person&apos;s negotiation a
-              little bit fairer.
+              It takes 90 seconds. No name, no email required. Your data point
+              makes the next person&apos;s negotiation a little bit fairer.
             </p>
 
             <div className="mb-6 space-y-2.5">
@@ -78,9 +69,7 @@ export const SubmitSection = () => {
                 className="flex items-center justify-between border-b border-neutral-200/60 py-3 last:border-none"
                 key={k}
               >
-                <span className="text-[12.5px] text-neutral-500">
-                  {k}
-                </span>
+                <span className="text-[12.5px] text-neutral-500">{k}</span>
                 <span
                   className={cn(
                     "text-[13px] font-medium",

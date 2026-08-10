@@ -1,9 +1,6 @@
 import type { RequestOptions } from "@/core/http/request-config";
 import { taxonomyRepository } from "@/features/taxonomy/taxonomy.repository";
-import {
-  toCategory,
-  toSkill,
-} from "@/features/taxonomy/taxonomy.mapper";
+import { toCategory, toSkill } from "@/features/taxonomy/taxonomy.mapper";
 import type { Category, Skill } from "@/types/job";
 
 export const listCategories = async (

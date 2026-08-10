@@ -16,11 +16,10 @@ export const employerRepository = {
   createProfile: async (
     payload: CreateEmployerProfileRequestDto
   ): Promise<CreateEmployerProfileResponseDto> => {
-    const { data } =
-      await apiClient.post<CreateEmployerProfileResponseDto>(
-        "/employer/profile",
-        payload
-      );
+    const { data } = await apiClient.post<CreateEmployerProfileResponseDto>(
+      "/employer/profile",
+      payload
+    );
     return data;
   },
 
@@ -71,11 +70,10 @@ export const employerRepository = {
     } = {},
     opts?: RequestOptions
   ): Promise<EmployerJobApplicationsResponseDto> => {
-    const { data } =
-      await apiClient.get<EmployerJobApplicationsResponseDto>(
-        `/employer/jobs/${jobId}/applications`,
-        { params, signal: opts?.signal }
-      );
+    const { data } = await apiClient.get<EmployerJobApplicationsResponseDto>(
+      `/employer/jobs/${jobId}/applications`,
+      { params, signal: opts?.signal }
+    );
     return data;
   },
 

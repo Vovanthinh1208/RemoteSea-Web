@@ -29,24 +29,18 @@ export const AccountSection = () => {
 
   const savePhone = () => {
     if (phone === (account?.phone ?? "")) return;
-    void runWithToast(
-      () => updateAccountMutation.mutateAsync({ phone }),
-      {
-        error: "Couldn't update phone number",
-      }
-    );
+    void runWithToast(() => updateAccountMutation.mutateAsync({ phone }), {
+      error: "Couldn't update phone number",
+    });
   };
 
   const saveField = (
     field: "language" | "region" | "currencyDisplay",
     value: string
   ) =>
-    runWithToast(
-      () => updateAccountMutation.mutateAsync({ [field]: value }),
-      {
-        error: "Couldn't update that setting",
-      }
-    );
+    runWithToast(() => updateAccountMutation.mutateAsync({ [field]: value }), {
+      error: "Couldn't update that setting",
+    });
 
   return (
     <section
@@ -90,9 +84,7 @@ export const AccountSection = () => {
         <div className="space-y-1.5">
           <label className="block text-[12.5px] font-medium text-neutral-700">
             Phone{" "}
-            <span className="font-normal text-neutral-400">
-              (optional)
-            </span>
+            <span className="font-normal text-neutral-400">(optional)</span>
           </label>
           <input
             className={TEXT_INPUT_CLASS}
@@ -138,9 +130,7 @@ export const AccountSection = () => {
             <select
               className={SELECT_INPUT_CLASS}
               value={account?.currencyDisplay ?? "USD ($)"}
-              onChange={(e) =>
-                saveField("currencyDisplay", e.target.value)
-              }
+              onChange={(e) => saveField("currencyDisplay", e.target.value)}
             >
               {CURRENCIES.map((c) => (
                 <option key={c}>{c}</option>

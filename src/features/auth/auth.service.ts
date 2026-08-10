@@ -27,18 +27,16 @@ export type {
   OAuthProvider,
 };
 
-export const login = async (
-  payload: LoginPayload
-): Promise<LoginResponseDto> => authRepository.login(payload);
+export const login = async (payload: LoginPayload): Promise<LoginResponseDto> =>
+  authRepository.login(payload);
 
 export const completeTwoFactorChallenge = async (
   payload: TwoFactorChallengePayload
 ): Promise<TwoFactorChallengeResponseDto> =>
   authRepository.completeTwoFactorChallenge(payload);
 
-export const getTwoFactorStatus =
-  async (): Promise<TwoFactorStatusDto> =>
-    authRepository.getTwoFactorStatus();
+export const getTwoFactorStatus = async (): Promise<TwoFactorStatusDto> =>
+  authRepository.getTwoFactorStatus();
 
 export const setupTwoFactor = async (): Promise<TwoFactorSetupDto> =>
   authRepository.setupTwoFactor();
@@ -50,8 +48,7 @@ export const verifyTwoFactorSetup = async (
 
 export const disableTwoFactor = async (
   payload: TwoFactorDisablePayload
-): Promise<{ message: string }> =>
-  authRepository.disableTwoFactor(payload);
+): Promise<{ message: string }> => authRepository.disableTwoFactor(payload);
 
 export const register = async (
   payload: RegisterPayload
@@ -76,18 +73,15 @@ export const getSession = async (
 
 export const forgotPassword = async (
   email: string
-): Promise<{ message: string }> =>
-  authRepository.forgotPassword(email);
+): Promise<{ message: string }> => authRepository.forgotPassword(email);
 
 export const resetPassword = async (
   payload: ResetPasswordPayload
-): Promise<{ message: string }> =>
-  authRepository.resetPassword(payload);
+): Promise<{ message: string }> => authRepository.resetPassword(payload);
 
 export const oauthUrl = (provider: OAuthProvider): string =>
   authRepository.oauthUrl(provider);
 
 export const getOAuthLinkUrl = async (
   provider: OAuthProvider
-): Promise<OAuthLinkUrlDto> =>
-  authRepository.getOAuthLinkUrl(provider);
+): Promise<OAuthLinkUrlDto> => authRepository.getOAuthLinkUrl(provider);

@@ -45,9 +45,7 @@ export const StatCard = ({
             {value}
           </span>
         </div>
-        {sub && (
-          <p className="mt-1 text-[12px] text-neutral-400">{sub}</p>
-        )}
+        {sub && <p className="mt-1 text-[12px] text-neutral-400">{sub}</p>}
       </div>
     );
   }
@@ -69,9 +67,7 @@ export const StatCard = ({
         <div className="mb-1 text-[28px] font-semibold tracking-tight text-neutral-900">
           {value}
         </div>
-        {sub && (
-          <span className="text-[12px] text-neutral-400">{sub}</span>
-        )}
+        {sub && <span className="text-[12px] text-neutral-400">{sub}</span>}
       </div>
     );
   }
@@ -95,11 +91,7 @@ export const StatCard = ({
       >
         {value}
       </div>
-      {sub && (
-        <div className="mt-0.5 text-[11px] text-neutral-400">
-          {sub}
-        </div>
-      )}
+      {sub && <div className="mt-0.5 text-[11px] text-neutral-400">{sub}</div>}
     </div>
   );
 };

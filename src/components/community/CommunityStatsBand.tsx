@@ -14,9 +14,7 @@ export const CommunityStatsBand = () => (
           <div className="text-[26px] font-semibold tracking-tight text-neutral-900">
             {s.v}
           </div>
-          <div className="mt-0.5 text-[13px] text-neutral-400">
-            {s.l}
-          </div>
+          <div className="mt-0.5 text-[13px] text-neutral-400">{s.l}</div>
         </div>
       ))}
     </div>

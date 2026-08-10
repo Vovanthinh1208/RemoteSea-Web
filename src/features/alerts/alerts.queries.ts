@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createAlert,
   deleteAlert,
@@ -47,13 +43,9 @@ export const useSetAlertActive = () => {
     // on error, then confirm via the settle invalidation.
     onMutate: async ({ id, isActive }) => {
       await queryClient.cancelQueries({ queryKey: alertKeys.all });
-      const previous = queryClient.getQueryData<JobAlert[]>(
-        alertKeys.all
-      );
+      const previous = queryClient.getQueryData<JobAlert[]>(alertKeys.all);
       queryClient.setQueryData<JobAlert[]>(alertKeys.all, (old) =>
-        old?.map((alert) =>
-          alert.id === id ? { ...alert, isActive } : alert
-        )
+        old?.map((alert) => (alert.id === id ? { ...alert, isActive } : alert))
       );
       return { previous };
     },

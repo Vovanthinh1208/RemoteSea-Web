@@ -13,10 +13,7 @@ interface PostJobDraftSavedProps {
 // Shown when Stripe isn't configured on the backend and checkout couldn't be started —
 // the job was still created (as an unpaid DRAFT), so this confirms that honestly
 // instead of implying a payment succeeded.
-export const PostJobDraftSaved = ({
-  form,
-  jobId,
-}: PostJobDraftSavedProps) => {
+export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
   const tier = TIERS.find((t) => t.id === form.tier) ?? TIERS[0];
 
   return (
@@ -35,8 +32,8 @@ export const PostJobDraftSaved = ({
         <strong className="text-neutral-800">
           {form.coName || "your company"}
         </strong>{" "}
-        was created as a draft. Checkout couldn&apos;t be started, so
-        it hasn&apos;t been paid or submitted for review yet.
+        was created as a draft. Checkout couldn&apos;t be started, so it
+        hasn&apos;t been paid or submitted for review yet.
       </p>
 
       <div className="mb-8 w-full max-w-md rounded-20 border border-neutral-200 bg-white p-6 text-left shadow-card">
@@ -56,9 +53,7 @@ export const PostJobDraftSaved = ({
             className="flex items-center justify-between border-b border-neutral-50 py-2.5 last:border-none"
             key={k}
           >
-            <span className="text-[12.5px] text-neutral-500">
-              {k}
-            </span>
+            <span className="text-[12.5px] text-neutral-500">{k}</span>
             <span className="text-[13px] text-neutral-900">{v}</span>
           </div>
         ))}

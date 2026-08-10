@@ -2,9 +2,7 @@ type QueryParamValue =
   string | number | boolean | string[] | number[] | undefined;
 
 /** Strips undefined values so axios doesn't serialize them as literal "undefined" query params. */
-export const dropUndefined = <
-  T extends Record<string, QueryParamValue>,
->(
+export const dropUndefined = <T extends Record<string, QueryParamValue>>(
   params: T
 ): T => {
   const result = {} as T;

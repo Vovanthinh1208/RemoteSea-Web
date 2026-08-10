@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getMyTalentProfile,
   getPublicTalentProfile,
@@ -24,10 +20,7 @@ export const useMyTalentProfile = () => {
       try {
         return await getMyTalentProfile({ signal });
       } catch (err) {
-        if (
-          err instanceof ApiError &&
-          err.status === NOT_FOUND_STATUS
-        )
+        if (err instanceof ApiError && err.status === NOT_FOUND_STATUS)
           return null;
         throw err;
       }
@@ -55,7 +48,6 @@ export const useUpdateMyTalentProfile = () => {
 export const usePublicTalentProfile = (slug: string | undefined) =>
   useQuery({
     queryKey: talentKeys.public(slug),
-    queryFn: ({ signal }) =>
-      getPublicTalentProfile(slug as string, { signal }),
+    queryFn: ({ signal }) => getPublicTalentProfile(slug as string, { signal }),
     enabled: !!slug,
   });

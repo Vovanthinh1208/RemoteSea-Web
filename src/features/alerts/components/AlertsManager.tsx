@@ -26,9 +26,7 @@ export const AlertsManager = () => {
   // created — runWithToast swallows the error (into a toast) and never throws,
   // so without this the form reset unconditionally and wiped the user's input
   // even on failure.
-  const handleCreate = (
-    payload: CreateAlertPayload
-  ): Promise<boolean> =>
+  const handleCreate = (payload: CreateAlertPayload): Promise<boolean> =>
     runWithToast(() => createAlertMutation.mutateAsync(payload), {
       success: "Alert created",
       successDescription: "We'll email you matching jobs.",
@@ -48,13 +46,10 @@ export const AlertsManager = () => {
     );
 
   const handleDelete = async (alert: JobAlert): Promise<void> => {
-    await runWithToast(
-      () => deleteAlertMutation.mutateAsync(alert.id),
-      {
-        success: "Alert deleted",
-        error: "Couldn't delete alert",
-      }
-    );
+    await runWithToast(() => deleteAlertMutation.mutateAsync(alert.id), {
+      success: "Alert deleted",
+      error: "Couldn't delete alert",
+    });
   };
 
   return (
@@ -64,8 +59,8 @@ export const AlertsManager = () => {
           Job alerts
         </h1>
         <p className="text-[15px] text-neutral-500">
-          Get notified when new jobs match your criteria. We email you
-          on your chosen schedule.
+          Get notified when new jobs match your criteria. We email you on your
+          chosen schedule.
         </p>
       </div>
 
@@ -98,8 +93,7 @@ export const AlertsManager = () => {
           />
         ) : !alerts || alerts.length === 0 ? (
           <EmptyRow>
-            No alerts yet. Create one above to start getting matched
-            jobs.
+            No alerts yet. Create one above to start getting matched jobs.
           </EmptyRow>
         ) : (
           alerts.map((alert) => (

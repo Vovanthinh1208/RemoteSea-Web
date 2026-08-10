@@ -1,19 +1,11 @@
-import {
-  CreditCard,
-  RefreshCw,
-  TrendingUp,
-  Wallet,
-} from "lucide-react";
+import { CreditCard, RefreshCw, TrendingUp, Wallet } from "lucide-react";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button } from "@/components/ui/button";
 import { StatCard } from "@/components/ui/stat-card";
 import { AdminRevenueSkeleton } from "@/features/admin/components/AdminRevenueSkeleton";
 import { useAdminRevenue } from "@/features/admin/admin.queries";
-import {
-  formatCents,
-  formatCentsCompact,
-} from "@/features/admin/admin.utils";
+import { formatCents, formatCentsCompact } from "@/features/admin/admin.utils";
 import type { RevenueMonthBucket } from "@/types/admin";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
@@ -36,11 +28,7 @@ export const AdminRevenue = () => {
     return (
       <EmptyState
         action={
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => void refetch()}
-          >
+          <Button size="sm" variant="outline" onClick={() => void refetch()}>
             Try again
           </Button>
         }
@@ -203,10 +191,7 @@ export const AdminRevenue = () => {
           </div>
           <div className="space-y-3">
             {mix.map((m) => (
-              <div
-                className="flex items-center gap-2.5"
-                key={m.planType}
-              >
+              <div className="flex items-center gap-2.5" key={m.planType}>
                 <span
                   className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
                   style={{ background: PLAN_BAR_COLOR[m.planType] }}
@@ -255,8 +240,7 @@ export const AdminRevenue = () => {
               className="grid items-center border-b border-neutral-50 px-5 py-3.5 last:border-0"
               key={t.jobId}
               style={{
-                gridTemplateColumns:
-                  "minmax(200px,1fr) 140px 100px 90px",
+                gridTemplateColumns: "minmax(200px,1fr) 140px 100px 90px",
               }}
             >
               <div className="min-w-0">

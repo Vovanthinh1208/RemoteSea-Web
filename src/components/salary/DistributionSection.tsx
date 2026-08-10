@@ -20,31 +20,27 @@ export const DistributionSection = () => {
           <div>
             <Eyebrow className="mb-2">Distribution</Eyebrow>
             <h2 className="mb-3 text-[28px] font-semibold tracking-tight text-white">
-              The{" "}
-              <em className="font-serif-italic text-brand-400">
-                shape
-              </em>{" "}
-              of remote pay.
+              The <em className="font-serif-italic text-brand-400">shape</em> of
+              remote pay.
             </h2>
             <p className="mb-6 text-sm leading-relaxed text-neutral-400">
-              Most VN talent working remote sits in the $2k–$5k band.
-              The fat tail is real — but it lives at senior + staff
-              levels with US-based companies.
+              Most VN talent working remote sits in the $2k–$5k band. The fat
+              tail is real — but it lives at senior + staff levels with US-based
+              companies.
             </p>
             <ul className="space-y-2.5">
               {[
                 <>
-                  <strong className="text-white">72%</strong> of
-                  placements between $2k–$5k
+                  <strong className="text-white">72%</strong> of placements
+                  between $2k–$5k
                 </>,
                 <>
-                  <strong className="text-white">$3,200</strong> is
-                  the median across all roles
+                  <strong className="text-white">$3,200</strong> is the median
+                  across all roles
                 </>,
                 <>
                   Staff+ engineering jobs can hit{" "}
-                  <strong className="text-white">$10k+</strong>{" "}
-                  monthly
+                  <strong className="text-white">$10k+</strong> monthly
                 </>,
               ].map((item, i) => (
                 <li
@@ -75,9 +71,7 @@ export const DistributionSection = () => {
                     minHeight: 4,
                   }}
                 />
-                <span className="text-[10px] text-neutral-500">
-                  {b.range}
-                </span>
+                <span className="text-[10px] text-neutral-500">{b.range}</span>
               </div>
             ))}
           </div>

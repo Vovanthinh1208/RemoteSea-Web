@@ -8,9 +8,7 @@ import type {
 } from "@/features/applications/applications.dto";
 
 export const applicationsRepository = {
-  apply: async (
-    payload: ApplyRequestDto
-  ): Promise<ApplicationDto> => {
+  apply: async (payload: ApplyRequestDto): Promise<ApplicationDto> => {
     const { data } = await apiClient.post<ApplicationDto>(
       "/applications",
       payload

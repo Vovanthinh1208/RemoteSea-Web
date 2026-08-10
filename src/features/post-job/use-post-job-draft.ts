@@ -69,8 +69,7 @@ export const usePostJobDraftPersistence = (
   // pristine visit never plants a draft.
   const hasUserInput =
     step > 1 ||
-    JSON.stringify({ ...form, jobCategoryId: "" }) !==
-      PRISTINE_FORM_JSON;
+    JSON.stringify({ ...form, jobCategoryId: "" }) !== PRISTINE_FORM_JSON;
 
   useEffect(() => {
     if (published) {
@@ -87,10 +86,7 @@ export const usePostJobDraftPersistence = (
     // lose at most this last window.
     const timer = setTimeout(() => {
       try {
-        localStorage.setItem(
-          DRAFT_STORAGE_KEY,
-          JSON.stringify({ form, step })
-        );
+        localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify({ form, step }));
       } catch {
         // Storage full/blocked — the wizard still works, just without autosave.
       }

@@ -15,9 +15,8 @@ export const NewsletterCtaSection = () => (
           opportunity.
         </h2>
         <p className="mx-auto mb-6 max-w-md text-sm text-neutral-500">
-          Every Friday: top 8 remote jobs curated for VN/SEA talent,
-          salary tips, and remote work insights you won&apos;t find on
-          LinkedIn.
+          Every Friday: top 8 remote jobs curated for VN/SEA talent, salary
+          tips, and remote work insights you won&apos;t find on LinkedIn.
         </p>
         <NewsletterForm />
         <p className="mt-3 text-xs text-neutral-400">

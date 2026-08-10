@@ -3,11 +3,9 @@ import { ApiError, parseErrorBody } from "@/core/errors/api-error";
 
 describe("parseErrorBody", () => {
   it("extracts a plain string error message", () => {
-    expect(parseErrorBody({ error: "Email already in use" })).toEqual(
-      {
-        message: "Email already in use",
-      }
-    );
+    expect(parseErrorBody({ error: "Email already in use" })).toEqual({
+      message: "Email already in use",
+    });
   });
 
   it("extracts message and field/form errors from a zod-flattened body", () => {

@@ -78,12 +78,8 @@ export const EmployerDashboard = () => {
     shortlisted: 0,
     avgTimeToHireInDays: 0,
   };
-  const activeListings = jobs.filter(
-    (j) => j.status === "ACTIVE"
-  ).length;
-  const inReview = jobs.filter(
-    (j) => j.status === "PENDING_REVIEW"
-  ).length;
+  const activeListings = jobs.filter((j) => j.status === "ACTIVE").length;
+  const inReview = jobs.filter((j) => j.status === "PENDING_REVIEW").length;
 
   const hour = new Date().getHours();
   const greeting =
@@ -93,9 +89,7 @@ export const EmployerDashboard = () => {
         ? "Good afternoon"
         : "Good evening";
   const firstName =
-    (user?.name ?? "there").split(" ").slice(-1)[0] ??
-    user?.name ??
-    "there";
+    (user?.name ?? "there").split(" ").slice(-1)[0] ?? user?.name ?? "there";
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -129,9 +123,7 @@ export const EmployerDashboard = () => {
             </div>
             <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
               {greeting},{" "}
-              <em className="font-serif-italic text-brand-700">
-                {firstName}.
-              </em>
+              <em className="font-serif-italic text-brand-700">{firstName}.</em>
             </h1>
             <p className="text-[15px] text-neutral-500">
               You have{" "}
@@ -139,9 +131,7 @@ export const EmployerDashboard = () => {
                 {stats.totalApps} applicants
               </strong>{" "}
               across{" "}
-              <strong className="text-neutral-900">
-                {activeListings}
-              </strong>{" "}
+              <strong className="text-neutral-900">{activeListings}</strong>{" "}
               live
               {activeListings === 1 ? " role" : " roles"}.
             </p>
@@ -191,9 +181,7 @@ export const EmployerDashboard = () => {
             size="lg"
             sub="from apply to offer"
             value={
-              stats.avgTimeToHireInDays
-                ? `${stats.avgTimeToHireInDays}d`
-                : "—"
+              stats.avgTimeToHireInDays ? `${stats.avgTimeToHireInDays}d` : "—"
             }
           />
         </div>
@@ -202,11 +190,7 @@ export const EmployerDashboard = () => {
           <div className="mb-6 flex items-center justify-between gap-4 rounded-16 border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] text-amber-800">
             Some applicant data couldn't load, so counts below may be
             incomplete.
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={refetchApplications}
-            >
+            <Button size="sm" variant="outline" onClick={refetchApplications}>
               Retry
             </Button>
           </div>

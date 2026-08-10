@@ -2,9 +2,7 @@ interface JobBenefitsCardProps {
   benefits: string[];
 }
 
-export const JobBenefitsCard = ({
-  benefits,
-}: JobBenefitsCardProps) => {
+export const JobBenefitsCard = ({ benefits }: JobBenefitsCardProps) => {
   if (benefits.length === 0) return null;
 
   return (

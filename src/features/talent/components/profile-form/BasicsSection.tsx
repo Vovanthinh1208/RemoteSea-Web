@@ -17,10 +17,7 @@ import {
 } from "@/features/users/users.queries";
 import { useToast } from "@/components/ui/toast";
 import { useToastMutation } from "@/hooks/useToastMutation";
-import {
-  uploadViaPresign,
-  validateFile,
-} from "@/services/uploads.api";
+import { uploadViaPresign, validateFile } from "@/services/uploads.api";
 import { reportError } from "@/services/monitoring";
 
 interface BasicsSectionProps {
@@ -97,13 +94,10 @@ export const BasicsSection = ({
   };
 
   const handleRemove = () =>
-    runWithToast(
-      () => updateAccountMutation.mutateAsync({ image: null }),
-      {
-        success: "Photo removed",
-        error: "Couldn't remove your photo",
-      }
-    );
+    runWithToast(() => updateAccountMutation.mutateAsync({ image: null }), {
+      success: "Photo removed",
+      error: "Couldn't remove your photo",
+    });
 
   return (
     <section
@@ -165,9 +159,7 @@ export const BasicsSection = ({
             </button>
             <button
               className="px-2 py-1 text-[12px] text-neutral-400 hover:text-neutral-600 disabled:opacity-60"
-              disabled={
-                !account?.image || updateAccountMutation.isPending
-              }
+              disabled={!account?.image || updateAccountMutation.isPending}
               type="button"
               onClick={handleRemove}
             >
@@ -196,16 +188,12 @@ export const BasicsSection = ({
         <div className="space-y-1.5">
           <p className="text-[12.5px] font-medium text-neutral-700">
             Pronouns{" "}
-            <span className="font-normal text-neutral-400">
-              (optional)
-            </span>
+            <span className="font-normal text-neutral-400">(optional)</span>
           </p>
           {/* Not a real input — there's no field for this yet. A disabled-but-
             normal-looking input invited users to click in, type, and find
             nothing saves. */}
-          <p className="text-[13.5px] text-neutral-400">
-            Coming soon
-          </p>
+          <p className="text-[13.5px] text-neutral-400">Coming soon</p>
         </div>
         <div className="space-y-1.5 sm:col-span-2">
           <div className="flex items-center justify-between">
@@ -226,9 +214,7 @@ export const BasicsSection = ({
             {...register("headline")}
           />
           {headlineError && (
-            <p className="text-[11.5px] text-red-600">
-              {headlineError}
-            </p>
+            <p className="text-[11.5px] text-red-600">{headlineError}</p>
           )}
         </div>
         <div className="space-y-1.5">

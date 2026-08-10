@@ -6,13 +6,10 @@ import type {
 } from "@/features/talent/talent.dto";
 
 export const talentRepository = {
-  getMine: async (
-    opts?: RequestOptions
-  ): Promise<TalentProfileDto> => {
-    const { data } = await apiClient.get<TalentProfileDto>(
-      "/talent/me",
-      { signal: opts?.signal }
-    );
+  getMine: async (opts?: RequestOptions): Promise<TalentProfileDto> => {
+    const { data } = await apiClient.get<TalentProfileDto>("/talent/me", {
+      signal: opts?.signal,
+    });
     return data;
   },
 
@@ -30,12 +27,9 @@ export const talentRepository = {
     slug: string,
     opts?: RequestOptions
   ): Promise<TalentProfileDto> => {
-    const { data } = await apiClient.get<TalentProfileDto>(
-      `/talent/${slug}`,
-      {
-        signal: opts?.signal,
-      }
-    );
+    const { data } = await apiClient.get<TalentProfileDto>(`/talent/${slug}`, {
+      signal: opts?.signal,
+    });
     return data;
   },
 };

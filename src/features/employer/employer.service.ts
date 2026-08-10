@@ -38,9 +38,7 @@ export const listEmployerJobs = async (
   status?: JobStatus,
   opts?: RequestOptions
 ): Promise<EmployerJobsResponse> =>
-  toEmployerJobsResponse(
-    await employerRepository.listJobs(status, opts)
-  );
+  toEmployerJobsResponse(await employerRepository.listJobs(status, opts));
 
 export const listJobApplications = async (
   jobId: string,
@@ -60,8 +58,4 @@ export const updateApplicationStatus = async (
   status: ApplicationStatus,
   notes?: string
 ): Promise<void> =>
-  employerRepository.updateApplicationStatus(
-    applicationId,
-    status,
-    notes
-  );
+  employerRepository.updateApplicationStatus(applicationId, status, notes);

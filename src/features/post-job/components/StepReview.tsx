@@ -22,8 +22,7 @@ export const StepReview = ({ form }: StepReviewProps) => {
           Review &amp; pay
         </h2>
         <p className="mt-1 text-sm text-neutral-500">
-          You&apos;ll complete payment securely on Stripe&apos;s
-          checkout page.
+          You&apos;ll complete payment securely on Stripe&apos;s checkout page.
         </p>
       </div>
 

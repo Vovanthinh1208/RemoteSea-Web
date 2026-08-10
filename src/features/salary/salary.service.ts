@@ -10,6 +10,4 @@ export type { SalaryBenchmark };
 export const listSalaryBenchmarks = async (
   opts?: RequestOptions
 ): Promise<SalaryBenchmark[]> =>
-  (await salaryRepository.listBenchmarks(opts)).map(
-    toSalaryBenchmark
-  );
+  (await salaryRepository.listBenchmarks(opts)).map(toSalaryBenchmark);

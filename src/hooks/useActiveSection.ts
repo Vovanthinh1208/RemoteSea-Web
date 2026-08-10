@@ -1,9 +1,4 @@
-import {
-  useEffect,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 const SCROLL_SPY_ROOT_MARGIN = "-25% 0px -60% 0px";
 
@@ -23,8 +18,7 @@ export const useActiveSection = (
         const hit = entries
           .filter((entry) => entry.isIntersecting)
           .sort(
-            (a, b) =>
-              a.boundingClientRect.top - b.boundingClientRect.top
+            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top
           )[0];
 
         if (hit) {

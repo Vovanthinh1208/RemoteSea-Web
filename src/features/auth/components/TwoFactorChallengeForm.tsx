@@ -28,17 +28,11 @@ export const TwoFactorChallengeForm = ({
     setError(null);
     setIsSubmitting(true);
     try {
-      await completeTwoFactorChallenge(
-        challengeToken,
-        code,
-        remember
-      );
+      await completeTwoFactorChallenge(challengeToken, code, remember);
       onSuccess();
     } catch (err) {
       const message =
-        err instanceof ApiError
-          ? err.message
-          : "Something went wrong.";
+        err instanceof ApiError ? err.message : "Something went wrong.";
       setError(message);
       toast({ title: "Couldn't verify code", variant: "error" });
     } finally {
@@ -53,8 +47,8 @@ export const TwoFactorChallengeForm = ({
           Two-factor authentication
         </p>
         <p className="mb-3 text-sm text-neutral-500">
-          Enter the 6-digit code from your authenticator app, or one
-          of your backup codes.
+          Enter the 6-digit code from your authenticator app, or one of your
+          backup codes.
         </p>
         <input
           autoComplete="one-time-code"

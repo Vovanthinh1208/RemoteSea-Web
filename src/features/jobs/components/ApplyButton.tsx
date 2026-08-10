@@ -53,19 +53,13 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
         description: "The employer has been notified.",
       });
     } catch (err) {
-      if (
-        err instanceof ApiError &&
-        err.status === ALREADY_APPLIED_STATUS
-      ) {
+      if (err instanceof ApiError && err.status === ALREADY_APPLIED_STATUS) {
         setState("applied");
         setMessage("You already applied to this role.");
         toast({ variant: "info", title: "Already applied" });
         return;
       }
-      if (
-        err instanceof ApiError &&
-        err.status === PROFILE_REQUIRED_STATUS
-      ) {
+      if (err instanceof ApiError && err.status === PROFILE_REQUIRED_STATUS) {
         setMessage("Create a talent profile first.");
         setState("error");
         toast({
@@ -104,9 +98,7 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
         {applyToJobMutation.isPending ? "Applying…" : "Apply now →"}
       </button>
       {message && (
-        <p className="mb-2.5 text-center text-[12px] text-red-600">
-          {message}
-        </p>
+        <p className="mb-2.5 text-center text-[12px] text-red-600">{message}</p>
       )}
     </>
   );

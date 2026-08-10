@@ -20,9 +20,7 @@ interface RecommendedJobsProps {
   applications: ApplicationWithJob[];
 }
 
-export const RecommendedJobs = ({
-  applications,
-}: RecommendedJobsProps) => {
+export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
   const { data } = useJobsQuery(
     DEFAULT_JOB_FILTERS,
     DEFAULT_FILTERS_FETCH_LIMIT
@@ -64,10 +62,7 @@ export const RecommendedJobs = ({
               key={job.id}
               to={ROUTES.jobDetail(job.id)}
             >
-              <CompanyLogo
-                name={job.employer.companyName}
-                size={40}
-              />
+              <CompanyLogo name={job.employer.companyName} size={40} />
               <div className="min-w-0 flex-1">
                 <div className="mb-0.5 flex items-center gap-1.5 text-[11.5px] text-neutral-400">
                   <span>{job.employer.companyName}</span>
@@ -80,11 +75,9 @@ export const RecommendedJobs = ({
                   {job.title}
                 </p>
                 <div className="flex flex-wrap gap-1">
-                  {job.skills
-                    .slice(0, TAGS_DISPLAY_COUNT)
-                    .map(({ skill }) => (
-                      <Tag key={skill.id}>{skill.name}</Tag>
-                    ))}
+                  {job.skills.slice(0, TAGS_DISPLAY_COUNT).map(({ skill }) => (
+                    <Tag key={skill.id}>{skill.name}</Tag>
+                  ))}
                 </div>
               </div>
               <div className="hidden flex-shrink-0 flex-col items-end gap-1.5 md:flex">

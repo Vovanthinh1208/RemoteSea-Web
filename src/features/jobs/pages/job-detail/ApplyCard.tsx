@@ -25,10 +25,7 @@ export const ApplyCard = ({ job }: ApplyCardProps) => {
       <div className="mb-1 font-mono text-[22px] font-semibold text-neutral-900">
         {salary ?? "Salary not specified"}
         {salary && (
-          <span className="text-[14px] font-normal text-neutral-500">
-            {" "}
-            /mo
-          </span>
+          <span className="text-[14px] font-normal text-neutral-500"> /mo</span>
         )}
       </div>
       <p className="mb-5 text-[12px] text-neutral-400">
@@ -46,9 +43,7 @@ export const ApplyCard = ({ job }: ApplyCardProps) => {
         </div>
         <div className="flex items-center justify-between text-[13px]">
           <span className="text-neutral-400">Applicants so far</span>
-          <span className="font-medium text-neutral-700">
-            {job.applyCount}
-          </span>
+          <span className="font-medium text-neutral-700">{job.applyCount}</span>
         </div>
         {expiresInDays !== null && (
           <div className="flex items-center justify-between text-[13px]">

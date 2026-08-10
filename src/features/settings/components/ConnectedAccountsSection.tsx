@@ -66,8 +66,7 @@ export const ConnectedAccountsSection = () => {
         variant: "error",
         title: `Couldn't connect ${connectionError}`,
         description:
-          CONNECTION_ERROR_REASONS[reason] ??
-          CONNECTION_ERROR_REASONS.unknown,
+          CONNECTION_ERROR_REASONS[reason] ?? CONNECTION_ERROR_REASONS.unknown,
       });
     }
 
@@ -84,13 +83,10 @@ export const ConnectedAccountsSection = () => {
   const disconnect = (provider: string) =>
     runWithToast(() => disconnectMutation.mutateAsync(provider), {
       error: "Couldn't disconnect",
-      onError: (err) =>
-        err instanceof ApiError ? err.message : undefined,
+      onError: (err) => (err instanceof ApiError ? err.message : undefined),
     });
 
-  const connect = async (
-    provider: (typeof PROVIDERS)[number]["id"]
-  ) => {
+  const connect = async (provider: (typeof PROVIDERS)[number]["id"]) => {
     try {
       const { url } = await getOAuthLinkUrl(provider);
       navigateTo(url);
@@ -98,8 +94,7 @@ export const ConnectedAccountsSection = () => {
       toast({
         variant: "error",
         title: `Couldn't start connecting ${provider}`,
-        description:
-          err instanceof ApiError ? err.message : undefined,
+        description: err instanceof ApiError ? err.message : undefined,
       });
     }
   };
@@ -126,14 +121,9 @@ export const ConnectedAccountsSection = () => {
       />
       <div className="divide-y divide-neutral-50 overflow-hidden rounded-16 border border-neutral-100">
         {PROVIDERS.map(({ id, name, bg, initial }) => {
-          const connection = connections?.find(
-            (c) => c.provider === id
-          );
+          const connection = connections?.find((c) => c.provider === id);
           return (
-            <div
-              className="flex items-center gap-3 px-4 py-3.5"
-              key={id}
-            >
+            <div className="flex items-center gap-3 px-4 py-3.5" key={id}>
               <span
                 className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-10 text-[11px] font-bold text-white"
                 style={{ background: bg }}
@@ -152,9 +142,7 @@ export const ConnectedAccountsSection = () => {
                       : "text-neutral-400"
                   )}
                 >
-                  {connection
-                    ? connection.providerAccountId
-                    : "Not connected"}
+                  {connection ? connection.providerAccountId : "Not connected"}
                 </p>
               </div>
               {connection ? (

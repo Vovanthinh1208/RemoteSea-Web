@@ -21,8 +21,7 @@ export type ApplicationStatusCounts = {
   byStatus: Record<ApplicationStatus, number>;
 };
 
-export const toApplication = (dto: ApplicationDto): Application =>
-  dto;
+export const toApplication = (dto: ApplicationDto): Application => dto;
 export const toApplicationWithJob = (
   dto: ApplicationWithJobDto
 ): ApplicationWithJob => dto;

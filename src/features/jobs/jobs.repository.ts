@@ -13,20 +13,14 @@ export const jobsRepository = {
     params: JobListQueryParams,
     opts?: RequestOptions
   ): Promise<JobListResponseDto> => {
-    const { data } = await apiClient.get<JobListResponseDto>(
-      "/jobs",
-      {
-        params,
-        signal: opts?.signal,
-      }
-    );
+    const { data } = await apiClient.get<JobListResponseDto>("/jobs", {
+      params,
+      signal: opts?.signal,
+    });
     return data;
   },
 
-  getById: async (
-    id: string,
-    opts?: RequestOptions
-  ): Promise<JobDto> => {
+  getById: async (id: string, opts?: RequestOptions): Promise<JobDto> => {
     const { data } = await apiClient.get<JobDto>(`/jobs/${id}`, {
       signal: opts?.signal,
     });

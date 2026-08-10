@@ -83,25 +83,11 @@ export const TIMEZONE_OPTIONS = [
   "Async-first",
 ] as const;
 
-export const LOCATION_OPTIONS = [
-  "remote",
-  "hybrid",
-  "onsite",
-] as const;
+export const LOCATION_OPTIONS = ["remote", "hybrid", "onsite"] as const;
 
-export const CURRENCY_OPTIONS = [
-  "USD",
-  "SGD",
-  "AUD",
-  "EUR",
-  "GBP",
-] as const;
+export const CURRENCY_OPTIONS = ["USD", "SGD", "AUD", "EUR", "GBP"] as const;
 
-export const PERIOD_OPTIONS = [
-  "/ month",
-  "/ year",
-  "/ hour",
-] as const;
+export const PERIOD_OPTIONS = ["/ month", "/ year", "/ hour"] as const;
 
 export const BENEFIT_OPTIONS = [
   "Health insurance",

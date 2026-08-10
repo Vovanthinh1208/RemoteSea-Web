@@ -22,9 +22,7 @@ export const JobCompanyCard = ({ job }: JobCompanyCardProps) => {
           </p>
           <p className="text-[12px] text-neutral-400">
             {countryFlag(job.country)} {country}
-            {job.employer.size
-              ? ` · ${job.employer.size} employees`
-              : ""}
+            {job.employer.size ? ` · ${job.employer.size} employees` : ""}
           </p>
         </div>
       </div>

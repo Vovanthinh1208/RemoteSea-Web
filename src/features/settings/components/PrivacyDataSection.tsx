@@ -89,9 +89,7 @@ export const PrivacyDataSection = () => {
               <p className="text-[12px] text-neutral-500">
                 Currently{" "}
                 <strong className="text-neutral-800">
-                  {isRestricted
-                    ? "Verified employers only"
-                    : "Public"}
+                  {isRestricted ? "Verified employers only" : "Public"}
                 </strong>
               </p>
             </div>
@@ -107,8 +105,7 @@ export const PrivacyDataSection = () => {
               Download your data
             </p>
             <p className="text-[12px] text-neutral-400">
-              Your profile, applications, and job alerts as a JSON
-              export.
+              Your profile, applications, and job alerts as a JSON export.
             </p>
           </div>
           <button

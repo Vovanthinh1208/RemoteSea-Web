@@ -29,16 +29,11 @@ const RESOLUTION_BANNER_DISPLAY_MS = 1200;
 
 export const AdminQueue = () => {
   const runWithToast = useToastMutation();
-  const { data, isLoading, isError, refetch } =
-    useAdminJobs("PENDING_REVIEW");
+  const { data, isLoading, isError, refetch } = useAdminJobs("PENDING_REVIEW");
   const reviewJobMutation = useReviewAdminJob();
 
-  const [resolved, setResolved] = useState<
-    Record<string, ResolutionKind>
-  >({});
-  const [checked, setChecked] = useState<Record<string, Set<number>>>(
-    {}
-  );
+  const [resolved, setResolved] = useState<Record<string, ResolutionKind>>({});
+  const [checked, setChecked] = useState<Record<string, Set<number>>>({});
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [banner, setBanner] = useState<{
     id: string;
@@ -62,8 +57,7 @@ export const AdminQueue = () => {
   // otherwise this used to force the view back to the decided job's banner even
   // after the reviewer had already moved on to reviewing a different one.
   const effectiveSelId =
-    selId &&
-    (active.some((j) => j.id === selId) || banner?.id === selId)
+    selId && (active.some((j) => j.id === selId) || banner?.id === selId)
       ? selId
       : (active[0]?.id ?? null);
   const sel = queue.find((j) => j.id === effectiveSelId);
@@ -124,11 +118,7 @@ export const AdminQueue = () => {
       <div className="flex-1">
         <EmptyState
           action={
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => void refetch()}
-            >
+            <Button size="sm" variant="outline" onClick={() => void refetch()}>
               Try again
             </Button>
           }
@@ -163,8 +153,7 @@ export const AdminQueue = () => {
   ).length;
   const avgWait = active.length
     ? Math.round(
-        active.reduce((a, j) => a + hoursSince(j.createdAt), 0) /
-          active.length
+        active.reduce((a, j) => a + hoursSince(j.createdAt), 0) / active.length
       )
     : 0;
   const approvedCount = Object.values(resolved).filter(
@@ -184,8 +173,8 @@ export const AdminQueue = () => {
             Review queue
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
-            Every job is human-reviewed before it goes live ·{" "}
-            {active.length} awaiting
+            Every job is human-reviewed before it goes live · {active.length}{" "}
+            awaiting
           </p>
         </div>
       </div>
@@ -198,10 +187,7 @@ export const AdminQueue = () => {
         rejectedCount={rejectedCount}
       />
 
-      <div
-        className="grid gap-4"
-        style={{ gridTemplateColumns: "280px 1fr" }}
-      >
+      <div className="grid gap-4" style={{ gridTemplateColumns: "280px 1fr" }}>
         <QueueListPane
           jobs={active}
           onSelect={setSelId}

@@ -24,14 +24,12 @@ export const WhySection = () => (
         <Eyebrow className="mb-3">Why post here</Eyebrow>
         <h2 className="text-[36px] font-semibold tracking-tight text-neutral-900">
           Smaller pool.{" "}
-          <em className="font-serif-italic text-brand-700">
-            Higher signal.
-          </em>
+          <em className="font-serif-italic text-brand-700">Higher signal.</em>
         </h2>
         <p className="mx-auto mt-3 max-w-lg text-sm text-neutral-500">
-          We&apos;re not trying to be the biggest. We&apos;re trying
-          to be the place where the right VN candidates actually apply
-          — and you get to interview five people, not five hundred.
+          We&apos;re not trying to be the biggest. We&apos;re trying to be the
+          place where the right VN candidates actually apply — and you get to
+          interview five people, not five hundred.
         </p>
       </div>
       <div className="grid gap-4 md:grid-cols-3">

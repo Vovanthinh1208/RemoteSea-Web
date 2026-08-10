@@ -33,8 +33,8 @@ export const HowItWorksSection = () => (
           </em>
         </h2>
         <p className="mx-auto mt-3 max-w-lg text-neutral-500">
-          Every job is reviewed before it goes live. Salary range
-          required. Employer verified. No ghost listings.
+          Every job is reviewed before it goes live. Salary range required.
+          Employer verified. No ghost listings.
         </p>
       </div>
       <div className="grid gap-8 md:grid-cols-3">

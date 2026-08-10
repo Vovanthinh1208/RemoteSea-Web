@@ -20,12 +20,7 @@ interface AssociableFieldProps {
   "aria-required"?: boolean;
 }
 
-export const Field = ({
-  label,
-  children,
-  hint,
-  required,
-}: FieldProps) => {
+export const Field = ({ label, children, hint, required }: FieldProps) => {
   const generatedId = useId();
   const child = Children.only(children);
   const canAssociate =
@@ -38,9 +33,7 @@ export const Field = ({
       child.type === "select" ||
       child.type === "textarea");
 
-  const fieldId = canAssociate
-    ? (child.props.id ?? generatedId)
-    : undefined;
+  const fieldId = canAssociate ? (child.props.id ?? generatedId) : undefined;
   const associatedChild = canAssociate
     ? cloneElement(child, {
         id: fieldId,
@@ -62,9 +55,7 @@ export const Field = ({
         )}
       </label>
       {associatedChild}
-      {hint && (
-        <p className="text-[11.5px] text-neutral-400">{hint}</p>
-      )}
+      {hint && <p className="text-[11.5px] text-neutral-400">{hint}</p>}
     </div>
   );
 };

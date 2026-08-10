@@ -49,8 +49,7 @@ export const Footer = () => {
               <span
                 className="grid h-[26px] w-[26px] place-items-center rounded-8 pb-0.5 font-serif text-lg italic leading-none text-white"
                 style={{
-                  background:
-                    "linear-gradient(140deg, #2E9B52, #1F7A3D)",
+                  background: "linear-gradient(140deg, #2E9B52, #1F7A3D)",
                 }}
               >
                 R
@@ -58,8 +57,8 @@ export const Footer = () => {
               RemoteSEA
             </div>
             <p className="max-w-[220px] text-sm leading-relaxed text-neutral-500">
-              Remote jobs from Singapore, Australia &amp; beyond —
-              curated for Vietnam talent.
+              Remote jobs from Singapore, Australia &amp; beyond — curated for
+              Vietnam talent.
             </p>
             <div className="mt-4 flex items-center gap-1.5 text-xs text-neutral-400">
               <span className="font-medium uppercase tracking-widest">

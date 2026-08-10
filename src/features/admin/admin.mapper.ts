@@ -15,6 +15,5 @@ export const toAdminJobsResponse = (
 export const toAdminEmployersResponse = (
   dto: AdminEmployersResponseDto
 ): AdminEmployersResponse => dto;
-export const toRevenueResponse = (
-  dto: RevenueResponseDto
-): RevenueResponse => dto;
+export const toRevenueResponse = (dto: RevenueResponseDto): RevenueResponse =>
+  dto;
