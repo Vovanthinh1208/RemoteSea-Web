@@ -96,9 +96,7 @@ export const TalentFilterSidebar = ({
     const exists = current.some((v) => v === val);
     onChange({
       ...filters,
-      [key]: exists
-        ? current.filter((v) => v !== val)
-        : [...current, val],
+      [key]: exists ? current.filter((v) => v !== val) : [...current, val],
     });
   };
 
