@@ -13,11 +13,13 @@ import { VnSignalCard } from "@/features/jobs/pages/job-detail/VnSignalCard";
 import { SalaryBenchmarkCard } from "@/features/jobs/pages/job-detail/SalaryBenchmarkCard";
 import { QuickFactsCard } from "@/features/jobs/pages/job-detail/QuickFactsCard";
 import { JobCompanyCard } from "@/features/jobs/pages/job-detail/JobCompanyCard";
+import { MatchCard } from "@/features/jobs/pages/job-detail/MatchCard";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useJobPostingSchema } from "@/hooks/useJobPostingSchema";
 import { LEVEL_LABELS, JOB_TYPE_LABELS } from "@/utils/labels";
 import { ROUTES } from "@/constants/routes";
 import { formatSalaryRange } from "@/utils/format";
+import { useMyMatch } from "@/features/matching/useMyMatch";
 
 const jobMetaDescription = (
   job: NonNullable<ReturnType<typeof useJobQuery>["data"]>
@@ -37,6 +39,7 @@ export const JobDetailPage = () => {
   // card compares against it, so it's meaningless (and shows $0) otherwise.
   const hasSalary = job?.salaryMin != null;
   const { data: benchmarks } = useSalaryBenchmarks(hasSalary);
+  const match = useMyMatch(job);
   useDocumentTitle(
     job ? `${job.title} at ${job.employer.companyName}` : "Job",
     job ? jobMetaDescription(job) : undefined
@@ -90,6 +93,7 @@ export const JobDetailPage = () => {
         <div className="space-y-4">
           <div className="sticky top-6 space-y-4">
             <ApplyCard job={job} />
+            {match && <MatchCard match={match} />}
             <VnSignalCard
               companyName={job.employer.companyName}
               vnHireCount={job.vnHireCount}

@@ -55,7 +55,7 @@ export type Job = {
   createdAt: string;
   employer: JobEmployerSummary;
   categories: { category: Category }[];
-  skills: { skill: Skill }[];
+  skills: { skill: Skill; isRequired: boolean }[];
 };
 
 // GET /jobs (the paginated board) sends a deliberately narrower shape than the
@@ -74,6 +74,7 @@ export type JobListItem = {
   level: ExperienceLevel;
   salaryMin: number | null;
   salaryMax: number | null;
+  currency: string;
   isRemote: boolean;
   timezone: string | null;
   country: string | null;
@@ -83,5 +84,5 @@ export type JobListItem = {
   createdAt: string;
   employer: JobListItemEmployer;
   categories: { category: Category }[];
-  skills: { skill: Skill }[];
+  skills: { skill: Skill; isRequired: boolean }[];
 };

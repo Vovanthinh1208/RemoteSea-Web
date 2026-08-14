@@ -123,6 +123,7 @@ const jobListItemSchema: ZodType<JobListItemDto> = z.object({
   level: experienceLevelSchema,
   salaryMin: z.number().nullable(),
   salaryMax: z.number().nullable(),
+  currency: z.string(),
   isRemote: z.boolean(),
   timezone: z.string().nullable(),
   country: z.string().nullable(),
@@ -132,7 +133,7 @@ const jobListItemSchema: ZodType<JobListItemDto> = z.object({
   createdAt: z.string(),
   employer: jobListItemEmployerSchema,
   categories: z.array(z.object({ category: categorySchema })),
-  skills: z.array(z.object({ skill: skillSchema })),
+  skills: z.array(z.object({ skill: skillSchema, isRequired: z.boolean() })),
 });
 
 const paginationSchema = z.object({
@@ -181,5 +182,5 @@ export const jobSchema: ZodType<JobDto> = z.object({
   createdAt: z.string(),
   employer: jobEmployerSummarySchema,
   categories: z.array(z.object({ category: categorySchema })),
-  skills: z.array(z.object({ skill: skillSchema })),
+  skills: z.array(z.object({ skill: skillSchema, isRequired: z.boolean() })),
 });

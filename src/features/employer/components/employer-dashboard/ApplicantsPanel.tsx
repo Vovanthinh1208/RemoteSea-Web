@@ -1,11 +1,13 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { Check, X } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
+import { Dropdown } from "@/components/ui/dropdown";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { useUpdateApplicationStatus } from "@/features/employer/employer.queries";
+import { MatchBadge } from "@/features/matching/MatchBadge";
 import {
   APPLICANT_STATUS,
   colorFor,
@@ -22,6 +24,16 @@ type ApplicantTabId = "all" | "new" | "shortlisted";
 
 const isApplicantTabId = (v: string): v is ApplicantTabId =>
   (["all", "new", "shortlisted"] as const).includes(v as ApplicantTabId);
+
+type ApplicantSortId = "recent" | "match";
+
+const isApplicantSortId = (v: string): v is ApplicantSortId =>
+  (["recent", "match"] as const).includes(v as ApplicantSortId);
+
+const SORT_OPTIONS: { value: ApplicantSortId; label: string }[] = [
+  { value: "recent", label: "Most recent" },
+  { value: "match", label: "Best match" },
+];
 
 const RECENT_APPLICANTS_DISPLAY_COUNT = 8;
 
@@ -88,6 +100,12 @@ const ApplicantRow = memo(function ApplicantRow({
         </div>
       </div>
 
+      {a.match && (
+        <div className="flex-shrink-0">
+          <MatchBadge match={a.match} />
+        </div>
+      )}
+
       <div className="flex-shrink-0 text-right">
         <Badge
           className="px-1.5 py-0.5 text-[10px]"
@@ -140,6 +158,11 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
     "all",
     isApplicantTabId
   );
+  const [sort, setSort] = useSearchParamState<ApplicantSortId>(
+    "applicantSort",
+    "recent",
+    isApplicantSortId
+  );
 
   const tabs: { id: ApplicantTabId; label: string; count: number }[] = [
     { id: "all", label: "All", count: applicants.length },
@@ -157,10 +180,22 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
       ).length,
     },
   ];
-  const list =
+  const filtered =
     tab === "all"
       ? applicants
       : applicants.filter((a) => APPLICANT_STATUS[a.status] === tab);
+  const list = useMemo(
+    () =>
+      sort === "match"
+        ? [...filtered].sort(
+            (a, b) => (b.match?.score ?? -1) - (a.match?.score ?? -1)
+          )
+        : [...filtered].sort(
+            (a, b) =>
+              new Date(b.appliedAt).getTime() - new Date(a.appliedAt).getTime()
+          ),
+    [filtered, sort]
+  );
 
   const { mutateAsync: updateStatus } = updateStatusMutation;
   const updateApplicantStatus = useCallback(
@@ -180,33 +215,41 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
         <h3 className="text-[14px] font-semibold text-neutral-900">
           Recent applicants
         </h3>
-        <div className="flex gap-0.5 rounded-8 border border-neutral-200 bg-neutral-50 p-0.5">
-          {tabs.map((t) => (
-            <button
-              aria-pressed={tab === t.id}
-              className={cn(
-                "rounded-6 px-2.5 py-1 text-[11.5px] font-medium transition-all",
-                tab === t.id
-                  ? "bg-white text-neutral-900 shadow-chip"
-                  : "text-neutral-500 hover:text-neutral-700"
-              )}
-              key={t.id}
-              type="button"
-              onClick={() => setTab(t.id)}
-            >
-              {t.label}
-              <span
+        <div className="flex items-center gap-2">
+          <Dropdown
+            aria-label="Sort applicants"
+            options={SORT_OPTIONS}
+            value={sort}
+            onChange={(v) => setSort(v as ApplicantSortId)}
+          />
+          <div className="flex gap-0.5 rounded-8 border border-neutral-200 bg-neutral-50 p-0.5">
+            {tabs.map((t) => (
+              <button
+                aria-pressed={tab === t.id}
                 className={cn(
-                  "ml-1 rounded-full px-1 py-0.5 text-[10px]",
+                  "rounded-6 px-2.5 py-1 text-[11.5px] font-medium transition-all",
                   tab === t.id
-                    ? "bg-brand-100 text-brand-700"
-                    : "bg-neutral-100 text-neutral-400"
+                    ? "bg-white text-neutral-900 shadow-chip"
+                    : "text-neutral-500 hover:text-neutral-700"
                 )}
+                key={t.id}
+                type="button"
+                onClick={() => setTab(t.id)}
               >
-                {t.count}
-              </span>
-            </button>
-          ))}
+                {t.label}
+                <span
+                  className={cn(
+                    "ml-1 rounded-full px-1 py-0.5 text-[10px]",
+                    tab === t.id
+                      ? "bg-brand-100 text-brand-700"
+                      : "bg-neutral-100 text-neutral-400"
+                  )}
+                >
+                  {t.count}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

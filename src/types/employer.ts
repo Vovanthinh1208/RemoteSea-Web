@@ -1,5 +1,15 @@
 import type { ApplicationStatus } from "@/types/application";
-import type { JobStatus, PlanType } from "@/types/job";
+import type {
+  ExperienceLevel,
+  JobStatus,
+  JobType,
+  PlanType,
+} from "@/types/job";
+import type {
+  EmploymentType,
+  RightToWork,
+  TimezoneOverlap,
+} from "@/types/talent";
 
 export type EmployerProfile = {
   id: string;
@@ -51,6 +61,18 @@ export type EmployerJobListItem = {
   publishedAt: string | null;
   createdAt: string;
   _count: { applications: number };
+  // Not rendered directly by the jobs list — carried so the dashboard can
+  // score this job's applicants against it (see ApplicantsPanel's match
+  // badge) without a second fetch.
+  level: ExperienceLevel;
+  salaryMin: number | null;
+  salaryMax: number | null;
+  currency: string;
+  jobType: JobType;
+  timezone: string | null;
+  country: string | null;
+  isRemote: boolean;
+  skills: { isRequired: boolean; skill: { id: string } }[];
 };
 
 export type EmployerJobsResponse = {
@@ -74,6 +96,19 @@ export type EmployerApplicant = {
     level: string;
     user: { name: string | null };
     skills: { skill: { id: string; name: string } }[];
+    // Not rendered directly — feeds the same match-score calculation as
+    // EmployerJobListItem's added fields above. Already shown to anyone
+    // viewing this talent's public profile (see talent/interfaces.ts's
+    // publicProfileArgs on the API side).
+    yearsExperience: number | null;
+    desiredSalaryMin: number | null;
+    desiredSalaryMax: number | null;
+    currency: string;
+    timezone: string | null;
+    country: string | null;
+    employmentTypes: EmploymentType[];
+    timezoneOverlap: TimezoneOverlap[];
+    rightToWork: RightToWork | null;
   };
 };
 
