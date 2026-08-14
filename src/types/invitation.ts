@@ -1,6 +1,5 @@
 export type InvitationStatus = "PENDING" | "ACCEPTED" | "DECLINED";
 
-// Talent-facing shape (GET /invitations) — job/employer summary only.
 export type Invitation = {
   id: string;
   message: string | null;

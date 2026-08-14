@@ -1,4 +1,4 @@
-import type { ApplicationStatus } from "@/types/application";
+import type { Application, ApplicationStatus } from "@/types/application";
 import type { TalentProfile } from "@/types/talent";
 
 export type AppStatusBucket =
@@ -22,6 +22,56 @@ export const STAGE_LABEL: Record<ApplicationStatus, string> = {
   OFFERED: "Offer received",
   REJECTED: "Not selected",
   WITHDRAWN: "Withdrawn",
+};
+
+export type TimelineStep = {
+  status: ApplicationStatus;
+  label: string;
+  timestamp: string | null;
+  reached: boolean;
+};
+
+// The "normal" progression track, in order — REJECTED/WITHDRAWN are terminal
+// exits from any point on this track, not steps within it, so they're
+// appended separately rather than listed here.
+const MAIN_TRACK: ApplicationStatus[] = [
+  "REVIEWING",
+  "SHORTLISTED",
+  "INTERVIEW",
+  "OFFERED",
+];
+
+/**
+ * Application Transparency's timeline — Applied/Viewed aren't
+ * ApplicationStatus values (Applied is appliedAt, Viewed is the separate
+ * viewedAt column), so ApplicationTimeline renders those two directly from
+ * the Application itself and only asks this for the status-driven steps
+ * that follow. Pure so it's testable without a component.
+ */
+export const buildTimelineSteps = (
+  application: Application
+): TimelineStep[] => {
+  const eventAt = new Map(
+    application.statusEvents.map((e) => [e.status, e.createdAt])
+  );
+
+  const steps: TimelineStep[] = MAIN_TRACK.map((status) => ({
+    status,
+    label: STAGE_LABEL[status],
+    timestamp: eventAt.get(status) ?? null,
+    reached: eventAt.has(status),
+  }));
+
+  if (application.status === "REJECTED" || application.status === "WITHDRAWN") {
+    steps.push({
+      status: application.status,
+      label: STAGE_LABEL[application.status],
+      timestamp: eventAt.get(application.status) ?? null,
+      reached: true,
+    });
+  }
+
+  return steps;
 };
 
 const trackedFields = (profile: TalentProfile): boolean[] => [

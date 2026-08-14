@@ -1,5 +1,13 @@
 import { Link } from "react-router-dom";
-import { Briefcase, Clock, Plus, Search, Star, Users } from "lucide-react";
+import {
+  Briefcase,
+  Clock,
+  Plus,
+  Search,
+  Star,
+  Timer,
+  Users,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   useEmployerApplicationsAggregate,
@@ -20,6 +28,16 @@ import { VerifiedInline } from "@/components/shared/VerifiedInline";
 
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
+const HOURS_PER_DAY = 24;
+
+// Employer Response SLA tile — hours read awkwardly past a day ("42h"), so
+// this switches to days once the average crosses HOURS_PER_DAY, matching
+// "Avg. time to hire" 's own day-granularity formatting.
+const formatResponseTime = (hours: number): string => {
+  if (hours === 0) return "—";
+  if (hours < HOURS_PER_DAY) return `${Math.round(hours)}h`;
+  return `${Math.round((hours / HOURS_PER_DAY) * 10) / 10}d`;
+};
 
 export const EmployerDashboard = () => {
   const { user } = useAuth();
@@ -77,6 +95,7 @@ export const EmployerDashboard = () => {
     totalApps: 0,
     shortlisted: 0,
     avgTimeToHireInDays: 0,
+    avgFirstResponseHours: 0,
   };
   const activeListings = jobs.filter((j) => j.status === "ACTIVE").length;
   const inReview = jobs.filter((j) => j.status === "PENDING_REVIEW").length;
@@ -159,7 +178,7 @@ export const EmployerDashboard = () => {
         </div>
 
         {/* KPIs */}
-        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-5">
           <StatCard
             icon={Briefcase}
             label="Active listings"
@@ -189,6 +208,13 @@ export const EmployerDashboard = () => {
             value={
               stats.avgTimeToHireInDays ? `${stats.avgTimeToHireInDays}d` : "—"
             }
+          />
+          <StatCard
+            icon={Timer}
+            label="Avg. first response"
+            size="lg"
+            sub="Employer Response SLA"
+            value={formatResponseTime(stats.avgFirstResponseHours)}
           />
         </div>
 

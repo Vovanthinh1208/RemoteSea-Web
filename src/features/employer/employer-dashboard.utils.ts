@@ -51,6 +51,39 @@ export const NEXT_LABEL: Partial<Record<ApplicationStatus, string>> = {
   INTERVIEW: "Offer",
 };
 
+// Employer Response SLA — mirrors the API's BACKLOG_THRESHOLD_MS
+// (applications/constants.ts) exactly, so this row indicator shows the same
+// signal driving the backend's reminder-email cron. PENDING is measured from
+// appliedAt (never touched at all); REVIEWING from updatedAt (time since it
+// entered that stage — only real transitions bump it, see
+// EmployerRepository.updateApplication).
+const DAY_MS = 24 * 60 * 60 * 1000;
+export const BACKLOG_THRESHOLD_MS = {
+  PENDING: 3 * DAY_MS,
+  REVIEWING: 7 * DAY_MS,
+} as const;
+
+export const backlogDays = (
+  status: ApplicationStatus,
+  appliedAt: string,
+  updatedAt: string,
+  now: number = Date.now()
+): number | null => {
+  if (status === "PENDING") {
+    const elapsed = now - new Date(appliedAt).getTime();
+    return elapsed > BACKLOG_THRESHOLD_MS.PENDING
+      ? Math.floor(elapsed / DAY_MS)
+      : null;
+  }
+  if (status === "REVIEWING") {
+    const elapsed = now - new Date(updatedAt).getTime();
+    return elapsed > BACKLOG_THRESHOLD_MS.REVIEWING
+      ? Math.floor(elapsed / DAY_MS)
+      : null;
+  }
+  return null;
+};
+
 const COLORS = [
   "#1F8A3A",
   "#2684FF",

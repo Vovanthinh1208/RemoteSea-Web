@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo } from "react";
-import { Check, X } from "lucide-react";
+import { Check, Clock3, X } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
@@ -11,6 +11,7 @@ import { MatchBadge } from "@/features/matching/MatchBadge";
 import { AvailabilityBadge } from "@/features/availability/AvailabilityBadge";
 import {
   APPLICANT_STATUS,
+  backlogDays,
   colorFor,
   NEXT_LABEL,
   NEXT_STAGE,
@@ -80,6 +81,7 @@ const ApplicantRow = memo(function ApplicantRow({
   const initial = personInitial(name);
   const group = APPLICANT_STATUS[a.status];
   const nextStatus = NEXT_STAGE[a.status];
+  const stuckDays = backlogDays(a.status, a.appliedAt, a.updatedAt);
   return (
     <div className="group flex items-center gap-3 rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50">
       <div
@@ -113,6 +115,15 @@ const ApplicantRow = memo(function ApplicantRow({
           noticePeriod={a.talent.noticePeriod}
         />
       </div>
+
+      {stuckDays !== null && (
+        <div
+          className="flex flex-shrink-0 items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700"
+          title="Employer Response SLA — this is the same signal behind the reminder email"
+        >
+          <Clock3 size={10} /> {stuckDays}d, awaiting review
+        </div>
+      )}
 
       <div className="flex-shrink-0 text-right">
         <Badge

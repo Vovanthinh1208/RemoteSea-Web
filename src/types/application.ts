@@ -9,6 +9,11 @@ export type ApplicationStatus =
   | "REJECTED"
   | "WITHDRAWN";
 
+export type ApplicationStatusEvent = {
+  status: ApplicationStatus;
+  createdAt: string;
+};
+
 // No `notes` here — that field is the employer's private note on the candidate
 // (PATCH /employer/applications/:id) and the API never sends it to the talent.
 export type Application = {
@@ -20,6 +25,11 @@ export type Application = {
   status: ApplicationStatus;
   appliedAt: string;
   updatedAt: string;
+  // Application Transparency — see ApplicationTimeline. viewedAt is the
+  // employer's list-view stamp; statusEvents is the full history, oldest
+  // first, always starting with the initial PENDING event.
+  viewedAt: string | null;
+  statusEvents: ApplicationStatusEvent[];
 };
 
 // GET /applications embeds the same narrow "job card" shape as the /jobs list —

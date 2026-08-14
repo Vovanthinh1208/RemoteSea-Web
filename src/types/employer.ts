@@ -82,6 +82,9 @@ export type EmployerJobsResponse = {
     totalApps: number;
     shortlisted: number;
     avgTimeToHireInDays: number;
+    // Employer Response SLA — avg hours from appliedAt to the first real
+    // status change (any direction), over applications that have one.
+    avgFirstResponseHours: number;
   };
 };
 
@@ -89,6 +92,13 @@ export type EmployerApplicant = {
   id: string;
   status: ApplicationStatus;
   appliedAt: string;
+  // Application Transparency — set once the first time this applicant
+  // appeared in a GET /employer/jobs/:id/applications response.
+  viewedAt: string | null;
+  // Only real transitions bump this (see the API's updateApplication) — used
+  // to compute the same "stuck in REVIEWING" backlog signal the reminder
+  // cron uses (see employer-dashboard.utils.ts's isBacklogged).
+  updatedAt: string;
   coverLetter: string | null;
   talent: {
     id: string;
