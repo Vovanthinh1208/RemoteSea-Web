@@ -90,6 +90,11 @@ const EmployerDashboardPage = lazy(() =>
     default: m.EmployerDashboardPage,
   }))
 );
+const TalentSearchPage = lazy(() =>
+  import("@/features/employer/pages/TalentSearchPage").then((m) => ({
+    default: m.TalentSearchPage,
+  }))
+);
 const PostJobPage = lazy(() =>
   import("@/features/post-job/pages/PostJobPage").then((m) => ({
     default: m.PostJobPage,
@@ -172,6 +177,10 @@ export const AppRouter = () => {
           <Route
             element={<EmployerDashboardPage />}
             path="employer-dashboard"
+          />
+          <Route
+            element={<TalentSearchPage />}
+            path="employer-dashboard/talent"
           />
         </Route>
 

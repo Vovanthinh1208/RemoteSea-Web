@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Briefcase, Clock, Plus, Star, Users } from "lucide-react";
+import { Briefcase, Clock, Plus, Search, Star, Users } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   useEmployerApplicationsAggregate,
@@ -145,6 +145,12 @@ export const EmployerDashboard = () => {
                 {profile.companyName}
                 {profile.isVerified && <VerifiedInline />}
               </div>
+              <Link
+                className={buttonVariants({ variant: "outline" })}
+                to={ROUTES.talentSearch}
+              >
+                <Search size={13} /> Find talent
+              </Link>
               <Link className={buttonVariants()} to={ROUTES.postJob}>
                 <Plus size={13} /> Post a job
               </Link>

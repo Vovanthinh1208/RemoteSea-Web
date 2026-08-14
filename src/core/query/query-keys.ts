@@ -1,4 +1,5 @@
 import type { JobFilters } from "@/features/jobs/job-filters";
+import type { TalentSearchFilters } from "@/features/employer/talent-search/talent-search.filters";
 
 // One factory per feature, all defined here up front so cross-feature invalidation
 // (e.g. jobs invalidating employer's job list) never has to import another feature's
@@ -47,6 +48,19 @@ export const employerKeys = {
   jobs: () => ["employer", "jobs"] as const,
   jobApplications: (jobId: string) =>
     ["employer", "job-applications", jobId] as const,
+};
+
+export const talentSearchKeys = {
+  all: ["talent-search"] as const,
+  // `forJob` is excluded on purpose — it drives client-side match sorting only
+  // (see match.util.ts) and is never sent to GET /talent, so keying the cache
+  // on it would mint a fresh cache entry / refetch for every job the employer
+  // picks to rank against, even though the server response is identical.
+  list: (filters: TalentSearchFilters, limit: number) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { forJob, ...serverFilters } = filters;
+    return ["talent-search", serverFilters, limit] as const;
+  },
 };
 
 export const salaryKeys = {
