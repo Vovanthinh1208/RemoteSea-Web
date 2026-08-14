@@ -19,3 +19,8 @@ export type EmployerProfileDto = EmployerProfile;
 export type EmployerJobsResponseDto = EmployerJobsResponse;
 export type EmployerJobApplicationsResponseDto =
   EmployerJobApplicationsResponse;
+
+export type SubmitVerificationRequestDto = { email: string };
+export type SubmitVerificationResponseDto = { message: string };
+export type ConfirmVerificationRequestDto = { token: string };
+export type ConfirmVerificationResponseDto = { message: string };

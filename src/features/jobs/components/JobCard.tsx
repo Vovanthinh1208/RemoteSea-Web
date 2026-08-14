@@ -1,7 +1,14 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { Bookmark, Clock, RefreshCw, ShieldCheck, Star } from "lucide-react";
+import {
+  BadgeCheck,
+  Bookmark,
+  Clock,
+  RefreshCw,
+  ShieldCheck,
+  Star,
+} from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { Badge } from "@/components/ui/badge";
 import { SalaryBadge } from "@/components/ui/salary-badge";
@@ -15,6 +22,7 @@ import {
   LEVEL_LABELS,
   countryFlag,
   isAsyncTimezone,
+  isVerifiedJob,
   timeAgo,
 } from "@/features/jobs/jobs.utils";
 import { ROUTES } from "@/constants/routes";
@@ -69,6 +77,12 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
             <Badge variant="verified">
               <ShieldCheck size={10} />
               Verified
+            </Badge>
+          )}
+          {isVerifiedJob(job) && (
+            <Badge variant="info">
+              <BadgeCheck size={10} />
+              Verified job
             </Badge>
           )}
           <span className="text-[13px] font-medium text-neutral-600">

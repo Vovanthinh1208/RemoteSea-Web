@@ -6,10 +6,12 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import {
+  confirmEmployerVerification,
   createEmployerProfile,
   getEmployerProfile,
   listEmployerJobs,
   listJobApplications,
+  submitEmployerVerification,
   updateApplicationStatus,
 } from "@/features/employer/employer.service";
 import { ApiError } from "@/core/errors/api-error";
@@ -158,6 +160,28 @@ export const useUpdateApplicationStatus = () => {
       queryClient.invalidateQueries({
         queryKey: MY_APPLICATIONS_KEY,
       });
+    },
+  });
+};
+
+export const useSubmitEmployerVerification = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: submitEmployerVerification,
+    onSuccess: () => {
+      // Flips verificationStatus to PENDING — the dashboard's "Verify your
+      // company" card reads that off the same profile query.
+      queryClient.invalidateQueries({ queryKey: employerKeys.profile() });
+    },
+  });
+};
+
+export const useConfirmEmployerVerification = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: confirmEmployerVerification,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: employerKeys.profile() });
     },
   });
 };

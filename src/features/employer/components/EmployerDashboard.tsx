@@ -18,6 +18,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { ListingsPanel } from "@/features/employer/components/employer-dashboard/ListingsPanel";
 import { ApplicantsPanel } from "@/features/employer/components/employer-dashboard/ApplicantsPanel";
 import { CompanyCard } from "@/features/employer/components/employer-dashboard/CompanyCard";
+import { VerifyCompanyBanner } from "@/features/employer/components/employer-dashboard/VerifyCompanyBanner";
 import { FunnelPanel } from "@/features/employer/components/employer-dashboard/FunnelPanel";
 import { EmployerDashboardSkeleton } from "@/features/employer/components/employer-dashboard/EmployerDashboardSkeleton";
 import { EmptyState } from "@/components/shared/EmptyState";
@@ -131,6 +132,13 @@ export const EmployerDashboard = () => {
               Get started
             </Link>
           </div>
+        )}
+
+        {profile && !profile.isVerified && (
+          <VerifyCompanyBanner
+            verificationEmail={profile.verificationEmail}
+            verificationStatus={profile.verificationStatus}
+          />
         )}
 
         {/* Greeting */}

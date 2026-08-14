@@ -59,3 +59,13 @@ export const updateApplicationStatus = async (
   notes?: string
 ): Promise<void> =>
   employerRepository.updateApplicationStatus(applicationId, status, notes);
+
+export const submitEmployerVerification = async (
+  email: string
+): Promise<{ message: string }> =>
+  employerRepository.submitVerification({ email });
+
+export const confirmEmployerVerification = async (
+  token: string
+): Promise<{ message: string }> =>
+  employerRepository.confirmVerification({ token });

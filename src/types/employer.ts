@@ -12,6 +12,9 @@ import type {
   TimezoneOverlap,
 } from "@/types/talent";
 
+export type EmployerVerificationStatus =
+  "NOT_SUBMITTED" | "PENDING" | "VERIFIED" | "FAILED";
+
 export type EmployerProfile = {
   id: string;
   companyName: string;
@@ -25,6 +28,12 @@ export type EmployerProfile = {
   hqCountry: string | null;
   hqCity: string | null;
   isVerified: boolean;
+  // Self-service domain/email verification — a second, independent path to
+  // isVerified alongside the admin verify/suspend toggle. isVerified stays
+  // the one flag every badge reads; these two only drive the dashboard's
+  // "Verify your company" prompt.
+  verificationEmail: string | null;
+  verificationStatus: EmployerVerificationStatus;
   createdAt: string;
   updatedAt: string;
 };

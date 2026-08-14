@@ -1,4 +1,4 @@
-import { Clock, Users } from "lucide-react";
+import { BadgeCheck, Clock, Users } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { Badge } from "@/components/ui/badge";
 import { SalaryBadge } from "@/components/ui/salary-badge";
@@ -7,6 +7,7 @@ import {
   JOB_TYPE_LABELS,
   LEVEL_LABELS,
   countryFlag,
+  isVerifiedJob,
   timeAgo,
 } from "@/features/jobs/jobs.utils";
 import type { Job } from "@/types/job";
@@ -45,6 +46,11 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {job.isFeatured && <Badge variant="featured">⭐ Featured</Badge>}
+          {isVerifiedJob(job) && (
+            <Badge variant="info">
+              <BadgeCheck size={10} /> Verified job
+            </Badge>
+          )}
           <Tag>{category}</Tag>
           <Tag>{LEVEL_LABELS[job.level]}</Tag>
           <Tag>{JOB_TYPE_LABELS[job.jobType]}</Tag>

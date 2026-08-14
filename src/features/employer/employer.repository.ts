@@ -3,12 +3,16 @@ import type { RequestOptions } from "@/core/http/request-config";
 import type { ApplicationStatus } from "@/types/application";
 import type { JobStatus } from "@/types/job";
 import type {
+  ConfirmVerificationRequestDto,
+  ConfirmVerificationResponseDto,
   CreateEmployerProfileRequestDto,
   CreateEmployerProfileResponseDto,
   EmployerJobApplicationsResponseDto,
   EmployerJobsResponseDto,
   EmployerProfileDto,
   EmployerProfileSummaryDto,
+  SubmitVerificationRequestDto,
+  SubmitVerificationResponseDto,
   UpdateEmployerProfileRequestDto,
 } from "@/features/employer/employer.dto";
 
@@ -86,5 +90,25 @@ export const employerRepository = {
       status,
       notes,
     });
+  },
+
+  submitVerification: async (
+    payload: SubmitVerificationRequestDto
+  ): Promise<SubmitVerificationResponseDto> => {
+    const { data } = await apiClient.post<SubmitVerificationResponseDto>(
+      "/employer/verification",
+      payload
+    );
+    return data;
+  },
+
+  confirmVerification: async (
+    payload: ConfirmVerificationRequestDto
+  ): Promise<ConfirmVerificationResponseDto> => {
+    const { data } = await apiClient.post<ConfirmVerificationResponseDto>(
+      "/employer/verification/confirm",
+      payload
+    );
+    return data;
   },
 };
