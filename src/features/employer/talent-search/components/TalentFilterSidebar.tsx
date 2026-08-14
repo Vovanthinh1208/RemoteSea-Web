@@ -93,9 +93,10 @@ export const TalentFilterSidebar = ({
     val: TalentSearchFilters[K][number]
   ) => {
     const current = filters[key] as TalentSearchFilters[K][number][];
+    const exists = current.some((v) => v === val);
     onChange({
       ...filters,
-      [key]: current.includes(val)
+      [key]: exists
         ? current.filter((v) => v !== val)
         : [...current, val],
     });
