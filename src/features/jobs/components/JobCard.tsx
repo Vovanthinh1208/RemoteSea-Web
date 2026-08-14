@@ -19,14 +19,20 @@ import {
 } from "@/features/jobs/jobs.utils";
 import { ROUTES } from "@/constants/routes";
 import type { JobListItem } from "@/types/job";
+import { useMyMatch } from "@/features/matching/useMyMatch";
+import { MatchBadge } from "@/features/matching/MatchBadge";
 
 interface JobCardProps {
   job: JobListItem;
 }
 
 export const JobCard = memo(function JobCard({ job }: JobCardProps) {
-  const { saved, statusUnknown, toggle } = useSavedJobToggle(job.id, ROUTES.jobs);
+  const { saved, statusUnknown, toggle } = useSavedJobToggle(
+    job.id,
+    ROUTES.jobs
+  );
   const queryClient = useQueryClient();
+  const match = useMyMatch(job);
 
   // Job-board -> job-detail is the single most common navigation in the app;
   // prefetching on hover means the detail page's data is often already cached
@@ -99,12 +105,15 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
             {isAsync ? <RefreshCw size={11} /> : <Clock size={11} />}
             {timezone}
           </Tag>
-          {job.vnHireCount > 0 && <Badge variant="vn">🇻🇳 {job.vnHireCount} VN here</Badge>}
+          {job.vnHireCount > 0 && (
+            <Badge variant="vn">🇻🇳 {job.vnHireCount} VN here</Badge>
+          )}
         </div>
       </div>
 
       {/* Right side */}
       <div className="flex flex-shrink-0 flex-col items-end gap-2">
+        {match && <MatchBadge match={match} />}
         <SalaryBadge max={job.salaryMax} min={job.salaryMin} />
         <span className="text-[12px] text-neutral-400">
           {timeAgo(job.publishedAt ?? job.createdAt)} ago

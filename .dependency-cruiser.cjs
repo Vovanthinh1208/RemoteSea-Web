@@ -29,7 +29,8 @@ module.exports = {
     {
       name: "no-orphans",
       severity: "warn",
-      comment: "A module nothing imports is either dead code or a missing wire-up.",
+      comment:
+        "A module nothing imports is either dead code or a missing wire-up.",
       from: {
         orphan: true,
         pathNot: [

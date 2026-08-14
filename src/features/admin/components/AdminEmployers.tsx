@@ -11,8 +11,15 @@ import { CompanyLogo } from "@/components/ui/company-logo";
 import { StatCard } from "@/components/ui/stat-card";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { AdminEmployersSkeleton } from "@/features/admin/components/AdminEmployersSkeleton";
-import { useAdminEmployers, useUpdateAdminEmployer } from "@/features/admin/admin.queries";
-import { colorFor, formatCents, formatCentsCompact } from "@/features/admin/admin.utils";
+import {
+  useAdminEmployers,
+  useUpdateAdminEmployer,
+} from "@/features/admin/admin.queries";
+import {
+  colorFor,
+  formatCents,
+  formatCentsCompact,
+} from "@/features/admin/admin.utils";
 import type { AdminEmployer } from "@/types/admin";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
@@ -43,7 +50,11 @@ const EmployerRow = memo(function EmployerRow({
       style={{ gridTemplateColumns: EMPLOYER_GRID_COLUMNS }}
     >
       <div className="flex min-w-0 items-center gap-3">
-        <CompanyLogo color={colorFor(e.companyName)} name={e.companyName} size={38} />
+        <CompanyLogo
+          color={colorFor(e.companyName)}
+          name={e.companyName}
+          size={38}
+        />
 
         <div className="min-w-0">
           <div className="flex items-center gap-1.5 text-[14px] font-semibold text-neutral-900">
@@ -126,11 +137,9 @@ export const AdminEmployers = () => {
   // can be shared/deep-linked, instead of silently resetting to "All" on reload.
   const isFilterId = (v: string): v is (typeof FILTERS)[number]["id"] =>
     FILTERS.some((f) => f.id === v);
-  const [filter, setFilter] = useSearchParamState<(typeof FILTERS)[number]["id"]>(
-    "filter",
-    "all",
-    isFilterId
-  );
+  const [filter, setFilter] = useSearchParamState<
+    (typeof FILTERS)[number]["id"]
+  >("filter", "all", isFilterId);
   const [search, setSearch] = useSearchParamState<string>("q", "");
 
   const employers = data?.employers ?? [];
@@ -139,7 +148,8 @@ export const AdminEmployers = () => {
   const updateEmployerStatus = useCallback(
     (id: string, action: "verify" | "suspend") =>
       runWithToast(() => updateEmployer({ id, action }), {
-        success: action === "verify" ? "Employer verified" : "Employer suspended",
+        success:
+          action === "verify" ? "Employer verified" : "Employer suspended",
         successVariant: action === "verify" ? "success" : "info",
         error: "Couldn't update employer",
       }),
@@ -148,7 +158,8 @@ export const AdminEmployers = () => {
 
   const rows = employers.filter((e) => {
     if (filter === "unverified" && e.isVerified) return false;
-    if (search && !e.companyName.toLowerCase().includes(search.toLowerCase())) return false;
+    if (search && !e.companyName.toLowerCase().includes(search.toLowerCase()))
+      return false;
     return true;
   });
 
@@ -184,7 +195,9 @@ export const AdminEmployers = () => {
         <Eyebrow className="mb-0.5">Operations</Eyebrow>
         {/* 26px, smaller than the app-wide 32px page title — intentional for
             the denser, list-heavy ops console, shared by AdminQueue/AdminRevenue. */}
-        <h1 className="text-[26px] font-semibold text-neutral-900">Employers</h1>
+        <h1 className="text-[26px] font-semibold text-neutral-900">
+          Employers
+        </h1>
         <p className="mt-1 text-sm text-neutral-500">
           {employers.length} companies · {totalListings} total listings · $
           {(totalSpendCents / CENTS_PER_DOLLAR).toLocaleString()} billed
@@ -193,7 +206,12 @@ export const AdminEmployers = () => {
 
       {/* KPIs */}
       <div className="mb-6 grid grid-cols-3 gap-3">
-        <StatCard icon={Building} label="Total employers" sub="all time" value={employers.length} />
+        <StatCard
+          icon={Building}
+          label="Total employers"
+          sub="all time"
+          value={employers.length}
+        />
         <StatCard
           icon={Shield}
           label="Unverified"
@@ -263,7 +281,8 @@ export const AdminEmployers = () => {
               // Scoped to this row's id — a shared mutation instance would otherwise
               // disable every other row's buttons while one employer's update is in flight.
               isPending={
-                updateEmployerMutation.isPending && updateEmployerMutation.variables?.id === e.id
+                updateEmployerMutation.isPending &&
+                updateEmployerMutation.variables?.id === e.id
               }
               key={e.id}
               maxSpend={maxSpend}

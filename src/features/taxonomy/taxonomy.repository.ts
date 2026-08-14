@@ -4,11 +4,16 @@ import type { CategoryDto, SkillDto } from "@/features/taxonomy/taxonomy.dto";
 
 export const taxonomyRepository = {
   listCategories: async (opts?: RequestOptions): Promise<CategoryDto[]> => {
-    const { data } = await apiClient.get<CategoryDto[]>("/categories", { signal: opts?.signal });
+    const { data } = await apiClient.get<CategoryDto[]>("/categories", {
+      signal: opts?.signal,
+    });
     return data;
   },
 
-  listSkills: async (q?: string, opts?: RequestOptions): Promise<SkillDto[]> => {
+  listSkills: async (
+    q?: string,
+    opts?: RequestOptions
+  ): Promise<SkillDto[]> => {
     const { data } = await apiClient.get<SkillDto[]>("/skills", {
       params: q ? { q } : undefined,
       signal: opts?.signal,

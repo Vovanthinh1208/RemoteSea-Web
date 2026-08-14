@@ -4,14 +4,17 @@ export const RETRYABLE_METHOD = "get";
 export const MAX_RETRIES = 2;
 export const RETRY_BASE_DELAY_MS = 300;
 
-export type RetryableConfig = InternalAxiosRequestConfig & { __retryCount?: number };
+export type RetryableConfig = InternalAxiosRequestConfig & {
+  __retryCount?: number;
+};
 
 export const isRetryableError = (
   method: string | undefined,
   status: number | undefined,
   isNetworkError: boolean
 ): boolean =>
-  method?.toLowerCase() === RETRYABLE_METHOD && (isNetworkError || (status ?? 0) >= 500);
+  method?.toLowerCase() === RETRYABLE_METHOD &&
+  (isNetworkError || (status ?? 0) >= 500);
 
 // Exponential backoff with equal jitter (AWS "backoff and jitter"): half the
 // window is fixed, half is random. Without the random half, every client that

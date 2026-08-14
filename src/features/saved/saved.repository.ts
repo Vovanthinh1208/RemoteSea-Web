@@ -1,6 +1,9 @@
 import { apiClient } from "@/core/http/http-client";
 import type { RequestOptions } from "@/core/http/request-config";
-import type { SavedJobIdsResponseDto, SavedJobListResponseDto } from "@/features/saved/saved.dto";
+import type {
+  SavedJobIdsResponseDto,
+  SavedJobListResponseDto,
+} from "@/features/saved/saved.dto";
 
 export const savedRepository = {
   list: async (
@@ -28,7 +31,9 @@ export const savedRepository = {
   },
 
   unsave: async (jobId: string): Promise<{ saved: boolean }> => {
-    const { data } = await apiClient.delete<{ saved: boolean }>(`/saved/${jobId}`);
+    const { data } = await apiClient.delete<{ saved: boolean }>(
+      `/saved/${jobId}`
+    );
     return data;
   },
 };

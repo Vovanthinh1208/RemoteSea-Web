@@ -20,26 +20,33 @@ export const DistributionSection = () => {
           <div>
             <Eyebrow className="mb-2">Distribution</Eyebrow>
             <h2 className="mb-3 text-[28px] font-semibold tracking-tight text-white">
-              The <em className="font-serif-italic text-brand-400">shape</em> of remote pay.
+              The <em className="font-serif-italic text-brand-400">shape</em> of
+              remote pay.
             </h2>
             <p className="mb-6 text-sm leading-relaxed text-neutral-400">
-              Most VN talent working remote sits in the $2k–$5k band. The fat tail is real — but it
-              lives at senior + staff levels with US-based companies.
+              Most VN talent working remote sits in the $2k–$5k band. The fat
+              tail is real — but it lives at senior + staff levels with US-based
+              companies.
             </p>
             <ul className="space-y-2.5">
               {[
                 <>
-                  <strong className="text-white">72%</strong> of placements between $2k–$5k
+                  <strong className="text-white">72%</strong> of placements
+                  between $2k–$5k
                 </>,
                 <>
-                  <strong className="text-white">$3,200</strong> is the median across all roles
+                  <strong className="text-white">$3,200</strong> is the median
+                  across all roles
                 </>,
                 <>
-                  Staff+ engineering jobs can hit <strong className="text-white">$10k+</strong>{" "}
-                  monthly
+                  Staff+ engineering jobs can hit{" "}
+                  <strong className="text-white">$10k+</strong> monthly
                 </>,
               ].map((item, i) => (
-                <li className="flex items-start gap-2.5 text-[13.5px] text-neutral-400" key={i}>
+                <li
+                  className="flex items-start gap-2.5 text-[13.5px] text-neutral-400"
+                  key={i}
+                >
                   <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" />
                   {item}
                 </li>
@@ -50,11 +57,19 @@ export const DistributionSection = () => {
           {/* Histogram */}
           <div className="flex h-48 items-end gap-2">
             {HISTOGRAM_BUCKETS.map((b) => (
-              <div className="flex flex-1 flex-col items-center gap-1.5" key={b.range}>
-                <span className="font-mono text-[10px] text-neutral-500">{b.pct}%</span>
+              <div
+                className="flex flex-1 flex-col items-center gap-1.5"
+                key={b.range}
+              >
+                <span className="font-mono text-[10px] text-neutral-500">
+                  {b.pct}%
+                </span>
                 <div
                   className="w-full rounded-t-4 bg-brand-600/70 transition-all"
-                  style={{ height: `${(b.pct / maxPct) * 100}%`, minHeight: 4 }}
+                  style={{
+                    height: `${(b.pct / maxPct) * 100}%`,
+                    minHeight: 4,
+                  }}
                 />
                 <span className="text-[10px] text-neutral-500">{b.range}</span>
               </div>

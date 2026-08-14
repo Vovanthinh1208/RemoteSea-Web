@@ -33,12 +33,19 @@ export const AuthCallbackPage = () => {
 
     loginWithToken(token)
       .then((user) => {
-        navigate(user.role === "EMPLOYER" ? ROUTES.employerDashboard : ROUTES.talent, {
-          replace: true,
-        });
+        navigate(
+          user.role === "EMPLOYER" ? ROUTES.employerDashboard : ROUTES.talent,
+          {
+            replace: true,
+          }
+        );
       })
       .catch(() => {
-        toast({ title: "Sign in failed", description: "Please try again.", variant: "error" });
+        toast({
+          title: "Sign in failed",
+          description: "Please try again.",
+          variant: "error",
+        });
         navigate(ROUTES.login, { replace: true });
       });
   }, [searchParams, loginWithToken, navigate, toast]);

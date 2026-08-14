@@ -2,7 +2,12 @@ import { memo } from "react";
 import { Clock } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { VerifiedBadge } from "@/components/shared/VerifiedBadge";
-import { colorFor, hoursSince, waitCls, waitFmt } from "@/features/admin/admin.utils";
+import {
+  colorFor,
+  hoursSince,
+  waitCls,
+  waitFmt,
+} from "@/features/admin/admin.utils";
 import type { AdminJob } from "@/types/admin";
 
 interface QueueListPaneProps {
@@ -17,7 +22,11 @@ interface QueueListRowProps {
   onSelect: (id: string) => void;
 }
 
-const QueueListRow = memo(function QueueListRow({ job: j, selected, onSelect }: QueueListRowProps) {
+const QueueListRow = memo(function QueueListRow({
+  job: j,
+  selected,
+  onSelect,
+}: QueueListRowProps) {
   return (
     <button
       className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 ${selected ? "bg-brand-50" : ""}`}
@@ -29,10 +38,16 @@ const QueueListRow = memo(function QueueListRow({ job: j, selected, onSelect }: 
         size={34}
       />
       <div className="min-w-0 flex-1">
-        <div className="text-[12px] font-semibold text-neutral-700">{j.employer.companyName}</div>
-        <div className="truncate text-[13px] font-medium text-neutral-900">{j.title}</div>
+        <div className="text-[12px] font-semibold text-neutral-700">
+          {j.employer.companyName}
+        </div>
+        <div className="truncate text-[13px] font-medium text-neutral-900">
+          {j.title}
+        </div>
         <div className="mt-1 flex flex-wrap gap-1">
-          <span className={`font-mono text-[11px] ${waitCls(hoursSince(j.createdAt))}`}>
+          <span
+            className={`font-mono text-[11px] ${waitCls(hoursSince(j.createdAt))}`}
+          >
             {waitFmt(hoursSince(j.createdAt))}
           </span>
           {j.planType === "FEATURED" && (
@@ -49,7 +64,11 @@ const QueueListRow = memo(function QueueListRow({ job: j, selected, onSelect }: 
   );
 });
 
-export const QueueListPane = ({ jobs, selectedId, onSelect }: QueueListPaneProps) => (
+export const QueueListPane = ({
+  jobs,
+  selectedId,
+  onSelect,
+}: QueueListPaneProps) => (
   <div className="rounded-12 border border-neutral-100 bg-white">
     <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
       <span className="text-[13px] font-semibold text-neutral-900">
@@ -64,7 +83,12 @@ export const QueueListPane = ({ jobs, selectedId, onSelect }: QueueListPaneProps
     </div>
     <div className="divide-y divide-neutral-50">
       {jobs.map((j) => (
-        <QueueListRow job={j} key={j.id} onSelect={onSelect} selected={j.id === selectedId} />
+        <QueueListRow
+          job={j}
+          key={j.id}
+          onSelect={onSelect}
+          selected={j.id === selectedId}
+        />
       ))}
     </div>
   </div>

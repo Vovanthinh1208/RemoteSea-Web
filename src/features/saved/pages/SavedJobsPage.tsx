@@ -16,7 +16,9 @@ export const SavedJobsPage = () => {
 
   return (
     <div className="mx-auto max-w-[900px] px-6 py-10">
-      <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">Saved jobs</h1>
+      <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
+        Saved jobs
+      </h1>
       <p className="mb-8 text-[15px] text-neutral-500">
         Jobs you've bookmarked to come back to later.
       </p>

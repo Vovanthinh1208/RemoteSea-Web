@@ -1,12 +1,17 @@
 import { Check } from "lucide-react";
 import { cn } from "@/utils/cn";
-import { TIERS, type PostJobStepProps } from "@/features/post-job/post-job.schemas";
+import {
+  TIERS,
+  type PostJobStepProps,
+} from "@/features/post-job/post-job.schemas";
 import { formatUsd } from "@/utils/format";
 
 export const StepPlan = ({ form, set }: PostJobStepProps) => (
   <div className="space-y-6">
     <div>
-      <h2 className="text-[22px] font-semibold text-neutral-900">Choose a plan</h2>
+      <h2 className="text-[22px] font-semibold text-neutral-900">
+        Choose a plan
+      </h2>
       <p className="mt-1 text-sm text-neutral-500">
         All plans include a public listing. Upgrade for more reach.
       </p>
@@ -35,17 +40,26 @@ export const StepPlan = ({ form, set }: PostJobStepProps) => (
               <Check size={11} />
             </span>
           )}
-          <p className="mb-1 text-[15px] font-semibold text-neutral-900">{t.name}</p>
+          <p className="mb-1 text-[15px] font-semibold text-neutral-900">
+            {t.name}
+          </p>
           <p className="mb-3 text-[22px] font-semibold text-neutral-900">
             {/* toLocaleString for the thousands separator — the Hands-on tier is
                 $1,200; the pricing page and salary figures format the same way. */}
             {formatUsd(t.price)}
-            <span className="ml-0.5 text-[13px] font-normal text-neutral-400">one-time</span>
+            <span className="ml-0.5 text-[13px] font-normal text-neutral-400">
+              one-time
+            </span>
           </p>
-          <p className="mb-3 text-[12.5px] leading-relaxed text-neutral-500">{t.desc}</p>
+          <p className="mb-3 text-[12.5px] leading-relaxed text-neutral-500">
+            {t.desc}
+          </p>
           <ul className="space-y-1.5">
             {t.features.map((f) => (
-              <li className="flex items-center gap-2 text-[12px] text-neutral-600" key={f}>
+              <li
+                className="flex items-center gap-2 text-[12px] text-neutral-600"
+                key={f}
+              >
                 <Check className="flex-shrink-0 text-brand-600" size={11} />
                 {f}
               </li>

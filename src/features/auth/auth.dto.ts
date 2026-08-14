@@ -2,7 +2,24 @@ import { z, type ZodType } from "zod";
 import type { AuthUser, UserRole } from "@/types/user";
 
 export type LoginPayload = { email: string; password: string };
-export type LoginResponseDto = { accessToken: string };
+export type LoginResponseDto =
+  { accessToken: string } | { twoFactorRequired: true; challengeToken: string };
+
+export type TwoFactorChallengePayload = {
+  challengeToken: string;
+  code: string;
+};
+export type TwoFactorChallengeResponseDto = { accessToken: string };
+
+export type TwoFactorStatusDto = { enabled: boolean };
+export type TwoFactorSetupDto = {
+  secret: string;
+  otpauthUrl: string;
+  qrCodeDataUrl: string;
+};
+export type TwoFactorVerifyPayload = { token: string };
+export type TwoFactorVerifyResponseDto = { backupCodes: string[] };
+export type TwoFactorDisablePayload = { password: string };
 
 export type RegisterPayload = {
   name: string;
@@ -10,10 +27,20 @@ export type RegisterPayload = {
   password: string;
   role: Extract<UserRole, "TALENT" | "EMPLOYER">;
 };
-export type RegisterResponseDto = { id: string; email: string; name: string; role: UserRole };
+export type RegisterResponseDto = {
+  id: string;
+  email: string;
+  name: string;
+  role: UserRole;
+};
 
-export type ResetPasswordPayload = { token: string; password: string };
-export type OAuthProvider = "google" | "github";
+export type ResetPasswordPayload = {
+  token: string;
+  password: string;
+};
+export type OAuthProvider = "google" | "github" | "linkedin";
+
+export type OAuthLinkUrlDto = { url: string };
 
 // Wire shape of GET /auth/session — identical to AuthUser today (see auth.mapper.ts).
 export type AuthUserDto = AuthUser;

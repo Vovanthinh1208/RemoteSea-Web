@@ -9,25 +9,42 @@ import type {
 
 export const adminRepository = {
   listEmployers: async (
-    params: { verified?: "true" | "false"; page?: number; limit?: number } = {},
+    params: {
+      verified?: "true" | "false";
+      page?: number;
+      limit?: number;
+    } = {},
     opts?: RequestOptions
   ): Promise<AdminEmployersResponseDto> => {
-    const { data } = await apiClient.get<AdminEmployersResponseDto>("/admin/employers", {
-      params,
-      signal: opts?.signal,
-    });
+    const { data } = await apiClient.get<AdminEmployersResponseDto>(
+      "/admin/employers",
+      {
+        params,
+        signal: opts?.signal,
+      }
+    );
     return data;
   },
 
-  updateEmployer: async (id: string, action: "verify" | "suspend"): Promise<{ success: true }> => {
-    const { data } = await apiClient.patch<{ success: true }>(`/admin/employers/${id}`, {
-      action,
-    });
+  updateEmployer: async (
+    id: string,
+    action: "verify" | "suspend"
+  ): Promise<{ success: true }> => {
+    const { data } = await apiClient.patch<{ success: true }>(
+      `/admin/employers/${id}`,
+      {
+        action,
+      }
+    );
     return data;
   },
 
   listJobs: async (
-    params: { status?: JobStatus; page?: number; limit?: number } = {},
+    params: {
+      status?: JobStatus;
+      page?: number;
+      limit?: number;
+    } = {},
     opts?: RequestOptions
   ): Promise<AdminJobsResponseDto> => {
     const { data } = await apiClient.get<AdminJobsResponseDto>("/admin/jobs", {
@@ -42,10 +59,10 @@ export const adminRepository = {
     action: "approve" | "reject",
     note?: string
   ): Promise<{ status: JobStatus; publishedAt: string | null }> => {
-    const { data } = await apiClient.patch<{ status: JobStatus; publishedAt: string | null }>(
-      `/admin/jobs/${id}`,
-      { action, note }
-    );
+    const { data } = await apiClient.patch<{
+      status: JobStatus;
+      publishedAt: string | null;
+    }>(`/admin/jobs/${id}`, { action, note });
     return data;
   },
 

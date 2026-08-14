@@ -11,10 +11,14 @@ import type {
   EmployerProfileSummary,
 } from "@/types/employer";
 
-export const toEmployerProfileSummary = (dto: EmployerProfileSummaryDto): EmployerProfileSummary =>
+export const toEmployerProfileSummary = (
+  dto: EmployerProfileSummaryDto
+): EmployerProfileSummary => dto;
+export const toEmployerProfile = (dto: EmployerProfileDto): EmployerProfile =>
   dto;
-export const toEmployerProfile = (dto: EmployerProfileDto): EmployerProfile => dto;
-export const toEmployerJobsResponse = (dto: EmployerJobsResponseDto): EmployerJobsResponse => dto;
+export const toEmployerJobsResponse = (
+  dto: EmployerJobsResponseDto
+): EmployerJobsResponse => dto;
 export const toEmployerJobApplicationsResponse = (
   dto: EmployerJobApplicationsResponseDto
 ): EmployerJobApplicationsResponse => dto;

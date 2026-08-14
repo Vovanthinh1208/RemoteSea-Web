@@ -17,7 +17,11 @@ const firstFieldError = (fieldErrors: FieldErrors): string | undefined => {
   return firstKey ? fieldErrors[firstKey]?.[0] : undefined;
 };
 
-type ParsedErrorBody = { message: string; fieldErrors?: FieldErrors; formErrors?: string[] };
+type ParsedErrorBody = {
+  message: string;
+  fieldErrors?: FieldErrors;
+  formErrors?: string[];
+};
 
 export const parseErrorBody = (body: unknown): ParsedErrorBody => {
   if (body && typeof body === "object" && "error" in body) {
@@ -25,8 +29,14 @@ export const parseErrorBody = (body: unknown): ParsedErrorBody => {
     if (typeof error === "string") return { message: error };
     if (isZodFlattenedError(error)) {
       const message =
-        error.formErrors[0] ?? firstFieldError(error.fieldErrors) ?? "Validation failed";
-      return { message, fieldErrors: error.fieldErrors, formErrors: error.formErrors };
+        error.formErrors[0] ??
+        firstFieldError(error.fieldErrors) ??
+        "Validation failed";
+      return {
+        message,
+        fieldErrors: error.fieldErrors,
+        formErrors: error.formErrors,
+      };
     }
   }
   return { message: "Something went wrong. Please try again." };

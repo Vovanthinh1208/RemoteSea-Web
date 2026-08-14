@@ -24,12 +24,15 @@ export const createEmployerProfile = async (
 ): Promise<{ id: string; slug: string; companyName: string }> =>
   employerRepository.createProfile(payload);
 
-export const getEmployerProfile = async (opts?: RequestOptions): Promise<EmployerProfileSummary> =>
+export const getEmployerProfile = async (
+  opts?: RequestOptions
+): Promise<EmployerProfileSummary> =>
   toEmployerProfileSummary(await employerRepository.getProfile(opts));
 
 export const updateEmployerProfile = async (
   payload: UpdateEmployerProfileRequestDto
-): Promise<EmployerProfile> => toEmployerProfile(await employerRepository.updateProfile(payload));
+): Promise<EmployerProfile> =>
+  toEmployerProfile(await employerRepository.updateProfile(payload));
 
 export const listEmployerJobs = async (
   status?: JobStatus,
@@ -39,7 +42,11 @@ export const listEmployerJobs = async (
 
 export const listJobApplications = async (
   jobId: string,
-  params: { status?: ApplicationStatus; page?: number; limit?: number } = {},
+  params: {
+    status?: ApplicationStatus;
+    page?: number;
+    limit?: number;
+  } = {},
   opts?: RequestOptions
 ): Promise<EmployerJobApplicationsResponse> =>
   toEmployerJobApplicationsResponse(
@@ -50,4 +57,5 @@ export const updateApplicationStatus = async (
   applicationId: string,
   status: ApplicationStatus,
   notes?: string
-): Promise<void> => employerRepository.updateApplicationStatus(applicationId, status, notes);
+): Promise<void> =>
+  employerRepository.updateApplicationStatus(applicationId, status, notes);

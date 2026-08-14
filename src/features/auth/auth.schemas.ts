@@ -5,8 +5,13 @@ import { z } from "zod";
 // so a policy change meant hunting down each copy. Settings' change-password
 // schema keeps its own copy on purpose: its message wording differs ("New
 // password …").
-const emailField = z.string().min(1, "Email is required").email("Enter a valid email");
-const passwordField = z.string().min(8, "Password must be at least 8 characters");
+const emailField = z
+  .string()
+  .min(1, "Email is required")
+  .email("Enter a valid email");
+const passwordField = z
+  .string()
+  .min(8, "Password must be at least 8 characters");
 
 export const loginSchema = z.object({
   email: emailField,

@@ -1,10 +1,15 @@
 import { apiClient } from "@/core/http/http-client";
 import type { RequestOptions } from "@/core/http/request-config";
-import type { CreateAlertRequestDto, JobAlertDto } from "@/features/alerts/alerts.dto";
+import type {
+  CreateAlertRequestDto,
+  JobAlertDto,
+} from "@/features/alerts/alerts.dto";
 
 export const alertsRepository = {
   list: async (opts?: RequestOptions): Promise<JobAlertDto[]> => {
-    const { data } = await apiClient.get<JobAlertDto[]>("/alerts", { signal: opts?.signal });
+    const { data } = await apiClient.get<JobAlertDto[]>("/alerts", {
+      signal: opts?.signal,
+    });
     return data;
   },
 
@@ -14,7 +19,9 @@ export const alertsRepository = {
   },
 
   setActive: async (id: string, isActive: boolean): Promise<JobAlertDto> => {
-    const { data } = await apiClient.patch<JobAlertDto>(`/alerts/${id}`, { isActive });
+    const { data } = await apiClient.patch<JobAlertDto>(`/alerts/${id}`, {
+      isActive,
+    });
     return data;
   },
 

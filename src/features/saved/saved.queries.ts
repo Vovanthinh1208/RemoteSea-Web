@@ -60,19 +60,28 @@ export const useSaveJob = () => {
     onMutate: async (jobId: string) => {
       await queryClient.cancelQueries({ queryKey: savedKeys.ids() });
       const previous = queryClient.getQueryData<string[]>(savedKeys.ids());
-      queryClient.setQueryData<string[]>(savedKeys.ids(), (old) => [...(old ?? []), jobId]);
+      queryClient.setQueryData<string[]>(savedKeys.ids(), (old) => [
+        ...(old ?? []),
+        jobId,
+      ]);
       return { previous };
     },
     onError: (_err, _jobId, context) => {
-      if (context?.previous) queryClient.setQueryData(savedKeys.ids(), context.previous);
+      if (context?.previous)
+        queryClient.setQueryData(savedKeys.ids(), context.previous);
     },
     // Only the display lists (full job rows) need a refetch — the ids set was
     // optimistically set to exactly what the server now holds (both endpoints
     // are idempotent), so refetching it was a wasted request on every single
     // heart click. On error the rollback restores it and a refetch confirms.
     onSettled: (_data, error) => {
-      if (error) void queryClient.invalidateQueries({ queryKey: savedKeys.ids() });
-      void queryClient.invalidateQueries({ queryKey: savedKeys.jobsPrefix });
+      if (error)
+        void queryClient.invalidateQueries({
+          queryKey: savedKeys.ids(),
+        });
+      void queryClient.invalidateQueries({
+        queryKey: savedKeys.jobsPrefix,
+      });
     },
   });
 };
@@ -103,7 +112,9 @@ export const useUnsaveJob = () => {
         (old) => {
           if (!old) return old;
 
-          const newSavedJobs = old.savedJobs.filter((job) => job.jobId !== jobId);
+          const newSavedJobs = old.savedJobs.filter(
+            (job) => job.jobId !== jobId
+          );
 
           return {
             ...old,
@@ -131,8 +142,12 @@ export const useUnsaveJob = () => {
 
     onSettled: (_data, error) => {
       if (error) {
-        void queryClient.invalidateQueries({ queryKey: savedKeys.ids() });
-        void queryClient.invalidateQueries({ queryKey: savedKeys.jobsPrefix });
+        void queryClient.invalidateQueries({
+          queryKey: savedKeys.ids(),
+        });
+        void queryClient.invalidateQueries({
+          queryKey: savedKeys.jobsPrefix,
+        });
       }
     },
   });

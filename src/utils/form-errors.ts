@@ -9,7 +9,10 @@ export const applyServerErrors = <T extends FieldValues>(
 
   for (const [field, messages] of Object.entries(error.fieldErrors)) {
     if (messages?.[0]) {
-      setError(field as Path<T>, { type: "server", message: messages[0] });
+      setError(field as Path<T>, {
+        type: "server",
+        message: messages[0],
+      });
     }
   }
 };

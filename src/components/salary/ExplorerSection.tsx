@@ -183,14 +183,19 @@ const SalaryBar = ({ row, globalMax, fmt }: SalaryBarProps) => {
         <p className="text-[13.5px] font-medium text-neutral-900">
           {row.seniority} {row.role}
         </p>
-        <p className="text-[11.5px] text-neutral-400">n = {row.samples} offers</p>
+        <p className="text-[11.5px] text-neutral-400">
+          n = {row.samples} offers
+        </p>
       </div>
       <div className="flex-1">
         <div className="relative mb-2 h-2 w-full rounded-full bg-neutral-100">
           {/* IQR band */}
           <span
             className="absolute h-full rounded-full bg-brand-200"
-            style={{ left: pct(row.p25), width: `${((row.p75 - row.p25) / globalMax) * 100}%` }}
+            style={{
+              left: pct(row.p25),
+              width: `${((row.p75 - row.p25) / globalMax) * 100}%`,
+            }}
           />
           {/* Median */}
           <span
@@ -214,7 +219,10 @@ const SalaryBar = ({ row, globalMax, fmt }: SalaryBarProps) => {
         <div className="flex items-center justify-between text-[11px]">
           <span className="text-neutral-400">{fmt(row.min)}</span>
           <span className="font-medium text-neutral-700">
-            median <strong className="font-semibold text-neutral-900">{fmt(row.median)}</strong>
+            median{" "}
+            <strong className="font-semibold text-neutral-900">
+              {fmt(row.median)}
+            </strong>
           </span>
           <span className="text-neutral-400">{fmt(row.max)}</span>
         </div>
@@ -237,7 +245,8 @@ export const ExplorerSection = () => {
   const rows = useMemo(
     () =>
       SALARY_DATA.filter(
-        (r) => r.role === role && (seniority === "All" || r.seniority === seniority)
+        (r) =>
+          r.role === role && (seniority === "All" || r.seniority === seniority)
       ),
     [role, seniority]
   );
@@ -249,7 +258,10 @@ export const ExplorerSection = () => {
           <div>
             <Eyebrow className="mb-2">Explorer</Eyebrow>
             <h2 className="text-[28px] font-semibold tracking-tight text-neutral-900">
-              Salary by <em className="font-serif-italic text-brand-700">role &amp; seniority</em>
+              Salary by{" "}
+              <em className="font-serif-italic text-brand-700">
+                role &amp; seniority
+              </em>
             </h2>
           </div>
           <div className="flex items-center gap-0.5 rounded-8 border border-neutral-200 bg-white p-0.5">
@@ -292,7 +304,11 @@ export const ExplorerSection = () => {
           </p>
           <div className="flex flex-wrap gap-2">
             {SENIORITIES.map((s) => (
-              <Chip active={seniority === s} key={s} onClick={() => setSeniority(s)}>
+              <Chip
+                active={seniority === s}
+                key={s}
+                onClick={() => setSeniority(s)}
+              >
                 {s}
               </Chip>
             ))}
@@ -319,8 +335,8 @@ export const ExplorerSection = () => {
 
           {rows.length === 0 ? (
             <div className="py-10 text-center text-sm text-neutral-400">
-              No data yet for <strong>{role}</strong> at <strong>{seniority}</strong>. Try another
-              seniority.
+              No data yet for <strong>{role}</strong> at{" "}
+              <strong>{seniority}</strong>. Try another seniority.
             </div>
           ) : (
             <div>
@@ -339,8 +355,9 @@ export const ExplorerSection = () => {
         {/* Disclaimer */}
         <div className="mt-5 flex items-start gap-2 rounded-12 bg-neutral-50 px-4 py-3 text-[12.5px] text-neutral-500">
           <Zap className="mt-0.5 flex-shrink-0 text-amber-500" size={14} />
-          All figures are gross monthly salary in USD unless toggled. Bonuses &amp; equity excluded.
-          Submit your offer anonymously to help refine these numbers.
+          All figures are gross monthly salary in USD unless toggled. Bonuses
+          &amp; equity excluded. Submit your offer anonymously to help refine
+          these numbers.
         </div>
       </div>
     </section>

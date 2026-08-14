@@ -98,11 +98,12 @@ export const PricingSection = () => {
         <div className="mb-12 text-center">
           <Eyebrow className="mb-3">Pricing</Eyebrow>
           <h2 className="text-[36px] font-semibold tracking-tight text-neutral-900">
-            One-time, not <em className="font-serif-italic text-brand-700">subscription.</em>
+            One-time, not{" "}
+            <em className="font-serif-italic text-brand-700">subscription.</em>
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm text-neutral-500">
-            No &quot;talent network access fees.&quot; No seats. Pay per role, only when you&apos;re
-            hiring.
+            No &quot;talent network access fees.&quot; No seats. Pay per role,
+            only when you&apos;re hiring.
           </p>
         </div>
 
@@ -110,7 +111,9 @@ export const PricingSection = () => {
           <div className="inline-flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-100 p-1">
             <button
               className={`rounded-full px-5 py-2 text-[13.5px] font-medium transition-all ${
-                !annual ? "bg-white text-neutral-900 shadow-chip" : "text-neutral-500"
+                !annual
+                  ? "bg-white text-neutral-900 shadow-chip"
+                  : "text-neutral-500"
               }`}
               onClick={() => setAnnual(false)}
             >
@@ -118,7 +121,9 @@ export const PricingSection = () => {
             </button>
             <button
               className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-[13.5px] font-medium transition-all ${
-                annual ? "bg-white text-neutral-900 shadow-chip" : "text-neutral-500"
+                annual
+                  ? "bg-white text-neutral-900 shadow-chip"
+                  : "text-neutral-500"
               }`}
               onClick={() => setAnnual(true)}
             >
@@ -146,8 +151,12 @@ export const PricingSection = () => {
                 </div>
               )}
 
-              <div className="mb-1 text-[16px] font-semibold text-neutral-900">{tier.name}</div>
-              <div className="mb-4 text-[12.5px] text-neutral-400">{tier.tag}</div>
+              <div className="mb-1 text-[16px] font-semibold text-neutral-900">
+                {tier.name}
+              </div>
+              <div className="mb-4 text-[12.5px] text-neutral-400">
+                {tier.tag}
+              </div>
 
               <div
                 className="mb-3 font-serif text-[48px] leading-none tracking-tight text-neutral-900"
@@ -182,7 +191,10 @@ export const PricingSection = () => {
 
               <ul className="space-y-2.5 border-t border-neutral-100 pt-5">
                 {tier.features.map((f) => (
-                  <li className="flex items-start gap-2.5 text-[13.5px] text-neutral-700" key={f}>
+                  <li
+                    className="flex items-start gap-2.5 text-[13.5px] text-neutral-700"
+                    key={f}
+                  >
                     <span className="mt-0.5 grid h-4 w-4 flex-shrink-0 place-items-center rounded-full bg-brand-50">
                       <Check className="text-brand-600" size={10} />
                     </span>

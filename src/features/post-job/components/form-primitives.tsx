@@ -35,12 +35,18 @@ export const Field = ({ label, children, hint, required }: FieldProps) => {
 
   const fieldId = canAssociate ? (child.props.id ?? generatedId) : undefined;
   const associatedChild = canAssociate
-    ? cloneElement(child, { id: fieldId, "aria-required": required || undefined })
+    ? cloneElement(child, {
+        id: fieldId,
+        "aria-required": required || undefined,
+      })
     : children;
 
   return (
     <div className="space-y-1.5">
-      <label className="block text-[13px] font-medium text-neutral-700" htmlFor={fieldId}>
+      <label
+        className="block text-[13px] font-medium text-neutral-700"
+        htmlFor={fieldId}
+      >
         {label}
         {required && (
           <span aria-hidden="true" className="ml-0.5 text-red-500">

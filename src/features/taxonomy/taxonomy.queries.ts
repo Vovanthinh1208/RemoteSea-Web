@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { listCategories, listSkills } from "@/features/taxonomy/taxonomy.service";
+import {
+  listCategories,
+  listSkills,
+} from "@/features/taxonomy/taxonomy.service";
 import { taxonomyKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 

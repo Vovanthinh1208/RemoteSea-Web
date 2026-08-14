@@ -5,15 +5,39 @@ import {
   Share2,
   ShieldCheck,
   SlidersHorizontal,
+  Sparkles,
   User,
 } from "lucide-react";
 
+// `done` is illustrative, same as the source — none of these are computed
+// from real profile completeness.
 export const PROF_SECTIONS = [
-  { id: "basics", label: "Basics", icon: User },
-  { id: "about", label: "About you", icon: Asterisk },
-  { id: "experience", label: "Experience", icon: Briefcase },
-  { id: "skills", label: "Skills", icon: Code2 },
-  { id: "prefs", label: "Preferences", icon: SlidersHorizontal },
-  { id: "links", label: "Links & CV", icon: Share2 },
-  { id: "visibility", label: "Visibility", icon: ShieldCheck },
+  { id: "basics", label: "Basics", done: true, icon: User },
+  { id: "about", label: "About you", done: true, icon: Asterisk },
+  {
+    id: "experience",
+    label: "Experience",
+    done: false,
+    icon: Briefcase,
+  },
+  { id: "skills", label: "Skills", done: true, icon: Code2 },
+  {
+    id: "prefs",
+    label: "Preferences",
+    done: false,
+    icon: SlidersHorizontal,
+  },
+  { id: "links", label: "Links & CV", done: false, icon: Share2 },
+  {
+    id: "highlights",
+    label: "Highlights",
+    done: false,
+    icon: Sparkles,
+  },
+  {
+    id: "visibility",
+    label: "Visibility",
+    done: true,
+    icon: ShieldCheck,
+  },
 ];

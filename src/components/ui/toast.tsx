@@ -1,12 +1,27 @@
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { AlertCircle, CheckCircle2, Info, X } from "lucide-react";
 import { cn } from "@/utils/cn";
 
 type Variant = "success" | "error" | "info";
 
-type ToastItem = { id: number; title: string; description?: string; variant: Variant };
+type ToastItem = {
+  id: number;
+  title: string;
+  description?: string;
+  variant: Variant;
+};
 
-type ToastInput = { title: string; description?: string; variant?: Variant };
+type ToastInput = {
+  title: string;
+  description?: string;
+  variant?: Variant;
+};
 
 type ToastContextValue = { toast: (input: ToastInput) => void };
 
@@ -62,9 +77,14 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
               key={t.id}
               role={t.variant === "error" ? "alert" : "status"}
             >
-              <Icon className={cn("mt-0.5 flex-shrink-0", ACCENT[t.variant])} size={17} />
+              <Icon
+                className={cn("mt-0.5 flex-shrink-0", ACCENT[t.variant])}
+                size={17}
+              />
               <div className="min-w-0 flex-1">
-                <p className="text-[13.5px] font-medium text-neutral-900">{t.title}</p>
+                <p className="text-[13.5px] font-medium text-neutral-900">
+                  {t.title}
+                </p>
                 {t.description && (
                   <p className="mt-0.5 text-[12.5px] leading-relaxed text-neutral-500">
                     {t.description}

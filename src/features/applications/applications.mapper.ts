@@ -4,7 +4,11 @@ import type {
   ApplicationStatusCountsDto,
   ApplicationWithJobDto,
 } from "@/features/applications/applications.dto";
-import type { Application, ApplicationStatus, ApplicationWithJob } from "@/types/application";
+import type {
+  Application,
+  ApplicationStatus,
+  ApplicationWithJob,
+} from "@/types/application";
 import type { PaginationMeta } from "@/core/pagination/pagination";
 
 export type ApplicationListResponse = {
@@ -18,7 +22,9 @@ export type ApplicationStatusCounts = {
 };
 
 export const toApplication = (dto: ApplicationDto): Application => dto;
-export const toApplicationWithJob = (dto: ApplicationWithJobDto): ApplicationWithJob => dto;
+export const toApplicationWithJob = (
+  dto: ApplicationWithJobDto
+): ApplicationWithJob => dto;
 
 export const toApplicationListResponse = (
   dto: ApplicationListResponseDto

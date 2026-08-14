@@ -52,7 +52,9 @@ export const SkillTagEditor = ({
               aria-label={`Remove skill: ${skill}`}
               className="text-neutral-400 hover:text-neutral-700"
               type="button"
-              onClick={() => setSkills(skills.filter((existing) => existing !== skill))}
+              onClick={() =>
+                setSkills(skills.filter((existing) => existing !== skill))
+              }
             >
               <X size={10} />
             </button>
@@ -61,7 +63,11 @@ export const SkillTagEditor = ({
         <input
           className="min-w-[120px] flex-1 px-1.5 py-0.5 text-[13px] text-neutral-700 placeholder:text-neutral-400 focus:outline-none"
           id={id}
-          placeholder={skills.length === 0 ? "Type a skill and press Enter…" : "Add another…"}
+          placeholder={
+            skills.length === 0
+              ? "Type a skill and press Enter…"
+              : "Add another…"
+          }
           value={inputValue}
           onBlur={() => {
             if (inputValue.trim()) addSkill(inputValue);

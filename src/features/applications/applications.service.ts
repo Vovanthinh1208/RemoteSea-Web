@@ -21,12 +21,16 @@ export const listMyApplications = async (
   limit: number,
   opts?: RequestOptions
 ): Promise<ApplicationListResponse> =>
-  toApplicationListResponse(await applicationsRepository.listMine(page, limit, opts));
+  toApplicationListResponse(
+    await applicationsRepository.listMine(page, limit, opts)
+  );
 
 export const getMyApplicationStats = async (
   opts?: RequestOptions
 ): Promise<ApplicationStatusCounts> =>
   toApplicationStatusCounts(await applicationsRepository.getStatusCounts(opts));
 
-export const listMyApplicationIds = async (opts?: RequestOptions): Promise<string[]> =>
+export const listMyApplicationIds = async (
+  opts?: RequestOptions
+): Promise<string[]> =>
   (await applicationsRepository.listMyApplicationIds(opts)).jobIds;

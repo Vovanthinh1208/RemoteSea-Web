@@ -10,7 +10,8 @@ export const buttonVariants = cva(
       variant: {
         primary:
           "bg-brand-600 text-white border-transparent hover:bg-brand-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]",
-        outline: "bg-transparent text-brand-600 border-brand-600 hover:bg-brand-50",
+        outline:
+          "bg-transparent text-brand-600 border-brand-600 hover:bg-brand-50",
         ghost:
           "bg-transparent text-neutral-600 border-transparent hover:bg-neutral-100 hover:text-neutral-900",
         soft: "bg-neutral-100 text-neutral-900 border-neutral-200 hover:bg-white hover:border-neutral-300",
@@ -44,7 +45,9 @@ const spinnerVariants = cva("absolute inset-y-0 flex items-center", {
 });
 
 interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
   isLoading?: boolean;
 }
 

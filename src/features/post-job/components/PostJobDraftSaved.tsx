@@ -25,10 +25,15 @@ export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
         Your job has been saved
       </h1>
       <p className="mb-6 max-w-md text-[15px] text-neutral-500">
-        <strong className="text-neutral-800">{form.jobTitle || "Your job"}</strong> at{" "}
-        <strong className="text-neutral-800">{form.coName || "your company"}</strong> was created as
-        a draft. Checkout couldn&apos;t be started, so it hasn&apos;t been paid or submitted for
-        review yet.
+        <strong className="text-neutral-800">
+          {form.jobTitle || "Your job"}
+        </strong>{" "}
+        at{" "}
+        <strong className="text-neutral-800">
+          {form.coName || "your company"}
+        </strong>{" "}
+        was created as a draft. Checkout couldn&apos;t be started, so it
+        hasn&apos;t been paid or submitted for review yet.
       </p>
 
       <div className="mb-8 w-full max-w-md rounded-20 border border-neutral-200 bg-white p-6 text-left shadow-card">
@@ -36,7 +41,10 @@ export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
           Job details
         </p>
         {[
-          { k: "Plan selected", v: `${tier.name} (${formatUsd(tier.price)})` },
+          {
+            k: "Plan selected",
+            v: `${tier.name} (${formatUsd(tier.price)})`,
+          },
           { k: "Company", v: form.coName || "—" },
           { k: "Role", v: form.jobTitle || "—" },
           { k: "Reference", v: jobId },

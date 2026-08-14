@@ -1,5 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { DEFAULT_JOB_FILTERS, type JobFilters } from "@/features/jobs/job-filters";
+import {
+  DEFAULT_JOB_FILTERS,
+  type JobFilters,
+} from "@/features/jobs/job-filters";
 
 const repository = vi.hoisted(() => ({
   jobsRepository: {
@@ -11,7 +14,8 @@ const repository = vi.hoisted(() => ({
 
 vi.mock("@/features/jobs/jobs.repository", () => repository);
 
-const { buildJobListParams, listJobs, getJob } = await import("@/features/jobs/jobs.service");
+const { buildJobListParams, listJobs, getJob } =
+  await import("@/features/jobs/jobs.service");
 const { ValidationError } = await import("@/core/errors/error-types");
 
 describe("buildJobListParams", () => {
@@ -66,7 +70,11 @@ describe("buildJobListParams", () => {
   it("treats the salary range as unset exactly at the floor/ceiling boundary", () => {
     const query: JobFilters = {
       ...DEFAULT_JOB_FILTERS,
-      filters: { ...DEFAULT_JOB_FILTERS.filters, salaryMin: 500, salaryMax: 8000 },
+      filters: {
+        ...DEFAULT_JOB_FILTERS.filters,
+        salaryMin: 500,
+        salaryMax: 8000,
+      },
     };
     const params = buildJobListParams(query, 12);
     expect(params.salaryMin).toBeUndefined();
@@ -82,7 +90,9 @@ const validJobListResponseDto = {
 
 describe("listJobs", () => {
   it("maps translated params into the repository call and returns the mapped response", async () => {
-    repository.jobsRepository.list.mockResolvedValueOnce(validJobListResponseDto);
+    repository.jobsRepository.list.mockResolvedValueOnce(
+      validJobListResponseDto
+    );
 
     const result = await listJobs(DEFAULT_JOB_FILTERS, 12);
 
@@ -94,8 +104,12 @@ describe("listJobs", () => {
   });
 
   it("throws a ValidationError when the response doesn't match the expected shape", async () => {
-    repository.jobsRepository.list.mockResolvedValueOnce({ jobs: "not-an-array" });
-    await expect(listJobs(DEFAULT_JOB_FILTERS, 12)).rejects.toBeInstanceOf(ValidationError);
+    repository.jobsRepository.list.mockResolvedValueOnce({
+      jobs: "not-an-array",
+    });
+    await expect(listJobs(DEFAULT_JOB_FILTERS, 12)).rejects.toBeInstanceOf(
+      ValidationError
+    );
   });
 });
 
@@ -126,7 +140,12 @@ describe("getJob", () => {
       publishedAt: null,
       expiresAt: null,
       createdAt: "2026-01-01T00:00:00.000Z",
-      employer: { companyName: "Acme", logoUrl: null, slug: "acme", isVerified: true },
+      employer: {
+        companyName: "Acme",
+        logoUrl: null,
+        slug: "acme",
+        isVerified: true,
+      },
       categories: [],
       skills: [],
     });

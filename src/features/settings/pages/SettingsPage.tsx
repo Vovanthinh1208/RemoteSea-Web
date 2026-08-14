@@ -1,104 +1,69 @@
 import { Link } from "react-router-dom";
-import { AlertTriangle, Eye, Lock, User } from "lucide-react";
-import { ChangePasswordForm } from "@/features/settings/components/ChangePasswordForm";
-import { DeleteAccountButton } from "@/features/settings/components/DeleteAccountButton";
-import { AccountNameForm } from "@/features/settings/components/AccountNameForm";
+import { useAuth } from "@/contexts/AuthContext";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ROUTES } from "@/constants/routes";
+import { SettingsNav } from "@/features/settings/components/SettingsNav";
+import { AccountSection } from "@/features/settings/components/AccountSection";
+import { SecuritySection } from "@/features/settings/components/SecuritySection";
+import { ConnectedAccountsSection } from "@/features/settings/components/ConnectedAccountsSection";
+import { NotificationsSection } from "@/features/settings/components/NotificationsSection";
+import { PrivacyDataSection } from "@/features/settings/components/PrivacyDataSection";
+import { DangerZoneSection } from "@/features/settings/components/DangerZoneSection";
+import { SettingsSaveBar } from "@/features/settings/components/SettingsSaveBar";
+import type { UserRole } from "@/types/user";
 
-interface SectionHeadProps {
-  eyebrow: string;
-  title: string;
-  help: string;
-  icon: React.ElementType;
-}
-
-const SectionHead = ({ eyebrow, title, help, icon: Icon }: SectionHeadProps) => (
-  <div className="mb-6 grid gap-4 sm:grid-cols-[1fr_220px]">
-    <div>
-      <p className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-        <Icon size={12} /> {eyebrow}
-      </p>
-      <h2 className="text-[22px] font-semibold text-neutral-900">{title}</h2>
-    </div>
-    <p className="text-[13px] leading-relaxed text-neutral-500">{help}</p>
-  </div>
-);
+const dashboardRouteForRole = (role?: UserRole): string => {
+  if (role === "EMPLOYER") return ROUTES.employerDashboard;
+  if (role === "ADMIN") return ROUTES.admin;
+  return ROUTES.talent;
+};
 
 export const SettingsPage = () => {
   useDocumentTitle("Settings");
+  const { user } = useAuth();
+  const dashboardRoute = dashboardRouteForRole(user?.role);
 
   return (
-    <div className="min-h-screen bg-neutral-50">
-      <div className="mx-auto max-w-[820px] px-6 py-10">
+    <div className="min-h-screen bg-[#F8F7F4]">
+      <div className="mx-auto max-w-[1100px] px-6 py-10">
+        {/* Page header */}
         <div className="mb-8">
+          <div className="mb-3 flex items-center gap-1.5 text-[12px] text-neutral-500">
+            <Link className="hover:text-neutral-700" to={dashboardRoute}>
+              ← Dashboard
+            </Link>
+            <span>·</span>
+            <span>Settings</span>
+          </div>
           <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
-            Your account, <em className="font-serif-italic text-brand-700">your rules.</em>
+            Your account,{" "}
+            <em className="font-serif-italic text-brand-700">your rules.</em>
           </h1>
           <p className="text-[15px] text-neutral-500">
-            Sign-in and security. Profile content lives under{" "}
-            <Link className="text-brand-600 hover:text-brand-700" to={ROUTES.profile}>
+            Sign-in, security, and how RemoteSEA talks to you. Profile content
+            lives under{" "}
+            <Link
+              className="text-brand-600 hover:text-brand-700"
+              to={ROUTES.profile}
+            >
               Profile setup
             </Link>
             .
           </p>
         </div>
 
-        <div className="space-y-2">
-          <section className="rounded-20 border border-neutral-100 bg-white p-7">
-            <SectionHead
-              eyebrow="Identity"
-              help="The email you sign in with, and your display name."
-              icon={User}
-              title="Your account"
-            />
-            <AccountNameForm />
-          </section>
+        <div className="grid gap-8 lg:grid-cols-[180px_1fr]">
+          <SettingsNav />
 
-          <section className="rounded-20 border border-neutral-100 bg-white p-7">
-            <SectionHead
-              eyebrow="Access"
-              help="Keep your account secure."
-              icon={Lock}
-              title="Security"
-            />
-            <ChangePasswordForm />
-          </section>
-
-          <section className="rounded-20 border border-neutral-100 bg-white p-7">
-            <SectionHead
-              eyebrow="Visibility"
-              help="Whether employers can find and contact you is managed from your talent profile."
-              icon={Eye}
-              title="Privacy"
-            />
-            <Link
-              className="inline-flex items-center gap-1.5 rounded-10 border border-neutral-200 bg-white px-3.5 py-2 text-[13px] font-medium text-neutral-700 hover:border-neutral-300"
-              to={ROUTES.profile}
-            >
-              Manage in Profile setup
-            </Link>
-          </section>
-
-          <section className="rounded-20 border border-red-100 bg-white p-7">
-            <SectionHead
-              eyebrow="Careful now"
-              help="This is permanent and cannot be undone."
-              icon={AlertTriangle}
-              title="Danger zone"
-            />
-            <div className="flex items-center justify-between rounded-16 border border-red-200 bg-red-50/40 px-5 py-4">
-              <div>
-                <p className="text-[13.5px] font-semibold text-neutral-900">Delete account</p>
-                <p className="text-[12.5px] text-neutral-500">
-                  Permanently remove your profile and applications. This cannot be undone.
-                </p>
-              </div>
-              <div className="ml-6 flex-shrink-0">
-                <DeleteAccountButton />
-              </div>
-            </div>
-          </section>
+          <div className="space-y-2">
+            <AccountSection />
+            <SecuritySection />
+            <ConnectedAccountsSection />
+            <NotificationsSection />
+            <PrivacyDataSection />
+            <DangerZoneSection />
+            <SettingsSaveBar dashboardRoute={dashboardRoute} />
+          </div>
         </div>
       </div>
     </div>

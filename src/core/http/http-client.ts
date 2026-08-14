@@ -46,7 +46,9 @@ apiClient.interceptors.request.use((config) => {
 
 let onUnauthorized: (() => void) | null = null;
 
-export const registerUnauthorizedHandler = (handler: () => void): (() => void) => {
+export const registerUnauthorizedHandler = (
+  handler: () => void
+): (() => void) => {
   onUnauthorized = handler;
   return () => {
     if (onUnauthorized === handler) onUnauthorized = null;

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Briefcase, Clock, Plus, Star, Users } from "lucide-react";
+import { Briefcase, Clock, Plus, Search, Star, Users } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   useEmployerApplicationsAggregate,
@@ -73,7 +73,11 @@ export const EmployerDashboard = () => {
   }
 
   const jobs = jobsData?.jobs ?? [];
-  const stats = jobsData?.stats ?? { totalApps: 0, shortlisted: 0, avgTimeToHireInDays: 0 };
+  const stats = jobsData?.stats ?? {
+    totalApps: 0,
+    shortlisted: 0,
+    avgTimeToHireInDays: 0,
+  };
   const activeListings = jobs.filter((j) => j.status === "ACTIVE").length;
   const inReview = jobs.filter((j) => j.status === "PENDING_REVIEW").length;
 
@@ -84,7 +88,8 @@ export const EmployerDashboard = () => {
       : hour < AFTERNOON_END_HOUR
         ? "Good afternoon"
         : "Good evening";
-  const firstName = (user?.name ?? "there").split(" ").slice(-1)[0] ?? user?.name ?? "there";
+  const firstName =
+    (user?.name ?? "there").split(" ").slice(-1)[0] ?? user?.name ?? "there";
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -96,10 +101,14 @@ export const EmployerDashboard = () => {
                 Set up your company profile
               </h3>
               <p className="text-[13px] text-neutral-600">
-                Create your employer profile to post jobs and receive applications.
+                Create your employer profile to post jobs and receive
+                applications.
               </p>
             </div>
-            <Link className={buttonVariants({ size: "sm" })} to={ROUTES.postJob}>
+            <Link
+              className={buttonVariants({ size: "sm" })}
+              to={ROUTES.postJob}
+            >
               Get started
             </Link>
           </div>
@@ -113,11 +122,17 @@ export const EmployerDashboard = () => {
               Employer dashboard
             </div>
             <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
-              {greeting}, <em className="font-serif-italic text-brand-700">{firstName}.</em>
+              {greeting},{" "}
+              <em className="font-serif-italic text-brand-700">{firstName}.</em>
             </h1>
             <p className="text-[15px] text-neutral-500">
-              You have <strong className="text-neutral-900">{stats.totalApps} applicants</strong>{" "}
-              across <strong className="text-neutral-900">{activeListings}</strong> live
+              You have{" "}
+              <strong className="text-neutral-900">
+                {stats.totalApps} applicants
+              </strong>{" "}
+              across{" "}
+              <strong className="text-neutral-900">{activeListings}</strong>{" "}
+              live
               {activeListings === 1 ? " role" : " roles"}.
             </p>
           </div>
@@ -130,6 +145,12 @@ export const EmployerDashboard = () => {
                 {profile.companyName}
                 {profile.isVerified && <VerifiedInline />}
               </div>
+              <Link
+                className={buttonVariants({ variant: "outline" })}
+                to={ROUTES.talentSearch}
+              >
+                <Search size={13} /> Find talent
+              </Link>
               <Link className={buttonVariants()} to={ROUTES.postJob}>
                 <Plus size={13} /> Post a job
               </Link>
@@ -165,13 +186,16 @@ export const EmployerDashboard = () => {
             label="Avg. time to hire"
             size="lg"
             sub="from apply to offer"
-            value={stats.avgTimeToHireInDays ? `${stats.avgTimeToHireInDays}d` : "—"}
+            value={
+              stats.avgTimeToHireInDays ? `${stats.avgTimeToHireInDays}d` : "—"
+            }
           />
         </div>
 
         {applicationsErrored && (
           <div className="mb-6 flex items-center justify-between gap-4 rounded-16 border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] text-amber-800">
-            Some applicant data couldn't load, so counts below may be incomplete.
+            Some applicant data couldn't load, so counts below may be
+            incomplete.
             <Button size="sm" variant="outline" onClick={refetchApplications}>
               Retry
             </Button>

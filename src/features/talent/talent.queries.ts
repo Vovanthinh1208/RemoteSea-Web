@@ -20,7 +20,8 @@ export const useMyTalentProfile = () => {
       try {
         return await getMyTalentProfile({ signal });
       } catch (err) {
-        if (err instanceof ApiError && err.status === NOT_FOUND_STATUS) return null;
+        if (err instanceof ApiError && err.status === NOT_FOUND_STATUS)
+          return null;
         throw err;
       }
     },
@@ -37,7 +38,9 @@ export const useUpdateMyTalentProfile = () => {
       // The public profile page supports viewing your own profile — without
       // this, editing and then clicking through to your own public URL shows
       // stale data for up to staleTime.
-      queryClient.invalidateQueries({ queryKey: talentKeys.public(profile.slug) });
+      queryClient.invalidateQueries({
+        queryKey: talentKeys.public(profile.slug),
+      });
     },
   });
 };

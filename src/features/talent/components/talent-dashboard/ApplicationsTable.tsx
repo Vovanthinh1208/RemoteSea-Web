@@ -17,7 +17,10 @@ import {
 import type { ApplicationWithJob } from "@/types/application";
 import { ROUTES } from "@/constants/routes";
 
-const STATUS_MAP: Record<AppStatusBucket, { label: string; variant: BadgeVariant }> = {
+const STATUS_MAP: Record<
+  AppStatusBucket,
+  { label: string; variant: BadgeVariant }
+> = {
   applied: { label: "Applied", variant: "info" },
   review: { label: "In review", variant: "warning" },
   interview: { label: "Interviewing", variant: "positive" },
@@ -31,7 +34,9 @@ interface ApplicationRowProps {
   application: ApplicationWithJob;
 }
 
-const ApplicationRow = memo(function ApplicationRow({ application: a }: ApplicationRowProps) {
+const ApplicationRow = memo(function ApplicationRow({
+  application: a,
+}: ApplicationRowProps) {
   const bucket = STATUS_TO_BUCKET[a.status];
   const s = STATUS_MAP[bucket];
   const company = a.job.employer.companyName;
@@ -44,13 +49,18 @@ const ApplicationRow = memo(function ApplicationRow({ application: a }: Applicat
       <div className="flex min-w-0 items-center gap-3">
         <CompanyLogo name={company} size={36} />
         <div className="min-w-0">
-          <p className="truncate text-[13.5px] font-medium text-neutral-900">{a.job.title}</p>
+          <p className="truncate text-[13.5px] font-medium text-neutral-900">
+            {a.job.title}
+          </p>
           <p className="text-[12px] text-neutral-400">
             {company} · {countryFlag(a.job.country)} {country}
           </p>
         </div>
       </div>
-      <Badge className="w-[100px] justify-center px-2.5 py-0.5" variant={s.variant}>
+      <Badge
+        className="w-[100px] justify-center px-2.5 py-0.5"
+        variant={s.variant}
+      >
         {s.label}
       </Badge>
       <span className="hidden w-[140px] text-[12px] text-neutral-500 md:block">
@@ -97,16 +107,31 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
       closed: buckets.closed,
     };
 
-    return { byTab, notClosedCount: applications.length - buckets.closed.length };
+    return {
+      byTab,
+      notClosedCount: applications.length - buckets.closed.length,
+    };
   }, [applications]);
 
   const filtered = grouped.byTab[tab];
 
   const tabs: { id: TabId; label: string; count: number }[] = [
     { id: "all", label: "All", count: applications.length },
-    { id: "active", label: "Active", count: grouped.byTab.active.length },
-    { id: "offers", label: "Offers", count: grouped.byTab.offers.length },
-    { id: "closed", label: "Closed", count: grouped.byTab.closed.length },
+    {
+      id: "active",
+      label: "Active",
+      count: grouped.byTab.active.length,
+    },
+    {
+      id: "offers",
+      label: "Offers",
+      count: grouped.byTab.offers.length,
+    },
+    {
+      id: "closed",
+      label: "Closed",
+      count: grouped.byTab.closed.length,
+    },
   ];
 
   return (
@@ -114,7 +139,9 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
       <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
         <h3 className="text-[14px] font-semibold text-neutral-900">
           Your applications{" "}
-          <span className="font-normal text-neutral-400">· {grouped.notClosedCount} active</span>
+          <span className="font-normal text-neutral-400">
+            · {grouped.notClosedCount} active
+          </span>
         </h3>
         <div className="flex items-center gap-0.5 rounded-8 bg-neutral-100 p-0.5">
           {tabs.map((t) => (
@@ -129,7 +156,8 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
               key={t.id}
               onClick={() => setTab(t.id)}
             >
-              {t.label} <span className="ml-0.5 text-neutral-400">{t.count}</span>
+              {t.label}{" "}
+              <span className="ml-0.5 text-neutral-400">{t.count}</span>
             </button>
           ))}
         </div>

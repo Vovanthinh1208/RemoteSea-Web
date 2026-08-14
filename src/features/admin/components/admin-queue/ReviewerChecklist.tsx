@@ -50,7 +50,9 @@ export const ReviewerChecklist = ({
                 >
                   {c.label}
                 </div>
-                <div className="mt-0.5 text-[12px] text-neutral-400">{c.hint}</div>
+                <div className="mt-0.5 text-[12px] text-neutral-400">
+                  {c.hint}
+                </div>
               </div>
             </button>
           );
@@ -60,11 +62,15 @@ export const ReviewerChecklist = ({
         <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-neutral-100">
           <div
             className="h-full rounded-full bg-brand-600 transition-all"
-            style={{ width: `${reqCount ? (doneCount / reqCount) * 100 : 0}%` }}
+            style={{
+              width: `${reqCount ? (doneCount / reqCount) * 100 : 0}%`,
+            }}
           />
         </div>
         <span className="text-[12px] text-neutral-400">
-          {allDone ? "All checks complete" : `${reqCount - doneCount} left before approval`}
+          {allDone
+            ? "All checks complete"
+            : `${reqCount - doneCount} left before approval`}
         </span>
       </div>
     </div>

@@ -1,5 +1,10 @@
 import { Check } from "lucide-react";
-import { Field, Input, Select, Textarea } from "@/features/post-job/components/form-primitives";
+import {
+  Field,
+  Input,
+  Select,
+  Textarea,
+} from "@/features/post-job/components/form-primitives";
 import { SkillTagEditor } from "@/components/shared/SkillTagEditor";
 import { PillToggle } from "@/components/shared/PillToggle";
 import { useCategories, useSkills } from "@/features/taxonomy/taxonomy.queries";
@@ -23,7 +28,9 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-[22px] font-semibold text-neutral-900">Role details</h2>
+        <h2 className="text-[22px] font-semibold text-neutral-900">
+          Role details
+        </h2>
         <p className="mt-1 text-sm text-neutral-500">
           Help candidates understand exactly what you need.
         </p>
@@ -40,21 +47,30 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
       <div className="grid gap-4 sm:grid-cols-3">
         <Field label="Category" required>
           <Select
-            options={(categories ?? []).map((c) => ({ value: c.id, label: c.name }))}
+            options={(categories ?? []).map((c) => ({
+              value: c.id,
+              label: c.name,
+            }))}
             value={form.jobCategoryId}
             onChange={(v) => set("jobCategoryId", v)}
           />
         </Field>
         <Field label="Seniority">
           <Select
-            options={SENIORITY_OPTIONS.map((o) => ({ value: o, label: o }))}
+            options={SENIORITY_OPTIONS.map((o) => ({
+              value: o,
+              label: o,
+            }))}
             value={form.jobSeniority}
             onChange={(v) => set("jobSeniority", v)}
           />
         </Field>
         <Field label="Employment type">
           <Select
-            options={JOB_TYPE_OPTIONS.map((o) => ({ value: o, label: JOB_TYPE_LABELS[o] }))}
+            options={JOB_TYPE_OPTIONS.map((o) => ({
+              value: o,
+              label: JOB_TYPE_LABELS[o],
+            }))}
             value={form.jobType}
             onChange={(v) => set("jobType", v)}
           />
@@ -64,14 +80,20 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Location">
           <Select
-            options={LOCATION_OPTIONS.map((o) => ({ value: o, label: o }))}
+            options={LOCATION_OPTIONS.map((o) => ({
+              value: o,
+              label: o,
+            }))}
             value={form.jobLoc}
             onChange={(v) => set("jobLoc", v)}
           />
         </Field>
         <Field label="Timezone overlap">
           <Select
-            options={TIMEZONE_OPTIONS.map((o) => ({ value: o, label: o }))}
+            options={TIMEZONE_OPTIONS.map((o) => ({
+              value: o,
+              label: o,
+            }))}
             value={form.jobTz}
             onChange={(v) => set("jobTz", v)}
           />
@@ -107,7 +129,9 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
       </Field>
 
       <div className="border-t border-neutral-100 pt-5">
-        <h3 className="mb-4 text-[14px] font-semibold text-neutral-800">Compensation</h3>
+        <h3 className="mb-4 text-[14px] font-semibold text-neutral-800">
+          Compensation
+        </h3>
         <div className="grid gap-4 sm:grid-cols-4">
           <Field label="Min" required>
             <Input
@@ -127,14 +151,20 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
           </Field>
           <Field label="Currency">
             <Select
-              options={CURRENCY_OPTIONS.map((o) => ({ value: o, label: o }))}
+              options={CURRENCY_OPTIONS.map((o) => ({
+                value: o,
+                label: o,
+              }))}
               value={form.salCur}
               onChange={(v) => set("salCur", v)}
             />
           </Field>
           <Field label="Period">
             <Select
-              options={PERIOD_OPTIONS.map((o) => ({ value: o, label: o }))}
+              options={PERIOD_OPTIONS.map((o) => ({
+                value: o,
+                label: o,
+              }))}
               value={form.salPer}
               onChange={(v) => set("salPer", v)}
             />
@@ -142,7 +172,9 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
         </div>
 
         <div className="mt-4">
-          <p className="mb-2 text-[13px] font-medium text-neutral-700">Benefits</p>
+          <p className="mb-2 text-[13px] font-medium text-neutral-700">
+            Benefits
+          </p>
           <div className="flex flex-wrap gap-2">
             {BENEFIT_OPTIONS.map((b) => (
               <PillToggle
@@ -160,7 +192,9 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
                   )
                 }
               >
-                {form.benefits.includes(b) && <Check className="mr-1 inline" size={10} />}
+                {form.benefits.includes(b) && (
+                  <Check className="mr-1 inline" size={10} />
+                )}
                 {b}
               </PillToggle>
             ))}

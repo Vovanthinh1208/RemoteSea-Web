@@ -35,13 +35,20 @@ const CheckRow = ({ checked, label, count, onToggle }: CheckRowProps) => (
     {/* A <label> with no associated form control isn't in the tab order and
         doesn't respond to Enter/Space — this was previously just a styled
         <span>, making every filter in this sidebar keyboard-inoperable. */}
-    <input checked={checked} className="peer sr-only" type="checkbox" onChange={onToggle} />
+    <input
+      checked={checked}
+      className="peer sr-only"
+      type="checkbox"
+      onChange={onToggle}
+    />
     <span
       aria-hidden="true"
       className={cn(
         "grid h-4 w-4 flex-shrink-0 place-items-center rounded-4 border transition-all",
         "peer-focus-visible:shadow-focus",
-        checked ? "border-brand-600 bg-brand-600" : "border-neutral-300 bg-white"
+        checked
+          ? "border-brand-600 bg-brand-600"
+          : "border-neutral-300 bg-white"
       )}
     >
       {checked && <Check className="text-white" size={10} strokeWidth={3} />}
@@ -82,7 +89,11 @@ const SENIORITY_OPTIONS = [
 const SALARY_STEP = 100;
 const SALARY_GAP = 500;
 
-export const FilterSidebar = ({ filters, onChange, facets }: FilterSidebarProps) => {
+export const FilterSidebar = ({
+  filters,
+  onChange,
+  facets,
+}: FilterSidebarProps) => {
   const { data: categories } = useCategories();
   const activeCount = countActiveFilters(filters);
 
@@ -93,7 +104,9 @@ export const FilterSidebar = ({ filters, onChange, facets }: FilterSidebarProps)
     const current = filters[key];
     onChange({
       ...filters,
-      [key]: current.includes(val) ? current.filter((v) => v !== val) : [...current, val],
+      [key]: current.includes(val)
+        ? current.filter((v) => v !== val)
+        : [...current, val],
     });
   };
 
@@ -103,7 +116,8 @@ export const FilterSidebar = ({ filters, onChange, facets }: FilterSidebarProps)
 
   const commitSalary = () => onChange({ ...filters, salaryMin, salaryMax });
 
-  const slugForCategoryName = (name: string) => categories?.find((c) => c.name === name)?.slug;
+  const slugForCategoryName = (name: string) =>
+    categories?.find((c) => c.name === name)?.slug;
 
   return (
     <aside className="w-full flex-shrink-0 sm:w-[220px]">
@@ -168,7 +182,9 @@ export const FilterSidebar = ({ filters, onChange, facets }: FilterSidebarProps)
             step={SALARY_STEP}
             type="range"
             value={salaryMin}
-            onChange={(e) => setSalaryMin(Math.min(+e.target.value, salaryMax - SALARY_GAP))}
+            onChange={(e) =>
+              setSalaryMin(Math.min(+e.target.value, salaryMax - SALARY_GAP))
+            }
             onKeyUp={commitSalary}
             onMouseUp={commitSalary}
             onTouchEnd={commitSalary}
@@ -181,7 +197,9 @@ export const FilterSidebar = ({ filters, onChange, facets }: FilterSidebarProps)
             step={SALARY_STEP}
             type="range"
             value={salaryMax}
-            onChange={(e) => setSalaryMax(Math.max(+e.target.value, salaryMin + SALARY_GAP))}
+            onChange={(e) =>
+              setSalaryMax(Math.max(+e.target.value, salaryMin + SALARY_GAP))
+            }
             onKeyUp={commitSalary}
             onMouseUp={commitSalary}
             onTouchEnd={commitSalary}

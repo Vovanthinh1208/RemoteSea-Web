@@ -1,6 +1,11 @@
 import { z } from "zod";
 
-export const JOB_TYPES = ["FULL_TIME", "PART_TIME", "CONTRACT", "FREELANCE"] as const;
+export const JOB_TYPES = [
+  "FULL_TIME",
+  "PART_TIME",
+  "CONTRACT",
+  "FREELANCE",
+] as const;
 export const LEVELS = ["ENTRY", "MID", "SENIOR", "LEAD", "EXECUTIVE"] as const;
 export const FREQUENCIES = ["IMMEDIATE", "DAILY", "WEEKLY"] as const;
 

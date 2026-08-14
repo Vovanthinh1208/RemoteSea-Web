@@ -48,14 +48,17 @@ export const MeetupsSection = () => (
         </p>
         <h2 className="mb-3 text-[32px] font-semibold text-white">
           Coffee, beers, &amp;{" "}
-          <em className="font-serif text-brand-400" style={{ fontFamily: "var(--font-serif)" }}>
+          <em
+            className="font-serif text-brand-400"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
             offline
           </em>{" "}
           bandwidth.
         </h2>
         <p className="mx-auto max-w-lg text-neutral-400">
-          Members organize meetups whenever 5+ folks are in the same city. Free, low-key, and the
-          wifi is always passable.
+          Members organize meetups whenever 5+ folks are in the same city. Free,
+          low-key, and the wifi is always passable.
         </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -71,25 +74,35 @@ export const MeetupsSection = () => (
               <span className="text-[10px] font-semibold uppercase text-neutral-400">
                 {e.date.split(" ")[0]}
               </span>
-              <span className="text-[22px] font-semibold text-white">{e.date.split(" ")[1]}</span>
+              <span className="text-[22px] font-semibold text-white">
+                {e.date.split(" ")[1]}
+              </span>
               <span className="text-[10px] text-neutral-400">{e.day}</span>
             </div>
             <div className="min-w-0 flex-1">
               <div className="mb-1 flex items-center gap-1 text-[11px] text-neutral-400">
                 <MapPin size={10} /> {e.city}
               </div>
-              <h4 className="mb-1.5 text-[14px] font-semibold text-white">{e.title}</h4>
-              <p className="mb-3 text-[12px] leading-relaxed text-neutral-400">{e.desc}</p>
+              <h4 className="mb-1.5 text-[14px] font-semibold text-white">
+                {e.title}
+              </h4>
+              <p className="mb-3 text-[12px] leading-relaxed text-neutral-400">
+                {e.desc}
+              </p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1">
                   {[0, 1, 2].map((j) => (
                     <span
                       className="h-5 w-5 rounded-full border border-neutral-800"
                       key={j}
-                      style={{ background: `hsl(${(i + j) * 60}, 50%, 50%)` }}
+                      style={{
+                        background: `hsl(${(i + j) * 60}, 50%, 50%)`,
+                      }}
                     />
                   ))}
-                  <span className="ml-1 text-[11px] text-neutral-400">{e.attendees} going</span>
+                  <span className="ml-1 text-[11px] text-neutral-400">
+                    {e.attendees} going
+                  </span>
                 </div>
                 <button
                   className="text-[12px] font-medium transition-colors"

@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import { ChevronRight, Plus } from "lucide-react";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
-import { STATUS_GROUP, STATUS_LABEL, timeAgo } from "@/features/employer/employer-dashboard.utils";
+import {
+  STATUS_GROUP,
+  STATUS_LABEL,
+  timeAgo,
+} from "@/features/employer/employer-dashboard.utils";
 import type { EmployerApplicant, EmployerJobListItem } from "@/types/employer";
 import { ROUTES } from "@/constants/routes";
 import { buttonVariants } from "@/components/ui/button";
@@ -24,7 +28,10 @@ interface ListingRowProps {
   applications: EmployerApplicant[];
 }
 
-const ListingRow = memo(function ListingRow({ job: j, applications: apps }: ListingRowProps) {
+const ListingRow = memo(function ListingRow({
+  job: j,
+  applications: apps,
+}: ListingRowProps) {
   const total = j._count.applications;
   const reviewed = apps.filter((a) => a.status !== "PENDING").length;
   const shortlisted = apps.filter((a) => a.status === "SHORTLISTED").length;
@@ -42,7 +49,9 @@ const ListingRow = memo(function ListingRow({ job: j, applications: apps }: List
     <>
       <div className="min-w-0">
         <div className="flex items-center gap-1.5">
-          <span className="truncate text-[13.5px] font-medium text-neutral-900">{j.title}</span>
+          <span className="truncate text-[13.5px] font-medium text-neutral-900">
+            {j.title}
+          </span>
           {j.planType === "FEATURED" && (
             <span className="flex-shrink-0 rounded-full bg-brand-600 px-1.5 py-0.5 text-[9.5px] font-bold text-white">
               Featured
@@ -64,7 +73,9 @@ const ListingRow = memo(function ListingRow({ job: j, applications: apps }: List
       {total > 0 ? (
         <div>
           <div className="mb-1 flex items-center gap-1.5">
-            <span className="text-[13px] font-semibold text-neutral-900">{total}</span>
+            <span className="text-[13px] font-semibold text-neutral-900">
+              {total}
+            </span>
             {newApps > 0 && (
               <span className="rounded-full bg-brand-50 px-1.5 py-0.5 text-[10px] font-medium text-brand-700">
                 +{newApps} new
@@ -87,11 +98,17 @@ const ListingRow = memo(function ListingRow({ job: j, applications: apps }: List
       )}
 
       <div className="text-center">
-        <div className="text-[13px] font-semibold text-neutral-700">{j.viewCount}</div>
+        <div className="text-[13px] font-semibold text-neutral-700">
+          {j.viewCount}
+        </div>
         <div className="text-[10px] text-neutral-400">views</div>
       </div>
 
-      {isPubliclyViewable ? <ChevronRight className="text-neutral-300" size={14} /> : <span />}
+      {isPubliclyViewable ? (
+        <ChevronRight className="text-neutral-300" size={14} />
+      ) : (
+        <span />
+      )}
     </>
   );
 
@@ -121,14 +138,20 @@ interface ListingsPanelProps {
   applicationsByJob: Map<string, EmployerApplicant[]>;
 }
 
-export const ListingsPanel = ({ jobs, applicationsByJob }: ListingsPanelProps) => {
+export const ListingsPanel = ({
+  jobs,
+  applicationsByJob,
+}: ListingsPanelProps) => {
   const active = jobs.filter((j) => STATUS_GROUP[j.status] !== "closed").length;
 
   return (
     <div className="rounded-20 border border-neutral-100 bg-white p-5">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-[14px] font-semibold text-neutral-900">
-          Your listings <span className="font-normal text-neutral-400">· {active} active</span>
+          Your listings{" "}
+          <span className="font-normal text-neutral-400">
+            · {active} active
+          </span>
         </h3>
         <Link className={buttonVariants({ size: "sm" })} to={ROUTES.postJob}>
           <Plus size={11} /> Post a job
@@ -136,7 +159,9 @@ export const ListingsPanel = ({ jobs, applicationsByJob }: ListingsPanelProps) =
       </div>
 
       {jobs.length === 0 ? (
-        <EmptyRow>No listings yet. Post your first job to start hiring.</EmptyRow>
+        <EmptyRow>
+          No listings yet. Post your first job to start hiring.
+        </EmptyRow>
       ) : (
         <>
           <div className="mb-1 grid grid-cols-[1fr_80px_120px_60px_32px] gap-3 px-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">

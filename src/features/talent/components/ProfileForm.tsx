@@ -12,25 +12,39 @@ import { useSkills } from "@/features/taxonomy/taxonomy.queries";
 import { ApiError } from "@/core/errors/api-error";
 import { applyServerErrors } from "@/utils/form-errors";
 import { reportError } from "@/services/monitoring";
-import { SectionHead, EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
+import {
+  SectionHead,
+  EMPHASIS_STYLE,
+} from "@/features/talent/components/profile-form/SectionHead";
 import { ProfileFormNav } from "@/features/talent/components/profile-form/ProfileFormNav";
 import { BasicsSection } from "@/features/talent/components/profile-form/BasicsSection";
 import { AboutSection } from "@/features/talent/components/profile-form/AboutSection";
 import { ExperienceSection } from "@/features/talent/components/profile-form/ExperienceSection";
 import { PreferencesSection } from "@/features/talent/components/profile-form/PreferencesSection";
 import { LinksSection } from "@/features/talent/components/profile-form/LinksSection";
+import { HighlightsSection } from "@/features/talent/components/profile-form/HighlightsSection";
 import { VisibilitySection } from "@/features/talent/components/profile-form/VisibilitySection";
 import {
   LABEL_TO_LEVEL,
   LEVEL_TO_LABEL,
+  NOTICE_PERIOD_OPTIONS,
+  PRIMARY_ROLE_OPTIONS,
+  RIGHT_TO_WORK_OPTIONS,
   TIMEZONE_OPTIONS,
   bucketToYears,
   normalizeUrl,
   yearsToBucket,
 } from "@/features/talent/talent.constants";
-import { profileFormSchema, type ProfileFormValues } from "@/features/talent/talent.schemas";
+import {
+  profileFormSchema,
+  type ProfileFormValues,
+} from "@/features/talent/talent.schemas";
 import { ROUTES } from "@/constants/routes";
-import type { TalentProfile } from "@/types/talent";
+import type {
+  EmploymentType,
+  TalentProfile,
+  TimezoneOverlap,
+} from "@/types/talent";
 
 interface ProfileFormProps {
   profile: TalentProfile | null;
@@ -42,7 +56,9 @@ interface ProfileFormProps {
 // drifted — one copy fell back to "MID"/`true`, the other to "Mid"/nothing —
 // which only stayed harmless because the reset copy runs under an `if (profile)`
 // guard. The null-safe form here is a strict superset of both.
-const profileToFormValues = (profile: TalentProfile | null): ProfileFormValues => ({
+const profileToFormValues = (
+  profile: TalentProfile | null
+): ProfileFormValues => ({
   name: profile?.user?.name ?? "",
   headline: profile?.headline ?? "",
   location: profile?.location ?? "",
@@ -53,6 +69,10 @@ const profileToFormValues = (profile: TalentProfile | null): ProfileFormValues =
   desiredSalaryMin: profile?.desiredSalaryMin ?? 1000,
   desiredSalaryMax: profile?.desiredSalaryMax ?? 3000,
   isOpenToWork: profile?.isOpenToWork ?? true,
+  visibility: profile?.visibility ?? "PUBLIC",
+  primaryRole: profile?.primaryRole ?? PRIMARY_ROLE_OPTIONS[0],
+  rightToWork: profile?.rightToWork ?? RIGHT_TO_WORK_OPTIONS[0],
+  noticePeriod: profile?.noticePeriod ?? NOTICE_PERIOD_OPTIONS[0],
   resumeUrl: profile?.resumeUrl ?? "",
   githubUrl: profile?.githubUrl ?? "",
   linkedinUrl: profile?.linkedinUrl ?? "",
@@ -64,8 +84,25 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
   // Memoized so its identity only changes when `profile` itself changes (a
   // fresh save, a refetch) — not on every render — which is what lets
   // useSyncedState tell "profile changed" apart from "component re-rendered".
-  const profileSkills = useMemo(() => profile?.skills.map((s) => s.skill.name) ?? [], [profile]);
+  const profileSkills = useMemo(
+    () => profile?.skills.map((s) => s.skill.name) ?? [],
+    [profile]
+  );
   const [skills, setSkills] = useSyncedState<string[]>(profileSkills);
+  const profileEmploymentTypes = useMemo(
+    () => profile?.employmentTypes ?? [],
+    [profile]
+  );
+  const [employmentTypes, setEmploymentTypes] = useSyncedState<
+    EmploymentType[]
+  >(profileEmploymentTypes);
+  const profileTimezoneOverlap = useMemo(
+    () => profile?.timezoneOverlap ?? [],
+    [profile]
+  );
+  const [timezoneOverlap, setTimezoneOverlap] = useSyncedState<
+    TimezoneOverlap[]
+  >(profileTimezoneOverlap);
   const { data: allSkills, isError: skillsErrored } = useSkills();
   const updateProfileMutation = useUpdateMyTalentProfile();
   const updateNameMutation = useUpdateMyName();
@@ -94,12 +131,23 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
-  const [headline, bio, salMin, salMax, isOpenToWork, resumeUrl] = watch([
+  const [
+    name,
+    headline,
+    bio,
+    salMin,
+    salMax,
+    isOpenToWork,
+    visibility,
+    resumeUrl,
+  ] = watch([
+    "name",
     "headline",
     "bio",
     "desiredSalaryMin",
     "desiredSalaryMax",
     "isOpenToWork",
+    "visibility",
     "resumeUrl",
   ]);
 
@@ -107,8 +155,11 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
     if (skills.length > 0 && !allSkills) {
       toast({
         variant: "error",
-        title: skillsErrored ? "Couldn't load the skills list" : "Still loading the skills list",
-        description: "Your selected skills can't be saved yet — please try again in a moment.",
+        title: skillsErrored
+          ? "Couldn't load the skills list"
+          : "Still loading the skills list",
+        description:
+          "Your selected skills can't be saved yet — please try again in a moment.",
       });
       return;
     }
@@ -136,6 +187,12 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
         desiredSalaryMin: values.desiredSalaryMin,
         desiredSalaryMax: values.desiredSalaryMax,
         isOpenToWork: values.isOpenToWork,
+        visibility: values.visibility,
+        primaryRole: values.primaryRole,
+        rightToWork: values.rightToWork,
+        noticePeriod: values.noticePeriod,
+        employmentTypes,
+        timezoneOverlap,
         resumeUrl: normalizeUrl(values.resumeUrl ?? ""),
         githubUrl: normalizeUrl(values.githubUrl ?? ""),
         linkedinUrl: normalizeUrl(values.linkedinUrl ?? ""),
@@ -156,7 +213,10 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
     }
   };
 
-  const saving = isSubmitting || updateProfileMutation.isPending || updateNameMutation.isPending;
+  const saving =
+    isSubmitting ||
+    updateProfileMutation.isPending ||
+    updateNameMutation.isPending;
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -171,17 +231,23 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
           </div>
           <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
             Make sure recruiters{" "}
-            <em className="font-serif italic text-brand-700" style={EMPHASIS_STYLE}>
+            <em
+              className="font-serif italic text-brand-700"
+              style={EMPHASIS_STYLE}
+            >
               see what matters.
             </em>
           </h1>
           <p className="text-[15px] text-neutral-500">
-            Your profile is what gets surfaced to founders and hiring managers. Keep it honest, keep
-            it short — they read dozens a day.
+            Your profile is what gets surfaced to founders and hiring managers.
+            Keep it honest, keep it short — they read dozens a day.
           </p>
         </div>
 
-        <form className="grid gap-8 lg:grid-cols-[180px_1fr]" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="grid gap-8 lg:grid-cols-[180px_1fr]"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <ProfileFormNav />
 
           {/* Sections */}
@@ -189,6 +255,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
             <BasicsSection
               headlineError={errors.headline?.message}
               headlineLength={headline?.length ?? 0}
+              name={name ?? ""}
               nameError={errors.name?.message}
               register={register}
             />
@@ -209,7 +276,10 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
                 eyebrow="04 · What you use"
                 help="5–12 specific skills. Tools and stacks, not soft skills. We match jobs based on this."
                 title={
-                  <em className="font-serif italic text-brand-700" style={EMPHASIS_STYLE}>
+                  <em
+                    className="font-serif italic text-brand-700"
+                    style={EMPHASIS_STYLE}
+                  >
                     Skills.
                   </em>
                 }
@@ -222,10 +292,14 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
             </section>
 
             <PreferencesSection
+              employmentTypes={employmentTypes}
+              onEmploymentTypesChange={setEmploymentTypes}
               onMaxChange={(v) => setValue("desiredSalaryMax", v)}
               onMinChange={(v) => setValue("desiredSalaryMin", v)}
+              onTimezoneOverlapChange={setTimezoneOverlap}
               salMax={salMax}
               salMin={salMin}
+              timezoneOverlap={timezoneOverlap}
             />
 
             <LinksSection
@@ -234,9 +308,13 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
               resumeUrl={resumeUrl ?? ""}
             />
 
+            <HighlightsSection />
+
             <VisibilitySection
               isOpenToWork={isOpenToWork}
-              onToggle={(v) => setValue("isOpenToWork", v)}
+              onOpenToWorkChange={(v) => setValue("isOpenToWork", v)}
+              onVisibilityChange={(v) => setValue("visibility", v)}
+              visibility={visibility}
             />
 
             {/* Save bar */}

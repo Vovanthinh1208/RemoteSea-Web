@@ -41,7 +41,9 @@ export const AutomatedChecks = ({ job }: AutomatedChecksProps) => {
               {AUTO_ICON[a.state]}
             </span>
             <div>
-              <div className="text-[13px] font-medium text-neutral-800">{a.t}</div>
+              <div className="text-[13px] font-medium text-neutral-800">
+                {a.t}
+              </div>
               <div className="text-[12px] text-neutral-400">{a.d}</div>
             </div>
           </div>

@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, Upload } from "lucide-react";
-import { uploadViaPresign, validateFile, type UploadType } from "@/services/uploads.api";
+import {
+  uploadViaPresign,
+  validateFile,
+  type UploadType,
+} from "@/services/uploads.api";
 import { reportError } from "@/services/monitoring";
 
 type UploadState = "idle" | "uploading" | "done" | "error";
@@ -21,7 +25,13 @@ const getButtonLabel = (state: UploadState, label: string): string => {
   return label;
 };
 
-export const FileUpload = ({ type, accept, label, value, onUploaded }: FileUploadProps) => {
+export const FileUpload = ({
+  type,
+  accept,
+  label,
+  value,
+  onUploaded,
+}: FileUploadProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [state, setState] = useState<UploadState>(value ? "done" : "idle");
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +58,9 @@ export const FileUpload = ({ type, accept, label, value, onUploaded }: FileUploa
     const controller = new AbortController();
     abortRef.current = controller;
     try {
-      const url = await uploadViaPresign(file, type, { signal: controller.signal });
+      const url = await uploadViaPresign(file, type, {
+        signal: controller.signal,
+      });
       onUploaded(url);
       setState("done");
     } catch (err) {
@@ -74,7 +86,11 @@ export const FileUpload = ({ type, accept, label, value, onUploaded }: FileUploa
         type="button"
         onClick={() => inputRef.current?.click()}
       >
-        {state === "done" ? <Check className="text-brand-600" size={14} /> : <Upload size={14} />}
+        {state === "done" ? (
+          <Check className="text-brand-600" size={14} />
+        ) : (
+          <Upload size={14} />
+        )}
         {getButtonLabel(state, label)}
       </button>
       {error && <p className="text-[12px] text-red-600">{error}</p>}

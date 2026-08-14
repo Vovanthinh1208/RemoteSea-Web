@@ -23,7 +23,12 @@ describe("parseErrorBody", () => {
   });
 
   it("falls back to the first field error when formErrors is empty", () => {
-    const body = { error: { formErrors: [], fieldErrors: { email: ["Invalid email"] } } };
+    const body = {
+      error: {
+        formErrors: [],
+        fieldErrors: { email: ["Invalid email"] },
+      },
+    };
     expect(parseErrorBody(body).message).toBe("Invalid email");
   });
 
@@ -31,14 +36,19 @@ describe("parseErrorBody", () => {
     expect(parseErrorBody({ nonsense: true }).message).toBe(
       "Something went wrong. Please try again."
     );
-    expect(parseErrorBody(undefined).message).toBe("Something went wrong. Please try again.");
+    expect(parseErrorBody(undefined).message).toBe(
+      "Something went wrong. Please try again."
+    );
   });
 });
 
 describe("ApiError", () => {
   it("carries status, message, and field errors", () => {
     const err = new ApiError(422, {
-      error: { formErrors: [], fieldErrors: { password: ["Too short"] } },
+      error: {
+        formErrors: [],
+        fieldErrors: { password: ["Too short"] },
+      },
     });
     expect(err.status).toBe(422);
     expect(err.message).toBe("Too short");

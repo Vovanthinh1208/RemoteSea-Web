@@ -8,7 +8,10 @@ interface SaveJobButtonProps {
 }
 
 export const SaveJobButton = ({ jobId }: SaveJobButtonProps) => {
-  const { saved, statusUnknown, toggle } = useSavedJobToggle(jobId, ROUTES.jobDetail(jobId));
+  const { saved, statusUnknown, toggle } = useSavedJobToggle(
+    jobId,
+    ROUTES.jobDetail(jobId)
+  );
 
   return (
     <button

@@ -20,8 +20,8 @@ export const EmployerCtaSection = () => (
             Looking for remote talent in Vietnam?
           </h2>
           <p className="mb-6 max-w-sm text-sm leading-relaxed text-neutral-400">
-            Post your job and reach 500+ qualified VN professionals. Verified listings, salary range
-            required, results in two weeks or money back.
+            Post your job and reach 500+ qualified VN professionals. Verified
+            listings, salary range required, results in two weeks or money back.
           </p>
           <div className="flex gap-3">
             <Link
@@ -42,7 +42,10 @@ export const EmployerCtaSection = () => (
         </div>
         <div className="space-y-3">
           {EMPLOYER_POINTS.map((item) => (
-            <div className="flex items-start gap-2.5 text-sm text-neutral-400" key={item}>
+            <div
+              className="flex items-start gap-2.5 text-sm text-neutral-400"
+              key={item}
+            >
               <span className="mt-0.5 grid h-4 w-4 flex-shrink-0 place-items-center rounded-full bg-brand-600">
                 <Star className="text-white" fill="white" size={9} />
               </span>

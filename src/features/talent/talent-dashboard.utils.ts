@@ -1,7 +1,8 @@
 import type { ApplicationStatus } from "@/types/application";
 import type { TalentProfile } from "@/types/talent";
 
-export type AppStatusBucket = "applied" | "review" | "interview" | "offer" | "closed";
+export type AppStatusBucket =
+  "applied" | "review" | "interview" | "offer" | "closed";
 
 export const STATUS_TO_BUCKET: Record<ApplicationStatus, AppStatusBucket> = {
   PENDING: "applied",
@@ -34,14 +35,18 @@ const trackedFields = (profile: TalentProfile): boolean[] => [
   profile.yearsExperience !== null,
 ];
 
-export const profileCompletion = (profile: TalentProfile | null | undefined): number => {
+export const profileCompletion = (
+  profile: TalentProfile | null | undefined
+): number => {
   if (!profile) return 0;
   const fields = trackedFields(profile);
   const done = fields.filter(Boolean).length;
   return Math.round((done / fields.length) * 100);
 };
 
-export const missingProfileFields = (profile: TalentProfile | null | undefined): string[] => {
+export const missingProfileFields = (
+  profile: TalentProfile | null | undefined
+): string[] => {
   if (!profile) return ["headline", "bio", "skills"];
   const missing: string[] = [];
   if (!profile.headline) missing.push("a headline");

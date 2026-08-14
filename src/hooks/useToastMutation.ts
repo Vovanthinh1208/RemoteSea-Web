@@ -17,7 +17,10 @@ export const useToastMutation = () => {
   const { toast } = useToast();
 
   return useCallback(
-    async (action: () => Promise<unknown>, messages: ToastMutationMessages): Promise<boolean> => {
+    async (
+      action: () => Promise<unknown>,
+      messages: ToastMutationMessages
+    ): Promise<boolean> => {
       try {
         await action();
 

@@ -3,13 +3,15 @@ import { scrubUrl } from "@/services/monitoring";
 
 describe("scrubUrl", () => {
   it("redacts the OAuth access token in the callback URL", () => {
-    expect(scrubUrl("https://app.example.com/auth/callback?token=abc123.def.ghi")).toBe(
-      "https://app.example.com/auth/callback?token=[REDACTED]"
-    );
+    expect(
+      scrubUrl("https://app.example.com/auth/callback?token=abc123.def.ghi")
+    ).toBe("https://app.example.com/auth/callback?token=[REDACTED]");
   });
 
   it("redacts the password-reset token", () => {
-    expect(scrubUrl("/reset-password?token=reset-secret")).toBe("/reset-password?token=[REDACTED]");
+    expect(scrubUrl("/reset-password?token=reset-secret")).toBe(
+      "/reset-password?token=[REDACTED]"
+    );
   });
 
   it("redacts a sensitive param at the start of a bare query string", () => {

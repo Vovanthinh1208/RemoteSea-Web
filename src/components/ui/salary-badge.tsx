@@ -10,7 +10,12 @@ interface SalaryBadgeProps {
 
 // Renders nothing when the job has no salary at all — callers used to paper
 // over that case with `?? 0`, which showed "$0–0".
-export const SalaryBadge = ({ min, max, unit = "/mo", className }: SalaryBadgeProps) => {
+export const SalaryBadge = ({
+  min,
+  max,
+  unit = "/mo",
+  className,
+}: SalaryBadgeProps) => {
   const range = formatSalaryRange(min, max);
   if (!range) return null;
   return (

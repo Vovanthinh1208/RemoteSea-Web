@@ -2,7 +2,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { resetPasswordSchema, type ResetPasswordFormValues } from "@/features/auth/auth.schemas";
+import {
+  resetPasswordSchema,
+  type ResetPasswordFormValues,
+} from "@/features/auth/auth.schemas";
 import { resetPassword } from "@/features/auth/auth.service";
 import { TextField } from "@/components/shared/TextField";
 import { useToast } from "@/components/ui/toast";
@@ -10,7 +13,8 @@ import { applyFormSubmitError } from "@/utils/form-errors";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
 
-const MISSING_TOKEN_MESSAGE = "This reset link is missing its token. Request a new one.";
+const MISSING_TOKEN_MESSAGE =
+  "This reset link is missing its token. Request a new one.";
 
 export const ResetPasswordForm = () => {
   const navigate = useNavigate();
@@ -45,7 +49,13 @@ export const ResetPasswordForm = () => {
       });
       navigate(ROUTES.login, { replace: true });
     } catch (err) {
-      setFormError(applyFormSubmitError(err, setError, "Something went wrong. Please try again."));
+      setFormError(
+        applyFormSubmitError(
+          err,
+          setError,
+          "Something went wrong. Please try again."
+        )
+      );
     } finally {
       setIsLoading(false);
     }
@@ -54,7 +64,8 @@ export const ResetPasswordForm = () => {
   if (!token) {
     return (
       <div className="rounded-12 border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-        This reset link is invalid or missing its token. Please request a new one.
+        This reset link is invalid or missing its token. Please request a new
+        one.
       </div>
     );
   }

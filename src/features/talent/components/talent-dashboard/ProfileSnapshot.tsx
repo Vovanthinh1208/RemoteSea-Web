@@ -16,7 +16,9 @@ export const ProfileSnapshot = () => {
         <GradientInitial className="mb-3 h-14 w-14 rounded-full text-lg">
           {(user?.name ?? "?").charAt(0).toUpperCase()}
         </GradientInitial>
-        <h3 className="text-[15px] font-semibold text-neutral-900">{user?.name}</h3>
+        <h3 className="text-[15px] font-semibold text-neutral-900">
+          {user?.name}
+        </h3>
         <p className="mt-0.5 text-[12.5px] text-neutral-400">
           {profile?.headline || "No headline yet"}
         </p>
@@ -29,8 +31,16 @@ export const ProfileSnapshot = () => {
       </div>
       <div className="border-t border-neutral-100">
         {[
-          { icon: MapPin, label: "Based in", value: profile?.location || "—" },
-          { icon: Clock, label: "Timezone", value: profile?.timezone || "—" },
+          {
+            icon: MapPin,
+            label: "Based in",
+            value: profile?.location || "—",
+          },
+          {
+            icon: Clock,
+            label: "Timezone",
+            value: profile?.timezone || "—",
+          },
           {
             icon: Briefcase,
             label: "Expecting",
@@ -47,7 +57,9 @@ export const ProfileSnapshot = () => {
             <span className="flex items-center gap-1.5 text-[12px] text-neutral-400">
               <Icon size={12} /> {label}
             </span>
-            <span className="text-[12px] font-medium text-neutral-700">{value}</span>
+            <span className="text-[12px] font-medium text-neutral-700">
+              {value}
+            </span>
           </div>
         ))}
       </div>

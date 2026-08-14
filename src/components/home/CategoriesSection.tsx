@@ -6,12 +6,24 @@ import { Eyebrow } from "@/components/ui/eyebrow";
 // tokens used elsewhere in the app — six categories need visually distinct
 // tags, and purple/rose are otherwise unused anywhere else in the codebase.
 const CATEGORIES = [
-  { label: "Engineering", count: 31, color: "bg-brand-50 text-brand-700" },
-  { label: "Design", count: 8, color: "bg-purple-50 text-purple-700" },
+  {
+    label: "Engineering",
+    count: 31,
+    color: "bg-brand-50 text-brand-700",
+  },
+  {
+    label: "Design",
+    count: 8,
+    color: "bg-purple-50 text-purple-700",
+  },
   { label: "Product", count: 5, color: "bg-blue-50 text-blue-700" },
   { label: "Data", count: 7, color: "bg-amber-50 text-amber-700" },
   { label: "Marketing", count: 4, color: "bg-rose-50 text-rose-700" },
-  { label: "Operations", count: 2, color: "bg-neutral-100 text-neutral-700" },
+  {
+    label: "Operations",
+    count: 2,
+    color: "bg-neutral-100 text-neutral-700",
+  },
 ];
 
 export const CategoriesSection = () => (
@@ -21,7 +33,10 @@ export const CategoriesSection = () => (
         <Eyebrow className="mb-2">Categories</Eyebrow>
         <h2 className="text-[28px] font-semibold text-neutral-900">
           Find roles in{" "}
-          <em className="font-serif" style={{ fontFamily: "var(--font-serif)" }}>
+          <em
+            className="font-serif"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
             your
           </em>{" "}
           field

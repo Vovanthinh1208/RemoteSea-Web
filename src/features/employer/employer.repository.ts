@@ -23,31 +23,51 @@ export const employerRepository = {
     return data;
   },
 
-  getProfile: async (opts?: RequestOptions): Promise<EmployerProfileSummaryDto> => {
-    const { data } = await apiClient.get<EmployerProfileSummaryDto>("/employer/profile", {
-      signal: opts?.signal,
-    });
+  getProfile: async (
+    opts?: RequestOptions
+  ): Promise<EmployerProfileSummaryDto> => {
+    const { data } = await apiClient.get<EmployerProfileSummaryDto>(
+      "/employer/profile",
+      {
+        signal: opts?.signal,
+      }
+    );
     return data;
   },
 
   // The backend's update endpoint only returns EmployerProfile's fields — unlike
   // GET /employer/profile, it does not include _count/totalApplications.
-  updateProfile: async (payload: UpdateEmployerProfileRequestDto): Promise<EmployerProfileDto> => {
-    const { data } = await apiClient.patch<EmployerProfileDto>("/employer/profile", payload);
+  updateProfile: async (
+    payload: UpdateEmployerProfileRequestDto
+  ): Promise<EmployerProfileDto> => {
+    const { data } = await apiClient.patch<EmployerProfileDto>(
+      "/employer/profile",
+      payload
+    );
     return data;
   },
 
-  listJobs: async (status?: JobStatus, opts?: RequestOptions): Promise<EmployerJobsResponseDto> => {
-    const { data } = await apiClient.get<EmployerJobsResponseDto>("/employer/jobs", {
-      params: status ? { status } : undefined,
-      signal: opts?.signal,
-    });
+  listJobs: async (
+    status?: JobStatus,
+    opts?: RequestOptions
+  ): Promise<EmployerJobsResponseDto> => {
+    const { data } = await apiClient.get<EmployerJobsResponseDto>(
+      "/employer/jobs",
+      {
+        params: status ? { status } : undefined,
+        signal: opts?.signal,
+      }
+    );
     return data;
   },
 
   listJobApplications: async (
     jobId: string,
-    params: { status?: ApplicationStatus; page?: number; limit?: number } = {},
+    params: {
+      status?: ApplicationStatus;
+      page?: number;
+      limit?: number;
+    } = {},
     opts?: RequestOptions
   ): Promise<EmployerJobApplicationsResponseDto> => {
     const { data } = await apiClient.get<EmployerJobApplicationsResponseDto>(
@@ -62,6 +82,9 @@ export const employerRepository = {
     status: ApplicationStatus,
     notes?: string
   ): Promise<void> => {
-    await apiClient.patch(`/employer/applications/${applicationId}`, { status, notes });
+    await apiClient.patch(`/employer/applications/${applicationId}`, {
+      status,
+      notes,
+    });
   },
 };

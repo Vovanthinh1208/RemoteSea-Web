@@ -8,6 +8,7 @@ import { JobCard } from "@/features/jobs/components/JobCard";
 import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
 import { Pagination } from "@/features/jobs/components/Pagination";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { Dropdown } from "@/components/ui/dropdown";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { useSyncedState } from "@/hooks/useSyncedState";
 import { useJobsQuery, prefetchJobsList } from "@/features/jobs/jobs.queries";
@@ -31,11 +32,22 @@ interface JobsBoardProps {
 const SEARCH_DEBOUNCE_MS = 400;
 const JOB_LIST_SKELETON_COUNT = 6;
 
-export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) => {
+const SORT_OPTIONS = [
+  { value: "relevance", label: "Best match" },
+  { value: "recent", label: "Most recent" },
+  { value: "salary", label: "Highest salary" },
+  { value: "featured", label: "Featured first" },
+] as const satisfies readonly { value: SortKey; label: string }[];
+
+export const JobsBoard = ({
+  filters: query,
+  onFiltersChange,
+}: JobsBoardProps) => {
   const [search, setSearch] = useSyncedState(query.q);
   const firstRender = useRef(true);
   const queryClient = useQueryClient();
-  const { data, isLoading, isFetching, isError, isPlaceholderData, refetch } = useJobsQuery(query);
+  const { data, isLoading, isFetching, isError, isPlaceholderData, refetch } =
+    useJobsQuery(query);
   const { data: categories } = useCategories();
 
   // Once a page's results are in, warm the cache for the next page — if the
@@ -44,7 +56,10 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
   // more common than paging back.
   useEffect(() => {
     if (!data || query.page >= data.pagination.pages) return;
-    void prefetchJobsList(queryClient, { ...query, page: query.page + 1 });
+    void prefetchJobsList(queryClient, {
+      ...query,
+      page: query.page + 1,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, queryClient]);
 
@@ -72,8 +87,10 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
 
   const setFilters = (filters: Filters) =>
     onFiltersChange({ ...query, filters, q: search, page: 1 });
-  const setSort = (sort: SortKey) => onFiltersChange({ ...query, sort, q: search, page: 1 });
-  const goToPage = (page: number) => onFiltersChange({ ...query, q: search, page });
+  const setSort = (sort: SortKey) =>
+    onFiltersChange({ ...query, sort, q: search, page: 1 });
+  const goToPage = (page: number) =>
+    onFiltersChange({ ...query, q: search, page });
 
   const { filters } = query;
   const activePills = buildActivePills(filters, categories, setFilters);
@@ -81,7 +98,12 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
   const jobs = data?.jobs ?? [];
   const total = data?.pagination.total ?? 0;
   const pages = data?.pagination.pages ?? 1;
-  const facets = data?.facets ?? { jobType: {}, timezone: {}, seniority: {}, category: {} };
+  const facets = data?.facets ?? {
+    jobType: {},
+    timezone: {},
+    seniority: {},
+    category: {},
+  };
 
   return (
     <div className="mx-auto max-w-[1240px] px-6 py-8">
@@ -89,7 +111,11 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
       <SearchBar value={search} onChange={setSearch} />
 
       <div className="flex flex-col gap-8 sm:flex-row">
-        <FilterSidebar facets={facets} filters={filters} onChange={setFilters} />
+        <FilterSidebar
+          facets={facets}
+          filters={filters}
+          onChange={setFilters}
+        />
 
         <div className="min-w-0 flex-1">
           {/* Toolbar */}
@@ -108,7 +134,10 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
                 <>
                   <strong className="text-neutral-900">{total}</strong>{" "}
                   {total === 1 ? "job" : "jobs"}
-                  <span className="text-neutral-400"> matching your filters</span>
+                  <span className="text-neutral-400">
+                    {" "}
+                    matching your filters
+                  </span>
                   {/* Background refetch (filter/sort/page change) over data
                       that's already on screen — isLoading only ever covers the
                       very first load, so this is the only signal for "still
@@ -123,17 +152,16 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
             </div>
             <div className="flex items-center gap-2 text-sm text-neutral-500">
               Sort by
-              <select
+              <Dropdown
                 aria-label="Sort jobs"
-                className="rounded-8 border border-neutral-200 bg-white px-2 py-1 text-sm text-neutral-700 outline-none focus:border-brand-600"
+                options={
+                  query.q
+                    ? SORT_OPTIONS
+                    : SORT_OPTIONS.filter((o) => o.value !== "relevance")
+                }
                 value={query.sort}
-                onChange={(e) => setSort(e.target.value as SortKey)}
-              >
-                {query.q && <option value="relevance">Best match</option>}
-                <option value="recent">Most recent</option>
-                <option value="salary">Highest salary</option>
-                <option value="featured">Featured first</option>
-              </select>
+                onChange={(v) => setSort(v as SortKey)}
+              />
             </div>
           </div>
 
@@ -184,11 +212,18 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
             <EmptyState
               action={
                 <div className="flex items-center justify-center gap-2">
-                  <Button size="sm" variant="outline" onClick={() => setFilters(DEFAULT_FILTERS)}>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setFilters(DEFAULT_FILTERS)}
+                  >
                     Clear filters
                   </Button>
                   <Link
-                    className={buttonVariants({ size: "sm", variant: "ghost" })}
+                    className={buttonVariants({
+                      size: "sm",
+                      variant: "ghost",
+                    })}
                     to={ROUTES.alerts}
                   >
                     Create a job alert instead
@@ -211,7 +246,13 @@ export const JobsBoard = ({ filters: query, onFiltersChange }: JobsBoardProps) =
             </div>
           )}
 
-          {!isLoading && <Pagination page={query.page} pages={pages} onPageChange={goToPage} />}
+          {!isLoading && (
+            <Pagination
+              page={query.page}
+              pages={pages}
+              onPageChange={goToPage}
+            />
+          )}
         </div>
       </div>
     </div>

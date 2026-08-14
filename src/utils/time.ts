@@ -7,7 +7,10 @@ export interface RelativeTimeSuffix {
   now: string;
 }
 
-const formatRelativeTime = (dateString: string | null, suffix: RelativeTimeSuffix): string => {
+const formatRelativeTime = (
+  dateString: string | null,
+  suffix: RelativeTimeSuffix
+): string => {
   if (!dateString) return suffix.now;
   const diff = Date.now() - new Date(dateString).getTime();
   const days = Math.floor(diff / MS_PER_DAY);
@@ -21,7 +24,15 @@ const formatRelativeTime = (dateString: string | null, suffix: RelativeTimeSuffi
 // "ago" in surrounding copy ("{timeAgoShort(x)} ago") vs. callers that render the
 // result standalone. Previously each feature defined its own near-identical wrapper.
 export const timeAgoShort = (dateString: string | null): string =>
-  formatRelativeTime(dateString, { day: "d", hour: "h", now: "just now" });
+  formatRelativeTime(dateString, {
+    day: "d",
+    hour: "h",
+    now: "just now",
+  });
 
 export const timeAgoLong = (dateString: string | null): string =>
-  formatRelativeTime(dateString, { day: "d ago", hour: "h ago", now: "Just now" });
+  formatRelativeTime(dateString, {
+    day: "d ago",
+    hour: "h ago",
+    now: "Just now",
+  });

@@ -16,16 +16,25 @@ vi.mock("@/features/auth/auth.repository", () => repository);
 const { getSession } = await import("@/features/auth/auth.service");
 const { ValidationError } = await import("@/core/errors/error-types");
 
-const validUser = { id: "user-1", email: "a@b.com", name: "Ada", role: "TALENT" as const };
+const validUser = {
+  id: "user-1",
+  email: "a@b.com",
+  name: "Ada",
+  role: "TALENT" as const,
+};
 
 describe("getSession", () => {
   it("returns the mapped user when a session exists", async () => {
-    repository.authRepository.getSession.mockResolvedValueOnce({ user: validUser });
+    repository.authRepository.getSession.mockResolvedValueOnce({
+      user: validUser,
+    });
     await expect(getSession()).resolves.toEqual(validUser);
   });
 
   it("returns null when there is no session (the 401 -> null contract AuthContext relies on)", async () => {
-    repository.authRepository.getSession.mockResolvedValueOnce({ user: null });
+    repository.authRepository.getSession.mockResolvedValueOnce({
+      user: null,
+    });
     await expect(getSession()).resolves.toBeNull();
   });
 

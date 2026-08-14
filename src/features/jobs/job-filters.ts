@@ -37,7 +37,12 @@ export const DEFAULT_FILTERS: Filters = {
   salaryMax: SALARY_CEIL,
 };
 
-export type JobFilters = { filters: Filters; q: string; sort: SortKey; page: number };
+export type JobFilters = {
+  filters: Filters;
+  q: string;
+  sort: SortKey;
+  page: number;
+};
 
 export const DEFAULT_JOB_FILTERS: JobFilters = {
   filters: DEFAULT_FILTERS,
@@ -95,8 +100,10 @@ export const serializeJobQuery = (query: JobFilters): string => {
   query.filters.timezone.forEach((v) => p.append("tz", v));
   query.filters.seniority.forEach((v) => p.append("level", v));
   query.filters.category.forEach((v) => p.append("category", v));
-  if (query.filters.salaryMin > SALARY_FLOOR) p.set("salaryMin", String(query.filters.salaryMin));
-  if (query.filters.salaryMax < SALARY_CEIL) p.set("salaryMax", String(query.filters.salaryMax));
+  if (query.filters.salaryMin > SALARY_FLOOR)
+    p.set("salaryMin", String(query.filters.salaryMin));
+  if (query.filters.salaryMax < SALARY_CEIL)
+    p.set("salaryMax", String(query.filters.salaryMax));
   if (query.sort !== "recent") p.set("sort", query.sort);
   if (query.page > 1) p.set("page", String(query.page));
   return p.toString();

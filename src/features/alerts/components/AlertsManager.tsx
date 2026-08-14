@@ -34,9 +34,16 @@ export const AlertsManager = () => {
     });
 
   const handleToggleActive = (alert: JobAlert) =>
-    runWithToast(() => setActiveMutation.mutateAsync({ id: alert.id, isActive: !alert.isActive }), {
-      error: "Couldn't update alert",
-    });
+    runWithToast(
+      () =>
+        setActiveMutation.mutateAsync({
+          id: alert.id,
+          isActive: !alert.isActive,
+        }),
+      {
+        error: "Couldn't update alert",
+      }
+    );
 
   const handleDelete = async (alert: JobAlert): Promise<void> => {
     await runWithToast(() => deleteAlertMutation.mutateAsync(alert.id), {
@@ -52,7 +59,8 @@ export const AlertsManager = () => {
           Job alerts
         </h1>
         <p className="text-[15px] text-neutral-500">
-          Get notified when new jobs match your criteria. We email you on your chosen schedule.
+          Get notified when new jobs match your criteria. We email you on your
+          chosen schedule.
         </p>
       </div>
 
@@ -72,7 +80,11 @@ export const AlertsManager = () => {
           // failed to load, which could prompt them to recreate duplicates.
           <EmptyState
             action={
-              <Button size="sm" variant="outline" onClick={() => void refetch()}>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => void refetch()}
+              >
                 Try again
               </Button>
             }
@@ -80,13 +92,16 @@ export const AlertsManager = () => {
             title="Couldn't load alerts"
           />
         ) : !alerts || alerts.length === 0 ? (
-          <EmptyRow>No alerts yet. Create one above to start getting matched jobs.</EmptyRow>
+          <EmptyRow>
+            No alerts yet. Create one above to start getting matched jobs.
+          </EmptyRow>
         ) : (
           alerts.map((alert) => (
             <AlertListItem
               alert={alert}
               isDeleting={
-                deleteAlertMutation.isPending && deleteAlertMutation.variables === alert.id
+                deleteAlertMutation.isPending &&
+                deleteAlertMutation.variables === alert.id
               }
               key={alert.id}
               onDelete={handleDelete}

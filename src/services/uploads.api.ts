@@ -2,7 +2,11 @@ import { apiClient } from "@/core/http/http-client";
 
 export type UploadType = "avatar" | "logo" | "resume";
 
-type PresignResponse = { uploadUrl: string; publicUrl: string; key: string };
+type PresignResponse = {
+  uploadUrl: string;
+  publicUrl: string;
+  key: string;
+};
 
 // Mirrors remotesea-api's src/modules/uploads/constants.ts exactly, so the client
 // rejects an invalid file with a specific message before it ever reaches the
@@ -23,7 +27,9 @@ export const MAX_FILE_SIZE_BYTES: Record<UploadType, number> = {
 
 export const validateFile = (file: File, type: UploadType): string | null => {
   if (!CONTENT_TYPES[type].includes(file.type)) {
-    return type === "resume" ? "Must be a PDF file." : "Must be a JPEG, PNG, or WebP image.";
+    return type === "resume"
+      ? "Must be a PDF file."
+      : "Must be a JPEG, PNG, or WebP image.";
   }
   if (file.size > MAX_FILE_SIZE_BYTES[type]) {
     return `File too large — max ${MAX_FILE_SIZE_BYTES[type] / BYTES_PER_MB}MB.`;
@@ -40,7 +46,12 @@ export const uploadViaPresign = async (
 ): Promise<string> => {
   const { data } = await apiClient.post<PresignResponse>(
     "/uploads/presign",
-    { type, filename: file.name, contentType: file.type, fileSize: file.size },
+    {
+      type,
+      filename: file.name,
+      contentType: file.type,
+      fileSize: file.size,
+    },
     { signal: options?.signal }
   );
 

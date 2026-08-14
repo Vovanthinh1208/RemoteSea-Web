@@ -37,11 +37,17 @@ export const TestimonialsSection = () => (
         <Eyebrow className="mb-3">Talent stories</Eyebrow>
         <h2 className="text-[32px] font-semibold text-neutral-900">
           From{" "}
-          <em className="font-serif" style={{ fontFamily: "var(--font-serif)" }}>
+          <em
+            className="font-serif"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
             apply
           </em>{" "}
           to{" "}
-          <em className="font-serif" style={{ fontFamily: "var(--font-serif)" }}>
+          <em
+            className="font-serif"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
             offer
           </em>
           .
@@ -49,7 +55,10 @@ export const TestimonialsSection = () => (
       </div>
       <div className="grid gap-5 md:grid-cols-3">
         {TESTIMONIALS.map((t) => (
-          <div className="rounded-16 border border-neutral-100 bg-neutral-50 p-6" key={t.name}>
+          <div
+            className="rounded-16 border border-neutral-100 bg-neutral-50 p-6"
+            key={t.name}
+          >
             <p className="mb-5 text-[14px] italic leading-relaxed text-neutral-700">
               &ldquo;{t.quote}&rdquo;
             </p>
@@ -61,9 +70,13 @@ export const TestimonialsSection = () => (
                 {t.initials}
               </div>
               <div>
-                <div className="text-[13px] font-semibold text-neutral-900">{t.name}</div>
+                <div className="text-[13px] font-semibold text-neutral-900">
+                  {t.name}
+                </div>
                 <div className="text-[12px] text-neutral-400">{t.title}</div>
-                <div className="mt-0.5 font-mono text-[11px] text-amber-700">{t.meta}</div>
+                <div className="mt-0.5 font-mono text-[11px] text-amber-700">
+                  {t.meta}
+                </div>
               </div>
             </div>
           </div>

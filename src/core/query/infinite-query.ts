@@ -15,13 +15,23 @@ export type PagedFetchResult<TItem> = {
  */
 export const createPagedInfiniteQueryOptions = <TItem>(config: {
   queryKey: QueryKey;
-  fetchPage: (pageParam: number, signal: AbortSignal) => Promise<PagedFetchResult<TItem>>;
+  fetchPage: (
+    pageParam: number,
+    signal: AbortSignal
+  ) => Promise<PagedFetchResult<TItem>>;
   initialPageParam?: number;
 }) => ({
   queryKey: config.queryKey,
   initialPageParam: config.initialPageParam ?? 1,
-  queryFn: ({ pageParam, signal }: { pageParam: number; signal: AbortSignal }) =>
-    config.fetchPage(pageParam, signal),
+  queryFn: ({
+    pageParam,
+    signal,
+  }: {
+    pageParam: number;
+    signal: AbortSignal;
+  }) => config.fetchPage(pageParam, signal),
   getNextPageParam: (lastPage: PagedFetchResult<TItem>) =>
-    lastPage.pagination.page < lastPage.pagination.pages ? lastPage.pagination.page + 1 : undefined,
+    lastPage.pagination.page < lastPage.pagination.pages
+      ? lastPage.pagination.page + 1
+      : undefined,
 });

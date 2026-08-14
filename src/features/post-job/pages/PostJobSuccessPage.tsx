@@ -18,7 +18,8 @@ export const PostJobSuccessPage = () => {
         Thanks for your submission
       </h1>
       <p className="mt-3 text-neutral-600">
-        Your job is under review. We&apos;ll email you within 24 hours once it&apos;s live.
+        Your job is under review. We&apos;ll email you within 24 hours once
+        it&apos;s live.
       </p>
       <Link className="mt-8" to={ROUTES.employerDashboard}>
         <Button size="lg" variant="primary">

@@ -7,7 +7,9 @@ const SCROLL_SPY_ROOT_MARGIN = "-25% 0px -60% 0px";
  * navigation. Returns a `useState`-shaped tuple so callers can also set the
  * active id optimistically (e.g. on a nav click, before the observer catches up).
  */
-export const useActiveSection = (ids: string[]): [string, Dispatch<SetStateAction<string>>] => {
+export const useActiveSection = (
+  ids: string[]
+): [string, Dispatch<SetStateAction<string>>] => {
   const [activeId, setActiveId] = useState(ids[0] ?? "");
 
   useEffect(() => {
@@ -15,7 +17,9 @@ export const useActiveSection = (ids: string[]): [string, Dispatch<SetStateActio
       (entries) => {
         const hit = entries
           .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+          .sort(
+            (a, b) => a.boundingClientRect.top - b.boundingClientRect.top
+          )[0];
 
         if (hit) {
           setActiveId(hit.target.id);

@@ -18,7 +18,12 @@ export const QueueKpis = ({
   rejectedCount,
 }: QueueKpisProps) => {
   const tiles = [
-    { icon: Inbox, label: "In queue", val: activeCount, sub: `${overdueCount} over SLA` },
+    {
+      icon: Inbox,
+      label: "In queue",
+      val: activeCount,
+      sub: `${overdueCount} over SLA`,
+    },
     {
       icon: Clock,
       label: "Avg. wait",
@@ -26,7 +31,12 @@ export const QueueKpis = ({
       sub: "SLA 24h",
       warn: avgWaitHours >= URGENT_WAIT_HOURS,
     },
-    { icon: Check, label: "Approved this session", val: approvedCount, sub: "+ live now" },
+    {
+      icon: Check,
+      label: "Approved this session",
+      val: approvedCount,
+      sub: "+ live now",
+    },
     {
       icon: Ban,
       label: "Rejected this session",

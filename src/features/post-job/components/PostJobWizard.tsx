@@ -48,7 +48,9 @@ export const PostJobWizard = () => {
   // Restore any saved draft synchronously so the first render already shows it.
   const [draft] = useState(loadPostJobDraft);
   const [step, setStep] = useState(draft?.step ?? 1);
-  const [form, setForm] = useState<PostJobFormState>(draft?.form ?? INITIAL_FORM_STATE);
+  const [form, setForm] = useState<PostJobFormState>(
+    draft?.form ?? INITIAL_FORM_STATE
+  );
   const [publishedJobId, setPublishedJobId] = useState<string | null>(null);
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -71,16 +73,24 @@ export const PostJobWizard = () => {
   if (!categoryDefaulted && categories && categories.length > 0) {
     setCategoryDefaulted(true);
     if (!form.jobCategoryId) {
-      setForm((prev) => ({ ...prev, jobCategoryId: categories[0].id }));
+      setForm((prev) => ({
+        ...prev,
+        jobCategoryId: categories[0].id,
+      }));
     }
   }
 
-  const set = (k: keyof PostJobFormState, v: unknown) => setForm((prev) => ({ ...prev, [k]: v }));
+  const set = (k: keyof PostJobFormState, v: unknown) =>
+    setForm((prev) => ({ ...prev, [k]: v }));
 
   const fail = (msg: string) => {
     setError(msg);
     setPublishing(false);
-    toast({ variant: "error", title: "Couldn't publish job", description: msg });
+    toast({
+      variant: "error",
+      title: "Couldn't publish job",
+      description: msg,
+    });
   };
 
   const goToStep = (nextStep: number) => {
@@ -104,7 +114,9 @@ export const PostJobWizard = () => {
     setStepErrors([]);
 
     if (form.jobDesc.trim().length < MIN_JOB_DESCRIPTION_LENGTH) {
-      fail(`Job description must be at least ${MIN_JOB_DESCRIPTION_LENGTH} characters.`);
+      fail(
+        `Job description must be at least ${MIN_JOB_DESCRIPTION_LENGTH} characters.`
+      );
       return;
     }
     if (!form.jobCategoryId) {
@@ -130,7 +142,9 @@ export const PostJobWizard = () => {
       });
     } catch (err) {
       // A 409 just means this employer already has a profile — fine, continue.
-      if (!(err instanceof ApiError && err.status === PROFILE_ALREADY_EXISTS_STATUS)) {
+      if (!(
+        err instanceof ApiError && err.status === PROFILE_ALREADY_EXISTS_STATUS
+      )) {
         reportError(err);
         fail("Could not save your company profile. Please try again.");
         return;
@@ -164,7 +178,9 @@ export const PostJobWizard = () => {
       jobId = job.id;
     } catch (err) {
       reportError(err);
-      fail("Could not create the job. Check the required fields and try again.");
+      fail(
+        "Could not create the job. Check the required fields and try again."
+      );
       return;
     }
 
@@ -184,7 +200,8 @@ export const PostJobWizard = () => {
     setPublishedJobId(jobId);
   };
 
-  if (publishedJobId) return <PostJobDraftSaved form={form} jobId={publishedJobId} />;
+  if (publishedJobId)
+    return <PostJobDraftSaved form={form} jobId={publishedJobId} />;
 
   const selectedTier = TIERS.find((t) => t.id === form.tier) ?? TIERS[0];
 
@@ -194,7 +211,10 @@ export const PostJobWizard = () => {
       <div className="border-b border-neutral-200 bg-white px-6 py-4">
         <h1 className="sr-only">Post a job</h1>
         <div className="mx-auto flex max-w-[1200px] items-center justify-between">
-          <Link className="text-[15px] font-semibold text-neutral-900" to={ROUTES.home}>
+          <Link
+            className="text-[15px] font-semibold text-neutral-900"
+            to={ROUTES.home}
+          >
             RemoteSEA
           </Link>
           <div className="flex items-center gap-1">
@@ -224,7 +244,9 @@ export const PostJobWizard = () => {
                 >
                   {s.label}
                 </span>
-                {i < STEPS.length - 1 && <ChevronRight className="text-neutral-300" size={14} />}
+                {i < STEPS.length - 1 && (
+                  <ChevronRight className="text-neutral-300" size={14} />
+                )}
               </div>
             ))}
           </div>

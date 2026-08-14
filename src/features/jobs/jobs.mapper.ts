@@ -1,4 +1,8 @@
-import type { JobDto, JobListItemDto, JobListResponseDto } from "@/features/jobs/jobs.dto";
+import type {
+  JobDto,
+  JobListItemDto,
+  JobListResponseDto,
+} from "@/features/jobs/jobs.dto";
 import type { PaginationMeta } from "@/core/pagination/pagination";
 import type { Job, JobFacets, JobListItem } from "@/types/job";
 
@@ -16,7 +20,9 @@ export type JobListResponse = {
 export const toJob = (dto: JobDto): Job => dto;
 export const toJobListItem = (dto: JobListItemDto): JobListItem => dto;
 
-export const toJobListResponse = (dto: JobListResponseDto): JobListResponse => ({
+export const toJobListResponse = (
+  dto: JobListResponseDto
+): JobListResponse => ({
   jobs: dto.jobs.map(toJobListItem),
   pagination: dto.pagination,
   facets: dto.facets,

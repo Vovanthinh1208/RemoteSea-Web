@@ -42,7 +42,8 @@ const MEMBERS = [
     years: 4,
     initial: "K",
     color: "linear-gradient(135deg,#7C3AED,#5B21B6)",
-    quote: "Living in a tea farm town. Working on growth across 5 SEA markets. Wild, honestly.",
+    quote:
+      "Living in a tea farm town. Working on growth across 5 SEA markets. Wild, honestly.",
   },
 ];
 
@@ -53,14 +54,18 @@ export const MembersSection = () => (
         <Eyebrow className="mb-2">Members</Eyebrow>
         <h2 className="mb-3 text-[32px] font-semibold text-neutral-900">
           The people{" "}
-          <em className="font-serif text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>
+          <em
+            className="font-serif text-brand-700"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
             actually
           </em>{" "}
           in here.
         </h2>
         <p className="mx-auto max-w-lg text-neutral-500">
-          A small slice of who you&apos;ll meet. Everyone&apos;s vetted, everyone&apos;s remote,
-          everyone&apos;s working for a company outside Vietnam.
+          A small slice of who you&apos;ll meet. Everyone&apos;s vetted,
+          everyone&apos;s remote, everyone&apos;s working for a company outside
+          Vietnam.
         </p>
       </div>
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -77,9 +82,13 @@ export const MembersSection = () => (
                 {m.initial}
               </div>
               <div>
-                <div className="text-[14px] font-semibold text-neutral-900">{m.name}</div>
+                <div className="text-[14px] font-semibold text-neutral-900">
+                  {m.name}
+                </div>
                 <div className="text-[12px] text-neutral-500">{m.role}</div>
-                <div className="text-[12px] text-neutral-400">@ {m.company}</div>
+                <div className="text-[12px] text-neutral-400">
+                  @ {m.company}
+                </div>
               </div>
             </div>
             <p className="mb-4 text-[13px] italic leading-relaxed text-neutral-600">

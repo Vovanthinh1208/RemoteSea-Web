@@ -10,7 +10,8 @@ const MIN_FUNNEL_BAR_PCT = 6;
 
 export const FunnelPanel = ({ applicants }: FunnelPanelProps) => {
   const total = applicants.length;
-  const countWhere = (pred: (a: ApplicantWithJob) => boolean) => applicants.filter(pred).length;
+  const countWhere = (pred: (a: ApplicantWithJob) => boolean) =>
+    applicants.filter(pred).length;
   // Exact per-stage counts, not cumulative — matches the original's countBy("SHORTLISTED")
   // etc. (a candidate currently INTERVIEW-ing is no longer counted as "Shortlisted").
   const reviewed = countWhere((a) => a.status !== "PENDING");
@@ -49,19 +50,24 @@ export const FunnelPanel = ({ applicants }: FunnelPanelProps) => {
   return (
     <div className="rounded-20 border border-neutral-100 bg-white p-5">
       <h3 className="mb-4 text-[14px] font-semibold text-neutral-900">
-        Hiring funnel <span className="font-normal text-neutral-400">· all listings</span>
+        Hiring funnel{" "}
+        <span className="font-normal text-neutral-400">· all listings</span>
       </h3>
       <div className="space-y-2.5">
         {funnel.map((f) => (
           <div className="flex items-center gap-3" key={f.label}>
-            <span className="w-24 flex-shrink-0 text-[12px] text-neutral-500">{f.label}</span>
+            <span className="w-24 flex-shrink-0 text-[12px] text-neutral-500">
+              {f.label}
+            </span>
             <div className="flex-1 overflow-hidden rounded-full bg-neutral-100">
               <div
                 className={cn(
                   "h-2 rounded-full transition-all",
                   f.amber ? "bg-amber-400" : "bg-brand-500"
                 )}
-                style={{ width: `${Math.max(f.pct, total ? MIN_FUNNEL_BAR_PCT : 0)}%` }}
+                style={{
+                  width: `${Math.max(f.pct, total ? MIN_FUNNEL_BAR_PCT : 0)}%`,
+                }}
               />
             </div>
             <span className="w-6 flex-shrink-0 text-right text-[12px] font-semibold text-neutral-700">

@@ -51,8 +51,12 @@ export const AdminRevenue = () => {
         <div>
           <Eyebrow className="mb-0.5">Finance</Eyebrow>
           {/* 26px — matches the ops console's denser page-title size (see AdminEmployers.tsx). */}
-          <h1 className="text-[26px] font-semibold text-neutral-900">Revenue</h1>
-          <p className="mt-1 text-sm text-neutral-500">Per-post billing · all amounts in USD</p>
+          <h1 className="text-[26px] font-semibold text-neutral-900">
+            Revenue
+          </h1>
+          <p className="mt-1 text-sm text-neutral-500">
+            Per-post billing · all amounts in USD
+          </p>
         </div>
       </div>
 
@@ -121,7 +125,10 @@ export const AdminRevenue = () => {
             {months.map((month) => {
               const sum = monthTotal(month);
               return (
-                <div className="flex flex-1 flex-col items-center gap-1" key={month.key}>
+                <div
+                  className="flex flex-1 flex-col items-center gap-1"
+                  key={month.key}
+                >
                   <div
                     className="flex w-full flex-col-reverse overflow-hidden rounded-t-4"
                     style={{ height: `${(sum / peak) * 140}px` }}
@@ -150,7 +157,9 @@ export const AdminRevenue = () => {
                       </>
                     )}
                   </div>
-                  <span className="text-[10px] text-neutral-400">{month.label}</span>
+                  <span className="text-[10px] text-neutral-400">
+                    {month.label}
+                  </span>
                 </div>
               );
             })}
@@ -160,7 +169,9 @@ export const AdminRevenue = () => {
         <div className="rounded-12 border border-neutral-100 bg-white p-5">
           <h3 className="mb-4 text-[14px] font-semibold text-neutral-900">
             Revenue by plan{" "}
-            <span className="text-[12px] font-normal text-neutral-400">· all time</span>
+            <span className="text-[12px] font-normal text-neutral-400">
+              · all time
+            </span>
           </h3>
           <div className="mb-4 flex h-6 overflow-hidden rounded-8">
             {mix.map((m) => (
@@ -172,7 +183,9 @@ export const AdminRevenue = () => {
                   background: PLAN_BAR_COLOR[m.planType],
                 }}
               >
-                {m.amount > 0 ? `${Math.round((m.amount / totalMix) * 100)}%` : ""}
+                {m.amount > 0
+                  ? `${Math.round((m.amount / totalMix) * 100)}%`
+                  : ""}
               </div>
             ))}
           </div>
@@ -189,7 +202,9 @@ export const AdminRevenue = () => {
                     {formatCents(m.price)}
                   </span>
                 </span>
-                <span className="text-[12px] text-neutral-400">{m.count} posts</span>
+                <span className="text-[12px] text-neutral-400">
+                  {m.count} posts
+                </span>
                 <span className="font-mono text-[13px] font-semibold text-neutral-900">
                   {formatCentsCompact(m.amount)}
                 </span>
@@ -202,11 +217,15 @@ export const AdminRevenue = () => {
       {/* Transactions */}
       <div className="overflow-x-auto rounded-12 border border-neutral-100 bg-white">
         <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-3">
-          <h3 className="text-[14px] font-semibold text-neutral-900">Recent transactions</h3>
+          <h3 className="text-[14px] font-semibold text-neutral-900">
+            Recent transactions
+          </h3>
         </div>
         <div
           className="grid border-b border-neutral-50 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-400"
-          style={{ gridTemplateColumns: "minmax(200px,1fr) 140px 100px 90px" }}
+          style={{
+            gridTemplateColumns: "minmax(200px,1fr) 140px 100px 90px",
+          }}
         >
           <span>Employer</span>
           <span>Plan</span>
@@ -220,13 +239,17 @@ export const AdminRevenue = () => {
             <div
               className="grid items-center border-b border-neutral-50 px-5 py-3.5 last:border-0"
               key={t.jobId}
-              style={{ gridTemplateColumns: "minmax(200px,1fr) 140px 100px 90px" }}
+              style={{
+                gridTemplateColumns: "minmax(200px,1fr) 140px 100px 90px",
+              }}
             >
               <div className="min-w-0">
                 <div className="truncate text-[14px] font-medium text-neutral-900">
                   {t.companyName}
                 </div>
-                <div className="truncate text-[12px] text-neutral-400">{t.jobTitle}</div>
+                <div className="truncate text-[12px] text-neutral-400">
+                  {t.jobTitle}
+                </div>
               </div>
               <span className="flex items-center gap-1 text-[13px] text-neutral-600">
                 <CreditCard size={13} />{" "}
@@ -240,7 +263,10 @@ export const AdminRevenue = () => {
                 {formatCents(t.amount)}
               </span>
               <span className="text-[13px] text-neutral-400">
-                {new Date(t.paidAt).toLocaleDateString("en-US", { month: "short", day: "2-digit" })}
+                {new Date(t.paidAt).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "2-digit",
+                })}
               </span>
             </div>
           ))

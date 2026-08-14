@@ -9,7 +9,15 @@ export const PLAN_LABELS: Record<string, string> = {
   HANDS_ON: "Hands-on",
 };
 
-const COLORS = ["#16766F", "#0EA5E9", "#2563EB", "#7C3AED", "#2E9B52", "#EE4D2D", "#00B14F"];
+const COLORS = [
+  "#16766F",
+  "#0EA5E9",
+  "#2563EB",
+  "#7C3AED",
+  "#2E9B52",
+  "#EE4D2D",
+  "#00B14F",
+];
 
 export const colorFor = (s: string): string => pickColorFromString(s, COLORS);
 
@@ -64,16 +72,34 @@ export const autoChecks = (job: AdminJob): AutoCheck[] => [
 ];
 
 export const REVIEW_CHECKLIST = [
-  { label: "Role is genuinely remote", hint: "Not hybrid mislabeled as remote." },
-  { label: "Salary within market band", hint: "Compare against benchmark." },
-  { label: "No discriminatory language", hint: "Requirements read clean." },
-  { label: "Company looks legitimate", hint: "Website + contact check out." },
+  {
+    label: "Role is genuinely remote",
+    hint: "Not hybrid mislabeled as remote.",
+  },
+  {
+    label: "Salary within market band",
+    hint: "Compare against benchmark.",
+  },
+  {
+    label: "No discriminatory language",
+    hint: "Requirements read clean.",
+  },
+  {
+    label: "Company looks legitimate",
+    hint: "Website + contact check out.",
+  },
 ];
 
-export const formatSalary = (min: number | null, max: number | null, currency = "USD"): string => {
+export const formatSalary = (
+  min: number | null,
+  max: number | null,
+  currency = "USD"
+): string => {
   if (!min) return "Not specified";
   const fmt = (n: number) => n.toLocaleString();
-  return max ? `${currency} ${fmt(min)}–${fmt(max)}` : `${currency} ${fmt(min)}+`;
+  return max
+    ? `${currency} ${fmt(min)}–${fmt(max)}`
+    : `${currency} ${fmt(min)}+`;
 };
 
 const CENTS_PER_DOLLAR = 100;

@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { computeBackoffMs, isRetryableError, RETRY_BASE_DELAY_MS } from "@/core/http/retry-policy";
+import {
+  computeBackoffMs,
+  isRetryableError,
+  RETRY_BASE_DELAY_MS,
+} from "@/core/http/retry-policy";
 
 describe("isRetryableError", () => {
   it("retries a GET on a network error", () => {
@@ -40,7 +44,9 @@ describe("computeBackoffMs", () => {
   });
 
   it("spreads concurrent retries instead of firing them in lockstep", () => {
-    const values = new Set(Array.from({ length: 20 }, () => computeBackoffMs(2)));
+    const values = new Set(
+      Array.from({ length: 20 }, () => computeBackoffMs(2))
+    );
     // With real Math.random, 20 clients should not all land on one delay.
     expect(values.size).toBeGreaterThan(1);
   });

@@ -11,7 +11,8 @@ export const formatSalaryRange = (
   opts: { prefix?: string } = {}
 ): string | null => {
   const prefix = opts.prefix ?? "$";
-  if (min != null && max != null) return `${prefix}${min.toLocaleString()}–${max.toLocaleString()}`;
+  if (min != null && max != null)
+    return `${prefix}${min.toLocaleString()}–${max.toLocaleString()}`;
   if (min != null) return `${prefix}${min.toLocaleString()}+`;
   if (max != null) return `Up to ${prefix}${max.toLocaleString()}`;
   return null;
@@ -23,4 +24,5 @@ export const formatSalaryRange = (
  * toLocaleString'd on the pricing page ("$1,200"); the same number showed two
  * ways. This is the one formatter for those.
  */
-export const formatUsd = (amount: number): string => `$${amount.toLocaleString()}`;
+export const formatUsd = (amount: number): string =>
+  `$${amount.toLocaleString()}`;

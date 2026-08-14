@@ -33,7 +33,10 @@ export const useJobPostingSchema = (job: Job | undefined): void => {
         ? {
             jobLocation: {
               "@type": "Place",
-              address: { "@type": "PostalAddress", addressCountry: job.country },
+              address: {
+                "@type": "PostalAddress",
+                addressCountry: job.country,
+              },
             },
           }
         : {}),

@@ -8,7 +8,10 @@ import {
   ValidationError,
 } from "@/core/errors/error-types";
 
-const STATUS_TO_ERROR: Record<number, new (status: number, body: unknown) => ApiError> = {
+const STATUS_TO_ERROR: Record<
+  number,
+  new (status: number, body: unknown) => ApiError
+> = {
   400: ValidationError,
   401: UnauthorizedError,
   403: ForbiddenError,
@@ -18,7 +21,10 @@ const STATUS_TO_ERROR: Record<number, new (status: number, body: unknown) => Api
 };
 
 /** Builds the right typed ApiError subclass for a given HTTP status (or NetworkError when there is none). */
-export const mapErrorToApiError = (status: number | undefined, body: unknown): ApiError => {
+export const mapErrorToApiError = (
+  status: number | undefined,
+  body: unknown
+): ApiError => {
   if (!status) return new NetworkError(body);
   const ErrorCtor = STATUS_TO_ERROR[status] ?? ApiError;
   return new ErrorCtor(status, body);

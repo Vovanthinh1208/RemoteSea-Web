@@ -1,5 +1,8 @@
 import { Shield } from "lucide-react";
-import { TIERS, type PostJobFormState } from "@/features/post-job/post-job.schemas";
+import {
+  TIERS,
+  type PostJobFormState,
+} from "@/features/post-job/post-job.schemas";
 import { formatUsd } from "@/utils/format";
 
 interface StepReviewProps {
@@ -15,7 +18,9 @@ export const StepReview = ({ form }: StepReviewProps) => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-[22px] font-semibold text-neutral-900">Review &amp; pay</h2>
+        <h2 className="text-[22px] font-semibold text-neutral-900">
+          Review &amp; pay
+        </h2>
         <p className="mt-1 text-sm text-neutral-500">
           You&apos;ll complete payment securely on Stripe&apos;s checkout page.
         </p>

@@ -1,5 +1,13 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Bookmark, Briefcase, Search, TrendingUp } from "lucide-react";
+import {
+  ArrowRight,
+  Bell,
+  Bookmark,
+  Briefcase,
+  Eye,
+  Search,
+  TrendingUp,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   useMyApplications,
@@ -7,13 +15,19 @@ import {
 } from "@/features/applications/applications.queries";
 import { useMyTalentProfile } from "@/features/talent/talent.queries";
 import { useSavedJobIds } from "@/features/saved/saved.queries";
+import { useAlerts } from "@/features/alerts/alerts.queries";
 import { CompletionRing } from "@/features/talent/components/talent-dashboard/CompletionRing";
 import { StatCard } from "@/components/ui/stat-card";
 import { ApplicationsTable } from "@/features/talent/components/talent-dashboard/ApplicationsTable";
 import { RecommendedJobs } from "@/features/talent/components/talent-dashboard/RecommendedJobs";
 import { ProfileSnapshot } from "@/features/talent/components/talent-dashboard/ProfileSnapshot";
+import { AlertsPanel } from "@/features/talent/components/talent-dashboard/AlertsPanel";
+import { ActivityFeed } from "@/features/talent/components/talent-dashboard/ActivityFeed";
 import { TalentDashboardSkeleton } from "@/features/talent/components/talent-dashboard/TalentDashboardSkeleton";
-import { missingProfileFields, profileCompletion } from "@/features/talent/talent-dashboard.utils";
+import {
+  missingProfileFields,
+  profileCompletion,
+} from "@/features/talent/talent-dashboard.utils";
 import { ROUTES } from "@/constants/routes";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button } from "@/components/ui/button";
@@ -40,6 +54,8 @@ export const TalentDashboard = () => {
   const { data: stats, isLoading: statsLoading } = useMyApplicationStats();
   const { data: profile, isLoading: profileLoading } = useMyTalentProfile();
   const { data: savedJobIds } = useSavedJobIds();
+  const { data: alerts } = useAlerts();
+  const activeAlertsCount = alerts?.filter((a) => a.isActive).length ?? 0;
 
   // savedJobIds feeds only the secondary "Saved jobs" count stat, so it's kept
   // out of the blocking gate — the core dashboard (greeting, application stats,
@@ -55,7 +71,11 @@ export const TalentDashboard = () => {
       <div className="mx-auto max-w-[1240px] px-6 py-10">
         <EmptyState
           action={
-            <Button size="sm" variant="outline" onClick={() => refetchApplications()}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => refetchApplications()}
+            >
               Try again
             </Button>
           }
@@ -91,22 +111,40 @@ export const TalentDashboard = () => {
           </div>
           <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
             {greeting},{" "}
-            <em className="font-serif-italic text-brand-700">{user?.name ?? "there"}</em>.
+            <em className="font-serif-italic text-brand-700">
+              {user?.name ?? "there"}
+            </em>
+            .
           </h1>
           <p className="text-[14px] text-neutral-500">
             You have{" "}
             <strong className="font-semibold text-neutral-800">
-              {interviewing} {interviewing === 1 ? "interview" : "interviews"} in progress
+              {interviewing} {interviewing === 1 ? "interview" : "interviews"}{" "}
+              in progress
             </strong>{" "}
             and {offers} {offers === 1 ? "offer" : "offers"} on the table.
           </p>
         </div>
-        <Link
-          className="inline-flex h-10 items-center gap-2 rounded-12 bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700"
-          to={ROUTES.jobs}
-        >
-          <Search size={14} /> Browse jobs
-        </Link>
+        <div className="flex gap-2">
+          <Link
+            className="inline-flex h-10 items-center gap-2 rounded-12 border border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
+            to={ROUTES.alerts}
+          >
+            <Bell size={14} />
+            Alerts
+            {activeAlertsCount > 0 && (
+              <span className="rounded-full bg-brand-600 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-white">
+                {activeAlertsCount}
+              </span>
+            )}
+          </Link>
+          <Link
+            className="inline-flex h-10 items-center gap-2 rounded-12 bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700"
+            to={ROUTES.jobs}
+          >
+            <Search size={14} /> Browse jobs
+          </Link>
+        </div>
       </div>
 
       {/* Profile completion banner */}
@@ -116,7 +154,10 @@ export const TalentDashboard = () => {
           <div className="flex-1">
             <h3 className="mb-0.5 text-[14px] font-semibold text-neutral-900">
               Your profile is{" "}
-              <em className="italic text-brand-700" style={{ fontFamily: "var(--font-serif)" }}>
+              <em
+                className="italic text-brand-700"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
                 {completion}% complete
               </em>
             </h3>
@@ -147,7 +188,7 @@ export const TalentDashboard = () => {
       )}
 
       {/* KPI tiles */}
-      <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
         <StatCard
           icon={Briefcase}
           label="Applications sent"
@@ -163,6 +204,14 @@ export const TalentDashboard = () => {
           // "—" while its query streams in (it's no longer in the loading gate),
           // rather than flashing a wrong "0" before the real count arrives.
           value={savedJobIds === undefined ? "—" : savedJobIds.length}
+        />
+        {/* Static placeholder — no profile-view tracking exists yet. */}
+        <StatCard
+          icon={Eye}
+          label="Profile views"
+          size="md"
+          sub="last 7 days"
+          value="48"
         />
         <StatCard
           icon={TrendingUp}
@@ -181,6 +230,8 @@ export const TalentDashboard = () => {
         </div>
         <div>
           <ProfileSnapshot />
+          <AlertsPanel />
+          <ActivityFeed />
         </div>
       </div>
     </div>

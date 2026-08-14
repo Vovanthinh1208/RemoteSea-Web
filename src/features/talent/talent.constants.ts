@@ -10,7 +10,8 @@ const BUCKET_TO_YEARS: Record<YearsBucket, number> = {
   "10+": 12,
 };
 
-export const bucketToYears = (bucket: YearsBucket): number => BUCKET_TO_YEARS[bucket];
+export const bucketToYears = (bucket: YearsBucket): number =>
+  BUCKET_TO_YEARS[bucket];
 
 export const yearsToBucket = (years: number | null): YearsBucket => {
   if (years === null) return "0–2";
@@ -20,9 +21,18 @@ export const yearsToBucket = (years: number | null): YearsBucket => {
   return "10+";
 };
 
-export const SENIORITY_OPTIONS = ["Junior", "Mid", "Senior", "Staff", "Principal / Lead"] as const;
+export const SENIORITY_OPTIONS = [
+  "Junior",
+  "Mid",
+  "Senior",
+  "Staff",
+  "Principal / Lead",
+] as const;
 
-export const LABEL_TO_LEVEL: Record<(typeof SENIORITY_OPTIONS)[number], ExperienceLevel> = {
+export const LABEL_TO_LEVEL: Record<
+  (typeof SENIORITY_OPTIONS)[number],
+  ExperienceLevel
+> = {
   Junior: "ENTRY",
   Mid: "MID",
   Senior: "SENIOR",
@@ -30,13 +40,51 @@ export const LABEL_TO_LEVEL: Record<(typeof SENIORITY_OPTIONS)[number], Experien
   "Principal / Lead": "EXECUTIVE",
 };
 
-export const LEVEL_TO_LABEL: Record<string, (typeof SENIORITY_OPTIONS)[number]> = {
+export const LEVEL_TO_LABEL: Record<
+  string,
+  (typeof SENIORITY_OPTIONS)[number]
+> = {
   ENTRY: "Junior",
   MID: "Mid",
   SENIOR: "Senior",
   LEAD: "Staff",
   EXECUTIVE: "Principal / Lead",
 };
+
+export const PRIMARY_ROLE_OPTIONS = [
+  "Software Engineer · Frontend",
+  "Software Engineer · Backend",
+  "Software Engineer · Full-stack",
+  "Product Designer",
+  "Product Manager",
+  "Data Analyst",
+] as const;
+
+export const RIGHT_TO_WORK_OPTIONS = [
+  "Vietnam only",
+  "Vietnam + Singapore",
+  "Vietnam + Australia",
+  "Open to relocation / sponsorship",
+] as const;
+
+export const EMPLOYMENT_TYPE_KEYS = [
+  "FULL_TIME",
+  "CONTRACT",
+  "PART_TIME",
+] as const;
+
+export const TIMEZONE_OVERLAP_KEYS = [
+  "SG_HOURS",
+  "AU_HOURS",
+  "ASYNC_ONLY",
+] as const;
+
+export const NOTICE_PERIOD_OPTIONS = [
+  "Immediate",
+  "2 weeks",
+  "1 month",
+  "2+ months",
+] as const;
 
 export const TIMEZONE_OPTIONS = [
   "UTC+7 (Hanoi · Bangkok · Jakarta)",

@@ -2,13 +2,55 @@ import { Check, Minus } from "lucide-react";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
 const COMPARE = [
-  { f: "VN-specific talent pool", us: true, li: false, ro: false, up: "partial" },
-  { f: "Salary range required", us: true, li: false, ro: "partial", up: false },
-  { f: "Verified employer signal", us: true, li: false, ro: false, up: "partial" },
-  { f: "Direct line to founder", us: true, li: false, ro: false, up: false },
-  { f: "Pay per post (vs subscription)", us: true, li: false, ro: true, up: true },
-  { f: "Hands-on screening option", us: true, li: false, ro: false, up: false },
-  { f: "Money-back guarantee", us: true, li: false, ro: false, up: false },
+  {
+    f: "VN-specific talent pool",
+    us: true,
+    li: false,
+    ro: false,
+    up: "partial",
+  },
+  {
+    f: "Salary range required",
+    us: true,
+    li: false,
+    ro: "partial",
+    up: false,
+  },
+  {
+    f: "Verified employer signal",
+    us: true,
+    li: false,
+    ro: false,
+    up: "partial",
+  },
+  {
+    f: "Direct line to founder",
+    us: true,
+    li: false,
+    ro: false,
+    up: false,
+  },
+  {
+    f: "Pay per post (vs subscription)",
+    us: true,
+    li: false,
+    ro: true,
+    up: true,
+  },
+  {
+    f: "Hands-on screening option",
+    us: true,
+    li: false,
+    ro: false,
+    up: false,
+  },
+  {
+    f: "Money-back guarantee",
+    us: true,
+    li: false,
+    ro: false,
+    up: false,
+  },
 ];
 
 const COMPARE_COLUMNS = ["RemoteSEA", "LinkedIn", "RemoteOK", "Upwork"];
@@ -38,7 +80,9 @@ const CompareCell = ({ v, highlight }: CompareCellProps) => {
     );
   }
   return (
-    <span className="text-[11px] font-medium uppercase tracking-wide text-amber-700">partial</span>
+    <span className="text-[11px] font-medium uppercase tracking-wide text-amber-700">
+      partial
+    </span>
   );
 };
 
@@ -66,12 +110,17 @@ export const CompareSection = () => (
             className={`grid grid-cols-[1.4fr_repeat(4,1fr)] border-b border-neutral-100 last:border-none ${i % 2 === 1 ? "bg-neutral-50/50" : ""}`}
             key={row.f}
           >
-            <div className="px-5 py-4 text-[14px] font-medium text-neutral-800">{row.f}</div>
+            <div className="px-5 py-4 text-[14px] font-medium text-neutral-800">
+              {row.f}
+            </div>
             <div className="flex items-center justify-center border-x border-brand-100 bg-gradient-to-b from-brand-50/30 to-transparent px-5 py-4">
               <CompareCell highlight v={row.us as CellValue} />
             </div>
             {[row.li, row.ro, row.up].map((v, j) => (
-              <div className="flex items-center justify-center px-5 py-4" key={j}>
+              <div
+                className="flex items-center justify-center px-5 py-4"
+                key={j}
+              >
                 <CompareCell v={v as CellValue} />
               </div>
             ))}

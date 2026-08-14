@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { forgotPasswordSchema, type ForgotPasswordFormValues } from "@/features/auth/auth.schemas";
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordFormValues,
+} from "@/features/auth/auth.schemas";
 import { forgotPassword } from "@/features/auth/auth.service";
 import { TextField } from "@/components/shared/TextField";
 import { applyFormSubmitError } from "@/utils/form-errors";
@@ -28,7 +31,13 @@ export const ForgotPasswordForm = () => {
       await forgotPassword(values.email);
       setIsSent(true);
     } catch (err) {
-      setFormError(applyFormSubmitError(err, setError, "Something went wrong. Please try again."));
+      setFormError(
+        applyFormSubmitError(
+          err,
+          setError,
+          "Something went wrong. Please try again."
+        )
+      );
     }
   };
 

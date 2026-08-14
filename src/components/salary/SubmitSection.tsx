@@ -13,20 +13,30 @@ export const SubmitSection = () => {
           <div>
             <Eyebrow className="mb-2">Contribute</Eyebrow>
             <h2 className="mb-3 text-[28px] font-semibold tracking-tight text-neutral-900">
-              Submit your salary, <em className="font-serif-italic text-brand-700">anonymously</em>.
+              Submit your salary,{" "}
+              <em className="font-serif-italic text-brand-700">anonymously</em>.
             </h2>
             <p className="mb-6 text-sm leading-relaxed text-neutral-500">
-              It takes 90 seconds. No name, no email required. Your data point makes the next
-              person&apos;s negotiation a little bit fairer.
+              It takes 90 seconds. No name, no email required. Your data point
+              makes the next person&apos;s negotiation a little bit fairer.
             </p>
 
             <div className="mb-6 space-y-2.5">
               {[
-                { icon: ShieldCheck, label: "Encrypted & anonymized" },
+                {
+                  icon: ShieldCheck,
+                  label: "Encrypted & anonymized",
+                },
                 { icon: Users, label: "612 submissions so far" },
-                { icon: RefreshCw, label: "Reviewed weekly by our team" },
+                {
+                  icon: RefreshCw,
+                  label: "Reviewed weekly by our team",
+                },
               ].map(({ icon: Icon, label }) => (
-                <div className="flex items-center gap-2.5 text-[13px] text-neutral-500" key={label}>
+                <div
+                  className="flex items-center gap-2.5 text-[13px] text-neutral-500"
+                  key={label}
+                >
                   <Icon className="text-brand-600" size={14} />
                   {label}
                 </div>
@@ -63,7 +73,9 @@ export const SubmitSection = () => {
                 <span
                   className={cn(
                     "text-[13px] font-medium",
-                    highlight ? "font-semibold text-brand-700" : "text-neutral-900"
+                    highlight
+                      ? "font-semibold text-brand-700"
+                      : "text-neutral-900"
                   )}
                 >
                   {v}

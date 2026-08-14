@@ -1,9 +1,15 @@
 export type JobType = "FULL_TIME" | "PART_TIME" | "CONTRACT" | "FREELANCE";
 export type ExperienceLevel = "ENTRY" | "MID" | "SENIOR" | "LEAD" | "EXECUTIVE";
-export type JobStatus = "DRAFT" | "PENDING_REVIEW" | "ACTIVE" | "CLOSED" | "REJECTED";
+export type JobStatus =
+  "DRAFT" | "PENDING_REVIEW" | "ACTIVE" | "CLOSED" | "REJECTED";
 export type PlanType = "STANDARD" | "FEATURED" | "HANDS_ON";
 
-export type Category = { id: string; name: string; slug: string; icon: string | null };
+export type Category = {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string | null;
+};
 export type Skill = { id: string; name: string; slug: string };
 
 export type JobFacets = {
@@ -49,14 +55,17 @@ export type Job = {
   createdAt: string;
   employer: JobEmployerSummary;
   categories: { category: Category }[];
-  skills: { skill: Skill }[];
+  skills: { skill: Skill; isRequired: boolean }[];
 };
 
 // GET /jobs (the paginated board) sends a deliberately narrower shape than the
 // single-job detail response — only what JobCard and RecommendedJobs actually
 // render. No description/requirements/benefits/currency/status/planType/counts,
 // which used to be sent (unused) for every card on every page of results.
-export type JobListItemEmployer = { companyName: string; isVerified: boolean };
+export type JobListItemEmployer = {
+  companyName: string;
+  isVerified: boolean;
+};
 
 export type JobListItem = {
   id: string;
@@ -65,6 +74,7 @@ export type JobListItem = {
   level: ExperienceLevel;
   salaryMin: number | null;
   salaryMax: number | null;
+  currency: string;
   isRemote: boolean;
   timezone: string | null;
   country: string | null;
@@ -74,5 +84,5 @@ export type JobListItem = {
   createdAt: string;
   employer: JobListItemEmployer;
   categories: { category: Category }[];
-  skills: { skill: Skill }[];
+  skills: { skill: Skill; isRequired: boolean }[];
 };

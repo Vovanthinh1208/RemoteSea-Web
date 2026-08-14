@@ -17,7 +17,11 @@ describe("buildActivePills", () => {
 
     const pills = buildActivePills(filters, undefined, vi.fn());
 
-    expect(pills.map((p) => p.label)).toEqual(["Full-time", "Senior", "SEA / APAC"]);
+    expect(pills.map((p) => p.label)).toEqual([
+      "Full-time",
+      "Senior",
+      "SEA / APAC",
+    ]);
   });
 
   it("resolves a category slug to its display name via the categories list", () => {
@@ -51,11 +55,17 @@ describe("buildActivePills", () => {
 
   it("clearing a pill calls onChange with that value removed and everything else intact", () => {
     const onChange = vi.fn();
-    const filters = { ...DEFAULT_FILTERS, jobType: ["Full-time", "Contract"] };
+    const filters = {
+      ...DEFAULT_FILTERS,
+      jobType: ["Full-time", "Contract"],
+    };
 
     const pills = buildActivePills(filters, undefined, onChange);
     pills.find((p) => p.label === "Full-time")?.clear();
 
-    expect(onChange).toHaveBeenCalledWith({ ...filters, jobType: ["Contract"] });
+    expect(onChange).toHaveBeenCalledWith({
+      ...filters,
+      jobType: ["Contract"],
+    });
   });
 });

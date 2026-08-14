@@ -70,7 +70,11 @@ export class ErrorBoundary extends Component<Props, State> {
               : "An unexpected error occurred. Try reloading the page."}
           </p>
           {!isChunkError && (
-            <Button className="mt-6" variant="primary" onClick={() => window.location.reload()}>
+            <Button
+              className="mt-6"
+              variant="primary"
+              onClick={() => window.location.reload()}
+            >
               Reload
             </Button>
           )}

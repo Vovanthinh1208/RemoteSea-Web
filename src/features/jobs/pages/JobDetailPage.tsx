@@ -13,14 +13,20 @@ import { VnSignalCard } from "@/features/jobs/pages/job-detail/VnSignalCard";
 import { SalaryBenchmarkCard } from "@/features/jobs/pages/job-detail/SalaryBenchmarkCard";
 import { QuickFactsCard } from "@/features/jobs/pages/job-detail/QuickFactsCard";
 import { JobCompanyCard } from "@/features/jobs/pages/job-detail/JobCompanyCard";
+import { MatchCard } from "@/features/jobs/pages/job-detail/MatchCard";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useJobPostingSchema } from "@/hooks/useJobPostingSchema";
 import { LEVEL_LABELS, JOB_TYPE_LABELS } from "@/utils/labels";
 import { ROUTES } from "@/constants/routes";
 import { formatSalaryRange } from "@/utils/format";
+import { useMyMatch } from "@/features/matching/useMyMatch";
 
-const jobMetaDescription = (job: NonNullable<ReturnType<typeof useJobQuery>["data"]>): string => {
-  const range = formatSalaryRange(job.salaryMin, job.salaryMax, { prefix: `${job.currency} ` });
+const jobMetaDescription = (
+  job: NonNullable<ReturnType<typeof useJobQuery>["data"]>
+): string => {
+  const range = formatSalaryRange(job.salaryMin, job.salaryMax, {
+    prefix: `${job.currency} `,
+  });
   const salary = range ? ` · ${range}/mo` : "";
   const location = job.isRemote ? "Remote" : (job.country ?? "Remote");
   return `${LEVEL_LABELS[job.level]} ${JOB_TYPE_LABELS[job.jobType]} role at ${job.employer.companyName} · ${location}${salary}. Apply on RemoteSEA.`;
@@ -33,6 +39,7 @@ export const JobDetailPage = () => {
   // card compares against it, so it's meaningless (and shows $0) otherwise.
   const hasSalary = job?.salaryMin != null;
   const { data: benchmarks } = useSalaryBenchmarks(hasSalary);
+  const match = useMyMatch(job);
   useDocumentTitle(
     job ? `${job.title} at ${job.employer.companyName}` : "Job",
     job ? jobMetaDescription(job) : undefined
@@ -51,7 +58,9 @@ export const JobDetailPage = () => {
   if (isError || !job) {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-md flex-col items-center justify-center px-6 text-center">
-        <h1 className="text-2xl font-semibold text-neutral-900">Job not found</h1>
+        <h1 className="text-2xl font-semibold text-neutral-900">
+          Job not found
+        </h1>
         <p className="mt-2 text-sm text-neutral-500">
           This listing may have closed or the link is incorrect.
         </p>
@@ -84,8 +93,14 @@ export const JobDetailPage = () => {
         <div className="space-y-4">
           <div className="sticky top-6 space-y-4">
             <ApplyCard job={job} />
-            <VnSignalCard companyName={job.employer.companyName} vnHireCount={job.vnHireCount} />
-            {hasSalary && <SalaryBenchmarkCard benchmarks={benchmarks} job={job} />}
+            {match && <MatchCard match={match} />}
+            <VnSignalCard
+              companyName={job.employer.companyName}
+              vnHireCount={job.vnHireCount}
+            />
+            {hasSalary && (
+              <SalaryBenchmarkCard benchmarks={benchmarks} job={job} />
+            )}
             <QuickFactsCard job={job} />
             <JobCompanyCard job={job} />
           </div>

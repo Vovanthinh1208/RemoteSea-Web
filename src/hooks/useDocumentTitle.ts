@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 
-const syncMeta = (selector: string, content: string | undefined): (() => void) => {
+const syncMeta = (
+  selector: string,
+  content: string | undefined
+): (() => void) => {
   if (!content) return () => {};
   const tag = document.querySelector(selector);
   if (!tag) return () => {};

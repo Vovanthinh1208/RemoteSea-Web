@@ -1,6 +1,9 @@
 import { useMemo } from "react";
 import { cn } from "@/utils/cn";
-import { STATUS_TO_BUCKET, type AppStatusBucket } from "@/features/talent/talent-dashboard.utils";
+import {
+  STATUS_TO_BUCKET,
+  type AppStatusBucket,
+} from "@/features/talent/talent-dashboard.utils";
 import type { ApplicationWithJob } from "@/types/application";
 
 interface PipelineProps {

@@ -2,7 +2,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import { registerSchema, type RegisterFormValues } from "@/features/auth/auth.schemas";
+import {
+  registerSchema,
+  type RegisterFormValues,
+} from "@/features/auth/auth.schemas";
 import { OAuthButtons } from "@/features/auth/components/OAuthButtons";
 import { OrDivider } from "@/features/auth/components/OrDivider";
 import { TextField } from "@/components/shared/TextField";
@@ -22,7 +25,9 @@ const ROLE_OPTIONS = [
 const DUPLICATE_EMAIL_STATUS = 409;
 
 const resolveRegisterErrorMessage = (error: ApiError): string =>
-  error.status === DUPLICATE_EMAIL_STATUS ? "That email is already registered." : error.message;
+  error.status === DUPLICATE_EMAIL_STATUS
+    ? "That email is already registered."
+    : error.message;
 
 export const RegisterForm = () => {
   const navigate = useNavigate();
@@ -40,7 +45,12 @@ export const RegisterForm = () => {
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { name: "", email: "", password: "", role: "TALENT" },
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      role: "TALENT",
+    },
   });
 
   const role = watch("role");
@@ -50,7 +60,10 @@ export const RegisterForm = () => {
     setFormError(null);
     try {
       const user = await registerAccount(values);
-      navigate(user.role === "EMPLOYER" ? ROUTES.employerDashboard : "/profile", { replace: true });
+      navigate(
+        user.role === "EMPLOYER" ? ROUTES.employerDashboard : "/profile",
+        { replace: true }
+      );
     } catch (err) {
       setFormError(
         applyFormSubmitError(

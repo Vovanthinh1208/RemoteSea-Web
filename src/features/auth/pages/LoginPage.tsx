@@ -29,7 +29,9 @@ export const LoginPage = () => {
       {/* Left panel */}
       <div
         className="hidden flex-col justify-between p-12 text-white lg:flex"
-        style={{ background: "linear-gradient(160deg, #0D3D1F 0%, #1F7A3D 100%)" }}
+        style={{
+          background: "linear-gradient(160deg, #0D3D1F 0%, #1F7A3D 100%)",
+        }}
       >
         <div className="flex items-center gap-2 text-lg font-semibold">
           <span className="grid h-7 w-7 place-items-center rounded-8 bg-white/10 pb-0.5 font-serif text-xl italic leading-none">
@@ -95,7 +97,9 @@ export const LoginPage = () => {
           </div>
         </div>
 
-        <p className="text-xs text-white/30">© 2026 RemoteSEA · Made in Đà Nẵng, Vietnam 🇻🇳</p>
+        <p className="text-xs text-white/30">
+          © 2026 RemoteSEA · Made in Đà Nẵng, Vietnam 🇻🇳
+        </p>
       </div>
 
       {/* Right panel (form) */}
@@ -123,7 +127,9 @@ export const LoginPage = () => {
         <h1 className="mb-1 text-[36px] font-semibold tracking-tight text-neutral-900">
           Sign in to RemoteSEA.
         </h1>
-        <p className="mb-8 text-sm text-neutral-500">Continue your search where you left off.</p>
+        <p className="mb-8 text-sm text-neutral-500">
+          Continue your search where you left off.
+        </p>
 
         <LoginForm />
       </div>

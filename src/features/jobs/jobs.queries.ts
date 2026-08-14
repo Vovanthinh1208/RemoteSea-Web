@@ -62,7 +62,9 @@ export const useCreateJob = () => {
     onSuccess: () => {
       // Without this, a newly-posted job can be missing from the employer's own
       // dashboard (if it was cached earlier this session) for up to staleTime.
-      queryClient.invalidateQueries({ queryKey: employerKeys.jobs() });
+      queryClient.invalidateQueries({
+        queryKey: employerKeys.jobs(),
+      });
       queryClient.invalidateQueries({ queryKey: jobKeys.all });
     },
   });

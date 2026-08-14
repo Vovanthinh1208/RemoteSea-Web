@@ -12,7 +12,9 @@ export const RegisterPage = () => {
       {/* Left panel */}
       <div
         className="hidden flex-col justify-between p-12 text-white lg:flex"
-        style={{ background: "linear-gradient(160deg, #0D3D1F 0%, #1F7A3D 100%)" }}
+        style={{
+          background: "linear-gradient(160deg, #0D3D1F 0%, #1F7A3D 100%)",
+        }}
       >
         <div className="flex items-center gap-2 text-lg font-semibold">
           <span className="grid h-7 w-7 place-items-center rounded-8 bg-white/10 pb-0.5 font-serif text-xl italic leading-none">
@@ -26,7 +28,10 @@ export const RegisterPage = () => {
           <p className="mb-4 text-[40px] font-semibold leading-tight">
             <span
               className="text-brand-400"
-              style={{ fontFamily: "var(--font-serif)", fontStyle: "italic" }}
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontStyle: "italic",
+              }}
             >
               500+ talent
             </span>{" "}
@@ -37,12 +42,13 @@ export const RegisterPage = () => {
             finding remote work.
           </p>
           <p className="mb-8 max-w-sm text-sm leading-relaxed text-white/60">
-            No spam. No recruiters in your inbox. Just curated jobs you can actually trust.
+            No spam. No recruiters in your inbox. Just curated jobs you can
+            actually trust.
           </p>
           <div className="rounded-16 border border-white/10 bg-white/5 p-5">
             <p className="mb-4 text-sm italic leading-relaxed text-white/80">
-              &ldquo;Mình apply được vào đúng công ty Singapore phù hợp timezone và được offer
-              $2,800/month sau 3 tuần.&rdquo;
+              &ldquo;Mình apply được vào đúng công ty Singapore phù hợp timezone
+              và được offer $2,800/month sau 3 tuần.&rdquo;
             </p>
             <div className="flex items-center gap-3">
               <div className="grid h-8 w-8 place-items-center rounded-full bg-brand-600 text-xs font-semibold">
@@ -50,12 +56,16 @@ export const RegisterPage = () => {
               </div>
               <div>
                 <div className="text-sm font-medium">Phạm Tuấn</div>
-                <div className="text-[12px] text-white/40">Frontend Developer · Hired 3 weeks</div>
+                <div className="text-[12px] text-white/40">
+                  Frontend Developer · Hired 3 weeks
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <p className="text-xs text-white/30">© 2026 RemoteSEA · Free for talent. Forever.</p>
+        <p className="text-xs text-white/30">
+          © 2026 RemoteSEA · Free for talent. Forever.
+        </p>
       </div>
 
       {/* Right panel */}
@@ -94,7 +104,9 @@ export const RegisterPage = () => {
         <h1 className="mb-1 text-[36px] font-semibold tracking-tight text-neutral-900">
           Join RemoteSEA.
         </h1>
-        <p className="mb-8 text-sm text-neutral-500">Free for talent. Forever. No card needed.</p>
+        <p className="mb-8 text-sm text-neutral-500">
+          Free for talent. Forever. No card needed.
+        </p>
 
         <RegisterForm />
       </div>

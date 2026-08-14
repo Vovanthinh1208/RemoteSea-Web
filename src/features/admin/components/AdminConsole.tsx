@@ -14,14 +14,19 @@ const TABS = [
 
 type AdminTabId = (typeof TABS)[number]["id"];
 
-const isAdminTabId = (v: string): v is AdminTabId => TABS.some((t) => t.id === v);
+const isAdminTabId = (v: string): v is AdminTabId =>
+  TABS.some((t) => t.id === v);
 
 export const AdminConsole = () => {
   // URL-synced like its sibling components (AdminEmployers' filter/search,
   // ApplicationsTable/ApplicantsPanel's tabs) — previously this was the one
   // piece of admin nav that reset to "Review queue" on every refresh or
   // shared link.
-  const [tab, setTab] = useSearchParamState<AdminTabId>("tab", "queue", isAdminTabId);
+  const [tab, setTab] = useSearchParamState<AdminTabId>(
+    "tab",
+    "queue",
+    isAdminTabId
+  );
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -29,7 +34,9 @@ export const AdminConsole = () => {
         <aside className="w-[180px] flex-shrink-0">
           <div className="mb-6">
             <Eyebrow>RemoteSEA</Eyebrow>
-            <p className="text-[15px] font-semibold text-neutral-900">Ops console</p>
+            <p className="text-[15px] font-semibold text-neutral-900">
+              Ops console
+            </p>
           </div>
           <nav aria-label="Ops console sections" className="space-y-0.5">
             {TABS.map((t) => (

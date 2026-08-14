@@ -1,5 +1,9 @@
 import { Layers } from "lucide-react";
-import { formatSalary, JOB_TYPE_LABELS, PLAN_LABELS } from "@/features/admin/admin.utils";
+import {
+  formatSalary,
+  JOB_TYPE_LABELS,
+  PLAN_LABELS,
+} from "@/features/admin/admin.utils";
 import type { AdminJob } from "@/types/admin";
 
 interface SubmissionSummaryProps {
@@ -14,7 +18,10 @@ export const SubmissionSummary = ({ job }: SubmissionSummaryProps) => {
       mono: true,
     },
     { k: "Type", v: JOB_TYPE_LABELS[job.jobType] },
-    { k: "Region", v: job.country ?? (job.isRemote ? "Remote" : "—") },
+    {
+      k: "Region",
+      v: job.country ?? (job.isRemote ? "Remote" : "—"),
+    },
     { k: "Plan", v: PLAN_LABELS[job.planType] },
   ];
 
@@ -30,7 +37,9 @@ export const SubmissionSummary = ({ job }: SubmissionSummaryProps) => {
             key={f.k}
           >
             <span className="text-neutral-500">{f.k}</span>
-            <span className={`font-medium text-neutral-900 ${f.mono ? "font-mono" : ""}`}>
+            <span
+              className={`font-medium text-neutral-900 ${f.mono ? "font-mono" : ""}`}
+            >
               {f.v}
             </span>
           </div>
