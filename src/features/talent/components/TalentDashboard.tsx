@@ -21,6 +21,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { ApplicationsTable } from "@/features/talent/components/talent-dashboard/ApplicationsTable";
 import { RecommendedJobs } from "@/features/talent/components/talent-dashboard/RecommendedJobs";
 import { ProfileSnapshot } from "@/features/talent/components/talent-dashboard/ProfileSnapshot";
+import { InvitationsPanel } from "@/features/talent/components/talent-dashboard/InvitationsPanel";
 import { AlertsPanel } from "@/features/talent/components/talent-dashboard/AlertsPanel";
 import { ActivityFeed } from "@/features/talent/components/talent-dashboard/ActivityFeed";
 import { TalentDashboardSkeleton } from "@/features/talent/components/talent-dashboard/TalentDashboardSkeleton";
@@ -230,6 +231,7 @@ export const TalentDashboard = () => {
         </div>
         <div>
           <ProfileSnapshot />
+          <InvitationsPanel />
           <AlertsPanel />
           <ActivityFeed />
         </div>
