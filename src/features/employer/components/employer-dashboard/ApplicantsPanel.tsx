@@ -8,6 +8,7 @@ import { useToastMutation } from "@/hooks/useToastMutation";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { useUpdateApplicationStatus } from "@/features/employer/employer.queries";
 import { MatchBadge } from "@/features/matching/MatchBadge";
+import { AvailabilityBadge } from "@/features/availability/AvailabilityBadge";
 import {
   APPLICANT_STATUS,
   colorFor,
@@ -105,6 +106,13 @@ const ApplicantRow = memo(function ApplicantRow({
           <MatchBadge match={a.match} />
         </div>
       )}
+
+      <div className="flex-shrink-0">
+        <AvailabilityBadge
+          isOpenToWork={a.talent.isOpenToWork}
+          noticePeriod={a.talent.noticePeriod}
+        />
+      </div>
 
       <div className="flex-shrink-0 text-right">
         <Badge

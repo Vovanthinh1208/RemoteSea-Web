@@ -7,6 +7,7 @@ import type {
 } from "@/types/job";
 import type {
   EmploymentType,
+  NoticePeriod,
   RightToWork,
   TimezoneOverlap,
 } from "@/types/talent";
@@ -109,6 +110,12 @@ export type EmployerApplicant = {
     employmentTypes: EmploymentType[];
     timezoneOverlap: TimezoneOverlap[];
     rightToWork: RightToWork | null;
+    // noticePeriod feeds the same match-score calculation as the fields
+    // above (see match.util.ts's scoreAvailability). isOpenToWork doesn't —
+    // it only decides whether ApplicantsPanel's AvailabilityBadge renders
+    // (an applicant can have turned it off after applying).
+    noticePeriod: NoticePeriod | null;
+    isOpenToWork: boolean;
   };
 };
 

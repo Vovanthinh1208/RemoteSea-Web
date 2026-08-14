@@ -5,6 +5,7 @@ import { SalaryBadge } from "@/components/ui/salary-badge";
 import { Tag } from "@/components/ui/tag";
 import { MatchBadge } from "@/features/matching/MatchBadge";
 import type { MatchResult } from "@/features/matching/match.util";
+import { AvailabilityBadge } from "@/features/availability/AvailabilityBadge";
 import { colorFor } from "@/features/employer/employer-dashboard.utils";
 import { personInitial } from "@/utils/name";
 import { countryFlag } from "@/utils/color";
@@ -70,6 +71,9 @@ export const TalentCard = memo(function TalentCard({
 
       <div className="flex flex-shrink-0 flex-col items-end gap-2">
         {match && <MatchBadge match={match} />}
+        {/* Talent search already filters to isOpenToWork:true (see
+            buildTalentSearchWhere) — always true here, no need to select it. */}
+        <AvailabilityBadge isOpenToWork noticePeriod={talent.noticePeriod} />
         <SalaryBadge
           max={talent.desiredSalaryMax}
           min={talent.desiredSalaryMin}

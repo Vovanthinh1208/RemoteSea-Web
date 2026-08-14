@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { AvailabilityBadge } from "@/features/availability/AvailabilityBadge";
 import { usePublicTalentProfile } from "@/features/talent/talent.queries";
 import { useAuth } from "@/contexts/AuthContext";
 import { LEVEL_TO_LABEL } from "@/features/talent/talent.constants";
@@ -283,13 +284,10 @@ export const PublicTalentProfilePage = () => {
                   <ShieldCheck className="text-brand-600" size={11} /> Verified
                 </span>
               )}
-              {profile.isOpenToWork && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-100 bg-brand-50 px-2.5 py-0.5 text-[11.5px] font-medium text-brand-700">
-                  <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
-                  Open to opportunities
-                  {isRecruiterPreview && " · ready in 2 weeks"}
-                </span>
-              )}
+              <AvailabilityBadge
+                isOpenToWork={profile.isOpenToWork}
+                noticePeriod={profile.noticePeriod}
+              />
             </div>
             <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
               {name}

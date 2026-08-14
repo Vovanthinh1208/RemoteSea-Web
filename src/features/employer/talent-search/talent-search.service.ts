@@ -19,6 +19,7 @@ export const buildTalentSearchParams = (
   timezoneOverlap: query.timezoneOverlap.length
     ? query.timezoneOverlap
     : undefined,
+  noticePeriod: query.noticePeriod.length ? query.noticePeriod : undefined,
   page: query.page,
   limit,
 });
