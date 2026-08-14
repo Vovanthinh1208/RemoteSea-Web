@@ -92,7 +92,7 @@ export const TalentFilterSidebar = ({
     key: K,
     val: TalentSearchFilters[K][number]
   ) => {
-    const current = filters[key];
+    const current = filters[key] as TalentSearchFilters[K][number][];
     onChange({
       ...filters,
       [key]: current.includes(val)
