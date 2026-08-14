@@ -70,6 +70,9 @@ export const talentSearchKeys = {
 
 export const salaryKeys = {
   benchmarks: () => ["salary", "benchmarks"] as const,
+  benchmarksBySeniority: () =>
+    ["salary", "benchmarks", "by-seniority"] as const,
+  benchmarksByCountry: () => ["salary", "benchmarks", "by-country"] as const,
 };
 
 export const savedKeys = {

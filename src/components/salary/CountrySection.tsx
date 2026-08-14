@@ -1,42 +1,21 @@
 import { cn } from "@/utils/cn";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { Spinner } from "@/components/ui/spinner";
+import { countryFlag } from "@/utils/color";
+import { useSalaryBenchmarksByCountry } from "@/features/salary/salary.queries";
 
-const COUNTRY_BANDS = [
-  {
-    country: "Singapore",
-    flag: "🇸🇬",
-    median: 3800,
-    range: "2.4k–6.2k",
-    jobs: 18,
-    color: "text-brand-700",
-  },
-  {
-    country: "Australia",
-    flag: "🇦🇺",
-    median: 4200,
-    range: "2.8k–7.5k",
-    jobs: 14,
-    color: "text-blue-600",
-  },
-  {
-    country: "United States (remote-first)",
-    flag: "🇺🇸",
-    median: 5600,
-    range: "3.5k–9k",
-    jobs: 11,
-    color: "text-amber-600",
-  },
-  {
-    country: "Europe (remote-first)",
-    flag: "🇪🇺",
-    median: 3400,
-    range: "2.2k–5.4k",
-    jobs: 4,
-    color: "text-neutral-600",
-  },
+const ACCENT_COLORS = [
+  "text-brand-700",
+  "text-blue-600",
+  "text-amber-600",
+  "text-neutral-600",
 ];
 
+const fmtK = (n: number) => `${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k`;
+
 export const CountrySection = () => {
+  const { data, isLoading, isError } = useSalaryBenchmarksByCountry();
+
   return (
     <section className="border-y border-neutral-100 bg-white py-16 [contain-intrinsic-size:auto_44rem] [content-visibility:auto]">
       <div className="mx-auto max-w-[1240px] px-6">
@@ -47,40 +26,53 @@ export const CountrySection = () => {
             <em className="font-serif-italic text-brand-700">money</em> lives
           </h2>
           <p className="mx-auto mt-2 max-w-lg text-sm text-neutral-500">
-            Median compensation for mid-level remote roles, by where the company
-            is headquartered.
+            Average compensation for open remote roles, by where the company is
+            headquartered.
           </p>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {COUNTRY_BANDS.map((c) => (
-            <div
-              className="rounded-20 border border-neutral-100 bg-white p-6 text-center transition-shadow hover:shadow-card"
-              key={c.country}
-            >
-              <div className="mb-2 text-[36px] leading-none">{c.flag}</div>
-              <p className="mb-3 text-[13.5px] font-medium text-neutral-700">
-                {c.country}
-              </p>
-              <p
-                className={cn(
-                  "mb-1 text-[32px] font-semibold leading-none tracking-tight",
-                  c.color
-                )}
+
+        {isLoading ? (
+          <div className="flex items-center justify-center py-10">
+            <Spinner className="h-6 w-6" />
+          </div>
+        ) : isError || !data || data.length === 0 ? (
+          <div className="py-10 text-center text-sm text-neutral-400">
+            Country data isn&apos;t available right now.
+          </div>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {data.map((c, i) => (
+              <div
+                className="rounded-20 border border-neutral-100 bg-white p-6 text-center transition-shadow hover:shadow-card"
+                key={c.country}
               >
-                ${c.median.toLocaleString()}
-                <span className="ml-0.5 text-[14px] font-normal text-neutral-400">
-                  /mo
+                <div className="mb-2 text-[36px] leading-none">
+                  {countryFlag(c.country)}
+                </div>
+                <p className="mb-3 text-[13.5px] font-medium text-neutral-700">
+                  {c.country}
+                </p>
+                <p
+                  className={cn(
+                    "mb-1 text-[32px] font-semibold leading-none tracking-tight",
+                    ACCENT_COLORS[i % ACCENT_COLORS.length]
+                  )}
+                >
+                  ${c.mid.toLocaleString()}
+                  <span className="ml-0.5 text-[14px] font-normal text-neutral-400">
+                    /mo
+                  </span>
+                </p>
+                <p className="mb-3 text-[12px] text-neutral-400">
+                  Range ${fmtK(c.min)}–${fmtK(c.max)}
+                </p>
+                <span className="rounded-full bg-neutral-100 px-2.5 py-1 text-[11.5px] font-medium text-neutral-500">
+                  {c.count} open listing{c.count === 1 ? "" : "s"}
                 </span>
-              </p>
-              <p className="mb-3 text-[12px] text-neutral-400">
-                Range {c.range}
-              </p>
-              <span className="rounded-full bg-neutral-100 px-2.5 py-1 text-[11.5px] font-medium text-neutral-500">
-                {c.jobs} open this month
-              </span>
-            </div>
-          ))}
-        </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,5 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { listSalaryBenchmarks } from "@/features/salary/salary.service";
+import {
+  listSalaryBenchmarks,
+  listSalaryBenchmarksByCountry,
+  listSalaryBenchmarksBySeniority,
+} from "@/features/salary/salary.service";
 import { salaryKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 
@@ -13,6 +17,26 @@ export const useSalaryBenchmarks = (enabled = true) =>
     ...TIER.reference,
   });
 
+export const useSalaryBenchmarksBySeniority = (enabled = true) =>
+  useQuery({
+    queryKey: salaryKeys.benchmarksBySeniority(),
+    queryFn: ({ signal }) => listSalaryBenchmarksBySeniority({ signal }),
+    enabled,
+    ...TIER.reference,
+  });
+
+export const useSalaryBenchmarksByCountry = (enabled = true) =>
+  useQuery({
+    queryKey: salaryKeys.benchmarksByCountry(),
+    queryFn: ({ signal }) => listSalaryBenchmarksByCountry({ signal }),
+    enabled,
+    ...TIER.reference,
+  });
+
 // Public surface for the domain type too — cross-feature consumers import
 // from here, not from the feature's inner service/api layers.
-export type { SalaryBenchmark } from "@/features/salary/salary.service";
+export type {
+  SalaryBenchmark,
+  SalaryBenchmarkBySeniority,
+  SalaryBenchmarkByCountry,
+} from "@/features/salary/salary.service";
