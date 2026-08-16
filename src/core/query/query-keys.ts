@@ -23,6 +23,10 @@ export const adminKeys = {
       : (["admin", "jobs"] as const),
   employers: () => ["admin", "employers"] as const,
   revenue: () => ["admin", "revenue"] as const,
+  reports: (status?: string) =>
+    status
+      ? (["admin", "reports", status] as const)
+      : (["admin", "reports"] as const),
 };
 
 export const alertKeys = {

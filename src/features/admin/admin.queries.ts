@@ -3,12 +3,15 @@ import {
   getAdminRevenue,
   listAdminEmployers,
   listAdminJobs,
+  listAdminReports,
+  resolveAdminReport,
   reviewAdminJob,
   updateAdminEmployer,
 } from "@/features/admin/admin.service";
 import { useAuth } from "@/contexts/AuthContext";
 import { adminKeys, jobKeys } from "@/core/query/query-keys";
 import type { JobStatus } from "@/types/job";
+import type { JobReportStatus } from "@/types/job-report";
 
 export const ADMIN_JOBS_KEY = adminKeys.jobs();
 export const ADMIN_EMPLOYERS_KEY = adminKeys.employers();
@@ -103,5 +106,36 @@ export const useAdminRevenue = () => {
     queryKey: adminKeys.revenue(),
     queryFn: ({ signal }) => getAdminRevenue({ signal }),
     enabled: !!user && user.role === "ADMIN",
+  });
+};
+
+export const useAdminReports = (status: JobReportStatus = "OPEN") => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: adminKeys.reports(status),
+    queryFn: ({ signal }) =>
+      listAdminReports({ status, limit: ADMIN_LIST_LIMIT }, { signal }),
+    enabled: !!user && user.role === "ADMIN",
+    staleTime: ADMIN_QUEUE_STALE_TIME_MS,
+    refetchOnWindowFocus: true,
+  });
+};
+
+export const useResolveAdminReport = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      id,
+      action,
+    }: {
+      id: string;
+      action: "resolve" | "dismiss";
+    }) => resolveAdminReport(id, action),
+    // Never touches Job.status, so unlike useReviewAdminJob this doesn't
+    // need to invalidate jobKeys — a resolved/dismissed report is purely an
+    // admin-side signal.
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: adminKeys.reports() });
+    },
   });
 };

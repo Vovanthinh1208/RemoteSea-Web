@@ -1,5 +1,6 @@
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { countryFlag } from "@/features/jobs/jobs.utils";
+import { ReportJobForm } from "@/features/jobs/pages/job-detail/ReportJobForm";
 import type { Job } from "@/types/job";
 
 interface JobCompanyCardProps {
@@ -31,6 +32,7 @@ export const JobCompanyCard = ({ job }: JobCompanyCardProps) => {
           {job.employer.description}
         </p>
       )}
+      <ReportJobForm jobId={job.id} />
     </div>
   );
 };

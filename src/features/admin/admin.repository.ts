@@ -1,8 +1,10 @@
 import { apiClient } from "@/core/http/http-client";
 import type { RequestOptions } from "@/core/http/request-config";
 import type { JobStatus } from "@/types/job";
+import type { JobReportStatus } from "@/types/job-report";
 import type {
   AdminEmployersResponseDto,
+  AdminJobReportsResponseDto,
   AdminJobsResponseDto,
   RevenueResponseDto,
 } from "@/features/admin/admin.dto";
@@ -70,6 +72,33 @@ export const adminRepository = {
     const { data } = await apiClient.get<RevenueResponseDto>("/admin/revenue", {
       signal: opts?.signal,
     });
+    return data;
+  },
+
+  listReports: async (
+    params: {
+      status?: JobReportStatus;
+      page?: number;
+      limit?: number;
+    } = {},
+    opts?: RequestOptions
+  ): Promise<AdminJobReportsResponseDto> => {
+    const { data } = await apiClient.get<AdminJobReportsResponseDto>(
+      "/admin/reports",
+      { params, signal: opts?.signal }
+    );
+    return data;
+  },
+
+  resolveReport: async (
+    id: string,
+    action: "resolve" | "dismiss"
+  ): Promise<{ id: string; status: JobReportStatus; resolvedAt: string }> => {
+    const { data } = await apiClient.patch<{
+      id: string;
+      status: JobReportStatus;
+      resolvedAt: string;
+    }>(`/admin/reports/${id}`, { action });
     return data;
   },
 };
