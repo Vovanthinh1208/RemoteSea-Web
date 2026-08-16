@@ -1,6 +1,8 @@
+import { Timer } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { countryFlag } from "@/features/jobs/jobs.utils";
 import { ReportJobForm } from "@/features/jobs/pages/job-detail/ReportJobForm";
+import { formatResponseTime } from "@/utils/format";
 import type { Job } from "@/types/job";
 
 interface JobCompanyCardProps {
@@ -28,8 +30,17 @@ export const JobCompanyCard = ({ job }: JobCompanyCardProps) => {
         </div>
       </div>
       {job.employer.description && (
-        <p className="text-[13px] leading-relaxed text-neutral-500">
+        <p className="mb-3 text-[13px] leading-relaxed text-neutral-500">
           {job.employer.description}
+        </p>
+      )}
+      {job.employer.avgFirstResponseHours != null && (
+        <p className="flex items-center gap-1.5 text-[12px] text-neutral-400">
+          <Timer size={12} />
+          Typically responds within{" "}
+          <span className="font-medium text-neutral-600">
+            {formatResponseTime(job.employer.avgFirstResponseHours)}
+          </span>
         </p>
       )}
       <ReportJobForm jobId={job.id} />

@@ -26,19 +26,10 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { GradientInitial } from "@/components/ui/gradient-initial";
 import { ROUTES } from "@/constants/routes";
 import { VerifiedInline } from "@/components/shared/VerifiedInline";
+import { formatResponseTime } from "@/utils/format";
 
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
-const HOURS_PER_DAY = 24;
-
-// Employer Response SLA tile — hours read awkwardly past a day ("42h"), so
-// this switches to days once the average crosses HOURS_PER_DAY, matching
-// "Avg. time to hire" 's own day-granularity formatting.
-const formatResponseTime = (hours: number): string => {
-  if (hours === 0) return "—";
-  if (hours < HOURS_PER_DAY) return `${Math.round(hours)}h`;
-  return `${Math.round((hours / HOURS_PER_DAY) * 10) / 10}d`;
-};
 
 export const EmployerDashboard = () => {
   const { user } = useAuth();

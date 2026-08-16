@@ -27,6 +27,10 @@ export type JobEmployerSummary = {
   size?: string | null;
   description?: string | null;
   hqCountry?: string | null;
+  // Sample-gated on the backend (null below a minimum responded-application
+  // count) — absent/null means "not enough signal yet," not "responds
+  // instantly."
+  avgFirstResponseHours?: number | null;
 };
 
 export type Job = {
