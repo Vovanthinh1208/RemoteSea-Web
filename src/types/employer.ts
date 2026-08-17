@@ -1,6 +1,7 @@
 import type { ApplicationStatus } from "@/types/application";
 import type {
   ExperienceLevel,
+  JobListItem,
   JobStatus,
   JobType,
   PlanType,
@@ -36,6 +37,31 @@ export type EmployerProfile = {
   verificationStatus: EmployerVerificationStatus;
   createdAt: string;
   updatedAt: string;
+};
+
+// GET /companies/:slug — deliberately narrower than EmployerProfile:
+// verificationEmail/verificationStatus (self-service-verification internals)
+// are never sent to this unauthenticated route.
+export type PublicCompanyProfile = {
+  id: string;
+  userId: string;
+  companyName: string;
+  slug: string;
+  logoUrl: string | null;
+  websiteUrl: string | null;
+  description: string | null;
+  industry: string | null;
+  size: string | null;
+  founded: number | null;
+  hqCountry: string | null;
+  hqCity: string | null;
+  isVerified: boolean;
+  verifiedAt: string | null;
+  createdAt: string;
+  activeJobCount: number;
+  vnHireTotal: number;
+  avgFirstResponseHours: number | null;
+  jobs: JobListItem[];
 };
 
 export type EmployerProfileSummary = EmployerProfile & {

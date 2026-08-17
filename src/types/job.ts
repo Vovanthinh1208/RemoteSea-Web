@@ -69,6 +69,7 @@ export type Job = {
 export type JobListItemEmployer = {
   companyName: string;
   isVerified: boolean;
+  slug: string;
 };
 
 export type JobListItem = {

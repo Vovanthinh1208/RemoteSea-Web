@@ -4,6 +4,7 @@ import type {
   EmployerJobsResponse,
   EmployerProfile,
   EmployerProfileSummary,
+  PublicCompanyProfile,
   UpdateEmployerProfilePayload,
 } from "@/types/employer";
 
@@ -24,3 +25,5 @@ export type SubmitVerificationRequestDto = { email: string };
 export type SubmitVerificationResponseDto = { message: string };
 export type ConfirmVerificationRequestDto = { token: string };
 export type ConfirmVerificationResponseDto = { message: string };
+
+export type PublicCompanyProfileDto = PublicCompanyProfile;

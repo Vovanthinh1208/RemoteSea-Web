@@ -85,9 +85,12 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
               Verified job
             </Badge>
           )}
-          <span className="text-[13px] font-medium text-neutral-600">
+          <Link
+            className="relative z-10 text-[13px] font-medium text-neutral-600 transition-colors hover:text-brand-700 hover:underline"
+            to={ROUTES.companyProfile(job.employer.slug)}
+          >
             {job.employer.companyName}
-          </span>
+          </Link>
           <span className="text-[13px] text-neutral-400">
             {countryFlag(job.country)} {country}
           </span>

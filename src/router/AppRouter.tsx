@@ -100,6 +100,11 @@ const EmployerVerifyPage = lazy(() =>
     default: m.EmployerVerifyPage,
   }))
 );
+const CompanyProfilePage = lazy(() =>
+  import("@/features/employer/pages/CompanyProfilePage").then((m) => ({
+    default: m.CompanyProfilePage,
+  }))
+);
 const PostJobPage = lazy(() =>
   import("@/features/post-job/pages/PostJobPage").then((m) => ({
     default: m.PostJobPage,
@@ -163,6 +168,7 @@ export const AppRouter = () => {
         <Route element={<EmployerVerifyPage />} path="employer/verify" />
         <Route element={<PostJobSuccessPage />} path="post-job/success" />
         <Route element={<PublicTalentProfilePage />} path="talent/:slug" />
+        <Route element={<CompanyProfilePage />} path="companies/:slug" />
 
         {/* post-job/alerts/settings are intentionally role-agnostic: creating an
             employer profile via the post-job wizard is how a user *becomes* an

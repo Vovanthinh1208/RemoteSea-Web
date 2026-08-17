@@ -11,6 +11,7 @@ import type {
   EmployerJobsResponseDto,
   EmployerProfileDto,
   EmployerProfileSummaryDto,
+  PublicCompanyProfileDto,
   SubmitVerificationRequestDto,
   SubmitVerificationResponseDto,
   UpdateEmployerProfileRequestDto,
@@ -108,6 +109,17 @@ export const employerRepository = {
     const { data } = await apiClient.post<ConfirmVerificationResponseDto>(
       "/employer/verification/confirm",
       payload
+    );
+    return data;
+  },
+
+  getPublicProfile: async (
+    slug: string,
+    opts?: RequestOptions
+  ): Promise<PublicCompanyProfileDto> => {
+    const { data } = await apiClient.get<PublicCompanyProfileDto>(
+      `/companies/${slug}`,
+      { signal: opts?.signal }
     );
     return data;
   },

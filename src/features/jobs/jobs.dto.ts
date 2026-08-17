@@ -102,6 +102,7 @@ const skillSchema = z.object({
 const jobListItemEmployerSchema = z.object({
   companyName: z.string(),
   isVerified: z.boolean(),
+  slug: z.string(),
 });
 
 const jobEmployerSummarySchema = z.object({

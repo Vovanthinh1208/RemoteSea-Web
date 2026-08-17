@@ -12,6 +12,7 @@ export const ROUTES = {
   community: "/community",
   employer: "/employer",
   employerVerify: "/employer/verify",
+  companyProfile: (slug: string) => `/companies/${slug}`,
   talent: "/talent",
   talentProfile: (slug: string) => `/talent/${slug}`,
   saved: "/saved",

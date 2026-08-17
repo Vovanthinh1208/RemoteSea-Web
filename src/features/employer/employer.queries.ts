@@ -9,6 +9,7 @@ import {
   confirmEmployerVerification,
   createEmployerProfile,
   getEmployerProfile,
+  getPublicCompanyProfile,
   listEmployerJobs,
   listJobApplications,
   submitEmployerVerification,
@@ -185,3 +186,11 @@ export const useConfirmEmployerVerification = () => {
     },
   });
 };
+
+export const usePublicCompanyProfile = (slug: string | undefined) =>
+  useQuery({
+    queryKey: employerKeys.public(slug),
+    queryFn: ({ signal }) =>
+      getPublicCompanyProfile(slug as string, { signal }),
+    enabled: !!slug,
+  });

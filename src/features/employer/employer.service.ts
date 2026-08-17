@@ -5,6 +5,7 @@ import {
   toEmployerJobsResponse,
   toEmployerProfile,
   toEmployerProfileSummary,
+  toPublicCompanyProfile,
 } from "@/features/employer/employer.mapper";
 import type {
   CreateEmployerProfileRequestDto,
@@ -17,6 +18,7 @@ import type {
   EmployerJobsResponse,
   EmployerProfile,
   EmployerProfileSummary,
+  PublicCompanyProfile,
 } from "@/types/employer";
 
 export const createEmployerProfile = async (
@@ -69,3 +71,9 @@ export const confirmEmployerVerification = async (
   token: string
 ): Promise<{ message: string }> =>
   employerRepository.confirmVerification({ token });
+
+export const getPublicCompanyProfile = async (
+  slug: string,
+  opts?: RequestOptions
+): Promise<PublicCompanyProfile> =>
+  toPublicCompanyProfile(await employerRepository.getPublicProfile(slug, opts));
