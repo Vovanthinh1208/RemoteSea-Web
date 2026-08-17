@@ -79,6 +79,11 @@ const PublicTalentProfilePage = lazy(() =>
     default: m.PublicTalentProfilePage,
   }))
 );
+const TalentVerifyPage = lazy(() =>
+  import("@/features/talent/pages/TalentVerifyPage").then((m) => ({
+    default: m.TalentVerifyPage,
+  }))
+);
 
 const EmployerMarketingPage = lazy(() =>
   import("@/features/employer/pages/EmployerMarketingPage").then((m) => ({
@@ -167,6 +172,7 @@ export const AppRouter = () => {
         <Route element={<EmployerMarketingPage />} path="employer" />
         <Route element={<EmployerVerifyPage />} path="employer/verify" />
         <Route element={<PostJobSuccessPage />} path="post-job/success" />
+        <Route element={<TalentVerifyPage />} path="talent/verify" />
         <Route element={<PublicTalentProfilePage />} path="talent/:slug" />
         <Route element={<CompanyProfilePage />} path="companies/:slug" />
 
