@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Check, Clock3, MessageCircle, X } from "lucide-react";
 import { cn } from "@/utils/cn";
@@ -6,9 +6,14 @@ import { ROUTES } from "@/constants/routes";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { Dropdown } from "@/components/ui/dropdown";
+import { ConfirmAction } from "@/components/shared/ConfirmAction";
+import { useToast } from "@/components/ui/toast";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
-import { useUpdateApplicationStatus } from "@/features/employer/employer.queries";
+import {
+  useBulkUpdateApplicationStatus,
+  useUpdateApplicationStatus,
+} from "@/features/employer/employer.queries";
 import { MatchBadge } from "@/features/matching/MatchBadge";
 import { AvailabilityBadge } from "@/features/availability/AvailabilityBadge";
 import {
@@ -64,6 +69,14 @@ const APPLICANT_ROW_STATUS_LABEL: Partial<Record<ApplicationStatus, string>> = {
   WITHDRAWN: "Withdrawn",
 };
 
+// Mirrors the backend's ALLOWED_TRANSITIONS (every status but REJECTED/
+// WITHDRAWN can reach REJECTED) rather than the single-row UI's narrower
+// "only if a next stage exists" gate — bulk-reject is a separate, more
+// general mechanism, so an OFFERED row (which has no single-row reject
+// button today) is still a valid bulk-reject candidate.
+const isRejectable = (status: ApplicationStatus): boolean =>
+  status !== "REJECTED" && status !== "WITHDRAWN";
+
 interface ApplicantRowProps {
   applicant: ApplicantWithJob;
   isPending: boolean;
@@ -72,12 +85,16 @@ interface ApplicantRowProps {
     jobId: string,
     status: ApplicationStatus
   ) => void;
+  selected: boolean;
+  onToggleSelect: (id: string) => void;
 }
 
 const ApplicantRow = memo(function ApplicantRow({
   applicant: a,
   isPending,
   onStatusChange,
+  selected,
+  onToggleSelect,
 }: ApplicantRowProps) {
   const name = a.talent.user.name ?? "Candidate";
   const initial = personInitial(name);
@@ -86,6 +103,19 @@ const ApplicantRow = memo(function ApplicantRow({
   const stuckDays = backlogDays(a.status, a.appliedAt, a.updatedAt);
   return (
     <div className="group flex items-center gap-3 rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50">
+      <input
+        aria-label={`Select ${name}`}
+        checked={selected}
+        className="h-4 w-4 shrink-0 accent-brand-600 disabled:opacity-30"
+        disabled={!isRejectable(a.status) || isPending}
+        title={
+          isRejectable(a.status)
+            ? undefined
+            : `Already ${(APPLICANT_ROW_STATUS_LABEL[a.status] ?? a.status).toLowerCase()}`
+        }
+        type="checkbox"
+        onChange={() => onToggleSelect(a.id)}
+      />
       <div
         className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-[13px] font-semibold text-white"
         style={{ background: colorFor(name) }}
@@ -181,6 +211,8 @@ interface ApplicantsPanelProps {
 export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
   const runWithToast = useToastMutation();
   const updateStatusMutation = useUpdateApplicationStatus();
+  const bulkUpdateMutation = useBulkUpdateApplicationStatus();
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   // URL-synced so reloading (or sharing the link) doesn't silently revert to "All".
   const [tab, setTab] = useSearchParamState<ApplicantTabId>(
     "applicantTab",
@@ -238,6 +270,72 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
     [updateStatus, runWithToast]
   );
 
+  const visible = list.slice(0, RECENT_APPLICANTS_DISPLAY_COUNT);
+  const eligibleVisible = visible.filter((a) => isRejectable(a.status));
+
+  // A selection only makes sense against the currently-visible rows — switching
+  // tabs changes what's shown, so stale ids pointing at rows that are no
+  // longer there would leave the bulk bar showing a count nothing on screen
+  // corresponds to. Reset during render (React's recommended pattern for
+  // "adjust state when a prop changes"), not in an effect — an effect here
+  // would commit one extra render with the stale selection still visible.
+  const [prevTab, setPrevTab] = useState(tab);
+  if (tab !== prevTab) {
+    setPrevTab(tab);
+    setSelectedIds(new Set());
+  }
+
+  const toggleSelect = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  const allEligibleSelected =
+    eligibleVisible.length > 0 &&
+    eligibleVisible.every((a) => selectedIds.has(a.id));
+
+  const toggleSelectAll = () => {
+    setSelectedIds(
+      allEligibleSelected
+        ? new Set()
+        : new Set(eligibleVisible.map((a) => a.id))
+    );
+  };
+
+  const { mutateAsync: bulkUpdate } = bulkUpdateMutation;
+  const { toast } = useToast();
+  const selectedApplicants = visible.filter((a) => selectedIds.has(a.id));
+  const bulkReject = async () => {
+    const items = selectedApplicants.map((a) => ({ id: a.id, jobId: a.jobId }));
+    try {
+      // Backend always returns 200 with a per-id updated/failed split —
+      // partial failure isn't an exception, so the message has to be built
+      // from the response, not runWithToast's single static success string.
+      const { updated, failed } = await bulkUpdate({
+        items,
+        status: "REJECTED",
+      });
+      toast({
+        variant: failed.length > 0 ? "info" : "success",
+        title:
+          failed.length === 0
+            ? `${updated.length} applicant${updated.length === 1 ? "" : "s"} rejected`
+            : `${updated.length} rejected, ${failed.length} couldn't be updated`,
+      });
+      // Only clear on a real response (even a partial one) — a thrown error
+      // (network failure, rate limit) means nothing was updated, so wiping
+      // the selection here would force the user to re-pick everyone just to
+      // retry the exact same batch.
+      setSelectedIds(new Set());
+    } catch {
+      toast({ variant: "error", title: "Couldn't reject applicants" });
+    }
+  };
+
   return (
     <div className="rounded-20 border border-neutral-100 bg-white p-5">
       <div className="mb-4 flex items-center justify-between">
@@ -285,21 +383,72 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
       {list.length === 0 ? (
         <EmptyRow>No applicants yet.</EmptyRow>
       ) : (
-        <div className="divide-y divide-neutral-50">
-          {list.slice(0, RECENT_APPLICANTS_DISPLAY_COUNT).map((a) => (
-            <ApplicantRow
-              applicant={a}
-              // Scoped to this row's id — otherwise updating one applicant disables
-              // the action buttons on every other row in the list too.
-              isPending={
-                updateStatusMutation.isPending &&
-                updateStatusMutation.variables?.id === a.id
-              }
-              key={a.id}
-              onStatusChange={updateApplicantStatus}
+        <>
+          <div className="mb-1 flex items-center gap-2.5 px-2">
+            <input
+              aria-label="Select all eligible"
+              checked={allEligibleSelected}
+              className="h-4 w-4 shrink-0 accent-brand-600 disabled:opacity-30"
+              disabled={eligibleVisible.length === 0}
+              title="Selects every applicant not already rejected or withdrawn"
+              type="checkbox"
+              onChange={toggleSelectAll}
             />
-          ))}
-        </div>
+            {selectedIds.size > 0 ? (
+              <div className="flex flex-1 flex-wrap items-center justify-between gap-2">
+                <span className="text-[12px] text-neutral-500">
+                  {selectedIds.size} selected
+                </span>
+                <ConfirmAction
+                  confirmLabel="Reject"
+                  isPending={bulkUpdateMutation.isPending}
+                  message={`Reject ${selectedIds.size} selected applicant${selectedIds.size === 1 ? "" : "s"}?`}
+                  pendingLabel="Rejecting…"
+                  onConfirm={bulkReject}
+                >
+                  {({ onClick }) => (
+                    <button
+                      className="inline-flex items-center gap-1 rounded-8 px-2.5 py-1 text-[11.5px] font-medium text-red-600 transition-colors hover:bg-red-50"
+                      type="button"
+                      onClick={onClick}
+                    >
+                      <X size={12} /> Reject selected
+                    </button>
+                  )}
+                </ConfirmAction>
+              </div>
+            ) : (
+              <span className="text-[12px] text-neutral-400">
+                Select to reject in bulk
+              </span>
+            )}
+          </div>
+
+          <div className="divide-y divide-neutral-50">
+            {visible.map((a) => (
+              <ApplicantRow
+                applicant={a}
+                // Scoped to this row's id for the single-item mutation —
+                // otherwise updating one applicant disables the action
+                // buttons on every other row too. bulkUpdateMutation is
+                // OR'd in unscoped: while a bulk write is in flight, every
+                // row pauses, since a concurrent single-item PATCH against
+                // a row the bulk call is also touching would race the same
+                // CAS the backend uses (harmless — one side just loses and
+                // reports stale — but confusing to trigger from the UI).
+                isPending={
+                  (updateStatusMutation.isPending &&
+                    updateStatusMutation.variables?.id === a.id) ||
+                  bulkUpdateMutation.isPending
+                }
+                key={a.id}
+                selected={selectedIds.has(a.id)}
+                onStatusChange={updateApplicantStatus}
+                onToggleSelect={toggleSelect}
+              />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

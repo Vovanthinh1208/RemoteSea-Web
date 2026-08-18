@@ -6,6 +6,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import {
+  bulkUpdateApplicationStatus,
   confirmEmployerVerification,
   createEmployerProfile,
   getEmployerProfile,
@@ -154,6 +155,40 @@ export const useUpdateApplicationStatus = () => {
     onSuccess: (_data, { jobId }) => {
       queryClient.invalidateQueries({
         queryKey: employerKeys.jobApplications(jobId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: employerKeys.jobs(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: MY_APPLICATIONS_KEY,
+      });
+    },
+  });
+};
+
+// Multi-job generalization of useUpdateApplicationStatus's invalidation —
+// a bulk selection in "Recent applicants" can span several jobs at once,
+// so every affected job's application cache needs invalidating, not just one.
+export const useBulkUpdateApplicationStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      items,
+      status,
+    }: {
+      items: { id: string; jobId: string }[];
+      status: ApplicationStatus;
+    }) =>
+      bulkUpdateApplicationStatus(
+        items.map((i) => i.id),
+        status
+      ),
+    onSuccess: (_data, { items }) => {
+      const jobIds = new Set(items.map((i) => i.jobId));
+      jobIds.forEach((jobId) => {
+        queryClient.invalidateQueries({
+          queryKey: employerKeys.jobApplications(jobId),
+        });
       });
       queryClient.invalidateQueries({
         queryKey: employerKeys.jobs(),

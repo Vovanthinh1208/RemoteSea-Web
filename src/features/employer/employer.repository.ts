@@ -3,6 +3,7 @@ import type { RequestOptions } from "@/core/http/request-config";
 import type { ApplicationStatus } from "@/types/application";
 import type { JobStatus } from "@/types/job";
 import type {
+  BulkUpdateApplicationsResponseDto,
   ConfirmVerificationRequestDto,
   ConfirmVerificationResponseDto,
   CreateEmployerProfileRequestDto,
@@ -91,6 +92,17 @@ export const employerRepository = {
       status,
       notes,
     });
+  },
+
+  bulkUpdateApplicationStatus: async (
+    ids: string[],
+    status: ApplicationStatus
+  ): Promise<BulkUpdateApplicationsResponseDto> => {
+    const { data } = await apiClient.patch<BulkUpdateApplicationsResponseDto>(
+      "/employer/applications/bulk",
+      { ids, status }
+    );
+    return data;
   },
 
   submitVerification: async (

@@ -7,6 +7,7 @@ import type {
   PublicCompanyProfile,
   UpdateEmployerProfilePayload,
 } from "@/types/employer";
+import type { ApplicationStatus } from "@/types/application";
 
 export type CreateEmployerProfileRequestDto = CreateEmployerProfilePayload;
 export type CreateEmployerProfileResponseDto = {
@@ -27,3 +28,15 @@ export type ConfirmVerificationRequestDto = { token: string };
 export type ConfirmVerificationResponseDto = { message: string };
 
 export type PublicCompanyProfileDto = PublicCompanyProfile;
+
+export type BulkUpdateApplicationsRequestDto = {
+  ids: string[];
+  status: ApplicationStatus;
+};
+export type BulkUpdateApplicationsResponseDto = {
+  updated: string[];
+  failed: {
+    id: string;
+    reason: "NOT_FOUND" | "INVALID_TRANSITION" | "STALE";
+  }[];
+};
