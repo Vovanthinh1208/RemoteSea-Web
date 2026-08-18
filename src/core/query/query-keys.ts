@@ -23,6 +23,10 @@ export const adminKeys = {
       : (["admin", "jobs"] as const),
   employers: () => ["admin", "employers"] as const,
   revenue: () => ["admin", "revenue"] as const,
+  reports: (status?: string) =>
+    status
+      ? (["admin", "reports", status] as const)
+      : (["admin", "reports"] as const),
 };
 
 export const alertKeys = {
@@ -48,6 +52,12 @@ export const employerKeys = {
   jobs: () => ["employer", "jobs"] as const,
   jobApplications: (jobId: string) =>
     ["employer", "job-applications", jobId] as const,
+  public: (slug: string | undefined) => ["employer", "public", slug] as const,
+};
+
+export const invitationKeys = {
+  all: ["invitations"] as const,
+  mine: () => ["invitations", "me"] as const,
 };
 
 export const talentSearchKeys = {
@@ -65,6 +75,9 @@ export const talentSearchKeys = {
 
 export const salaryKeys = {
   benchmarks: () => ["salary", "benchmarks"] as const,
+  benchmarksBySeniority: () =>
+    ["salary", "benchmarks", "by-seniority"] as const,
+  benchmarksByCountry: () => ["salary", "benchmarks", "by-country"] as const,
 };
 
 export const savedKeys = {
@@ -83,6 +96,7 @@ export const savedKeys = {
 
 export const talentKeys = {
   mine: () => ["talent", "me"] as const,
+  publicAll: () => ["talent", "public"] as const,
   public: (slug: string | undefined) => ["talent", "public", slug] as const,
 };
 
@@ -114,4 +128,20 @@ export const usersKeys = {
   pauseState: () => ["users", "me", "pause"] as const,
   connections: () => ["users", "me", "connections"] as const,
   sessions: () => ["users", "me", "sessions"] as const,
+};
+
+export const notificationKeys = {
+  // Prefix for every paginated notifications list page — lets mark-read
+  // mutations invalidate the display lists without also refetching
+  // unreadCount (which optimistic updates keep exact on their own), same
+  // split as savedKeys.jobsPrefix/ids.
+  listsPrefix: ["notifications", "list"] as const,
+  list: (page: number, limit: number) =>
+    ["notifications", "list", page, limit] as const,
+  unreadCount: () => ["notifications", "unread-count"] as const,
+};
+
+export const messageKeys = {
+  thread: (applicationId: string) =>
+    ["messages", "thread", applicationId] as const,
 };

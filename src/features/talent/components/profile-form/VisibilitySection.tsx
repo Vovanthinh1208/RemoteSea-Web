@@ -64,11 +64,6 @@ export const VisibilitySection = ({
   onOpenToWorkChange,
   onVisibilityChange,
 }: VisibilitySectionProps) => {
-  // "Invited only" has no backing state — selecting it doesn't touch either
-  // real field — so its selection can't be derived from (isOpenToWork,
-  // visibility) the way "open"/"verified"/"off" can. A synced local copy lets
-  // it stay selected locally while still snapping back to the derived value
-  // whenever the profile reloads (a fresh fetch, a save from elsewhere).
   const [selected, setSelected] = useSyncedState<VisibilityCard>(
     toCard(isOpenToWork, visibility)
   );
@@ -85,7 +80,6 @@ export const VisibilitySection = ({
     } else if (id === "off") {
       onOpenToWorkChange(false);
     }
-    // "invited" is UI-only — no API field to change yet.
   };
 
   return (

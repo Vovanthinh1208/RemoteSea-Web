@@ -27,6 +27,10 @@ export interface MatchableTalent {
   employmentTypes: string[];
   timezoneOverlap: string[];
   skills: { skill: { id: string } }[];
+  // Talent-only signal — no job-side counterpart to compare against (a job
+  // has no "how soon do you need this filled" field yet), so this scores the
+  // candidate's own readiness rather than a two-sided match.
+  noticePeriod?: string | null;
 }
 
 export interface MatchResult {
@@ -35,11 +39,12 @@ export interface MatchResult {
 }
 
 const WEIGHTS = {
-  skills: 35,
+  skills: 30,
   seniority: 20,
-  salary: 15,
+  salary: 10,
   location: 20,
   employmentType: 10,
+  availability: 10,
 } as const;
 
 // Component fractions ≥ this surface a "why it matches" reason — below it,
@@ -143,6 +148,24 @@ const scoreEmploymentType = (job: MatchableJob, talent: MatchableTalent) => {
   return 1;
 };
 
+// Shorter notice generally reads as more hireable regardless of which job
+// it's compared against — a universal readiness signal, not a two-sided
+// match component (see MatchableTalent.noticePeriod).
+const NOTICE_PERIOD_SCORE: Record<string, number> = {
+  Immediate: 1,
+  "2 weeks": 0.8,
+  "1 month": 0.5,
+  "2+ months": 0.25,
+};
+
+const scoreAvailability = (talent: MatchableTalent) => {
+  // Same neutral-fallback convention as scoreSalary/scoreEmploymentType —
+  // "not stated" isn't a mismatch, it's missing information.
+  const NEUTRAL = 0.6;
+  if (!talent.noticePeriod) return NEUTRAL;
+  return NOTICE_PERIOD_SCORE[talent.noticePeriod] ?? NEUTRAL;
+};
+
 export const computeMatchScore = (
   job: MatchableJob,
   talent: MatchableTalent
@@ -152,13 +175,15 @@ export const computeMatchScore = (
   const salary = scoreSalary(job, talent);
   const location = scoreLocation(job, talent);
   const employmentType = scoreEmploymentType(job, talent);
+  const availability = scoreAvailability(talent);
 
   const score = Math.round(
     WEIGHTS.skills * skills.fraction +
       WEIGHTS.seniority * seniority +
       WEIGHTS.salary * salary +
       WEIGHTS.location * location +
-      WEIGHTS.employmentType * employmentType
+      WEIGHTS.employmentType * employmentType +
+      WEIGHTS.availability * availability
   );
 
   const reasonCandidates: { weight: number; fraction: number; text: string }[] =
@@ -191,6 +216,11 @@ export const computeMatchScore = (
         weight: WEIGHTS.employmentType,
         fraction: employmentType,
         text: "Matches your preferred employment type",
+      },
+      {
+        weight: WEIGHTS.availability,
+        fraction: availability,
+        text: availability >= 1 ? "Available immediately" : "Available soon",
       },
     ];
 

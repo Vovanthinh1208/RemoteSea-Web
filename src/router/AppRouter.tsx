@@ -79,6 +79,11 @@ const PublicTalentProfilePage = lazy(() =>
     default: m.PublicTalentProfilePage,
   }))
 );
+const TalentVerifyPage = lazy(() =>
+  import("@/features/talent/pages/TalentVerifyPage").then((m) => ({
+    default: m.TalentVerifyPage,
+  }))
+);
 
 const EmployerMarketingPage = lazy(() =>
   import("@/features/employer/pages/EmployerMarketingPage").then((m) => ({
@@ -93,6 +98,16 @@ const EmployerDashboardPage = lazy(() =>
 const TalentSearchPage = lazy(() =>
   import("@/features/employer/pages/TalentSearchPage").then((m) => ({
     default: m.TalentSearchPage,
+  }))
+);
+const EmployerVerifyPage = lazy(() =>
+  import("@/features/employer/pages/EmployerVerifyPage").then((m) => ({
+    default: m.EmployerVerifyPage,
+  }))
+);
+const CompanyProfilePage = lazy(() =>
+  import("@/features/employer/pages/CompanyProfilePage").then((m) => ({
+    default: m.CompanyProfilePage,
   }))
 );
 const PostJobPage = lazy(() =>
@@ -118,9 +133,21 @@ const SavedJobsPage = lazy(() =>
   }))
 );
 
+const NotificationsPage = lazy(() =>
+  import("@/features/notifications/pages/NotificationsPage").then((m) => ({
+    default: m.NotificationsPage,
+  }))
+);
+
 const SettingsPage = lazy(() =>
   import("@/features/settings/pages/SettingsPage").then((m) => ({
     default: m.SettingsPage,
+  }))
+);
+
+const MessageThreadPage = lazy(() =>
+  import("@/features/messages/pages/MessageThreadPage").then((m) => ({
+    default: m.MessageThreadPage,
   }))
 );
 
@@ -155,17 +182,22 @@ export const AppRouter = () => {
         <Route element={<CommunityPage />} path="community" />
 
         <Route element={<EmployerMarketingPage />} path="employer" />
+        <Route element={<EmployerVerifyPage />} path="employer/verify" />
         <Route element={<PostJobSuccessPage />} path="post-job/success" />
+        <Route element={<TalentVerifyPage />} path="talent/verify" />
         <Route element={<PublicTalentProfilePage />} path="talent/:slug" />
+        <Route element={<CompanyProfilePage />} path="companies/:slug" />
 
         {/* post-job/alerts/settings are intentionally role-agnostic: creating an
             employer profile via the post-job wizard is how a user *becomes* an
-            employer, and alerts/settings apply to any authenticated account. */}
+            employer, and alerts/settings/notifications apply to any
+            authenticated account. */}
         <Route element={<ProtectedRoute />}>
           <Route element={<PostJobPage />} path="post-job" />
           <Route element={<AlertsPage />} path="alerts" />
           <Route element={<SettingsPage />} path="settings" />
           <Route element={<SavedJobsPage />} path="saved" />
+          <Route element={<NotificationsPage />} path="notifications" />
         </Route>
 
         <Route element={<ProtectedRoute roles={["TALENT"]} />}>
@@ -186,6 +218,17 @@ export const AppRouter = () => {
 
         <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
           <Route element={<AdminPage />} path="admin" />
+        </Route>
+
+        {/* One shared thread page for both roles — the API enforces real
+            authorization per-endpoint (message.repository.ts branches on
+            role to pick the right one) regardless of what the frontend
+            allows through here. */}
+        <Route element={<ProtectedRoute roles={["TALENT", "EMPLOYER"]} />}>
+          <Route
+            element={<MessageThreadPage />}
+            path="applications/:id/messages"
+          />
         </Route>
 
         <Route element={<NotFoundPage />} path="*" />

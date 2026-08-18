@@ -1,10 +1,12 @@
 import type {
   AdminEmployersResponseDto,
+  AdminJobReportsResponseDto,
   AdminJobsResponseDto,
   RevenueResponseDto,
 } from "@/features/admin/admin.dto";
 import type {
   AdminEmployersResponse,
+  AdminJobReportsResponse,
   AdminJobsResponse,
   RevenueResponse,
 } from "@/types/admin";
@@ -17,3 +19,6 @@ export const toAdminEmployersResponse = (
 ): AdminEmployersResponse => dto;
 export const toRevenueResponse = (dto: RevenueResponseDto): RevenueResponse =>
   dto;
+export const toAdminJobReportsResponse = (
+  dto: AdminJobReportsResponseDto
+): AdminJobReportsResponse => dto;

@@ -21,9 +21,11 @@ import { StatCard } from "@/components/ui/stat-card";
 import { ApplicationsTable } from "@/features/talent/components/talent-dashboard/ApplicationsTable";
 import { RecommendedJobs } from "@/features/talent/components/talent-dashboard/RecommendedJobs";
 import { ProfileSnapshot } from "@/features/talent/components/talent-dashboard/ProfileSnapshot";
+import { InvitationsPanel } from "@/features/talent/components/talent-dashboard/InvitationsPanel";
 import { AlertsPanel } from "@/features/talent/components/talent-dashboard/AlertsPanel";
 import { ActivityFeed } from "@/features/talent/components/talent-dashboard/ActivityFeed";
 import { TalentDashboardSkeleton } from "@/features/talent/components/talent-dashboard/TalentDashboardSkeleton";
+import { VerifyEmailBanner } from "@/features/talent/components/talent-dashboard/VerifyEmailBanner";
 import {
   missingProfileFields,
   profileCompletion,
@@ -102,6 +104,13 @@ export const TalentDashboard = () => {
 
   return (
     <div className="mx-auto max-w-[1240px] px-6 py-10">
+      {profile && !profile.isVerified && (
+        <VerifyEmailBanner
+          verificationEmail={profile.verificationEmail ?? null}
+          verificationStatus={profile.verificationStatus ?? "NOT_SUBMITTED"}
+        />
+      )}
+
       {/* Greeting */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
@@ -230,6 +239,7 @@ export const TalentDashboard = () => {
         </div>
         <div>
           <ProfileSnapshot />
+          <InvitationsPanel />
           <AlertsPanel />
           <ActivityFeed />
         </div>

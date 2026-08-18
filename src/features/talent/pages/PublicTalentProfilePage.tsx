@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { AvailabilityBadge } from "@/features/availability/AvailabilityBadge";
 import { usePublicTalentProfile } from "@/features/talent/talent.queries";
 import { useAuth } from "@/contexts/AuthContext";
 import { LEVEL_TO_LABEL } from "@/features/talent/talent.constants";
@@ -31,11 +32,12 @@ import type { WorkExperience } from "@/types/work-experience";
 
 // ─── Decorative, illustrative-only content ─────────────────────────────────
 // None of this is backed by a real model (recruiter identity, match score,
-// verification badges, reply time, market-comparison benchmarks) — shown
-// purely to match the reference design's "preview as recruiter" layout.
-// Kept obviously mock (same static content regardless of whose profile is
-// being viewed). Selected work / Education / Languages / notice period are
-// real (see ProfileHighlight / TalentProfile.noticePeriod) — not mocked here.
+// reply time, market-comparison benchmarks, "Employment verified"/"ID
+// verified") — shown purely to match the reference design's "preview as
+// recruiter" layout. Kept obviously mock (same static content regardless of
+// whose profile is being viewed). Selected work / Education / Languages /
+// notice period / email verification (TalentProfile.isVerified — see the
+// hero badge and the "Trust signals" card's first row) are real, not mocked.
 const MOCK_RECRUITER = {
   company: "Finch Labs",
   roleTitle: "Senior Full-stack Engineer",
@@ -278,18 +280,15 @@ export const PublicTalentProfilePage = () => {
 
           <div>
             <div className="mb-2 flex flex-wrap items-center gap-2">
-              {isRecruiterPreview && (
+              {profile.isVerified && (
                 <span className="inline-flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-0.5 text-[11.5px] font-medium text-neutral-600">
                   <ShieldCheck className="text-brand-600" size={11} /> Verified
                 </span>
               )}
-              {profile.isOpenToWork && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-100 bg-brand-50 px-2.5 py-0.5 text-[11.5px] font-medium text-brand-700">
-                  <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
-                  Open to opportunities
-                  {isRecruiterPreview && " · ready in 2 weeks"}
-                </span>
-              )}
+              <AvailabilityBadge
+                isOpenToWork={profile.isOpenToWork}
+                noticePeriod={profile.noticePeriod}
+              />
             </div>
             <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
               {name}
@@ -699,15 +698,24 @@ export const PublicTalentProfilePage = () => {
                   </h4>
                   <div className="space-y-2.5 text-[12.5px]">
                     <div className="flex items-center gap-2">
-                      <ShieldCheck
-                        className="flex-shrink-0 text-brand-600"
-                        size={14}
-                      />
+                      {profile.isVerified ? (
+                        <ShieldCheck
+                          className="flex-shrink-0 text-brand-600"
+                          size={14}
+                        />
+                      ) : (
+                        <Mail
+                          className="flex-shrink-0 text-neutral-300"
+                          size={14}
+                        />
+                      )}
                       <div className="min-w-0">
                         <p className="font-medium text-neutral-800">
-                          Email verified
+                          {profile.isVerified
+                            ? "Email verified"
+                            : "Email not verified"}
                         </p>
-                        {isOwnProfile && user && (
+                        {isOwnProfile && user && profile.isVerified && (
                           <p className="truncate text-[11px] text-neutral-400">
                             {user.email}
                           </p>

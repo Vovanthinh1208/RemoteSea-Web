@@ -1,5 +1,13 @@
 import { Link } from "react-router-dom";
-import { Briefcase, Clock, Plus, Search, Star, Users } from "lucide-react";
+import {
+  Briefcase,
+  Clock,
+  Plus,
+  Search,
+  Star,
+  Timer,
+  Users,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   useEmployerApplicationsAggregate,
@@ -10,6 +18,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { ListingsPanel } from "@/features/employer/components/employer-dashboard/ListingsPanel";
 import { ApplicantsPanel } from "@/features/employer/components/employer-dashboard/ApplicantsPanel";
 import { CompanyCard } from "@/features/employer/components/employer-dashboard/CompanyCard";
+import { VerifyCompanyBanner } from "@/features/employer/components/employer-dashboard/VerifyCompanyBanner";
 import { FunnelPanel } from "@/features/employer/components/employer-dashboard/FunnelPanel";
 import { EmployerDashboardSkeleton } from "@/features/employer/components/employer-dashboard/EmployerDashboardSkeleton";
 import { EmptyState } from "@/components/shared/EmptyState";
@@ -17,6 +26,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { GradientInitial } from "@/components/ui/gradient-initial";
 import { ROUTES } from "@/constants/routes";
 import { VerifiedInline } from "@/components/shared/VerifiedInline";
+import { formatResponseTime } from "@/utils/format";
 
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
@@ -77,6 +87,7 @@ export const EmployerDashboard = () => {
     totalApps: 0,
     shortlisted: 0,
     avgTimeToHireInDays: 0,
+    avgFirstResponseHours: 0,
   };
   const activeListings = jobs.filter((j) => j.status === "ACTIVE").length;
   const inReview = jobs.filter((j) => j.status === "PENDING_REVIEW").length;
@@ -112,6 +123,13 @@ export const EmployerDashboard = () => {
               Get started
             </Link>
           </div>
+        )}
+
+        {profile && !profile.isVerified && (
+          <VerifyCompanyBanner
+            verificationEmail={profile.verificationEmail}
+            verificationStatus={profile.verificationStatus}
+          />
         )}
 
         {/* Greeting */}
@@ -159,7 +177,7 @@ export const EmployerDashboard = () => {
         </div>
 
         {/* KPIs */}
-        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-5">
           <StatCard
             icon={Briefcase}
             label="Active listings"
@@ -189,6 +207,13 @@ export const EmployerDashboard = () => {
             value={
               stats.avgTimeToHireInDays ? `${stats.avgTimeToHireInDays}d` : "—"
             }
+          />
+          <StatCard
+            icon={Timer}
+            label="Avg. first response"
+            size="lg"
+            sub="Employer Response SLA"
+            value={formatResponseTime(stats.avgFirstResponseHours)}
           />
         </div>
 

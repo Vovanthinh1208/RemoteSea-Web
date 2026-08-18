@@ -1,26 +1,35 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
-import { Clock } from "lucide-react";
+import { Check, Clock, Send } from "lucide-react";
 import { SalaryBadge } from "@/components/ui/salary-badge";
 import { Tag } from "@/components/ui/tag";
 import { MatchBadge } from "@/features/matching/MatchBadge";
 import type { MatchResult } from "@/features/matching/match.util";
+import { AvailabilityBadge } from "@/features/availability/AvailabilityBadge";
 import { colorFor } from "@/features/employer/employer-dashboard.utils";
 import { personInitial } from "@/utils/name";
 import { countryFlag } from "@/utils/color";
 import { LEVEL_LABELS } from "@/utils/labels";
 import { ROUTES } from "@/constants/routes";
+import { cn } from "@/utils/cn";
 import type { TalentSearchItem } from "@/types/talent-search";
 
 interface TalentCardProps {
   talent: TalentSearchItem;
   /** Precomputed by TalentSearchBoard (once per job selection, not per card) — see its matchByTalentId. */
   match: MatchResult | undefined;
+  /** undefined when no job is selected in "Rank against" — same job context the match badge above uses. */
+  onInvite: (() => void) | undefined;
+  invited: boolean;
+  inviting: boolean;
 }
 
 export const TalentCard = memo(function TalentCard({
   talent,
   match,
+  onInvite,
+  invited,
+  inviting,
 }: TalentCardProps) {
   const name = talent.user.name ?? "Candidate";
   const initial = personInitial(name);
@@ -70,10 +79,39 @@ export const TalentCard = memo(function TalentCard({
 
       <div className="flex flex-shrink-0 flex-col items-end gap-2">
         {match && <MatchBadge match={match} />}
+        {/* Talent search already filters to isOpenToWork:true (see
+            buildTalentSearchWhere) — always true here, no need to select it. */}
+        <AvailabilityBadge isOpenToWork noticePeriod={talent.noticePeriod} />
         <SalaryBadge
           max={talent.desiredSalaryMax}
           min={talent.desiredSalaryMin}
         />
+        <button
+          className={cn(
+            "relative z-10 inline-flex items-center gap-1 rounded-8 px-2 py-1 text-[11px] font-medium transition-colors disabled:cursor-not-allowed",
+            invited
+              ? "bg-emerald-50 text-emerald-700"
+              : "bg-brand-50 text-brand-700 hover:bg-brand-100 disabled:opacity-50"
+          )}
+          disabled={!onInvite || invited || inviting}
+          title={
+            onInvite
+              ? undefined
+              : "Select a job in “Rank against” above to invite"
+          }
+          type="button"
+          onClick={onInvite}
+        >
+          {invited ? (
+            <>
+              <Check size={11} /> Invited
+            </>
+          ) : (
+            <>
+              <Send size={11} /> {inviting ? "Sending…" : "Invite to apply"}
+            </>
+          )}
+        </button>
       </div>
     </article>
   );

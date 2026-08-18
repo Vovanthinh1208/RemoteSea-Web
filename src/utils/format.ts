@@ -26,3 +26,19 @@ export const formatSalaryRange = (
  */
 export const formatUsd = (amount: number): string =>
   `$${amount.toLocaleString()}`;
+
+const HOURS_PER_DAY = 24;
+
+/**
+ * Shared by the employer's own private SLA tile (EmployerDashboard) and the
+ * public per-employer stat on the job detail page — hours read awkwardly
+ * past a day ("42h"), so this switches to days once the average crosses
+ * HOURS_PER_DAY. `hours === 0` renders as "—" rather than "0h": the backend
+ * collapses "no data" to 0 in the private aggregate, so 0 is ambiguous with
+ * "responds instantly" and must not be shown as a real number.
+ */
+export const formatResponseTime = (hours: number): string => {
+  if (hours === 0) return "—";
+  if (hours < HOURS_PER_DAY) return `${Math.round(hours)}h`;
+  return `${Math.round((hours / HOURS_PER_DAY) * 10) / 10}d`;
+};

@@ -3,12 +3,18 @@ import type { RequestOptions } from "@/core/http/request-config";
 import type { ApplicationStatus } from "@/types/application";
 import type { JobStatus } from "@/types/job";
 import type {
+  BulkUpdateApplicationsResponseDto,
+  ConfirmVerificationRequestDto,
+  ConfirmVerificationResponseDto,
   CreateEmployerProfileRequestDto,
   CreateEmployerProfileResponseDto,
   EmployerJobApplicationsResponseDto,
   EmployerJobsResponseDto,
   EmployerProfileDto,
   EmployerProfileSummaryDto,
+  PublicCompanyProfileDto,
+  SubmitVerificationRequestDto,
+  SubmitVerificationResponseDto,
   UpdateEmployerProfileRequestDto,
 } from "@/features/employer/employer.dto";
 
@@ -86,5 +92,47 @@ export const employerRepository = {
       status,
       notes,
     });
+  },
+
+  bulkUpdateApplicationStatus: async (
+    ids: string[],
+    status: ApplicationStatus
+  ): Promise<BulkUpdateApplicationsResponseDto> => {
+    const { data } = await apiClient.patch<BulkUpdateApplicationsResponseDto>(
+      "/employer/applications/bulk",
+      { ids, status }
+    );
+    return data;
+  },
+
+  submitVerification: async (
+    payload: SubmitVerificationRequestDto
+  ): Promise<SubmitVerificationResponseDto> => {
+    const { data } = await apiClient.post<SubmitVerificationResponseDto>(
+      "/employer/verification",
+      payload
+    );
+    return data;
+  },
+
+  confirmVerification: async (
+    payload: ConfirmVerificationRequestDto
+  ): Promise<ConfirmVerificationResponseDto> => {
+    const { data } = await apiClient.post<ConfirmVerificationResponseDto>(
+      "/employer/verification/confirm",
+      payload
+    );
+    return data;
+  },
+
+  getPublicProfile: async (
+    slug: string,
+    opts?: RequestOptions
+  ): Promise<PublicCompanyProfileDto> => {
+    const { data } = await apiClient.get<PublicCompanyProfileDto>(
+      `/companies/${slug}`,
+      { signal: opts?.signal }
+    );
+    return data;
   },
 };

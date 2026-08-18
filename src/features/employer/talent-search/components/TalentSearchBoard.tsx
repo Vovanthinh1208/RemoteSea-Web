@@ -8,8 +8,11 @@ import { Pagination } from "@/features/jobs/components/Pagination";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { useSyncedState } from "@/hooks/useSyncedState";
+import { useToastMutation } from "@/hooks/useToastMutation";
+import { ApiError } from "@/core/errors/api-error";
 import { useTalentSearchQuery } from "@/features/employer/talent-search/talent-search.queries";
 import { useEmployerJobs } from "@/features/employer/employer.queries";
+import { useSendInvitation } from "@/features/invitations/invitations.queries";
 import { computeMatchScore } from "@/features/matching/match.util";
 import {
   DEFAULT_TALENT_SEARCH_FILTERS,
@@ -32,6 +35,14 @@ export const TalentSearchBoard = ({
 }: TalentSearchBoardProps) => {
   const [search, setSearch] = useSyncedState(query.q);
   const [sortByMatch, setSortByMatch] = useState(false);
+  // Session-local "already invited" tracking — see talent-search plan notes:
+  // not a new sent-ids endpoint, a stale reload that re-sends is caught
+  // cleanly by the backend's ALREADY_INVITED conflict instead.
+  const [invitedTalentIds, setInvitedTalentIds] = useState<Set<string>>(
+    new Set()
+  );
+  const runWithToast = useToastMutation();
+  const sendInvitation = useSendInvitation();
   const firstRender = useRef(true);
   const { data, isLoading, isFetching, isError, isPlaceholderData, refetch } =
     useTalentSearchQuery(query);
@@ -60,6 +71,23 @@ export const TalentSearchBoard = ({
   const setForJob = (jobId: string | undefined) => {
     setSortByMatch(false);
     onFiltersChange({ ...query, forJob: jobId });
+  };
+
+  const inviteTalent = (talentId: string) => {
+    if (!selectedJob) return;
+    void runWithToast(
+      () =>
+        sendInvitation
+          .mutateAsync({ jobId: selectedJob.id, talentId })
+          .then(() =>
+            setInvitedTalentIds((prev) => new Set(prev).add(talentId))
+          ),
+      {
+        success: "Invitation sent",
+        error: "Couldn't send invitation",
+        onError: (err) => (err instanceof ApiError ? err.message : undefined),
+      }
+    );
   };
 
   const talents = data?.talents ?? [];
@@ -190,9 +218,17 @@ export const TalentSearchBoard = ({
             >
               {displayedTalents.map((talent) => (
                 <TalentCard
+                  invited={invitedTalentIds.has(talent.id)}
+                  inviting={
+                    sendInvitation.isPending &&
+                    sendInvitation.variables?.talentId === talent.id
+                  }
                   key={talent.id}
                   match={matchByTalentId?.get(talent.id)}
                   talent={talent}
+                  onInvite={
+                    selectedJob ? () => inviteTalent(talent.id) : undefined
+                  }
                 />
               ))}
             </div>

@@ -46,7 +46,7 @@ export const ConfirmAction = ({
         {isPending ? pendingLabel : confirmLabel}
       </button>
       <button
-        className="rounded-8 border border-neutral-200 px-2.5 py-1 text-[12px] text-neutral-600 hover:bg-neutral-50"
+        className="rounded-8 border border-neutral-200 px-2.5 py-1 text-[12px] text-neutral-600 transition-colors hover:bg-neutral-50"
         type="button"
         onClick={() => setIsConfirming(false)}
       >

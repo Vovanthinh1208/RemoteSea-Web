@@ -27,7 +27,7 @@ export const SubmitSection = () => {
                   icon: ShieldCheck,
                   label: "Encrypted & anonymized",
                 },
-                { icon: Users, label: "612 submissions so far" },
+                { icon: Users, label: "Fully anonymous" },
                 {
                   icon: RefreshCw,
                   label: "Reviewed weekly by our team",
@@ -44,7 +44,12 @@ export const SubmitSection = () => {
             </div>
 
             <div className="flex gap-3">
-              <Button className="rounded-12 px-5" size="lg">
+              <Button
+                className="rounded-12 px-5"
+                disabled
+                size="lg"
+                title="Coming soon"
+              >
                 Submit a data point <ArrowRight size={14} />
               </Button>
               <Link

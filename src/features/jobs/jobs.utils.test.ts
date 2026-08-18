@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { buildActivePills } from "@/features/jobs/jobs.utils";
+import { buildActivePills, isVerifiedJob } from "@/features/jobs/jobs.utils";
 import { DEFAULT_FILTERS } from "@/features/jobs/job-filters";
 
 describe("buildActivePills", () => {
@@ -67,5 +67,47 @@ describe("buildActivePills", () => {
       ...filters,
       jobType: ["Contract"],
     });
+  });
+});
+
+describe("isVerifiedJob", () => {
+  const verifiedEmployer = { isVerified: true };
+  const baseJob = {
+    description: "x".repeat(100),
+    salaryMin: 1000,
+    categories: [{ category: { id: "c1" } }],
+    employer: verifiedEmployer,
+  };
+
+  it("passes when the employer is verified and all criteria are met", () => {
+    expect(isVerifiedJob(baseJob)).toBe(true);
+  });
+
+  it("fails when the employer isn't verified", () => {
+    expect(isVerifiedJob({ ...baseJob, employer: { isVerified: false } })).toBe(
+      false
+    );
+  });
+
+  it("fails when salaryMin is null", () => {
+    expect(isVerifiedJob({ ...baseJob, salaryMin: null })).toBe(false);
+  });
+
+  it("fails when there are no categories", () => {
+    expect(isVerifiedJob({ ...baseJob, categories: [] })).toBe(false);
+  });
+
+  it("fails when the description is too short", () => {
+    expect(isVerifiedJob({ ...baseJob, description: "too short" })).toBe(false);
+  });
+
+  it("skips the description check when the field isn't present (board card payload)", () => {
+    expect(
+      isVerifiedJob({
+        salaryMin: baseJob.salaryMin,
+        categories: baseJob.categories,
+        employer: baseJob.employer,
+      })
+    ).toBe(true);
   });
 });

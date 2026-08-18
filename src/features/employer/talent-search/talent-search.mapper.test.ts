@@ -17,6 +17,7 @@ const responseDto: TalentSearchResponseDto = {
       currency: "USD",
       employmentTypes: ["FULL_TIME"],
       timezoneOverlap: ["SG_HOURS"],
+      noticePeriod: "2 weeks",
       updatedAt: "2026-06-30T14:02:31.000Z",
       user: { name: "Jane Doe", image: null },
       skills: [{ skill: { id: "s1", name: "Node.js", slug: "node-js" } }],

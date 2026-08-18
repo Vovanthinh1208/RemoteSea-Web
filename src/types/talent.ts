@@ -4,6 +4,9 @@ import type { ProfileHighlight } from "@/types/profile-highlight";
 
 export type TalentVisibility = "PUBLIC" | "VERIFIED_EMPLOYERS";
 
+export type TalentVerificationStatus =
+  "NOT_SUBMITTED" | "PENDING" | "VERIFIED" | "FAILED";
+
 export type TalentSkill = {
   talentId: string;
   skillId: string;
@@ -28,6 +31,13 @@ export type TalentProfile = {
   linkedinUrl: string | null;
   isOpenToWork: boolean;
   visibility: TalentVisibility;
+  // isVerified/verifiedAt are public (any "Verified" badge reads isVerified).
+  // verificationEmail/verificationStatus are own-profile-only internals —
+  // optional here since GET /talent/:slug never sends them.
+  isVerified: boolean;
+  verifiedAt: string | null;
+  verificationEmail?: string | null;
+  verificationStatus?: TalentVerificationStatus;
   primaryRole: PrimaryRole | null;
   rightToWork: RightToWork | null;
   employmentTypes: EmploymentType[];

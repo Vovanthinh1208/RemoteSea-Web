@@ -1,7 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  confirmTalentVerification,
   getMyTalentProfile,
   getPublicTalentProfile,
+  submitTalentVerification,
   updateMyTalentProfile,
 } from "@/features/talent/talent.service";
 import { useAuth } from "@/contexts/AuthContext";
@@ -51,3 +53,29 @@ export const usePublicTalentProfile = (slug: string | undefined) =>
     queryFn: ({ signal }) => getPublicTalentProfile(slug as string, { signal }),
     enabled: !!slug,
   });
+
+export const useSubmitTalentVerification = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: submitTalentVerification,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: talentKeys.mine() });
+    },
+  });
+};
+
+export const useConfirmTalentVerification = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: confirmTalentVerification,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: talentKeys.mine() });
+      // Confirming flips the publicly-exposed `isVerified` flag, but this
+      // mutation only returns a message (no slug to target). Invalidate by
+      // prefix so any mounted public-profile query (own slug unknown here)
+      // still picks up the change instead of showing a stale badge for up
+      // to staleTime — same problem useUpdateMyTalentProfile solves above.
+      queryClient.invalidateQueries({ queryKey: talentKeys.publicAll() });
+    },
+  });
+};

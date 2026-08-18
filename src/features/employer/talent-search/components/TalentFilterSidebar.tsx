@@ -10,6 +10,7 @@ import {
   countActiveTalentFilters,
   type TalentSearchFilters,
 } from "@/features/employer/talent-search/talent-search.filters";
+import { NOTICE_PERIOD_OPTIONS } from "@/features/talent/talent.constants";
 import { LEVEL_LABELS } from "@/utils/labels";
 
 interface TalentFilterSidebarProps {
@@ -87,7 +88,12 @@ export const TalentFilterSidebar = ({
   const activeCount = countActiveTalentFilters(filters);
 
   const toggle = <
-    K extends "level" | "country" | "employmentTypes" | "timezoneOverlap",
+    K extends
+      | "level"
+      | "country"
+      | "employmentTypes"
+      | "timezoneOverlap"
+      | "noticePeriod",
   >(
     key: K,
     val: TalentSearchFilters[K][number]
@@ -134,6 +140,7 @@ export const TalentFilterSidebar = ({
               country: [],
               employmentTypes: [],
               timezoneOverlap: [],
+              noticePeriod: [],
             })
           }
         >
@@ -155,6 +162,17 @@ export const TalentFilterSidebar = ({
             key={skill.id}
             label={skill.name}
             onToggle={() => toggleSkill(skill.id)}
+          />
+        ))}
+      </FilterGroup>
+
+      <FilterGroup label="Availability">
+        {NOTICE_PERIOD_OPTIONS.map((notice) => (
+          <CheckRow
+            checked={filters.noticePeriod.includes(notice)}
+            key={notice}
+            label={notice === "Immediate" ? "Available now" : notice}
+            onToggle={() => toggle("noticePeriod", notice)}
           />
         ))}
       </FilterGroup>

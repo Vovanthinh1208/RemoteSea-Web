@@ -5,6 +5,7 @@ import type {
   JobType,
   PlanType,
 } from "@/types/job";
+import type { JobReportReason, JobReportStatus } from "@/types/job-report";
 
 export type AdminJob = {
   id: string;
@@ -114,4 +115,31 @@ export type RevenueResponse = {
   mix: RevenuePlanMix[];
   transactions: RevenueTransaction[];
   totals: { allTime: number; thisMonth: number };
+};
+
+export type AdminJobReport = {
+  id: string;
+  reason: JobReportReason;
+  details: string | null;
+  status: JobReportStatus;
+  createdAt: string;
+  resolvedAt: string | null;
+  job: {
+    id: string;
+    title: string;
+    slug: string;
+    status: JobStatus;
+    employer: { companyName: string };
+  };
+  reporter: { id: string; email: string; name: string | null };
+};
+
+export type AdminJobReportsResponse = {
+  reports: AdminJobReport[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
 };

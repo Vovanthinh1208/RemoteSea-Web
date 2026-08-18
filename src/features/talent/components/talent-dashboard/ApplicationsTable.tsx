@@ -1,6 +1,6 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ChevronDown, MessageCircle } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
@@ -9,6 +9,7 @@ import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { countryFlag } from "@/utils/color";
 import { timeAgoShort } from "@/utils/time";
 import { Pipeline } from "@/features/talent/components/talent-dashboard/Pipeline";
+import { ApplicationTimeline } from "@/features/talent/components/talent-dashboard/ApplicationTimeline";
 import {
   STAGE_LABEL,
   STATUS_TO_BUCKET,
@@ -37,42 +38,63 @@ interface ApplicationRowProps {
 const ApplicationRow = memo(function ApplicationRow({
   application: a,
 }: ApplicationRowProps) {
+  const [expanded, setExpanded] = useState(false);
   const bucket = STATUS_TO_BUCKET[a.status];
   const s = STATUS_MAP[bucket];
   const company = a.job.employer.companyName;
   const country = a.job.country ?? "Remote";
   return (
-    <Link
-      className="grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-4 border-b border-neutral-50 px-5 py-3.5 transition-colors last:border-none hover:bg-neutral-50/60"
-      to={ROUTES.jobDetail(a.jobId)}
-    >
-      <div className="flex min-w-0 items-center gap-3">
-        <CompanyLogo name={company} size={36} />
-        <div className="min-w-0">
-          <p className="truncate text-[13.5px] font-medium text-neutral-900">
-            {a.job.title}
-          </p>
-          <p className="text-[12px] text-neutral-400">
-            {company} · {countryFlag(a.job.country)} {country}
-          </p>
-        </div>
-      </div>
-      <Badge
-        className="w-[100px] justify-center px-2.5 py-0.5"
-        variant={s.variant}
+    <div className="border-b border-neutral-50 last:border-none">
+      <button
+        aria-expanded={expanded}
+        className="grid w-full grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-4 px-5 py-3.5 text-left transition-colors hover:bg-neutral-50/60"
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
       >
-        {s.label}
-      </Badge>
-      <span className="hidden w-[140px] text-[12px] text-neutral-500 md:block">
-        {STAGE_LABEL[a.status]}
-      </span>
-      <span className="hidden w-[72px] text-right text-[12px] text-neutral-400 md:block">
-        {/* Relative time, matching the employer side's applicant list — the two
-            dashboards used to show the same appliedAt in two different formats. */}
-        {timeAgoShort(a.appliedAt)}
-      </span>
-      <ChevronRight className="h-5 w-5 flex-shrink-0 text-neutral-300" />
-    </Link>
+        <div className="flex min-w-0 items-center gap-3">
+          <CompanyLogo name={company} size={36} />
+          <div className="min-w-0">
+            <Link
+              className="block truncate text-[13.5px] font-medium text-neutral-900 hover:text-brand-700 hover:underline"
+              to={ROUTES.jobDetail(a.jobId)}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {a.job.title}
+            </Link>
+            <p className="text-[12px] text-neutral-400">
+              {company} · {countryFlag(a.job.country)} {country}
+            </p>
+          </div>
+        </div>
+        <Badge
+          className="w-[100px] justify-center px-2.5 py-0.5"
+          variant={s.variant}
+        >
+          {s.label}
+        </Badge>
+        <span className="hidden w-[140px] text-[12px] text-neutral-500 md:block">
+          {STAGE_LABEL[a.status]}
+        </span>
+        <span className="hidden w-[72px] text-right text-[12px] text-neutral-400 md:block">
+          {timeAgoShort(a.appliedAt)}
+        </span>
+        <Link
+          aria-label="Message about this application"
+          className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+          to={ROUTES.applicationMessages(a.id)}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <MessageCircle size={16} />
+        </Link>
+        <ChevronDown
+          className={cn(
+            "h-5 w-5 flex-shrink-0 text-neutral-300 transition-transform",
+            expanded && "rotate-180"
+          )}
+        />
+      </button>
+      {expanded && <ApplicationTimeline application={a} />}
+    </div>
   );
 });
 
@@ -173,11 +195,12 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
         />
       ) : (
         <div>
-          <div className="grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-4 border-b border-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+          <div className="grid grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-4 border-b border-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
             <span>Role &amp; company</span>
             <span className="w-[100px] text-center">Status</span>
             <span className="hidden w-[140px] md:block">Stage</span>
             <span className="hidden w-[72px] text-right md:block">Applied</span>
+            <span className="w-8" />
             <span className="w-5" />
           </div>
           {filtered.map((a) => (

@@ -1,5 +1,9 @@
 import type { ExperienceLevel, Skill } from "@/types/job";
-import type { EmploymentType, TimezoneOverlap } from "@/types/talent";
+import type {
+  EmploymentType,
+  NoticePeriod,
+  TimezoneOverlap,
+} from "@/types/talent";
 
 export type TalentSearchItem = {
   id: string;
@@ -14,6 +18,7 @@ export type TalentSearchItem = {
   currency: string;
   employmentTypes: EmploymentType[];
   timezoneOverlap: TimezoneOverlap[];
+  noticePeriod: NoticePeriod | null;
   updatedAt: string;
   user: { name: string | null; image: string | null };
   skills: { skill: Skill }[];

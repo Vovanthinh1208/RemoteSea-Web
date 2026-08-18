@@ -19,3 +19,13 @@ export const getPublicTalentProfile = async (
   opts?: RequestOptions
 ): Promise<TalentProfile> =>
   toTalentProfile(await talentRepository.getPublic(slug, opts));
+
+export const submitTalentVerification = async (
+  email: string
+): Promise<{ message: string }> =>
+  talentRepository.submitVerification({ email });
+
+export const confirmTalentVerification = async (
+  token: string
+): Promise<{ message: string }> =>
+  talentRepository.confirmVerification({ token });

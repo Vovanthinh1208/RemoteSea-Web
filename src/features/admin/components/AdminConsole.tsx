@@ -1,14 +1,16 @@
-import { Briefcase, Building, Wallet } from "lucide-react";
+import { Briefcase, Building, Flag, Wallet } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { AdminQueue } from "@/features/admin/components/AdminQueue";
 import { AdminEmployers } from "@/features/admin/components/AdminEmployers";
+import { AdminReports } from "@/features/admin/components/AdminReports";
 import { AdminRevenue } from "@/features/admin/components/AdminRevenue";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
 const TABS = [
   { id: "queue", label: "Review queue", icon: Briefcase },
   { id: "employers", label: "Employers", icon: Building },
+  { id: "reports", label: "Reports", icon: Flag },
   { id: "revenue", label: "Revenue", icon: Wallet },
 ] as const;
 
@@ -62,6 +64,7 @@ export const AdminConsole = () => {
         <div className="min-w-0 flex-1">
           {tab === "queue" && <AdminQueue />}
           {tab === "employers" && <AdminEmployers />}
+          {tab === "reports" && <AdminReports />}
           {tab === "revenue" && <AdminRevenue />}
         </div>
       </div>

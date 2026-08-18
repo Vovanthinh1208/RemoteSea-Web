@@ -15,6 +15,28 @@ export { countryFlag } from "@/utils/color";
 export const isAsyncTimezone = (timezone: string | null): boolean =>
   timezone?.toLowerCase().includes("async") ?? false;
 
+// Mirrors the API's jobs/job-verification.util.ts (the auto-approval gate for
+// verified employers) — deliberate duplication, same tradeoff as this file's
+// own TIMEZONE_LABELS-style constants living in both repos. JobListItem (the
+// board's card payload) doesn't carry `description`, so that criterion is
+// skipped when absent rather than fetched separately — JobHeaderCard (detail
+// page, which does have it) still gets the full 4-criteria check.
+const MIN_DESCRIPTION_LENGTH = 100;
+
+type VerifiableJob = {
+  description?: string;
+  salaryMin: number | null;
+  categories: unknown[];
+  employer: { isVerified: boolean };
+};
+
+export const isVerifiedJob = (job: VerifiableJob): boolean =>
+  job.employer.isVerified &&
+  job.salaryMin != null &&
+  job.categories.length > 0 &&
+  (job.description === undefined ||
+    job.description.length >= MIN_DESCRIPTION_LENGTH);
+
 export const MS_PER_DAY = 86_400_000;
 
 export const timeAgo = timeAgoShort;

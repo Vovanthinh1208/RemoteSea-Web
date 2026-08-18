@@ -1,4 +1,5 @@
-import { Clock, Users } from "lucide-react";
+import { Link } from "react-router-dom";
+import { BadgeCheck, Clock, Users } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { Badge } from "@/components/ui/badge";
 import { SalaryBadge } from "@/components/ui/salary-badge";
@@ -7,8 +8,10 @@ import {
   JOB_TYPE_LABELS,
   LEVEL_LABELS,
   countryFlag,
+  isVerifiedJob,
   timeAgo,
 } from "@/features/jobs/jobs.utils";
+import { ROUTES } from "@/constants/routes";
 import type { Job } from "@/types/job";
 import { VerifiedInline } from "@/components/shared/VerifiedInline";
 
@@ -40,11 +43,19 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
         <h1 className="mb-1 text-[22px] font-semibold text-neutral-900">
           {job.title}
         </h1>
-        <p className="text-[15px] text-neutral-500">
+        <Link
+          className="text-[15px] text-neutral-500 transition-colors hover:text-brand-700 hover:underline"
+          to={ROUTES.companyProfile(job.employer.slug)}
+        >
           {job.employer.companyName}
-        </p>
+        </Link>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {job.isFeatured && <Badge variant="featured">⭐ Featured</Badge>}
+          {isVerifiedJob(job) && (
+            <Badge variant="info">
+              <BadgeCheck size={10} /> Verified job
+            </Badge>
+          )}
           <Tag>{category}</Tag>
           <Tag>{LEVEL_LABELS[job.level]}</Tag>
           <Tag>{JOB_TYPE_LABELS[job.jobType]}</Tag>

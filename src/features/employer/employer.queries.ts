@@ -6,10 +6,14 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import {
+  bulkUpdateApplicationStatus,
+  confirmEmployerVerification,
   createEmployerProfile,
   getEmployerProfile,
+  getPublicCompanyProfile,
   listEmployerJobs,
   listJobApplications,
+  submitEmployerVerification,
   updateApplicationStatus,
 } from "@/features/employer/employer.service";
 import { ApiError } from "@/core/errors/api-error";
@@ -161,3 +165,67 @@ export const useUpdateApplicationStatus = () => {
     },
   });
 };
+
+// Multi-job generalization of useUpdateApplicationStatus's invalidation —
+// a bulk selection in "Recent applicants" can span several jobs at once,
+// so every affected job's application cache needs invalidating, not just one.
+export const useBulkUpdateApplicationStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      items,
+      status,
+    }: {
+      items: { id: string; jobId: string }[];
+      status: ApplicationStatus;
+    }) =>
+      bulkUpdateApplicationStatus(
+        items.map((i) => i.id),
+        status
+      ),
+    onSuccess: (_data, { items }) => {
+      const jobIds = new Set(items.map((i) => i.jobId));
+      jobIds.forEach((jobId) => {
+        queryClient.invalidateQueries({
+          queryKey: employerKeys.jobApplications(jobId),
+        });
+      });
+      queryClient.invalidateQueries({
+        queryKey: employerKeys.jobs(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: MY_APPLICATIONS_KEY,
+      });
+    },
+  });
+};
+
+export const useSubmitEmployerVerification = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: submitEmployerVerification,
+    onSuccess: () => {
+      // Flips verificationStatus to PENDING — the dashboard's "Verify your
+      // company" card reads that off the same profile query.
+      queryClient.invalidateQueries({ queryKey: employerKeys.profile() });
+    },
+  });
+};
+
+export const useConfirmEmployerVerification = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: confirmEmployerVerification,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: employerKeys.profile() });
+    },
+  });
+};
+
+export const usePublicCompanyProfile = (slug: string | undefined) =>
+  useQuery({
+    queryKey: employerKeys.public(slug),
+    queryFn: ({ signal }) =>
+      getPublicCompanyProfile(slug as string, { signal }),
+    enabled: !!slug,
+  });
