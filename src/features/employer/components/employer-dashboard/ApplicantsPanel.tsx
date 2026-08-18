@@ -1,6 +1,8 @@
 import { memo, useCallback, useMemo } from "react";
-import { Check, Clock3, X } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Check, Clock3, MessageCircle, X } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { ROUTES } from "@/constants/routes";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { Dropdown } from "@/components/ui/dropdown";
@@ -134,6 +136,14 @@ const ApplicantRow = memo(function ApplicantRow({
             APPLICANT_STATUS_LABEL[group]}
         </Badge>
       </div>
+
+      <Link
+        aria-label="Message applicant"
+        className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+        to={ROUTES.applicationMessages(a.id)}
+      >
+        <MessageCircle size={13} />
+      </Link>
 
       {nextStatus && a.status !== "REJECTED" ? (
         <div className="flex flex-shrink-0 items-center gap-1">

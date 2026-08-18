@@ -140,3 +140,8 @@ export const notificationKeys = {
     ["notifications", "list", page, limit] as const,
   unreadCount: () => ["notifications", "unread-count"] as const,
 };
+
+export const messageKeys = {
+  thread: (applicationId: string) =>
+    ["messages", "thread", applicationId] as const,
+};

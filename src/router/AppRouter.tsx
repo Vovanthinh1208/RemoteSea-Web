@@ -145,6 +145,12 @@ const SettingsPage = lazy(() =>
   }))
 );
 
+const MessageThreadPage = lazy(() =>
+  import("@/features/messages/pages/MessageThreadPage").then((m) => ({
+    default: m.MessageThreadPage,
+  }))
+);
+
 const AdminPage = lazy(() =>
   import("@/features/admin/pages/AdminPage").then((m) => ({
     default: m.AdminPage,
@@ -212,6 +218,17 @@ export const AppRouter = () => {
 
         <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
           <Route element={<AdminPage />} path="admin" />
+        </Route>
+
+        {/* One shared thread page for both roles — the API enforces real
+            authorization per-endpoint (message.repository.ts branches on
+            role to pick the right one) regardless of what the frontend
+            allows through here. */}
+        <Route element={<ProtectedRoute roles={["TALENT", "EMPLOYER"]} />}>
+          <Route
+            element={<MessageThreadPage />}
+            path="applications/:id/messages"
+          />
         </Route>
 
         <Route element={<NotFoundPage />} path="*" />

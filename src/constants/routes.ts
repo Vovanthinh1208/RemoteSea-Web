@@ -19,6 +19,7 @@ export const ROUTES = {
   saved: "/saved",
   alerts: "/alerts",
   notifications: "/notifications",
+  applicationMessages: (id: string) => `/applications/${id}/messages`,
   settings: "/settings",
   employerDashboard: "/employer-dashboard",
   talentSearch: "/employer-dashboard/talent",

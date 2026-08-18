@@ -1,6 +1,6 @@
 import { memo, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, MessageCircle } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
@@ -45,14 +45,9 @@ const ApplicationRow = memo(function ApplicationRow({
   const country = a.job.country ?? "Remote";
   return (
     <div className="border-b border-neutral-50 last:border-none">
-      {/* Application Transparency: this row toggles the timeline below it
-          instead of navigating away — the job title link is the escape
-          hatch for "go to the listing", same pattern JobCard/TalentCard use
-          for a card-wide action vs. a nested real link (stopPropagation so
-          clicking the title doesn't also toggle). */}
       <button
         aria-expanded={expanded}
-        className="grid w-full grid-cols-[1fr_auto_auto_auto_auto] items-center gap-4 px-5 py-3.5 text-left transition-colors hover:bg-neutral-50/60"
+        className="grid w-full grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-4 px-5 py-3.5 text-left transition-colors hover:bg-neutral-50/60"
         type="button"
         onClick={() => setExpanded((v) => !v)}
       >
@@ -81,10 +76,16 @@ const ApplicationRow = memo(function ApplicationRow({
           {STAGE_LABEL[a.status]}
         </span>
         <span className="hidden w-[72px] text-right text-[12px] text-neutral-400 md:block">
-          {/* Relative time, matching the employer side's applicant list — the two
-              dashboards used to show the same appliedAt in two different formats. */}
           {timeAgoShort(a.appliedAt)}
         </span>
+        <Link
+          aria-label="Message about this application"
+          className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+          to={ROUTES.applicationMessages(a.id)}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <MessageCircle size={16} />
+        </Link>
         <ChevronDown
           className={cn(
             "h-5 w-5 flex-shrink-0 text-neutral-300 transition-transform",
@@ -194,11 +195,12 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
         />
       ) : (
         <div>
-          <div className="grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-4 border-b border-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+          <div className="grid grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-4 border-b border-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
             <span>Role &amp; company</span>
             <span className="w-[100px] text-center">Status</span>
             <span className="hidden w-[140px] md:block">Stage</span>
             <span className="hidden w-[72px] text-right md:block">Applied</span>
+            <span className="w-8" />
             <span className="w-5" />
           </div>
           {filtered.map((a) => (
