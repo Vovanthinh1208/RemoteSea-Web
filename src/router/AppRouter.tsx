@@ -151,6 +151,12 @@ const MessageThreadPage = lazy(() =>
   }))
 );
 
+const InterviewPage = lazy(() =>
+  import("@/features/interviews/pages/InterviewPage").then((m) => ({
+    default: m.InterviewPage,
+  }))
+);
+
 const AdminPage = lazy(() =>
   import("@/features/admin/pages/AdminPage").then((m) => ({
     default: m.AdminPage,
@@ -228,6 +234,10 @@ export const AppRouter = () => {
           <Route
             element={<MessageThreadPage />}
             path="applications/:id/messages"
+          />
+          <Route
+            element={<InterviewPage />}
+            path="applications/:id/interview"
           />
         </Route>
 

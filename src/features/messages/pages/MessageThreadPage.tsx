@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Send } from "lucide-react";
+import { useParams } from "react-router-dom";
+import { Send } from "lucide-react";
 import {
   useMessages,
   useSendMessage,
@@ -10,12 +10,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/shared/EmptyState";
+import { ApplicationDetailHeader } from "@/components/shared/ApplicationDetailHeader";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
-import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useApplicationHeaderContext } from "@/hooks/useApplicationHeaderContext";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { timeAgoLong } from "@/utils/time";
 import { cn } from "@/utils/cn";
-import { ROUTES } from "@/constants/routes";
 
 const MessageBubbleSkeleton = ({ align }: { align: "left" | "right" }) => (
   <div className={cn("flex", align === "right" && "justify-end")}>
@@ -54,14 +54,8 @@ export const MessageThreadPage = () => {
   const { id } = useParams<{ id: string }>();
   const applicationId = id ?? "";
   const { user } = useAuth();
-  const isEmployerViewer = user?.role === "EMPLOYER";
-  const backHref = isEmployerViewer ? ROUTES.employerDashboard : ROUTES.talent;
-
   const { data, isLoading, isError, refetch } = useMessages(applicationId);
-  const title = isEmployerViewer
-    ? (data?.talentName ?? "Candidate")
-    : (data?.employerName ?? "Employer");
-  useDocumentTitle(data ? title : "Messages");
+  const { backHref, title } = useApplicationHeaderContext(data, "Messages");
 
   const sendMessage = useSendMessage(applicationId);
   const runWithToast = useToastMutation();
@@ -87,25 +81,12 @@ export const MessageThreadPage = () => {
 
   return (
     <div className="mx-auto flex h-[calc(100vh-64px)] max-w-[720px] flex-col px-6 py-6">
-      <div className="mb-4 flex items-center gap-3">
-        <Link
-          aria-label="Back"
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
-          to={backHref}
-        >
-          <ArrowLeft size={17} />
-        </Link>
-        <div className="min-w-0">
-          <h1 className="truncate text-[17px] font-semibold text-neutral-900">
-            {title}
-          </h1>
-          {data && (
-            <p className="truncate text-[12.5px] text-neutral-400">
-              {data.jobTitle}
-            </p>
-          )}
-        </div>
-      </div>
+      <ApplicationDetailHeader
+        backHref={backHref}
+        className="mb-4"
+        subtitle={data?.jobTitle}
+        title={title}
+      />
 
       <div className="min-h-0 flex-1 space-y-3 overflow-y-auto rounded-16 border border-neutral-100 bg-white p-5">
         {isLoading ? (

@@ -145,3 +145,8 @@ export const messageKeys = {
   thread: (applicationId: string) =>
     ["messages", "thread", applicationId] as const,
 };
+
+export const interviewKeys = {
+  detail: (applicationId: string) =>
+    ["interviews", "detail", applicationId] as const,
+};

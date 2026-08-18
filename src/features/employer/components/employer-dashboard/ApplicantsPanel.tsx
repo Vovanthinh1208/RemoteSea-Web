@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, Clock3, MessageCircle, X } from "lucide-react";
+import { CalendarClock, Check, Clock3, MessageCircle, X } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { ROUTES } from "@/constants/routes";
 import { EmptyRow } from "@/components/shared/EmptyRow";
@@ -174,6 +174,16 @@ const ApplicantRow = memo(function ApplicantRow({
       >
         <MessageCircle size={13} />
       </Link>
+
+      {a.status === "INTERVIEW" && (
+        <Link
+          aria-label="Schedule interview"
+          className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+          to={ROUTES.applicationInterview(a.id)}
+        >
+          <CalendarClock size={13} />
+        </Link>
+      )}
 
       {nextStatus && a.status !== "REJECTED" ? (
         <div className="flex flex-shrink-0 items-center gap-1">
