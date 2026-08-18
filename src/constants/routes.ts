@@ -18,6 +18,7 @@ export const ROUTES = {
   talentProfile: (slug: string) => `/talent/${slug}`,
   saved: "/saved",
   alerts: "/alerts",
+  notifications: "/notifications",
   settings: "/settings",
   employerDashboard: "/employer-dashboard",
   talentSearch: "/employer-dashboard/talent",

@@ -129,3 +129,14 @@ export const usersKeys = {
   connections: () => ["users", "me", "connections"] as const,
   sessions: () => ["users", "me", "sessions"] as const,
 };
+
+export const notificationKeys = {
+  // Prefix for every paginated notifications list page — lets mark-read
+  // mutations invalidate the display lists without also refetching
+  // unreadCount (which optimistic updates keep exact on their own), same
+  // split as savedKeys.jobsPrefix/ids.
+  listsPrefix: ["notifications", "list"] as const,
+  list: (page: number, limit: number) =>
+    ["notifications", "list", page, limit] as const,
+  unreadCount: () => ["notifications", "unread-count"] as const,
+};

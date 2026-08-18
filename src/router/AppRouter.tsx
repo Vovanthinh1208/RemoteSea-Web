@@ -133,6 +133,12 @@ const SavedJobsPage = lazy(() =>
   }))
 );
 
+const NotificationsPage = lazy(() =>
+  import("@/features/notifications/pages/NotificationsPage").then((m) => ({
+    default: m.NotificationsPage,
+  }))
+);
+
 const SettingsPage = lazy(() =>
   import("@/features/settings/pages/SettingsPage").then((m) => ({
     default: m.SettingsPage,
@@ -178,12 +184,14 @@ export const AppRouter = () => {
 
         {/* post-job/alerts/settings are intentionally role-agnostic: creating an
             employer profile via the post-job wizard is how a user *becomes* an
-            employer, and alerts/settings apply to any authenticated account. */}
+            employer, and alerts/settings/notifications apply to any
+            authenticated account. */}
         <Route element={<ProtectedRoute />}>
           <Route element={<PostJobPage />} path="post-job" />
           <Route element={<AlertsPage />} path="alerts" />
           <Route element={<SettingsPage />} path="settings" />
           <Route element={<SavedJobsPage />} path="saved" />
+          <Route element={<NotificationsPage />} path="notifications" />
         </Route>
 
         <Route element={<ProtectedRoute roles={["TALENT"]} />}>

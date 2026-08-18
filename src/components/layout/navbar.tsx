@@ -4,6 +4,7 @@ import { cn } from "@/utils/cn";
 import { useAuth } from "@/contexts/AuthContext";
 import { ROUTES } from "@/constants/routes";
 import { prefetchRoute } from "@/router/route-prefetch";
+import { NotificationBell } from "@/components/layout/NotificationBell";
 
 const NAV_LINKS = [
   { href: "/jobs", label: "Jobs" },
@@ -102,6 +103,7 @@ export const Navbar = () => {
                   Admin
                 </Link>
               )}
+              <NotificationBell />
               <Link
                 aria-label="Settings"
                 className="grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
