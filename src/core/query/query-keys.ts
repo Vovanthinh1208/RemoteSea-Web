@@ -27,6 +27,8 @@ export const adminKeys = {
     status
       ? (["admin", "reports", status] as const)
       : (["admin", "reports"] as const),
+  auditLog: (page: number, targetType?: string, targetId?: string) =>
+    ["admin", "audit-log", page, targetType, targetId] as const,
 };
 
 export const alertKeys = {

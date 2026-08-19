@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getAdminRevenue,
+  listAdminAuditLog,
   listAdminEmployers,
   listAdminJobs,
   listAdminReports,
@@ -12,6 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { adminKeys, jobKeys } from "@/core/query/query-keys";
 import type { JobStatus } from "@/types/job";
 import type { JobReportStatus } from "@/types/job-report";
+import type { AdminAuditTargetType } from "@/types/admin";
 
 export const ADMIN_JOBS_KEY = adminKeys.jobs();
 export const ADMIN_EMPLOYERS_KEY = adminKeys.employers();
@@ -137,5 +139,21 @@ export const useResolveAdminReport = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: adminKeys.reports() });
     },
+  });
+};
+
+export const useAdminAuditLog = (
+  page = 1,
+  filter: { targetType?: AdminAuditTargetType; targetId?: string } = {}
+) => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: adminKeys.auditLog(page, filter.targetType, filter.targetId),
+    queryFn: ({ signal }) =>
+      listAdminAuditLog(
+        { ...filter, page, limit: ADMIN_LIST_LIMIT },
+        { signal }
+      ),
+    enabled: !!user && user.role === "ADMIN",
   });
 };

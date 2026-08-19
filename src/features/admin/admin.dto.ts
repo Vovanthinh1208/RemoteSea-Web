@@ -1,4 +1,5 @@
 import type {
+  AdminAuditLogResponse,
   AdminEmployersResponse,
   AdminJobReportsResponse,
   AdminJobsResponse,
@@ -9,3 +10,4 @@ export type AdminJobsResponseDto = AdminJobsResponse;
 export type AdminEmployersResponseDto = AdminEmployersResponse;
 export type RevenueResponseDto = RevenueResponse;
 export type AdminJobReportsResponseDto = AdminJobReportsResponse;
+export type AdminAuditLogResponseDto = AdminAuditLogResponse;
