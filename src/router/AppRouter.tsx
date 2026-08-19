@@ -157,6 +157,12 @@ const InterviewPage = lazy(() =>
   }))
 );
 
+const ApplicationDetailPage = lazy(() =>
+  import("@/features/applications/pages/ApplicationDetailPage").then((m) => ({
+    default: m.ApplicationDetailPage,
+  }))
+);
+
 const AdminPage = lazy(() =>
   import("@/features/admin/pages/AdminPage").then((m) => ({
     default: m.AdminPage,
@@ -209,6 +215,7 @@ export const AppRouter = () => {
         <Route element={<ProtectedRoute roles={["TALENT"]} />}>
           <Route element={<ProfilePage />} path="profile" />
           <Route element={<TalentDashboardPage />} path="talent" />
+          <Route element={<ApplicationDetailPage />} path="applications/:id" />
         </Route>
 
         <Route element={<ProtectedRoute roles={["EMPLOYER"]} />}>

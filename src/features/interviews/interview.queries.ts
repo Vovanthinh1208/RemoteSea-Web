@@ -5,7 +5,7 @@ import {
   proposeInterview,
 } from "@/features/interviews/interview.service";
 import { useAuth } from "@/contexts/AuthContext";
-import { interviewKeys } from "@/core/query/query-keys";
+import { activityKeys, interviewKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 
 // No polling here (unlike useMessages' 8s interval) — an interview changes
@@ -56,6 +56,11 @@ export const useConfirmInterview = (applicationId: string) => {
       queryClient.invalidateQueries({
         queryKey: interviewKeys.detail(applicationId),
       });
+      // Confirming produces a fresh INTERVIEW_CONFIRMED entry (see the
+      // backend's activity.util.ts) — this cache didn't exist when this
+      // mutation was first written, so nothing invalidated it on this path
+      // until now.
+      queryClient.invalidateQueries({ queryKey: activityKeys.mine() });
     },
   });
 };

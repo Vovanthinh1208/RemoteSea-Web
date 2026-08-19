@@ -1,37 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import {
-  ArrowUpRight,
-  CalendarClock,
-  Mail,
-  MessageCircle,
-  RefreshCw,
-} from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { useTalentActivity } from "@/features/talent/activity.queries";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/utils/cn";
 import { timeAgoLong } from "@/utils/time";
-import type { ActivityItem, ActivityItemType } from "@/types/activity";
-
-const ICON_BY_TYPE: Record<ActivityItemType, typeof ArrowUpRight> = {
-  APPLICATION_STATUS_CHANGED: ArrowUpRight,
-  MESSAGE_RECEIVED: MessageCircle,
-  INTERVIEW_PROPOSED: CalendarClock,
-  INTERVIEW_CONFIRMED: CalendarClock,
-  INVITATION_RECEIVED: Mail,
-};
-
-const BULLET_CLS_BY_TYPE: Record<ActivityItemType, string> = {
-  APPLICATION_STATUS_CHANGED:
-    "bg-amber-50 text-amber-600 border border-amber-100",
-  MESSAGE_RECEIVED: "bg-brand-50 text-brand-600 border border-brand-100",
-  INTERVIEW_PROPOSED: "bg-brand-50 text-brand-600 border border-brand-100",
-  INTERVIEW_CONFIRMED: "bg-brand-50 text-brand-600 border border-brand-100",
-  INVITATION_RECEIVED: "bg-neutral-100 text-neutral-400",
-};
+import { EVENT_BULLET_CLASS, EVENT_ICON } from "@/utils/notification-icons";
+import type { ActivityItem } from "@/types/activity";
 
 const ActivityRow = ({ item }: { item: ActivityItem }) => {
   const navigate = useNavigate();
-  const FeedIcon = ICON_BY_TYPE[item.type];
+  const FeedIcon = EVENT_ICON[item.type];
   return (
     <button
       className="flex w-full gap-3 rounded-8 px-2 py-2.5 text-left transition-colors hover:bg-neutral-50"
@@ -41,7 +19,7 @@ const ActivityRow = ({ item }: { item: ActivityItem }) => {
       <span
         className={cn(
           "mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-full",
-          BULLET_CLS_BY_TYPE[item.type]
+          EVENT_BULLET_CLASS[item.type]
         )}
       >
         <FeedIcon size={10} />

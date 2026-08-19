@@ -12,6 +12,7 @@ import { ROUTES } from "@/constants/routes";
 import { Skeleton } from "@/components/ui/skeleton";
 import { timeAgoShort } from "@/utils/time";
 import { cn } from "@/utils/cn";
+import { EVENT_ICON } from "@/utils/notification-icons";
 
 const PANEL_ITEM_LIMIT = 8;
 const PANEL_SKELETON_COUNT = 3;
@@ -111,32 +112,43 @@ export const NotificationBell = () => {
                 No notifications yet
               </div>
             ) : (
-              notifications.map((n) => (
-                <button
-                  key={n.id}
-                  className={cn(
-                    "flex w-full items-start gap-2.5 border-b border-neutral-50 px-4 py-3 text-left transition-colors last:border-0 hover:bg-neutral-50",
-                    !n.readAt && "bg-brand-50/60"
-                  )}
-                  type="button"
-                  onClick={() => handleRowClick(n)}
-                >
-                  <span
+              notifications.map((n) => {
+                const TypeIcon = EVENT_ICON[n.type];
+                return (
+                  <button
+                    key={n.id}
                     className={cn(
-                      "mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full",
-                      n.readAt ? "bg-transparent" : "bg-brand-600"
+                      "flex w-full items-start gap-2.5 border-b border-neutral-50 px-4 py-3 text-left transition-colors last:border-0 hover:bg-neutral-50",
+                      !n.readAt && "bg-brand-50/60"
                     )}
-                  />
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[13px] font-medium text-neutral-900">
-                      {n.title}
-                    </p>
-                    <p className="mt-0.5 text-[11.5px] text-neutral-400">
-                      {timeAgoShort(n.createdAt)}
-                    </p>
-                  </div>
-                </button>
-              ))
+                    type="button"
+                    onClick={() => handleRowClick(n)}
+                  >
+                    <span
+                      className={cn(
+                        "mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full",
+                        n.readAt ? "bg-transparent" : "bg-brand-600"
+                      )}
+                    />
+                    <div className="min-w-0 flex-1">
+                      {/* min-w-0 on this row (not just its parent) is what
+                          lets the inner span actually shrink — `truncate`
+                          on the flex row itself doesn't reliably ellipsis
+                          with an icon sibling in the mix. */}
+                      <p className="flex min-w-0 items-center gap-1 text-[13px] font-medium text-neutral-900">
+                        <TypeIcon
+                          className="shrink-0 text-neutral-400"
+                          size={11}
+                        />
+                        <span className="truncate">{n.title}</span>
+                      </p>
+                      <p className="mt-0.5 text-[11.5px] text-neutral-400">
+                        {timeAgoShort(n.createdAt)}
+                      </p>
+                    </div>
+                  </button>
+                );
+              })
             )}
           </div>
 

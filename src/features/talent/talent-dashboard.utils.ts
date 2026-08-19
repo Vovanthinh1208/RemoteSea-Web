@@ -1,5 +1,6 @@
 import type { Application, ApplicationStatus } from "@/types/application";
 import type { TalentProfile } from "@/types/talent";
+import type { BadgeVariant } from "@/components/ui/badge";
 
 export type AppStatusBucket =
   "applied" | "review" | "interview" | "offer" | "closed";
@@ -22,6 +23,20 @@ export const STAGE_LABEL: Record<ApplicationStatus, string> = {
   OFFERED: "Offer received",
   REJECTED: "Not selected",
   WITHDRAWN: "Withdrawn",
+};
+
+// Same bucket->badge mapping ApplicationsTable's rows use — pulled out here so
+// ApplicationDetailPage (a different entry point onto the same data) shows an
+// identical status pill instead of a second, drift-prone copy of the mapping.
+export const STATUS_BADGE: Record<
+  AppStatusBucket,
+  { label: string; variant: BadgeVariant }
+> = {
+  applied: { label: "Applied", variant: "info" },
+  review: { label: "In review", variant: "warning" },
+  interview: { label: "Interviewing", variant: "positive" },
+  offer: { label: "Offer", variant: "success" },
+  closed: { label: "Closed", variant: "muted" },
 };
 
 export type TimelineStep = {

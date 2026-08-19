@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   applyToJob,
+  getApplication,
   getMyApplicationStats,
   listMyApplicationIds,
   listMyApplications,
@@ -46,6 +47,19 @@ export const useMyApplicationIds = () => {
     queryKey: applicationKeys.ids(),
     queryFn: ({ signal }) => listMyApplicationIds({ signal }),
     enabled: !!user,
+    ...TIER.live,
+  });
+};
+
+// Backs ApplicationDetailPage — the target of an APPLICATION_STATUS_CHANGED
+// notification/activity-feed link. TIER.live: same "user expects to see
+// their own recent action reflected" reasoning as useMyApplicationIds.
+export const useApplication = (id: string) => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: applicationKeys.detail(id),
+    queryFn: ({ signal }) => getApplication(id, { signal }),
+    enabled: !!user && !!id,
     ...TIER.live,
   });
 };

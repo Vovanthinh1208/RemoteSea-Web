@@ -44,6 +44,7 @@ export const applicationKeys = {
   // Membership set (applied job ids) for "already applied?" checks — the
   // ApplyButton twin of savedKeys.ids().
   ids: () => ["applications", "ids"] as const,
+  detail: (id: string) => ["applications", "detail", id] as const,
 };
 
 export const employerKeys = {

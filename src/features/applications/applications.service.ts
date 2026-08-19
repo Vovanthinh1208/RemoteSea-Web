@@ -4,17 +4,24 @@ import {
   toApplication,
   toApplicationListResponse,
   toApplicationStatusCounts,
+  toApplicationWithJob,
   type ApplicationListResponse,
   type ApplicationStatusCounts,
 } from "@/features/applications/applications.mapper";
 import type { ApplyRequestDto } from "@/features/applications/applications.dto";
-import type { Application } from "@/types/application";
+import type { Application, ApplicationWithJob } from "@/types/application";
 
 export type ApplyPayload = ApplyRequestDto;
 export type { ApplicationListResponse, ApplicationStatusCounts };
 
 export const applyToJob = async (payload: ApplyPayload): Promise<Application> =>
   toApplication(await applicationsRepository.apply(payload));
+
+export const getApplication = async (
+  id: string,
+  opts?: RequestOptions
+): Promise<ApplicationWithJob> =>
+  toApplicationWithJob(await applicationsRepository.getById(id, opts));
 
 export const listMyApplications = async (
   page: number,
