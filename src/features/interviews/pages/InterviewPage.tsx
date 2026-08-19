@@ -3,6 +3,7 @@ import { useInterview } from "@/features/interviews/interview.queries";
 import { ProposeInterviewForm } from "@/features/interviews/components/ProposeInterviewForm";
 import { ConfirmInterviewForm } from "@/features/interviews/components/ConfirmInterviewForm";
 import { UpcomingInterviewCard } from "@/features/interviews/components/UpcomingInterviewCard";
+import { ReviewCTA } from "@/features/reviews/components/ReviewCTA";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/shared/EmptyState";
@@ -57,7 +58,16 @@ export const InterviewPage = () => {
             />
           )
         ) : data.interview.status === "CONFIRMED" ? (
-          <UpcomingInterviewCard interview={data.interview} />
+          <div className="space-y-4">
+            <UpcomingInterviewCard interview={data.interview} />
+            <ReviewCTA
+              applicationId={applicationId}
+              revieweeName={
+                (isEmployerViewer ? data.talentName : data.employerName) ??
+                (isEmployerViewer ? "the candidate" : "the employer")
+              }
+            />
+          </div>
         ) : isEmployerViewer ? (
           <div className="space-y-5">
             <div className="rounded-10 border border-amber-200 bg-amber-50 p-3.5 text-[12.5px] text-amber-700">
