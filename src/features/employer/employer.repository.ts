@@ -96,11 +96,12 @@ export const employerRepository = {
 
   bulkUpdateApplicationStatus: async (
     ids: string[],
-    status: ApplicationStatus
+    status: ApplicationStatus,
+    notes?: string
   ): Promise<BulkUpdateApplicationsResponseDto> => {
     const { data } = await apiClient.patch<BulkUpdateApplicationsResponseDto>(
       "/employer/applications/bulk",
-      { ids, status }
+      { ids, status, notes }
     );
     return data;
   },

@@ -65,9 +65,10 @@ export const updateApplicationStatus = async (
 
 export const bulkUpdateApplicationStatus = async (
   ids: string[],
-  status: ApplicationStatus
+  status: ApplicationStatus,
+  notes?: string
 ): Promise<BulkUpdateApplicationsResponseDto> =>
-  employerRepository.bulkUpdateApplicationStatus(ids, status);
+  employerRepository.bulkUpdateApplicationStatus(ids, status, notes);
 
 export const submitEmployerVerification = async (
   email: string

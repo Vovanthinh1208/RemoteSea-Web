@@ -208,23 +208,43 @@ const ApplicantRow = memo(function ApplicantRow({
 
         {nextStatus && a.status !== "REJECTED" ? (
           <div className="flex flex-shrink-0 items-center gap-1">
-            <button
-              className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100 disabled:opacity-50"
-              disabled={isPending}
-              type="button"
-              onClick={() => onStatusChange(a.id, a.jobId, nextStatus)}
+            <ConfirmAction
+              confirmLabel={NEXT_LABEL[a.status]}
+              isPending={isPending}
+              message={`${NEXT_LABEL[a.status]} this applicant?`}
+              pendingLabel="Updating…"
+              onConfirm={() => onStatusChange(a.id, a.jobId, nextStatus)}
             >
-              <Check size={11} /> {NEXT_LABEL[a.status]}
-            </button>
-            <button
-              aria-label="Reject applicant"
-              className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
-              disabled={isPending}
-              type="button"
-              onClick={() => onStatusChange(a.id, a.jobId, "REJECTED")}
+              {({ onClick }) => (
+                <button
+                  className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100 disabled:opacity-50"
+                  disabled={isPending}
+                  type="button"
+                  onClick={onClick}
+                >
+                  <Check size={11} /> {NEXT_LABEL[a.status]}
+                </button>
+              )}
+            </ConfirmAction>
+            <ConfirmAction
+              confirmLabel="Reject"
+              isPending={isPending}
+              message="Reject this applicant?"
+              pendingLabel="Rejecting…"
+              onConfirm={() => onStatusChange(a.id, a.jobId, "REJECTED")}
             >
-              <X size={13} />
-            </button>
+              {({ onClick }) => (
+                <button
+                  aria-label="Reject applicant"
+                  className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+                  disabled={isPending}
+                  type="button"
+                  onClick={onClick}
+                >
+                  <X size={13} />
+                </button>
+              )}
+            </ConfirmAction>
           </div>
         ) : (
           <div className="flex-shrink-0 text-[11px] text-neutral-400">
@@ -356,22 +376,32 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
   const { mutateAsync: bulkUpdate } = bulkUpdateMutation;
   const { toast } = useToast();
   const selectedApplicants = visible.filter((a) => selectedIds.has(a.id));
-  const bulkReject = async () => {
+
+  // A single bulk-advance target only makes sense when every selected row
+  // shares the same current status — NEXT_STAGE varies by status, and a
+  // mixed selection has no one "next stage" to offer. Selecting within a
+  // status-filtered tab (the common case) always satisfies this.
+  const commonStatus =
+    selectedApplicants.length > 0 &&
+    selectedApplicants.every((a) => a.status === selectedApplicants[0].status)
+      ? selectedApplicants[0].status
+      : null;
+  const bulkNextStatus = commonStatus ? NEXT_STAGE[commonStatus] : undefined;
+
+  const runBulkUpdate = async (status: ApplicationStatus, notes?: string) => {
     const items = selectedApplicants.map((a) => ({ id: a.id, jobId: a.jobId }));
+    const verb = status === "REJECTED" ? "rejected" : "advanced";
     try {
       // Backend always returns 200 with a per-id updated/failed split —
       // partial failure isn't an exception, so the message has to be built
       // from the response, not runWithToast's single static success string.
-      const { updated, failed } = await bulkUpdate({
-        items,
-        status: "REJECTED",
-      });
+      const { updated, failed } = await bulkUpdate({ items, status, notes });
       toast({
         variant: failed.length > 0 ? "info" : "success",
         title:
           failed.length === 0
-            ? `${updated.length} applicant${updated.length === 1 ? "" : "s"} rejected`
-            : `${updated.length} rejected, ${failed.length} couldn't be updated`,
+            ? `${updated.length} applicant${updated.length === 1 ? "" : "s"} ${verb}`
+            : `${updated.length} ${verb}, ${failed.length} couldn't be updated`,
       });
       // Only clear on a real response (even a partial one) — a thrown error
       // (network failure, rate limit) means nothing was updated, so wiping
@@ -379,7 +409,10 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
       // retry the exact same batch.
       setSelectedIds(new Set());
     } catch {
-      toast({ variant: "error", title: "Couldn't reject applicants" });
+      toast({
+        variant: "error",
+        title: `Couldn't ${status === "REJECTED" ? "reject" : "advance"} applicants`,
+      });
     }
   };
 
@@ -446,27 +479,51 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
                 <span className="text-[12px] text-neutral-500">
                   {selectedIds.size} selected
                 </span>
-                <ConfirmAction
-                  confirmLabel="Reject"
-                  isPending={bulkUpdateMutation.isPending}
-                  message={`Reject ${selectedIds.size} selected applicant${selectedIds.size === 1 ? "" : "s"}?`}
-                  pendingLabel="Rejecting…"
-                  onConfirm={bulkReject}
-                >
-                  {({ onClick }) => (
-                    <button
-                      className="inline-flex items-center gap-1 rounded-8 px-2.5 py-1 text-[11.5px] font-medium text-red-600 transition-colors hover:bg-red-50"
-                      type="button"
-                      onClick={onClick}
+                <div className="flex flex-wrap items-center gap-2">
+                  {bulkNextStatus && (
+                    <ConfirmAction
+                      confirmLabel={NEXT_LABEL[commonStatus!]}
+                      isPending={bulkUpdateMutation.isPending}
+                      message={`${NEXT_LABEL[commonStatus!]} ${selectedIds.size} selected applicant${selectedIds.size === 1 ? "" : "s"}?`}
+                      notePlaceholder="Add a shared note (optional)"
+                      pendingLabel="Updating…"
+                      onConfirm={(note) => runBulkUpdate(bulkNextStatus, note)}
                     >
-                      <X size={12} /> Reject selected
-                    </button>
+                      {({ onClick }) => (
+                        <button
+                          className="inline-flex items-center gap-1 rounded-8 px-2.5 py-1 text-[11.5px] font-medium text-brand-700 transition-colors hover:bg-brand-50"
+                          type="button"
+                          onClick={onClick}
+                        >
+                          <Check size={12} /> {NEXT_LABEL[commonStatus!]}{" "}
+                          selected
+                        </button>
+                      )}
+                    </ConfirmAction>
                   )}
-                </ConfirmAction>
+                  <ConfirmAction
+                    confirmLabel="Reject"
+                    isPending={bulkUpdateMutation.isPending}
+                    message={`Reject ${selectedIds.size} selected applicant${selectedIds.size === 1 ? "" : "s"}?`}
+                    notePlaceholder="Add a shared note (optional)"
+                    pendingLabel="Rejecting…"
+                    onConfirm={(note) => runBulkUpdate("REJECTED", note)}
+                  >
+                    {({ onClick }) => (
+                      <button
+                        className="inline-flex items-center gap-1 rounded-8 px-2.5 py-1 text-[11.5px] font-medium text-red-600 transition-colors hover:bg-red-50"
+                        type="button"
+                        onClick={onClick}
+                      >
+                        <X size={12} /> Reject selected
+                      </button>
+                    )}
+                  </ConfirmAction>
+                </div>
               </div>
             ) : (
               <span className="text-[12px] text-neutral-400">
-                Select to reject in bulk
+                Select to update in bulk
               </span>
             )}
           </div>

@@ -175,13 +175,16 @@ export const useBulkUpdateApplicationStatus = () => {
     mutationFn: ({
       items,
       status,
+      notes,
     }: {
       items: { id: string; jobId: string }[];
       status: ApplicationStatus;
+      notes?: string;
     }) =>
       bulkUpdateApplicationStatus(
         items.map((i) => i.id),
-        status
+        status,
+        notes
       ),
     onSuccess: (_data, { items }) => {
       const jobIds = new Set(items.map((i) => i.jobId));
