@@ -63,6 +63,12 @@ export const invitationKeys = {
   mine: () => ["invitations", "me"] as const,
 };
 
+export const teamKeys = {
+  members: () => ["team", "members"] as const,
+  invitations: () => ["team", "invitations"] as const,
+  preview: (token: string) => ["team", "invitation-preview", token] as const,
+};
+
 export const talentSearchKeys = {
   all: ["talent-search"] as const,
   // `forJob` is excluded on purpose — it drives client-side match sorting only

@@ -100,6 +100,16 @@ const TalentSearchPage = lazy(() =>
     default: m.TalentSearchPage,
   }))
 );
+const TeamSettingsPage = lazy(() =>
+  import("@/features/team/pages/TeamSettingsPage").then((m) => ({
+    default: m.TeamSettingsPage,
+  }))
+);
+const TeamInvitePage = lazy(() =>
+  import("@/features/team/pages/TeamInvitePage").then((m) => ({
+    default: m.TeamInvitePage,
+  }))
+);
 const EmployerVerifyPage = lazy(() =>
   import("@/features/employer/pages/EmployerVerifyPage").then((m) => ({
     default: m.EmployerVerifyPage,
@@ -195,6 +205,10 @@ export const AppRouter = () => {
 
         <Route element={<EmployerMarketingPage />} path="employer" />
         <Route element={<EmployerVerifyPage />} path="employer/verify" />
+        {/* Public — an invited person (possibly with no account yet, or an
+            account under a different role) needs to reach this before/
+            during sign-up, same reasoning as employer/verify above. */}
+        <Route element={<TeamInvitePage />} path="team/invitations/:token" />
         <Route element={<PostJobSuccessPage />} path="post-job/success" />
         <Route element={<TalentVerifyPage />} path="talent/verify" />
         <Route element={<PublicTalentProfilePage />} path="talent/:slug" />
@@ -226,6 +240,10 @@ export const AppRouter = () => {
           <Route
             element={<TalentSearchPage />}
             path="employer-dashboard/talent"
+          />
+          <Route
+            element={<TeamSettingsPage />}
+            path="employer-dashboard/team"
           />
         </Route>
 
