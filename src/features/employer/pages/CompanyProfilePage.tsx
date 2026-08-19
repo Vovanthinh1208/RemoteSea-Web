@@ -15,6 +15,7 @@ import { CompanyLogo } from "@/components/ui/company-logo";
 import { VerifiedInline } from "@/components/shared/VerifiedInline";
 import { JobCard } from "@/features/jobs/components/JobCard";
 import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
+import { ReviewsSection } from "@/features/reviews/components/ReviewsSection";
 import { usePublicCompanyProfile } from "@/features/employer/employer.queries";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
@@ -23,6 +24,15 @@ import { formatResponseTime } from "@/utils/format";
 import { ROUTES } from "@/constants/routes";
 
 const JOB_LIST_SKELETON_COUNT = 3;
+
+// A company's incoming reviews are always TALENT_TO_EMPLOYER (see
+// ReviewForm's identical direction split) — communication/interviewProcess/
+// professionalism, never reliability.
+const EMPLOYER_REVIEW_CATEGORIES = [
+  { key: "communication", label: "Communication" },
+  { key: "interviewProcess", label: "Interview process" },
+  { key: "professionalism", label: "Professionalism" },
+] as const;
 
 const companyMetaDescription = (
   profile: NonNullable<ReturnType<typeof usePublicCompanyProfile>["data"]>
@@ -182,6 +192,11 @@ export const CompanyProfilePage = () => {
                 ))}
               </div>
             )}
+
+            <ReviewsSection
+              categories={EMPLOYER_REVIEW_CATEGORIES}
+              userId={profile.userId}
+            />
           </div>
 
           <aside className="space-y-4">

@@ -3,11 +3,13 @@ import type { RequestOptions } from "@/core/http/request-config";
 import type { JobStatus } from "@/types/job";
 import type { JobReportStatus } from "@/types/job-report";
 import type {
+  AdminAuditLogResponseDto,
   AdminEmployersResponseDto,
   AdminJobReportsResponseDto,
   AdminJobsResponseDto,
   RevenueResponseDto,
 } from "@/features/admin/admin.dto";
+import type { AdminAuditTargetType } from "@/types/admin";
 
 export const adminRepository = {
   listEmployers: async (
@@ -99,6 +101,22 @@ export const adminRepository = {
       status: JobReportStatus;
       resolvedAt: string;
     }>(`/admin/reports/${id}`, { action });
+    return data;
+  },
+
+  listAuditLog: async (
+    params: {
+      targetType?: AdminAuditTargetType;
+      targetId?: string;
+      page?: number;
+      limit?: number;
+    } = {},
+    opts?: RequestOptions
+  ): Promise<AdminAuditLogResponseDto> => {
+    const { data } = await apiClient.get<AdminAuditLogResponseDto>(
+      "/admin/audit-log",
+      { params, signal: opts?.signal }
+    );
     return data;
   },
 };

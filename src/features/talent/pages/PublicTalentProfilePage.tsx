@@ -20,6 +20,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { AvailabilityBadge } from "@/features/availability/AvailabilityBadge";
+import { ReviewsSection } from "@/features/reviews/components/ReviewsSection";
 import { usePublicTalentProfile } from "@/features/talent/talent.queries";
 import { useAuth } from "@/contexts/AuthContext";
 import { LEVEL_TO_LABEL } from "@/features/talent/talent.constants";
@@ -30,14 +31,6 @@ import { ROUTES } from "@/constants/routes";
 import type { EmploymentType, TimezoneOverlap } from "@/types/talent";
 import type { WorkExperience } from "@/types/work-experience";
 
-// ─── Decorative, illustrative-only content ─────────────────────────────────
-// None of this is backed by a real model (recruiter identity, match score,
-// reply time, market-comparison benchmarks, "Employment verified"/"ID
-// verified") — shown purely to match the reference design's "preview as
-// recruiter" layout. Kept obviously mock (same static content regardless of
-// whose profile is being viewed). Selected work / Education / Languages /
-// notice period / email verification (TalentProfile.isVerified — see the
-// hero badge and the "Trust signals" card's first row) are real, not mocked.
 const MOCK_RECRUITER = {
   company: "Finch Labs",
   roleTitle: "Senior Full-stack Engineer",
@@ -96,9 +89,6 @@ const formatDuration = (startIso: string, endIso: string | null): string => {
   );
 };
 
-// FULL_TIME/CONTRACT/PART_TIME are storage keys, never shown raw — this maps
-// them to the display labels used everywhere else in the app (ProfileForm's
-// PreferencesSection uses the same wording).
 const EMPLOYMENT_LABELS: Record<EmploymentType, string> = {
   FULL_TIME: "Full-time",
   CONTRACT: "Contract",
@@ -110,6 +100,12 @@ const HOURS_OVERLAP_LABELS: Record<TimezoneOverlap, string> = {
   AU_HOURS: "AU",
   ASYNC_ONLY: "async",
 };
+
+const TALENT_REVIEW_CATEGORIES = [
+  { key: "communication", label: "Communication" },
+  { key: "professionalism", label: "Professionalism" },
+  { key: "reliability", label: "Reliability" },
+] as const;
 
 export const PublicTalentProfilePage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -377,6 +373,11 @@ export const PublicTalentProfilePage = () => {
 
         <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
           <div className="space-y-2">
+            <ReviewsSection
+              categories={TALENT_REVIEW_CATEGORIES}
+              userId={profile.userId}
+            />
+
             {profile.bio && (
               <section className="rounded-20 border border-neutral-100 bg-white p-7">
                 <h2 className="mb-4 text-[17px] font-semibold text-neutral-900">

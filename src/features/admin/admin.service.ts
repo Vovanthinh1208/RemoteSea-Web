@@ -1,6 +1,7 @@
 import type { RequestOptions } from "@/core/http/request-config";
 import { adminRepository } from "@/features/admin/admin.repository";
 import {
+  toAdminAuditLogResponse,
   toAdminEmployersResponse,
   toAdminJobReportsResponse,
   toAdminJobsResponse,
@@ -9,6 +10,8 @@ import {
 import type { JobStatus } from "@/types/job";
 import type { JobReportStatus } from "@/types/job-report";
 import type {
+  AdminAuditLogResponse,
+  AdminAuditTargetType,
   AdminEmployersResponse,
   AdminJobReportsResponse,
   AdminJobsResponse,
@@ -59,3 +62,14 @@ export const resolveAdminReport = async (
   action: "resolve" | "dismiss"
 ): Promise<{ id: string; status: JobReportStatus; resolvedAt: string }> =>
   adminRepository.resolveReport(id, action);
+
+export const listAdminAuditLog = async (
+  params: {
+    targetType?: AdminAuditTargetType;
+    targetId?: string;
+    page?: number;
+    limit?: number;
+  } = {},
+  opts?: RequestOptions
+): Promise<AdminAuditLogResponse> =>
+  toAdminAuditLogResponse(await adminRepository.listAuditLog(params, opts));

@@ -27,6 +27,8 @@ export const adminKeys = {
     status
       ? (["admin", "reports", status] as const)
       : (["admin", "reports"] as const),
+  auditLog: (page: number, targetType?: string, targetId?: string) =>
+    ["admin", "audit-log", page, targetType, targetId] as const,
 };
 
 export const alertKeys = {
@@ -154,4 +156,12 @@ export const messageKeys = {
 export const interviewKeys = {
   detail: (applicationId: string) =>
     ["interviews", "detail", applicationId] as const,
+};
+
+export const reviewKeys = {
+  eligibility: (applicationId: string) =>
+    ["reviews", "eligibility", applicationId] as const,
+  forUserPrefix: (userId: string) => ["reviews", "user", userId] as const,
+  forUser: (userId: string, page: number) =>
+    ["reviews", "user", userId, page] as const,
 };

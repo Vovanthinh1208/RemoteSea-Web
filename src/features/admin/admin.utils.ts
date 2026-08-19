@@ -1,5 +1,9 @@
 import { pickColorFromString } from "@/utils/color";
-import type { AdminJob } from "@/types/admin";
+import type {
+  AdminAuditAction,
+  AdminAuditTargetType,
+  AdminJob,
+} from "@/types/admin";
 
 export { LEVEL_LABELS, JOB_TYPE_LABELS } from "@/utils/labels";
 
@@ -114,3 +118,50 @@ export const formatCents = (cents: number): string =>
 /** Integer cents → "$1.2k", the compact form used on KPI tiles. */
 export const formatCentsCompact = (cents: number): string =>
   `$${(cents / CENTS_PER_DOLLAR / DOLLARS_PER_THOUSAND).toFixed(1)}k`;
+
+export const AUDIT_ACTION_LABEL: Record<AdminAuditAction, string> = {
+  EMPLOYER_VERIFIED: "Verified employer",
+  EMPLOYER_SUSPENDED: "Suspended employer",
+  JOB_APPROVED: "Approved job",
+  JOB_REJECTED: "Rejected job",
+  JOB_REPORT_RESOLVED: "Resolved report",
+  JOB_REPORT_DISMISSED: "Dismissed report",
+};
+
+// Reject/suspend/dismiss read as the "negative" branch of their pair —
+// drives the row's bullet color, same amber/positive split ApplicantsPanel
+// and ApplicationsTable already use for a status's connotation.
+export const AUDIT_ACTION_IS_NEGATIVE: Record<AdminAuditAction, boolean> = {
+  EMPLOYER_VERIFIED: false,
+  EMPLOYER_SUSPENDED: true,
+  JOB_APPROVED: false,
+  JOB_REJECTED: true,
+  JOB_REPORT_RESOLVED: false,
+  JOB_REPORT_DISMISSED: true,
+};
+
+export const AUDIT_TARGET_TAB_LABEL: Record<AdminAuditTargetType, string> = {
+  EMPLOYER: "Employers",
+  JOB: "Jobs",
+  JOB_REPORT: "Reports",
+};
+
+export type AuditDiffRow = { key: string; before: string; after: string };
+
+/** Merges before/after JSON blobs into a readable changed-fields list — key
+ * order follows `after`, falling back to `before` for a key only it has
+ * (e.g. a removed field). Every value is stringified via String() so
+ * booleans/numbers/null all render sensibly without per-type branching. */
+export const buildAuditDiff = (
+  before: Record<string, unknown> | null,
+  after: Record<string, unknown> | null
+): AuditDiffRow[] => {
+  const keys = [
+    ...new Set([...Object.keys(after ?? {}), ...Object.keys(before ?? {})]),
+  ];
+  return keys.map((key) => ({
+    key,
+    before: before && key in before ? String(before[key]) : "—",
+    after: after && key in after ? String(after[key]) : "—",
+  }));
+};

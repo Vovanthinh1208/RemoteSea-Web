@@ -143,3 +143,38 @@ export type AdminJobReportsResponse = {
     pages: number;
   };
 };
+
+export type AdminAuditAction =
+  | "EMPLOYER_VERIFIED"
+  | "EMPLOYER_SUSPENDED"
+  | "JOB_APPROVED"
+  | "JOB_REJECTED"
+  | "JOB_REPORT_RESOLVED"
+  | "JOB_REPORT_DISMISSED";
+
+export type AdminAuditTargetType = "EMPLOYER" | "JOB" | "JOB_REPORT";
+
+export type AdminAuditLogEntry = {
+  id: string;
+  adminId: string;
+  // Snapshotted at write time (see the API's AdminAuditLog model) — stays
+  // readable even if the admin's account is later renamed or removed.
+  adminEmail: string;
+  action: AdminAuditAction;
+  targetType: AdminAuditTargetType;
+  targetId: string;
+  targetLabel: string;
+  before: Record<string, unknown> | null;
+  after: Record<string, unknown> | null;
+  createdAt: string;
+};
+
+export type AdminAuditLogResponse = {
+  entries: AdminAuditLogEntry[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+};
