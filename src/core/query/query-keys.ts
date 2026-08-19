@@ -172,3 +172,8 @@ export const reviewKeys = {
   forUser: (userId: string, page: number) =>
     ["reviews", "user", userId, page] as const,
 };
+
+export const scorecardKeys = {
+  list: (applicationId: string) =>
+    ["scorecards", "list", applicationId] as const,
+};

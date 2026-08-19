@@ -1,6 +1,14 @@
 export const DURATION_OPTIONS = [15, 30, 45, 60, 90];
 export const MAX_SLOTS = 2;
 
+// Mirrors the backend's own eligibility rule (ScorecardsService/
+// ReviewsService's isEligible: CONFIRMED and the slot has passed) — pulled
+// into its own function, not inlined at the call site, so the impure
+// Date.now() read doesn't happen directly inside a component's render body
+// (see BACKLOG_THRESHOLD_MS.backlogDays for the same pattern elsewhere).
+export const hasOccurred = (confirmedSlot: string | null): boolean =>
+  !!confirmedSlot && new Date(confirmedSlot).getTime() <= Date.now();
+
 export const formatSlot = (iso: string) =>
   new Date(iso).toLocaleString("en-US", {
     weekday: "short",
