@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   confirmTalentVerification,
   getMyTalentProfile,
+  getProfileViewAnalytics,
   getPublicTalentProfile,
   submitTalentVerification,
   updateMyTalentProfile,
@@ -77,5 +78,17 @@ export const useConfirmTalentVerification = () => {
       // to staleTime — same problem useUpdateMyTalentProfile solves above.
       queryClient.invalidateQueries({ queryKey: talentKeys.publicAll() });
     },
+  });
+};
+
+// Deliberately not in TalentDashboard's blocking loading gate — same
+// "streams in on its own, shows '—' until then" treatment as
+// useSavedJobIds, since it backs one secondary KPI tile, not the page.
+export const useProfileViewAnalytics = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: talentKeys.profileViews(),
+    queryFn: ({ signal }) => getProfileViewAnalytics({ signal }),
+    enabled: !!user,
   });
 };

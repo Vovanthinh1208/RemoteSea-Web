@@ -4,6 +4,7 @@ import {
   Bell,
   Bookmark,
   Briefcase,
+  Eye,
   Search,
   TrendingUp,
 } from "lucide-react";
@@ -12,7 +13,10 @@ import {
   useMyApplications,
   useMyApplicationStats,
 } from "@/features/applications/applications.queries";
-import { useMyTalentProfile } from "@/features/talent/talent.queries";
+import {
+  useMyTalentProfile,
+  useProfileViewAnalytics,
+} from "@/features/talent/talent.queries";
 import { useSavedJobIds } from "@/features/saved/saved.queries";
 import { useAlerts } from "@/features/alerts/alerts.queries";
 import { CompletionRing } from "@/features/talent/components/talent-dashboard/CompletionRing";
@@ -55,6 +59,11 @@ export const TalentDashboard = () => {
   const { data: stats, isLoading: statsLoading } = useMyApplicationStats();
   const { data: profile, isLoading: profileLoading } = useMyTalentProfile();
   const { data: savedJobIds } = useSavedJobIds();
+  const {
+    data: profileViewAnalytics,
+    isLoading: profileViewsLoading,
+    isError: profileViewsErrored,
+  } = useProfileViewAnalytics();
   const { data: alerts } = useAlerts();
   const activeAlertsCount = alerts?.filter((a) => a.isActive).length ?? 0;
 
@@ -196,7 +205,7 @@ export const TalentDashboard = () => {
       )}
 
       {/* KPI tiles */}
-      <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         <StatCard
           icon={Briefcase}
           label="Applications sent"
@@ -226,6 +235,27 @@ export const TalentDashboard = () => {
           size="md"
           sub="of submitted"
           value={`${interviewRate}%`}
+        />
+        <StatCard
+          icon={Eye}
+          label="Profile views"
+          size="md"
+          sub={
+            profileViewsLoading
+              ? undefined
+              : profileViewsErrored
+                ? "Couldn't load"
+                : `${profileViewAnalytics?.uniqueViewers ?? 0} unique`
+          }
+          // Real employer views, deduplicated server-side to one per employer
+          // per day — not a fake/static number. "—" while loading or on a
+          // failed fetch (never a misleading 0), same convention as
+          // savedJobIds above.
+          value={
+            profileViewsLoading || profileViewsErrored
+              ? "—"
+              : (profileViewAnalytics?.totalViews ?? 0)
+          }
         />
       </div>
 

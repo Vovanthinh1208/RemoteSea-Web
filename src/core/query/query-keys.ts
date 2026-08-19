@@ -101,6 +101,7 @@ export const talentKeys = {
   mine: () => ["talent", "me"] as const,
   publicAll: () => ["talent", "public"] as const,
   public: (slug: string | undefined) => ["talent", "public", slug] as const,
+  profileViews: () => ["talent", "me", "profile-views"] as const,
 };
 
 export const workExperienceKeys = {
