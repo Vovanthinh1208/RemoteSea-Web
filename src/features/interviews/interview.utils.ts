@@ -1,3 +1,5 @@
+import type { UpcomingInterview } from "@/types/interview";
+
 export const DURATION_OPTIONS = [15, 30, 45, 60, 90];
 export const MAX_SLOTS = 2;
 
@@ -27,4 +29,61 @@ export const toLocalInputValue = (iso: string) => {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
     d.getHours()
   )}:${pad(d.getMinutes())}`;
+};
+
+export const formatTime = (iso: string) =>
+  new Date(iso).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
+const dayKeyOf = (d: Date): string =>
+  `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+
+const dayLabel = (iso: string): string => {
+  const target = new Date(iso);
+  const now = new Date();
+  if (dayKeyOf(target) === dayKeyOf(now)) return "Today";
+  const tomorrow = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1
+  );
+  if (dayKeyOf(target) === dayKeyOf(tomorrow)) return "Tomorrow";
+  return target.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+export interface InterviewDayGroup {
+  key: string;
+  label: string;
+  interviews: UpcomingInterview[];
+}
+
+// Interviews already arrive sorted soonest-first (see InterviewsRepository.
+// findUpcomingForCompany's orderBy on the backend) — this walks that order
+// once instead of grouping-then-resorting, so consecutive same-day
+// interviews land in one group without disturbing the order within or
+// across days.
+export const groupInterviewsByDay = (
+  interviews: UpcomingInterview[]
+): InterviewDayGroup[] => {
+  const groups: InterviewDayGroup[] = [];
+  for (const interview of interviews) {
+    const key = dayKeyOf(new Date(interview.confirmedSlot));
+    const last = groups[groups.length - 1];
+    if (last?.key === key) {
+      last.interviews.push(interview);
+    } else {
+      groups.push({
+        key,
+        label: dayLabel(interview.confirmedSlot),
+        interviews: [interview],
+      });
+    }
+  }
+  return groups;
 };

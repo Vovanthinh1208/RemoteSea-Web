@@ -26,6 +26,7 @@ export const ROUTES = {
   employerDashboard: "/employer-dashboard",
   talentSearch: "/employer-dashboard/talent",
   team: "/employer-dashboard/team",
+  interviewSchedule: "/employer-dashboard/interviews",
   teamInvite: (token: string) => `/team/invitations/${token}`,
   profile: "/profile",
   postJob: "/post-job",

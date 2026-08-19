@@ -5,6 +5,7 @@ import type {
   InterviewDto,
   InterviewWithHeaderResponseDto,
   ProposeInterviewRequestDto,
+  UpcomingInterviewsResponseDto,
 } from "@/features/interviews/interview.dto";
 import type { UserRole } from "@/types/user";
 
@@ -47,6 +48,18 @@ export const interviewRepository = {
     const { data } = await apiClient.patch<InterviewDto>(
       `/applications/${applicationId}/interview/confirm`,
       body
+    );
+    return data;
+  },
+
+  // Employer-only — no talent-side equivalent, so unlike the paths above
+  // this doesn't need interviewPath's role branching.
+  listUpcoming: async (
+    opts?: RequestOptions
+  ): Promise<UpcomingInterviewsResponseDto> => {
+    const { data } = await apiClient.get<UpcomingInterviewsResponseDto>(
+      "/employer/interviews/upcoming",
+      { signal: opts?.signal }
     );
     return data;
   },

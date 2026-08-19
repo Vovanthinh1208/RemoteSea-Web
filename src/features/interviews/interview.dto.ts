@@ -1,4 +1,4 @@
-import type { Interview } from "@/types/interview";
+import type { Interview, UpcomingInterviewsResponse } from "@/types/interview";
 
 export type InterviewDto = Interview;
 
@@ -16,3 +16,5 @@ export type InterviewWithHeaderResponseDto = {
   employerName: string;
   talentName: string | null;
 };
+
+export type UpcomingInterviewsResponseDto = UpcomingInterviewsResponse;

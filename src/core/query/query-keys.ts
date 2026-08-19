@@ -163,6 +163,7 @@ export const messageKeys = {
 export const interviewKeys = {
   detail: (applicationId: string) =>
     ["interviews", "detail", applicationId] as const,
+  upcoming: () => ["interviews", "upcoming"] as const,
 };
 
 export const reviewKeys = {
