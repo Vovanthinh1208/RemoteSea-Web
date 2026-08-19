@@ -63,6 +63,12 @@ export const invitationKeys = {
   mine: () => ["invitations", "me"] as const,
 };
 
+export const teamKeys = {
+  members: () => ["team", "members"] as const,
+  invitations: () => ["team", "invitations"] as const,
+  preview: (token: string) => ["team", "invitation-preview", token] as const,
+};
+
 export const talentSearchKeys = {
   all: ["talent-search"] as const,
   // `forJob` is excluded on purpose — it drives client-side match sorting only
@@ -101,6 +107,7 @@ export const talentKeys = {
   mine: () => ["talent", "me"] as const,
   publicAll: () => ["talent", "public"] as const,
   public: (slug: string | undefined) => ["talent", "public", slug] as const,
+  profileViews: () => ["talent", "me", "profile-views"] as const,
 };
 
 export const workExperienceKeys = {
@@ -156,6 +163,7 @@ export const messageKeys = {
 export const interviewKeys = {
   detail: (applicationId: string) =>
     ["interviews", "detail", applicationId] as const,
+  upcoming: () => ["interviews", "upcoming"] as const,
 };
 
 export const reviewKeys = {
@@ -164,4 +172,9 @@ export const reviewKeys = {
   forUserPrefix: (userId: string) => ["reviews", "user", userId] as const,
   forUser: (userId: string, page: number) =>
     ["reviews", "user", userId, page] as const,
+};
+
+export const scorecardKeys = {
+  list: (applicationId: string) =>
+    ["scorecards", "list", applicationId] as const,
 };

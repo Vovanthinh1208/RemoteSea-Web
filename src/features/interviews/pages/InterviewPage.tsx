@@ -4,6 +4,8 @@ import { ProposeInterviewForm } from "@/features/interviews/components/ProposeIn
 import { ConfirmInterviewForm } from "@/features/interviews/components/ConfirmInterviewForm";
 import { UpcomingInterviewCard } from "@/features/interviews/components/UpcomingInterviewCard";
 import { ReviewCTA } from "@/features/reviews/components/ReviewCTA";
+import { ScorecardSection } from "@/features/scorecards/components/ScorecardSection";
+import { hasOccurred } from "@/features/interviews/interview.utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/shared/EmptyState";
@@ -60,6 +62,13 @@ export const InterviewPage = () => {
         ) : data.interview.status === "CONFIRMED" ? (
           <div className="space-y-4">
             <UpcomingInterviewCard interview={data.interview} />
+            {isEmployerViewer && (
+              <ScorecardSection
+                applicationId={applicationId}
+                interviewOccurred={hasOccurred(data.interview.confirmedSlot)}
+                talentName={data.talentName ?? "the candidate"}
+              />
+            )}
             <ReviewCTA
               applicationId={applicationId}
               revieweeName={

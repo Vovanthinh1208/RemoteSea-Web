@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   registerSchema,
   type RegisterFormValues,
@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/toast";
 import { ApiError } from "@/core/errors/api-error";
 import { applyFormSubmitError } from "@/utils/form-errors";
+import { isSafeInternalPath } from "@/utils/safe-redirect";
 import { ROUTES } from "@/constants/routes";
 import { cn } from "@/utils/cn";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,12 @@ const resolveRegisterErrorMessage = (error: ApiError): string =>
 
 export const RegisterForm = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const rawCallbackUrl = searchParams.get("callbackUrl");
+  const callbackUrl =
+    rawCallbackUrl && isSafeInternalPath(rawCallbackUrl)
+      ? rawCallbackUrl
+      : null;
   const { registerAccount } = useAuth();
   const { toast } = useToast();
   const [formError, setFormError] = useState<string | null>(null);
@@ -61,7 +68,8 @@ export const RegisterForm = () => {
     try {
       const user = await registerAccount(values);
       navigate(
-        user.role === "EMPLOYER" ? ROUTES.employerDashboard : "/profile",
+        callbackUrl ??
+          (user.role === "EMPLOYER" ? ROUTES.employerDashboard : "/profile"),
         { replace: true }
       );
     } catch (err) {

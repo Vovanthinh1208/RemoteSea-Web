@@ -3,6 +3,7 @@ import type { RequestOptions } from "@/core/http/request-config";
 import type {
   ConfirmVerificationRequestDto,
   ConfirmVerificationResponseDto,
+  ProfileViewAnalyticsDto,
   SubmitVerificationRequestDto,
   SubmitVerificationResponseDto,
   TalentProfileDto,
@@ -53,6 +54,16 @@ export const talentRepository = {
     const { data } = await apiClient.post<ConfirmVerificationResponseDto>(
       "/talent/verification/confirm",
       payload
+    );
+    return data;
+  },
+
+  getProfileViewAnalytics: async (
+    opts?: RequestOptions
+  ): Promise<ProfileViewAnalyticsDto> => {
+    const { data } = await apiClient.get<ProfileViewAnalyticsDto>(
+      "/talent/me/profile-views",
+      { signal: opts?.signal }
     );
     return data;
   },

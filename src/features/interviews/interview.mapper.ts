@@ -1,10 +1,15 @@
 import type {
   InterviewDto,
   InterviewWithHeaderResponseDto,
+  UpcomingInterviewsResponseDto,
 } from "@/features/interviews/interview.dto";
-import type { Interview } from "@/types/interview";
+import type { Interview, UpcomingInterviewsResponse } from "@/types/interview";
 
 export const toInterview = (dto: InterviewDto): Interview => dto;
+
+export const toUpcomingInterviewsResponse = (
+  dto: UpcomingInterviewsResponseDto
+): UpcomingInterviewsResponse => dto;
 
 export type InterviewWithHeader = {
   interview: Interview | null;

@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   confirmInterview,
   getInterview,
+  getUpcomingInterviews,
   proposeInterview,
 } from "@/features/interviews/interview.service";
 import { useAuth } from "@/contexts/AuthContext";
@@ -45,6 +46,19 @@ export const useProposeInterview = (applicationId: string) => {
         queryKey: interviewKeys.detail(applicationId),
       });
     },
+  });
+};
+
+// Company-wide agenda — no polling (same reasoning as useInterview above),
+// and TIER.list rather than TIER.live since a stale-by-a-minute schedule
+// view is fine; it's not something the viewer just acted on themselves.
+export const useUpcomingInterviews = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: interviewKeys.upcoming(),
+    queryFn: ({ signal }) => getUpcomingInterviews({ signal }),
+    enabled: !!user,
+    ...TIER.list,
   });
 };
 

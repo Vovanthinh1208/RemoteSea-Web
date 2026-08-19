@@ -3,9 +3,10 @@ import { interviewRepository } from "@/features/interviews/interview.repository"
 import {
   toInterview,
   toInterviewWithHeader,
+  toUpcomingInterviewsResponse,
   type InterviewWithHeader,
 } from "@/features/interviews/interview.mapper";
-import type { Interview } from "@/types/interview";
+import type { Interview, UpcomingInterviewsResponse } from "@/types/interview";
 import type { UserRole } from "@/types/user";
 
 export type { InterviewWithHeader };
@@ -38,3 +39,8 @@ export const confirmInterview = async (
   slot: string
 ): Promise<Interview> =>
   toInterview(await interviewRepository.confirm(applicationId, { slot }));
+
+export const getUpcomingInterviews = async (
+  opts?: RequestOptions
+): Promise<UpcomingInterviewsResponse> =>
+  toUpcomingInterviewsResponse(await interviewRepository.listUpcoming(opts));
