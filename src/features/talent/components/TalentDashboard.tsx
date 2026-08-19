@@ -4,7 +4,6 @@ import {
   Bell,
   Bookmark,
   Briefcase,
-  Eye,
   Search,
   TrendingUp,
 } from "lucide-react";
@@ -214,13 +213,12 @@ export const TalentDashboard = () => {
           // rather than flashing a wrong "0" before the real count arrives.
           value={savedJobIds === undefined ? "—" : savedJobIds.length}
         />
-        {/* Static placeholder — no profile-view tracking exists yet. */}
         <StatCard
-          icon={Eye}
-          label="Profile views"
+          icon={Bell}
+          label="Job alerts"
           size="md"
-          sub="last 7 days"
-          value="48"
+          sub="active"
+          value={activeAlertsCount}
         />
         <StatCard
           icon={TrendingUp}

@@ -1,6 +1,6 @@
 import { memo, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown, MessageCircle } from "lucide-react";
+import { CalendarClock, ChevronDown, MessageCircle } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
@@ -78,14 +78,29 @@ const ApplicationRow = memo(function ApplicationRow({
         <span className="hidden w-[72px] text-right text-[12px] text-neutral-400 md:block">
           {timeAgoShort(a.appliedAt)}
         </span>
-        <Link
-          aria-label="Message about this application"
-          className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
-          to={ROUTES.applicationMessages(a.id)}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <MessageCircle size={16} />
-        </Link>
+        {/* Grouped in one flex wrapper (rather than a second grid track) so
+            the interview icon's conditional presence never shifts the grid's
+            column count row-to-row. */}
+        <div className="flex shrink-0 items-center gap-1">
+          <Link
+            aria-label="Message about this application"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+            to={ROUTES.applicationMessages(a.id)}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <MessageCircle size={16} />
+          </Link>
+          {a.status === "INTERVIEW" && (
+            <Link
+              aria-label="View interview"
+              className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+              to={ROUTES.applicationInterview(a.id)}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <CalendarClock size={16} />
+            </Link>
+          )}
+        </div>
         <ChevronDown
           className={cn(
             "h-5 w-5 flex-shrink-0 text-neutral-300 transition-transform",

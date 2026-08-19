@@ -108,6 +108,10 @@ export const profileHighlightKeys = {
   mine: () => ["talent", "me", "highlights"] as const,
 };
 
+export const activityKeys = {
+  mine: () => ["talent", "me", "activity"] as const,
+};
+
 export const taxonomyKeys = {
   categories: () => ["categories"] as const,
   skills: (q?: string) => ["skills", q ?? ""] as const,
@@ -144,4 +148,9 @@ export const notificationKeys = {
 export const messageKeys = {
   thread: (applicationId: string) =>
     ["messages", "thread", applicationId] as const,
+};
+
+export const interviewKeys = {
+  detail: (applicationId: string) =>
+    ["interviews", "detail", applicationId] as const,
 };

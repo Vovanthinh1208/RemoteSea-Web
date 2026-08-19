@@ -135,6 +135,7 @@ export type EmployerApplicant = {
   // cron uses (see employer-dashboard.utils.ts's isBacklogged).
   updatedAt: string;
   coverLetter: string | null;
+  resumeUrl: string | null;
   talent: {
     id: string;
     slug: string;

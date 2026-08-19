@@ -20,6 +20,7 @@ export const ROUTES = {
   alerts: "/alerts",
   notifications: "/notifications",
   applicationMessages: (id: string) => `/applications/${id}/messages`,
+  applicationInterview: (id: string) => `/applications/${id}/interview`,
   settings: "/settings",
   employerDashboard: "/employer-dashboard",
   talentSearch: "/employer-dashboard/talent",

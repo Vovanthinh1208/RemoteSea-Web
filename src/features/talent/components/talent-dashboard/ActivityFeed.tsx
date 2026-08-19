@@ -1,92 +1,116 @@
-import { Bell, Bookmark, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import {
+  ArrowUpRight,
+  CalendarClock,
+  Mail,
+  MessageCircle,
+  RefreshCw,
+} from "lucide-react";
+import { useTalentActivity } from "@/features/talent/activity.queries";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/utils/cn";
+import { timeAgoLong } from "@/utils/time";
+import type { ActivityItem, ActivityItemType } from "@/types/activity";
 
-// Static placeholder feed — no activity/notifications backend exists yet.
-// Mirrors the remotesea design reference 1:1 pending a real activity log.
-const FEED = [
-  {
-    kind: "amber",
-    body: (
-      <>
-        Canva moved your application to the <strong>final round</strong>.
-        Schedule with their hiring team.
-      </>
-    ),
-    time: "2h ago",
-  },
-  {
-    kind: "brand",
-    body: (
-      <>
-        Finch Labs viewed your profile. <strong>4 views this week.</strong>
-      </>
-    ),
-    time: "yesterday",
-  },
-  {
-    kind: "plain",
-    body: (
-      <>
-        3 new jobs matched <strong>Senior Frontend, SG hours</strong>.
-      </>
-    ),
-    time: "2d ago",
-  },
-  {
-    kind: "brand",
-    body: (
-      <>
-        You added <strong>Postgres</strong> and <strong>WebGL</strong> to your
-        skills.
-      </>
-    ),
-    time: "3d ago",
-  },
-  {
-    kind: "plain",
-    body: (
-      <>
-        Stripe reached out about <strong>Support Engineer — APAC</strong>.
-      </>
-    ),
-    time: "5d ago",
-  },
-] as const;
-
-const BULLET_CLS = {
-  amber: "bg-amber-50 text-amber-600 border border-amber-100",
-  brand: "bg-brand-50 text-brand-600 border border-brand-100",
-  plain: "bg-neutral-100 text-neutral-400",
+const ICON_BY_TYPE: Record<ActivityItemType, typeof ArrowUpRight> = {
+  APPLICATION_STATUS_CHANGED: ArrowUpRight,
+  MESSAGE_RECEIVED: MessageCircle,
+  INTERVIEW_PROPOSED: CalendarClock,
+  INTERVIEW_CONFIRMED: CalendarClock,
+  INVITATION_RECEIVED: Mail,
 };
 
-export const ActivityFeed = () => (
-  <div className="overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">
-    <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
-      <h3 className="text-[14px] font-semibold text-neutral-900">Activity</h3>
-    </div>
-    <div className="p-3">
-      {FEED.map((f, i) => {
-        const FeedIcon =
-          f.kind === "amber" ? Bell : f.kind === "brand" ? User : Bookmark;
-        return (
-          <div className="flex gap-3 rounded-8 px-2 py-2.5" key={i}>
-            <span
-              className={cn(
-                "mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-full",
-                BULLET_CLS[f.kind]
-              )}
-            >
-              <FeedIcon size={10} />
-            </span>
-            <div>
-              <p className="text-[12.5px] leading-relaxed text-neutral-700">
-                {f.body}
-              </p>
-              <span className="text-[11px] text-neutral-400">{f.time}</span>
-            </div>
-          </div>
-        );
-      })}
+const BULLET_CLS_BY_TYPE: Record<ActivityItemType, string> = {
+  APPLICATION_STATUS_CHANGED:
+    "bg-amber-50 text-amber-600 border border-amber-100",
+  MESSAGE_RECEIVED: "bg-brand-50 text-brand-600 border border-brand-100",
+  INTERVIEW_PROPOSED: "bg-brand-50 text-brand-600 border border-brand-100",
+  INTERVIEW_CONFIRMED: "bg-brand-50 text-brand-600 border border-brand-100",
+  INVITATION_RECEIVED: "bg-neutral-100 text-neutral-400",
+};
+
+const ActivityRow = ({ item }: { item: ActivityItem }) => {
+  const navigate = useNavigate();
+  const FeedIcon = ICON_BY_TYPE[item.type];
+  return (
+    <button
+      className="flex w-full gap-3 rounded-8 px-2 py-2.5 text-left transition-colors hover:bg-neutral-50"
+      type="button"
+      onClick={() => navigate(item.link)}
+    >
+      <span
+        className={cn(
+          "mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-full",
+          BULLET_CLS_BY_TYPE[item.type]
+        )}
+      >
+        <FeedIcon size={10} />
+      </span>
+      <div className="min-w-0">
+        <p className="text-[12.5px] leading-relaxed text-neutral-700">
+          <strong className="font-medium text-neutral-900">{item.title}</strong>
+          {item.body && (
+            <>
+              {" — "}
+              {item.body}
+            </>
+          )}
+        </p>
+        <span className="text-[11px] text-neutral-400">
+          {timeAgoLong(item.createdAt)}
+        </span>
+      </div>
+    </button>
+  );
+};
+
+// Same bullet + two-line composition as the row it stands in for (see
+// NotificationRowSkeleton's identical approach) — a shape-matched skeleton
+// reads as "this list is loading," a generic bar just flickers.
+const ActivityRowSkeleton = () => (
+  <div className="flex gap-3 px-2 py-2.5">
+    <Skeleton className="mt-0.5 h-6 w-6 flex-shrink-0 rounded-full" />
+    <div className="min-w-0 flex-1 space-y-1.5">
+      <Skeleton className="h-3.5 w-4/5" />
+      <Skeleton className="h-3 w-12" />
     </div>
   </div>
 );
+
+const ACTIVITY_SKELETON_COUNT = 3;
+
+export const ActivityFeed = () => {
+  const { data: activity, isLoading, isError, refetch } = useTalentActivity();
+
+  return (
+    <div className="overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">
+      <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
+        <h3 className="text-[14px] font-semibold text-neutral-900">Activity</h3>
+      </div>
+      <div className="p-3">
+        {isLoading ? (
+          Array.from({ length: ACTIVITY_SKELETON_COUNT }, (_, i) => (
+            <ActivityRowSkeleton key={i} />
+          ))
+        ) : isError ? (
+          <div className="flex items-center justify-between px-2 py-4 text-[12.5px] text-neutral-400">
+            Couldn't load your activity.
+            <button
+              className="inline-flex items-center gap-1 font-medium text-brand-600 hover:text-brand-700"
+              type="button"
+              onClick={() => refetch()}
+            >
+              <RefreshCw size={11} /> Retry
+            </button>
+          </div>
+        ) : activity && activity.length > 0 ? (
+          activity.map((item) => <ActivityRow item={item} key={item.id} />)
+        ) : (
+          <p className="px-2 py-4 text-[12.5px] text-neutral-400">
+            No activity yet.
+          </p>
+        )}
+      </div>
+    </div>
+  );
+};

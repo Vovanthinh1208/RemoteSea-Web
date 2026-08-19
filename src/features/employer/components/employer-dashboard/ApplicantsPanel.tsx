@@ -1,6 +1,13 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, Clock3, MessageCircle, X } from "lucide-react";
+import {
+  CalendarClock,
+  Check,
+  Clock3,
+  MessageCircle,
+  Paperclip,
+  X,
+} from "lucide-react";
 import { cn } from "@/utils/cn";
 import { ROUTES } from "@/constants/routes";
 import { EmptyRow } from "@/components/shared/EmptyRow";
@@ -101,104 +108,144 @@ const ApplicantRow = memo(function ApplicantRow({
   const group = APPLICANT_STATUS[a.status];
   const nextStatus = NEXT_STAGE[a.status];
   const stuckDays = backlogDays(a.status, a.appliedAt, a.updatedAt);
+  const [showCoverLetter, setShowCoverLetter] = useState(false);
   return (
-    <div className="group flex items-center gap-3 rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50">
-      <input
-        aria-label={`Select ${name}`}
-        checked={selected}
-        className="h-4 w-4 shrink-0 accent-brand-600 disabled:opacity-30"
-        disabled={!isRejectable(a.status) || isPending}
-        title={
-          isRejectable(a.status)
-            ? undefined
-            : `Already ${(APPLICANT_ROW_STATUS_LABEL[a.status] ?? a.status).toLowerCase()}`
-        }
-        type="checkbox"
-        onChange={() => onToggleSelect(a.id)}
-      />
-      <div
-        className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-[13px] font-semibold text-white"
-        style={{ background: colorFor(name) }}
-      >
-        {initial}
-      </div>
-
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-1.5">
-          <span className="text-[13.5px] font-medium text-neutral-900">
-            {name}
-          </span>
-        </div>
-        <div className="text-[11.5px] text-neutral-400">
-          {a.talent.headline ?? a.talent.level}
-          <span className="text-neutral-300"> · for {a.jobTitle}</span>
-        </div>
-      </div>
-
-      {a.match && (
-        <div className="flex-shrink-0">
-          <MatchBadge match={a.match} />
-        </div>
-      )}
-
-      <div className="flex-shrink-0">
-        <AvailabilityBadge
-          isOpenToWork={a.talent.isOpenToWork}
-          noticePeriod={a.talent.noticePeriod}
+    <div className="group rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50">
+      <div className="flex items-center gap-3">
+        <input
+          aria-label={`Select ${name}`}
+          checked={selected}
+          className="h-4 w-4 shrink-0 accent-brand-600 disabled:opacity-30"
+          disabled={!isRejectable(a.status) || isPending}
+          title={
+            isRejectable(a.status)
+              ? undefined
+              : `Already ${(APPLICANT_ROW_STATUS_LABEL[a.status] ?? a.status).toLowerCase()}`
+          }
+          type="checkbox"
+          onChange={() => onToggleSelect(a.id)}
         />
-      </div>
-
-      {stuckDays !== null && (
         <div
-          className="flex flex-shrink-0 items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700"
-          title="Employer Response SLA — this is the same signal behind the reminder email"
+          className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-[13px] font-semibold text-white"
+          style={{ background: colorFor(name) }}
         >
-          <Clock3 size={10} /> {stuckDays}d, awaiting review
+          {initial}
         </div>
-      )}
 
-      <div className="flex-shrink-0 text-right">
-        <Badge
-          className="px-1.5 py-0.5 text-[10px]"
-          variant={APPLICANT_STATUS_VARIANT[group]}
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[13.5px] font-medium text-neutral-900">
+              {name}
+            </span>
+          </div>
+          <div className="text-[11.5px] text-neutral-400">
+            {a.talent.headline ?? a.talent.level}
+            <span className="text-neutral-300"> · for {a.jobTitle}</span>
+          </div>
+        </div>
+
+        {a.match && (
+          <div className="flex-shrink-0">
+            <MatchBadge match={a.match} />
+          </div>
+        )}
+
+        <div className="flex-shrink-0">
+          <AvailabilityBadge
+            isOpenToWork={a.talent.isOpenToWork}
+            noticePeriod={a.talent.noticePeriod}
+          />
+        </div>
+
+        {stuckDays !== null && (
+          <div
+            className="flex flex-shrink-0 items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700"
+            title="Employer Response SLA — this is the same signal behind the reminder email"
+          >
+            <Clock3 size={10} /> {stuckDays}d, awaiting review
+          </div>
+        )}
+
+        <div className="flex-shrink-0 text-right">
+          <Badge
+            className="px-1.5 py-0.5 text-[10px]"
+            variant={APPLICANT_STATUS_VARIANT[group]}
+          >
+            {APPLICANT_ROW_STATUS_LABEL[a.status] ??
+              APPLICANT_STATUS_LABEL[group]}
+          </Badge>
+        </div>
+
+        {a.resumeUrl && (
+          <a
+            aria-label="View resume"
+            className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+            href={a.resumeUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <Paperclip size={13} />
+          </a>
+        )}
+
+        <Link
+          aria-label="Message applicant"
+          className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+          to={ROUTES.applicationMessages(a.id)}
         >
-          {APPLICANT_ROW_STATUS_LABEL[a.status] ??
-            APPLICANT_STATUS_LABEL[group]}
-        </Badge>
+          <MessageCircle size={13} />
+        </Link>
+
+        {a.status === "INTERVIEW" && (
+          <Link
+            aria-label="Schedule interview"
+            className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+            to={ROUTES.applicationInterview(a.id)}
+          >
+            <CalendarClock size={13} />
+          </Link>
+        )}
+
+        {nextStatus && a.status !== "REJECTED" ? (
+          <div className="flex flex-shrink-0 items-center gap-1">
+            <button
+              className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100 disabled:opacity-50"
+              disabled={isPending}
+              type="button"
+              onClick={() => onStatusChange(a.id, a.jobId, nextStatus)}
+            >
+              <Check size={11} /> {NEXT_LABEL[a.status]}
+            </button>
+            <button
+              aria-label="Reject applicant"
+              className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+              disabled={isPending}
+              type="button"
+              onClick={() => onStatusChange(a.id, a.jobId, "REJECTED")}
+            >
+              <X size={13} />
+            </button>
+          </div>
+        ) : (
+          <div className="flex-shrink-0 text-[11px] text-neutral-400">
+            {timeAgo(a.appliedAt)}
+          </div>
+        )}
       </div>
 
-      <Link
-        aria-label="Message applicant"
-        className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
-        to={ROUTES.applicationMessages(a.id)}
-      >
-        <MessageCircle size={13} />
-      </Link>
-
-      {nextStatus && a.status !== "REJECTED" ? (
-        <div className="flex flex-shrink-0 items-center gap-1">
-          <button
-            className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100 disabled:opacity-50"
-            disabled={isPending}
-            type="button"
-            onClick={() => onStatusChange(a.id, a.jobId, nextStatus)}
-          >
-            <Check size={11} /> {NEXT_LABEL[a.status]}
-          </button>
-          <button
-            aria-label="Reject applicant"
-            className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
-            disabled={isPending}
-            type="button"
-            onClick={() => onStatusChange(a.id, a.jobId, "REJECTED")}
-          >
-            <X size={13} />
-          </button>
-        </div>
-      ) : (
-        <div className="flex-shrink-0 text-[11px] text-neutral-400">
-          {timeAgo(a.appliedAt)}
-        </div>
+      {a.coverLetter && (
+        <button
+          className="mt-1.5 px-2 text-[11px] text-neutral-400 transition-colors hover:text-neutral-600 hover:underline"
+          type="button"
+          onClick={() => setShowCoverLetter((v) => !v)}
+        >
+          {showCoverLetter ? "Hide cover letter" : "View cover letter"}
+        </button>
+      )}
+      {showCoverLetter && a.coverLetter && (
+        <p className="mx-2 mt-1.5 whitespace-pre-wrap rounded-8 bg-neutral-50 p-2.5 text-[12.5px] leading-relaxed text-neutral-600">
+          {a.coverLetter}
+        </p>
       )}
     </div>
   );
