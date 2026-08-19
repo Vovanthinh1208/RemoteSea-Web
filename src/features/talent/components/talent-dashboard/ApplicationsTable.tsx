@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { CalendarClock, ChevronDown, MessageCircle } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { Badge, type BadgeVariant } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/utils/cn";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { countryFlag } from "@/utils/color";
@@ -12,22 +12,12 @@ import { Pipeline } from "@/features/talent/components/talent-dashboard/Pipeline
 import { ApplicationTimeline } from "@/features/talent/components/talent-dashboard/ApplicationTimeline";
 import {
   STAGE_LABEL,
+  STATUS_BADGE,
   STATUS_TO_BUCKET,
   type AppStatusBucket,
 } from "@/features/talent/talent-dashboard.utils";
 import type { ApplicationWithJob } from "@/types/application";
 import { ROUTES } from "@/constants/routes";
-
-const STATUS_MAP: Record<
-  AppStatusBucket,
-  { label: string; variant: BadgeVariant }
-> = {
-  applied: { label: "Applied", variant: "info" },
-  review: { label: "In review", variant: "warning" },
-  interview: { label: "Interviewing", variant: "positive" },
-  offer: { label: "Offer", variant: "success" },
-  closed: { label: "Closed", variant: "muted" },
-};
 
 type TabId = "all" | "active" | "offers" | "closed";
 
@@ -40,7 +30,7 @@ const ApplicationRow = memo(function ApplicationRow({
 }: ApplicationRowProps) {
   const [expanded, setExpanded] = useState(false);
   const bucket = STATUS_TO_BUCKET[a.status];
-  const s = STATUS_MAP[bucket];
+  const s = STATUS_BADGE[bucket];
   const company = a.job.employer.companyName;
   const country = a.job.country ?? "Remote";
   return (

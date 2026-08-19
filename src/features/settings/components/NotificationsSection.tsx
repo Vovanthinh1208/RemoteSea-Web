@@ -47,7 +47,7 @@ export const NotificationsSection = () => {
       </p>
       <div className="mb-6 divide-y divide-neutral-50 rounded-16 border border-neutral-100 bg-white px-4">
         <ToggleRow
-          desc="When an employer views, shortlists, or responds to one of your applications."
+          desc="When an employer moves one of your applications forward — shortlisted, interviewing, offered, or rejected."
           on={prefs?.applicationUpdates ?? true}
           title="Application updates"
           onChange={(v) => toggle("applicationUpdates", v)}
@@ -102,8 +102,9 @@ export const NotificationsSection = () => {
           onChange={(v) => toggle("tipsAndResources", v)}
         />
         <ToggleRow
-          desc="Real-time alerts on this device, even when RemoteSEA isn't open."
-          on={prefs?.browserPush ?? true}
+          disabled
+          desc="Real-time alerts on this device, even when RemoteSEA isn't open. Not built yet — this won't do anything until it is."
+          on={false}
           title="Browser push notifications"
           onChange={(v) => toggle("browserPush", v)}
         />

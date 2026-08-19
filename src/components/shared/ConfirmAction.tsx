@@ -1,11 +1,16 @@
 import { useState } from "react";
+import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 
 interface ConfirmActionProps {
   message: string;
-  onConfirm: () => void | Promise<void>;
+  onConfirm: (note?: string) => void | Promise<void>;
   isPending?: boolean;
   confirmLabel?: string;
   pendingLabel?: string;
+  /** Adds an optional note textarea to the confirm step, passed to onConfirm
+   *  trimmed (undefined if left blank) — opt-in so every other call site
+   *  (account deletion, alert deletion, ...) keeps its current compact form. */
+  notePlaceholder?: string;
   /** Renders the idle-state trigger (e.g. an icon button or a labeled button). */
   children: (props: { onClick: () => void }) => React.ReactNode;
 }
@@ -23,35 +28,52 @@ export const ConfirmAction = ({
   isPending,
   confirmLabel = "Yes",
   pendingLabel = "Working…",
+  notePlaceholder,
   children,
 }: ConfirmActionProps) => {
   const [isConfirming, setIsConfirming] = useState(false);
+  const [note, setNote] = useState("");
 
   if (!isConfirming) {
     return <>{children({ onClick: () => setIsConfirming(true) })}</>;
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="text-[12px] text-neutral-600">{message}</span>
-      <button
-        className="rounded-8 bg-red-600 px-2.5 py-1 text-[12px] font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-60"
-        disabled={isPending}
-        type="button"
-        onClick={async () => {
-          await onConfirm();
-          setIsConfirming(false);
-        }}
-      >
-        {isPending ? pendingLabel : confirmLabel}
-      </button>
-      <button
-        className="rounded-8 border border-neutral-200 px-2.5 py-1 text-[12px] text-neutral-600 transition-colors hover:bg-neutral-50"
-        type="button"
-        onClick={() => setIsConfirming(false)}
-      >
-        Cancel
-      </button>
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-[12px] text-neutral-600">{message}</span>
+        <button
+          className="rounded-8 bg-red-600 px-2.5 py-1 text-[12px] font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-60"
+          disabled={isPending}
+          type="button"
+          onClick={async () => {
+            await onConfirm(note.trim() || undefined);
+            setIsConfirming(false);
+            setNote("");
+          }}
+        >
+          {isPending ? pendingLabel : confirmLabel}
+        </button>
+        <button
+          className="rounded-8 border border-neutral-200 px-2.5 py-1 text-[12px] text-neutral-600 transition-colors hover:bg-neutral-50"
+          type="button"
+          onClick={() => {
+            setIsConfirming(false);
+            setNote("");
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+      {notePlaceholder !== undefined && (
+        <textarea
+          className={TEXTAREA_INPUT_CLASS}
+          placeholder={notePlaceholder}
+          rows={2}
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+        />
+      )}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useMarkNotificationRead } from "@/features/notifications/notification.queries";
+import { EVENT_BULLET_CLASS, EVENT_ICON } from "@/utils/notification-icons";
 import type { Notification } from "@/types/notification";
 import { timeAgoLong } from "@/utils/time";
 import { cn } from "@/utils/cn";
@@ -12,6 +13,7 @@ export const NotificationRow = ({
   const markRead = useMarkNotificationRead();
   const navigate = useNavigate();
   const isUnread = !notification.readAt;
+  const TypeIcon = EVENT_ICON[notification.type];
 
   // A single interactive element carrying both the read/unread background
   // and the hover state — always marks read, only navigates if there's a
@@ -34,12 +36,18 @@ export const NotificationRow = ({
       type="button"
       onClick={handleClick}
     >
+      {/* Same icon+color-by-type bullet as ActivityFeed's rows — the row-level
+          unread tint above already carries the read/unread signal, so this
+          slot is free to show what kind of event this is instead of just a
+          plain dot. */}
       <span
         className={cn(
-          "mt-1.5 h-2 w-2 shrink-0 rounded-full",
-          isUnread ? "bg-brand-600" : "bg-transparent"
+          "mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-full",
+          EVENT_BULLET_CLASS[notification.type]
         )}
-      />
+      >
+        <TypeIcon size={11} />
+      </span>
       <div className="min-w-0 flex-1">
         <p className="text-[14.5px] font-medium text-neutral-900">
           {notification.title}

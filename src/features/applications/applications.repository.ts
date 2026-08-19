@@ -4,6 +4,7 @@ import type {
   ApplicationDto,
   ApplicationListResponseDto,
   ApplicationStatusCountsDto,
+  ApplicationWithJobDto,
   ApplyRequestDto,
 } from "@/features/applications/applications.dto";
 
@@ -12,6 +13,17 @@ export const applicationsRepository = {
     const { data } = await apiClient.post<ApplicationDto>(
       "/applications",
       payload
+    );
+    return data;
+  },
+
+  getById: async (
+    id: string,
+    opts?: RequestOptions
+  ): Promise<ApplicationWithJobDto> => {
+    const { data } = await apiClient.get<ApplicationWithJobDto>(
+      `/applications/${id}`,
+      { signal: opts?.signal }
     );
     return data;
   },
