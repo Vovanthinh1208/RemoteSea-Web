@@ -84,9 +84,7 @@ const ApplicationRow = memo(function ApplicationRow({
         <span className="hidden w-[72px] text-right text-[12px] text-neutral-400 md:block">
           {timeAgoShort(a.appliedAt)}
         </span>
-        {/* Grouped in one flex wrapper (rather than a second grid track) so
-            the interview icon's conditional presence never shifts the grid's
-            column count row-to-row. */}
+
         <div className="flex shrink-0 items-center gap-1">
           <Link
             aria-label="Message about this application"
@@ -126,9 +124,6 @@ interface ApplicationsTableProps {
 const isTabId = (v: string): v is TabId =>
   (["all", "active", "offers", "closed"] as const).includes(v as TabId);
 
-// "all" can never hit this — its filtered list is `applications` itself, so
-// it's only empty when the outer applications.length === 0 check already
-// handled it. Still typed over every TabId so indexing below stays exhaustive.
 const TAB_EMPTY_COPY: Record<TabId, { title: string; description: string }> = {
   all: {
     title: "No applications yet",
@@ -151,12 +146,8 @@ const TAB_EMPTY_COPY: Record<TabId, { title: string; description: string }> = {
 };
 
 export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
-  // URL-synced so reloading (or sharing the link) doesn't silently revert to "Active".
   const [tab, setTab] = useSearchParamState<TabId>("appTab", "active", isTabId);
 
-  // Single O(n) bucketing pass instead of re-filtering `applications` once per tab
-  // count plus once for the visible rows (previously 6 separate .filter() passes
-  // over the same array on every render).
   const grouped = useMemo(() => {
     const buckets: Record<AppStatusBucket, ApplicationWithJob[]> = {
       applied: [],

@@ -65,8 +65,6 @@ interface ApplicationTimelineProps {
   application: Application;
 }
 
-/** Application Transparency — the per-application timeline, expanded inline
- * from ApplicationsTable's rows (see plan: no new detail page/route). */
 export const ApplicationTimeline = ({
   application,
 }: ApplicationTimelineProps) => {

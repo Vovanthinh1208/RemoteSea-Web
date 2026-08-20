@@ -67,20 +67,11 @@ const APPLICANT_STATUS_LABEL: Record<ApplicantStatusGroup, string> = {
   archived: "Archived",
 };
 
-// The "archived" group covers both REJECTED and WITHDRAWN for tab-filtering
-// purposes, but showing "Archived" on the row badge right after an employer
-// clicks reject (with a toast that says "Applicant rejected") reads as if the
-// action didn't register. The badge shows the real, specific status instead.
 const APPLICANT_ROW_STATUS_LABEL: Partial<Record<ApplicationStatus, string>> = {
   REJECTED: "Rejected",
   WITHDRAWN: "Withdrawn",
 };
 
-// Mirrors the backend's ALLOWED_TRANSITIONS (every status but REJECTED/
-// WITHDRAWN can reach REJECTED) rather than the single-row UI's narrower
-// "only if a next stage exists" gate — bulk-reject is a separate, more
-// general mechanism, so an OFFERED row (which has no single-row reject
-// button today) is still a valid bulk-reject candidate.
 const isRejectable = (status: ApplicationStatus): boolean =>
   status !== "REJECTED" && status !== "WITHDRAWN";
 
@@ -94,9 +85,6 @@ interface ApplicantRowProps {
   ) => void;
   selected: boolean;
   onToggleSelect: (id: string) => void;
-  // Only ever set for status === "INTERVIEW" rows (see
-  // useApplicantHiringSignals' bounded fan-out) — undefined for every
-  // earlier/later stage, where there's nothing to show.
   signal: ApplicantHiringSignal | undefined;
   currentUserId: string | undefined;
 }
@@ -117,9 +105,6 @@ const ApplicantRow = memo(function ApplicantRow({
   const stuckDays = backlogDays(a.status, a.appliedAt, a.updatedAt);
   const [showCoverLetter, setShowCoverLetter] = useState(false);
 
-  // Only the INTERVIEW stage gets a "what's next" line and a contextual
-  // action — every earlier stage already has a clear one-click advance
-  // button, and every later (terminal) stage has nothing left to do.
   const interviewOccurred = hasOccurred(
     signal?.interview?.confirmedSlot ?? null
   );
@@ -154,13 +139,93 @@ const ApplicantRow = memo(function ApplicantRow({
     interviewStageAction?.kind === "view-interview"
       ? ROUTES.applicationInterview(a.id)
       : ROUTES.employerApplicationDetail(a.id);
+
+  const actionGroup =
+    a.status === "INTERVIEW" ? (
+      <div className="flex flex-shrink-0 items-center gap-1">
+        {interviewStageAction ? (
+          <Link
+            className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100"
+            to={interviewStageActionHref}
+          >
+            {interviewStageAction.label}
+          </Link>
+        ) : (
+          <span className="h-7 w-20 animate-pulse rounded-8 bg-neutral-100" />
+        )}
+        <ConfirmAction
+          confirmLabel="Reject"
+          isPending={isPending}
+          message="Reject this applicant?"
+          pendingLabel="Rejecting…"
+          onConfirm={() => onStatusChange(a.id, a.jobId, "REJECTED")}
+        >
+          {({ onClick }) => (
+            <button
+              aria-label="Reject applicant"
+              className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+              disabled={isPending}
+              type="button"
+              onClick={onClick}
+            >
+              <X size={13} />
+            </button>
+          )}
+        </ConfirmAction>
+      </div>
+    ) : nextStatus && a.status !== "REJECTED" ? (
+      <div className="flex flex-shrink-0 items-center gap-1">
+        <ConfirmAction
+          confirmLabel={NEXT_LABEL[a.status]}
+          isPending={isPending}
+          message={`${NEXT_LABEL[a.status]} this applicant?`}
+          pendingLabel="Updating…"
+          onConfirm={() => onStatusChange(a.id, a.jobId, nextStatus)}
+        >
+          {({ onClick }) => (
+            <button
+              className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100 disabled:opacity-50"
+              disabled={isPending}
+              type="button"
+              onClick={onClick}
+            >
+              <Check size={11} /> {NEXT_LABEL[a.status]}
+            </button>
+          )}
+        </ConfirmAction>
+        <ConfirmAction
+          confirmLabel="Reject"
+          isPending={isPending}
+          message="Reject this applicant?"
+          pendingLabel="Rejecting…"
+          onConfirm={() => onStatusChange(a.id, a.jobId, "REJECTED")}
+        >
+          {({ onClick }) => (
+            <button
+              aria-label="Reject applicant"
+              className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+              disabled={isPending}
+              type="button"
+              onClick={onClick}
+            >
+              <X size={13} />
+            </button>
+          )}
+        </ConfirmAction>
+      </div>
+    ) : (
+      <div className="flex-shrink-0 text-[11px] text-neutral-400">
+        {timeAgo(a.appliedAt)}
+      </div>
+    );
+
   return (
     <div className="group rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50">
-      <div className="flex items-center gap-3">
+      <div className="flex items-start gap-3">
         <input
           aria-label={`Select ${name}`}
           checked={selected}
-          className="h-4 w-4 shrink-0 accent-brand-600 disabled:opacity-30"
+          className="mt-2 h-4 w-4 shrink-0 accent-brand-600 disabled:opacity-30"
           disabled={!isRejectable(a.status) || isPending}
           title={
             isRejectable(a.status)
@@ -177,169 +242,83 @@ const ApplicantRow = memo(function ApplicantRow({
           {initial}
         </div>
 
-        <Link
-          className="min-w-0 flex-1"
-          to={ROUTES.employerApplicationDetail(a.id)}
-        >
-          <div className="flex items-center gap-1.5">
-            <span className="text-[13.5px] font-medium text-neutral-900 hover:underline">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-2">
+            <Link
+              className="min-w-0 flex-1 truncate text-[13.5px] font-medium text-neutral-900 hover:underline"
+              to={ROUTES.employerApplicationDetail(a.id)}
+            >
               {name}
-            </span>
+            </Link>
+            <div className="flex flex-shrink-0 items-center gap-1.5">
+              <Badge
+                className="px-1.5 py-0.5 text-[10px]"
+                variant={APPLICANT_STATUS_VARIANT[group]}
+              >
+                {APPLICANT_ROW_STATUS_LABEL[a.status] ??
+                  APPLICANT_STATUS_LABEL[group]}
+              </Badge>
+              {a.resumeUrl && (
+                <a
+                  aria-label="View resume"
+                  className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+                  href={a.resumeUrl}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <Paperclip size={13} />
+                </a>
+              )}
+              {actionGroup}
+            </div>
           </div>
-          <div className="text-[11.5px] text-neutral-400">
-            {a.talent.headline ?? a.talent.level}
-            <span className="text-neutral-300"> · for {a.jobTitle}</span>
+
+          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+            <Link
+              className="text-[11.5px] text-neutral-400 hover:text-neutral-600 hover:underline"
+              to={ROUTES.employerApplicationDetail(a.id)}
+            >
+              {a.talent.headline ?? a.talent.level}
+              <span className="text-neutral-300"> · for {a.jobTitle}</span>
+            </Link>
+            {a.match && <MatchBadge match={a.match} />}
+            <AvailabilityBadge
+              isOpenToWork={a.talent.isOpenToWork}
+              noticePeriod={a.talent.noticePeriod}
+            />
+            {stuckDays !== null && (
+              <span
+                className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700"
+                title="Employer Response SLA — this is the same signal behind the reminder email"
+              >
+                <Clock3 size={10} /> {stuckDays}d, awaiting review
+              </span>
+            )}
           </div>
+
           {nextLine && (
-            <div className="mt-0.5 flex items-center gap-1 text-[11px] font-medium text-brand-700">
+            <div className="mt-1 flex items-center gap-1 text-[11px] font-medium text-brand-700">
               <nextLine.icon size={11} />
               {nextLine.text}
             </div>
           )}
-        </Link>
 
-        {a.match && (
-          <div className="flex-shrink-0">
-            <MatchBadge match={a.match} />
-          </div>
-        )}
-
-        <div className="flex-shrink-0">
-          <AvailabilityBadge
-            isOpenToWork={a.talent.isOpenToWork}
-            noticePeriod={a.talent.noticePeriod}
-          />
+          {a.coverLetter && (
+            <button
+              className="mt-1.5 text-[11px] text-neutral-400 transition-colors hover:text-neutral-600 hover:underline"
+              type="button"
+              onClick={() => setShowCoverLetter((v) => !v)}
+            >
+              {showCoverLetter ? "Hide cover letter" : "View cover letter"}
+            </button>
+          )}
+          {showCoverLetter && a.coverLetter && (
+            <p className="mt-1.5 whitespace-pre-wrap rounded-8 bg-neutral-50 p-2.5 text-[12.5px] leading-relaxed text-neutral-600">
+              {a.coverLetter}
+            </p>
+          )}
         </div>
-
-        {stuckDays !== null && (
-          <div
-            className="flex flex-shrink-0 items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700"
-            title="Employer Response SLA — this is the same signal behind the reminder email"
-          >
-            <Clock3 size={10} /> {stuckDays}d, awaiting review
-          </div>
-        )}
-
-        <div className="flex-shrink-0 text-right">
-          <Badge
-            className="px-1.5 py-0.5 text-[10px]"
-            variant={APPLICANT_STATUS_VARIANT[group]}
-          >
-            {APPLICANT_ROW_STATUS_LABEL[a.status] ??
-              APPLICANT_STATUS_LABEL[group]}
-          </Badge>
-        </div>
-
-        {a.resumeUrl && (
-          <a
-            aria-label="View resume"
-            className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
-            href={a.resumeUrl}
-            rel="noreferrer"
-            target="_blank"
-          >
-            <Paperclip size={13} />
-          </a>
-        )}
-
-        {a.status === "INTERVIEW" ? (
-          <div className="flex flex-shrink-0 items-center gap-1">
-            {interviewStageAction ? (
-              <Link
-                className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100"
-                to={interviewStageActionHref}
-              >
-                {interviewStageAction.label}
-              </Link>
-            ) : (
-              // Signal (interview + scorecards) still loading — never fall
-              // through to the generic NEXT_STAGE advance button here: for
-              // INTERVIEW that button used to jump straight to OFFERED,
-              // skipping the interview/feedback flow entirely. Wait for the
-              // real contextual action instead of showing a wrong one.
-              <span className="h-7 w-20 animate-pulse rounded-8 bg-neutral-100" />
-            )}
-            <ConfirmAction
-              confirmLabel="Reject"
-              isPending={isPending}
-              message="Reject this applicant?"
-              pendingLabel="Rejecting…"
-              onConfirm={() => onStatusChange(a.id, a.jobId, "REJECTED")}
-            >
-              {({ onClick }) => (
-                <button
-                  aria-label="Reject applicant"
-                  className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
-                  disabled={isPending}
-                  type="button"
-                  onClick={onClick}
-                >
-                  <X size={13} />
-                </button>
-              )}
-            </ConfirmAction>
-          </div>
-        ) : nextStatus && a.status !== "REJECTED" ? (
-          <div className="flex flex-shrink-0 items-center gap-1">
-            <ConfirmAction
-              confirmLabel={NEXT_LABEL[a.status]}
-              isPending={isPending}
-              message={`${NEXT_LABEL[a.status]} this applicant?`}
-              pendingLabel="Updating…"
-              onConfirm={() => onStatusChange(a.id, a.jobId, nextStatus)}
-            >
-              {({ onClick }) => (
-                <button
-                  className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100 disabled:opacity-50"
-                  disabled={isPending}
-                  type="button"
-                  onClick={onClick}
-                >
-                  <Check size={11} /> {NEXT_LABEL[a.status]}
-                </button>
-              )}
-            </ConfirmAction>
-            <ConfirmAction
-              confirmLabel="Reject"
-              isPending={isPending}
-              message="Reject this applicant?"
-              pendingLabel="Rejecting…"
-              onConfirm={() => onStatusChange(a.id, a.jobId, "REJECTED")}
-            >
-              {({ onClick }) => (
-                <button
-                  aria-label="Reject applicant"
-                  className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
-                  disabled={isPending}
-                  type="button"
-                  onClick={onClick}
-                >
-                  <X size={13} />
-                </button>
-              )}
-            </ConfirmAction>
-          </div>
-        ) : (
-          <div className="flex-shrink-0 text-[11px] text-neutral-400">
-            {timeAgo(a.appliedAt)}
-          </div>
-        )}
       </div>
-
-      {a.coverLetter && (
-        <button
-          className="mt-1.5 px-2 text-[11px] text-neutral-400 transition-colors hover:text-neutral-600 hover:underline"
-          type="button"
-          onClick={() => setShowCoverLetter((v) => !v)}
-        >
-          {showCoverLetter ? "Hide cover letter" : "View cover letter"}
-        </button>
-      )}
-      {showCoverLetter && a.coverLetter && (
-        <p className="mx-2 mt-1.5 whitespace-pre-wrap rounded-8 bg-neutral-50 p-2.5 text-[12.5px] leading-relaxed text-neutral-600">
-          {a.coverLetter}
-        </p>
-      )}
     </div>
   );
 });
@@ -452,10 +431,6 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
   const { toast } = useToast();
   const selectedApplicants = visible.filter((a) => selectedIds.has(a.id));
 
-  // A single bulk-advance target only makes sense when every selected row
-  // shares the same current status — NEXT_STAGE varies by status, and a
-  // mixed selection has no one "next stage" to offer. Selecting within a
-  // status-filtered tab (the common case) always satisfies this.
   const commonStatus =
     selectedApplicants.length > 0 &&
     selectedApplicants.every((a) => a.status === selectedApplicants[0].status)
@@ -607,14 +582,6 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
             {visible.map((a) => (
               <ApplicantRow
                 applicant={a}
-                // Scoped to this row's id for the single-item mutation —
-                // otherwise updating one applicant disables the action
-                // buttons on every other row too. bulkUpdateMutation is
-                // OR'd in unscoped: while a bulk write is in flight, every
-                // row pauses, since a concurrent single-item PATCH against
-                // a row the bulk call is also touching would race the same
-                // CAS the backend uses (harmless — one side just loses and
-                // reports stale — but confusing to trigger from the UI).
                 isPending={
                   (updateStatusMutation.isPending &&
                     updateStatusMutation.variables?.id === a.id) ||
