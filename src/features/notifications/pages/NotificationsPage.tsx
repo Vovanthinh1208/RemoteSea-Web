@@ -3,6 +3,7 @@ import {
   useMarkAllNotificationsRead,
   useNotifications,
 } from "@/features/notifications/notification.queries";
+import { groupNotificationsByDay } from "@/features/notifications/notification.utils";
 import { NotificationRow } from "@/features/notifications/components/NotificationRow";
 import { NotificationRowSkeleton } from "@/features/notifications/components/NotificationRowSkeleton";
 import { Pagination } from "@/features/jobs/components/Pagination";
@@ -72,9 +73,18 @@ export const NotificationsPage = () => {
         />
       ) : (
         <>
-          <div className="divide-y divide-neutral-100 overflow-hidden rounded-16 border border-neutral-100">
-            {notifications.map((n) => (
-              <NotificationRow key={n.id} notification={n} />
+          <div className="space-y-6">
+            {groupNotificationsByDay(notifications).map((group) => (
+              <div key={group.key}>
+                <h2 className="mb-2 px-1 text-[12px] font-semibold uppercase tracking-wide text-neutral-400">
+                  {group.label}
+                </h2>
+                <div className="divide-y divide-neutral-100 overflow-hidden rounded-16 border border-neutral-100">
+                  {group.notifications.map((n) => (
+                    <NotificationRow key={n.id} notification={n} />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
           {data && (

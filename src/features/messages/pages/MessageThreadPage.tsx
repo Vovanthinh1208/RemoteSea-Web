@@ -16,12 +16,17 @@ import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useApplicationHeaderContext } from "@/hooks/useApplicationHeaderContext";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { timeAgoLong } from "@/utils/time";
+import { companyColor } from "@/utils/color";
 import { cn } from "@/utils/cn";
 
 const COMPOSE_MAX_HEIGHT_PX = 160;
+const AVATAR_SIZE_PX = 24;
 
 const MessageBubbleSkeleton = ({ align }: { align: "left" | "right" }) => (
-  <div className={cn("flex", align === "right" && "justify-end")}>
+  <div
+    className={cn("flex items-end gap-1.5", align === "right" && "justify-end")}
+  >
+    {align === "left" && <div className="h-6 w-6 flex-shrink-0" />}
     <Skeleton className="h-14 w-[220px] rounded-16" />
   </div>
 );
@@ -29,26 +34,60 @@ const MessageBubbleSkeleton = ({ align }: { align: "left" | "right" }) => (
 const MessageBubble = ({
   message,
   isMine,
+  isFirstInGroup,
+  isLastInGroup,
+  otherPartyName,
 }: {
   message: Message;
   isMine: boolean;
+  isFirstInGroup: boolean;
+  isLastInGroup: boolean;
+  otherPartyName: string;
 }) => (
-  <div className={cn("flex", isMine && "justify-end")}>
+  <div
+    className={cn(
+      "flex items-end gap-1.5",
+      isMine && "justify-end",
+      isFirstInGroup ? "mt-3" : "mt-0.5"
+    )}
+  >
+    {!isMine && (
+      <div
+        className="flex-shrink-0"
+        style={{ width: AVATAR_SIZE_PX, height: AVATAR_SIZE_PX }}
+      >
+        {isLastInGroup && (
+          <div
+            aria-hidden="true"
+            className="grid h-full w-full place-items-center rounded-full text-[10.5px] font-semibold text-white"
+            style={{ background: companyColor(otherPartyName) }}
+          >
+            {otherPartyName.charAt(0).toUpperCase()}
+          </div>
+        )}
+      </div>
+    )}
     <div
       className={cn(
-        "max-w-[75%] rounded-16 px-3.5 py-2.5 text-[13.5px]",
-        isMine ? "bg-brand-600 text-white" : "bg-neutral-100 text-neutral-900"
+        "max-w-[70%] rounded-16 px-3.5 py-2.5 text-[13.5px]",
+        isMine ? "bg-brand-600 text-white" : "bg-neutral-100 text-neutral-900",
+        isMine && !isFirstInGroup && "rounded-tr-4",
+        isMine && !isLastInGroup && "rounded-br-4",
+        !isMine && !isFirstInGroup && "rounded-tl-4",
+        !isMine && !isLastInGroup && "rounded-bl-4"
       )}
     >
       <p className="whitespace-pre-wrap break-words">{message.body}</p>
-      <p
-        className={cn(
-          "mt-1 text-[10.5px]",
-          isMine ? "text-brand-100" : "text-neutral-400"
-        )}
-      >
-        {timeAgoLong(message.createdAt)}
-      </p>
+      {isLastInGroup && (
+        <p
+          className={cn(
+            "mt-1 text-[10.5px]",
+            isMine ? "text-brand-100" : "text-neutral-400"
+          )}
+        >
+          {timeAgoLong(message.createdAt)}
+        </p>
+      )}
     </div>
   </div>
 );
@@ -107,7 +146,7 @@ export const MessageThreadPage = () => {
         title={title}
       />
 
-      <div className="min-h-0 flex-1 space-y-3 overflow-y-auto rounded-16 border border-neutral-100 bg-white p-5">
+      <div className="min-h-0 flex-1 space-y-4 overflow-y-auto rounded-16 border border-neutral-100 bg-white p-5">
         {isLoading ? (
           <>
             <MessageBubbleSkeleton align="left" />
@@ -137,14 +176,21 @@ export const MessageThreadPage = () => {
                   {group.label}
                 </span>
               </div>
-              <div className="space-y-3">
-                {group.messages.map((m) => (
-                  <MessageBubble
-                    isMine={m.senderId === user?.id}
-                    key={m.id}
-                    message={m}
-                  />
-                ))}
+              <div>
+                {group.messages.map((m, i) => {
+                  const prev = group.messages[i - 1];
+                  const next = group.messages[i + 1];
+                  return (
+                    <MessageBubble
+                      isFirstInGroup={!prev || prev.senderId !== m.senderId}
+                      isLastInGroup={!next || next.senderId !== m.senderId}
+                      isMine={m.senderId === user?.id}
+                      key={m.id}
+                      message={m}
+                      otherPartyName={title}
+                    />
+                  );
+                })}
               </div>
             </div>
           ))
@@ -153,16 +199,20 @@ export const MessageThreadPage = () => {
       </div>
 
       <form
-        className="mt-3 flex items-end gap-2"
+        className="mt-3 flex items-end gap-1.5 rounded-24 border border-neutral-200 bg-white py-1.5 pl-4 pr-1.5 transition-colors focus-within:border-brand-600"
         onSubmit={(e) => {
           e.preventDefault();
           handleSend();
         }}
       >
         <textarea
-          className={cn(TEXTAREA_INPUT_CLASS, "min-h-[44px]")}
+          className={cn(
+            TEXTAREA_INPUT_CLASS,
+            "min-h-[24px] resize-none border-none bg-transparent p-0 py-1.5 shadow-none focus:border-none focus:shadow-none"
+          )}
           maxLength={4000}
           placeholder="Write a message…"
+          ref={textareaRef}
           rows={1}
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
@@ -174,7 +224,7 @@ export const MessageThreadPage = () => {
           }}
         />
         <Button
-          className="shrink-0"
+          className="h-9 w-9 flex-shrink-0 rounded-full p-0"
           disabled={!draft.trim() || sendMessage.isPending}
           isLoading={sendMessage.isPending}
           type="submit"

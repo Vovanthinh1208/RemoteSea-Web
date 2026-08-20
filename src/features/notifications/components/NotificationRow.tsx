@@ -15,13 +15,6 @@ export const NotificationRow = ({
   const isUnread = !notification.readAt;
   const TypeIcon = EVENT_ICON[notification.type];
 
-  // A single interactive element carrying both the read/unread background
-  // and the hover state — always marks read, only navigates if there's a
-  // link. Splitting these into a <Link> wrapping a separately-styled inner
-  // div (an earlier version of this) made the wrapper's hover:bg invisible
-  // (the inner div's own opaque background painted over it) and made
-  // link-less notifications silently unclickable — same bug class
-  // NotificationBell's row button already avoids by staying one element.
   const handleClick = () => {
     if (isUnread) markRead.mutate(notification.id);
     if (notification.link) navigate(notification.link);
@@ -30,26 +23,27 @@ export const NotificationRow = ({
   return (
     <button
       className={cn(
-        "flex w-full items-start gap-3 px-4 py-4 text-left transition-colors hover:bg-neutral-50",
+        "flex w-full items-start gap-3.5 px-4 py-4 text-left transition-colors hover:bg-neutral-50",
         isUnread && "bg-brand-50/60"
       )}
       type="button"
       onClick={handleClick}
     >
-      {/* Same icon+color-by-type bullet as ActivityFeed's rows — the row-level
-          unread tint above already carries the read/unread signal, so this
-          slot is free to show what kind of event this is instead of just a
-          plain dot. */}
       <span
         className={cn(
-          "mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-full",
+          "grid h-10 w-10 flex-shrink-0 place-items-center rounded-full",
           EVENT_BULLET_CLASS[notification.type]
         )}
       >
-        <TypeIcon size={11} />
+        <TypeIcon size={17} />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-[14.5px] font-medium text-neutral-900">
+        <p
+          className={cn(
+            "text-[14.5px] text-neutral-900",
+            isUnread ? "font-semibold" : "font-medium"
+          )}
+        >
           {notification.title}
         </p>
         {notification.body && (
@@ -61,6 +55,12 @@ export const NotificationRow = ({
           {timeAgoLong(notification.createdAt)}
         </p>
       </div>
+      {isUnread && (
+        <span
+          aria-hidden="true"
+          className="mt-2 h-2.5 w-2.5 flex-shrink-0 rounded-full bg-brand-600"
+        />
+      )}
     </button>
   );
 };
