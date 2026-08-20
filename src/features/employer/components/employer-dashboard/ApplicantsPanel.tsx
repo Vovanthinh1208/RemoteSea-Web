@@ -132,9 +132,12 @@ const ApplicantRow = memo(function ApplicantRow({
           {initial}
         </div>
 
-        <div className="min-w-0 flex-1">
+        <Link
+          className="min-w-0 flex-1"
+          to={ROUTES.employerApplicationDetail(a.id)}
+        >
           <div className="flex items-center gap-1.5">
-            <span className="text-[13.5px] font-medium text-neutral-900">
+            <span className="text-[13.5px] font-medium text-neutral-900 hover:underline">
               {name}
             </span>
           </div>
@@ -142,7 +145,7 @@ const ApplicantRow = memo(function ApplicantRow({
             {a.talent.headline ?? a.talent.level}
             <span className="text-neutral-300"> · for {a.jobTitle}</span>
           </div>
-        </div>
+        </Link>
 
         {a.match && (
           <div className="flex-shrink-0">

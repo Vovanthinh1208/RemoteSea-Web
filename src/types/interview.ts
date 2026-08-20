@@ -8,6 +8,11 @@ export type Interview = {
   meetingUrl: string | null;
   status: InterviewStatus;
   createdAt: string;
+  // Already present on the API response (interviews/interfaces.ts's
+  // interviewSelect) — just not declared here until the hiring workspace
+  // needed it, to compute who's eligible to submit a scorecard.
+  interviewerId: string | null;
+  interviewer: { name: string | null } | null;
 };
 
 // 'mine': the caller is an INTERVIEWER-role team member, so `interviews`
