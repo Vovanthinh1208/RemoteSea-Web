@@ -3,6 +3,7 @@ import { RefreshCw, Users } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useScorecards } from "@/features/scorecards/scorecard.queries";
 import { ScorecardForm } from "@/features/scorecards/components/ScorecardForm";
+import { breakdownByRecommendation } from "@/features/scorecards/scorecard.utils";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,8 +25,6 @@ const RECOMMENDATION_VARIANTS: Record<ScorecardRecommendation, BadgeVariant> = {
 
 const SCORECARD_SKELETON_COUNT = 2;
 
-// Shape-matched (header row + item rows), not one generic block — same
-// reasoning as ReviewsSectionSkeleton/TeamMembersSection's MemberRowSkeleton.
 const ScorecardSectionSkeleton = () => (
   <div className="space-y-3 rounded-16 border border-neutral-100 bg-white p-4">
     <div className="flex items-center justify-between">
@@ -52,17 +51,15 @@ const ScorecardSectionSkeleton = () => (
 interface ScorecardSectionProps {
   applicationId: string;
   talentName: string;
-  // Mirrors the backend's own eligibility rule (ScorecardsService.isEligible):
-  // CONFIRMED and the confirmed slot has already passed. This component is
-  // only ever mounted once status is CONFIRMED (see InterviewPage), so this
-  // prop just carries the "has it actually happened yet" half of that rule.
   interviewOccurred: boolean;
+  eligibleReviewerCount?: number;
 }
 
 export const ScorecardSection = ({
   applicationId,
   talentName,
   interviewOccurred,
+  eligibleReviewerCount,
 }: ScorecardSectionProps) => {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
@@ -72,10 +69,6 @@ export const ScorecardSection = ({
     return <ScorecardSectionSkeleton />;
   }
 
-  // A failed fetch gets a retry affordance, same as TeamMembersSection,
-  // ReviewsSection, and InviteMemberSection's PendingInvitationsList —
-  // hiding it outright would be indistinguishable from "no feedback yet"
-  // and silently swallow a real error.
   if (isError || !data) {
     return (
       <div className="flex items-center justify-between rounded-16 border border-neutral-100 bg-white px-4 py-3.5 text-[12.5px] text-neutral-400">
@@ -91,32 +84,80 @@ export const ScorecardSection = ({
     );
   }
 
-  const alreadySubmitted = data.scorecards.some(
+  const myScorecard = data.scorecards.find(
     (scorecard) => scorecard.authorId === user?.id
   );
+  const alreadySubmitted = !!myScorecard;
 
-  // Nothing submitted yet and the caller can't add anything yet either —
-  // zero scorecards isn't an error, so this renders nothing rather than an
-  // empty shell, same restraint as ReviewCTA returning null when !eligible.
   if (data.scorecards.length === 0 && !interviewOccurred) {
     return null;
   }
 
+  const breakdown = breakdownByRecommendation(data.scorecards);
+
   return (
     <div className="space-y-3 rounded-16 border border-neutral-100 bg-white p-4">
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex min-w-0 items-center gap-2">
-          <Users className="flex-shrink-0 text-neutral-400" size={15} />
-          <h3 className="text-[13.5px] font-medium text-neutral-900">
-            Team feedback
-          </h3>
-        </div>
-        {data.summary.total > 0 && (
-          <span className="flex-shrink-0 text-[12px] text-neutral-500">
+      <div className="flex items-center gap-2">
+        <Users className="flex-shrink-0 text-neutral-400" size={15} />
+        <h3 className="text-[13.5px] font-medium text-neutral-900">
+          Team feedback
+        </h3>
+      </div>
+
+      {data.summary.total > 0 &&
+        (eligibleReviewerCount !== undefined ? (
+          <div className="space-y-2 rounded-10 bg-neutral-50 p-3">
+            <div className="flex items-baseline justify-between">
+              <div>
+                <span className="text-[22px] font-semibold leading-none text-neutral-900">
+                  {data.summary.hireCount}/{data.summary.total}
+                </span>
+                <p className="mt-1 text-[11.5px] text-neutral-500">
+                  Recommend hire
+                </p>
+              </div>
+              <span className="flex-shrink-0 text-[11.5px] text-neutral-500">
+                {data.summary.total}/{eligibleReviewerCount} submitted
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 border-t border-neutral-100 pt-2 text-[11.5px] text-neutral-500">
+              {(["STRONG_YES", "YES", "NO", "STRONG_NO"] as const).map(
+                (recommendation) => (
+                  <span key={recommendation}>
+                    {RECOMMENDATION_LABELS[recommendation]}{" "}
+                    <span className="font-medium text-neutral-700">
+                      {breakdown[recommendation]}
+                    </span>
+                  </span>
+                )
+              )}
+            </div>
+          </div>
+        ) : (
+          <span className="text-[12px] text-neutral-500">
             {data.summary.hireCount}/{data.summary.total} recommend hire
           </span>
-        )}
-      </div>
+        ))}
+
+      {eligibleReviewerCount !== undefined && myScorecard && (
+        <div className="rounded-10 border border-brand-100 bg-brand-50/60 p-3">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11.5px] font-medium uppercase tracking-wider text-brand-700">
+              Your feedback
+            </span>
+            <Badge
+              variant={RECOMMENDATION_VARIANTS[myScorecard.recommendation]}
+            >
+              {RECOMMENDATION_LABELS[myScorecard.recommendation]}
+            </Badge>
+          </div>
+          {myScorecard.note && (
+            <p className="mt-1.5 text-[12.5px] leading-relaxed text-neutral-700">
+              &ldquo;{myScorecard.note}&rdquo;
+            </p>
+          )}
+        </div>
+      )}
 
       {data.scorecards.length > 0 && (
         <ul className="space-y-2">

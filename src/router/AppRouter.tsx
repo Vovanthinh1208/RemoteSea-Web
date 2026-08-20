@@ -105,6 +105,11 @@ const TeamSettingsPage = lazy(() =>
     default: m.TeamSettingsPage,
   }))
 );
+const ApplicationWorkspacePage = lazy(() =>
+  import("@/features/employer/hiring/pages/ApplicationWorkspacePage").then(
+    (m) => ({ default: m.ApplicationWorkspacePage })
+  )
+);
 const UpcomingInterviewsPage = lazy(() =>
   import("@/features/interviews/pages/UpcomingInterviewsPage").then((m) => ({
     default: m.UpcomingInterviewsPage,
@@ -253,6 +258,10 @@ export const AppRouter = () => {
           <Route
             element={<UpcomingInterviewsPage />}
             path="employer-dashboard/interviews"
+          />
+          <Route
+            element={<ApplicationWorkspacePage />}
+            path="employer-dashboard/applications/:id"
           />
         </Route>
 
