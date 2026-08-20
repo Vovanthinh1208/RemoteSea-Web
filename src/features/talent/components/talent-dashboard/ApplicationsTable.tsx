@@ -11,6 +11,7 @@ import { timeAgoShort } from "@/utils/time";
 import { Pipeline } from "@/features/talent/components/talent-dashboard/Pipeline";
 import { ApplicationTimeline } from "@/features/talent/components/talent-dashboard/ApplicationTimeline";
 import {
+  buildTimelineSteps,
   STAGE_LABEL,
   STATUS_BADGE,
   STATUS_TO_BUCKET,
@@ -33,6 +34,8 @@ const ApplicationRow = memo(function ApplicationRow({
   const s = STATUS_BADGE[bucket];
   const company = a.job.employer.companyName;
   const country = a.job.country ?? "Remote";
+  const mainSteps = buildTimelineSteps(a).slice(0, 4);
+  const dotFillClass = bucket === "closed" ? "bg-neutral-300" : "bg-brand-500";
   return (
     <div className="border-b border-neutral-50 last:border-none">
       <button
@@ -62,9 +65,22 @@ const ApplicationRow = memo(function ApplicationRow({
         >
           {s.label}
         </Badge>
-        <span className="hidden w-[140px] text-[12px] text-neutral-500 md:block">
-          {STAGE_LABEL[a.status]}
-        </span>
+        <div className="hidden w-[140px] flex-col gap-1.5 md:flex">
+          <div className="flex items-center gap-1">
+            {mainSteps.map((step) => (
+              <span
+                className={cn(
+                  "h-1.5 flex-1 rounded-full",
+                  step.reached ? dotFillClass : "bg-neutral-100"
+                )}
+                key={step.status}
+              />
+            ))}
+          </div>
+          <span className="text-[11.5px] text-neutral-500">
+            {STAGE_LABEL[a.status]}
+          </span>
+        </div>
         <span className="hidden w-[72px] text-right text-[12px] text-neutral-400 md:block">
           {timeAgoShort(a.appliedAt)}
         </span>
@@ -109,6 +125,30 @@ interface ApplicationsTableProps {
 
 const isTabId = (v: string): v is TabId =>
   (["all", "active", "offers", "closed"] as const).includes(v as TabId);
+
+// "all" can never hit this — its filtered list is `applications` itself, so
+// it's only empty when the outer applications.length === 0 check already
+// handled it. Still typed over every TabId so indexing below stays exhaustive.
+const TAB_EMPTY_COPY: Record<TabId, { title: string; description: string }> = {
+  all: {
+    title: "No applications yet",
+    description: "Jobs you apply to will show up here.",
+  },
+  active: {
+    title: "No active applications",
+    description:
+      "Applications you're still waiting to hear back on will show up here.",
+  },
+  offers: {
+    title: "No offers yet",
+    description: "Offers you receive will show up here.",
+  },
+  closed: {
+    title: "No closed applications",
+    description:
+      "Applications that were withdrawn or didn't move forward will show up here.",
+  },
+};
 
 export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
   // URL-synced so reloading (or sharing the link) doesn't silently revert to "Active".
@@ -195,8 +235,14 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
       {applications.length === 0 ? (
         <EmptyState
           className="px-5 py-10"
-          description="Jobs you apply to will show up here."
-          title="No applications yet"
+          description={TAB_EMPTY_COPY.all.description}
+          title={TAB_EMPTY_COPY.all.title}
+        />
+      ) : filtered.length === 0 ? (
+        <EmptyState
+          className="px-5 py-10"
+          description={TAB_EMPTY_COPY[tab].description}
+          title={TAB_EMPTY_COPY[tab].title}
         />
       ) : (
         <div>
