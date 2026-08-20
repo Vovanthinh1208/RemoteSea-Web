@@ -4,26 +4,39 @@ import { timeAgoLong } from "@/utils/time";
 import { buildTimelineSteps } from "@/features/talent/talent-dashboard.utils";
 import type { Application } from "@/types/application";
 
-interface TimelineRowProps {
+interface TimelineItem {
   label: string;
   timestamp: string | null;
   reached: boolean;
   negative?: boolean;
-  last?: boolean;
 }
 
-const TimelineRow = ({
+interface TimelineStepProps extends TimelineItem {
+  first: boolean;
+  connectorFilled: boolean;
+}
+
+const TimelineStep = ({
   label,
   timestamp,
   reached,
   negative,
-  last,
-}: TimelineRowProps) => (
-  <div className="flex items-start gap-3">
-    <div className="flex flex-col items-center self-stretch">
+  first,
+  connectorFilled,
+}: TimelineStepProps) => (
+  <>
+    {!first && (
       <span
         className={cn(
-          "grid h-4 w-4 flex-shrink-0 place-items-center rounded-full border",
+          "mt-[9px] h-px w-8 flex-shrink-0 sm:w-12",
+          connectorFilled ? "bg-brand-300" : "bg-neutral-200"
+        )}
+      />
+    )}
+    <div className="flex w-[96px] flex-shrink-0 flex-col items-center text-center sm:w-[112px]">
+      <span
+        className={cn(
+          "grid h-5 w-5 flex-shrink-0 place-items-center rounded-full border",
           reached
             ? negative
               ? "border-red-500 bg-red-500"
@@ -31,31 +44,21 @@ const TimelineRow = ({
             : "border-neutral-300 bg-white"
         )}
       >
-        {reached && <Check className="text-white" size={9} strokeWidth={3} />}
+        {reached && <Check className="text-white" size={10} strokeWidth={3} />}
       </span>
-      {!last && (
-        <span
-          className={cn(
-            "w-px flex-1",
-            reached ? "bg-brand-200" : "bg-neutral-200"
-          )}
-        />
-      )}
-    </div>
-    <div className="min-w-0 flex-1 pb-4">
       <p
         className={cn(
-          "text-[12.5px] font-medium",
+          "mt-2 text-[11.5px] font-medium leading-tight",
           reached ? "text-neutral-900" : "text-neutral-400"
         )}
       >
         {label}
       </p>
-      <p className="text-[11px] text-neutral-400">
+      <p className="mt-0.5 text-[10.5px] text-neutral-400">
         {timestamp ? timeAgoLong(timestamp) : "Not yet"}
       </p>
     </div>
-  </div>
+  </>
 );
 
 interface ApplicationTimelineProps {
@@ -71,24 +74,36 @@ export const ApplicationTimeline = ({
   const isNegative = (status: string) =>
     status === "REJECTED" || status === "WITHDRAWN";
 
+  const items: TimelineItem[] = [
+    { label: "Applied", timestamp: application.appliedAt, reached: true },
+    {
+      label: "Viewed by employer",
+      timestamp: application.viewedAt,
+      reached: !!application.viewedAt,
+    },
+    ...steps.map((step) => ({
+      label: step.label,
+      timestamp: step.timestamp,
+      reached: step.reached,
+      negative: isNegative(step.status),
+    })),
+  ];
+
   return (
-    <div className="border-t border-neutral-50 bg-neutral-50/40 px-5 py-4">
-      <TimelineRow label="Applied" reached timestamp={application.appliedAt} />
-      <TimelineRow
-        label="Viewed by employer"
-        reached={!!application.viewedAt}
-        timestamp={application.viewedAt}
-      />
-      {steps.map((step, i) => (
-        <TimelineRow
-          key={step.status}
-          label={step.label}
-          last={i === steps.length - 1}
-          negative={isNegative(step.status)}
-          reached={step.reached}
-          timestamp={step.timestamp}
-        />
-      ))}
+    <div className="overflow-x-auto border-t border-neutral-50 bg-neutral-50/40 px-5 py-5">
+      <div className="flex w-max items-start">
+        {items.map((item, i) => (
+          <TimelineStep
+            connectorFilled={i > 0 && items[i - 1].reached}
+            first={i === 0}
+            key={`${item.label}-${i}`}
+            label={item.label}
+            negative={item.negative}
+            reached={item.reached}
+            timestamp={item.timestamp}
+          />
+        ))}
+      </div>
     </div>
   );
 };
