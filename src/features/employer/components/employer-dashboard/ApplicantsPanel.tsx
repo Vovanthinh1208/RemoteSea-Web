@@ -1,14 +1,8 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  CalendarClock,
-  Check,
-  Clock3,
-  MessageCircle,
-  Paperclip,
-  X,
-} from "lucide-react";
+import { Calendar, Check, Clock3, Paperclip, Users, X } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { useAuth } from "@/contexts/AuthContext";
 import { ROUTES } from "@/constants/routes";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
@@ -32,6 +26,12 @@ import {
   timeAgo,
   type ApplicantStatusGroup,
 } from "@/features/employer/employer-dashboard.utils";
+import {
+  useApplicantHiringSignals,
+  type ApplicantHiringSignal,
+} from "@/features/employer/hiring/applicant-signals.queries";
+import { getPrimaryAction } from "@/features/employer/hiring/hiring-stage.utils";
+import { formatSlot, hasOccurred } from "@/features/interviews/interview.utils";
 import type { ApplicantWithJob } from "@/features/employer/employer.queries";
 import type { ApplicationStatus } from "@/types/application";
 import { personInitial } from "@/utils/name";
@@ -94,6 +94,11 @@ interface ApplicantRowProps {
   ) => void;
   selected: boolean;
   onToggleSelect: (id: string) => void;
+  // Only ever set for status === "INTERVIEW" rows (see
+  // useApplicantHiringSignals' bounded fan-out) — undefined for every
+  // earlier/later stage, where there's nothing to show.
+  signal: ApplicantHiringSignal | undefined;
+  currentUserId: string | undefined;
 }
 
 const ApplicantRow = memo(function ApplicantRow({
@@ -102,6 +107,8 @@ const ApplicantRow = memo(function ApplicantRow({
   onStatusChange,
   selected,
   onToggleSelect,
+  signal,
+  currentUserId,
 }: ApplicantRowProps) {
   const name = a.talent.user.name ?? "Candidate";
   const initial = personInitial(name);
@@ -109,6 +116,44 @@ const ApplicantRow = memo(function ApplicantRow({
   const nextStatus = NEXT_STAGE[a.status];
   const stuckDays = backlogDays(a.status, a.appliedAt, a.updatedAt);
   const [showCoverLetter, setShowCoverLetter] = useState(false);
+
+  // Only the INTERVIEW stage gets a "what's next" line and a contextual
+  // action — every earlier stage already has a clear one-click advance
+  // button, and every later (terminal) stage has nothing left to do.
+  const interviewOccurred = hasOccurred(
+    signal?.interview?.confirmedSlot ?? null
+  );
+  const nextLine =
+    a.status === "INTERVIEW" && signal
+      ? signal.interview?.status === "CONFIRMED" &&
+        signal.interview.confirmedSlot &&
+        !interviewOccurred
+        ? { icon: Calendar, text: formatSlot(signal.interview.confirmedSlot) }
+        : signal.scorecardSummary && signal.scorecardSummary.total > 0
+          ? {
+              icon: Users,
+              text: `${signal.scorecardSummary.hireCount}/${signal.scorecardSummary.total} recommend hire`,
+            }
+          : null
+      : null;
+
+  const interviewStageAction =
+    a.status === "INTERVIEW" && signal
+      ? getPrimaryAction({
+          status: a.status,
+          interview: signal.interview,
+          viewerHasSubmittedScorecard: signal.scorecards.some(
+            (s) => s.authorId === currentUserId
+          ),
+          scorecardSummary: signal.scorecardSummary,
+          eligibleReviewerCount: signal.eligibleReviewerCount,
+        })
+      : null;
+  const interviewStageActionHref =
+    interviewStageAction?.kind === "schedule-interview" ||
+    interviewStageAction?.kind === "view-interview"
+      ? ROUTES.applicationInterview(a.id)
+      : ROUTES.employerApplicationDetail(a.id);
   return (
     <div className="group rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50">
       <div className="flex items-center gap-3">
@@ -145,6 +190,12 @@ const ApplicantRow = memo(function ApplicantRow({
             {a.talent.headline ?? a.talent.level}
             <span className="text-neutral-300"> · for {a.jobTitle}</span>
           </div>
+          {nextLine && (
+            <div className="mt-0.5 flex items-center gap-1 text-[11px] font-medium text-brand-700">
+              <nextLine.icon size={11} />
+              {nextLine.text}
+            </div>
+          )}
         </Link>
 
         {a.match && (
@@ -191,25 +242,44 @@ const ApplicantRow = memo(function ApplicantRow({
           </a>
         )}
 
-        <Link
-          aria-label="Message applicant"
-          className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
-          to={ROUTES.applicationMessages(a.id)}
-        >
-          <MessageCircle size={13} />
-        </Link>
-
-        {a.status === "INTERVIEW" && (
-          <Link
-            aria-label="Schedule interview"
-            className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
-            to={ROUTES.applicationInterview(a.id)}
-          >
-            <CalendarClock size={13} />
-          </Link>
-        )}
-
-        {nextStatus && a.status !== "REJECTED" ? (
+        {a.status === "INTERVIEW" ? (
+          <div className="flex flex-shrink-0 items-center gap-1">
+            {interviewStageAction ? (
+              <Link
+                className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100"
+                to={interviewStageActionHref}
+              >
+                {interviewStageAction.label}
+              </Link>
+            ) : (
+              // Signal (interview + scorecards) still loading — never fall
+              // through to the generic NEXT_STAGE advance button here: for
+              // INTERVIEW that button used to jump straight to OFFERED,
+              // skipping the interview/feedback flow entirely. Wait for the
+              // real contextual action instead of showing a wrong one.
+              <span className="h-7 w-20 animate-pulse rounded-8 bg-neutral-100" />
+            )}
+            <ConfirmAction
+              confirmLabel="Reject"
+              isPending={isPending}
+              message="Reject this applicant?"
+              pendingLabel="Rejecting…"
+              onConfirm={() => onStatusChange(a.id, a.jobId, "REJECTED")}
+            >
+              {({ onClick }) => (
+                <button
+                  aria-label="Reject applicant"
+                  className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+                  disabled={isPending}
+                  type="button"
+                  onClick={onClick}
+                >
+                  <X size={13} />
+                </button>
+              )}
+            </ConfirmAction>
+          </div>
+        ) : nextStatus && a.status !== "REJECTED" ? (
           <div className="flex flex-shrink-0 items-center gap-1">
             <ConfirmAction
               confirmLabel={NEXT_LABEL[a.status]}
@@ -342,6 +412,8 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
 
   const visible = list.slice(0, RECENT_APPLICANTS_DISPLAY_COUNT);
   const eligibleVisible = visible.filter((a) => isRejectable(a.status));
+  const hiringSignals = useApplicantHiringSignals(visible);
+  const { user } = useAuth();
 
   // A selection only makes sense against the currently-visible rows — switching
   // tabs changes what's shown, so stale ids pointing at rows that are no
@@ -548,8 +620,10 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
                     updateStatusMutation.variables?.id === a.id) ||
                   bulkUpdateMutation.isPending
                 }
+                currentUserId={user?.id}
                 key={a.id}
                 selected={selectedIds.has(a.id)}
+                signal={hiringSignals.get(a.id)}
                 onStatusChange={updateApplicantStatus}
                 onToggleSelect={toggleSelect}
               />
