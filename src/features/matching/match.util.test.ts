@@ -5,9 +5,9 @@ import {
   type MatchableTalent,
 } from "./match.util";
 
-const REACT = { id: "react", isRequired: true };
-const TS = { id: "ts", isRequired: true };
-const GRAPHQL = { id: "graphql", isRequired: false };
+const REACT = { id: "react", name: "React", isRequired: true };
+const TS = { id: "ts", name: "TypeScript", isRequired: true };
+const GRAPHQL = { id: "graphql", name: "GraphQL", isRequired: false };
 
 const talentSkill = (id: string) => ({ skill: { id } });
 
@@ -21,9 +21,9 @@ const baseJob: MatchableJob = {
   country: "Singapore",
   isRemote: true,
   skills: [
-    { isRequired: true, skill: { id: REACT.id } },
-    { isRequired: true, skill: { id: TS.id } },
-    { isRequired: false, skill: { id: GRAPHQL.id } },
+    { isRequired: true, skill: { id: REACT.id, name: REACT.name } },
+    { isRequired: true, skill: { id: TS.id, name: TS.name } },
+    { isRequired: false, skill: { id: GRAPHQL.id, name: GRAPHQL.name } },
   ],
 };
 
@@ -64,7 +64,7 @@ describe("computeMatchScore", () => {
       timezone: "GMT+11",
       country: "Vietnam",
       isRemote: false,
-      skills: [{ isRequired: true, skill: { id: "rust" } }],
+      skills: [{ isRequired: true, skill: { id: "rust", name: "Rust" } }],
     };
     const talent: MatchableTalent = {
       level: "ENTRY",
@@ -81,6 +81,23 @@ describe("computeMatchScore", () => {
     const { score, reasons } = computeMatchScore(job, talent);
     expect(score).toBeLessThan(25);
     expect(reasons).toEqual([]);
+  });
+
+  it("lists missing skills required-first, omitting ones the talent already has", () => {
+    const talent: MatchableTalent = {
+      ...baseTalent,
+      skills: [talentSkill(TS.id)],
+    };
+    const { missingSkills } = computeMatchScore(baseJob, talent);
+    expect(missingSkills).toEqual([
+      { id: REACT.id, name: REACT.name, isRequired: true },
+      { id: GRAPHQL.id, name: GRAPHQL.name, isRequired: false },
+    ]);
+  });
+
+  it("reports no missing skills once every job skill is covered", () => {
+    const { missingSkills } = computeMatchScore(baseJob, baseTalent);
+    expect(missingSkills).toEqual([]);
   });
 
   it("falls back to neutral fractions instead of penalizing missing data", () => {

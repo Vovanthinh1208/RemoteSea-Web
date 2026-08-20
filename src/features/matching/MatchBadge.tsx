@@ -17,6 +17,15 @@ const tierClass = (score: number) => {
   return "border-neutral-200 bg-neutral-100 text-neutral-500";
 };
 
+const tooltipFor = (match: MatchBadgeProps["match"]): string | undefined => {
+  const parts = [...match.reasons];
+  const requiredGaps = match.missingSkills.filter((s) => s.isRequired);
+  if (requiredGaps.length > 0) {
+    parts.push(`Missing: ${requiredGaps.map((s) => s.name).join(", ")}`);
+  }
+  return parts.length ? parts.join(" · ") : undefined;
+};
+
 export const MatchBadge = ({ match, className }: MatchBadgeProps) => (
   <span
     className={cn(
@@ -24,7 +33,7 @@ export const MatchBadge = ({ match, className }: MatchBadgeProps) => (
       tierClass(match.score),
       className
     )}
-    title={match.reasons.length ? match.reasons.join(" · ") : undefined}
+    title={tooltipFor(match)}
   >
     {match.score}% match
   </span>

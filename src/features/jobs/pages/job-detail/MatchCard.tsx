@@ -1,5 +1,6 @@
 import { Check, Sparkles } from "lucide-react";
 import type { MatchResult } from "@/features/matching/match.util";
+import { cn } from "@/utils/cn";
 
 interface MatchCardProps {
   match: MatchResult;
@@ -32,6 +33,30 @@ export const MatchCard = ({ match }: MatchCardProps) => (
       <p className="text-[12.5px] text-neutral-400">
         Fill out more of your profile for a better match breakdown.
       </p>
+    )}
+
+    {match.missingSkills.length > 0 && (
+      <div className="mt-3 border-t border-neutral-100 pt-3">
+        <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wider text-neutral-400">
+          Skills to close the gap
+        </p>
+        <ul className="flex flex-wrap gap-1.5">
+          {match.missingSkills.map((skill) => (
+            <li
+              className={cn(
+                "rounded-full border px-2 py-0.5 text-[11px] font-medium",
+                skill.isRequired
+                  ? "border-amber-200 bg-amber-50 text-amber-700"
+                  : "border-neutral-200 bg-neutral-50 text-neutral-500"
+              )}
+              key={skill.id}
+              title={skill.isRequired ? "Required" : "Optional"}
+            >
+              {skill.name}
+            </li>
+          ))}
+        </ul>
+      </div>
     )}
   </div>
 );

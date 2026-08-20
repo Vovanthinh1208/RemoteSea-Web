@@ -14,7 +14,7 @@ export interface MatchableJob {
   timezone: string | null;
   country: string | null;
   isRemote: boolean;
-  skills: { isRequired: boolean; skill: { id: string } }[];
+  skills: { isRequired: boolean; skill: { id: string; name: string } }[];
 }
 
 export interface MatchableTalent {
@@ -33,9 +33,19 @@ export interface MatchableTalent {
   noticePeriod?: string | null;
 }
 
+export interface SkillGap {
+  id: string;
+  name: string;
+  isRequired: boolean;
+}
+
 export interface MatchResult {
   score: number;
   reasons: string[];
+  // Job skills the talent doesn't have, required ones first — lets a talent
+  // see exactly what to close before applying, and an employer see exactly
+  // what an applicant lacks instead of only a "2/4 matched" fraction.
+  missingSkills: SkillGap[];
 }
 
 const WEIGHTS = {
@@ -71,7 +81,8 @@ const TIMEZONE_OVERLAP_COUNTRY: Record<string, string> = {
 const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
 
 const scoreSkills = (job: MatchableJob, talent: MatchableTalent) => {
-  if (job.skills.length === 0) return { fraction: 1, matched: 0, total: 0 };
+  if (job.skills.length === 0)
+    return { fraction: 1, matched: 0, total: 0, missing: [] };
 
   const talentSkillIds = new Set(talent.skills.map((s) => s.skill.id));
   const required = job.skills.filter((s) => s.isRequired);
@@ -92,7 +103,18 @@ const scoreSkills = (job: MatchableJob, talent: MatchableTalent) => {
   const matched = job.skills.filter((s) =>
     talentSkillIds.has(s.skill.id)
   ).length;
-  return { fraction, matched, total: job.skills.length };
+
+  // Required gaps first — they're what's actually blocking a strong match;
+  // optional ones are worth knowing but never the reason to hold back.
+  const missing: SkillGap[] = [...required, ...optional]
+    .filter((s) => !talentSkillIds.has(s.skill.id))
+    .map((s) => ({
+      id: s.skill.id,
+      name: s.skill.name,
+      isRequired: s.isRequired,
+    }));
+
+  return { fraction, matched, total: job.skills.length, missing };
 };
 
 const scoreSeniority = (job: MatchableJob, talent: MatchableTalent) => {
@@ -231,5 +253,5 @@ export const computeMatchScore = (
     .slice(0, MAX_REASONS)
     .map((r) => r.text);
 
-  return { score, reasons };
+  return { score, reasons, missingSkills: skills.missing };
 };
