@@ -1,6 +1,14 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, Check, Clock3, Paperclip, Users, X } from "lucide-react";
+import {
+  Calendar,
+  Check,
+  ChevronDown,
+  Clock3,
+  Paperclip,
+  Users,
+  X,
+} from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useAuth } from "@/contexts/AuthContext";
 import { ROUTES } from "@/constants/routes";
@@ -237,7 +245,10 @@ const ApplicantRow = memo(function ApplicantRow({
         />
         <div
           className="relative flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-[13px] font-semibold text-white"
-          style={{ background: colorFor(name) }}
+          style={{
+            background: colorFor(name),
+            boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.15)",
+          }}
         >
           {initial}
         </div>
@@ -305,16 +316,23 @@ const ApplicantRow = memo(function ApplicantRow({
 
           {a.coverLetter && (
             <button
-              className="mt-1.5 text-[11px] text-neutral-400 transition-colors hover:text-neutral-600 hover:underline"
+              className="mt-1.5 inline-flex items-center gap-0.5 text-[11px] text-neutral-400 transition-colors hover:text-neutral-600"
               type="button"
               onClick={() => setShowCoverLetter((v) => !v)}
             >
               {showCoverLetter ? "Hide cover letter" : "View cover letter"}
+              <ChevronDown
+                className={cn(
+                  "transition-transform",
+                  showCoverLetter && "rotate-180"
+                )}
+                size={12}
+              />
             </button>
           )}
           {showCoverLetter && a.coverLetter && (
-            <p className="mt-1.5 whitespace-pre-wrap rounded-8 bg-neutral-50 p-2.5 text-[12.5px] leading-relaxed text-neutral-600">
-              {a.coverLetter}
+            <p className="mt-1.5 whitespace-pre-wrap rounded-8 border-l-2 border-neutral-200 bg-neutral-50 py-2 pl-3 pr-2.5 text-[12.5px] leading-relaxed text-neutral-600">
+              &ldquo;{a.coverLetter}&rdquo;
             </p>
           )}
         </div>
