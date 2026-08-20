@@ -1,5 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useCreateScorecard } from "@/features/scorecards/scorecard.queries";
@@ -18,11 +19,13 @@ const NOT_ELIGIBLE_STATUS = 403;
 const RECOMMENDATION_OPTIONS: {
   value: ScorecardRecommendation;
   label: string;
+  icon: typeof ThumbsUp;
+  filled: boolean;
 }[] = [
-  { value: "STRONG_YES", label: "Strong yes" },
-  { value: "YES", label: "Yes" },
-  { value: "NO", label: "No" },
-  { value: "STRONG_NO", label: "Strong no" },
+  { value: "STRONG_YES", label: "Strong yes", icon: ThumbsUp, filled: true },
+  { value: "YES", label: "Yes", icon: ThumbsUp, filled: false },
+  { value: "NO", label: "No", icon: ThumbsDown, filled: false },
+  { value: "STRONG_NO", label: "Strong no", icon: ThumbsDown, filled: true },
 ];
 
 interface ScorecardFormProps {
@@ -97,22 +100,29 @@ export const ScorecardForm = ({
               Recommendation
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {RECOMMENDATION_OPTIONS.map(({ value, label }) => (
-                <button
-                  aria-pressed={field.value === value}
-                  className={cn(
-                    "rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition-colors",
-                    field.value === value
-                      ? "border-brand-600 bg-brand-50 text-brand-700"
-                      : "border-neutral-200 text-neutral-600 hover:border-neutral-300"
-                  )}
-                  key={value}
-                  type="button"
-                  onClick={() => field.onChange(value)}
-                >
-                  {label}
-                </button>
-              ))}
+              {RECOMMENDATION_OPTIONS.map(
+                ({ value, label, icon: Icon, filled }) => (
+                  <button
+                    aria-pressed={field.value === value}
+                    className={cn(
+                      "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition-colors",
+                      field.value === value
+                        ? "border-brand-600 bg-brand-50 text-brand-700"
+                        : "border-neutral-200 text-neutral-600 hover:border-neutral-300"
+                    )}
+                    key={value}
+                    type="button"
+                    onClick={() => field.onChange(value)}
+                  >
+                    <Icon
+                      fill={filled ? "currentColor" : "none"}
+                      size={13}
+                      strokeWidth={filled ? 1.5 : 2}
+                    />
+                    {label}
+                  </button>
+                )
+              )}
             </div>
           </div>
         )}

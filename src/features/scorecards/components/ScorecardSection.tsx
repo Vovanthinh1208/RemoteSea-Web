@@ -7,6 +7,7 @@ import { breakdownByRecommendation } from "@/features/scorecards/scorecard.utils
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/utils/cn";
 import type { ScorecardRecommendation } from "@/types/scorecard";
 
 const RECOMMENDATION_LABELS: Record<ScorecardRecommendation, string> = {
@@ -21,6 +22,16 @@ const RECOMMENDATION_VARIANTS: Record<ScorecardRecommendation, BadgeVariant> = {
   YES: "positive",
   NO: "warning",
   STRONG_NO: "warning",
+};
+
+// Matches each badge variant's dot to the same hue used above, so the
+// breakdown row and the per-scorecard badges read as the same color
+// language rather than two unrelated palettes.
+const RECOMMENDATION_DOT_COLOR: Record<ScorecardRecommendation, string> = {
+  STRONG_YES: "bg-emerald-500",
+  YES: "bg-brand-500",
+  NO: "bg-amber-500",
+  STRONG_NO: "bg-amber-500",
 };
 
 const SCORECARD_SKELETON_COUNT = 2;
@@ -123,7 +134,16 @@ export const ScorecardSection = ({
             <div className="flex flex-wrap gap-x-4 gap-y-1 border-t border-neutral-100 pt-2 text-[11.5px] text-neutral-500">
               {(["STRONG_YES", "YES", "NO", "STRONG_NO"] as const).map(
                 (recommendation) => (
-                  <span key={recommendation}>
+                  <span
+                    className="inline-flex items-center gap-1.5"
+                    key={recommendation}
+                  >
+                    <span
+                      className={cn(
+                        "h-1.5 w-1.5 rounded-full",
+                        RECOMMENDATION_DOT_COLOR[recommendation]
+                      )}
+                    />
                     {RECOMMENDATION_LABELS[recommendation]}{" "}
                     <span className="font-medium text-neutral-700">
                       {breakdown[recommendation]}

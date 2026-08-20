@@ -1,6 +1,9 @@
 import { Link, useParams } from "react-router-dom";
 import { CalendarClock, MessageCircle } from "lucide-react";
 import { useApplication } from "@/features/applications/applications.queries";
+import { useInterview } from "@/features/interviews/interview.queries";
+import { hasOccurred } from "@/features/interviews/interview.utils";
+import { UpcomingInterviewCard } from "@/features/interviews/components/UpcomingInterviewCard";
 import { ApplicationTimeline } from "@/features/talent/components/talent-dashboard/ApplicationTimeline";
 import {
   STATUS_BADGE,
@@ -9,10 +12,13 @@ import {
 import { ApplicationDetailHeader } from "@/components/shared/ApplicationDetailHeader";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { CompanyLogo } from "@/components/ui/company-logo";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { cn } from "@/utils/cn";
 import { ROUTES } from "@/constants/routes";
+import type { ApplicationStatus } from "@/types/application";
 
 // Mirrors ApplicationTimeline's own TimelineRow shape (small circle + a
 // connecting line + two text lines) rather than a generic bar skeleton — the
@@ -32,6 +38,33 @@ const TimelineRowSkeleton = ({ last }: { last?: boolean }) => (
   </div>
 );
 
+// One friendly, forward-looking line per status — the timeline below already
+// shows what's happened; this is the one thing this page adds on top: what
+// to expect next. INTERVIEW is handled separately (an inline interview
+// card/prompt carries more signal than a single sentence could).
+const STATUS_GUIDANCE: Partial<Record<ApplicationStatus, string>> = {
+  PENDING:
+    "Your application is in the queue. Most employers respond within a few days.",
+  REVIEWING: "The employer is currently reviewing your application.",
+  SHORTLISTED:
+    "You've been shortlisted — the employer may reach out to schedule an interview soon.",
+  OFFERED: "This employer has extended you an offer. Congratulations!",
+  REJECTED:
+    "This employer decided to move forward with other candidates this time.",
+  WITHDRAWN: "You withdrew this application.",
+};
+
+const formatSalary = (
+  min: number | null,
+  max: number | null,
+  currency: string
+): string | null => {
+  if (!min && !max) return null;
+  const fmt = (n: number) => `${currency} ${n.toLocaleString()}`;
+  if (min && max) return `${fmt(min)}–${fmt(max)}`;
+  return fmt((min ?? max)!);
+};
+
 export const ApplicationDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const applicationId = id ?? "";
@@ -41,16 +74,34 @@ export const ApplicationDetailPage = () => {
     isError,
     refetch,
   } = useApplication(applicationId);
+  const { data: interviewData } = useInterview(applicationId);
+  const interview = interviewData?.interview ?? null;
 
   useDocumentTitle(
     application ? application.job.employer.companyName : "Application"
   );
+
+  const salary = application
+    ? formatSalary(
+        application.job.salaryMin,
+        application.job.salaryMax,
+        application.job.currency
+      )
+    : null;
 
   return (
     <div className="mx-auto max-w-[640px] px-6 py-10">
       <ApplicationDetailHeader
         backHref={ROUTES.talent}
         className="mb-6"
+        icon={
+          application && (
+            <CompanyLogo
+              name={application.job.employer.companyName}
+              size={36}
+            />
+          )
+        }
         subtitle={application?.job.title}
         title={
           application ? application.job.employer.companyName : "Application"
@@ -85,37 +136,69 @@ export const ApplicationDetailPage = () => {
           </div>
         ) : (
           <>
-            <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
-              <Badge
-                variant={
-                  STATUS_BADGE[STATUS_TO_BUCKET[application.status]].variant
-                }
-              >
-                {STATUS_BADGE[STATUS_TO_BUCKET[application.status]].label}
-              </Badge>
-              {/* Same icon-only circular link treatment ApplicationsTable and
-                  ApplicantsPanel already use for these exact two routes — a
-                  labeled button here would be the only place in the app
-                  saying "Message"/"Interview" instead of just showing it. */}
-              <div className="flex items-center gap-1">
+            <div className="flex items-center justify-between gap-3 border-b border-neutral-100 px-5 py-4">
+              <div className="flex min-w-0 items-center gap-2.5">
+                <Badge
+                  variant={
+                    STATUS_BADGE[STATUS_TO_BUCKET[application.status]].variant
+                  }
+                >
+                  {STATUS_BADGE[STATUS_TO_BUCKET[application.status]].label}
+                </Badge>
+                {salary && (
+                  <span className="truncate text-[12px] text-neutral-400">
+                    {salary} ·{" "}
+                    {application.job.isRemote
+                      ? "Remote"
+                      : application.job.country}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-shrink-0 items-center gap-1.5">
                 <Link
-                  aria-label="Message about this application"
-                  className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+                  className={cn(
+                    buttonVariants({ variant: "ghost", size: "sm" }),
+                    "gap-1.5"
+                  )}
                   to={ROUTES.applicationMessages(application.id)}
                 >
-                  <MessageCircle size={16} />
+                  <MessageCircle size={14} /> Message
                 </Link>
                 {application.status === "INTERVIEW" && (
                   <Link
-                    aria-label="View interview"
-                    className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "sm" }),
+                      "gap-1.5"
+                    )}
                     to={ROUTES.applicationInterview(application.id)}
                   >
-                    <CalendarClock size={16} />
+                    <CalendarClock size={14} /> Interview
                   </Link>
                 )}
               </div>
             </div>
+
+            <div className="space-y-3 border-b border-neutral-100 p-5">
+              {application.status === "INTERVIEW" ? (
+                interview?.status === "CONFIRMED" &&
+                !hasOccurred(interview.confirmedSlot) ? (
+                  <UpcomingInterviewCard interview={interview} />
+                ) : (
+                  <p className="text-[13px] text-neutral-600">
+                    {interview
+                      ? "The employer proposed interview times — pick one to lock it in."
+                      : "The employer will reach out to schedule an interview."}
+                  </p>
+                )
+              ) : (
+                STATUS_GUIDANCE[application.status] && (
+                  <p className="text-[13px] text-neutral-600">
+                    {STATUS_GUIDANCE[application.status]}
+                  </p>
+                )
+              )}
+            </div>
+
             <ApplicationTimeline application={application} />
           </>
         )}

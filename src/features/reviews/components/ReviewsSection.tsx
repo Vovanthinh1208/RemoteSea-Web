@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { StarRating } from "@/components/shared/StarRating";
+import { CompanyLogo } from "@/components/ui/company-logo";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/features/jobs/components/Pagination";
 import { useUserReviews } from "@/features/reviews/reviews.queries";
@@ -55,9 +56,12 @@ const ReviewCard = ({ review }: { review: ReviewListItem }) => (
         “{review.comment}”
       </p>
     )}
-    <p className="mt-1.5 text-[12px] font-medium text-neutral-500">
-      {reviewerLabel(review)}
-    </p>
+    <div className="mt-2 flex items-center gap-2">
+      <CompanyLogo name={reviewerLabel(review)} size={20} />
+      <p className="text-[12px] font-medium text-neutral-500">
+        {reviewerLabel(review)}
+      </p>
+    </div>
   </div>
 );
 
@@ -105,7 +109,7 @@ export const ReviewsSection = ({ userId, categories }: ReviewsSectionProps) => {
         <div className="flex items-center justify-between text-[12.5px] text-neutral-400">
           Couldn't load reviews.
           <button
-            className="inline-flex items-center gap-1 font-medium text-brand-600 hover:text-brand-700"
+            className="inline-flex items-center gap-1 font-medium text-brand-600 transition-colors hover:text-brand-700"
             type="button"
             onClick={() => refetch()}
           >

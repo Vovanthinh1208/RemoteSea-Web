@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Send } from "lucide-react";
 import {
   useMessages,
   useSendMessage,
 } from "@/features/messages/message.queries";
+import { groupMessagesByDay } from "@/features/messages/message.utils";
 import type { Message } from "@/types/message";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,8 @@ import { useApplicationHeaderContext } from "@/hooks/useApplicationHeaderContext
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { timeAgoLong } from "@/utils/time";
 import { cn } from "@/utils/cn";
+
+const COMPOSE_MAX_HEIGHT_PX = 160;
 
 const MessageBubbleSkeleton = ({ align }: { align: "left" | "right" }) => (
   <div className={cn("flex", align === "right" && "justify-end")}>
@@ -61,19 +64,35 @@ export const MessageThreadPage = () => {
   const runWithToast = useToastMutation();
   const [draft, setDraft] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const hasLoadedOnce = useRef(false);
+  const messageCount = data?.messages.length;
 
+  // The very first render with data (opening the thread) jumps straight to
+  // the bottom — animating a smooth scroll through the entire history on
+  // every page load reads as sluggish, not "friendly." Only a message count
+  // increase *after* that (sending, or a new one arriving) gets the smooth
+  // scroll, so it reads as "a new message just appeared."
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [data?.messages.length]);
+    if (messageCount === undefined) return;
+    bottomRef.current?.scrollIntoView({
+      behavior: hasLoadedOnce.current ? "smooth" : "auto",
+      block: "end",
+    });
+    hasLoadedOnce.current = true;
+  }, [messageCount]);
+
+  useLayoutEffect(() => {
+    const el = textareaRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, COMPOSE_MAX_HEIGHT_PX)}px`;
+  }, [draft]);
 
   const handleSend = () => {
     const body = draft.trim();
     if (!body) return;
     setDraft("");
-    // The mutation's own onError already rolls back the optimistic bubble
-    // (see useSendMessage) — without this, that rollback was the only
-    // signal a failed send gave: the message just silently vanished, with
-    // no indication why.
     void runWithToast(() => sendMessage.mutateAsync(body), {
       error: "Couldn't send message",
     });
@@ -111,12 +130,23 @@ export const MessageThreadPage = () => {
             title="No messages yet"
           />
         ) : (
-          data.messages.map((m) => (
-            <MessageBubble
-              isMine={m.senderId === user?.id}
-              key={m.id}
-              message={m}
-            />
+          groupMessagesByDay(data.messages).map((group) => (
+            <div key={group.key}>
+              <div className="mb-3 flex items-center justify-center">
+                <span className="rounded-full bg-neutral-100 px-2.5 py-0.5 text-[11px] font-medium text-neutral-500">
+                  {group.label}
+                </span>
+              </div>
+              <div className="space-y-3">
+                {group.messages.map((m) => (
+                  <MessageBubble
+                    isMine={m.senderId === user?.id}
+                    key={m.id}
+                    message={m}
+                  />
+                ))}
+              </div>
+            </div>
           ))
         )}
         <div ref={bottomRef} />

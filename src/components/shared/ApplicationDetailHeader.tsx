@@ -7,6 +7,9 @@ interface ApplicationDetailHeaderProps {
   title: string;
   subtitle?: string | null;
   className?: string;
+  /** Optional identity mark (e.g. a CompanyLogo) between the back link and
+   *  the title — the back arrow always stays leftmost regardless. */
+  icon?: React.ReactNode;
 }
 
 // Shared by every per-application detail page (messages, interviews, ...) —
@@ -17,6 +20,7 @@ export const ApplicationDetailHeader = ({
   title,
   subtitle,
   className,
+  icon,
 }: ApplicationDetailHeaderProps) => (
   <div className={cn("flex items-center gap-3", className)}>
     <Link
@@ -26,6 +30,7 @@ export const ApplicationDetailHeader = ({
     >
       <ArrowLeft size={17} />
     </Link>
+    {icon}
     <div className="min-w-0">
       <h1 className="truncate text-[17px] font-semibold text-neutral-900">
         {title}

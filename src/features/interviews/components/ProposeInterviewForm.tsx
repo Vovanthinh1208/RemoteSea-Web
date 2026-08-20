@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { X } from "lucide-react";
 import { useProposeInterview } from "@/features/interviews/interview.queries";
 import {
   DURATION_OPTIONS,
@@ -31,6 +32,12 @@ export const ProposeInterviewForm = ({
 
   const updateSlot = (index: number, value: string) => {
     setSlots((prev) => prev.map((s, i) => (i === index ? value : s)));
+  };
+
+  const removeSlot = (index: number) => {
+    setSlots((prev) =>
+      prev.length > 1 ? prev.filter((_, i) => i !== index) : prev
+    );
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -72,17 +79,33 @@ export const ProposeInterviewForm = ({
       </div>
 
       <div className="space-y-2">
-        <span className="block text-[12.5px] font-medium text-neutral-700">
-          Proposed times (1–2)
-        </span>
+        <div>
+          <span className="block text-[12.5px] font-medium text-neutral-700">
+            Proposed times (1–2)
+          </span>
+          <span className="text-[11.5px] text-neutral-400">
+            In your local time — the candidate sees these converted to theirs.
+          </span>
+        </div>
         {slots.map((slot, i) => (
-          <input
-            className={TEXT_INPUT_CLASS}
-            key={i}
-            type="datetime-local"
-            value={slot}
-            onChange={(e) => updateSlot(i, e.target.value)}
-          />
+          <div className="flex items-center gap-1.5" key={i}>
+            <input
+              className={TEXT_INPUT_CLASS}
+              type="datetime-local"
+              value={slot}
+              onChange={(e) => updateSlot(i, e.target.value)}
+            />
+            {slots.length > 1 && (
+              <button
+                aria-label="Remove this time option"
+                className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+                type="button"
+                onClick={() => removeSlot(i)}
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
         ))}
         {slots.length < MAX_SLOTS && (
           <button

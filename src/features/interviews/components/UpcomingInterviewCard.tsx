@@ -1,4 +1,4 @@
-import { Video } from "lucide-react";
+import { User, Video } from "lucide-react";
 import { formatSlot } from "@/features/interviews/interview.utils";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
@@ -17,8 +17,14 @@ export const UpcomingInterviewCard = ({
       {interview.confirmedSlot && formatSlot(interview.confirmedSlot)}
     </p>
     <p className="mt-1 text-[13px] text-neutral-500">
-      {interview.durationMinutes} minutes
+      {interview.durationMinutes} minutes · your local time
     </p>
+    {interview.interviewer?.name && (
+      <p className="mt-2 flex items-center gap-1.5 text-[13px] text-neutral-600">
+        <User className="flex-shrink-0 text-neutral-400" size={14} />
+        With {interview.interviewer.name}
+      </p>
+    )}
     {interview.meetingUrl && (
       <a
         className={cn(

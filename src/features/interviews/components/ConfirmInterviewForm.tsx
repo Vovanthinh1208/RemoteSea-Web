@@ -27,9 +27,14 @@ export const ConfirmInterviewForm = ({
 
   return (
     <div className="space-y-3">
-      <p className="text-[13px] text-neutral-600">
-        Pick the time that works for you:
-      </p>
+      <div>
+        <p className="text-[13px] text-neutral-600">
+          Pick the time that works for you:
+        </p>
+        <p className="text-[11.5px] text-neutral-400">
+          Shown in your local time · {interview.durationMinutes} minutes
+        </p>
+      </div>
       <div className="space-y-2">
         {interview.proposedSlots.map((slot) => (
           <label
