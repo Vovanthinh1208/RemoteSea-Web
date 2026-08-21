@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { flushSync } from "react-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import * as authService from "@/features/auth/auth.service";
 import { registerUnauthorizedHandler } from "@/core/http/http-client";
@@ -171,8 +172,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const sessionUser = await hydrateFromSession();
         if (!sessionUser)
           throw new Error("Could not load session after authentication");
-        queryClient.setQueryData(SESSION_KEY, sessionUser);
-        setHasToken(true);
+        // flushSync, not two plain setState calls — the caller (login/2FA
+        // forms) navigates immediately after this resolves. Without forcing
+        // the commit here, that navigate() can run before React has actually
+        // re-rendered with the new hasToken/session data, so the destination
+        // route's ProtectedRoute reads a still-stale `user: null` and bounces
+        // straight back to /login — "I verified the code and got logged
+        // right back out."
+        flushSync(() => {
+          queryClient.setQueryData(SESSION_KEY, sessionUser);
+          setHasToken(true);
+        });
         return sessionUser;
       } catch (err) {
         // Establishing a brand-new session must be all-or-nothing: don't leave a

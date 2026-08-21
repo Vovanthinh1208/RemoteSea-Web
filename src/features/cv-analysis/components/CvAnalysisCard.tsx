@@ -9,9 +9,6 @@ import { cn } from "@/utils/cn";
 
 const COPIED_FEEDBACK_MS = 1500;
 
-// Interview questions are meant to be used, not just read — a one-click copy
-// (with brief feedback so a click never feels like it silently did nothing)
-// saves retyping one into interview notes/a scheduling doc.
 const SuggestedQuestion = ({ question }: { question: string }) => {
   const [copied, setCopied] = useState(false);
 
