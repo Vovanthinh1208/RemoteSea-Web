@@ -253,7 +253,10 @@ export const ApplicationWorkspacePage = () => {
 
         <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
           <div className="space-y-4">
-            <CvAnalysisCard applicationId={applicant.id} talentName={talentName} />
+            <CvAnalysisCard
+              applicationId={applicant.id}
+              talentName={talentName}
+            />
 
             {interview?.status === "CONFIRMED" && !occurred && (
               <UpcomingInterviewCard interview={interview} />

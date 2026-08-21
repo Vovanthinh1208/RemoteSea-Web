@@ -108,7 +108,7 @@ export type EmployerJobListItem = {
   timezone: string | null;
   country: string | null;
   isRemote: boolean;
-  skills: { isRequired: boolean; skill: { id: string } }[];
+  skills: { isRequired: boolean; skill: { id: string; name: string } }[];
 };
 
 export type EmployerJobsResponse = {

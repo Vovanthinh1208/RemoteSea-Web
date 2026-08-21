@@ -64,7 +64,8 @@ export const CvAnalysisCard = ({
   }
 
   if (isError) {
-    const noResume = error instanceof ApiError && error.status === NO_RESUME_STATUS;
+    const noResume =
+      error instanceof ApiError && error.status === NO_RESUME_STATUS;
     return (
       <div className="flex items-center justify-between gap-3 rounded-16 border border-neutral-100 bg-white px-4 py-3.5 text-[12.5px] text-neutral-400">
         {noResume
@@ -169,8 +170,8 @@ export const CvAnalysisCard = ({
       )}
 
       <p className="text-[10.5px] text-neutral-300">
-        AI-generated from the CV and job description — always a starting
-        point, never the final word.
+        AI-generated from the CV and job description — always a starting point,
+        never the final word.
       </p>
     </div>
   );
