@@ -1,9 +1,42 @@
-import { Check, Minus, RefreshCw, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { Check, Copy, Minus, RefreshCw, Sparkles } from "lucide-react";
 import { useCvAnalysis } from "@/features/cv-analysis/cv-analysis.queries";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ApiError } from "@/core/errors/api-error";
+import { timeAgoLong } from "@/utils/time";
 import { cn } from "@/utils/cn";
+
+const COPIED_FEEDBACK_MS = 1500;
+
+// Interview questions are meant to be used, not just read — a one-click copy
+// (with brief feedback so a click never feels like it silently did nothing)
+// saves retyping one into interview notes/a scheduling doc.
+const SuggestedQuestion = ({ question }: { question: string }) => {
+  const [copied, setCopied] = useState(false);
+
+  return (
+    <li className="flex items-start justify-between gap-2 text-[12px] text-neutral-600">
+      <span>&ldquo;{question}&rdquo;</span>
+      <button
+        aria-label="Copy question"
+        className="flex-shrink-0 text-neutral-300 transition-colors hover:text-neutral-600"
+        type="button"
+        onClick={() => {
+          void navigator.clipboard.writeText(question);
+          setCopied(true);
+          setTimeout(() => setCopied(false), COPIED_FEEDBACK_MS);
+        }}
+      >
+        {copied ? (
+          <Check className="text-brand-600" size={12} />
+        ) : (
+          <Copy size={12} />
+        )}
+      </button>
+    </li>
+  );
+};
 
 const NO_RESUME_STATUS = 400;
 
@@ -12,18 +45,30 @@ interface CvAnalysisCardProps {
   talentName: string;
 }
 
-const scoreColor = (score: number): string => {
-  if (score >= 75) return "text-emerald-600";
-  if (score >= 50) return "text-brand-600";
-  return "text-neutral-500";
+const scoreTier = (
+  score: number
+): { text: string; bar: string; label: string } => {
+  if (score >= 75) {
+    return {
+      text: "text-emerald-600",
+      bar: "bg-emerald-500",
+      label: "Strong fit",
+    };
+  }
+  if (score >= 50) {
+    return {
+      text: "text-brand-600",
+      bar: "bg-brand-500",
+      label: "Moderate fit",
+    };
+  }
+  return { text: "text-neutral-500", bar: "bg-neutral-400", label: "Weak fit" };
 };
 
 const CvAnalysisSkeleton = () => (
   <div className="space-y-3 rounded-16 border border-neutral-100 bg-white p-4">
-    <div className="flex items-center justify-between">
-      <Skeleton className="h-4 w-28" />
-      <Skeleton className="h-6 w-12" />
-    </div>
+    <Skeleton className="h-4 w-28" />
+    <Skeleton className="h-16 w-full rounded-10" />
     <Skeleton className="h-3 w-full" />
     <Skeleton className="h-3 w-4/5" />
     <div className="grid grid-cols-2 gap-3 pt-1">
@@ -86,21 +131,35 @@ export const CvAnalysisCard = ({
 
   if (!data) return null;
 
+  const tier = scoreTier(data.fitScore);
+
   return (
     <div className="space-y-3 rounded-16 border border-neutral-100 bg-white p-4">
-      <div className="flex items-center justify-between gap-2">
-        <h3 className="flex items-center gap-1.5 text-[13.5px] font-medium text-neutral-900">
-          <Sparkles className="flex-shrink-0 text-brand-600" size={15} />
-          AI CV Analysis
-        </h3>
+      <h3 className="flex items-center gap-1.5 text-[13.5px] font-medium text-neutral-900">
+        <Sparkles className="flex-shrink-0 text-brand-600" size={15} />
+        AI CV Analysis
+      </h3>
+
+      <div className="flex items-center gap-3 rounded-10 bg-neutral-50 p-3">
         <span
           className={cn(
-            "text-[17px] font-semibold leading-none",
-            scoreColor(data.fitScore)
+            "flex-shrink-0 text-[26px] font-semibold leading-none",
+            tier.text
           )}
         >
           {data.fitScore}%
         </span>
+        <div className="min-w-0 flex-1 space-y-1">
+          <p className={cn("text-[11.5px] font-medium", tier.text)}>
+            {tier.label}
+          </p>
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-200">
+            <div
+              className={cn("h-full rounded-full", tier.bar)}
+              style={{ width: `${data.fitScore}%` }}
+            />
+          </div>
+        </div>
       </div>
 
       <p className="text-[12.5px] leading-relaxed text-neutral-600">
@@ -159,19 +218,18 @@ export const CvAnalysisCard = ({
           <p className="mb-1.5 text-[10.5px] font-semibold uppercase tracking-wider text-neutral-400">
             Questions worth asking
           </p>
-          <ul className="space-y-1">
+          <ul className="space-y-1.5">
             {data.suggestedQuestions.map((q) => (
-              <li className="text-[12px] text-neutral-600" key={q}>
-                &ldquo;{q}&rdquo;
-              </li>
+              <SuggestedQuestion key={q} question={q} />
             ))}
           </ul>
         </div>
       )}
 
-      <p className="text-[10.5px] text-neutral-300">
-        AI-generated from the CV and job description — always a starting point,
-        never the final word.
+      <p className="text-[10.5px] text-neutral-400">
+        AI-generated from the CV and job description (
+        {timeAgoLong(data.createdAt)}) — always a starting point, never the
+        final word.
       </p>
     </div>
   );
