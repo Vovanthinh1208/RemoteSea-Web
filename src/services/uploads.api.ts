@@ -38,11 +38,66 @@ export const validateFile = (file: File, type: UploadType): string | null => {
 };
 
 const UPLOAD_TIMEOUT_MS = 60_000;
+const PERCENT = 100;
+
+// XMLHttpRequest, not fetch — fetch has no cross-browser-supported way to
+// observe upload progress (only download progress, via the response body
+// stream), while XHR's upload.onprogress is exactly what a resume-sized PUT
+// needs to show real percentage feedback instead of just "Uploading…".
+const putViaXhr = (
+  uploadUrl: string,
+  file: File,
+  options: { signal?: AbortSignal; onProgress?: (percent: number) => void }
+): Promise<void> =>
+  new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    // Mirrors the previous fetch-based timeout/external-abort chaining: a
+    // stalled upload can't hang forever, and unmounting the caller (or an
+    // explicit Cancel click) aborts the same in-flight request either way.
+    const timeoutId = setTimeout(() => {
+      xhr.abort();
+    }, UPLOAD_TIMEOUT_MS);
+    const onExternalAbort = () => xhr.abort();
+    options.signal?.addEventListener("abort", onExternalAbort);
+    const cleanup = () => {
+      clearTimeout(timeoutId);
+      options.signal?.removeEventListener("abort", onExternalAbort);
+    };
+
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        options.onProgress?.(
+          Math.round((event.loaded / event.total) * PERCENT)
+        );
+      }
+    };
+    xhr.onload = () => {
+      cleanup();
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve();
+      } else {
+        reject(new Error("Upload failed"));
+      }
+    };
+    xhr.onerror = () => {
+      cleanup();
+      reject(new Error("Upload failed"));
+    };
+    xhr.onabort = () => {
+      cleanup();
+      reject(new DOMException("Upload cancelled", "AbortError"));
+    };
+
+    xhr.open("PUT", uploadUrl);
+    xhr.setRequestHeader("Content-Type", file.type);
+    xhr.send(file);
+  });
 
 export const uploadViaPresign = async (
   file: File,
   type: UploadType,
-  options?: { signal?: AbortSignal }
+  options?: { signal?: AbortSignal; onProgress?: (percent: number) => void }
 ): Promise<string> => {
   const { data } = await apiClient.post<PresignResponse>(
     "/uploads/presign",
@@ -55,28 +110,6 @@ export const uploadViaPresign = async (
     { signal: options?.signal }
   );
 
-  // The presign call goes through apiClient (15s timeout, auto-retry), but the actual
-  // PUT to storage is a bare fetch with no built-in timeout — a stalled upload could
-  // otherwise hang forever. This also lets callers cancel on unmount via `signal`.
-  const controller = new AbortController();
-  const timeoutId = setTimeout(
-    () => controller.abort(new Error("Upload timed out")),
-    UPLOAD_TIMEOUT_MS
-  );
-  const onExternalAbort = () => controller.abort(options?.signal?.reason);
-  options?.signal?.addEventListener("abort", onExternalAbort);
-
-  try {
-    const response = await fetch(data.uploadUrl, {
-      method: "PUT",
-      body: file,
-      headers: { "Content-Type": file.type },
-      signal: controller.signal,
-    });
-    if (!response.ok) throw new Error("Upload failed");
-    return data.publicUrl;
-  } finally {
-    clearTimeout(timeoutId);
-    options?.signal?.removeEventListener("abort", onExternalAbort);
-  }
+  await putViaXhr(data.uploadUrl, file, options ?? {});
+  return data.publicUrl;
 };
