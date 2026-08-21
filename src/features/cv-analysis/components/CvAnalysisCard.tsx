@@ -82,9 +82,6 @@ export const CvAnalysisCard = ({
   const { data, isFetching, isError, error, fetchStatus, refetch } =
     useCvAnalysis(applicationId);
 
-  // enabled: false on the query itself (see cv-analysis.queries.ts) — this
-  // is the one place that actually kicks off the (billed) LLM call, and only
-  // on an explicit click, never automatically on page load.
   const hasRequested = fetchStatus !== "idle" || !!data;
 
   if (!hasRequested) {
