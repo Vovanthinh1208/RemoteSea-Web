@@ -22,6 +22,7 @@ import { HiringDecisionCard } from "@/features/employer/hiring/components/Hiring
 import { ApplicationActivityTimeline } from "@/features/employer/hiring/components/ApplicationActivityTimeline";
 import { UpcomingInterviewCard } from "@/features/interviews/components/UpcomingInterviewCard";
 import { ScorecardSection } from "@/features/scorecards/components/ScorecardSection";
+import { CvAnalysisCard } from "@/features/cv-analysis/components/CvAnalysisCard";
 import { ApplicationDetailHeader } from "@/components/shared/ApplicationDetailHeader";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -252,6 +253,8 @@ export const ApplicationWorkspacePage = () => {
 
         <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
           <div className="space-y-4">
+            <CvAnalysisCard applicationId={applicant.id} talentName={talentName} />
+
             {interview?.status === "CONFIRMED" && !occurred && (
               <UpcomingInterviewCard interview={interview} />
             )}

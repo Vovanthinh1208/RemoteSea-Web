@@ -178,3 +178,8 @@ export const scorecardKeys = {
   list: (applicationId: string) =>
     ["scorecards", "list", applicationId] as const,
 };
+
+export const cvAnalysisKeys = {
+  detail: (applicationId: string) =>
+    ["cv-analysis", "detail", applicationId] as const,
+};
