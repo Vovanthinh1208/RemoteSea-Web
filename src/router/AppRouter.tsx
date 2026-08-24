@@ -147,6 +147,12 @@ const AlertsPage = lazy(() =>
   }))
 );
 
+const AiChatPage = lazy(() =>
+  import("@/features/ai-chat/pages/AiChatPage").then((m) => ({
+    default: m.AiChatPage,
+  }))
+);
+
 const SavedJobsPage = lazy(() =>
   import("@/features/saved/pages/SavedJobsPage").then((m) => ({
     default: m.SavedJobsPage,
@@ -234,6 +240,7 @@ export const AppRouter = () => {
           <Route element={<SettingsPage />} path="settings" />
           <Route element={<SavedJobsPage />} path="saved" />
           <Route element={<NotificationsPage />} path="notifications" />
+          <Route element={<AiChatPage />} path="ai-chat" />
         </Route>
 
         <Route element={<ProtectedRoute roles={["TALENT"]} />}>

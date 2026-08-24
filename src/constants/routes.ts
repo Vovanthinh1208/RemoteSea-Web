@@ -17,6 +17,7 @@ export const ROUTES = {
   talentVerify: "/talent/verify",
   talentProfile: (slug: string) => `/talent/${slug}`,
   saved: "/saved",
+  aiChat: "/ai-chat",
   alerts: "/alerts",
   notifications: "/notifications",
   applicationDetail: (id: string) => `/applications/${id}`,

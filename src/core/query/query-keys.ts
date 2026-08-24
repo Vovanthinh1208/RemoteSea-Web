@@ -166,6 +166,12 @@ export const interviewKeys = {
   upcoming: () => ["interviews", "upcoming"] as const,
 };
 
+export const aiChatKeys = {
+  conversations: () => ["ai-chat", "conversations"] as const,
+  conversation: (conversationId: string) =>
+    ["ai-chat", "conversation", conversationId] as const,
+};
+
 export const reviewKeys = {
   eligibility: (applicationId: string) =>
     ["reviews", "eligibility", applicationId] as const,
