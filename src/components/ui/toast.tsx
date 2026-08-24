@@ -68,7 +68,10 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
   return (
     <ToastContext.Provider value={value}>
       {children}
-      <div className="pointer-events-none fixed bottom-4 right-4 z-[100] flex w-[340px] max-w-[calc(100vw-2rem)] flex-col gap-2">
+      {/* bottom-24, not bottom-4 — the AI chat widget's launcher button
+          (AiChatWidget) is fixed at the same bottom-right corner; this
+          offset keeps toasts clear of it instead of overlapping. */}
+      <div className="pointer-events-none fixed bottom-24 right-4 z-[100] flex w-[340px] max-w-[calc(100vw-2rem)] flex-col gap-2">
         {toasts.map((t) => {
           const Icon = ICONS[t.variant];
           return (

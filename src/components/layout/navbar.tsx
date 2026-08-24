@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Bell, Bookmark, Settings, Sparkles } from "lucide-react";
+import { Bell, Bookmark, Settings } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useAuth } from "@/contexts/AuthContext";
 import { ROUTES } from "@/constants/routes";
@@ -103,13 +103,6 @@ export const Navbar = () => {
                   Admin
                 </Link>
               )}
-              <Link
-                aria-label="AI Assistant"
-                className="grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
-                to={ROUTES.aiChat}
-              >
-                <Sparkles size={17} />
-              </Link>
               <NotificationBell />
               <Link
                 aria-label="Settings"

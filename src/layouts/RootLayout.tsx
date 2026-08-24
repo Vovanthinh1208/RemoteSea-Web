@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/footer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { FullPageLoader } from "@/components/ui/spinner";
 import { OfflineBanner } from "@/components/shared/OfflineBanner";
+import { AiChatWidget } from "@/features/ai-chat/components/AiChatWidget";
 
 export const RootLayout = () => {
   const { pathname } = useLocation();
@@ -55,6 +56,7 @@ export const RootLayout = () => {
         </ErrorBoundary>
       </main>
       <Footer />
+      <AiChatWidget />
     </>
   );
 };

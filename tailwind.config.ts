@@ -75,9 +75,24 @@ const config: Config = {
           from: { opacity: "0", transform: "translateY(8px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        // Scales/fades from the corner it's anchored to (paired with an
+        // `origin-bottom-right` class on the panel) so the AI chat popup
+        // visibly grows out of its launcher button rather than just fading
+        // in place — the "-out" pair is what makes the close feel like a
+        // real transition instead of an instant disappearance.
+        "chat-pop-in": {
+          from: { opacity: "0", transform: "scale(0.92) translateY(12px)" },
+          to: { opacity: "1", transform: "scale(1) translateY(0)" },
+        },
+        "chat-pop-out": {
+          from: { opacity: "1", transform: "scale(1) translateY(0)" },
+          to: { opacity: "0", transform: "scale(0.92) translateY(12px)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.5s cubic-bezier(0.22,0.61,0.36,1) both",
+        "chat-pop-in": "chat-pop-in 0.22s cubic-bezier(0.16,1,0.3,1) both",
+        "chat-pop-out": "chat-pop-out 0.16s ease-in both",
       },
     },
   },
