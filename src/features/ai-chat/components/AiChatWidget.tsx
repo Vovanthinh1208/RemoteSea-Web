@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Send, Sparkles, X } from "lucide-react";
+import { History, Plus, Send, Sparkles, X } from "lucide-react";
 import {
   useConversation,
   useConversations,
@@ -7,13 +7,21 @@ import {
 } from "@/features/ai-chat/ai-chat.queries";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmptyState } from "@/components/shared/EmptyState";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/utils/cn";
+import { timeAgoShort } from "@/utils/time";
 
 const COMPOSE_MAX_HEIGHT_PX = 120;
+const DRAFT_MAX_LENGTH = 2000;
+const DRAFT_WARN_LENGTH = 1800;
+
+const SUGGESTED_PROMPTS = [
+  "What's our remote hiring policy?",
+  "How do I review a candidate's application?",
+  "What are the steps in our hiring process?",
+];
 
 const AnswerBubble = ({
   question,
@@ -26,14 +34,14 @@ const AnswerBubble = ({
   sources?: string[];
   pending?: boolean;
 }) => (
-  <div className="mt-4 space-y-2">
+  <div className="mt-4 animate-fade-up space-y-2">
     <div className="flex justify-end">
       <div className="max-w-[80%] rounded-16 rounded-br-4 bg-brand-600 px-3.5 py-2.5 text-[13.5px] text-white">
         <p className="whitespace-pre-wrap break-words">{question}</p>
       </div>
     </div>
     <div className="flex items-start gap-2">
-      <div className="mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-full bg-brand-600 text-white">
+      <div className="mt-0.5 grid h-6 w-6 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-chip">
         <Sparkles size={13} />
       </div>
       <div className="max-w-[80%] rounded-16 rounded-tl-4 bg-neutral-100 px-3.5 py-2.5 text-[13.5px] text-neutral-900">
@@ -62,6 +70,7 @@ export const AiChatWidget = () => {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   // undefined = no explicit choice made yet (resume the most recent
   // conversation, if any); null = explicitly starting a new/blank one
   // ("New chat"); a string = a real conversation id. Deriving the id to
@@ -86,8 +95,11 @@ export const AiChatWidget = () => {
   const runWithToast = useToastMutation();
 
   const rootRef = useRef<HTMLDivElement>(null);
+  const historyRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  const firstName = user?.name?.split(" ")[0];
 
   // Defined before the effects below (not after the `if (!user) return
   // null` guard) so the click-outside/Escape effect's closure always
@@ -102,7 +114,13 @@ export const AiChatWidget = () => {
     // this effect's dependency array can stay just [open], same pattern
     // NotificationBell uses with its own setOpen(false).
     const onPointerDown = (e: PointerEvent) => {
-      if (!rootRef.current?.contains(e.target as Node)) setClosing(true);
+      if (!rootRef.current?.contains(e.target as Node)) {
+        setClosing(true);
+        return;
+      }
+      if (!historyRef.current?.contains(e.target as Node)) {
+        setShowHistory(false);
+      }
     };
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setClosing(true);
@@ -127,10 +145,14 @@ export const AiChatWidget = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [open, conversation.data?.turns.length, pendingQuestion]);
 
+  useEffect(() => {
+    if (open) textareaRef.current?.focus();
+  }, [open]);
+
   if (!user) return null;
 
-  const handleSend = async () => {
-    const question = draft.trim();
+  const handleSend = async (text?: string) => {
+    const question = (text ?? draft).trim();
     if (!question || sendMessage.isPending) return;
     setDraft("");
     setPendingQuestion(question);
@@ -150,15 +172,27 @@ export const AiChatWidget = () => {
     if (!ok) setDraft(question); // give the question back so it isn't lost
   };
 
+  const startNewChat = () => {
+    setSelectedConversationId(null);
+    setShowHistory(false);
+    textareaRef.current?.focus();
+  };
+
+  const hasNoConversations = conversations.data?.length === 0;
+  const draftLength = draft.length;
+
   return (
     <div ref={rootRef}>
       <button
         aria-expanded={open}
         aria-label={open ? "Close AI Assistant" : "Open AI Assistant"}
-        className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-brand-600 text-white shadow-card-lg transition-transform hover:scale-105 active:scale-95"
+        className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card-lg transition-transform hover:scale-105 active:scale-95"
         type="button"
         onClick={() => (open ? requestClose() : setOpen(true))}
       >
+        {!open && !conversations.isLoading && hasNoConversations && (
+          <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-brand-500 opacity-40" />
+        )}
         {open ? <X size={22} /> : <Sparkles size={22} />}
       </button>
 
@@ -175,21 +209,88 @@ export const AiChatWidget = () => {
             }
           }}
         >
-          <div className="flex flex-shrink-0 items-center justify-between border-b border-neutral-100 px-4 py-3">
-            <div>
-              <p className="text-[13.5px] font-semibold text-neutral-900">
-                RemoteSea Assistant
-              </p>
-              <p className="text-[11.5px] text-neutral-400">
-                Ask about hiring policies, or a specific application.
-              </p>
+          <div className="relative flex flex-shrink-0 items-center justify-between border-b border-neutral-100 bg-gradient-to-b from-neutral-50 to-white px-4 py-3">
+            <div className="flex items-center gap-2.5">
+              <div className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-chip">
+                <Sparkles size={16} />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <p className="text-[13.5px] font-semibold text-neutral-900">
+                    RemoteSea Assistant
+                  </p>
+                  <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
+                </div>
+                <p className="text-[11.5px] text-neutral-400">
+                  Ask about hiring policies, or a specific application.
+                </p>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex flex-shrink-0 items-center gap-1">
+              <div className="relative" ref={historyRef}>
+                <button
+                  aria-label="Conversation history"
+                  className={cn(
+                    "grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-900",
+                    showHistory && "bg-neutral-100 text-neutral-900"
+                  )}
+                  title="Conversation history"
+                  type="button"
+                  onClick={() => setShowHistory((v) => !v)}
+                >
+                  <History size={15} />
+                </button>
+                {showHistory && (
+                  <div className="scrollbar-thin absolute right-0 top-9 z-10 max-h-64 w-64 overflow-y-auto rounded-12 border border-neutral-200 bg-white p-1.5 shadow-card-lg">
+                    {conversations.isLoading ? (
+                      <div className="space-y-1.5 p-1.5">
+                        <Skeleton className="h-9 w-full rounded-8" />
+                        <Skeleton className="h-9 w-full rounded-8" />
+                      </div>
+                    ) : hasNoConversations ? (
+                      <p className="px-2.5 py-3 text-center text-[12px] text-neutral-400">
+                        No previous conversations yet.
+                      </p>
+                    ) : (
+                      conversations.data?.map((c) => (
+                        <button
+                          className={cn(
+                            "flex w-full flex-col items-start gap-0.5 rounded-8 px-2.5 py-1.5 text-left transition-colors hover:bg-neutral-50",
+                            c.id === activeConversationId && "bg-brand-50"
+                          )}
+                          key={c.id}
+                          type="button"
+                          onClick={() => {
+                            setSelectedConversationId(c.id);
+                            setShowHistory(false);
+                          }}
+                        >
+                          <span
+                            className={cn(
+                              "w-full truncate text-[12.5px] font-medium",
+                              c.id === activeConversationId
+                                ? "text-brand-700"
+                                : "text-neutral-800"
+                            )}
+                          >
+                            {c.title || "Untitled conversation"}
+                          </span>
+                          <span className="text-[10.5px] text-neutral-400">
+                            {timeAgoShort(c.updatedAt)}
+                          </span>
+                        </button>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
               <button
-                className="rounded-8 px-2 py-1 text-[11.5px] font-medium text-brand-600 transition-colors hover:bg-brand-50"
+                aria-label="New chat"
+                className="flex items-center gap-1 rounded-8 px-2 py-1 text-[11.5px] font-medium text-brand-600 transition-colors hover:bg-brand-50"
                 type="button"
-                onClick={() => setSelectedConversationId(null)}
+                onClick={startNewChat}
               >
+                <Plus size={13} />
                 New chat
               </button>
               <button
@@ -203,28 +304,53 @@ export const AiChatWidget = () => {
             </div>
           </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto p-4">
+          <div className="scrollbar-thin min-h-0 flex-1 overflow-y-auto p-4">
             {!activeConversationId && !pendingQuestion ? (
-              <EmptyState
-                description="Ask a question about RemoteSea's hiring policies or process to get started."
-                title="Start a new conversation"
-              />
+              <div className="flex h-full animate-fade-up flex-col items-center justify-center gap-4 py-6 text-center">
+                <div className="grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card">
+                  <Sparkles size={20} />
+                </div>
+                <div>
+                  <p className="mb-1 text-[14.5px] font-semibold text-neutral-900">
+                    Hi{firstName ? `, ${firstName}` : ""} — how can I help?
+                  </p>
+                  <p className="text-[12.5px] text-neutral-500">
+                    Ask a question about RemoteSea's hiring policies or process
+                    to get started.
+                  </p>
+                </div>
+                <div className="flex w-full flex-col gap-1.5">
+                  {SUGGESTED_PROMPTS.map((prompt) => (
+                    <button
+                      className="rounded-12 border border-neutral-200 px-3 py-2 text-left text-[12.5px] text-neutral-700 transition-colors hover:border-brand-300 hover:bg-brand-50"
+                      disabled={sendMessage.isPending}
+                      key={prompt}
+                      type="button"
+                      onClick={() => void handleSend(prompt)}
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ) : conversation.isLoading && activeConversationId ? (
               <Skeleton className="h-16 w-2/3 rounded-16" />
             ) : conversation.isError ? (
-              <EmptyState
-                action={
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => conversation.refetch()}
-                  >
-                    Try again
-                  </Button>
-                }
-                description="Something went wrong loading this conversation."
-                title="Couldn't load conversation"
-              />
+              <div className="flex h-full flex-col items-center justify-center gap-3 py-16 text-center">
+                <p className="font-medium text-neutral-900">
+                  Couldn't load conversation
+                </p>
+                <p className="text-sm text-neutral-500">
+                  Something went wrong loading this conversation.
+                </p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => conversation.refetch()}
+                >
+                  Try again
+                </Button>
+              </div>
             ) : (
               <>
                 {conversation.data?.turns.map((t) => (
@@ -243,8 +369,23 @@ export const AiChatWidget = () => {
             <div ref={bottomRef} />
           </div>
 
+          <div className="flex-shrink-0 px-3 pb-1">
+            {draftLength > DRAFT_WARN_LENGTH && (
+              <p
+                className={cn(
+                  "pb-1 text-right text-[10.5px]",
+                  draftLength >= DRAFT_MAX_LENGTH
+                    ? "text-red-500"
+                    : "text-neutral-400"
+                )}
+              >
+                {draftLength}/{DRAFT_MAX_LENGTH}
+              </p>
+            )}
+          </div>
+
           <form
-            className="m-3 mt-0 flex flex-shrink-0 items-end gap-1.5 rounded-24 border border-neutral-200 bg-white py-1.5 pl-4 pr-1.5 transition-colors focus-within:border-brand-600"
+            className="m-3 mt-0 flex flex-shrink-0 items-end gap-1.5 rounded-24 border border-neutral-200 bg-white py-1.5 pl-4 pr-1.5 transition-colors focus-within:border-brand-600 focus-within:shadow-focus"
             onSubmit={(e) => {
               e.preventDefault();
               void handleSend();
@@ -255,7 +396,7 @@ export const AiChatWidget = () => {
                 TEXTAREA_INPUT_CLASS,
                 "min-h-[24px] resize-none border-none bg-transparent p-0 py-1.5 shadow-none focus:border-none focus:shadow-none"
               )}
-              maxLength={2000}
+              maxLength={DRAFT_MAX_LENGTH}
               placeholder="Ask the RemoteSea assistant…"
               ref={textareaRef}
               rows={1}

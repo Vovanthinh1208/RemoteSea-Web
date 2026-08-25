@@ -60,6 +60,27 @@
     font-family: var(--font-serif);
     font-style: italic;
   }
+
+  /* Thin, unobtrusive scrollbar for compact panels (AI chat message list and
+     its history dropdown) where the default OS scrollbar looks bulky at
+     380px wide. */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #ddd9d1 transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #ddd9d1;
+    border-radius: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: #c7c2b9;
+  }
 }
 
 /* Applies to every animation/transition in the app (spinners, pulse skeletons,
