@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:render": "vite build",
     "size": "size-limit",
     "lint": "eslint . --cache --cache-location .cache/eslint/",
     "depcruise": "depcruise src --config .dependency-cruiser.cjs",
