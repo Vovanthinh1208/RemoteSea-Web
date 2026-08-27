@@ -153,7 +153,7 @@ const ApplicantRow = memo(function ApplicantRow({
       <div className="flex flex-shrink-0 items-center gap-1">
         {interviewStageAction ? (
           <Link
-            className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100"
+            className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100 focus-visible:shadow-focus focus-visible:outline-none"
             to={interviewStageActionHref}
           >
             {interviewStageAction.label}
@@ -171,7 +171,7 @@ const ApplicantRow = memo(function ApplicantRow({
           {({ onClick }) => (
             <button
               aria-label="Reject applicant"
-              className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+              className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
               disabled={isPending}
               type="button"
               onClick={onClick}
@@ -192,7 +192,7 @@ const ApplicantRow = memo(function ApplicantRow({
         >
           {({ onClick }) => (
             <button
-              className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100 disabled:opacity-50"
+              className="inline-flex items-center gap-1 rounded-8 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700 transition-colors hover:bg-brand-100 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
               disabled={isPending}
               type="button"
               onClick={onClick}
@@ -211,7 +211,7 @@ const ApplicantRow = memo(function ApplicantRow({
           {({ onClick }) => (
             <button
               aria-label="Reject applicant"
-              className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+              className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
               disabled={isPending}
               type="button"
               onClick={onClick}
@@ -256,7 +256,7 @@ const ApplicantRow = memo(function ApplicantRow({
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-2">
             <Link
-              className="min-w-0 flex-1 truncate text-[13.5px] font-medium text-neutral-900 hover:underline"
+              className="min-w-0 flex-1 truncate rounded-4 text-[13.5px] font-medium text-neutral-900 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.employerApplicationDetail(a.id)}
             >
               {name}
@@ -272,7 +272,7 @@ const ApplicantRow = memo(function ApplicantRow({
               {a.resumeUrl && (
                 <a
                   aria-label="View resume"
-                  className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+                  className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                   href={a.resumeUrl}
                   rel="noreferrer"
                   target="_blank"
@@ -286,7 +286,7 @@ const ApplicantRow = memo(function ApplicantRow({
 
           <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
             <Link
-              className="text-[11.5px] text-neutral-400 hover:text-neutral-600 hover:underline"
+              className="rounded-4 text-[11.5px] text-neutral-400 hover:text-neutral-600 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.employerApplicationDetail(a.id)}
             >
               {a.talent.headline ?? a.talent.level}
@@ -316,7 +316,7 @@ const ApplicantRow = memo(function ApplicantRow({
 
           {a.coverLetter && (
             <button
-              className="mt-1.5 inline-flex items-center gap-0.5 text-[11px] text-neutral-400 transition-colors hover:text-neutral-600"
+              className="mt-1.5 inline-flex items-center gap-0.5 rounded-4 text-[11px] text-neutral-400 transition-colors hover:text-neutral-600 focus-visible:shadow-focus focus-visible:outline-none"
               type="button"
               onClick={() => setShowCoverLetter((v) => !v)}
             >
@@ -502,7 +502,7 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
               <button
                 aria-pressed={tab === t.id}
                 className={cn(
-                  "rounded-6 px-2.5 py-1 text-[11.5px] font-medium transition-all",
+                  "rounded-8 px-2.5 py-1 text-[11.5px] font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none",
                   tab === t.id
                     ? "bg-white text-neutral-900 shadow-chip"
                     : "text-neutral-500 hover:text-neutral-700"
@@ -559,7 +559,7 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
                     >
                       {({ onClick }) => (
                         <button
-                          className="inline-flex items-center gap-1 rounded-8 px-2.5 py-1 text-[11.5px] font-medium text-brand-700 transition-colors hover:bg-brand-50"
+                          className="inline-flex items-center gap-1 rounded-8 px-2.5 py-1 text-[11.5px] font-medium text-brand-700 transition-colors hover:bg-brand-50 focus-visible:shadow-focus focus-visible:outline-none"
                           type="button"
                           onClick={onClick}
                         >
@@ -579,7 +579,7 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
                   >
                     {({ onClick }) => (
                       <button
-                        className="inline-flex items-center gap-1 rounded-8 px-2.5 py-1 text-[11.5px] font-medium text-red-600 transition-colors hover:bg-red-50"
+                        className="inline-flex items-center gap-1 rounded-8 px-2.5 py-1 text-[11.5px] font-medium text-red-600 transition-colors hover:bg-red-50 focus-visible:shadow-focus focus-visible:outline-none"
                         type="button"
                         onClick={onClick}
                       >

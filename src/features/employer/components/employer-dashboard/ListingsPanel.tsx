@@ -115,7 +115,7 @@ const ListingRow = memo(function ListingRow({
   if (isPubliclyViewable) {
     return (
       <Link
-        className="grid cursor-pointer grid-cols-[1fr_80px_120px_60px_32px] items-center gap-3 rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50"
+        className="grid cursor-pointer grid-cols-[1fr_80px_120px_60px_32px] items-center gap-3 rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none"
         to={ROUTES.jobDetail(j.id)}
       >
         {rowContent}
