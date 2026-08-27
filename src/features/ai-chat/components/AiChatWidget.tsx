@@ -1,5 +1,13 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { History, Plus, Send, Sparkles, X } from "lucide-react";
+import {
+  ArrowRight,
+  History,
+  MessageCircleQuestion,
+  Plus,
+  Send,
+  Sparkles,
+  X,
+} from "lucide-react";
 import {
   useConversation,
   useConversations,
@@ -36,7 +44,7 @@ const AnswerBubble = ({
 }) => (
   <div className="mt-5 animate-fade-up space-y-3 first:mt-0">
     <div className="flex justify-end">
-      <div className="max-w-[85%] rounded-16 rounded-br-4 bg-brand-600 px-4 py-3 text-[14.5px] leading-relaxed text-white shadow-chip sm:max-w-[78%]">
+      <div className="max-w-[85%] rounded-16 rounded-br-4 bg-gradient-to-br from-brand-500 to-brand-600 px-4 py-3 text-[14.5px] leading-relaxed text-white shadow-chip sm:max-w-[78%]">
         <p className="whitespace-pre-wrap break-words">{question}</p>
       </div>
     </div>
@@ -44,12 +52,12 @@ const AnswerBubble = ({
       <div className="mt-0.5 grid h-7 w-7 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-chip">
         <Sparkles size={14} />
       </div>
-      <div className="max-w-[85%] rounded-16 rounded-tl-4 bg-neutral-100 px-4 py-3 text-[14.5px] leading-relaxed text-neutral-900 sm:max-w-[78%]">
+      <div className="max-w-[85%] rounded-16 rounded-tl-4 border border-neutral-100 bg-neutral-50 px-4 py-3 text-[14.5px] leading-relaxed text-neutral-900 shadow-chip sm:max-w-[78%]">
         {pending ? (
-          <div className="flex items-center gap-1.5 py-1.5 text-neutral-400">
-            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-neutral-400 [animation-delay:-0.3s]" />
-            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-neutral-400 [animation-delay:-0.15s]" />
-            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-neutral-400" />
+          <div className="flex items-center gap-1.5 py-1.5 text-brand-500">
+            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-brand-500 [animation-delay:-0.3s]" />
+            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-brand-500 [animation-delay:-0.15s]" />
+            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-brand-500" />
           </div>
         ) : (
           <>
@@ -186,7 +194,7 @@ export const AiChatWidget = () => {
       <button
         aria-expanded={open}
         aria-label={open ? "Close AI Assistant" : "Open AI Assistant"}
-        className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card-lg transition-transform hover:scale-105 active:scale-95"
+        className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card-lg transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_28px_rgba(46,155,82,0.35)] active:scale-95"
         type="button"
         onClick={() => (open ? requestClose() : setOpen(true))}
       >
@@ -205,7 +213,7 @@ export const AiChatWidget = () => {
             // AI answers in. Desktop (sm+): back to a floating corner card,
             // just meaningfully larger than before (420–460px vs 380px) so
             // paragraphs and code/lists in answers have room to breathe.
-            "fixed inset-x-3 bottom-3 top-16 z-40 flex origin-bottom flex-col overflow-hidden rounded-20 border border-neutral-200 bg-white shadow-card-lg",
+            "fixed inset-x-3 bottom-3 top-16 z-40 flex origin-bottom flex-col overflow-hidden rounded-24 border border-brand-100/70 bg-white shadow-[0_8px_24px_rgba(26,25,23,0.10),0_2px_10px_rgba(46,155,82,0.08)]",
             "sm:inset-x-auto sm:inset-y-auto sm:bottom-[92px] sm:right-5 sm:top-auto sm:h-[min(680px,calc(100vh-8rem))] sm:w-[420px] sm:max-w-[calc(100vw-2.5rem)] sm:origin-bottom-right",
             "lg:w-[460px]",
             closing ? "animate-chat-pop-out" : "animate-chat-pop-in"
@@ -219,7 +227,7 @@ export const AiChatWidget = () => {
         >
           <div className="relative flex flex-shrink-0 items-center justify-between border-b border-neutral-100 bg-gradient-to-b from-neutral-50 to-white px-5 py-4">
             <div className="flex items-center gap-3">
-              <div className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-chip">
+              <div className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-chip ring-4 ring-brand-50">
                 <Sparkles size={17} />
               </div>
               <div>
@@ -227,7 +235,10 @@ export const AiChatWidget = () => {
                   <p className="text-[15px] font-semibold text-neutral-900">
                     RemoteSea Assistant
                   </p>
-                  <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-500" />
+                  </span>
                 </div>
                 <p className="text-[12.5px] text-neutral-400">
                   Ask about hiring policies, or a specific application.
@@ -249,7 +260,7 @@ export const AiChatWidget = () => {
                   <History size={16} />
                 </button>
                 {showHistory && (
-                  <div className="scrollbar-thin absolute right-0 top-10 z-10 max-h-72 w-72 overflow-y-auto rounded-12 border border-neutral-200 bg-white p-2 shadow-card-lg">
+                  <div className="scrollbar-thin absolute right-0 top-10 z-10 max-h-72 w-72 origin-top-right animate-fade-up overflow-y-auto rounded-12 border border-neutral-200 bg-white p-2 shadow-card-lg">
                     {conversations.isLoading ? (
                       <div className="space-y-1.5 p-1.5">
                         <Skeleton className="h-9 w-full rounded-8" />
@@ -263,7 +274,7 @@ export const AiChatWidget = () => {
                       conversations.data?.map((c) => (
                         <button
                           className={cn(
-                            "flex w-full flex-col items-start gap-0.5 rounded-8 px-3 py-2 text-left transition-colors hover:bg-neutral-50",
+                            "relative flex w-full flex-col items-start gap-0.5 rounded-8 px-3 py-2 pl-3.5 text-left transition-colors hover:bg-neutral-50",
                             c.id === activeConversationId && "bg-brand-50"
                           )}
                           key={c.id}
@@ -273,6 +284,9 @@ export const AiChatWidget = () => {
                             setShowHistory(false);
                           }}
                         >
+                          {c.id === activeConversationId && (
+                            <span className="absolute bottom-1.5 left-1 top-1.5 w-[3px] rounded-full bg-brand-500" />
+                          )}
                           <span
                             className={cn(
                               "w-full truncate text-[13px] font-medium",
@@ -294,7 +308,7 @@ export const AiChatWidget = () => {
               </div>
               <button
                 aria-label="New chat"
-                className="flex items-center gap-1 rounded-8 px-2.5 py-1.5 text-[12px] font-medium text-brand-600 transition-colors hover:bg-brand-50"
+                className="flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-1.5 text-[12px] font-medium text-brand-700 transition-colors hover:bg-brand-100"
                 type="button"
                 onClick={startNewChat}
               >
@@ -303,19 +317,22 @@ export const AiChatWidget = () => {
               </button>
               <button
                 aria-label="Close"
-                className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+                className="group grid h-8 w-8 flex-shrink-0 place-items-center rounded-full text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
                 type="button"
                 onClick={requestClose}
               >
-                <X size={16} />
+                <X
+                  className="transition-transform group-hover:rotate-90"
+                  size={16}
+                />
               </button>
             </div>
           </div>
 
-          <div className="scrollbar-thin min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-5">
+          <div className="scrollbar-thin min-h-0 flex-1 overflow-y-auto bg-gradient-to-b from-brand-50/40 via-white to-white px-4 py-5 sm:px-5">
             {!activeConversationId && !pendingQuestion ? (
               <div className="flex h-full animate-fade-up flex-col items-center justify-center gap-5 py-6 text-center">
-                <div className="grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card">
+                <div className="grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card ring-8 ring-brand-50">
                   <Sparkles size={22} />
                 </div>
                 <div>
@@ -328,23 +345,43 @@ export const AiChatWidget = () => {
                   </p>
                 </div>
                 <div className="flex w-full flex-col gap-2">
-                  {SUGGESTED_PROMPTS.map((prompt) => (
+                  {SUGGESTED_PROMPTS.map((prompt, i) => (
                     <button
-                      className="rounded-12 border border-neutral-200 px-3.5 py-2.5 text-left text-[13px] text-neutral-700 shadow-chip transition-colors hover:border-brand-300 hover:bg-brand-50"
+                      className="group flex animate-fade-up items-center gap-2.5 rounded-12 border border-neutral-200 bg-white px-3.5 py-2.5 text-left text-[13px] text-neutral-700 shadow-chip transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:bg-brand-50 hover:shadow-card disabled:pointer-events-none disabled:opacity-60"
                       disabled={sendMessage.isPending}
                       key={prompt}
+                      style={{ animationDelay: `${i * 60 + 80}ms` }}
                       type="button"
                       onClick={() => void handleSend(prompt)}
                     >
-                      {prompt}
+                      <MessageCircleQuestion
+                        className="flex-shrink-0 text-brand-500"
+                        size={15}
+                      />
+                      <span className="flex-1">{prompt}</span>
+                      <ArrowRight
+                        className="flex-shrink-0 text-neutral-300 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:text-brand-500 group-hover:opacity-100"
+                        size={14}
+                      />
                     </button>
                   ))}
                 </div>
               </div>
             ) : conversation.isLoading && activeConversationId ? (
-              <Skeleton className="h-16 w-2/3 rounded-16" />
+              <div className="space-y-3">
+                <div className="flex justify-end">
+                  <Skeleton className="h-9 w-2/3 rounded-16 rounded-br-4" />
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <Skeleton className="mt-0.5 h-7 w-7 flex-shrink-0 rounded-full" />
+                  <Skeleton className="h-16 w-3/4 rounded-16 rounded-tl-4" />
+                </div>
+              </div>
             ) : conversation.isError ? (
               <div className="flex h-full flex-col items-center justify-center gap-3 py-16 text-center">
+                <div className="grid h-12 w-12 place-items-center rounded-full bg-amber-50 text-amber-600">
+                  <MessageCircleQuestion size={20} />
+                </div>
                 <p className="font-medium text-neutral-900">
                   Couldn't load conversation
                 </p>
@@ -381,9 +418,9 @@ export const AiChatWidget = () => {
             {draftLength > DRAFT_WARN_LENGTH && (
               <p
                 className={cn(
-                  "pb-1 text-right text-[11px]",
+                  "pb-1 text-right text-[11px] tabular-nums",
                   draftLength >= DRAFT_MAX_LENGTH
-                    ? "text-red-500"
+                    ? "font-medium text-red-500"
                     : "text-neutral-400"
                 )}
               >
@@ -393,7 +430,7 @@ export const AiChatWidget = () => {
           </div>
 
           <form
-            className="mx-4 mb-4 mt-0 flex flex-shrink-0 items-end gap-2 rounded-24 border border-neutral-200 bg-white py-2 pl-[18px] pr-2 shadow-chip transition-colors focus-within:border-brand-600 focus-within:shadow-focus sm:mx-5"
+            className="mx-4 mb-4 mt-0 flex flex-shrink-0 items-end gap-2 rounded-24 border border-neutral-200 bg-white py-2 pl-[18px] pr-2 shadow-chip transition-all focus-within:border-brand-600 focus-within:shadow-focus sm:mx-5"
             onSubmit={(e) => {
               e.preventDefault();
               void handleSend();
@@ -418,7 +455,7 @@ export const AiChatWidget = () => {
               }}
             />
             <Button
-              className="h-10 w-10 flex-shrink-0 rounded-full p-0"
+              className="h-10 w-10 flex-shrink-0 rounded-full border-none bg-gradient-to-br from-brand-500 to-brand-700 p-0 shadow-chip transition-transform enabled:hover:scale-105 enabled:hover:from-brand-500 enabled:hover:to-brand-700 disabled:from-neutral-300 disabled:to-neutral-300"
               disabled={!draft.trim() || sendMessage.isPending}
               isLoading={sendMessage.isPending}
               type="submit"
