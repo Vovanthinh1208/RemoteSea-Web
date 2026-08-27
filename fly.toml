@@ -13,7 +13,7 @@ primary_region = 'sin'
   # `fly launch` regenerated this file and dropped this section; restored
   # here since deploying without it breaks the build/app entirely.
   [build.args]
-    VITE_API_URL = "https://remotesea-nestjs.onrender.com"
+    VITE_API_URL = "https://remotesea-api.fly.dev"
 
 [http_service]
   internal_port = 80
