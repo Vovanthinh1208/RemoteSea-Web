@@ -36,6 +36,12 @@ export const isTerminalNegative = (status: ApplicationStatus): boolean =>
 export type StageBadgeVariant =
   "info" | "positive" | "success" | "warning" | "muted";
 
+// REVIEWING/SHORTLISTED match talent-dashboard.utils.ts's STATUS_BADGE
+// ("review" bucket -> "warning") — the same ApplicationStatus previously
+// rendered amber on the talent side and green here, an unintentional color
+// drift between the two independent status-badge systems (found auditing
+// this file; see talent-dashboard.utils.ts's own comment on why that one
+// exists as a single shared source in the first place).
 export const stageBadgeVariant = (
   status: ApplicationStatus,
   interviewOccurred: boolean
@@ -45,7 +51,7 @@ export const stageBadgeVariant = (
       return "info";
     case "REVIEWING":
     case "SHORTLISTED":
-      return "positive";
+      return "warning";
     case "INTERVIEW":
       return interviewOccurred ? "warning" : "positive";
     case "OFFERED":
@@ -69,8 +75,11 @@ export const stageLabel = (
       return "Shortlisted";
     case "INTERVIEW":
       return interviewOccurred ? "Awaiting decision" : "Interview";
+    // OFFERED means an offer was extended, not accepted — ApplicationStatus
+    // has no distinct "accepted" state. "Hired" here overstated that as
+    // fact; "Offer sent" says only what's actually confirmed.
     case "OFFERED":
-      return "Hired";
+      return "Offer sent";
     case "REJECTED":
       return "Rejected";
     case "WITHDRAWN":

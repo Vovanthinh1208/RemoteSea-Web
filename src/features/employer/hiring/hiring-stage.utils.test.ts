@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildHiringPipeline,
   getPrimaryAction,
+  stageBadgeVariant,
   stageLabel,
 } from "./hiring-stage.utils";
 import type { Interview } from "@/types/interview";
@@ -25,8 +26,31 @@ describe("stageLabel", () => {
     expect(stageLabel("REVIEWING", false)).toBe("Reviewing");
     expect(stageLabel("INTERVIEW", false)).toBe("Interview");
     expect(stageLabel("INTERVIEW", true)).toBe("Awaiting decision");
-    expect(stageLabel("OFFERED", false)).toBe("Hired");
+    expect(stageLabel("OFFERED", false)).toBe("Offer sent");
     expect(stageLabel("REJECTED", false)).toBe("Rejected");
+  });
+});
+
+describe("stageBadgeVariant", () => {
+  // REVIEWING/SHORTLISTED must match talent-dashboard.utils.ts's own
+  // STATUS_BADGE ("review" bucket -> "warning") — these two independent
+  // status-badge systems drifted apart once (this same status rendered
+  // amber on the talent side, green here) before that was caught and
+  // fixed; this pins the fix so it can't silently drift back.
+  it("matches talent-dashboard.utils's warning color for REVIEWING/SHORTLISTED", () => {
+    expect(stageBadgeVariant("REVIEWING", false)).toBe("warning");
+    expect(stageBadgeVariant("SHORTLISTED", false)).toBe("warning");
+  });
+
+  it("distinguishes INTERVIEW before/after it occurs", () => {
+    expect(stageBadgeVariant("INTERVIEW", false)).toBe("positive");
+    expect(stageBadgeVariant("INTERVIEW", true)).toBe("warning");
+  });
+
+  it("gives terminal statuses their own distinct colors", () => {
+    expect(stageBadgeVariant("OFFERED", false)).toBe("success");
+    expect(stageBadgeVariant("REJECTED", false)).toBe("muted");
+    expect(stageBadgeVariant("WITHDRAWN", false)).toBe("muted");
   });
 });
 

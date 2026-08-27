@@ -128,7 +128,7 @@ export const CvAnalysisCard = ({
   const tier = scoreTier(data.fitScore);
 
   return (
-    <div className="space-y-3 rounded-16 border border-neutral-100 bg-white p-4">
+    <div className="animate-fade-up space-y-3 rounded-16 border border-neutral-100 bg-white p-4">
       <h3 className="flex items-center gap-1.5 text-[13.5px] font-medium text-neutral-900">
         <Sparkles className="flex-shrink-0 text-brand-600" size={15} />
         AI CV Analysis
@@ -147,9 +147,19 @@ export const CvAnalysisCard = ({
           <p className={cn("text-[11.5px] font-medium", tier.text)}>
             {tier.label}
           </p>
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-200">
+          <div
+            aria-label={`Fit score: ${data.fitScore} out of 100 — ${tier.label}`}
+            aria-valuemax={100}
+            aria-valuemin={0}
+            aria-valuenow={data.fitScore}
+            className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-200"
+            role="progressbar"
+          >
             <div
-              className={cn("h-full rounded-full", tier.bar)}
+              className={cn(
+                "h-full rounded-full transition-[width] duration-500 ease-out",
+                tier.bar
+              )}
               style={{ width: `${data.fitScore}%` }}
             />
           </div>
@@ -168,10 +178,10 @@ export const CvAnalysisCard = ({
                 Strengths
               </p>
               <ul className="space-y-1">
-                {data.strengths.map((s) => (
+                {data.strengths.map((s, i) => (
                   <li
                     className="flex items-start gap-1 text-[12px] text-neutral-700"
-                    key={s}
+                    key={`${i}-${s}`}
                   >
                     <Check
                       className="mt-0.5 flex-shrink-0 text-emerald-600"
@@ -189,10 +199,10 @@ export const CvAnalysisCard = ({
                 Gaps
               </p>
               <ul className="space-y-1">
-                {data.gaps.map((g) => (
+                {data.gaps.map((g, i) => (
                   <li
                     className="flex items-start gap-1 text-[12px] text-neutral-700"
-                    key={g}
+                    key={`${i}-${g}`}
                   >
                     <Minus
                       className="mt-0.5 flex-shrink-0 text-amber-600"
@@ -213,8 +223,8 @@ export const CvAnalysisCard = ({
             Questions worth asking
           </p>
           <ul className="space-y-1.5">
-            {data.suggestedQuestions.map((q) => (
-              <SuggestedQuestion key={q} question={q} />
+            {data.suggestedQuestions.map((q, i) => (
+              <SuggestedQuestion key={`${i}-${q}`} question={q} />
             ))}
           </ul>
         </div>
