@@ -1,0 +1,35 @@
+# fly.toml app configuration file generated for remotesea-web on 2026-08-27T09:04:27+07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'remotesea-web'
+primary_region = 'sin'
+
+[build]
+  # VITE_API_URL is not a secret — it's a public API URL, already visible
+  # to every visitor in the built JS bundle and CSP header on Render today.
+  # Required at Docker build time (vite.config.ts throws if unset) —
+  # `fly launch` regenerated this file and dropped this section; restored
+  # here since deploying without it breaks the build/app entirely.
+  [build.args]
+    VITE_API_URL = "https://remotesea-nestjs.onrender.com"
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '10s'
+    method = 'GET'
+    path = '/'
+    protocol = 'http'
+
+[[vm]]
+  size = 'shared-cpu-1x'
+  memory = '256mb'

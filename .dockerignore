@@ -1,0 +1,19 @@
+node_modules
+dist
+dist-ssr
+.git
+.cache
+coverage
+
+# Never let a local .env leak into the build context — VITE_API_URL is
+# injected explicitly via the Dockerfile's ARG/ENV instead (see its own
+# comment). Confirmed a real env var already wins over any .env file's
+# value, but excluding these too removes any ambiguity, and guarantees a
+# developer's local-only value (e.g. localhost) can never end up in a
+# built image by accident. .env.example has no secrets but also nothing
+# the build needs — no reason for it to be in the image either.
+.env
+.env.*
+
+*.log
+.DS_Store
