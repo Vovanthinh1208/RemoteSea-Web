@@ -57,7 +57,7 @@ export const NotificationBell = () => {
         aria-expanded={open}
         aria-label="Notifications"
         className={cn(
-          "relative grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900",
+          "relative grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none",
           open && "bg-neutral-100 text-neutral-900"
         )}
         type="button"
@@ -79,7 +79,7 @@ export const NotificationBell = () => {
             </span>
             {unreadCount > 0 && (
               <button
-                className="text-[12.5px] text-brand-600 transition-colors hover:text-brand-700"
+                className="rounded-8 text-[12.5px] text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
                 disabled={markAllRead.isPending}
                 type="button"
                 onClick={() => markAllRead.mutate()}
@@ -118,13 +118,14 @@ export const NotificationBell = () => {
                   <button
                     key={n.id}
                     className={cn(
-                      "flex w-full items-start gap-2.5 border-b border-neutral-50 px-4 py-3 text-left transition-colors last:border-0 hover:bg-neutral-50",
+                      "flex w-full items-start gap-2.5 border-b border-neutral-50 px-4 py-3 text-left transition-colors last:border-0 hover:bg-neutral-50 focus-visible:relative focus-visible:z-10 focus-visible:shadow-focus focus-visible:outline-none",
                       !n.readAt && "bg-brand-50/60"
                     )}
                     type="button"
                     onClick={() => handleRowClick(n)}
                   >
                     <span
+                      aria-hidden="true"
                       className={cn(
                         "mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full",
                         n.readAt ? "bg-transparent" : "bg-brand-600"
@@ -140,6 +141,7 @@ export const NotificationBell = () => {
                           className="shrink-0 text-neutral-400"
                           size={11}
                         />
+                        {!n.readAt && <span className="sr-only">Unread: </span>}
                         <span className="truncate">{n.title}</span>
                       </p>
                       <p className="mt-0.5 text-[11.5px] text-neutral-400">
@@ -153,7 +155,7 @@ export const NotificationBell = () => {
           </div>
 
           <Link
-            className="block border-t border-neutral-100 px-4 py-2.5 text-center text-[12.5px] text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
+            className="block border-t border-neutral-100 px-4 py-2.5 text-center text-[12.5px] text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-900 focus-visible:relative focus-visible:z-10 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.notifications}
             onClick={() => setOpen(false)}
           >

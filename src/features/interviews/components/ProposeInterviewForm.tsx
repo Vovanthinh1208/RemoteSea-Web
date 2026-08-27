@@ -98,7 +98,7 @@ export const ProposeInterviewForm = ({
             {slots.length > 1 && (
               <button
                 aria-label="Remove this time option"
-                className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+                className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
                 onClick={() => removeSlot(i)}
               >
@@ -109,7 +109,7 @@ export const ProposeInterviewForm = ({
         ))}
         {slots.length < MAX_SLOTS && (
           <button
-            className="text-[12.5px] font-medium text-brand-600 transition-colors hover:text-brand-700"
+            className="rounded-8 text-[12.5px] font-medium text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
             type="button"
             onClick={() => setSlots((prev) => [...prev, ""])}
           >

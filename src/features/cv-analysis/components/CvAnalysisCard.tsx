@@ -17,7 +17,7 @@ const SuggestedQuestion = ({ question }: { question: string }) => {
       <span>&ldquo;{question}&rdquo;</span>
       <button
         aria-label="Copy question"
-        className="flex-shrink-0 text-neutral-300 transition-colors hover:text-neutral-600"
+        className="flex-shrink-0 rounded-4 text-neutral-300 transition-colors hover:text-neutral-600 focus-visible:shadow-focus focus-visible:outline-none"
         type="button"
         onClick={() => {
           void navigator.clipboard.writeText(question);
@@ -112,7 +112,7 @@ export const CvAnalysisCard = ({
           : "Couldn't analyze this CV."}
         {!noResume && (
           <button
-            className="inline-flex items-center gap-1 font-medium text-brand-600 transition-colors hover:text-brand-700"
+            className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
             type="button"
             onClick={() => refetch()}
           >

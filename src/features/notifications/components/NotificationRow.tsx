@@ -23,7 +23,7 @@ export const NotificationRow = ({
   return (
     <button
       className={cn(
-        "flex w-full items-start gap-3.5 px-4 py-4 text-left transition-colors hover:bg-neutral-50",
+        "flex w-full items-start gap-3.5 px-4 py-4 text-left transition-colors hover:bg-neutral-50 focus-visible:relative focus-visible:z-10 focus-visible:shadow-focus focus-visible:outline-none",
         isUnread && "bg-brand-50/60"
       )}
       type="button"
@@ -44,6 +44,7 @@ export const NotificationRow = ({
             isUnread ? "font-semibold" : "font-medium"
           )}
         >
+          {isUnread && <span className="sr-only">Unread: </span>}
           {notification.title}
         </p>
         {notification.body && (

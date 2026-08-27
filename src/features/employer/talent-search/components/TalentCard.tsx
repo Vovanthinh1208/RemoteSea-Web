@@ -88,7 +88,7 @@ export const TalentCard = memo(function TalentCard({
         />
         <button
           className={cn(
-            "relative z-10 inline-flex items-center gap-1 rounded-8 px-2 py-1 text-[11px] font-medium transition-colors disabled:cursor-not-allowed",
+            "relative z-10 inline-flex items-center gap-1 rounded-8 px-2 py-1 text-[11px] font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed",
             invited
               ? "bg-emerald-50 text-emerald-700"
               : "bg-brand-50 text-brand-700 hover:bg-brand-100 disabled:opacity-50"

@@ -50,12 +50,12 @@ export const UpcomingInterviewsPage = () => {
   const groups = data ? groupInterviewsByDay(data.interviews) : [];
 
   return (
-    <div className="min-h-screen bg-[#F8F7F4]">
+    <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-[820px] px-6 py-10">
         <div className="mb-8">
           <div className="mb-3 flex items-center gap-1.5 text-[12px] text-neutral-500">
             <Link
-              className="hover:text-neutral-700"
+              className="rounded-8 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.employerDashboard}
             >
               ← Dashboard
@@ -112,7 +112,7 @@ export const UpcomingInterviewsPage = () => {
                 <div className="space-y-2">
                   {group.interviews.map((interview) => (
                     <Link
-                      className="flex items-center gap-4 rounded-10 border border-neutral-100 bg-white px-4 py-3 transition-colors hover:border-neutral-200"
+                      className="flex items-center gap-4 rounded-10 border border-neutral-100 bg-white px-4 py-3 transition-all hover:border-neutral-200 hover:shadow-chip focus-visible:relative focus-visible:z-10 focus-visible:shadow-focus focus-visible:outline-none"
                       key={interview.id}
                       to={ROUTES.applicationInterview(interview.applicationId)}
                     >
