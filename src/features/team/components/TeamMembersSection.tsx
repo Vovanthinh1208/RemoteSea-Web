@@ -7,10 +7,12 @@ import {
 import { RoleBadge, roleLabel } from "@/features/team/components/RoleBadge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { GradientInitial } from "@/components/ui/gradient-initial";
 import { SELECT_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { ApiError } from "@/core/errors/api-error";
 import { timeAgoLong } from "@/utils/time";
+import { personInitial } from "@/utils/name";
 import { cn } from "@/utils/cn";
 import type { CompanyMemberRole, TeamMember } from "@/types/team";
 
@@ -61,9 +63,9 @@ const MemberRow = ({ member, isOwner, isSelf }: MemberRowProps) => {
 
   return (
     <div className="flex items-center gap-3 border-b border-neutral-50 px-5 py-4 last:border-none">
-      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-brand-600 text-[13px] font-semibold text-white">
-        {displayName.charAt(0).toUpperCase()}
-      </div>
+      <GradientInitial className="h-9 w-9 rounded-full text-[13px]">
+        {personInitial(displayName)}
+      </GradientInitial>
       <div className="min-w-0 flex-1">
         <p className="truncate text-[13.5px] font-medium text-neutral-900">
           {displayName}
@@ -95,7 +97,7 @@ const MemberRow = ({ member, isOwner, isSelf }: MemberRowProps) => {
       {isOwner && !isSelf && (
         <button
           aria-label={`Remove ${displayName}`}
-          className="flex-shrink-0 rounded-8 p-1.5 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+          className="flex-shrink-0 rounded-8 p-1.5 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
           disabled={removeMember.isPending}
           type="button"
           onClick={() => void handleRemove()}

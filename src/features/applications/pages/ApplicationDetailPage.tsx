@@ -74,7 +74,8 @@ export const ApplicationDetailPage = () => {
     isError,
     refetch,
   } = useApplication(applicationId);
-  const { data: interviewData } = useInterview(applicationId);
+  const { data: interviewData, isLoading: interviewLoading } =
+    useInterview(applicationId);
   const interview = interviewData?.interview ?? null;
 
   useDocumentTitle(
@@ -180,8 +181,10 @@ export const ApplicationDetailPage = () => {
 
             <div className="space-y-3 border-b border-neutral-100 p-5">
               {application.status === "INTERVIEW" ? (
-                interview?.status === "CONFIRMED" &&
-                !hasOccurred(interview.confirmedSlot) ? (
+                interviewLoading ? (
+                  <Skeleton className="h-4 w-64" />
+                ) : interview?.status === "CONFIRMED" &&
+                  !hasOccurred(interview.confirmedSlot) ? (
                   <UpcomingInterviewCard interview={interview} />
                 ) : (
                   <p className="text-[13px] text-neutral-600">

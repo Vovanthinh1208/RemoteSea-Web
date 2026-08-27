@@ -81,11 +81,17 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
         Create a new alert
       </h2>
       <div className="grid gap-3 sm:grid-cols-2">
-        <div>
+        <div className="space-y-1.5">
+          <label
+            className="block text-[12.5px] font-medium text-neutral-700"
+            htmlFor="alert-name"
+          >
+            Alert name
+          </label>
           <input
-            aria-label="Alert name"
             className={TEXT_INPUT_CLASS}
-            placeholder="Alert name (e.g. Senior remote engineering)"
+            id="alert-name"
+            placeholder="e.g. Senior remote engineering"
             {...register("name")}
           />
           {errors.name && (
@@ -94,55 +100,99 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
             </p>
           )}
         </div>
-        <input
-          aria-label="Keywords"
-          className={TEXT_INPUT_CLASS}
-          placeholder="Keywords (optional)"
-          {...register("keywords")}
-        />
-        <select
-          aria-label="Job type"
-          className={SELECT_INPUT_CLASS}
-          {...register("jobType")}
-        >
-          <option value="">Any job type</option>
-          {JOB_TYPES.map((jobType) => (
-            <option key={jobType} value={jobType}>
-              {jobType.replace("_", " ").toLowerCase()}
-            </option>
-          ))}
-        </select>
-        <select
-          aria-label="Seniority level"
-          className={SELECT_INPUT_CLASS}
-          {...register("level")}
-        >
-          <option value="">Any level</option>
-          {LEVELS.map((level) => (
-            <option key={level} value={level}>
-              {level.toLowerCase()}
-            </option>
-          ))}
-        </select>
-        <input
-          aria-label="Minimum salary"
-          className={TEXT_INPUT_CLASS}
-          min={0}
-          placeholder="Min salary (USD/mo, optional)"
-          type="number"
-          {...register("salaryMin")}
-        />
-        <select
-          aria-label="Notification frequency"
-          className={SELECT_INPUT_CLASS}
-          {...register("frequency")}
-        >
-          {FREQUENCIES.map((frequency) => (
-            <option key={frequency} value={frequency}>
-              {frequency.toLowerCase()}
-            </option>
-          ))}
-        </select>
+        <div className="space-y-1.5">
+          <label
+            className="block text-[12.5px] font-medium text-neutral-700"
+            htmlFor="alert-keywords"
+          >
+            Keywords{" "}
+            <span className="font-normal text-neutral-400">(optional)</span>
+          </label>
+          <input
+            className={TEXT_INPUT_CLASS}
+            id="alert-keywords"
+            placeholder="e.g. React, remote"
+            {...register("keywords")}
+          />
+        </div>
+        <div className="space-y-1.5">
+          <label
+            className="block text-[12.5px] font-medium text-neutral-700"
+            htmlFor="alert-job-type"
+          >
+            Job type
+          </label>
+          <select
+            className={SELECT_INPUT_CLASS}
+            id="alert-job-type"
+            {...register("jobType")}
+          >
+            <option value="">Any job type</option>
+            {JOB_TYPES.map((jobType) => (
+              <option key={jobType} value={jobType}>
+                {jobType.replace("_", " ").toLowerCase()}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="space-y-1.5">
+          <label
+            className="block text-[12.5px] font-medium text-neutral-700"
+            htmlFor="alert-level"
+          >
+            Seniority level
+          </label>
+          <select
+            className={SELECT_INPUT_CLASS}
+            id="alert-level"
+            {...register("level")}
+          >
+            <option value="">Any level</option>
+            {LEVELS.map((level) => (
+              <option key={level} value={level}>
+                {level.toLowerCase()}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="space-y-1.5">
+          <label
+            className="block text-[12.5px] font-medium text-neutral-700"
+            htmlFor="alert-salary-min"
+          >
+            Minimum salary{" "}
+            <span className="font-normal text-neutral-400">
+              (USD/mo, optional)
+            </span>
+          </label>
+          <input
+            className={TEXT_INPUT_CLASS}
+            id="alert-salary-min"
+            min={0}
+            placeholder="e.g. 2000"
+            type="number"
+            {...register("salaryMin")}
+          />
+        </div>
+        <div className="space-y-1.5">
+          <label
+            className="block text-[12.5px] font-medium text-neutral-700"
+            htmlFor="alert-frequency"
+          >
+            Notification frequency
+          </label>
+          <select
+            className={SELECT_INPUT_CLASS}
+            id="alert-frequency"
+            {...register("frequency")}
+          >
+            {FREQUENCIES.map((frequency) => (
+              <option key={frequency} value={frequency}>
+                {frequency.toLowerCase()}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {categories && categories.length > 0 && (

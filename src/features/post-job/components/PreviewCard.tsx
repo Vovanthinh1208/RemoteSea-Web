@@ -1,5 +1,5 @@
 import { Clock, Globe, MapPin } from "lucide-react";
-import { companyColor } from "@/utils/color";
+import { CompanyLogo } from "@/components/ui/company-logo";
 import type { PostJobFormState } from "@/features/post-job/post-job.schemas";
 import { formatSalaryRange } from "@/utils/format";
 
@@ -10,17 +10,10 @@ interface PreviewCardProps {
 const PREVIEW_SKILLS_DISPLAY_COUNT = 4;
 
 export const PreviewCard = ({ form }: PreviewCardProps) => {
-  const color = companyColor(form.coName || "Your Company");
-
   return (
     <div className="rounded-16 border border-neutral-200 bg-white p-4">
       <div className="mb-3 flex items-start gap-3">
-        <div
-          className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-12 text-[14px] font-bold text-white"
-          style={{ background: color }}
-        >
-          {form.coName ? form.coName[0]?.toUpperCase() : "A"}
-        </div>
+        <CompanyLogo name={form.coName || "Your Company"} size={40} />
         <div className="min-w-0 flex-1">
           <p className="truncate text-[13.5px] font-semibold text-neutral-900">
             {form.jobTitle || "Senior Frontend Engineer"}

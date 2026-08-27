@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RefreshCw, X } from "lucide-react";
+import { Loader2, RefreshCw, X } from "lucide-react";
 import {
   useInviteTeamMember,
   usePendingInvitations,
@@ -79,9 +79,16 @@ export const InviteMemberSection = () => {
         className="flex flex-col gap-3 sm:flex-row sm:items-start"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="flex-1">
+        <div className="flex-1 space-y-1.5">
+          <label
+            className="block text-[12.5px] font-medium text-neutral-700"
+            htmlFor="invite-email"
+          >
+            Email
+          </label>
           <input
             className={TEXT_INPUT_CLASS}
+            id="invite-email"
             placeholder="teammate@company.com"
             type="email"
             {...register("email")}
@@ -92,8 +99,18 @@ export const InviteMemberSection = () => {
             </p>
           )}
         </div>
-        <div className="sm:w-44">
-          <select className={SELECT_INPUT_CLASS} {...register("role")}>
+        <div className="space-y-1.5 sm:w-44">
+          <label
+            className="block text-[12.5px] font-medium text-neutral-700"
+            htmlFor="invite-role"
+          >
+            Role
+          </label>
+          <select
+            className={SELECT_INPUT_CLASS}
+            id="invite-role"
+            {...register("role")}
+          >
             {INVITABLE_ROLES.map((role) => (
               <option key={role} value={role}>
                 {roleLabel(role)}
@@ -101,13 +118,24 @@ export const InviteMemberSection = () => {
             ))}
           </select>
         </div>
-        <Button
-          disabled={inviteMutation.isPending}
-          isLoading={inviteMutation.isPending}
-          type="submit"
-        >
-          Send invite
-        </Button>
+        <div className="space-y-1.5">
+          {/* Invisible label-height spacer — keeps the button's own top edge
+              aligned with the email/role inputs (not their labels) on the
+              sm:flex-row layout, without hardcoding a pixel offset. */}
+          <span
+            aria-hidden="true"
+            className="hidden text-[12.5px] font-medium sm:block"
+          >
+            &nbsp;
+          </span>
+          <Button
+            disabled={inviteMutation.isPending}
+            isLoading={inviteMutation.isPending}
+            type="submit"
+          >
+            Send invite
+          </Button>
+        </div>
       </form>
 
       <PendingInvitationsList />
@@ -145,7 +173,7 @@ const PendingInvitationsList = () => {
       <div className="mt-5 flex items-center justify-between border-t border-neutral-100 pt-4 text-[12.5px] text-neutral-400">
         Couldn't load pending invitations.
         <button
-          className="inline-flex items-center gap-1 font-medium text-brand-600 hover:text-brand-700"
+          className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={() => refetch()}
         >
@@ -155,6 +183,15 @@ const PendingInvitationsList = () => {
     );
   }
   if (!data || data.length === 0) return null;
+
+  // revokeMutation is one shared mutation for every row below — while it's
+  // in flight every row's button goes disabled, but .variables still names
+  // which invitation triggered it, so that one row can show a spinner
+  // instead of the whole list looking frozen with no explanation (same
+  // fix as InvitationsPanel/SecuritySection/ConnectedAccountsSection).
+  const revokingId = revokeMutation.isPending
+    ? revokeMutation.variables
+    : undefined;
 
   return (
     <div className="mt-5 border-t border-neutral-100 pt-4">
@@ -178,12 +215,16 @@ const PendingInvitationsList = () => {
             </div>
             <button
               aria-label={`Revoke invitation to ${invitation.email}`}
-              className="flex-shrink-0 rounded-8 p-1.5 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+              className="flex-shrink-0 rounded-8 p-1.5 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
               disabled={revokeMutation.isPending}
               type="button"
               onClick={() => void handleRevoke(invitation.id)}
             >
-              <X size={13} />
+              {revokingId === invitation.id ? (
+                <Loader2 className="animate-spin" size={13} />
+              ) : (
+                <X size={13} />
+              )}
             </button>
           </div>
         ))}

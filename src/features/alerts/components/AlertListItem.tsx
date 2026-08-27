@@ -55,7 +55,7 @@ export const AlertListItem = ({
       {({ onClick }) => (
         <button
           aria-label="Delete alert"
-          className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600"
+          className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={onClick}
         >

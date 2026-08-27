@@ -60,7 +60,7 @@ export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
       </div>
 
       <Link
-        className="inline-flex h-11 items-center gap-2 rounded-12 bg-brand-600 px-5 text-sm font-medium text-white hover:bg-brand-700"
+        className="inline-flex h-11 items-center gap-2 rounded-12 bg-brand-600 px-5 text-sm font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
         to={ROUTES.employerDashboard}
       >
         Go to dashboard <ArrowRight size={14} />

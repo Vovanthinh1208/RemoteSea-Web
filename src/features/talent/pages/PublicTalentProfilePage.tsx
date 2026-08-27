@@ -15,10 +15,13 @@ import {
   Settings,
   ShieldCheck,
   User,
+  UserX,
   Zap,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { GradientInitial } from "@/components/ui/gradient-initial";
+import { CompanyLogo } from "@/components/ui/company-logo";
 import { AvailabilityBadge } from "@/features/availability/AvailabilityBadge";
 import { ReviewsSection } from "@/features/reviews/components/ReviewsSection";
 import { usePublicTalentProfile } from "@/features/talent/talent.queries";
@@ -27,6 +30,7 @@ import { LEVEL_TO_LABEL } from "@/features/talent/talent.constants";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { safeExternalUrl } from "@/utils/safe-url";
 import { formatSalaryRange } from "@/utils/format";
+import { personInitial } from "@/utils/name";
 import { ROUTES } from "@/constants/routes";
 import type { EmploymentType, TimezoneOverlap } from "@/types/talent";
 import type { WorkExperience } from "@/types/work-experience";
@@ -36,31 +40,6 @@ const MOCK_RECRUITER = {
   roleTitle: "Senior Full-stack Engineer",
 };
 const MOCK_MATCH_SCORE = 94;
-
-const AVATAR_COLORS = [
-  "#1F8A3A",
-  "#FF6D3B",
-  "#0EA5E9",
-  "#8B5CF6",
-  "#EC4899",
-  "#F59E0B",
-];
-
-const colorForCompany = (company: string): string => {
-  let hash = 0;
-  for (const char of company) hash = (hash * 31 + char.charCodeAt(0)) | 0;
-  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
-};
-
-const initialsFor = (name: string): string =>
-  name
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
 
 const formatMonthYear = (iso: string): string =>
   new Date(iso).toLocaleDateString("en-US", {
@@ -107,6 +86,39 @@ const TALENT_REVIEW_CATEGORIES = [
   { key: "reliability", label: "Reliability" },
 ] as const;
 
+// Mirrors the real page's actual shape (hero card, main-column sections,
+// sidebar cards) rather than one flat block — so the content that pops in a
+// moment later doesn't shift the page around it (same reasoning as
+// TalentDashboardSkeleton).
+const ProfileSkeleton = () => (
+  <div className="mx-auto max-w-[1200px] px-6 py-10">
+    <div className="mb-6 grid gap-6 rounded-24 border border-neutral-100 bg-white p-8 lg:grid-cols-[auto_1fr_auto]">
+      <Skeleton className="h-20 w-20 flex-shrink-0 rounded-full" />
+      <div className="space-y-3">
+        <Skeleton className="h-4 w-40" />
+        <Skeleton className="h-8 w-64" />
+        <Skeleton className="h-4 w-48" />
+        <div className="flex gap-4">
+          <Skeleton className="h-3.5 w-24" />
+          <Skeleton className="h-3.5 w-24" />
+          <Skeleton className="h-3.5 w-24" />
+        </div>
+      </div>
+      <Skeleton className="h-24 w-full rounded-16 lg:w-[200px]" />
+    </div>
+    <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+      <div className="space-y-5">
+        <Skeleton className="h-40 rounded-20" />
+        <Skeleton className="h-52 rounded-20" />
+      </div>
+      <div className="space-y-4">
+        <Skeleton className="h-40 rounded-20" />
+        <Skeleton className="h-28 rounded-20" />
+      </div>
+    </div>
+  </div>
+);
+
 export const PublicTalentProfilePage = () => {
   const { slug } = useParams<{ slug: string }>();
   const [searchParams] = useSearchParams();
@@ -120,16 +132,15 @@ export const PublicTalentProfilePage = () => {
   );
 
   if (isLoading) {
-    return (
-      <div className="mx-auto max-w-[1200px] px-6 py-10">
-        <Skeleton className="h-48 w-full rounded-24" />
-      </div>
-    );
+    return <ProfileSkeleton />;
   }
 
   if (isError || !profile) {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-md flex-col items-center justify-center px-6 text-center">
+        <div className="mb-4 grid h-12 w-12 place-items-center rounded-full bg-neutral-100 text-neutral-400">
+          <UserX size={20} />
+        </div>
         <h1 className="text-2xl font-semibold text-neutral-900">
           Profile not found
         </h1>
@@ -144,7 +155,6 @@ export const PublicTalentProfilePage = () => {
   }
 
   const name = profile.user?.name ?? "RemoteSEA member";
-  const initials = initialsFor(name);
   const isOwnProfile = !!user && profile.userId === user.id;
 
   const employmentLabel = profile.employmentTypes.length
@@ -212,14 +222,7 @@ export const PublicTalentProfilePage = () => {
         {isRecruiterPreview && (
           <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-20 border border-brand-100 bg-brand-50 p-5">
             <div className="flex items-center gap-3">
-              <span
-                className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 text-[13px] font-bold text-white"
-                style={{
-                  background: colorForCompany(MOCK_RECRUITER.company),
-                }}
-              >
-                {initialsFor(MOCK_RECRUITER.company)}
-              </span>
+              <CompanyLogo name={MOCK_RECRUITER.company} size={36} />
               <div>
                 <p className="text-[10.5px] font-semibold uppercase tracking-wider text-neutral-500">
                   Viewing as recruiter · {MOCK_RECRUITER.company}
@@ -242,19 +245,19 @@ export const PublicTalentProfilePage = () => {
             </div>
             <div className="flex items-center gap-2">
               <button
-                className="flex items-center gap-1.5 rounded-10 border border-neutral-200 bg-white px-3 py-2 text-[12.5px] font-medium text-neutral-600 hover:border-neutral-300"
+                className="flex items-center gap-1.5 rounded-10 border border-neutral-200 bg-white px-3 py-2 text-[12.5px] font-medium text-neutral-600 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
               >
                 <FolderPlus size={13} /> Add to shortlist
               </button>
               <button
-                className="flex items-center gap-1.5 rounded-10 border border-neutral-200 bg-white px-3 py-2 text-[12.5px] font-medium text-neutral-600 hover:border-neutral-300"
+                className="flex items-center gap-1.5 rounded-10 border border-neutral-200 bg-white px-3 py-2 text-[12.5px] font-medium text-neutral-600 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
               >
                 <Bookmark size={13} /> Save
               </button>
               <button
-                className="flex items-center gap-1.5 rounded-10 bg-brand-600 px-3 py-2 text-[12.5px] font-medium text-white hover:bg-brand-700"
+                className="flex items-center gap-1.5 rounded-10 bg-brand-600 px-3 py-2 text-[12.5px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
               >
                 <Send size={13} /> Send message
@@ -266,8 +269,10 @@ export const PublicTalentProfilePage = () => {
         {/* Hero */}
         <div className="mb-6 grid gap-6 rounded-24 border border-neutral-100 bg-white p-8 lg:grid-cols-[auto_1fr_auto]">
           <div className="flex flex-col items-center gap-2">
-            <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-brand-600 text-[26px] font-bold text-white">
-              {initials}
+            <div className="relative">
+              <GradientInitial className="h-20 w-20 rounded-full text-[26px]">
+                {personInitial(name)}
+              </GradientInitial>
               {profile.isOpenToWork && (
                 <span className="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full border-2 border-white bg-brand-500" />
               )}
@@ -372,7 +377,7 @@ export const PublicTalentProfilePage = () => {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
-          <div className="space-y-2">
+          <div className="space-y-5">
             <ReviewsSection
               categories={TALENT_REVIEW_CATEGORIES}
               userId={profile.userId}
@@ -430,14 +435,7 @@ export const PublicTalentProfilePage = () => {
                       className="flex gap-4 py-4 first:pt-0"
                       key={experience.id}
                     >
-                      <div
-                        className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-10 text-[13px] font-bold text-white"
-                        style={{
-                          background: colorForCompany(experience.company),
-                        }}
-                      >
-                        {initialsFor(experience.company)}
-                      </div>
+                      <CompanyLogo name={experience.company} size={40} />
                       <div className="min-w-0 flex-1">
                         <p className="text-[13.5px] font-semibold text-neutral-900">
                           {experience.title}{" "}
@@ -508,7 +506,7 @@ export const PublicTalentProfilePage = () => {
                     const Card = url ? "a" : "div";
                     return (
                       <Card
-                        className="block rounded-16 border border-neutral-100 p-4 transition-colors hover:border-neutral-200"
+                        className="block rounded-16 border border-neutral-100 p-4 transition-colors hover:border-neutral-200 focus-visible:shadow-focus focus-visible:outline-none"
                         href={url ?? undefined}
                         key={work.id}
                         rel={url ? "noopener noreferrer" : undefined}
@@ -675,7 +673,7 @@ export const PublicTalentProfilePage = () => {
                   <div className="space-y-1.5">
                     {links.map((l) => (
                       <a
-                        className="flex items-center gap-2.5 rounded-10 px-2 py-1.5 text-[13px] text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
+                        className="flex items-center gap-2.5 rounded-10 px-2 py-1.5 text-[13px] text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
                         href={l.href}
                         key={l.href}
                         rel="noopener noreferrer"
@@ -756,7 +754,7 @@ export const PublicTalentProfilePage = () => {
 
               {isOwnProfile && (
                 <Link
-                  className="flex items-center justify-center gap-1.5 rounded-12 border border-neutral-200 bg-white py-2.5 text-[12.5px] font-medium text-neutral-500 transition-colors hover:border-neutral-300 hover:text-neutral-700"
+                  className="flex items-center justify-center gap-1.5 rounded-12 border border-neutral-200 bg-white py-2.5 text-[12.5px] font-medium text-neutral-500 transition-colors hover:border-neutral-300 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                   to={ROUTES.profile}
                 >
                   <Settings size={12} /> This is your profile · Edit

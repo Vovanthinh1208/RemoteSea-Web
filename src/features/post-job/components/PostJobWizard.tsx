@@ -222,17 +222,16 @@ export const PostJobWizard = () => {
               <div className="flex items-center gap-1" key={s.id}>
                 <button
                   className={cn(
-                    "flex h-7 w-7 items-center justify-center rounded-full text-[11.5px] font-medium transition-all",
+                    "flex h-7 w-7 items-center justify-center rounded-full text-[11.5px] font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed",
                     step === s.id
                       ? "bg-brand-600 text-white"
                       : step > s.id
-                        ? "bg-brand-100 text-brand-700"
+                        ? "bg-brand-100 text-brand-700 hover:bg-brand-200"
                         : "bg-neutral-100 text-neutral-400"
                   )}
+                  disabled={s.id >= step}
                   type="button"
-                  onClick={() => {
-                    if (s.id < step) goToStep(s.id);
-                  }}
+                  onClick={() => goToStep(s.id)}
                 >
                   {step > s.id ? <Check size={11} /> : s.id}
                 </button>
@@ -292,7 +291,7 @@ export const PostJobWizard = () => {
           <div className="mt-8 flex justify-between border-t border-neutral-100 pt-6">
             {step > 1 ? (
               <button
-                className="rounded-12 border border-neutral-200 px-5 py-2.5 text-[13.5px] font-medium text-neutral-600 hover:border-neutral-300"
+                className="rounded-12 border border-neutral-200 px-5 py-2.5 text-[13.5px] font-medium text-neutral-600 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
                 onClick={() => goToStep(step - 1)}
               >
@@ -303,7 +302,7 @@ export const PostJobWizard = () => {
             )}
             {step < 4 ? (
               <button
-                className="inline-flex items-center gap-2 rounded-12 bg-brand-600 px-6 py-2.5 text-[13.5px] font-medium text-white hover:bg-brand-700"
+                className="inline-flex items-center gap-2 rounded-12 bg-brand-600 px-6 py-2.5 text-[13.5px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
                 onClick={() => goToStep(step + 1)}
               >
@@ -311,7 +310,7 @@ export const PostJobWizard = () => {
               </button>
             ) : (
               <button
-                className="inline-flex items-center gap-2 rounded-12 bg-brand-600 px-6 py-2.5 text-[13.5px] font-medium text-white hover:bg-brand-700 disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-12 bg-brand-600 px-6 py-2.5 text-[13.5px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
                 disabled={publishing}
                 type="button"
                 onClick={handlePublish}
