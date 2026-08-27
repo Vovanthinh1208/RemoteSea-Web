@@ -133,7 +133,7 @@ export const FilterSidebar = ({
         <button
           aria-controls="job-filter-groups"
           aria-expanded={mobileOpen}
-          className="-my-1 flex items-center gap-2 py-1 sm:pointer-events-none"
+          className="-my-1 flex items-center gap-2 rounded-8 py-1 focus-visible:shadow-focus focus-visible:outline-none sm:pointer-events-none"
           type="button"
           onClick={() => setMobileOpen((v) => !v)}
         >
@@ -155,7 +155,7 @@ export const FilterSidebar = ({
         <button
           type="button"
           className={cn(
-            "text-[12px] text-brand-600 transition-colors hover:text-brand-700",
+            "rounded-4 text-[12px] text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none",
             activeCount > 0 ? "visible pt-[3px]" : "invisible"
           )}
           onClick={() => onChange(DEFAULT_FILTERS)}

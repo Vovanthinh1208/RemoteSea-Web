@@ -110,7 +110,7 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
     return (
       <>
         <button
-          className="mb-2.5 w-full rounded-12 bg-brand-600 py-3 text-[15px] font-medium text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+          className="mb-2.5 w-full rounded-12 bg-brand-600 py-3 text-[15px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
           type="button"
           onClick={openApplyForm}
         >

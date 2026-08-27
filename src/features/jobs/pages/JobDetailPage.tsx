@@ -50,7 +50,18 @@ export const JobDetailPage = () => {
     return (
       <div className="mx-auto max-w-[1240px] px-6 py-10">
         <Skeleton className="mb-8 h-4 w-24" />
-        <Skeleton className="h-40 w-full rounded-16" />
+        <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
+          <div className="space-y-6">
+            <Skeleton className="h-32 rounded-16" />
+            <Skeleton className="h-48 rounded-16" />
+            <Skeleton className="h-24 rounded-16" />
+          </div>
+          <div className="space-y-4">
+            <Skeleton className="h-64 rounded-16" />
+            <Skeleton className="h-40 rounded-16" />
+            <Skeleton className="h-32 rounded-16" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -74,7 +85,7 @@ export const JobDetailPage = () => {
   return (
     <div className="mx-auto max-w-[1240px] px-6 py-10">
       <Link
-        className="mb-8 inline-flex items-center gap-1.5 text-sm text-neutral-500 transition-colors hover:text-neutral-900"
+        className="mb-8 inline-flex items-center gap-1.5 rounded-8 text-sm text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
         to={ROUTES.jobs}
       >
         <ArrowLeft size={14} /> Back to jobs

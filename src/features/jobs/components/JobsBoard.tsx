@@ -176,7 +176,7 @@ export const JobsBoard = ({
                   {p.label}
                   <button
                     aria-label={`Remove filter: ${p.label}`}
-                    className="text-neutral-400 hover:text-neutral-700"
+                    className="rounded-4 text-neutral-400 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                     onClick={p.clear}
                   >
                     <X size={12} />

@@ -20,7 +20,7 @@ export const JobCompanyCard = ({ job }: JobCompanyCardProps) => {
         Company
       </h3>
       <Link
-        className="mb-3 flex items-center gap-3"
+        className="mb-3 flex items-center gap-3 rounded-8 focus-visible:shadow-focus focus-visible:outline-none"
         to={ROUTES.companyProfile(job.employer.slug)}
       >
         <CompanyLogo name={job.employer.companyName} size={40} />

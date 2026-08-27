@@ -47,7 +47,7 @@ export const ReportJobForm = ({ jobId }: ReportJobFormProps) => {
   if (!open) {
     return (
       <button
-        className="mt-3 inline-flex items-center gap-1 text-[12px] text-neutral-400 transition-colors hover:text-neutral-600"
+        className="mt-3 inline-flex items-center gap-1 rounded-4 text-[12px] text-neutral-400 transition-colors hover:text-neutral-600 focus-visible:shadow-focus focus-visible:outline-none"
         type="button"
         onClick={() => setOpen(true)}
       >

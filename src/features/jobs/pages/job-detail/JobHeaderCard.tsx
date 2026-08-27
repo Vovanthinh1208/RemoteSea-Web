@@ -44,7 +44,7 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
           {job.title}
         </h1>
         <Link
-          className="text-[15px] text-neutral-500 transition-colors hover:text-brand-700 hover:underline"
+          className="rounded-4 text-[15px] text-neutral-500 transition-colors hover:text-brand-700 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
           to={ROUTES.companyProfile(job.employer.slug)}
         >
           {job.employer.companyName}

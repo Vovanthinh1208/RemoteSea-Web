@@ -86,7 +86,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
             </Badge>
           )}
           <Link
-            className="relative z-10 text-[13px] font-medium text-neutral-600 transition-colors hover:text-brand-700 hover:underline"
+            className="relative z-10 rounded-4 text-[13px] font-medium text-neutral-600 transition-colors hover:text-brand-700 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.companyProfile(job.employer.slug)}
           >
             {job.employer.companyName}
@@ -105,7 +105,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
         {/* Title */}
         <h3 className="mb-2 text-[15px] font-semibold leading-snug text-neutral-900">
           <Link
-            className="transition-colors after:absolute after:inset-0 group-hover:text-brand-700"
+            className="rounded-4 transition-colors after:absolute after:inset-0 focus-visible:shadow-focus focus-visible:outline-none group-hover:text-brand-700"
             to={ROUTES.jobDetail(job.id)}
             onMouseEnter={handlePrefetchJob}
           >

@@ -16,7 +16,7 @@ export const SaveJobButton = ({ jobId }: SaveJobButtonProps) => {
   return (
     <button
       className={cn(
-        "flex w-full items-center justify-center gap-2 rounded-12 border py-2.5 text-[14px] font-medium transition-colors",
+        "flex w-full items-center justify-center gap-2 rounded-12 border py-2.5 text-[14px] font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none",
         statusUnknown
           ? "border-neutral-100 bg-neutral-50 text-transparent"
           : saved

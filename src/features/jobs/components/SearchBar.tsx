@@ -16,18 +16,14 @@ export const SearchBar = ({ value, onChange }: SearchBarProps) => (
       value={value}
       onChange={(e) => onChange(e.target.value)}
     />
-    {value ? (
+    {value && (
       <button
         aria-label="Clear search"
-        className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+        className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
         onClick={() => onChange("")}
       >
         <X size={14} />
       </button>
-    ) : (
-      <kbd className="rounded-4 border border-neutral-200 bg-neutral-100 px-1.5 py-0.5 font-mono text-[11px] text-neutral-400">
-        ⌘K
-      </kbd>
     )}
   </div>
 );
