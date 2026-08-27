@@ -78,7 +78,7 @@ const AnswerBubble = ({
           </div>
           {!pending && answer && (
             <button
-              className="mt-1 flex items-center gap-1 rounded-8 px-1.5 py-1 text-[11px] text-neutral-400 opacity-0 transition-opacity hover:text-brand-600 group-hover/msg:opacity-100"
+              className="mt-1 flex items-center gap-1 rounded-8 px-1.5 py-1 text-[11px] text-neutral-400 opacity-0 transition-opacity hover:text-brand-600 focus-visible:opacity-100 focus-visible:shadow-focus focus-visible:outline-none group-hover/msg:opacity-100"
               type="button"
               onClick={() => {
                 void navigator.clipboard.writeText(answer);
@@ -160,7 +160,15 @@ export const AiChatWidget = () => {
       }
     };
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setClosing(true);
+      if (e.key !== "Escape") return;
+      // Escape closes the nearest open layer first — the history dropdown,
+      // if it's open — rather than jumping straight to closing the whole
+      // panel, matching the click-outside handler's two-layer treatment.
+      setShowHistory((wasShowingHistory) => {
+        if (wasShowingHistory) return false;
+        setClosing(true);
+        return wasShowingHistory;
+      });
     };
     document.addEventListener("pointerdown", onPointerDown);
     document.addEventListener("keydown", onKeyDown);
@@ -223,7 +231,7 @@ export const AiChatWidget = () => {
       <button
         aria-expanded={open}
         aria-label={open ? "Close AI Assistant" : "Open AI Assistant"}
-        className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card-lg transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_28px_rgba(46,155,82,0.35)] active:scale-95"
+        className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card-lg transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_28px_rgba(46,155,82,0.35)] focus-visible:shadow-focus focus-visible:outline-none active:scale-95"
         type="button"
         onClick={() => (open ? requestClose() : setOpen(true))}
       >
@@ -294,7 +302,7 @@ export const AiChatWidget = () => {
                 <button
                   aria-label="Conversation history"
                   className={cn(
-                    "grid h-8 w-8 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-900",
+                    "grid h-8 w-8 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none",
                     showHistory && "bg-neutral-100 text-neutral-900"
                   )}
                   title="Conversation history"
@@ -318,7 +326,7 @@ export const AiChatWidget = () => {
                       conversations.data?.map((c) => (
                         <button
                           className={cn(
-                            "relative flex w-full flex-col items-start gap-0.5 rounded-8 px-3 py-2 pl-3.5 text-left transition-colors hover:bg-neutral-50",
+                            "relative flex w-full flex-col items-start gap-0.5 rounded-8 px-3 py-2 pl-3.5 text-left transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none",
                             c.id === activeConversationId && "bg-brand-50"
                           )}
                           key={c.id}
@@ -352,7 +360,7 @@ export const AiChatWidget = () => {
               </div>
               <button
                 aria-label="New chat"
-                className="flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-1.5 text-[12px] font-medium text-brand-700 transition-colors hover:bg-brand-100"
+                className="flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-1.5 text-[12px] font-medium text-brand-700 transition-colors hover:bg-brand-100 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
                 onClick={startNewChat}
               >
@@ -361,7 +369,7 @@ export const AiChatWidget = () => {
               </button>
               <button
                 aria-label="Close"
-                className="group grid h-8 w-8 flex-shrink-0 place-items-center rounded-full text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+                className="group grid h-8 w-8 flex-shrink-0 place-items-center rounded-full text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
                 onClick={requestClose}
               >
@@ -394,7 +402,7 @@ export const AiChatWidget = () => {
                 <div className="flex w-full flex-col gap-2">
                   {SUGGESTED_PROMPTS.map((prompt, i) => (
                     <button
-                      className="group flex animate-fade-up items-center gap-2.5 rounded-12 border border-neutral-200 bg-white px-3.5 py-2.5 text-left text-[13px] text-neutral-700 shadow-chip transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:bg-brand-50 hover:shadow-card disabled:pointer-events-none disabled:opacity-60"
+                      className="group flex animate-fade-up items-center gap-2.5 rounded-12 border border-neutral-200 bg-white px-3.5 py-2.5 text-left text-[13px] text-neutral-700 shadow-chip transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:bg-brand-50 hover:shadow-card focus-visible:shadow-focus focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60"
                       disabled={sendMessage.isPending}
                       key={prompt}
                       style={{ animationDelay: `${i * 60 + 80}ms` }}
@@ -444,7 +452,7 @@ export const AiChatWidget = () => {
                 </Button>
               </div>
             ) : (
-              <>
+              <div aria-live="polite" role="log">
                 {conversation.data?.turns.map((t) => (
                   <AnswerBubble
                     answer={t.answer}
@@ -456,7 +464,7 @@ export const AiChatWidget = () => {
                 {pendingQuestion && (
                   <AnswerBubble pending question={pendingQuestion} />
                 )}
-              </>
+              </div>
             )}
             <div ref={bottomRef} />
           </div>
@@ -484,6 +492,7 @@ export const AiChatWidget = () => {
             }}
           >
             <textarea
+              aria-label="Message"
               className={cn(
                 TEXTAREA_INPUT_CLASS,
                 "min-h-[26px] resize-none border-none bg-transparent p-0 py-1.5 text-[14.5px] leading-relaxed shadow-none focus:border-none focus:shadow-none"
@@ -502,6 +511,7 @@ export const AiChatWidget = () => {
               }}
             />
             <Button
+              aria-label="Send message"
               className="h-10 w-10 flex-shrink-0 rounded-full border-none bg-gradient-to-br from-brand-500 to-brand-700 p-0 shadow-chip transition-transform enabled:hover:scale-105 enabled:hover:from-brand-500 enabled:hover:to-brand-700 disabled:from-neutral-300 disabled:to-neutral-300"
               disabled={!draft.trim() || sendMessage.isPending}
               isLoading={sendMessage.isPending}
