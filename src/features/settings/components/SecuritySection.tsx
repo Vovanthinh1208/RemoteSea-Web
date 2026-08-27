@@ -1,4 +1,4 @@
-import { Ban, Globe, Laptop } from "lucide-react";
+import { Ban, Globe, Laptop, Loader2 } from "lucide-react";
 import { cn } from "@/utils/cn";
 import {
   SectionHead,
@@ -97,11 +97,15 @@ export const SecuritySection = () => {
               </span>
               {!s.current && (
                 <button
-                  className="flex-shrink-0 rounded-8 border border-neutral-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-neutral-600 hover:border-neutral-300 disabled:opacity-60"
+                  className="flex flex-shrink-0 items-center gap-1.5 rounded-8 border border-neutral-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-neutral-600 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
                   disabled={revokeMutation.isPending}
                   type="button"
                   onClick={() => revoke(s.id)}
                 >
+                  {revokeMutation.isPending &&
+                    revokeMutation.variables === s.id && (
+                      <Loader2 className="animate-spin" size={12} />
+                    )}
                   Revoke
                 </button>
               )}
@@ -110,7 +114,7 @@ export const SecuritySection = () => {
         })}
       </div>
       <button
-        className="flex w-full items-center gap-2 rounded-12 border border-dashed border-red-200 px-4 py-3 text-[13px] font-medium text-red-600 transition-colors hover:border-red-300 hover:bg-red-50/50 disabled:opacity-60"
+        className="flex w-full items-center gap-2 rounded-12 border border-dashed border-red-200 px-4 py-3 text-[13px] font-medium text-red-600 transition-colors hover:border-red-300 hover:bg-red-50/50 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
         disabled={!hasOtherSessions || revokeOthersMutation.isPending}
         type="button"
         onClick={revokeAllOthers}

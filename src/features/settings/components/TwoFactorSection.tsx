@@ -30,18 +30,23 @@ export const TwoFactorSection = () => {
   const [password, setPassword] = useState("");
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [codesCopied, setCodesCopied] = useState(false);
 
   const enabled = status?.enabled ?? false;
 
-  const startSetup = async () => {
-    setError(null);
-    const result = await setupMutation.mutateAsync();
-    setSetup({
-      secret: result.secret,
-      qrCodeDataUrl: result.qrCodeDataUrl,
-    });
-    setStep("setting_up");
-  };
+  const startSetup = () =>
+    runWithToast(
+      async () => {
+        setError(null);
+        const result = await setupMutation.mutateAsync();
+        setSetup({
+          secret: result.secret,
+          qrCodeDataUrl: result.qrCodeDataUrl,
+        });
+        setStep("setting_up");
+      },
+      { error: "Couldn't start two-factor setup" }
+    );
 
   const cancelSetup = () => {
     setStep("idle");
@@ -112,6 +117,7 @@ export const TwoFactorSection = () => {
           </p>
         </div>
         <Toggle
+          disabled={setupMutation.isPending}
           on={enabled}
           onChange={(on) => {
             if (on) void startSetup();
@@ -178,9 +184,19 @@ export const TwoFactorSection = () => {
             size="sm"
             onClick={() => {
               void navigator.clipboard.writeText(backupCodes.join("\n"));
+              setCodesCopied(true);
+              setTimeout(() => setCodesCopied(false), 1500);
             }}
           >
-            <Copy size={12} /> Copy codes
+            {codesCopied ? (
+              <>
+                <Check size={12} /> Copied
+              </>
+            ) : (
+              <>
+                <Copy size={12} /> Copy codes
+              </>
+            )}
           </Button>
           <Button size="sm" variant="outline" onClick={finishBackupCodes}>
             I've saved these

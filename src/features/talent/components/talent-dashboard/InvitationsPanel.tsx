@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Check, Mail, X } from "lucide-react";
+import { Check, Loader2, Mail, X } from "lucide-react";
 import {
   useMyInvitations,
   useRespondToInvitation,
@@ -19,6 +19,12 @@ export const InvitationsPanel = () => {
   const visible = pending.slice(0, DASHBOARD_INVITATIONS_LIMIT);
 
   if (pending.length === 0) return null;
+
+  // respond is one shared mutation for every row, so while it's in flight
+  // every button below goes disabled — but .variables still names which
+  // invitation/action triggered it, letting that one row show a spinner
+  // instead of leaving the whole panel looking frozen with no explanation.
+  const respondingTo = respond.isPending ? respond.variables : undefined;
 
   const respondTo = (invitation: Invitation, action: "ACCEPT" | "DECLINE") =>
     runWithToast(() => respond.mutateAsync({ id: invitation.id, action }), {
@@ -49,7 +55,7 @@ export const InvitationsPanel = () => {
               {invitation.employer.companyName}
             </p>
             <Link
-              className="truncate text-[11.5px] text-neutral-500 hover:text-brand-700 hover:underline"
+              className="truncate text-[11.5px] text-neutral-500 hover:text-brand-700 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.jobDetail(invitation.job.id)}
             >
               invited you to apply — {invitation.job.title}
@@ -61,20 +67,32 @@ export const InvitationsPanel = () => {
             )}
             <div className="mt-2 flex items-center gap-2">
               <button
-                className="inline-flex items-center gap-1 rounded-8 bg-brand-600 px-2.5 py-1 text-[11px] font-medium text-white transition-colors hover:bg-brand-700 disabled:opacity-50"
+                className="inline-flex items-center gap-1 rounded-8 bg-brand-600 px-2.5 py-1 text-[11px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
                 disabled={respond.isPending}
                 type="button"
                 onClick={() => respondTo(invitation, "ACCEPT")}
               >
-                <Check size={11} /> Accept &amp; apply
+                {respondingTo?.id === invitation.id &&
+                respondingTo.action === "ACCEPT" ? (
+                  <Loader2 className="animate-spin" size={11} />
+                ) : (
+                  <Check size={11} />
+                )}
+                Accept &amp; apply
               </button>
               <button
-                className="inline-flex items-center gap-1 rounded-8 px-2.5 py-1 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700 disabled:opacity-50"
+                className="inline-flex items-center gap-1 rounded-8 px-2.5 py-1 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
                 disabled={respond.isPending}
                 type="button"
                 onClick={() => respondTo(invitation, "DECLINE")}
               >
-                <X size={11} /> Decline
+                {respondingTo?.id === invitation.id &&
+                respondingTo.action === "DECLINE" ? (
+                  <Loader2 className="animate-spin" size={11} />
+                ) : (
+                  <X size={11} />
+                )}
+                Decline
               </button>
             </div>
           </div>

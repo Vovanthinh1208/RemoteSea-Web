@@ -4,6 +4,7 @@ import { CalendarClock, ChevronDown, MessageCircle } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { countryFlag } from "@/utils/color";
@@ -40,7 +41,7 @@ const ApplicationRow = memo(function ApplicationRow({
     <div className="border-b border-neutral-50 last:border-none">
       <button
         aria-expanded={expanded}
-        className="grid w-full grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-4 px-5 py-3.5 text-left transition-colors hover:bg-neutral-50/60"
+        className="grid w-full cursor-pointer grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-4 px-5 py-3.5 text-left transition-colors hover:bg-neutral-50/60 focus-visible:relative focus-visible:z-10 focus-visible:shadow-focus focus-visible:outline-none"
         type="button"
         onClick={() => setExpanded((v) => !v)}
       >
@@ -88,7 +89,7 @@ const ApplicationRow = memo(function ApplicationRow({
         <div className="flex shrink-0 items-center gap-1">
           <Link
             aria-label="Message about this application"
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.applicationMessages(a.id)}
             onClick={(e) => e.stopPropagation()}
           >
@@ -97,7 +98,7 @@ const ApplicationRow = memo(function ApplicationRow({
           {a.status === "INTERVIEW" && (
             <Link
               aria-label="View interview"
-              className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+              className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.applicationInterview(a.id)}
               onClick={(e) => e.stopPropagation()}
             >
@@ -206,12 +207,13 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
             <button
               aria-pressed={tab === t.id}
               className={cn(
-                "rounded-6 px-3 py-1 text-[12px] font-medium transition-all",
+                "rounded-8 px-3 py-1 text-[12px] font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none",
                 tab === t.id
-                  ? "bg-white text-neutral-900 shadow-sm"
+                  ? "bg-white text-neutral-900 shadow-chip"
                   : "text-neutral-500 hover:text-neutral-700"
               )}
               key={t.id}
+              type="button"
               onClick={() => setTab(t.id)}
             >
               {t.label}{" "}
@@ -225,6 +227,13 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
 
       {applications.length === 0 ? (
         <EmptyState
+          action={
+            <Link to={ROUTES.jobs}>
+              <Button size="sm" variant="outline">
+                Browse jobs
+              </Button>
+            </Link>
+          }
           className="px-5 py-10"
           description={TAB_EMPTY_COPY.all.description}
           title={TAB_EMPTY_COPY.all.title}

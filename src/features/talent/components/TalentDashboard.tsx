@@ -144,7 +144,7 @@ export const TalentDashboard = () => {
         </div>
         <div className="flex gap-2">
           <Link
-            className="inline-flex h-10 items-center gap-2 rounded-12 border border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
+            className="inline-flex h-10 items-center gap-2 rounded-12 border border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.alerts}
           >
             <Bell size={14} />
@@ -156,7 +156,7 @@ export const TalentDashboard = () => {
             )}
           </Link>
           <Link
-            className="inline-flex h-10 items-center gap-2 rounded-12 bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700"
+            className="inline-flex h-10 items-center gap-2 rounded-12 bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.jobs}
           >
             <Search size={14} /> Browse jobs
@@ -196,7 +196,7 @@ export const TalentDashboard = () => {
             </p>
           </div>
           <Link
-            className="inline-flex h-10 flex-shrink-0 items-center gap-2 rounded-12 bg-brand-600 px-5 text-sm font-medium text-white transition-colors hover:bg-brand-700"
+            className="inline-flex h-10 flex-shrink-0 items-center gap-2 rounded-12 bg-brand-600 px-5 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.profile}
           >
             Complete profile <ArrowRight size={14} />

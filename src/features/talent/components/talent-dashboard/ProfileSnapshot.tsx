@@ -23,7 +23,7 @@ export const ProfileSnapshot = () => {
           {profile?.headline || "No headline yet"}
         </p>
         <Link
-          className="mt-3 inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-8 border border-neutral-200 text-[12.5px] font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
+          className="mt-3 inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-8 border border-neutral-200 text-[12.5px] font-medium text-neutral-700 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none"
           to={ROUTES.profile}
         >
           Edit profile <ArrowRight size={12} />

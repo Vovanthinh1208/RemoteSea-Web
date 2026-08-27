@@ -19,13 +19,13 @@ export const SettingsSaveBar = ({ dashboardRoute }: SettingsSaveBarProps) => (
     </span>
     <div className="flex items-center gap-2">
       <Link
-        className="rounded-10 px-4 py-2 text-[13px] text-neutral-500 hover:text-neutral-700"
+        className="rounded-10 px-4 py-2 text-[13px] text-neutral-500 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
         to={dashboardRoute}
       >
         Close
       </Link>
       <Link
-        className="inline-flex items-center gap-1.5 rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white hover:bg-brand-700"
+        className="inline-flex items-center gap-1.5 rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
         to={dashboardRoute}
       >
         Done <Check size={13} />

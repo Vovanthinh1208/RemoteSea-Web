@@ -12,7 +12,7 @@ const ActivityRow = ({ item }: { item: ActivityItem }) => {
   const FeedIcon = EVENT_ICON[item.type];
   return (
     <button
-      className="flex w-full gap-3 rounded-8 px-2 py-2.5 text-left transition-colors hover:bg-neutral-50"
+      className="flex w-full gap-3 rounded-8 px-2 py-2.5 text-left transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none"
       type="button"
       onClick={() => navigate(item.link)}
     >
@@ -74,7 +74,7 @@ export const ActivityFeed = () => {
           <div className="flex items-center justify-between px-2 py-4 text-[12.5px] text-neutral-400">
             Couldn't load your activity.
             <button
-              className="inline-flex items-center gap-1 font-medium text-brand-600 hover:text-brand-700"
+              className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
               type="button"
               onClick={() => refetch()}
             >

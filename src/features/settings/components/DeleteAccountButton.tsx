@@ -23,7 +23,7 @@ export const DeleteAccountButton = () => {
     >
       {({ onClick }) => (
         <button
-          className="rounded-10 border border-red-200 bg-white px-4 py-2 text-[13px] font-medium text-red-600 transition-colors hover:bg-red-50"
+          className="rounded-10 border border-red-200 bg-white px-4 py-2 text-[13px] font-medium text-red-600 transition-colors hover:bg-red-50 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={onClick}
         >

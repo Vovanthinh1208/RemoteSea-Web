@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 import { cn } from "@/utils/cn";
 import {
   SectionHead,
@@ -147,16 +148,20 @@ export const ConnectedAccountsSection = () => {
               </div>
               {connection ? (
                 <button
-                  className="flex-shrink-0 rounded-8 border border-neutral-200 px-2.5 py-1.5 text-[12px] font-medium text-neutral-600 hover:border-neutral-300 disabled:opacity-60"
+                  className="flex flex-shrink-0 items-center gap-1.5 rounded-8 border border-neutral-200 px-2.5 py-1.5 text-[12px] font-medium text-neutral-600 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
                   disabled={disconnectMutation.isPending}
                   type="button"
                   onClick={() => disconnect(id)}
                 >
+                  {disconnectMutation.isPending &&
+                    disconnectMutation.variables === id && (
+                      <Loader2 className="animate-spin" size={12} />
+                    )}
                   Disconnect
                 </button>
               ) : (
                 <button
-                  className="flex-shrink-0 rounded-8 border border-neutral-200 px-2.5 py-1.5 text-[12px] font-medium text-neutral-600 hover:border-neutral-300"
+                  className="flex-shrink-0 rounded-8 border border-neutral-200 px-2.5 py-1.5 text-[12px] font-medium text-neutral-600 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none"
                   type="button"
                   onClick={() => void connect(id)}
                 >

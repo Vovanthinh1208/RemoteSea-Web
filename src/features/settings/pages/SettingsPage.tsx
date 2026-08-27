@@ -24,12 +24,15 @@ export const SettingsPage = () => {
   const dashboardRoute = dashboardRouteForRole(user?.role);
 
   return (
-    <div className="min-h-screen bg-[#F8F7F4]">
+    <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-[1100px] px-6 py-10">
         {/* Page header */}
         <div className="mb-8">
           <div className="mb-3 flex items-center gap-1.5 text-[12px] text-neutral-500">
-            <Link className="hover:text-neutral-700" to={dashboardRoute}>
+            <Link
+              className="rounded-8 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
+              to={dashboardRoute}
+            >
               ← Dashboard
             </Link>
             <span>·</span>
@@ -43,7 +46,7 @@ export const SettingsPage = () => {
             Sign-in, security, and how RemoteSEA talks to you. Profile content
             lives under{" "}
             <Link
-              className="text-brand-600 hover:text-brand-700"
+              className="rounded-8 text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.profile}
             >
               Profile setup

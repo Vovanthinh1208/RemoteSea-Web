@@ -42,7 +42,7 @@ export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
           </span>
         </h3>
         <Link
-          className="inline-flex items-center gap-1 text-[12px] font-medium text-brand-600 hover:text-brand-700"
+          className="inline-flex items-center gap-1 rounded-8 text-[12px] font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
           to={ROUTES.jobs}
         >
           Browse all jobs <ArrowRight size={12} />
@@ -58,7 +58,7 @@ export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
           const country = job.country ?? "Remote";
           return (
             <Link
-              className="flex items-center gap-4 border-b border-neutral-50 px-5 py-4 transition-colors last:border-none hover:bg-neutral-50/60"
+              className="flex items-center gap-4 border-b border-neutral-50 px-5 py-4 transition-colors last:border-none hover:bg-neutral-50/60 focus-visible:relative focus-visible:z-10 focus-visible:shadow-focus focus-visible:outline-none"
               key={job.id}
               to={ROUTES.jobDetail(job.id)}
             >

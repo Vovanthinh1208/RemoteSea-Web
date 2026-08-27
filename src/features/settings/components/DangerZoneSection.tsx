@@ -66,7 +66,7 @@ export const DangerZoneSection = () => {
             </p>
           </div>
           <button
-            className="ml-6 flex-shrink-0 rounded-10 border border-amber-300 bg-amber-50 px-4 py-2 text-[13px] font-medium text-amber-800 hover:bg-amber-100 disabled:opacity-60"
+            className="ml-6 flex-shrink-0 rounded-10 border border-amber-300 bg-amber-50 px-4 py-2 text-[13px] font-medium text-amber-800 hover:bg-amber-100 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
             disabled={isPending}
             type="button"
             onClick={togglePause}

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Download, Eye } from "lucide-react";
 import {
   SectionHead,
@@ -27,7 +26,6 @@ const downloadJson = (data: unknown, filename: string) => {
 
 export const PrivacyDataSection = () => {
   const runWithToast = useToastMutation();
-  const [indexing, setIndexing] = useState(false);
 
   const { data: profile } = useMyTalentProfile();
   const updateProfileMutation = useUpdateMyTalentProfile();
@@ -109,7 +107,7 @@ export const PrivacyDataSection = () => {
             </p>
           </div>
           <button
-            className="flex-shrink-0 rounded-8 border border-neutral-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-neutral-700 hover:border-neutral-300 disabled:opacity-60"
+            className="flex-shrink-0 rounded-8 border border-neutral-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-neutral-700 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
             disabled={exportMutation.isPending}
             type="button"
             onClick={requestExport}
@@ -120,10 +118,11 @@ export const PrivacyDataSection = () => {
       </div>
       <div className="divide-y divide-neutral-50 rounded-16 border border-neutral-100 bg-white px-4">
         <ToggleRow
-          desc="Off by default. When on, your public talent page can appear in Google results."
-          on={indexing}
+          disabled
+          desc="Off by default. When on, your public talent page can appear in Google results. Not built yet — this won't do anything until it is."
+          on={false}
           title="Let search engines index my public profile"
-          onChange={setIndexing}
+          onChange={() => {}}
         />
       </div>
     </section>

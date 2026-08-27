@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { useAlerts } from "@/features/alerts/alerts.queries";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ROUTES } from "@/constants/routes";
 import { cn } from "@/utils/cn";
 import type { JobAlert } from "@/types/alert";
 
 const DASHBOARD_ALERTS_LIMIT = 4;
+const ALERTS_SKELETON_COUNT = 2;
 
 const summarizeAlert = (alert: JobAlert): string =>
   [
@@ -18,7 +20,7 @@ const summarizeAlert = (alert: JobAlert): string =>
     .join(" · ") || "All jobs";
 
 export const AlertsPanel = () => {
-  const { data: alerts } = useAlerts();
+  const { data: alerts, isLoading } = useAlerts();
   const visible = alerts?.slice(0, DASHBOARD_ALERTS_LIMIT) ?? [];
 
   return (
@@ -28,14 +30,27 @@ export const AlertsPanel = () => {
           Saved searches
         </h3>
         <Link
-          className="inline-flex items-center gap-1 text-[12px] font-medium text-brand-600 hover:text-brand-700"
+          className="inline-flex items-center gap-1 rounded-8 text-[12px] font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
           to={ROUTES.alerts}
         >
           <Plus size={12} /> New
         </Link>
       </div>
       <div>
-        {visible.length === 0 ? (
+        {isLoading ? (
+          Array.from({ length: ALERTS_SKELETON_COUNT }, (_, i) => (
+            <div
+              className="flex items-center justify-between gap-3 border-b border-neutral-50 px-5 py-3.5 last:border-none"
+              key={i}
+            >
+              <div className="min-w-0 flex-1 space-y-1.5">
+                <Skeleton className="h-3.5 w-2/5" />
+                <Skeleton className="h-3 w-3/5" />
+              </div>
+              <Skeleton className="h-5 w-14 flex-shrink-0 rounded-full" />
+            </div>
+          ))
+        ) : visible.length === 0 ? (
           <p className="px-5 py-4 text-[12.5px] text-neutral-400">
             No saved searches yet.
           </p>

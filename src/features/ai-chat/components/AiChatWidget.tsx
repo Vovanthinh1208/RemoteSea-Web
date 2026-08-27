@@ -15,6 +15,7 @@ import {
   useConversations,
   useSendChatMessage,
 } from "@/features/ai-chat/ai-chat.queries";
+import { AiMarkdown } from "@/features/ai-chat/components/AiMarkdown";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
@@ -67,7 +68,7 @@ const AnswerBubble = ({
               </div>
             ) : (
               <>
-                <p className="whitespace-pre-wrap break-words">{answer}</p>
+                <AiMarkdown text={answer ?? ""} />
                 {!!sources?.length && (
                   <p className="mt-2.5 border-t border-neutral-200 pt-2.5 text-[11.5px] text-neutral-500">
                     Sources: {sources.join(" · ")}
