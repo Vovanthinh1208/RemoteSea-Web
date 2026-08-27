@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   ArrowRight,
+  Check,
+  Copy,
   History,
   MessageCircleQuestion,
   Plus,
@@ -41,38 +43,65 @@ const AnswerBubble = ({
   answer?: string;
   sources?: string[];
   pending?: boolean;
-}) => (
-  <div className="mt-5 animate-fade-up space-y-3 first:mt-0">
-    <div className="flex justify-end">
-      <div className="max-w-[85%] rounded-16 rounded-br-4 bg-gradient-to-br from-brand-500 to-brand-600 px-4 py-3 text-[14.5px] leading-relaxed text-white shadow-chip sm:max-w-[78%]">
-        <p className="whitespace-pre-wrap break-words">{question}</p>
+}) => {
+  const [copied, setCopied] = useState(false);
+
+  return (
+    <div className="mt-5 animate-fade-up space-y-3 first:mt-0">
+      <div className="flex justify-end">
+        <div className="max-w-[85%] rounded-16 rounded-br-4 bg-gradient-to-br from-brand-500 to-brand-600 px-4 py-3 text-[14.5px] leading-relaxed text-white shadow-chip sm:max-w-[78%]">
+          <p className="whitespace-pre-wrap break-words">{question}</p>
+        </div>
       </div>
-    </div>
-    <div className="flex items-start gap-2.5">
-      <div className="mt-0.5 grid h-7 w-7 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-chip">
-        <Sparkles size={14} />
-      </div>
-      <div className="max-w-[85%] rounded-16 rounded-tl-4 border border-neutral-100 bg-neutral-50 px-4 py-3 text-[14.5px] leading-relaxed text-neutral-900 shadow-chip sm:max-w-[78%]">
-        {pending ? (
-          <div className="flex items-center gap-1.5 py-1.5 text-brand-500">
-            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-brand-500 [animation-delay:-0.3s]" />
-            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-brand-500 [animation-delay:-0.15s]" />
-            <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-brand-500" />
-          </div>
-        ) : (
-          <>
-            <p className="whitespace-pre-wrap break-words">{answer}</p>
-            {!!sources?.length && (
-              <p className="mt-2.5 border-t border-neutral-200 pt-2.5 text-[11.5px] text-neutral-500">
-                Sources: {sources.join(" · ")}
-              </p>
+      <div className="group/msg flex items-start gap-2.5">
+        <div className="mt-0.5 grid h-7 w-7 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-chip">
+          <Sparkles size={14} />
+        </div>
+        <div className="min-w-0 max-w-[85%] sm:max-w-[78%]">
+          <div className="rounded-16 rounded-tl-4 border border-neutral-100 bg-neutral-50 px-4 py-3 text-[14.5px] leading-relaxed text-neutral-900 shadow-chip">
+            {pending ? (
+              <div className="flex items-center gap-1.5 py-1.5 text-brand-500">
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-brand-500 [animation-delay:-0.3s]" />
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-brand-500 [animation-delay:-0.15s]" />
+                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-brand-500" />
+              </div>
+            ) : (
+              <>
+                <p className="whitespace-pre-wrap break-words">{answer}</p>
+                {!!sources?.length && (
+                  <p className="mt-2.5 border-t border-neutral-200 pt-2.5 text-[11.5px] text-neutral-500">
+                    Sources: {sources.join(" · ")}
+                  </p>
+                )}
+              </>
             )}
-          </>
-        )}
+          </div>
+          {!pending && answer && (
+            <button
+              className="mt-1 flex items-center gap-1 rounded-8 px-1.5 py-1 text-[11px] text-neutral-400 opacity-0 transition-opacity hover:text-brand-600 group-hover/msg:opacity-100"
+              type="button"
+              onClick={() => {
+                void navigator.clipboard.writeText(answer);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 1500);
+              }}
+            >
+              {copied ? (
+                <>
+                  <Check size={12} /> Copied
+                </>
+              ) : (
+                <>
+                  <Copy size={12} /> Copy
+                </>
+              )}
+            </button>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const AiChatWidget = () => {
   const { user } = useAuth();
@@ -201,7 +230,22 @@ export const AiChatWidget = () => {
         {!open && !conversations.isLoading && hasNoConversations && (
           <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-brand-500 opacity-40" />
         )}
-        {open ? <X size={22} /> : <Sparkles size={22} />}
+        <span className="relative h-[22px] w-[22px]">
+          <Sparkles
+            className={cn(
+              "absolute inset-0 transition-all duration-200",
+              open ? "rotate-45 opacity-0" : "rotate-0 opacity-100"
+            )}
+            size={22}
+          />
+          <X
+            className={cn(
+              "absolute inset-0 transition-all duration-200",
+              open ? "rotate-0 opacity-100" : "-rotate-45 opacity-0"
+            )}
+            size={22}
+          />
+        </span>
       </button>
 
       {open && (
@@ -232,7 +276,7 @@ export const AiChatWidget = () => {
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <p className="text-[15px] font-semibold text-neutral-900">
+                  <p className="bg-gradient-to-r from-brand-700 to-brand-500 bg-clip-text text-[15px] font-semibold text-transparent">
                     RemoteSea Assistant
                   </p>
                   <span className="relative flex h-1.5 w-1.5">
@@ -332,8 +376,11 @@ export const AiChatWidget = () => {
           <div className="scrollbar-thin min-h-0 flex-1 overflow-y-auto bg-gradient-to-b from-brand-50/40 via-white to-white px-4 py-5 sm:px-5">
             {!activeConversationId && !pendingQuestion ? (
               <div className="flex h-full animate-fade-up flex-col items-center justify-center gap-5 py-6 text-center">
-                <div className="grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card ring-8 ring-brand-50">
-                  <Sparkles size={22} />
+                <div className="relative grid h-14 w-14 place-items-center">
+                  <span className="absolute inset-[-14px] -z-10 animate-pulse rounded-full bg-brand-300/30 blur-xl" />
+                  <div className="grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card ring-8 ring-brand-50">
+                    <Sparkles size={22} />
+                  </div>
                 </div>
                 <div>
                   <p className="mb-1.5 text-[16px] font-semibold text-neutral-900">
