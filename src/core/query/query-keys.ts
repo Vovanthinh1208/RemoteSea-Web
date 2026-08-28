@@ -55,6 +55,7 @@ export const employerKeys = {
   jobs: () => ["employer", "jobs"] as const,
   jobApplications: (jobId: string) =>
     ["employer", "job-applications", jobId] as const,
+  recentApplications: () => ["employer", "recent-applications"] as const,
   public: (slug: string | undefined) => ["employer", "public", slug] as const,
 };
 

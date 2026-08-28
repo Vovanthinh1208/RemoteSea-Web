@@ -12,6 +12,7 @@ import type {
   EmployerJobsResponseDto,
   EmployerProfileDto,
   EmployerProfileSummaryDto,
+  EmployerRecentApplicationsResponseDto,
   PublicCompanyProfileDto,
   SubmitVerificationRequestDto,
   SubmitVerificationResponseDto,
@@ -79,6 +80,16 @@ export const employerRepository = {
     const { data } = await apiClient.get<EmployerJobApplicationsResponseDto>(
       `/employer/jobs/${jobId}/applications`,
       { params, signal: opts?.signal }
+    );
+    return data;
+  },
+
+  listRecentApplications: async (
+    opts?: RequestOptions
+  ): Promise<EmployerRecentApplicationsResponseDto> => {
+    const { data } = await apiClient.get<EmployerRecentApplicationsResponseDto>(
+      "/employer/applications/recent",
+      { signal: opts?.signal }
     );
     return data;
   },

@@ -174,3 +174,12 @@ export type EmployerJobApplicationsResponse = {
     pages: number;
   };
 };
+
+// GET /employer/applications/recent — company-wide across every job, so
+// (unlike EmployerJobApplicationsResponse, scoped to one job the caller
+// already knows) each item carries its own jobId/jobTitle. No pagination:
+// this is a fixed-size "recent activity" feed, server-capped, not a list
+// the caller pages through.
+export type EmployerRecentApplicationsResponse = {
+  applications: (EmployerApplicant & { jobId: string; jobTitle: string })[];
+};

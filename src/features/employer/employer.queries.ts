@@ -1,10 +1,5 @@
 import { useMemo } from "react";
-import {
-  useMutation,
-  useQueries,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   bulkUpdateApplicationStatus,
   confirmEmployerVerification,
@@ -12,7 +7,7 @@ import {
   getEmployerProfile,
   getPublicCompanyProfile,
   listEmployerJobs,
-  listJobApplications,
+  listRecentApplications,
   submitEmployerVerification,
   updateApplicationStatus,
 } from "@/features/employer/employer.service";
@@ -33,7 +28,6 @@ export const EMPLOYER_JOBS_KEY = employerKeys.jobs();
 
 const NOT_FOUND_STATUS = 404;
 const FORBIDDEN_STATUS = 403;
-const APPLICATIONS_PER_JOB_LIMIT = 50;
 
 export const useEmployerProfile = () => {
   const { user } = useAuth();
@@ -83,51 +77,54 @@ export type ApplicantWithJob = EmployerApplicant & {
   match: MatchResult | null;
 };
 
+// Used to be N parallel GET /employer/jobs/:id/applications requests (one
+// per job with any applicants, via useQueries) merged client-side — an
+// employer with N active listings paid N full request/auth/DB round trips
+// just to render the dashboard's "Recent applicants" panel. Now one
+// GET /employer/applications/recent call returns the same company-wide
+// activity feed directly (see EmployerRepository.findRecentApplicationsForCompany).
+// jobs (from the already-single-request useEmployerJobs) is still needed
+// for match scoring — computeMatchScore needs the full job (skills, salary,
+// level, timezone), which the recent-applications response deliberately
+// doesn't duplicate per row.
 export const useEmployerApplicationsAggregate = () => {
   const { data: jobsData } = useEmployerJobs();
   const jobs = jobsData?.jobs ?? [];
-  const jobIds = jobs.filter((j) => j._count.applications > 0).map((j) => j.id);
 
-  const results = useQueries({
-    queries: jobIds.map((jobId) => ({
-      queryKey: employerKeys.jobApplications(jobId),
-      queryFn: ({ signal }: { signal: AbortSignal }) =>
-        listJobApplications(
-          jobId,
-          { limit: APPLICATIONS_PER_JOB_LIMIT },
-          { signal }
-        ),
-      ...TIER.live,
-    })),
+  const {
+    data,
+    isLoading,
+    isError,
+    dataUpdatedAt,
+    refetch: refetchAll,
+  } = useQuery({
+    queryKey: employerKeys.recentApplications(),
+    queryFn: ({ signal }) => listRecentApplications({ signal }),
+    ...TIER.live,
   });
 
-  const isLoading = results.some((r) => r.isLoading);
-  const isError = results.some((r) => r.isError);
-
-  const jobIdsKey = jobIds.join(",");
-  const dataVersion = results.map((r) => r.dataUpdatedAt).join(",");
   const { byJobId, all } = useMemo(() => {
-    const byJobId = new Map<string, EmployerApplicant[]>();
-    jobIds.forEach((jobId, i) => {
-      byJobId.set(jobId, results[i]?.data?.applications ?? []);
-    });
-
+    const applications = data?.applications ?? [];
     const jobById = new Map(jobs.map((j) => [j.id, j]));
-    const all: ApplicantWithJob[] = jobIds.flatMap((jobId) => {
+
+    const byJobId = new Map<string, EmployerApplicant[]>();
+    const all: ApplicantWithJob[] = applications.map((a) => {
+      const { jobId, jobTitle, ...applicant } = a;
+      const existing = byJobId.get(jobId);
+      if (existing) existing.push(applicant);
+      else byJobId.set(jobId, [applicant]);
       const job = jobById.get(jobId);
-      return (byJobId.get(jobId) ?? []).map((a) => ({
-        ...a,
+      return {
+        ...applicant,
         jobId,
-        jobTitle: job?.title ?? "",
-        match: job ? computeMatchScore(job, a.talent) : null,
-      }));
+        jobTitle,
+        match: job ? computeMatchScore(job, applicant.talent) : null,
+      };
     });
 
     return { byJobId, all };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [jobIdsKey, dataVersion, jobs]);
-
-  const refetchAll = () => results.forEach((r) => r.refetch());
+  }, [dataUpdatedAt, jobs]);
 
   return {
     isLoading,
@@ -155,6 +152,13 @@ export const useUpdateApplicationStatus = () => {
     onSuccess: (_data, { jobId }) => {
       queryClient.invalidateQueries({
         queryKey: employerKeys.jobApplications(jobId),
+      });
+      // The dashboard's "Recent applicants" panel reads this key now (see
+      // useEmployerApplicationsAggregate), not a per-job key — without this
+      // it kept showing the pre-update status until the next unrelated
+      // refetch.
+      queryClient.invalidateQueries({
+        queryKey: employerKeys.recentApplications(),
       });
       queryClient.invalidateQueries({
         queryKey: employerKeys.jobs(),
@@ -192,6 +196,11 @@ export const useBulkUpdateApplicationStatus = () => {
         queryClient.invalidateQueries({
           queryKey: employerKeys.jobApplications(jobId),
         });
+      });
+      // Same reasoning as useUpdateApplicationStatus's own comment — a
+      // single key for the whole company-wide feed, not per-job.
+      queryClient.invalidateQueries({
+        queryKey: employerKeys.recentApplications(),
       });
       queryClient.invalidateQueries({
         queryKey: employerKeys.jobs(),

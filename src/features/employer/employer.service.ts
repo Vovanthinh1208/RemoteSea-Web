@@ -5,6 +5,7 @@ import {
   toEmployerJobsResponse,
   toEmployerProfile,
   toEmployerProfileSummary,
+  toEmployerRecentApplicationsResponse,
   toPublicCompanyProfile,
 } from "@/features/employer/employer.mapper";
 import type {
@@ -19,6 +20,7 @@ import type {
   EmployerJobsResponse,
   EmployerProfile,
   EmployerProfileSummary,
+  EmployerRecentApplicationsResponse,
   PublicCompanyProfile,
 } from "@/types/employer";
 
@@ -54,6 +56,13 @@ export const listJobApplications = async (
 ): Promise<EmployerJobApplicationsResponse> =>
   toEmployerJobApplicationsResponse(
     await employerRepository.listJobApplications(jobId, params, opts)
+  );
+
+export const listRecentApplications = async (
+  opts?: RequestOptions
+): Promise<EmployerRecentApplicationsResponse> =>
+  toEmployerRecentApplicationsResponse(
+    await employerRepository.listRecentApplications(opts)
   );
 
 export const updateApplicationStatus = async (

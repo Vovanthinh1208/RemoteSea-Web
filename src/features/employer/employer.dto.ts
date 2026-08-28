@@ -1,5 +1,6 @@
 import type {
   CreateEmployerProfilePayload,
+  EmployerApplicant,
   EmployerJobApplicationsResponse,
   EmployerJobsResponse,
   EmployerProfile,
@@ -21,6 +22,17 @@ export type EmployerProfileDto = EmployerProfile;
 export type EmployerJobsResponseDto = EmployerJobsResponse;
 export type EmployerJobApplicationsResponseDto =
   EmployerJobApplicationsResponse;
+
+// Raw wire shape of GET /employer/applications/recent — `job` comes back
+// nested (matching the backend's RecentApplicationListItemDto), flattened
+// to jobId/jobTitle by toEmployerRecentApplicationsResponse in the mapper
+// so the rest of the app can treat it exactly like EmployerApplicant.
+export type EmployerRecentApplicationsResponseDto = {
+  applications: (EmployerApplicant & {
+    jobId: string;
+    job: { title: string };
+  })[];
+};
 
 export type SubmitVerificationRequestDto = { email: string };
 export type SubmitVerificationResponseDto = { message: string };
