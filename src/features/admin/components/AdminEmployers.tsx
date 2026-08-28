@@ -227,8 +227,7 @@ export const AdminEmployers = () => {
         />
       </div>
 
-      {/* Filter + search */}
-      <div className="mb-4 flex items-center gap-3">
+      <div className="mb-4 flex flex-wrap items-center gap-3">
         <div className="flex gap-1">
           {FILTERS.map((f) => (
             <PillToggle
@@ -248,11 +247,11 @@ export const AdminEmployers = () => {
             </PillToggle>
           ))}
         </div>
-        <div className="ml-auto flex h-9 items-center gap-2 rounded-10 border border-neutral-200 bg-white px-3 focus-within:border-brand-600 focus-within:shadow-focus">
+        <div className="flex h-9 w-full items-center gap-2 rounded-10 border border-neutral-200 bg-white px-3 focus-within:border-brand-600 focus-within:shadow-focus sm:ml-auto sm:w-auto">
           <Search className="text-neutral-400" size={14} />
           <input
             aria-label="Search employers"
-            className="w-48 bg-transparent text-sm outline-none placeholder:text-neutral-400"
+            className="w-full bg-transparent text-sm outline-none placeholder:text-neutral-400 sm:w-48"
             placeholder="Search employers…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}

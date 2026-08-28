@@ -28,7 +28,7 @@ export const ReviewCTA = ({ applicationId, revieweeName }: ReviewCTAProps) => {
   if (data.alreadyReviewed || justSubmitted) {
     return (
       <div className="flex items-center gap-2 rounded-16 border border-neutral-100 bg-neutral-50 px-4 py-3 text-[13px] text-neutral-600">
-        <Check className="text-brand-600" size={15} />
+        <Check className="flex-shrink-0 text-brand-600" size={15} />
         You reviewed this interaction.
       </div>
     );
@@ -60,16 +60,21 @@ export const ReviewCTA = ({ applicationId, revieweeName }: ReviewCTAProps) => {
 
   return (
     <div className="flex items-center justify-between gap-4 rounded-16 border border-brand-100 bg-brand-50/60 p-4">
-      <div className="flex items-center gap-2.5">
+      <div className="flex min-w-0 items-center gap-2.5">
         <MessageSquareText className="flex-shrink-0 text-brand-600" size={16} />
-        <div>
+        <div className="min-w-0">
           <p className="text-[13.5px] font-medium text-neutral-900">
             Your interview with {revieweeName} is complete.
           </p>
           <p className="text-[12px] text-neutral-500">Share your experience.</p>
         </div>
       </div>
-      <Button size="sm" type="button" onClick={() => setOpen(true)}>
+      <Button
+        className="flex-shrink-0"
+        size="sm"
+        type="button"
+        onClick={() => setOpen(true)}
+      >
         Write a review
       </Button>
     </div>
