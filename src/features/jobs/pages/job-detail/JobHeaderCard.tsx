@@ -49,6 +49,10 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
         >
           {job.employer.companyName}
         </Link>
+
+        <div className="mt-2 sm:hidden">
+          <SalaryBadge max={job.salaryMax} min={job.salaryMin} />
+        </div>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {job.isFeatured && <Badge variant="featured">⭐ Featured</Badge>}
           {isVerifiedJob(job) && (

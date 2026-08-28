@@ -87,11 +87,21 @@ export const CvAnalysisCard = ({
   if (!hasRequested) {
     return (
       <div className="flex items-center justify-between gap-3 rounded-16 border border-neutral-100 bg-white px-4 py-3.5">
-        <div className="flex items-center gap-2 text-[12.5px] text-neutral-500">
+        {/* min-w-0 so a long talent name wraps within this text block
+            instead of forcing the button (flex-shrink-0) to get squeezed
+            or the row to overflow on a narrow card. */}
+        <div className="flex min-w-0 items-center gap-2 text-[12.5px] text-neutral-500">
           <Sparkles className="flex-shrink-0 text-brand-600" size={15} />
-          See how {talentName}&rsquo;s CV stacks up against this role.
+          <span>
+            See how {talentName}&rsquo;s CV stacks up against this role.
+          </span>
         </div>
-        <Button size="sm" variant="outline" onClick={() => refetch()}>
+        <Button
+          className="flex-shrink-0"
+          size="sm"
+          variant="outline"
+          onClick={() => refetch()}
+        >
           Analyze with AI
         </Button>
       </div>
@@ -107,12 +117,14 @@ export const CvAnalysisCard = ({
       error instanceof ApiError && error.status === NO_RESUME_STATUS;
     return (
       <div className="flex items-center justify-between gap-3 rounded-16 border border-neutral-100 bg-white px-4 py-3.5 text-[12.5px] text-neutral-400">
-        {noResume
-          ? `${talentName} hasn't uploaded a CV.`
-          : "Couldn't analyze this CV."}
+        <span className="min-w-0">
+          {noResume
+            ? `${talentName} hasn't uploaded a CV.`
+            : "Couldn't analyze this CV."}
+        </span>
         {!noResume && (
           <button
-            className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
+            className="inline-flex flex-shrink-0 items-center gap-1 rounded-8 font-medium text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
             type="button"
             onClick={() => refetch()}
           >

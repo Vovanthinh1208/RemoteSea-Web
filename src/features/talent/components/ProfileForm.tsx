@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Eye } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
 import { SkillTagEditor } from "@/components/shared/SkillTagEditor";
 import { useSyncedState } from "@/hooks/useSyncedState";
@@ -242,6 +242,36 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
             Your profile is what gets surfaced to founders and hiring managers.
             Keep it honest, keep it short — they read dozens a day.
           </p>
+          {/* ProfileFormNav (the section-jump sidebar) is hidden below lg —
+              correct, a scroll-spy sidebar doesn't make sense once sections
+              just stack — but "Preview as recruiter" lives nowhere else in
+              the app, so hiding the whole nav also silently removed the
+              only way to reach it on mobile. This is the one piece worth
+              surfacing on its own down here; jumping between sections isn't
+              worth the same treatment since scrolling already does that. */}
+          {profile ? (
+            <Link
+              className="mt-3 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-brand-600 hover:text-brand-700 lg:hidden"
+              target="_blank"
+              to={{
+                pathname: ROUTES.talentProfile(profile.slug),
+                search: "?preview=recruiter",
+              }}
+            >
+              <Eye size={13} />
+              Preview as recruiter
+              <ArrowUpRight size={11} />
+            </Link>
+          ) : (
+            <span
+              className="mt-3 inline-flex items-center gap-1.5 text-[12.5px] text-neutral-300 lg:hidden"
+              title="Save your profile first"
+            >
+              <Eye size={13} />
+              Preview as recruiter
+              <ArrowUpRight size={11} />
+            </span>
+          )}
         </div>
 
         <form
