@@ -156,7 +156,7 @@ export const EmployerDashboard = () => {
             </p>
           </div>
           {profile && (
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-[12.5px] font-medium text-neutral-700">
                 <GradientInitial className="h-5 w-5 rounded-full text-[10px]">
                   {profile.companyName.charAt(0).toUpperCase()}
@@ -222,7 +222,11 @@ export const EmployerDashboard = () => {
           <div className="mb-6 flex items-center justify-between gap-4 rounded-16 border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] text-amber-800">
             Some applicant data couldn't load, so counts below may be
             incomplete.
-            <Button size="sm" variant="outline" onClick={refetchApplications}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => void refetchApplications()}
+            >
               Retry
             </Button>
           </div>

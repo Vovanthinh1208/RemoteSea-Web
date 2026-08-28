@@ -19,8 +19,6 @@ const STATUS_VARIANT: Record<string, BadgeVariant> = {
   closed: "muted",
 };
 
-// Stable fallback so jobs with no applications don't break the row's memo
-// comparison with a freshly-allocated empty array on every render.
 const EMPTY_APPLICATIONS: EmployerApplicant[] = [];
 
 interface ListingRowProps {
@@ -97,7 +95,12 @@ const ListingRow = memo(function ListingRow({
         <span className="text-[12px] italic text-neutral-400">Awaiting</span>
       )}
 
-      <div className="text-center">
+      {/* Dropped below sm — the mobile grid template only has 4 columns
+          (see the className below); this stays a straightforward hidden
+          cell rather than folding view count into another column, so
+          nothing here needs conditional content, just conditional
+          visibility. */}
+      <div className="hidden text-center sm:block">
         <div className="text-[13px] font-semibold text-neutral-700">
           {j.viewCount}
         </div>
@@ -115,7 +118,7 @@ const ListingRow = memo(function ListingRow({
   if (isPubliclyViewable) {
     return (
       <Link
-        className="grid cursor-pointer grid-cols-[1fr_80px_120px_60px_32px] items-center gap-3 rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none"
+        className="grid cursor-pointer grid-cols-[1fr_64px_88px_20px] items-center gap-2 rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
         to={ROUTES.jobDetail(j.id)}
       >
         {rowContent}
@@ -125,7 +128,7 @@ const ListingRow = memo(function ListingRow({
 
   return (
     <div
-      className="grid grid-cols-[1fr_80px_120px_60px_32px] items-center gap-3 rounded-12 px-2 py-3"
+      className="grid grid-cols-[1fr_64px_88px_20px] items-center gap-2 rounded-12 px-2 py-3 sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
       title="This listing isn't live yet, so it doesn't have a public page to view."
     >
       {rowContent}
@@ -164,11 +167,11 @@ export const ListingsPanel = ({
         </EmptyRow>
       ) : (
         <>
-          <div className="mb-1 grid grid-cols-[1fr_80px_120px_60px_32px] gap-3 px-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+          <div className="mb-1 grid grid-cols-[1fr_64px_88px_20px] gap-2 px-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400 sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3">
             <span>Role</span>
             <span>Status</span>
             <span>Applications</span>
-            <span>Views</span>
+            <span className="hidden sm:block">Views</span>
             <span />
           </div>
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useSkills } from "@/features/taxonomy/taxonomy.queries";
 import {
@@ -86,6 +86,10 @@ export const TalentFilterSidebar = ({
   const { data: allSkills } = useSkills(skillQuery);
   const skillOptions = (allSkills ?? []).slice(0, SKILL_SUGGESTION_LIMIT);
   const activeCount = countActiveTalentFilters(filters);
+  // Mobile only — same fix as jobs/FilterSidebar.tsx (identical bug: six
+  // filter groups, one with its own search input, rendered full-height
+  // inline above the talent list on a phone with no way to collapse them).
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const toggle = <
     K extends
@@ -118,14 +122,28 @@ export const TalentFilterSidebar = ({
   return (
     <aside className="w-full flex-shrink-0 sm:w-[220px]">
       <div className="flex items-center justify-between">
-        <h3 className="flex items-center gap-2 text-[15px] font-semibold text-neutral-900">
-          Filters
+        <button
+          aria-controls="talent-filter-groups"
+          aria-expanded={mobileOpen}
+          className="-my-1 flex items-center gap-2 py-1 sm:pointer-events-none"
+          type="button"
+          onClick={() => setMobileOpen((v) => !v)}
+        >
+          <h3 className="text-[15px] font-semibold text-neutral-900">
+            Filters
+          </h3>
           {activeCount > 0 && (
             <span className="grid h-4 w-4 place-items-center rounded-full bg-brand-600 text-[11px] font-semibold text-white">
               {activeCount}
             </span>
           )}
-        </h3>
+          <ChevronDown
+            className={cn(
+              "h-4 w-4 flex-shrink-0 text-neutral-400 transition-transform sm:hidden",
+              mobileOpen && "rotate-180"
+            )}
+          />
+        </button>
         <button
           type="button"
           className={cn(
@@ -148,78 +166,83 @@ export const TalentFilterSidebar = ({
         </button>
       </div>
 
-      <FilterGroup label="Skills">
-        <input
-          className="mb-2 w-full rounded-8 border border-neutral-200 px-2.5 py-1.5 text-[13px] outline-none focus:border-brand-600"
-          placeholder="Search skills…"
-          type="text"
-          value={skillQuery}
-          onChange={(e) => setSkillQuery(e.target.value)}
-        />
-        {skillOptions.map((skill) => (
-          <CheckRow
-            checked={filters.skills.includes(skill.id)}
-            key={skill.id}
-            label={skill.name}
-            onToggle={() => toggleSkill(skill.id)}
+      <div
+        className={cn(mobileOpen ? "block" : "hidden", "sm:!block")}
+        id="talent-filter-groups"
+      >
+        <FilterGroup label="Skills">
+          <input
+            className="mb-2 w-full rounded-8 border border-neutral-200 px-2.5 py-1.5 text-[13px] outline-none focus:border-brand-600"
+            placeholder="Search skills…"
+            type="text"
+            value={skillQuery}
+            onChange={(e) => setSkillQuery(e.target.value)}
           />
-        ))}
-      </FilterGroup>
+          {skillOptions.map((skill) => (
+            <CheckRow
+              checked={filters.skills.includes(skill.id)}
+              key={skill.id}
+              label={skill.name}
+              onToggle={() => toggleSkill(skill.id)}
+            />
+          ))}
+        </FilterGroup>
 
-      <FilterGroup label="Availability">
-        {NOTICE_PERIOD_OPTIONS.map((notice) => (
-          <CheckRow
-            checked={filters.noticePeriod.includes(notice)}
-            key={notice}
-            label={notice === "Immediate" ? "Available now" : notice}
-            onToggle={() => toggle("noticePeriod", notice)}
-          />
-        ))}
-      </FilterGroup>
+        <FilterGroup label="Availability">
+          {NOTICE_PERIOD_OPTIONS.map((notice) => (
+            <CheckRow
+              checked={filters.noticePeriod.includes(notice)}
+              key={notice}
+              label={notice === "Immediate" ? "Available now" : notice}
+              onToggle={() => toggle("noticePeriod", notice)}
+            />
+          ))}
+        </FilterGroup>
 
-      <FilterGroup label="Seniority">
-        {LEVEL_OPTIONS.map((level) => (
-          <CheckRow
-            checked={filters.level.includes(level)}
-            key={level}
-            label={LEVEL_LABELS[level]}
-            onToggle={() => toggle("level", level)}
-          />
-        ))}
-      </FilterGroup>
+        <FilterGroup label="Seniority">
+          {LEVEL_OPTIONS.map((level) => (
+            <CheckRow
+              checked={filters.level.includes(level)}
+              key={level}
+              label={LEVEL_LABELS[level]}
+              onToggle={() => toggle("level", level)}
+            />
+          ))}
+        </FilterGroup>
 
-      <FilterGroup label="Employment type">
-        {EMPLOYMENT_TYPE_OPTIONS.map((type) => (
-          <CheckRow
-            checked={filters.employmentTypes.includes(type)}
-            key={type}
-            label={type.replace("_", "-")}
-            onToggle={() => toggle("employmentTypes", type)}
-          />
-        ))}
-      </FilterGroup>
+        <FilterGroup label="Employment type">
+          {EMPLOYMENT_TYPE_OPTIONS.map((type) => (
+            <CheckRow
+              checked={filters.employmentTypes.includes(type)}
+              key={type}
+              label={type.replace("_", "-")}
+              onToggle={() => toggle("employmentTypes", type)}
+            />
+          ))}
+        </FilterGroup>
 
-      <FilterGroup label="Timezone overlap">
-        {TIMEZONE_OVERLAP_OPTIONS.map((tz) => (
-          <CheckRow
-            checked={filters.timezoneOverlap.includes(tz)}
-            key={tz}
-            label={TIMEZONE_OVERLAP_LABELS[tz]}
-            onToggle={() => toggle("timezoneOverlap", tz)}
-          />
-        ))}
-      </FilterGroup>
+        <FilterGroup label="Timezone overlap">
+          {TIMEZONE_OVERLAP_OPTIONS.map((tz) => (
+            <CheckRow
+              checked={filters.timezoneOverlap.includes(tz)}
+              key={tz}
+              label={TIMEZONE_OVERLAP_LABELS[tz]}
+              onToggle={() => toggle("timezoneOverlap", tz)}
+            />
+          ))}
+        </FilterGroup>
 
-      <FilterGroup label="Country">
-        {COUNTRY_OPTIONS.map((country) => (
-          <CheckRow
-            checked={filters.country.includes(country)}
-            key={country}
-            label={country}
-            onToggle={() => toggle("country", country)}
-          />
-        ))}
-      </FilterGroup>
+        <FilterGroup label="Country">
+          {COUNTRY_OPTIONS.map((country) => (
+            <CheckRow
+              checked={filters.country.includes(country)}
+              key={country}
+              label={country}
+              onToggle={() => toggle("country", country)}
+            />
+          ))}
+        </FilterGroup>
+      </div>
     </aside>
   );
 };
