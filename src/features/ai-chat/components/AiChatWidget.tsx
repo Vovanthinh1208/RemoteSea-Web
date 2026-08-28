@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
+  ArrowDown,
   ArrowRight,
   Check,
   Copy,
@@ -27,6 +28,10 @@ import { timeAgoShort } from "@/utils/time";
 const COMPOSE_MAX_HEIGHT_PX = 120;
 const DRAFT_MAX_LENGTH = 2000;
 const DRAFT_WARN_LENGTH = 1800;
+// Within this many px of the true bottom still counts as "at the bottom" —
+// a user who scrolled up even slightly to re-read the last line shouldn't
+// be treated as having left the conversation's end.
+const NEAR_BOTTOM_THRESHOLD_PX = 80;
 
 const SUGGESTED_PROMPTS = [
   "What's our remote hiring policy?",
@@ -79,7 +84,7 @@ const AnswerBubble = ({
           </div>
           {!pending && answer && (
             <button
-              className="mt-1 flex items-center gap-1 rounded-8 px-1.5 py-1 text-[11px] text-neutral-400 opacity-0 transition-opacity hover:text-brand-600 focus-visible:opacity-100 focus-visible:shadow-focus focus-visible:outline-none group-hover/msg:opacity-100"
+              className="mt-1 flex items-center gap-1 rounded-8 px-1.5 py-1 text-[11px] text-neutral-400 opacity-60 transition-opacity hover:text-brand-600 focus-visible:opacity-100 focus-visible:shadow-focus focus-visible:outline-none sm:opacity-0 sm:group-hover/msg:opacity-100"
               type="button"
               onClick={() => {
                 void navigator.clipboard.writeText(answer);
@@ -136,6 +141,23 @@ export const AiChatWidget = () => {
   const historyRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  // A ref, not state — read synchronously inside the message-count effect
+  // below, which must react to the *latest* scroll position at the instant
+  // a new turn arrives, not whatever isNearBottom happened to be as of this
+  // component's last render (state read inside that effect's closure could
+  // be one render behind a scroll event that just fired).
+  const isNearBottomRef = useRef(true);
+  const [hasNewMessageBelow, setHasNewMessageBelow] = useState(false);
+  // Opening the panel (or switching conversations) jumps straight to the
+  // bottom — animating a smooth scroll through the entire history on every
+  // open reads as sluggish, not "friendly." Only a message count increase
+  // *after* that (sending, or a new one arriving) gets the smooth scroll,
+  // so it reads as "a new message just appeared." Reset whenever the
+  // conversation identity changes, not just once ever, so switching to a
+  // different past conversation also jumps instead of smooth-scrolling
+  // through it.
+  const hasLoadedOnce = useRef(false);
 
   const firstName = user?.name?.split(" ")[0];
 
@@ -186,10 +208,59 @@ export const AiChatWidget = () => {
     el.style.height = `${Math.min(el.scrollHeight, COMPOSE_MAX_HEIGHT_PX)}px`;
   }, [draft]);
 
+  // Tracks scroll position while the panel is open — read (via the ref
+  // above) whenever a new turn arrives, so that arrival only auto-scrolls
+  // if the user was already at/near the bottom. Someone scrolled up to
+  // re-read an earlier answer shouldn't get yanked back down the instant a
+  // new one comes in; they get the "New message" pill below instead.
   useEffect(() => {
     if (!open) return;
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    const checkNearBottom = () => {
+      const near =
+        el.scrollHeight - el.scrollTop - el.clientHeight <
+        NEAR_BOTTOM_THRESHOLD_PX;
+      isNearBottomRef.current = near;
+      if (near) setHasNewMessageBelow(false);
+    };
+    checkNearBottom();
+    el.addEventListener("scroll", checkNearBottom, { passive: true });
+    return () => el.removeEventListener("scroll", checkNearBottom);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    if (isNearBottomRef.current) {
+      bottomRef.current?.scrollIntoView({
+        behavior: hasLoadedOnce.current ? "smooth" : "auto",
+        block: "end",
+      });
+    } else if (hasLoadedOnce.current) {
+      // Only surface the pill for a turn that arrived *after* the initial
+      // load, not for "you opened a long conversation already scrolled
+      // somewhere" — there's nothing new to point at in that case.
+      setHasNewMessageBelow(true);
+    }
+    hasLoadedOnce.current = true;
+  }, [
+    open,
+    activeConversationId,
+    conversation.data?.turns.length,
+    pendingQuestion,
+  ]);
+
+  // A different conversation is a different scroll history — the "already
+  // jumped once" flag from the previous one shouldn't carry over and cause
+  // this one to smooth-scroll through everything on its own first render.
+  useEffect(() => {
+    hasLoadedOnce.current = false;
+  }, [activeConversationId]);
+
+  const scrollToBottom = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [open, conversation.data?.turns.length, pendingQuestion]);
+    setHasNewMessageBelow(false);
+  };
 
   useEffect(() => {
     if (open) textareaRef.current?.focus();
@@ -232,7 +303,12 @@ export const AiChatWidget = () => {
       <button
         aria-expanded={open}
         aria-label={open ? "Close AI Assistant" : "Open AI Assistant"}
-        className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card-lg transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_28px_rgba(46,155,82,0.35)] focus-visible:shadow-focus focus-visible:outline-none active:scale-95"
+        // max(1.25rem, safe-area) instead of a plain bottom-5 — on a
+        // notched phone in standalone/PWA mode, the fixed 20px offset sat
+        // partly under the home-indicator gesture bar; this keeps the same
+        // 20px on every other device (env() resolves to 0 where there's no
+        // inset) while clearing the real one where it exists.
+        className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card-lg transition-all duration-200 hover:scale-105 hover:shadow-[0_10px_28px_rgba(46,155,82,0.35)] focus-visible:shadow-focus focus-visible:outline-none active:scale-95"
         type="button"
         onClick={() => (open ? requestClose() : setOpen(true))}
       >
@@ -260,13 +336,11 @@ export const AiChatWidget = () => {
       {open && (
         <div
           className={cn(
-            // Mobile: a near-fullscreen sheet (clears the h-16 sticky navbar,
-            // small margin everywhere else) — the old fixed 380px corner
-            // popup shrank to ~310px on narrow phones, far too tight to read
-            // AI answers in. Desktop (sm+): back to a floating corner card,
-            // just meaningfully larger than before (420–460px vs 380px) so
-            // paragraphs and code/lists in answers have room to breathe.
-            "fixed inset-x-3 bottom-3 top-16 z-40 flex origin-bottom flex-col overflow-hidden rounded-24 border border-brand-100/70 bg-white shadow-[0_8px_24px_rgba(26,25,23,0.10),0_2px_10px_rgba(46,155,82,0.08)]",
+            // Same env()-aware bottom offset as the launcher button — the
+            // full-height mobile sheet's own bottom edge (and the composer
+            // sitting near it) is exactly where a notched phone's home
+            // indicator would otherwise overlap it.
+            "fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] top-16 z-40 flex origin-bottom flex-col overflow-hidden rounded-24 border border-brand-100/70 bg-white shadow-[0_8px_24px_rgba(26,25,23,0.10),0_2px_10px_rgba(46,155,82,0.08)]",
             "sm:inset-x-auto sm:inset-y-auto sm:bottom-[92px] sm:right-5 sm:top-auto sm:h-[min(680px,calc(100vh-8rem))] sm:w-[420px] sm:max-w-[calc(100vw-2.5rem)] sm:origin-bottom-right",
             "lg:w-[460px]",
             closing ? "animate-chat-pop-out" : "animate-chat-pop-in"
@@ -278,26 +352,27 @@ export const AiChatWidget = () => {
             }
           }}
         >
-          <div className="relative flex flex-shrink-0 items-center justify-between border-b border-neutral-100 bg-gradient-to-b from-neutral-50 to-white px-5 py-4">
-            <div className="flex items-center gap-3">
+          <div className="relative flex flex-shrink-0 items-center justify-between gap-2 border-b border-neutral-100 bg-gradient-to-b from-neutral-50 to-white px-5 py-4">
+            <div className="flex min-w-0 items-center gap-3">
               <div className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-chip ring-4 ring-brand-50">
                 <Sparkles size={17} />
               </div>
-              <div>
+              <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <p className="bg-gradient-to-r from-brand-700 to-brand-500 bg-clip-text text-[15px] font-semibold text-transparent">
+                  <p className="truncate bg-gradient-to-r from-brand-700 to-brand-500 bg-clip-text text-[15px] font-semibold text-transparent">
                     RemoteSea Assistant
                   </p>
-                  <span className="relative flex h-1.5 w-1.5">
+                  <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
                     <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-500" />
                   </span>
                 </div>
-                <p className="text-[12.5px] text-neutral-400">
+                <p className="truncate text-[12.5px] text-neutral-400">
                   Ask about hiring policies, or a specific application.
                 </p>
               </div>
             </div>
+
             <div className="flex flex-shrink-0 items-center gap-1">
               <div className="relative" ref={historyRef}>
                 <button
@@ -382,92 +457,107 @@ export const AiChatWidget = () => {
             </div>
           </div>
 
-          <div className="scrollbar-thin min-h-0 flex-1 overflow-y-auto bg-gradient-to-b from-brand-50/40 via-white to-white px-4 py-5 sm:px-5">
-            {!activeConversationId && !pendingQuestion ? (
-              <div className="flex h-full animate-fade-up flex-col items-center justify-center gap-5 py-6 text-center">
-                <div className="relative grid h-14 w-14 place-items-center">
-                  <span className="absolute inset-[-14px] -z-10 animate-pulse rounded-full bg-brand-300/30 blur-xl" />
-                  <div className="grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card ring-8 ring-brand-50">
-                    <Sparkles size={22} />
+          <div className="relative min-h-0 flex-1">
+            <div
+              className="scrollbar-thin h-full overflow-y-auto bg-gradient-to-b from-brand-50/40 via-white to-white px-4 py-5 sm:px-5"
+              ref={scrollContainerRef}
+            >
+              {!activeConversationId && !pendingQuestion ? (
+                <div className="flex h-full animate-fade-up flex-col items-center justify-center gap-5 py-6 text-center">
+                  <div className="relative grid h-14 w-14 place-items-center">
+                    <span className="absolute inset-[-14px] -z-10 animate-pulse rounded-full bg-brand-300/30 blur-xl" />
+                    <div className="grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card ring-8 ring-brand-50">
+                      <Sparkles size={22} />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="mb-1.5 text-[16px] font-semibold text-neutral-900">
+                      Hi{firstName ? `, ${firstName}` : ""} — how can I help?
+                    </p>
+                    <p className="mx-auto max-w-[280px] text-[13.5px] leading-relaxed text-neutral-500">
+                      Ask a question about RemoteSea's hiring policies or
+                      process to get started.
+                    </p>
+                  </div>
+                  <div className="flex w-full flex-col gap-2">
+                    {SUGGESTED_PROMPTS.map((prompt, i) => (
+                      <button
+                        className="group flex animate-fade-up items-center gap-2.5 rounded-12 border border-neutral-200 bg-white px-3.5 py-2.5 text-left text-[13px] text-neutral-700 shadow-chip transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:bg-brand-50 hover:shadow-card focus-visible:shadow-focus focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60"
+                        disabled={sendMessage.isPending}
+                        key={prompt}
+                        style={{ animationDelay: `${i * 60 + 80}ms` }}
+                        type="button"
+                        onClick={() => void handleSend(prompt)}
+                      >
+                        <MessageCircleQuestion
+                          className="flex-shrink-0 text-brand-500"
+                          size={15}
+                        />
+                        <span className="flex-1">{prompt}</span>
+                        <ArrowRight
+                          className="flex-shrink-0 text-neutral-300 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:text-brand-500 group-hover:opacity-100"
+                          size={14}
+                        />
+                      </button>
+                    ))}
                   </div>
                 </div>
-                <div>
-                  <p className="mb-1.5 text-[16px] font-semibold text-neutral-900">
-                    Hi{firstName ? `, ${firstName}` : ""} — how can I help?
-                  </p>
-                  <p className="mx-auto max-w-[280px] text-[13.5px] leading-relaxed text-neutral-500">
-                    Ask a question about RemoteSea's hiring policies or process
-                    to get started.
-                  </p>
+              ) : conversation.isLoading && activeConversationId ? (
+                <div className="space-y-3">
+                  <div className="flex justify-end">
+                    <Skeleton className="h-9 w-2/3 rounded-16 rounded-br-4" />
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Skeleton className="mt-0.5 h-7 w-7 flex-shrink-0 rounded-full" />
+                    <Skeleton className="h-16 w-3/4 rounded-16 rounded-tl-4" />
+                  </div>
                 </div>
-                <div className="flex w-full flex-col gap-2">
-                  {SUGGESTED_PROMPTS.map((prompt, i) => (
-                    <button
-                      className="group flex animate-fade-up items-center gap-2.5 rounded-12 border border-neutral-200 bg-white px-3.5 py-2.5 text-left text-[13px] text-neutral-700 shadow-chip transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:bg-brand-50 hover:shadow-card focus-visible:shadow-focus focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60"
-                      disabled={sendMessage.isPending}
-                      key={prompt}
-                      style={{ animationDelay: `${i * 60 + 80}ms` }}
-                      type="button"
-                      onClick={() => void handleSend(prompt)}
-                    >
-                      <MessageCircleQuestion
-                        className="flex-shrink-0 text-brand-500"
-                        size={15}
-                      />
-                      <span className="flex-1">{prompt}</span>
-                      <ArrowRight
-                        className="flex-shrink-0 text-neutral-300 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:text-brand-500 group-hover:opacity-100"
-                        size={14}
-                      />
-                    </button>
+              ) : conversation.isError ? (
+                <div className="flex h-full flex-col items-center justify-center gap-3 py-16 text-center">
+                  <div className="grid h-12 w-12 place-items-center rounded-full bg-amber-50 text-amber-600">
+                    <MessageCircleQuestion size={20} />
+                  </div>
+                  <p className="font-medium text-neutral-900">
+                    Couldn't load conversation
+                  </p>
+                  <p className="text-sm text-neutral-500">
+                    Something went wrong loading this conversation.
+                  </p>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => conversation.refetch()}
+                  >
+                    Try again
+                  </Button>
+                </div>
+              ) : (
+                <div aria-live="polite" role="log">
+                  {conversation.data?.turns.map((t) => (
+                    <AnswerBubble
+                      answer={t.answer}
+                      key={t.id}
+                      question={t.question}
+                      sources={t.sources}
+                    />
                   ))}
+                  {pendingQuestion && (
+                    <AnswerBubble pending question={pendingQuestion} />
+                  )}
                 </div>
-              </div>
-            ) : conversation.isLoading && activeConversationId ? (
-              <div className="space-y-3">
-                <div className="flex justify-end">
-                  <Skeleton className="h-9 w-2/3 rounded-16 rounded-br-4" />
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <Skeleton className="mt-0.5 h-7 w-7 flex-shrink-0 rounded-full" />
-                  <Skeleton className="h-16 w-3/4 rounded-16 rounded-tl-4" />
-                </div>
-              </div>
-            ) : conversation.isError ? (
-              <div className="flex h-full flex-col items-center justify-center gap-3 py-16 text-center">
-                <div className="grid h-12 w-12 place-items-center rounded-full bg-amber-50 text-amber-600">
-                  <MessageCircleQuestion size={20} />
-                </div>
-                <p className="font-medium text-neutral-900">
-                  Couldn't load conversation
-                </p>
-                <p className="text-sm text-neutral-500">
-                  Something went wrong loading this conversation.
-                </p>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => conversation.refetch()}
-                >
-                  Try again
-                </Button>
-              </div>
-            ) : (
-              <div aria-live="polite" role="log">
-                {conversation.data?.turns.map((t) => (
-                  <AnswerBubble
-                    answer={t.answer}
-                    key={t.id}
-                    question={t.question}
-                    sources={t.sources}
-                  />
-                ))}
-                {pendingQuestion && (
-                  <AnswerBubble pending question={pendingQuestion} />
-                )}
-              </div>
+              )}
+              <div ref={bottomRef} />
+            </div>
+            {hasNewMessageBelow && (
+              <button
+                className="absolute bottom-3 left-1/2 flex -translate-x-1/2 animate-fade-up items-center gap-1.5 rounded-full bg-neutral-900/85 px-3.5 py-2 text-[12px] font-medium text-white shadow-card-lg backdrop-blur-sm transition-colors hover:bg-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
+                type="button"
+                onClick={scrollToBottom}
+              >
+                <ArrowDown size={12} />
+                New message
+              </button>
             )}
-            <div ref={bottomRef} />
           </div>
 
           <div className="flex-shrink-0 px-4 pb-1 sm:px-5">
