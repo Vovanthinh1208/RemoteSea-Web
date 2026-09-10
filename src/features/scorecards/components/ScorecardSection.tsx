@@ -28,7 +28,7 @@ const RECOMMENDATION_VARIANTS: Record<ScorecardRecommendation, BadgeVariant> = {
 // breakdown row and the per-scorecard badges read as the same color
 // language rather than two unrelated palettes.
 const RECOMMENDATION_DOT_COLOR: Record<ScorecardRecommendation, string> = {
-  STRONG_YES: "bg-emerald-500",
+  STRONG_YES: "bg-brand-900",
   YES: "bg-brand-500",
   NO: "bg-amber-500",
   STRONG_NO: "bg-amber-500",

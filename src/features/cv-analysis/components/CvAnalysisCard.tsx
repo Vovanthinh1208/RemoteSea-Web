@@ -42,13 +42,17 @@ interface CvAnalysisCardProps {
   talentName: string;
 }
 
+// Both real tiers stay in the brand-green family (900 vs 600), not a
+// second emerald hue for "Strong fit" — same "shade carries the hierarchy,
+// not a new hue" fix as TIER_BADGE_CLASS (src/utils/color.ts) and Badge's
+// "success" variant (src/components/ui/badge.tsx).
 const scoreTier = (
   score: number
 ): { text: string; bar: string; label: string } => {
   if (score >= 75) {
     return {
-      text: "text-emerald-600",
-      bar: "bg-emerald-500",
+      text: "text-brand-900",
+      bar: "bg-brand-900",
       label: "Strong fit",
     };
   }
@@ -184,9 +188,13 @@ export const CvAnalysisCard = ({
 
       {(data.strengths.length > 0 || data.gaps.length > 0) && (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {/* brand, not emerald — this already sits next to "Gaps" in
+              amber below, a real 2-color positive/caution contrast; brand
+              is this app's actual "positive" hue, so emerald here was a
+              second, unrelated green rather than adding distinction. */}
           {data.strengths.length > 0 && (
-            <div className="rounded-10 bg-emerald-50/60 p-2.5">
-              <p className="mb-1.5 text-[10.5px] font-semibold uppercase tracking-wider text-emerald-700">
+            <div className="rounded-10 bg-brand-50/60 p-2.5">
+              <p className="mb-1.5 text-[10.5px] font-semibold uppercase tracking-wider text-brand-700">
                 Strengths
               </p>
               <ul className="space-y-1">
@@ -196,7 +204,7 @@ export const CvAnalysisCard = ({
                     key={`${i}-${s}`}
                   >
                     <Check
-                      className="mt-0.5 flex-shrink-0 text-emerald-600"
+                      className="mt-0.5 flex-shrink-0 text-brand-600"
                       size={11}
                     />
                     {s}

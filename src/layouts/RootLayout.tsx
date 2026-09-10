@@ -1,16 +1,28 @@
-import { Suspense, useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import { Outlet, useLocation, useNavigationType } from "react-router-dom";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { FullPageLoader } from "@/components/ui/spinner";
 import { OfflineBanner } from "@/components/shared/OfflineBanner";
-import { AiChatWidget } from "@/features/ai-chat/components/AiChatWidget";
+import { useAuth } from "@/contexts/AuthContext";
+
+// Lazy, not a static import: AiChatWidget pulls in react-markdown +
+// remark-breaks (AiMarkdown.tsx) — that chain alone put the boot-critical
+// entry bundle 91% over its own CI budget (.size-limit.json), for a widget
+// that's only relevant to authenticated users in the first place (see the
+// `user &&` gate below). Named export, not default, hence the `.then`.
+const AiChatWidget = lazy(() =>
+  import("@/features/ai-chat/components/AiChatWidget").then((m) => ({
+    default: m.AiChatWidget,
+  }))
+);
 
 export const RootLayout = () => {
   const { pathname } = useLocation();
   const navigationType = useNavigationType();
   const mainRef = useRef<HTMLElement>(null);
+  const { user } = useAuth();
 
   // Without this, a screen-reader user clicking a nav link gets no indication
   // navigation happened — focus stays wherever it was on the old page. Skipped
@@ -56,7 +68,14 @@ export const RootLayout = () => {
         </ErrorBoundary>
       </main>
       <Footer />
-      <AiChatWidget />
+      {/* Gated on `user`, not just lazy — this also means the widget's own
+          useConversations() query never fires for a logged-out visitor,
+          not just that its code doesn't load for one. */}
+      {user && (
+        <Suspense fallback={null}>
+          <AiChatWidget />
+        </Suspense>
+      )}
     </>
   );
 };

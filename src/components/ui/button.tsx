@@ -15,6 +15,13 @@ export const buttonVariants = cva(
         ghost:
           "bg-transparent text-neutral-600 border-transparent hover:bg-neutral-100 hover:text-neutral-900",
         soft: "bg-neutral-100 text-neutral-900 border-neutral-200 hover:bg-white hover:border-neutral-300",
+        // For a destructive/irreversible action (delete, suspend, reject) —
+        // added because ConfirmAction.tsx (src/components/shared), the one
+        // shared confirm-step primitive used across 9 features, had been
+        // hand-rolling `bg-red-600 hover:bg-red-700` on a raw <button>
+        // instead of reaching for a variant here, since none existed yet.
+        danger:
+          "bg-danger-600 text-white border-transparent hover:bg-danger-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]",
       },
       size: {
         sm: "h-8 px-3 text-[13px]",

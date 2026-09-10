@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Check, Loader2, Mail, X } from "lucide-react";
+import { Check, Loader2, Mail, RefreshCw, X } from "lucide-react";
 import {
   useMyInvitations,
   useRespondToInvitation,
@@ -12,11 +12,34 @@ import type { Invitation } from "@/types/invitation";
 const DASHBOARD_INVITATIONS_LIMIT = 4;
 
 export const InvitationsPanel = () => {
-  const { data: invitations } = useMyInvitations();
+  const { data: invitations, isError, refetch } = useMyInvitations();
   const respond = useRespondToInvitation();
   const runWithToast = useToastMutation();
   const pending = (invitations ?? []).filter((i) => i.status === "PENDING");
   const visible = pending.slice(0, DASHBOARD_INVITATIONS_LIMIT);
+
+  // Checked before the empty-return below, deliberately: `invitations` is
+  // undefined on a fetch failure too, so `pending` comes out empty either
+  // way — without this, a real pending invitation silently disappeared
+  // behind a plain network error, indistinguishable from actually having
+  // none. Loading intentionally still renders nothing (unchanged) — this
+  // panel's existing "invisible until there's something to show" design
+  // for the genuinely-empty case is fine; only the error case was silently
+  // misreporting itself as that same "nothing to show" state.
+  if (isError) {
+    return (
+      <div className="mb-5 flex items-center justify-between gap-3 overflow-hidden rounded-16 border border-neutral-100 bg-white px-5 py-4 text-[12.5px] text-neutral-400 shadow-card">
+        Couldn't load your invitations.
+        <button
+          className="inline-flex flex-shrink-0 items-center gap-1 rounded-8 font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
+          type="button"
+          onClick={() => refetch()}
+        >
+          <RefreshCw size={11} /> Retry
+        </button>
+      </div>
+    );
+  }
 
   if (pending.length === 0) return null;
 
@@ -54,8 +77,12 @@ export const InvitationsPanel = () => {
             <p className="text-[13px] font-medium text-neutral-900">
               {invitation.employer.companyName}
             </p>
+            {/* block, not left inline — text-overflow: ellipsis (from
+                truncate) doesn't reliably apply to a plain inline box like
+                this Link renders as by default, so a long job title could
+                silently overflow the card instead of ellipsizing. */}
             <Link
-              className="truncate text-[11.5px] text-neutral-500 hover:text-brand-700 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
+              className="block truncate text-[11.5px] text-neutral-500 hover:text-brand-700 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.jobDetail(invitation.job.id)}
             >
               invited you to apply — {invitation.job.title}

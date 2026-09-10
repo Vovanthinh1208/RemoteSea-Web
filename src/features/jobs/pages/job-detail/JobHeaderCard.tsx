@@ -55,8 +55,12 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {job.isFeatured && <Badge variant="featured">⭐ Featured</Badge>}
+          {/* variant="positive" (brand green), not "info" (stock blue) —
+              same consolidation as JobCard.tsx: this and "Verified
+              employer" above are the same underlying trust signal, so they
+              share one accent instead of two. */}
           {isVerifiedJob(job) && (
-            <Badge variant="info">
+            <Badge variant="positive">
               <BadgeCheck size={10} /> Verified job
             </Badge>
           )}

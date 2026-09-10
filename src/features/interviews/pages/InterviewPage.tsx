@@ -30,15 +30,25 @@ export const InterviewPage = () => {
         title={title}
       />
 
-      <div className="rounded-16 border border-neutral-100 bg-white p-5">
-        {isLoading ? (
+      {/* The CONFIRMED branch below deliberately does NOT get this
+          card wrapper — UpcomingInterviewCard/ScorecardSection/ReviewCTA
+          are each already their own full bordered card, so wrapping them
+          in one more wasn't extra grouping, just a fourth stacked frame.
+          Every other branch here renders plain content (a form, a status
+          message, a loading/error placeholder) that still benefits from
+          one page-level card, so each keeps its own copy of the wrapper
+          rather than sharing a new component just for this. */}
+      {isLoading ? (
+        <div className="rounded-16 border border-neutral-100 bg-white p-5">
           <div className="space-y-2">
             <Skeleton className="h-3 w-24" />
             <Skeleton className="h-5 w-40" />
             <Skeleton className="h-3.5 w-28" />
             <Skeleton className="mt-3 h-9 w-32 rounded-8" />
           </div>
-        ) : isError ? (
+        </div>
+      ) : isError ? (
+        <div className="rounded-16 border border-neutral-100 bg-white p-5">
           <EmptyState
             action={
               <Button size="sm" variant="outline" onClick={() => refetch()}>
@@ -48,8 +58,10 @@ export const InterviewPage = () => {
             description="Something went wrong loading this interview."
             title="Couldn't load interview details"
           />
-        ) : !data?.interview ? (
-          isEmployerViewer ? (
+        </div>
+      ) : !data?.interview ? (
+        <div className="rounded-16 border border-neutral-100 bg-white p-5">
+          {isEmployerViewer ? (
             <ProposeInterviewForm
               applicationId={applicationId}
               existing={null}
@@ -59,26 +71,28 @@ export const InterviewPage = () => {
               description="Waiting for the employer to propose interview times."
               title="No interview scheduled yet"
             />
-          )
-        ) : data.interview.status === "CONFIRMED" ? (
-          <div className="space-y-4">
-            <UpcomingInterviewCard interview={data.interview} />
-            {isEmployerViewer && (
-              <ScorecardSection
-                applicationId={applicationId}
-                interviewOccurred={hasOccurred(data.interview.confirmedSlot)}
-                talentName={data.talentName ?? "the candidate"}
-              />
-            )}
-            <ReviewCTA
+          )}
+        </div>
+      ) : data.interview.status === "CONFIRMED" ? (
+        <div className="space-y-4">
+          <UpcomingInterviewCard interview={data.interview} />
+          {isEmployerViewer && (
+            <ScorecardSection
               applicationId={applicationId}
-              revieweeName={
-                (isEmployerViewer ? data.talentName : data.employerName) ??
-                (isEmployerViewer ? "the candidate" : "the employer")
-              }
+              interviewOccurred={hasOccurred(data.interview.confirmedSlot)}
+              talentName={data.talentName ?? "the candidate"}
             />
-          </div>
-        ) : isEmployerViewer ? (
+          )}
+          <ReviewCTA
+            applicationId={applicationId}
+            revieweeName={
+              (isEmployerViewer ? data.talentName : data.employerName) ??
+              (isEmployerViewer ? "the candidate" : "the employer")
+            }
+          />
+        </div>
+      ) : isEmployerViewer ? (
+        <div className="rounded-16 border border-neutral-100 bg-white p-5">
           <div className="space-y-5">
             <div className="rounded-10 border border-amber-200 bg-amber-50 p-3.5 text-[12.5px] text-amber-700">
               Waiting on the candidate to confirm one of these times. You can
@@ -89,13 +103,15 @@ export const InterviewPage = () => {
               existing={data.interview}
             />
           </div>
-        ) : (
+        </div>
+      ) : (
+        <div className="rounded-16 border border-neutral-100 bg-white p-5">
           <ConfirmInterviewForm
             applicationId={applicationId}
             interview={data.interview}
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

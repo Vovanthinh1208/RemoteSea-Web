@@ -42,3 +42,47 @@ export const formatResponseTime = (hours: number): string => {
   if (hours < HOURS_PER_DAY) return `${Math.round(hours)}h`;
   return `${Math.round((hours / HOURS_PER_DAY) * 10) / 10}d`;
 };
+
+/**
+ * A work-experience start/end date as "Jan 2024" — was defined identically
+ * in both PublicTalentProfilePage.tsx and profile-form/ExperienceSection.tsx
+ * (the display and edit views of the same experience data). UTC, not local
+ * time zone: these are month/year-only values with no real day-of-month
+ * meaning, so a local-time read near a month boundary shouldn't be able to
+ * shift which month renders.
+ */
+export const formatMonthYear = (iso: string): string =>
+  new Date(iso).toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+
+/**
+ * A work-experience span as "2 yrs 3 mo" (falls back to "< 1 mo"). Only
+ * used on the public profile page today, but generic enough — and close
+ * enough in kind to formatMonthYear above — to live here rather than as a
+ * page-local helper.
+ */
+export const formatDuration = (
+  startIso: string,
+  endIso: string | null
+): string => {
+  const start = new Date(startIso);
+  const end = endIso ? new Date(endIso) : new Date();
+  const totalMonths = Math.max(
+    0,
+    (end.getUTCFullYear() - start.getUTCFullYear()) * 12 +
+      (end.getUTCMonth() - start.getUTCMonth())
+  );
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+  return (
+    [
+      years ? `${years} yr${years > 1 ? "s" : ""}` : null,
+      months ? `${months} mo` : null,
+    ]
+      .filter(Boolean)
+      .join(" ") || "< 1 mo"
+  );
+};

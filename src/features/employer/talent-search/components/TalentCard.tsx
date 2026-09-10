@@ -56,7 +56,7 @@ export const TalentCard = memo(function TalentCard({
 
         <h3 className="mb-2 text-[15px] font-semibold leading-snug text-neutral-900">
           <Link
-            className="transition-colors after:absolute after:inset-0 group-hover:text-brand-700"
+            className="rounded-4 transition-colors after:absolute after:inset-0 focus-visible:shadow-focus focus-visible:outline-none group-hover:text-brand-700"
             to={ROUTES.talentProfile(talent.slug)}
           >
             {talent.headline ?? LEVEL_LABELS[talent.level]}
@@ -89,8 +89,14 @@ export const TalentCard = memo(function TalentCard({
         <button
           className={cn(
             "relative z-10 inline-flex items-center gap-1 rounded-8 px-2 py-1 text-[11px] font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed",
+            // neutral, not emerald — this button sits right below
+            // MatchBadge/AvailabilityBadge on the same card (both already
+            // brand-family, see TIER_BADGE_CLASS), so a third unrelated
+            // green here reintroduced the exact color-pileup those two
+            // were just fixed for. Neutral also reads correctly as "done/
+            // inactive," matching this button's disabled state once invited.
             invited
-              ? "bg-emerald-50 text-emerald-700"
+              ? "bg-neutral-100 text-neutral-500"
               : "bg-brand-50 text-brand-700 hover:bg-brand-100 disabled:opacity-50"
           )}
           disabled={!onInvite || invited || inviting}

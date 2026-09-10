@@ -152,7 +152,11 @@ export const PreferencesSection = ({
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
         Employment type
       </p>
-      <div className="mb-6 divide-y divide-neutral-50 rounded-16 border border-neutral-100 bg-white px-4">
+      {/* No border/bg wrapper here — the uppercase label above each group
+          already separates it from its neighbors; a bordered/backgrounded
+          box around each one, nested inside this section's own bordered
+          card, was doubled framing with no extra information. */}
+      <div className="mb-6 divide-y divide-neutral-50">
         <ToggleRow
           desc="Standard, salaried, employment contract via EOR or direct."
           on={employmentTypes.includes("FULL_TIME")}
@@ -176,7 +180,11 @@ export const PreferencesSection = ({
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
         Timezone overlap
       </p>
-      <div className="mb-6 divide-y divide-neutral-50 rounded-16 border border-neutral-100 bg-white px-4">
+      {/* No border/bg wrapper here — the uppercase label above each group
+          already separates it from its neighbors; a bordered/backgrounded
+          box around each one, nested inside this section's own bordered
+          card, was doubled framing with no extra information. */}
+      <div className="mb-6 divide-y divide-neutral-50">
         <ToggleRow
           desc="1 hour ahead of Vietnam. Most SEA startups operate here."
           on={timezoneOverlap.includes("SG_HOURS")}
@@ -214,7 +222,7 @@ export const PreferencesSection = ({
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
         Notifications
       </p>
-      <div className="divide-y divide-neutral-50 rounded-16 border border-neutral-100 bg-white px-4">
+      <div className="divide-y divide-neutral-50">
         <ToggleRow
           desc="Top 5 matches for your saved filters, every Monday."
           on={notificationPrefs?.weeklyDigest ?? true}

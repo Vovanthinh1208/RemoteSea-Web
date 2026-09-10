@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 
 interface ConfirmActionProps {
@@ -42,10 +43,12 @@ export const ConfirmAction = ({
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-[12px] text-neutral-600">{message}</span>
-        <button
-          className="rounded-8 bg-red-600 px-2.5 py-1 text-[12px] font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-60"
+        <Button
           disabled={isPending}
+          isLoading={isPending}
+          size="sm"
           type="button"
+          variant="danger"
           onClick={async () => {
             await onConfirm(note.trim() || undefined);
             setIsConfirming(false);
@@ -53,17 +56,19 @@ export const ConfirmAction = ({
           }}
         >
           {isPending ? pendingLabel : confirmLabel}
-        </button>
-        <button
-          className="rounded-8 border border-neutral-200 px-2.5 py-1 text-[12px] text-neutral-600 transition-colors hover:bg-neutral-50"
+        </Button>
+        <Button
+          className="border-neutral-200 hover:bg-neutral-50"
+          size="sm"
           type="button"
+          variant="ghost"
           onClick={() => {
             setIsConfirming(false);
             setNote("");
           }}
         >
           Cancel
-        </button>
+        </Button>
       </div>
       {notePlaceholder !== undefined && (
         <textarea

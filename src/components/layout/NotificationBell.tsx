@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { timeAgoShort } from "@/utils/time";
 import { cn } from "@/utils/cn";
 import { EVENT_ICON } from "@/utils/notification-icons";
+import { useToastMutation } from "@/hooks/useToastMutation";
 
 const PANEL_ITEM_LIMIT = 8;
 const PANEL_SKELETON_COUNT = 3;
@@ -27,6 +28,7 @@ export const NotificationBell = () => {
   const { data, isLoading } = useNotifications(1, PANEL_ITEM_LIMIT);
   const markRead = useMarkNotificationRead();
   const markAllRead = useMarkAllNotificationsRead();
+  const runWithToast = useToastMutation();
   const notifications = data?.notifications ?? [];
 
   useEffect(() => {
@@ -45,8 +47,15 @@ export const NotificationBell = () => {
     };
   }, [open]);
 
+  // Same fix as NotificationRow.tsx's own handleClick — a bare .mutate()
+  // here left a failed mark-read (which optimistically reverts, see
+  // useMarkNotificationRead) with no visible explanation.
   const handleRowClick = (notification: Notification) => {
-    if (!notification.readAt) markRead.mutate(notification.id);
+    if (!notification.readAt) {
+      void runWithToast(() => markRead.mutateAsync(notification.id), {
+        error: "Couldn't mark as read",
+      });
+    }
     setOpen(false);
     if (notification.link) navigate(notification.link);
   };
@@ -79,10 +88,14 @@ export const NotificationBell = () => {
             </span>
             {unreadCount > 0 && (
               <button
-                className="rounded-8 text-[12.5px] text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
+                className="rounded-8 text-[12.5px] text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
                 disabled={markAllRead.isPending}
                 type="button"
-                onClick={() => markAllRead.mutate()}
+                onClick={() =>
+                  void runWithToast(() => markAllRead.mutateAsync(), {
+                    error: "Couldn't mark all as read",
+                  })
+                }
               >
                 Mark all read
               </button>

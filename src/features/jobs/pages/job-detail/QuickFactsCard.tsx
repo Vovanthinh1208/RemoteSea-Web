@@ -1,4 +1,4 @@
-import { Clock, FileText, MapPin, Monitor, Users } from "lucide-react";
+import { Clock, FileText, Globe, Monitor, Repeat } from "lucide-react";
 import { JOB_TYPE_LABELS } from "@/features/jobs/jobs.utils";
 import type { Job } from "@/types/job";
 
@@ -17,7 +17,9 @@ export const QuickFactsCard = ({ job }: QuickFactsCardProps) => {
 
   const facts = [
     {
-      icon: <MapPin size={13} />,
+      // Globe, not MapPin — this row is about visa/work-authorization
+      // status, not a place; MapPin conventionally signals location.
+      icon: <Globe size={13} />,
       k: "Visa needed",
       v: "No · remote",
     },
@@ -33,7 +35,9 @@ export const QuickFactsCard = ({ job }: QuickFactsCardProps) => {
       v: hasEquipmentBenefit ? "Provided" : "Self-supplied",
     },
     {
-      icon: <Users size={13} />,
+      // Repeat, not Users — this row is a count of process steps, not team
+      // size; Users conventionally signals people/headcount.
+      icon: <Repeat size={13} />,
       k: "Interview rounds",
       v: DEFAULT_INTERVIEW_ROUNDS,
     },

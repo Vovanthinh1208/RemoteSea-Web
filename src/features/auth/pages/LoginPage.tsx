@@ -27,12 +27,7 @@ export const LoginPage = () => {
   return (
     <div className="grid min-h-[calc(100vh-64px)] lg:grid-cols-2">
       {/* Left panel */}
-      <div
-        className="hidden flex-col justify-between p-12 text-white lg:flex"
-        style={{
-          background: "linear-gradient(160deg, #0D3D1F 0%, #1F7A3D 100%)",
-        }}
-      >
+      <div className="auth-panel-gradient hidden flex-col justify-between p-12 text-white lg:flex">
         <div className="flex items-center gap-2 text-lg font-semibold">
           <span className="grid h-7 w-7 place-items-center rounded-8 bg-white/10 pb-0.5 font-serif text-xl italic leading-none">
             R

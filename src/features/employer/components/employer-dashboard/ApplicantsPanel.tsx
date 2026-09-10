@@ -378,10 +378,19 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
       ).length,
     },
   ];
-  const filtered =
-    tab === "all"
-      ? applicants
-      : applicants.filter((a) => APPLICANT_STATUS[a.status] === tab);
+  // Memoized on its own, not just inline above the `list` useMemo below —
+  // an inline `.filter()` here produced a fresh array every render even
+  // when `applicants`/`tab` hadn't changed, which meant `list`'s own
+  // useMemo (keyed on `filtered`) never actually skipped the sort, and
+  // that unstable `visible` array cascaded into useApplicantHiringSignals'
+  // own internal memoization too.
+  const filtered = useMemo(
+    () =>
+      tab === "all"
+        ? applicants
+        : applicants.filter((a) => APPLICANT_STATUS[a.status] === tab),
+    [applicants, tab]
+  );
   const list = useMemo(
     () =>
       sort === "match"
@@ -407,8 +416,18 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
     [updateStatus, runWithToast]
   );
 
-  const visible = list.slice(0, RECENT_APPLICANTS_DISPLAY_COUNT);
-  const eligibleVisible = visible.filter((a) => isRejectable(a.status));
+  // Memoized for the same reason `filtered` above is: `.slice()` on an
+  // unchanged `list` still returns a new array every render, and that
+  // unstable reference was passed straight into useApplicantHiringSignals,
+  // whose own useMemo (keyed on this array) never got to skip work.
+  const visible = useMemo(
+    () => list.slice(0, RECENT_APPLICANTS_DISPLAY_COUNT),
+    [list]
+  );
+  const eligibleVisible = useMemo(
+    () => visible.filter((a) => isRejectable(a.status)),
+    [visible]
+  );
   const hiringSignals = useApplicantHiringSignals(visible);
   const { user } = useAuth();
 
@@ -484,8 +503,12 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
     }
   };
 
+  // rounded-16, not rounded-20 — matches EmployerDashboardSkeleton's
+  // placeholder for this exact panel (same fix as ListingsPanel.tsx); was
+  // rounded-20 on the real card, so the corner radius visibly snapped the
+  // instant real data loaded.
   return (
-    <div className="rounded-20 border border-neutral-100 bg-white p-5">
+    <div className="rounded-16 border border-neutral-100 bg-white p-5">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-[14px] font-semibold text-neutral-900">
           Recent applicants

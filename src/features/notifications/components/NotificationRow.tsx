@@ -4,6 +4,7 @@ import { EVENT_BULLET_CLASS, EVENT_ICON } from "@/utils/notification-icons";
 import type { Notification } from "@/types/notification";
 import { timeAgoLong } from "@/utils/time";
 import { cn } from "@/utils/cn";
+import { useToastMutation } from "@/hooks/useToastMutation";
 
 export const NotificationRow = ({
   notification,
@@ -11,12 +12,21 @@ export const NotificationRow = ({
   notification: Notification;
 }) => {
   const markRead = useMarkNotificationRead();
+  const runWithToast = useToastMutation();
   const navigate = useNavigate();
   const isUnread = !notification.readAt;
   const TypeIcon = EVENT_ICON[notification.type];
 
+  // Was a bare markRead.mutate() — the optimistic update (see
+  // useMarkNotificationRead's onMutate/onError) rolled the row visually
+  // back to unread on failure, but nothing told the user *why* it reverted;
+  // a transient failure looked identical to the click not registering.
   const handleClick = () => {
-    if (isUnread) markRead.mutate(notification.id);
+    if (isUnread) {
+      void runWithToast(() => markRead.mutateAsync(notification.id), {
+        error: "Couldn't mark as read",
+      });
+    }
     if (notification.link) navigate(notification.link);
   };
 

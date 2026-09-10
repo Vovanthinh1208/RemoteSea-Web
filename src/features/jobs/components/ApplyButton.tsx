@@ -128,8 +128,13 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
   // Inline expand, not a modal — no Dialog/Sheet primitive exists anywhere in
   // this codebase (see ReportJobForm's identical rationale), and this form is
   // self-contained: JobDetailPage doesn't need to know it opened.
+  // No border here — ApplyCard.tsx (the only place this renders) is
+  // already its own bordered card; a second full border around this form,
+  // nested directly inside it, doubled the framing. bg-white stays: form
+  // fields need that contrast against ApplyCard's brand-tinted background
+  // to stay legible, which a border alone doesn't provide.
   return (
-    <div className="mb-2.5 space-y-3 rounded-12 border border-neutral-200 bg-white p-4">
+    <div className="mb-2.5 space-y-3 rounded-12 bg-white p-4">
       <div>
         <p className="mb-1.5 text-[13px] font-medium text-neutral-700">
           Resume

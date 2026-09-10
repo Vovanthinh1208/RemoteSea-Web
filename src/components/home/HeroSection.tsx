@@ -57,8 +57,14 @@ export const HeroSection = ({ featuredJobs }: HeroSectionProps) => (
         </div>
 
         <div className="flex items-center gap-3 text-sm text-neutral-400">
+          {/* Two brand tones, not four unrelated hues (amber, brand-green,
+              a stock blue outside this project's palette, and neutral) —
+              purely decorative "diverse people" avatars, so the color
+              itself carries no meaning worth spending 4 accents on. Still
+              4 circles (the "and more" social-proof read stays intact),
+              just alternating between 2 tones instead of 4.  */}
           <div className="flex -space-x-1.5">
-            {["#F59E0B", "#2E9B52", "#2563EB", "#9B9690"].map((c, i) => (
+            {["#2E9B52", "#6DBF82", "#2E9B52", "#6DBF82"].map((c, i) => (
               <span
                 className="h-7 w-7 rounded-full border-2 border-neutral-50"
                 key={i}

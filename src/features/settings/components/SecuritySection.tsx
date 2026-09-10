@@ -64,7 +64,11 @@ export const SecuritySection = () => {
       <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
         Active sessions
       </p>
-      <div className="mb-3 divide-y divide-neutral-50 overflow-hidden rounded-16 border border-neutral-100">
+      {/* No border here — same reasoning as TwoFactorSection.tsx just
+          above: this already sits inside SecuritySection's own bordered
+          card, so a second full frame around the row list was doubled,
+          not extra grouping. */}
+      <div className="mb-3 divide-y divide-neutral-50">
         {sessions?.map((s) => {
           const Icon = isMobileDevice(s.device) ? Globe : Laptop;
           return (

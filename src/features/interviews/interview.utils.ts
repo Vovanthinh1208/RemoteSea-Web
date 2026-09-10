@@ -1,3 +1,4 @@
+import { dayKeyOf, relativeDayLabel } from "@/utils/time";
 import type { UpcomingInterview } from "@/types/interview";
 
 export const DURATION_OPTIONS = [15, 30, 45, 60, 90];
@@ -37,26 +38,6 @@ export const formatTime = (iso: string) =>
     minute: "2-digit",
   });
 
-const dayKeyOf = (d: Date): string =>
-  `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-
-const dayLabel = (iso: string): string => {
-  const target = new Date(iso);
-  const now = new Date();
-  if (dayKeyOf(target) === dayKeyOf(now)) return "Today";
-  const tomorrow = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() + 1
-  );
-  if (dayKeyOf(target) === dayKeyOf(tomorrow)) return "Tomorrow";
-  return target.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  });
-};
-
 export interface InterviewDayGroup {
   key: string;
   label: string;
@@ -80,7 +61,7 @@ export const groupInterviewsByDay = (
     } else {
       groups.push({
         key,
-        label: dayLabel(interview.confirmedSlot),
+        label: relativeDayLabel(interview.confirmedSlot, "tomorrow"),
         interviews: [interview],
       });
     }

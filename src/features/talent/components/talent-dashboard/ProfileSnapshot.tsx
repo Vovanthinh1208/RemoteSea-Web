@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Briefcase, Clock, MapPin } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMyTalentProfile } from "@/features/talent/talent.queries";
 import { ROUTES } from "@/constants/routes";
@@ -29,34 +29,34 @@ export const ProfileSnapshot = () => {
           Edit profile <ArrowRight size={12} />
         </Link>
       </div>
+      {/* Plain label/value rows, no icons — matches the same class of
+          metadata on the public profile's own Quick Facts panel
+          (PublicTalentProfilePage.tsx), where "Based in"/"Timezone" already
+          say what they are; MapPin/Clock/Briefcase added no information the
+          label didn't already state. */}
       <div className="border-t border-neutral-100">
         {[
           {
-            icon: MapPin,
             label: "Based in",
             value: profile?.location || "—",
           },
           {
-            icon: Clock,
             label: "Timezone",
             value: profile?.timezone || "—",
           },
           {
-            icon: Briefcase,
             label: "Expecting",
             value:
               profile?.desiredSalaryMin && profile.desiredSalaryMax
                 ? `${formatSalaryRange(profile.desiredSalaryMin, profile.desiredSalaryMax)}/mo`
                 : "—",
           },
-        ].map(({ icon: Icon, label, value }) => (
+        ].map(({ label, value }) => (
           <div
             className="flex items-center justify-between border-b border-neutral-50 px-4 py-2.5 last:border-none"
             key={label}
           >
-            <span className="flex items-center gap-1.5 text-[12px] text-neutral-400">
-              <Icon size={12} /> {label}
-            </span>
+            <span className="text-[12px] text-neutral-400">{label}</span>
             <span className="text-[12px] font-medium text-neutral-700">
               {value}
             </span>

@@ -1,4 +1,5 @@
 import { cn } from "@/utils/cn";
+import { TIER_BADGE_CLASS } from "@/utils/color";
 import type { MatchResult } from "@/features/matching/match.util";
 
 interface MatchBadgeProps {
@@ -10,11 +11,9 @@ const HIGH_MATCH_THRESHOLD = 75;
 const MID_MATCH_THRESHOLD = 50;
 
 const tierClass = (score: number) => {
-  if (score >= HIGH_MATCH_THRESHOLD)
-    return "border-emerald-100 bg-emerald-50 text-emerald-700";
-  if (score >= MID_MATCH_THRESHOLD)
-    return "border-brand-100 bg-brand-50 text-brand-700";
-  return "border-neutral-200 bg-neutral-100 text-neutral-500";
+  if (score >= HIGH_MATCH_THRESHOLD) return TIER_BADGE_CLASS.high;
+  if (score >= MID_MATCH_THRESHOLD) return TIER_BADGE_CLASS.mid;
+  return TIER_BADGE_CLASS.low;
 };
 
 const tooltipFor = (match: MatchBadgeProps["match"]): string | undefined => {

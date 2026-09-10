@@ -41,6 +41,23 @@ const config: Config = {
           600: "#D97706",
           700: "#B45309",
         },
+        // No token existed for error/destructive UI — every author reaching
+        // for red independently fell back to Tailwind's stock `red-*` scale
+        // (39 files, per audit), bypassing this token file entirely the same
+        // way the missing brand-300/500 and rounded-20 gaps above did.
+        // Values are Tailwind's own default red palette (not invented) so
+        // existing `red-*` usage and this token render identically —
+        // formalizes the vocabulary going forward without a wide, separate
+        // repaint of every existing call site.
+        danger: {
+          50: "#FEF2F2",
+          100: "#FEE2E2",
+          200: "#FECACA",
+          400: "#F87171",
+          500: "#EF4444",
+          600: "#DC2626",
+          700: "#B91C1C",
+        },
       },
       fontFamily: {
         sans: ["var(--font-geist)", "system-ui", "sans-serif"],

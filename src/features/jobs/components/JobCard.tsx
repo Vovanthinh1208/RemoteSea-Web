@@ -79,8 +79,13 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
               Verified
             </Badge>
           )}
+          {/* variant="positive" (brand green, same bordered weight as
+              "info"), not "info" (stock blue) — both this and the employer
+              "Verified" badge above are the same underlying concept
+              (verification), so they share one accent color instead of
+              splitting trust signals across two unrelated hues. */}
           {isVerifiedJob(job) && (
-            <Badge variant="info">
+            <Badge variant="positive">
               <BadgeCheck size={10} />
               Verified job
             </Badge>

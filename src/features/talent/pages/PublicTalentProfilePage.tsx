@@ -29,7 +29,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { LEVEL_TO_LABEL } from "@/features/talent/talent.constants";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { safeExternalUrl } from "@/utils/safe-url";
-import { formatSalaryRange } from "@/utils/format";
+import {
+  formatDuration,
+  formatMonthYear,
+  formatSalaryRange,
+} from "@/utils/format";
 import { personInitial } from "@/utils/name";
 import { ROUTES } from "@/constants/routes";
 import type { EmploymentType, TimezoneOverlap } from "@/types/talent";
@@ -40,33 +44,6 @@ const MOCK_RECRUITER = {
   roleTitle: "Senior Full-stack Engineer",
 };
 const MOCK_MATCH_SCORE = 94;
-
-const formatMonthYear = (iso: string): string =>
-  new Date(iso).toLocaleDateString("en-US", {
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-
-const formatDuration = (startIso: string, endIso: string | null): string => {
-  const start = new Date(startIso);
-  const end = endIso ? new Date(endIso) : new Date();
-  const totalMonths = Math.max(
-    0,
-    (end.getUTCFullYear() - start.getUTCFullYear()) * 12 +
-      (end.getUTCMonth() - start.getUTCMonth())
-  );
-  const years = Math.floor(totalMonths / 12);
-  const months = totalMonths % 12;
-  return (
-    [
-      years ? `${years} yr${years > 1 ? "s" : ""}` : null,
-      months ? `${months} mo` : null,
-    ]
-      .filter(Boolean)
-      .join(" ") || "< 1 mo"
-  );
-};
 
 const EMPLOYMENT_LABELS: Record<EmploymentType, string> = {
   FULL_TIME: "Full-time",
@@ -163,8 +140,6 @@ export const PublicTalentProfilePage = () => {
   const hoursOverlapLabel = profile.timezoneOverlap.length
     ? profile.timezoneOverlap.map((t) => HOURS_OVERLAP_LABELS[t]).join(" / ")
     : "Not specified";
-  const openToRelocation =
-    profile.rightToWork === "Open to relocation / sponsorship" ? "Yes" : "No";
   const remoteLevel = profile.timezoneOverlap.includes("ASYNC_ONLY")
     ? "Remote · Async-first"
     : "Remote";
@@ -324,11 +299,12 @@ export const PublicTalentProfilePage = () => {
                   {profile.yearsExperience}+ yrs experience
                 </span>
               )}
-              <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
-                <ShieldCheck
-                  className="flex-shrink-0 text-neutral-400"
-                  size={12}
-                />
+              {/* No icon here — ShieldCheck is already the page's
+                  "Verified" badge above; reusing it for seniority level
+                  gave the same glyph two unrelated meanings on one screen,
+                  and no other icon in this row's set means "level" without
+                  being just as arbitrary. */}
+              <span className="text-[13px] text-neutral-500">
                 {LEVEL_TO_LABEL[profile.level] ?? profile.level}
               </span>
               {isRecruiterPreview && (
@@ -614,19 +590,18 @@ export const PublicTalentProfilePage = () => {
                         </dd>
                       </div>
                     )}
+                    {/* One row, not two — "Open to relocation" used to
+                        render right below this as a derived Yes/No from
+                        the exact same field, but that collapsed 3 of the 4
+                        real RightToWork values ("Vietnam only"/"+
+                        Singapore"/"+ Australia") down to an indistinguishable
+                        "No," losing information the raw value already
+                        states more precisely. */}
                     {profile.rightToWork && (
                       <div className="flex items-center justify-between gap-2">
                         <dt className="text-neutral-500">Right to work</dt>
                         <dd className="text-right font-medium text-neutral-800">
                           {profile.rightToWork}
-                        </dd>
-                      </div>
-                    )}
-                    {profile.rightToWork && (
-                      <div className="flex items-center justify-between gap-2">
-                        <dt className="text-neutral-500">Open to relocation</dt>
-                        <dd className="font-medium text-neutral-800">
-                          {openToRelocation}
                         </dd>
                       </div>
                     )}

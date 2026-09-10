@@ -147,8 +147,11 @@ export const ListingsPanel = ({
 }: ListingsPanelProps) => {
   const active = jobs.filter((j) => STATUS_GROUP[j.status] !== "closed").length;
 
+  // rounded-16, not rounded-20 — matches EmployerDashboardSkeleton's
+  // placeholder for this exact panel; was rounded-20 on the real card, so
+  // the corner radius visibly snapped the instant real data loaded.
   return (
-    <div className="rounded-20 border border-neutral-100 bg-white p-5">
+    <div className="rounded-16 border border-neutral-100 bg-white p-5">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-[14px] font-semibold text-neutral-900">
           Your listings{" "}

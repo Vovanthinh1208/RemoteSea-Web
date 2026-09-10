@@ -81,6 +81,20 @@
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     background-color: #c7c2b9;
   }
+
+  /* LoginPage/RegisterPage's left marketing panel — was two independent
+     copies of the literal hex gradient `#0D3D1F`/`#1F7A3D` (brand-900/
+     brand-700, copy-pasted instead of referenced) in each page's own inline
+     style. theme() here means the gradient stays correct automatically if
+     those tokens ever change, instead of a third hardcoded copy drifting
+     from the token file the way the first two already had. */
+  .auth-panel-gradient {
+    background: linear-gradient(
+      160deg,
+      theme("colors.brand.900") 0%,
+      theme("colors.brand.700") 100%
+    );
+  }
 }
 
 /* Applies to every animation/transition in the app (spinners, pulse skeletons,

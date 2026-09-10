@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { SalaryBadge } from "@/components/ui/salary-badge";
 import { Tag } from "@/components/ui/tag";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useJobsQuery } from "@/features/jobs/jobs.queries";
 import {
   DEFAULT_FILTERS_FETCH_LIMIT,
@@ -20,8 +21,22 @@ interface RecommendedJobsProps {
   applications: ApplicationWithJob[];
 }
 
+// Shape-matched to the real row below (logo + two text lines + tag row) —
+// same "the loading state mirrors real layout" convention as every other
+// dashboard skeleton in this feature.
+const RecommendedJobRowSkeleton = () => (
+  <div className="flex items-center gap-4 border-b border-neutral-50 px-5 py-4 last:border-none">
+    <Skeleton className="h-10 w-10 flex-shrink-0 rounded-full" />
+    <div className="min-w-0 flex-1 space-y-1.5">
+      <Skeleton className="h-3 w-24" />
+      <Skeleton className="h-4 w-2/5" />
+      <Skeleton className="h-4 w-3/5" />
+    </div>
+  </div>
+);
+
 export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
-  const { data } = useJobsQuery(
+  const { data, isLoading } = useJobsQuery(
     DEFAULT_JOB_FILTERS,
     DEFAULT_FILTERS_FETCH_LIMIT
   );
@@ -29,6 +44,24 @@ export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
   const recommended = (data?.jobs ?? [])
     .filter((j) => !appliedIds.has(j.id))
     .slice(0, RECOMMENDED_JOBS_DISPLAY_COUNT);
+
+  // isLoading checked before the empty-return below — without it, `data`
+  // being undefined mid-fetch meant `recommended` was indistinguishable
+  // from "genuinely no recommendations," so this panel was fully absent
+  // (not a skeleton) during load and then popped into the talent
+  // dashboard layout the instant data resolved.
+  if (isLoading) {
+    return (
+      <div className="overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">
+        <div className="border-b border-neutral-100 px-5 py-4">
+          <Skeleton className="h-4 w-32" />
+        </div>
+        {Array.from({ length: RECOMMENDED_JOBS_DISPLAY_COUNT }, (_, i) => (
+          <RecommendedJobRowSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
 
   if (recommended.length === 0) return null;
 

@@ -45,7 +45,11 @@ export const NotificationsSection = () => {
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
         Your activity
       </p>
-      <div className="mb-6 divide-y divide-neutral-50 rounded-16 border border-neutral-100 bg-white px-4">
+      {/* No border/bg on this or the next two toggle-row groups below —
+          each already has its own uppercase label; a bordered/backgrounded
+          box around each one, nested inside this section's own bordered
+          card, was doubled framing (same fix as PreferencesSection.tsx). */}
+      <div className="mb-6 divide-y divide-neutral-50">
         <ToggleRow
           desc="When an employer moves one of your applications forward — shortlisted, interviewing, offered, or rejected."
           on={prefs?.applicationUpdates ?? true}
@@ -63,7 +67,7 @@ export const NotificationsSection = () => {
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
         Matches & digests
       </p>
-      <div className="mb-6 divide-y divide-neutral-50 rounded-16 border border-neutral-100 bg-white px-4">
+      <div className="mb-6 divide-y divide-neutral-50">
         <ToggleRow
           desc="Top 5 matches for your saved filters, once a week."
           on={prefs?.weeklyDigest ?? true}
@@ -88,7 +92,7 @@ export const NotificationsSection = () => {
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
         From RemoteSEA
       </p>
-      <div className="divide-y divide-neutral-50 rounded-16 border border-neutral-100 bg-white px-4">
+      <div className="divide-y divide-neutral-50">
         <ToggleRow
           desc="Occasional updates when we ship something worth knowing about."
           on={prefs?.productNews ?? false}

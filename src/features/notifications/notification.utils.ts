@@ -1,24 +1,5 @@
+import { dayKeyOf, relativeDayLabel } from "@/utils/time";
 import type { Notification } from "@/types/notification";
-
-const dayKeyOf = (d: Date): string =>
-  `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-
-const dayHeading = (iso: string): string => {
-  const target = new Date(iso);
-  const now = new Date();
-  if (dayKeyOf(target) === dayKeyOf(now)) return "Today";
-  const yesterday = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() - 1
-  );
-  if (dayKeyOf(target) === dayKeyOf(yesterday)) return "Yesterday";
-  return target.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  });
-};
 
 export interface NotificationDayGroup {
   key: string;
@@ -42,7 +23,7 @@ export const groupNotificationsByDay = (
     } else {
       groups.push({
         key,
-        label: dayHeading(notification.createdAt),
+        label: relativeDayLabel(notification.createdAt, "yesterday"),
         notifications: [notification],
       });
     }

@@ -14,7 +14,15 @@ const badgeVariants = cva(
         info: "border border-blue-100 bg-blue-50 text-blue-700",
         warning: "border border-amber-100 bg-amber-50 text-amber-700",
         positive: "border border-brand-100 bg-brand-50 text-brand-700",
-        success: "border border-emerald-100 bg-emerald-50 text-emerald-700",
+        // Darker/more saturated brand, not a second green hue (was
+        // emerald-*, outside this project's own brand/neutral/amber/danger
+        // scale — tailwind.config.ts) — "success" is meant to read as a
+        // stronger version of "positive" below (e.g. a scorecard's
+        // STRONG_YES vs. YES, or a final "Offer" outcome vs. an in-progress
+        // one), so it stays in the same hue family and gets its emphasis
+        // from shade instead. Matches TIER_BADGE_CLASS's "high" tier
+        // (src/utils/color.ts) for the same reason in a different context.
+        success: "border border-brand-300 bg-brand-100 text-brand-900",
       },
     },
     defaultVariants: { variant: "muted" },

@@ -3,6 +3,7 @@ import { Briefcase, Plus, SlidersHorizontal, X } from "lucide-react";
 import { EMPHASIS_STYLE } from "@/features/talent/components/profile-form/SectionHead";
 import { WorkExperienceForm } from "@/features/talent/components/profile-form/WorkExperienceForm";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
+import { GradientInitial } from "@/components/ui/gradient-initial";
 import { useToast } from "@/components/ui/toast";
 import { reportError } from "@/services/monitoring";
 import {
@@ -15,24 +16,10 @@ import {
   monthToIsoDate,
   type WorkExperienceFormValues,
 } from "@/features/talent/work-experience.schemas";
+import { formatMonthYear } from "@/utils/format";
 import type { WorkExperience } from "@/types/work-experience";
 
 const MAX_EXPERIENCES = 5;
-
-const AVATAR_COLORS = [
-  "#1F8A3A",
-  "#FF6D3B",
-  "#0EA5E9",
-  "#8B5CF6",
-  "#EC4899",
-  "#F59E0B",
-];
-
-const colorForCompany = (company: string): string => {
-  let hash = 0;
-  for (const char of company) hash = (hash * 31 + char.charCodeAt(0)) | 0;
-  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
-};
 
 const initialsForCompany = (company: string): string =>
   company
@@ -43,13 +30,6 @@ const initialsForCompany = (company: string): string =>
     .slice(0, 2)
     .join("")
     .toUpperCase();
-
-const formatMonthYear = (iso: string): string =>
-  new Date(iso).toLocaleDateString("en-US", {
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  });
 
 type EditorMode =
   { type: "none" } | { type: "create" } | { type: "edit"; id: string };
@@ -223,14 +203,14 @@ export const ExperienceSection = () => {
                 className="flex animate-fade-up gap-4 py-4 first:pt-0"
                 key={experience.id}
               >
-                <div
-                  className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-10 text-[13px] font-bold text-white"
-                  style={{
-                    background: colorForCompany(experience.company),
-                  }}
-                >
+                {/* GradientInitial, not a per-company hash color — this
+                    used to pick from 6 unrelated hardcoded hues by name
+                    hash, the one place in the app breaking from the single
+                    brand-gradient avatar convention everywhere else
+                    (CompanyCard, ProfileSnapshot, employer dashboard chip). */}
+                <GradientInitial className="h-10 w-10 rounded-10 text-[13px]">
                   {initialsForCompany(experience.company)}
-                </div>
+                </GradientInitial>
                 <div className="min-w-0 flex-1">
                   <p className="flex flex-wrap items-center gap-1.5 text-[13.5px] font-semibold text-neutral-900">
                     {experience.title}{" "}
