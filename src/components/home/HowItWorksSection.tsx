@@ -24,13 +24,7 @@ export const HowItWorksSection = () => (
       <div className="mb-12 text-center">
         <Eyebrow className="mb-3">How it works</Eyebrow>
         <h2 className="text-[36px] font-semibold tracking-tight text-neutral-900">
-          Simple. Curated.{" "}
-          <em
-            className="font-serif"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            Built for you.
-          </em>
+          Simple. Curated. <em className="font-serif-italic">Built for you.</em>
         </h2>
         <p className="mx-auto mt-3 max-w-lg text-neutral-500">
           Every job is reviewed before it goes live. Salary range required.

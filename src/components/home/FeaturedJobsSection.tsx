@@ -18,17 +18,11 @@ export const FeaturedJobsSection = ({
         <div>
           <Eyebrow className="mb-2">Live now</Eyebrow>
           <h2 className="text-[28px] font-semibold text-neutral-900">
-            Jobs open{" "}
-            <em
-              className="font-serif"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              right now
-            </em>
+            Jobs open <em className="font-serif-italic">right now</em>
           </h2>
         </div>
         <Link
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700"
+          className="inline-flex items-center gap-1.5 rounded-8 text-sm font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
           to={ROUTES.jobs}
         >
           Browse all 47 jobs <ArrowRight size={14} />

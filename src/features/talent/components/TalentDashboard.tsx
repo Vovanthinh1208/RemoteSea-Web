@@ -166,15 +166,12 @@ export const TalentDashboard = () => {
 
       {/* Profile completion banner */}
       {completion < 100 && (
-        <div className="mb-6 flex flex-col items-start gap-4 rounded-16 border border-brand-100 bg-brand-50/60 p-5 sm:flex-row sm:items-center">
+        <div className="mb-6 flex flex-col items-start gap-4 rounded-20 border border-brand-100 bg-brand-50/60 p-5 sm:flex-row sm:items-center">
           <CompletionRing pct={completion} />
           <div className="flex-1">
             <h3 className="mb-0.5 text-[14px] font-semibold text-neutral-900">
               Your profile is{" "}
-              <em
-                className="italic text-brand-700"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
+              <em className="font-serif-italic text-brand-700">
                 {completion}% complete
               </em>
             </h3>

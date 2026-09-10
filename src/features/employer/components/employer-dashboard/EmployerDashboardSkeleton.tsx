@@ -22,9 +22,9 @@ export const EmployerDashboardSkeleton = () => (
         <Skeleton className="h-10 w-40 rounded-12" />
       </div>
 
-      <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-5">
+      <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {Array.from({ length: KPI_SKELETON_COUNT }, (_, i) => (
-          <Skeleton className="h-24 rounded-12" key={i} />
+          <Skeleton className="h-24 rounded-20" key={i} />
         ))}
       </div>
 

@@ -129,7 +129,7 @@ export const TalentSearchBoard = ({
         {search && (
           <button
             aria-label="Clear search"
-            className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
+            className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
             onClick={() => setSearch("")}
           >
             <X size={14} />
@@ -165,7 +165,7 @@ export const TalentSearchBoard = ({
               />
               {selectedJob && (
                 <button
-                  className="text-[12px] text-brand-600 transition-colors hover:text-brand-700"
+                  className="rounded-4 text-[12px] text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
                   type="button"
                   onClick={() => setSortByMatch((v) => !v)}
                 >

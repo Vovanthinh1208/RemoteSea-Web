@@ -172,7 +172,7 @@ export const TwoFactorChallengeForm = ({
         )}
 
         <button
-          className="mt-3 block w-full text-center text-xs font-medium text-neutral-500 transition-colors hover:text-neutral-700"
+          className="mt-3 block w-full rounded-8 py-1 text-center text-xs font-medium text-neutral-500 transition-colors hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={() => switchMode(mode === "totp" ? "backup" : "totp")}
         >
@@ -192,7 +192,7 @@ export const TwoFactorChallengeForm = ({
         Verify
       </Button>
       <button
-        className="w-full text-center text-sm text-neutral-500 hover:text-neutral-700"
+        className="w-full rounded-8 py-1 text-center text-sm text-neutral-500 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
         type="button"
         onClick={onBack}
       >

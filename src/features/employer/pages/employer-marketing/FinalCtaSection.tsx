@@ -18,26 +18,25 @@ export const FinalCtaSection = () => (
           <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-[#8FC52A]">
             Ready when you are
           </p>
-          <h2
-            className="mb-4 font-serif text-[clamp(36px,4.5vw,52px)] leading-[1.1] tracking-tight text-white"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
+          <h2 className="mb-4 text-[clamp(36px,4.5vw,52px)] font-semibold leading-[1.1] tracking-tight text-white">
             Post your role today.
             <br />
-            <em className="italic text-[#8FC52A]">Get applies by Friday.</em>
+            <em className="font-serif-italic text-[#8FC52A]">
+              Get applies by Friday.
+            </em>
           </h2>
           <p className="mb-8 text-[17px] text-white/75">
             Fifteen minutes to list. Eight hours to publish. Two weeks to hire.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
-              className="inline-flex h-[52px] items-center gap-2 rounded-12 bg-brand-600 px-7 text-[15px] font-medium text-white transition-colors hover:bg-brand-700"
+              className="inline-flex h-[52px] items-center gap-2 rounded-12 bg-brand-600 px-7 text-[15px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.postJob}
             >
               Post a job — from $150 <ArrowRight size={16} />
             </Link>
             <a
-              className="inline-flex h-[52px] items-center px-7 text-[15px] font-medium text-white/70 transition-colors hover:text-white"
+              className="inline-flex h-[52px] items-center px-7 text-[15px] font-medium text-white/70 transition-colors hover:text-white focus-visible:shadow-focus focus-visible:outline-none"
               href="mailto:hello@remotesea.io"
             >
               Talk to founder first

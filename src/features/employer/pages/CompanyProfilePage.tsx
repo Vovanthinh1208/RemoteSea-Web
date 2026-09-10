@@ -246,7 +246,7 @@ export const CompanyProfilePage = () => {
 
               {isOwnProfile && (
                 <Link
-                  className="flex items-center justify-center gap-1.5 rounded-12 border border-neutral-200 bg-white py-2.5 text-[12.5px] font-medium text-neutral-500 transition-colors hover:border-neutral-300 hover:text-neutral-700"
+                  className="flex items-center justify-center gap-1.5 rounded-12 border border-neutral-200 bg-white py-2.5 text-[12.5px] font-medium text-neutral-500 transition-colors hover:border-neutral-300 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                   to={ROUTES.employerDashboard}
                 >
                   <Settings size={12} /> This is your company · Edit

@@ -76,7 +76,7 @@ export const HighlightForm = ({
 
   return (
     <form
-      className="animate-fade-up space-y-3 rounded-16 border border-brand-100 bg-brand-50/30 p-4"
+      className="animate-fade-up space-y-4 rounded-16 border border-neutral-100 bg-white p-4 sm:p-5"
       onSubmit={handleSubmit(async (values) => {
         const ok = await onSubmit(values);
         if (ok) onCancel();
@@ -183,14 +183,14 @@ export const HighlightForm = ({
 
       <div className="flex items-center gap-2 pt-1">
         <button
-          className="rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+          className="rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
           disabled={isSubmitting}
           type="submit"
         >
           {isSubmitting ? "Saving…" : initial ? "Save changes" : "Add"}
         </button>
         <button
-          className="rounded-10 border border-neutral-200 bg-white px-4 py-2 text-[13px] font-medium text-neutral-600 transition-colors hover:border-neutral-300"
+          className="rounded-10 border border-neutral-200 bg-white px-4 py-2 text-[13px] font-medium text-neutral-600 transition-colors hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={onCancel}
         >

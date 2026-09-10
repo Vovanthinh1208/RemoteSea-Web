@@ -56,7 +56,7 @@ const EmptyState = ({ onAdd }: { onAdd: () => void }) => (
       Add your most recent role first — it's the one recruiters read first.
     </p>
     <button
-      className="mt-1 flex items-center gap-1.5 rounded-10 bg-brand-600 px-3.5 py-2 text-[12.5px] font-medium text-white transition-colors hover:bg-brand-700"
+      className="mt-1 flex items-center gap-1.5 rounded-10 bg-brand-600 px-3.5 py-2 text-[12.5px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
       type="button"
       onClick={onAdd}
     >
@@ -246,7 +246,7 @@ export const ExperienceSection = () => {
                 <div className="flex flex-shrink-0 gap-1">
                   <button
                     aria-label="Edit role"
-                    className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700"
+                    className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                     type="button"
                     onClick={() => setMode({ type: "edit", id: experience.id })}
                   >
@@ -260,7 +260,7 @@ export const ExperienceSection = () => {
                     {({ onClick }) => (
                       <button
                         aria-label="Delete role"
-                        className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-red-50 hover:text-red-600"
+                        className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none"
                         type="button"
                         onClick={onClick}
                       >
@@ -290,7 +290,7 @@ export const ExperienceSection = () => {
 
       {!isLoading && mode.type !== "create" && list.length > 0 && !atCap && (
         <button
-          className="mt-2 flex w-full items-center justify-center gap-2 rounded-12 border border-dashed border-neutral-300 py-3 text-[13px] text-neutral-500 transition-colors hover:border-brand-300 hover:text-brand-700"
+          className="mt-2 flex w-full items-center justify-center gap-2 rounded-12 border border-dashed border-neutral-300 py-3 text-[13px] text-neutral-500 transition-colors hover:border-brand-300 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={() => setMode({ type: "create" })}
         >

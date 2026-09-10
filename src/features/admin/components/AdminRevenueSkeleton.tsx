@@ -1,6 +1,9 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-const KPI_SKELETON_COUNT = 4;
+// 2 fixed tiles (all-time, this month) + one per plan type (STANDARD,
+// FEATURED, HANDS_ON) — matches AdminRevenue.tsx's real tile count so the
+// 4-col grid doesn't reflow by one tile when the skeleton swaps for data.
+const KPI_SKELETON_COUNT = 5;
 const TRANSACTION_ROW_SKELETON_COUNT = 5;
 
 export const AdminRevenueSkeleton = () => (

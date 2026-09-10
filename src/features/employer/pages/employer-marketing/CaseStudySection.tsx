@@ -21,13 +21,10 @@ export const CaseStudySection = () => (
         <div className="relative z-10 grid gap-12 md:grid-cols-[1.1fr_1fr]">
           <div>
             <Eyebrow className="mb-3">Case study</Eyebrow>
-            <h2
-              className="mb-4 font-serif text-[38px] leading-[1.15] tracking-tight text-neutral-900"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
+            <h2 className="mb-4 text-[38px] font-semibold leading-[1.15] tracking-tight text-neutral-900">
               &quot;We hired our founding engineer in{" "}
-              <em className="italic text-brand-700">11 days</em> through
-              RemoteSEA.&quot;
+              <em className="font-serif-italic text-brand-700">11 days</em>{" "}
+              through RemoteSEA.&quot;
             </h2>
             <p className="mb-8 text-[14.5px] leading-relaxed text-neutral-500">
               Finch Labs (SG) needed a full-stack engineer for cross-border

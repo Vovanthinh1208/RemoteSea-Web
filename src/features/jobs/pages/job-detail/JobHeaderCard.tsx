@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BadgeCheck, Clock, Users } from "lucide-react";
+import { BadgeCheck, Clock, RefreshCw, Star, Users } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { Badge } from "@/components/ui/badge";
 import { SalaryBadge } from "@/components/ui/salary-badge";
@@ -8,6 +8,7 @@ import {
   JOB_TYPE_LABELS,
   LEVEL_LABELS,
   countryFlag,
+  isAsyncTimezone,
   isVerifiedJob,
   timeAgo,
 } from "@/features/jobs/jobs.utils";
@@ -22,6 +23,7 @@ interface JobHeaderCardProps {
 export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
   const country = job.country ?? job.employer.hqCountry ?? "Remote";
   const timezone = job.timezone ?? (job.isRemote ? "Remote" : country);
+  const isAsync = isAsyncTimezone(timezone);
   const category = job.categories[0]?.category.name ?? "Other";
   return (
     <div className="mb-6 flex items-start gap-4 rounded-16 border border-neutral-100 bg-white p-6 shadow-card">
@@ -54,7 +56,11 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
           <SalaryBadge max={job.salaryMax} min={job.salaryMin} />
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          {job.isFeatured && <Badge variant="featured">⭐ Featured</Badge>}
+          {job.isFeatured && (
+            <Badge variant="featured">
+              <Star size={10} /> Featured
+            </Badge>
+          )}
           {/* variant="positive" (brand green), not "info" (stock blue) —
               same consolidation as JobCard.tsx: this and "Verified
               employer" above are the same underlying trust signal, so they
@@ -67,7 +73,10 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
           <Tag>{category}</Tag>
           <Tag>{LEVEL_LABELS[job.level]}</Tag>
           <Tag>{JOB_TYPE_LABELS[job.jobType]}</Tag>
-          <Tag>{timezone}</Tag>
+          <Tag>
+            {isAsync ? <RefreshCw size={11} /> : <Clock size={11} />}
+            {timezone}
+          </Tag>
           {job.vnHireCount > 0 && (
             <Badge variant="vn">
               <Users size={10} /> {job.vnHireCount} VN on team

@@ -74,7 +74,11 @@ export const PrivacyDataSection = () => {
           </>
         }
       />
-      <div className="mb-5 divide-y divide-neutral-50 overflow-hidden rounded-16 border border-neutral-100">
+      {/* No border/bg wrapper here — same reasoning as SecuritySection's
+          session list and TwoFactorSection: this already sits inside the
+          section's own bordered card, so a second full frame was doubled
+          framing, not extra grouping. */}
+      <div className="mb-5 divide-y divide-neutral-50">
         {profile && (
           <div className="flex items-center gap-3 px-4 py-3.5">
             <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-neutral-100 text-neutral-500">
@@ -116,15 +120,13 @@ export const PrivacyDataSection = () => {
           </button>
         </div>
       </div>
-      <div className="divide-y divide-neutral-50 rounded-16 border border-neutral-100 bg-white px-4">
-        <ToggleRow
-          disabled
-          desc="Off by default. When on, your public talent page can appear in Google results. Not built yet — this won't do anything until it is."
-          on={false}
-          title="Let search engines index my public profile"
-          onChange={() => {}}
-        />
-      </div>
+      <ToggleRow
+        disabled
+        desc="Off by default. When on, your public talent page can appear in Google results. Not built yet — this won't do anything until it is."
+        on={false}
+        title="Let search engines index my public profile"
+        onChange={() => {}}
+      />
     </section>
   );
 };

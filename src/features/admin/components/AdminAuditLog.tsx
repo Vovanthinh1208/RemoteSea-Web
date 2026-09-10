@@ -45,7 +45,7 @@ const EntryRow = ({ entry }: { entry: AdminAuditLogEntry }) => {
     <div className="border-b border-neutral-50 last:border-0">
       <button
         aria-expanded={expanded}
-        className="flex w-full items-center gap-3 px-5 py-4 text-left transition-colors hover:bg-neutral-50"
+        className="flex w-full items-center gap-3 px-5 py-4 text-left transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none"
         type="button"
         onClick={() => setExpanded((v) => !v)}
       >

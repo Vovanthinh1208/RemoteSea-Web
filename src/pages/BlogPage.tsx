@@ -160,13 +160,8 @@ export const BlogPage = () => {
           </div>
           <h1 className="mb-3 max-w-2xl text-[44px] font-semibold leading-[1.1] tracking-tight text-neutral-900 lg:text-[52px]">
             Field notes from{" "}
-            <em
-              className="font-serif text-brand-700"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              remote work
-            </em>
-            , written by the people doing it.
+            <em className="font-serif-italic text-brand-700">remote work</em>,
+            written by the people doing it.
           </h1>
           <p className="mb-10 max-w-xl text-[17px] leading-relaxed text-neutral-500">
             No SEO sludge, no &ldquo;10 tips for productivity.&rdquo; Just
@@ -237,12 +232,7 @@ export const BlogPage = () => {
               <Eyebrow className="mb-1">Recent</Eyebrow>
               <h2 className="text-[28px] font-semibold text-neutral-900">
                 The{" "}
-                <em
-                  className="font-serif text-brand-700"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  archive
-                </em>
+                <em className="font-serif-italic text-brand-700">archive</em>
               </h2>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -354,7 +344,7 @@ export const BlogPage = () => {
                   your story.
                 </p>
                 <a
-                  className="inline-flex items-center gap-1 text-[13px] font-medium text-brand-600 hover:text-brand-700"
+                  className="inline-flex items-center gap-1 rounded-8 text-[13px] font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
                   href="#"
                   onClick={(e) => e.preventDefault()}
                 >
@@ -371,13 +361,8 @@ export const BlogPage = () => {
         <div className="mx-auto max-w-[640px] px-6 text-center">
           <h2 className="mb-3 text-[32px] font-semibold text-neutral-900">
             Get the next{" "}
-            <em
-              className="font-serif text-brand-700"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              essay
-            </em>
-            , before it hits the site.
+            <em className="font-serif-italic text-brand-700">essay</em>, before
+            it hits the site.
           </h2>
           <p className="mb-8 text-[15px] leading-relaxed text-neutral-500">
             One thoughtful piece every Tuesday morning, written by working

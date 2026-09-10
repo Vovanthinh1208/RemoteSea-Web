@@ -102,7 +102,7 @@ export const CandidateSummaryCard = ({
       {applicant.coverLetter && (
         <div>
           <button
-            className="text-[12px] font-medium text-brand-600 transition-colors hover:text-brand-700"
+            className="rounded-4 text-[12px] font-medium text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
             type="button"
             onClick={() => setCoverLetterOpen((open) => !open)}
           >

@@ -32,20 +32,13 @@ export const CategoriesSection = () => (
       <div className="mb-8">
         <Eyebrow className="mb-2">Categories</Eyebrow>
         <h2 className="text-[28px] font-semibold text-neutral-900">
-          Find roles in{" "}
-          <em
-            className="font-serif"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            your
-          </em>{" "}
-          field
+          Find roles in <em className="font-serif-italic">your</em> field
         </h2>
       </div>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
         {CATEGORIES.map((cat) => (
           <Link
-            className="group flex items-center justify-between rounded-12 border border-neutral-100 bg-white px-4 py-3 transition-all hover:border-neutral-200 hover:shadow-card"
+            className="group flex items-center justify-between rounded-12 border border-neutral-100 bg-white px-4 py-3 transition-all hover:border-neutral-200 hover:shadow-card focus-visible:shadow-focus focus-visible:outline-none"
             key={cat.label}
             to={`/jobs?category=${cat.label}`}
           >

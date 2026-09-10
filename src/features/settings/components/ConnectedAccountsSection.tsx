@@ -120,7 +120,11 @@ export const ConnectedAccountsSection = () => {
           </>
         }
       />
-      <div className="divide-y divide-neutral-50 overflow-hidden rounded-16 border border-neutral-100">
+      {/* No border/bg wrapper here — same reasoning as SecuritySection's
+          session list and TwoFactorSection: this already sits inside the
+          section's own bordered card, so a second full frame was doubled
+          framing, not extra grouping. */}
+      <div className="divide-y divide-neutral-50">
         {PROVIDERS.map(({ id, name, bg, initial }) => {
           const connection = connections?.find((c) => c.provider === id);
           return (

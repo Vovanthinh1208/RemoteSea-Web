@@ -348,7 +348,7 @@ export const PostJobWizard = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 rounded-12 border border-neutral-100 bg-white p-3 text-[12px] text-neutral-400">
+            <div className="flex items-center gap-2 rounded-16 border border-neutral-100 bg-white p-3 text-[12px] text-neutral-400">
               <Shield className="flex-shrink-0 text-brand-500" size={13} />
               Secured by Stripe · SSL encrypted
             </div>

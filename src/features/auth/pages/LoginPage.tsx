@@ -101,7 +101,7 @@ export const LoginPage = () => {
       <div className="mx-auto flex w-full max-w-md flex-col justify-center px-8 py-12">
         <div className="mb-10 flex items-center justify-between">
           <Link
-            className="inline-flex items-center gap-1.5 text-sm text-neutral-500 transition-colors hover:text-neutral-900"
+            className="inline-flex items-center gap-1.5 rounded-8 text-sm text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.home}
           >
             <ArrowLeft size={14} /> Back
@@ -109,7 +109,7 @@ export const LoginPage = () => {
           <p className="text-sm text-neutral-500">
             New here?{" "}
             <Link
-              className="inline-flex items-center gap-0.5 font-medium text-brand-600 hover:text-brand-700"
+              className="inline-flex items-center gap-0.5 rounded-8 font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.register}
             >
               Create account <ArrowRight size={13} />

@@ -26,13 +26,7 @@ export const CommunityHeroSection = () => (
         </div>
         <h1 className="mb-4 text-[44px] font-semibold leading-[1.1] tracking-tight text-neutral-900 lg:text-[52px]">
           500+ remote-working Vietnamese,{" "}
-          <em
-            className="font-serif text-brand-700"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            one Slack
-          </em>
-          .
+          <em className="font-serif-italic text-brand-700">one Slack</em>.
         </h1>
         <p className="mb-8 max-w-lg text-[17px] leading-relaxed text-neutral-500">
           Engineers, designers, marketers, ops people — all working remotely for
@@ -43,7 +37,7 @@ export const CommunityHeroSection = () => (
           <Button className="rounded-12 px-6" size="xl">
             Request an invite <ArrowRight size={16} />
           </Button>
-          <button className="inline-flex h-[52px] items-center gap-2 rounded-12 border border-neutral-200 bg-white px-6 text-[15px] font-medium text-neutral-700 transition-colors hover:bg-neutral-50">
+          <button className="inline-flex h-[52px] items-center gap-2 rounded-12 border border-neutral-200 bg-white px-6 text-[15px] font-medium text-neutral-700 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none">
             Watch the tour (2 min)
           </button>
         </div>

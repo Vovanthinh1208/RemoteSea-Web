@@ -54,13 +54,8 @@ export const MembersSection = () => (
         <Eyebrow className="mb-2">Members</Eyebrow>
         <h2 className="mb-3 text-[32px] font-semibold text-neutral-900">
           The people{" "}
-          <em
-            className="font-serif text-brand-700"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            actually
-          </em>{" "}
-          in here.
+          <em className="font-serif-italic text-brand-700">actually</em> in
+          here.
         </h2>
         <p className="mx-auto max-w-lg text-neutral-500">
           A small slice of who you&apos;ll meet. Everyone&apos;s vetted,

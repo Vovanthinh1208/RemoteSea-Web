@@ -53,7 +53,7 @@ export const Navbar = () => {
           {NAV_LINKS.map(({ href, label }) => (
             <Link
               className={cn(
-                "rounded-8 px-3 py-1.5 text-sm transition-colors",
+                "rounded-8 px-3 py-1.5 text-sm transition-colors focus-visible:shadow-focus focus-visible:outline-none",
                 location.pathname.startsWith(href)
                   ? "font-medium text-neutral-900"
                   : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900"
@@ -73,7 +73,7 @@ export const Navbar = () => {
         {/* Actions */}
         <div className="flex items-center gap-2">
           <Link
-            className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+            className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.employer}
           >
             For employers
@@ -81,7 +81,7 @@ export const Navbar = () => {
 
           <Link
             aria-label="Saved jobs"
-            className="grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+            className="grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.saved}
           >
             <Bookmark size={17} />
@@ -90,14 +90,14 @@ export const Navbar = () => {
           {user ? (
             <>
               <Link
-                className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+                className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
                 to={dashboardHref}
               >
                 Dashboard
               </Link>
               {user.role === "ADMIN" && (
                 <Link
-                  className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+                  className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
                   to={ROUTES.admin}
                 >
                   Admin
@@ -106,13 +106,13 @@ export const Navbar = () => {
               <NotificationBell />
               <Link
                 aria-label="Settings"
-                className="grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+                className="grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
                 to={ROUTES.settings}
               >
                 <Settings size={17} />
               </Link>
               <button
-                className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+                className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
                 onClick={handleSignOut}
               >
@@ -122,14 +122,14 @@ export const Navbar = () => {
           ) : (
             <>
               <Link
-                className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+                className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
                 to={ROUTES.login}
               >
                 Sign in
               </Link>
 
               <Link
-                className="inline-flex h-[38px] items-center gap-1.5 rounded-8 bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700"
+                className="inline-flex h-[38px] items-center gap-1.5 rounded-8 bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
                 to={ROUTES.register}
               >
                 <Bell size={14} />

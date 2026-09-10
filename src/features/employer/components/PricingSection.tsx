@@ -110,7 +110,7 @@ export const PricingSection = () => {
         <div className="mb-10 flex justify-center">
           <div className="inline-flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-100 p-1">
             <button
-              className={`rounded-full px-5 py-2 text-[13.5px] font-medium transition-all ${
+              className={`rounded-full px-5 py-2 text-[13.5px] font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none ${
                 !annual
                   ? "bg-white text-neutral-900 shadow-chip"
                   : "text-neutral-500"
@@ -120,7 +120,7 @@ export const PricingSection = () => {
               Per role
             </button>
             <button
-              className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-[13.5px] font-medium transition-all ${
+              className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-[13.5px] font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none ${
                 annual
                   ? "bg-white text-neutral-900 shadow-chip"
                   : "text-neutral-500"
@@ -171,14 +171,14 @@ export const PricingSection = () => {
 
               {tier.name === "Hands-on" ? (
                 <a
-                  className="mb-6 flex w-full items-center justify-center gap-2 rounded-12 border border-neutral-200 py-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
+                  className="mb-6 flex w-full items-center justify-center gap-2 rounded-12 border border-neutral-200 py-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none"
                   href="mailto:hello@remotesea.io"
                 >
                   Talk to us <ArrowRight size={14} />
                 </a>
               ) : (
                 <Link
-                  className={`mb-6 flex w-full items-center justify-center gap-2 rounded-12 py-3 text-sm font-medium transition-colors ${
+                  className={`mb-6 flex w-full items-center justify-center gap-2 rounded-12 py-3 text-sm font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none ${
                     tier.featured
                       ? "bg-brand-600 text-white hover:bg-brand-700"
                       : "border border-neutral-200 text-neutral-700 hover:bg-neutral-50"

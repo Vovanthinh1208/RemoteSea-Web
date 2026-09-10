@@ -4,9 +4,10 @@ const KPI_SKELETON_COUNT = 5;
 const ROW_SKELETON_COUNT = 5;
 
 // Mirrors TalentDashboard's actual structure — greeting, 5 KPI tiles, the
-// applications table, and four stacked side panels — rather than a handful
-// of generic blocks. A shape-matched skeleton means the real content that
-// pops in a beat later doesn't shift the page around it.
+// applications table, and four stacked side panels (profile snapshot,
+// invitations, alerts, activity) — rather than a handful of generic blocks.
+// A shape-matched skeleton means the real content that pops in a beat later
+// doesn't shift the page around it.
 export const TalentDashboardSkeleton = () => (
   <div className="mx-auto max-w-[1240px] px-6 py-10">
     <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -47,6 +48,7 @@ export const TalentDashboardSkeleton = () => (
       <div className="space-y-5">
         <Skeleton className="h-52 rounded-16" />
         <Skeleton className="h-28 rounded-16" />
+        <Skeleton className="h-40 rounded-16" />
         <Skeleton className="h-40 rounded-16" />
       </div>
     </div>

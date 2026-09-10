@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Check } from "lucide-react";
+import { AlertCircle, ArrowRight, Check } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -110,15 +110,15 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
     return (
       <>
         <button
-          className="mb-2.5 w-full rounded-12 bg-brand-600 py-3 text-[15px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
+          className="mb-2.5 flex w-full items-center justify-center gap-2 rounded-12 bg-brand-600 py-3 text-[15px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
           type="button"
           onClick={openApplyForm}
         >
-          Apply now →
+          Apply now <ArrowRight size={16} />
         </button>
         {message && (
-          <p className="mb-2.5 text-center text-[12px] text-red-600">
-            {message}
+          <p className="mb-2.5 flex items-center justify-center gap-1 text-center text-[12px] text-red-600">
+            <AlertCircle size={11} /> {message}
           </p>
         )}
       </>
@@ -185,7 +185,9 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
         </Button>
       </div>
       {message && (
-        <p className="text-center text-[12px] text-red-600">{message}</p>
+        <p className="flex items-center justify-center gap-1 text-center text-[12px] text-red-600">
+          <AlertCircle size={11} /> {message}
+        </p>
       )}
     </div>
   );

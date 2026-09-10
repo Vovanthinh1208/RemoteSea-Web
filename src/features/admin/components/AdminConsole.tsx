@@ -54,7 +54,7 @@ export const AdminConsole = () => {
               <button
                 aria-current={tab === t.id ? "page" : undefined}
                 className={cn(
-                  "flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-[13px] font-medium transition-colors",
+                  "flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-[13px] font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none",
                   tab === t.id
                     ? "bg-brand-600 text-white"
                     : "border border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50"
@@ -83,7 +83,7 @@ export const AdminConsole = () => {
                 <button
                   aria-current={tab === t.id ? "page" : undefined}
                   className={cn(
-                    "flex w-full items-center gap-2 rounded-10 px-3 py-2 text-[13px] transition-all",
+                    "flex w-full items-center gap-2 rounded-10 px-3 py-2 text-[13px] transition-all focus-visible:shadow-focus focus-visible:outline-none",
                     tab === t.id
                       ? "bg-white font-medium text-neutral-900 shadow-chip"
                       : "text-neutral-500 hover:bg-white/60 hover:text-neutral-700"

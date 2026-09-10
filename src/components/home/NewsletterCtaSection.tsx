@@ -6,12 +6,7 @@ export const NewsletterCtaSection = () => (
       <div className="rounded-24 border border-brand-100 bg-brand-50 p-10 text-center">
         <h2 className="mb-2 text-[28px] font-semibold text-neutral-900">
           Don&apos;t miss the{" "}
-          <em
-            className="font-serif text-brand-700"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            next
-          </em>{" "}
+          <em className="font-serif-italic text-brand-700">next</em>{" "}
           opportunity.
         </h2>
         <p className="mx-auto mb-6 max-w-md text-sm text-neutral-500">

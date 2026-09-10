@@ -24,13 +24,8 @@ export const HeroSection = ({ featuredJobs }: HeroSectionProps) => (
 
         <h1 className="mb-5 text-[44px] font-semibold leading-[1.1] tracking-tight text-neutral-900 lg:text-[52px]">
           Remote jobs from Singapore, Australia &amp; beyond —{" "}
-          <em
-            className="font-serif italic not-italic text-brand-700"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            curated
-          </em>{" "}
-          for Vietnam talent.
+          <em className="font-serif-italic text-brand-700">curated</em> for
+          Vietnam talent.
         </h1>
 
         <p className="mb-8 max-w-xl text-[17px] leading-relaxed text-neutral-500">
@@ -41,14 +36,14 @@ export const HeroSection = ({ featuredJobs }: HeroSectionProps) => (
 
         <div className="mb-8 flex items-center gap-3">
           <Link
-            className="inline-flex h-[52px] items-center gap-2 rounded-12 bg-brand-600 px-6 text-[15px] font-medium text-white transition-colors hover:bg-brand-700"
+            className="inline-flex h-[52px] items-center gap-2 rounded-12 bg-brand-600 px-6 text-[15px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.jobs}
           >
             Browse 47 open jobs
             <ArrowRight size={16} />
           </Link>
           <Link
-            className="inline-flex h-[52px] items-center gap-2 rounded-12 px-6 text-[15px] font-medium text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+            className="inline-flex h-[52px] items-center gap-2 rounded-12 px-6 text-[15px] font-medium text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.register}
           >
             <Bell size={16} />

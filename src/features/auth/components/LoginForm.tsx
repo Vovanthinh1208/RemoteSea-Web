@@ -108,7 +108,7 @@ export const LoginForm = () => {
           label="Password"
           labelSlot={
             <Link
-              className="text-xs text-brand-600 hover:text-brand-700"
+              className="rounded-4 text-xs text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.forgotPassword}
             >
               Forgot?

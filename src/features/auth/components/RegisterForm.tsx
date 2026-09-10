@@ -93,7 +93,7 @@ export const RegisterForm = () => {
         {ROLE_OPTIONS.map((option) => (
           <button
             className={cn(
-              "h-10 rounded-12 border text-sm font-medium transition-all",
+              "h-10 rounded-12 border text-sm font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none",
               role === option.value
                 ? "border-brand-600 bg-brand-50 text-brand-700"
                 : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300"
@@ -153,11 +153,17 @@ export const RegisterForm = () => {
         </Button>
         <p className="text-center text-[12px] text-neutral-400">
           By signing up you agree to our{" "}
-          <Link className="text-neutral-600 hover:underline" to="/terms">
+          <Link
+            className="rounded-4 text-neutral-600 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
+            to="/terms"
+          >
             Terms
           </Link>{" "}
           and{" "}
-          <Link className="text-neutral-600 hover:underline" to="/privacy">
+          <Link
+            className="rounded-4 text-neutral-600 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
+            to="/privacy"
+          >
             Privacy Policy
           </Link>
           .

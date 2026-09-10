@@ -48,12 +48,7 @@ export const MeetupsSection = () => (
         </p>
         <h2 className="mb-3 text-[32px] font-semibold text-white">
           Coffee, beers, &amp;{" "}
-          <em
-            className="font-serif text-brand-400"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            offline
-          </em>{" "}
+          <em className="font-serif-italic text-brand-400">offline</em>{" "}
           bandwidth.
         </h2>
         <p className="mx-auto max-w-lg text-neutral-400">
@@ -105,7 +100,7 @@ export const MeetupsSection = () => (
                   </span>
                 </div>
                 <button
-                  className="text-[12px] font-medium transition-colors"
+                  className="rounded-8 text-[12px] font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none"
                   style={{ color: e.color }}
                 >
                   RSVP →

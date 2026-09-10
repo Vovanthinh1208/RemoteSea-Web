@@ -2,7 +2,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const KPI_SKELETON_COUNT = 3;
 const ROW_SKELETON_COUNT = 6;
-const EMPLOYER_GRID_COLUMNS = "1fr 90px 140px 100px 32px";
+// Matches AdminEmployers.tsx's EMPLOYER_GRID_COLUMNS exactly — was drifted
+// (1fr instead of minmax(260px, 1fr), 32px instead of 88px for the action
+// column), which understated how wide the real Verify/Suspend button is.
+const EMPLOYER_GRID_COLUMNS = "minmax(260px, 1fr) 90px 140px 100px 88px";
 
 export const AdminEmployersSkeleton = () => (
   <div className="flex-1 overflow-hidden">
@@ -26,12 +29,18 @@ export const AdminEmployersSkeleton = () => (
         >
           <div className="flex items-center gap-3">
             <Skeleton className="h-10 w-10 flex-shrink-0 rounded-10" />
-            <Skeleton className="h-4 w-32" />
+            {/* Two lines — company name + verified badge on one line, email
+                and HQ country on the next, matching EmployerRow's two-line
+                identity block instead of collapsing it to one bar. */}
+            <div className="min-w-0 flex-1 space-y-1.5">
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-3 w-24" />
+            </div>
           </div>
           <Skeleton className="h-4 w-10" />
           <Skeleton className="h-4 w-20" />
           <Skeleton className="h-4 w-16" />
-          <Skeleton className="rounded-6 h-6 w-6" />
+          <Skeleton className="h-8 w-[76px] justify-self-end rounded-8" />
         </div>
       ))}
     </div>

@@ -26,13 +26,7 @@ export const JoinCtaSection = () => (
       <Eyebrow className="mb-3">Apply</Eyebrow>
       <h2 className="mb-4 text-[36px] font-semibold text-neutral-900">
         Ready to join the{" "}
-        <em
-          className="font-serif text-brand-700"
-          style={{ fontFamily: "var(--font-serif)" }}
-        >
-          family
-        </em>
-        ?
+        <em className="font-serif-italic text-brand-700">family</em>?
       </h2>
       <p className="mb-10 text-[15px] leading-relaxed text-neutral-500">
         One form, 4 questions, ~5 minutes. We review applications every Friday
@@ -58,7 +52,7 @@ export const JoinCtaSection = () => (
         <Button className="rounded-12 px-6" size="xl">
           Request invite <ArrowRight size={16} />
         </Button>
-        <button className="inline-flex h-[52px] items-center gap-2 rounded-12 border border-neutral-200 bg-white px-6 text-[15px] font-medium text-neutral-700 transition-colors hover:bg-neutral-50">
+        <button className="inline-flex h-[52px] items-center gap-2 rounded-12 border border-neutral-200 bg-white px-6 text-[15px] font-medium text-neutral-700 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none">
           Read the code of conduct
         </button>
       </div>

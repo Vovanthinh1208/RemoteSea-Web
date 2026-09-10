@@ -26,7 +26,7 @@ export const OAuthButtons = () => {
     <div className="mb-6 space-y-3">
       {OAUTH_PROVIDERS.map((provider) => (
         <a
-          className="flex h-11 w-full items-center gap-3 rounded-12 border border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-700 transition-all hover:border-neutral-300 hover:bg-neutral-50"
+          className="flex h-11 w-full items-center gap-3 rounded-12 border border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-700 transition-all hover:border-neutral-300 hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none"
           href={oauthUrl(provider.id)}
           key={provider.id}
         >

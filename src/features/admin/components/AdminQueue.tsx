@@ -132,11 +132,12 @@ export const AdminQueue = () => {
   if (queue.length === 0) {
     return (
       <div className="flex-1">
+        <Eyebrow className="mb-0.5">Operations</Eyebrow>
         <h1 className="text-[26px] font-semibold text-neutral-900">
           Review queue
         </h1>
         <EmptyState
-          description="Nothing awaiting review. All caught up. ✅"
+          description="Nothing awaiting review. All caught up."
           title="Queue is clear"
         />
       </div>

@@ -248,7 +248,7 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
                 <div className="flex flex-shrink-0 gap-1">
                   <button
                     aria-label="Edit"
-                    className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700"
+                    className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                     type="button"
                     onClick={() => setMode({ type: "edit", id: highlight.id })}
                   >
@@ -262,7 +262,7 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
                     {({ onClick }) => (
                       <button
                         aria-label="Delete"
-                        className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-red-50 hover:text-red-600"
+                        className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none"
                         type="button"
                         onClick={onClick}
                       >
@@ -284,15 +284,22 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
           type={type}
         />
       ) : (
-        !atCap && (
-          <button
-            className="flex w-full items-center justify-center gap-2 rounded-12 border border-dashed border-neutral-300 py-2.5 text-[12.5px] text-neutral-500 transition-colors hover:border-brand-300 hover:text-brand-700"
-            type="button"
-            onClick={() => setMode({ type: "create" })}
-          >
-            <Plus size={12} /> {meta.addLabel}
-          </button>
-        )
+        <>
+          {list.length === 0 && (
+            <p className="mb-2 text-[12px] text-neutral-400">
+              {meta.emptyLabel}
+            </p>
+          )}
+          {!atCap && (
+            <button
+              className="flex w-full items-center justify-center gap-2 rounded-12 border border-dashed border-neutral-300 py-2.5 text-[12.5px] text-neutral-500 transition-colors hover:border-brand-300 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
+              type="button"
+              onClick={() => setMode({ type: "create" })}
+            >
+              <Plus size={12} /> {meta.addLabel}
+            </button>
+          )}
+        </>
       )}
     </div>
   );

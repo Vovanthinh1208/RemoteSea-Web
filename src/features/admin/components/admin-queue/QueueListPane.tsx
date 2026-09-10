@@ -29,7 +29,8 @@ const QueueListRow = memo(function QueueListRow({
 }: QueueListRowProps) {
   return (
     <button
-      className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 ${selected ? "bg-brand-50" : ""}`}
+      className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none ${selected ? "bg-brand-50" : ""}`}
+      type="button"
       onClick={() => onSelect(j.id)}
     >
       <CompanyLogo

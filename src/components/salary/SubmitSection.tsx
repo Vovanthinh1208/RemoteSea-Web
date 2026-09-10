@@ -53,7 +53,7 @@ export const SubmitSection = () => {
                 Submit a data point <ArrowRight size={14} />
               </Button>
               <Link
-                className="inline-flex h-11 items-center gap-2 px-5 text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900"
+                className="inline-flex h-11 items-center gap-2 rounded-8 px-5 text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
                 to={ROUTES.jobs}
               >
                 See live jobs

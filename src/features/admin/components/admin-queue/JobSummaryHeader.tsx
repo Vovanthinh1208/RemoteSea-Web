@@ -1,4 +1,5 @@
 import { CompanyLogo } from "@/components/ui/company-logo";
+import { Tag } from "@/components/ui/tag";
 import { VerifiedBadge } from "@/components/shared/VerifiedBadge";
 import {
   colorFor,
@@ -57,12 +58,7 @@ export const JobSummaryHeader = ({ job }: JobSummaryHeaderProps) => {
           </h2>
           <div className="flex flex-wrap gap-1.5">
             {tags.map((t) => (
-              <span
-                className="rounded-full border border-neutral-200 px-2.5 py-0.5 text-[12px] text-neutral-600"
-                key={t}
-              >
-                {t}
-              </span>
+              <Tag key={t}>{t}</Tag>
             ))}
           </div>
         </div>

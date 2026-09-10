@@ -355,14 +355,14 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
               </span>
               <div className="flex items-center gap-2">
                 <button
-                  className="rounded-10 border border-neutral-200 bg-white px-4 py-2 text-[13px] font-medium text-neutral-700 hover:border-neutral-300 disabled:opacity-60"
+                  className="rounded-10 border border-neutral-200 bg-white px-4 py-2 text-[13px] font-medium text-neutral-700 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
                   disabled={saving}
                   type="submit"
                 >
                   {saving ? "Saving…" : "Save"}
                 </button>
                 <Link
-                  className="inline-flex items-center gap-1.5 rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white hover:bg-brand-700"
+                  className="inline-flex items-center gap-1.5 rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
                   to={ROUTES.talent}
                 >
                   Done <ArrowRight size={13} />

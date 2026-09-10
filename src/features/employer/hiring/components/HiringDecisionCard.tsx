@@ -68,7 +68,7 @@ export const HiringDecisionCard = ({
             <Button
               className="flex-1"
               type="button"
-              variant="outline"
+              variant="danger"
               onClick={onClick}
             >
               Reject

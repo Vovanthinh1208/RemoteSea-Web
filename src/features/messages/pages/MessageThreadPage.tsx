@@ -199,7 +199,7 @@ export const MessageThreadPage = () => {
       </div>
 
       <form
-        className="mt-3 flex items-end gap-1.5 rounded-24 border border-neutral-200 bg-white py-1.5 pl-4 pr-1.5 transition-colors focus-within:border-brand-600"
+        className="mt-3 flex items-end gap-1.5 rounded-24 border border-neutral-200 bg-white py-1.5 pl-4 pr-1.5 transition-all focus-within:border-brand-600 focus-within:shadow-focus"
         onSubmit={(e) => {
           e.preventDefault();
           handleSend();
@@ -224,6 +224,7 @@ export const MessageThreadPage = () => {
           }}
         />
         <Button
+          aria-label="Send message"
           className="h-9 w-9 flex-shrink-0 rounded-full p-0"
           disabled={!draft.trim() || sendMessage.isPending}
           isLoading={sendMessage.isPending}

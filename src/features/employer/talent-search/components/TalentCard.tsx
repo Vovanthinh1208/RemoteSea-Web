@@ -38,7 +38,7 @@ export const TalentCard = memo(function TalentCard({
   return (
     <article className="group relative flex items-start gap-4 rounded-12 border border-neutral-100 bg-white p-5 transition-all duration-150 hover:border-neutral-200 hover:shadow-card">
       <div
-        className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-10 text-[15px] font-semibold text-white"
+        className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-full text-[15px] font-semibold text-white"
         style={{ background: colorFor(name) }}
       >
         {initial}

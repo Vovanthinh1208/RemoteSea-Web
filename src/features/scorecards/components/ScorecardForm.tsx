@@ -78,10 +78,11 @@ export const ScorecardForm = ({
     );
 
   return (
-    <form
-      className="space-y-4 rounded-16 border border-neutral-200 bg-white p-5"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    // No card frame here — this form only ever renders embedded inside
+    // ScorecardSection's own bordered card (single call site), so its own
+    // border/bg/padding was just a second frame around the same white
+    // background with no visual separation to show for it.
+    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <div>
         <h3 className="text-[15px] font-semibold text-neutral-900">
           Your read on {talentName}
@@ -105,7 +106,7 @@ export const ScorecardForm = ({
                   <button
                     aria-pressed={field.value === value}
                     className={cn(
-                      "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition-colors",
+                      "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none",
                       field.value === value
                         ? "border-brand-600 bg-brand-50 text-brand-700"
                         : "border-neutral-200 text-neutral-600 hover:border-neutral-300"

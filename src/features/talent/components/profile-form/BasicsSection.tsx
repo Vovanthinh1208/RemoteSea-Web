@@ -150,7 +150,7 @@ export const BasicsSection = ({
               onChange={handleFileChange}
             />
             <button
-              className="rounded-8 border border-neutral-200 bg-white px-3 py-1 text-[12px] font-medium text-neutral-700 hover:border-neutral-300 disabled:opacity-60"
+              className="rounded-8 border border-neutral-200 bg-white px-3 py-1 text-[12px] font-medium text-neutral-700 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
               disabled={uploading}
               type="button"
               onClick={() => fileInputRef.current?.click()}
@@ -158,7 +158,7 @@ export const BasicsSection = ({
               {uploading ? "Uploading…" : "Upload photo"}
             </button>
             <button
-              className="px-2 py-1 text-[12px] text-neutral-400 hover:text-neutral-600 disabled:opacity-60"
+              className="rounded-8 px-2 py-1 text-[12px] text-neutral-400 hover:text-neutral-600 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
               disabled={!account?.image || updateAccountMutation.isPending}
               type="button"
               onClick={handleRemove}

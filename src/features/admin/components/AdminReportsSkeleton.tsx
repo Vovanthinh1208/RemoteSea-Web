@@ -25,7 +25,12 @@ export const AdminReportsSkeleton = () => (
           key={i}
           style={{ gridTemplateColumns: REPORT_GRID_COLUMNS }}
         >
-          <Skeleton className="h-4 w-36" />
+          {/* Two lines — job title + employer name, matching ReportRow's
+              stacked identity block instead of collapsing it to one bar. */}
+          <div className="min-w-0 space-y-1.5">
+            <Skeleton className="h-4 w-36" />
+            <Skeleton className="h-3 w-24" />
+          </div>
           <Skeleton className="h-4 w-24" />
           <Skeleton className="h-5 w-20 rounded-4" />
           <Skeleton className="h-4 w-full" />

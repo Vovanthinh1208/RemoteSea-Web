@@ -36,21 +36,8 @@ export const TestimonialsSection = () => (
       <div className="mb-10 text-center">
         <Eyebrow className="mb-3">Talent stories</Eyebrow>
         <h2 className="text-[32px] font-semibold text-neutral-900">
-          From{" "}
-          <em
-            className="font-serif"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            apply
-          </em>{" "}
-          to{" "}
-          <em
-            className="font-serif"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            offer
-          </em>
-          .
+          From <em className="font-serif-italic">apply</em> to{" "}
+          <em className="font-serif-italic">offer</em>.
         </h2>
       </div>
       <div className="grid gap-5 md:grid-cols-3">

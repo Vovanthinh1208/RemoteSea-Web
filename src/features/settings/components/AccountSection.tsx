@@ -63,7 +63,7 @@ export const AccountSection = () => {
         }
       />
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-1.5 sm:col-span-2 sm:col-start-1 sm:col-end-2">
+        <div className="space-y-1.5 sm:col-span-2">
           <label className="block text-[12.5px] font-medium text-neutral-700">
             Email{" "}
             <span className="font-normal text-neutral-400">

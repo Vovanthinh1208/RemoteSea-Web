@@ -161,7 +161,7 @@ export const ExplorerSection = () => {
             {(["USD", "VND"] as const).map((c) => (
               <button
                 className={cn(
-                  "rounded-6 px-3 py-1.5 text-[12px] font-medium transition-all",
+                  "rounded-6 px-3 py-1.5 text-[12px] font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none",
                   currency === c
                     ? "bg-neutral-900 text-white"
                     : "text-neutral-500 hover:text-neutral-700"

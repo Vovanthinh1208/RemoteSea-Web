@@ -164,7 +164,7 @@ export const WorkExperienceForm = ({
     >
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-white text-neutral-500">
+          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-neutral-100 text-neutral-500">
             <Building2 size={15} />
           </span>
           <div className="min-w-0 flex-1">
@@ -179,7 +179,7 @@ export const WorkExperienceForm = ({
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-white text-neutral-500">
+          <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-neutral-100 text-neutral-500">
             <Briefcase size={15} />
           </span>
           <div className="min-w-0 flex-1">
@@ -195,7 +195,7 @@ export const WorkExperienceForm = ({
       </div>
 
       <div className="flex items-center gap-3">
-        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-white text-neutral-500">
+        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-neutral-100 text-neutral-500">
           <MapPin size={15} />
         </span>
         <input
@@ -269,14 +269,14 @@ export const WorkExperienceForm = ({
 
       <div className="flex items-center gap-2 pt-1">
         <button
-          className="rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+          className="rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
           disabled={isSubmitting}
           type="submit"
         >
           {isSubmitting ? "Saving…" : initial ? "Save changes" : "Add role"}
         </button>
         <button
-          className="rounded-10 border border-neutral-200 bg-white px-4 py-2 text-[13px] font-medium text-neutral-600 transition-colors hover:border-neutral-300"
+          className="rounded-10 border border-neutral-200 bg-white px-4 py-2 text-[13px] font-medium text-neutral-600 transition-colors hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={onCancel}
         >

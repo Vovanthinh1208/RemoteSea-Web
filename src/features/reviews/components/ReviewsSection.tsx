@@ -109,7 +109,7 @@ export const ReviewsSection = ({ userId, categories }: ReviewsSectionProps) => {
         <div className="flex items-center justify-between text-[12.5px] text-neutral-400">
           Couldn't load reviews.
           <button
-            className="inline-flex items-center gap-1 font-medium text-brand-600 transition-colors hover:text-brand-700"
+            className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
             type="button"
             onClick={() => refetch()}
           >

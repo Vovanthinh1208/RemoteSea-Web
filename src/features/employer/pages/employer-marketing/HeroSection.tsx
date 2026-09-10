@@ -75,13 +75,10 @@ export const HeroSection = () => (
           <Building2 size={13} /> For hiring teams
         </div>
 
-        <h1
-          className="mb-4 font-serif text-[clamp(40px,5.5vw,60px)] leading-[1.15] tracking-tight text-neutral-900"
-          style={{ fontFamily: "var(--font-serif)" }}
-        >
+        <h1 className="mb-4 text-[clamp(40px,5.5vw,60px)] font-semibold leading-[1.15] tracking-tight text-neutral-900">
           Hire from Vietnam.
           <br />
-          <em className="italic text-brand-700">The right way.</em>
+          <em className="font-serif-italic text-brand-700">The right way.</em>
         </h1>
 
         <p className="mb-8 text-[17px] leading-relaxed text-neutral-500">
@@ -92,13 +89,13 @@ export const HeroSection = () => (
 
         <div className="mb-5 flex flex-wrap gap-3">
           <Link
-            className="inline-flex h-[52px] items-center gap-2 rounded-12 bg-brand-600 px-6 text-[15px] font-medium text-white transition-colors hover:bg-brand-700"
+            className="inline-flex h-[52px] items-center gap-2 rounded-12 bg-brand-600 px-6 text-[15px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
             to="#pricing"
           >
             Post a job — from $150 <ArrowRight size={16} />
           </Link>
           <a
-            className="inline-flex h-[52px] items-center gap-2 rounded-12 px-6 text-[15px] font-medium text-neutral-700 transition-colors hover:bg-neutral-100"
+            className="inline-flex h-[52px] items-center gap-2 rounded-12 px-6 text-[15px] font-medium text-neutral-700 transition-colors hover:bg-neutral-100 focus-visible:shadow-focus focus-visible:outline-none"
             href="mailto:hello@remotesea.io"
           >
             Talk to founder

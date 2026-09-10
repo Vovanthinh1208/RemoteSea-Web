@@ -1,4 +1,4 @@
-import { cn } from "@/utils/cn";
+import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import type { CompanyMemberRole } from "@/types/team";
 
 const ROLE_LABELS: Record<CompanyMemberRole, string> = {
@@ -8,22 +8,19 @@ const ROLE_LABELS: Record<CompanyMemberRole, string> = {
   INTERVIEWER: "Interviewer",
 };
 
-const ROLE_CLASSES: Record<CompanyMemberRole, string> = {
-  OWNER: "border-brand-200 bg-brand-50 text-brand-700",
-  RECRUITER: "border-neutral-200 bg-neutral-50 text-neutral-700",
-  HIRING_MANAGER: "border-neutral-200 bg-neutral-50 text-neutral-700",
-  INTERVIEWER: "border-neutral-200 bg-neutral-50 text-neutral-700",
+// OWNER reads as the "elevated" role (same brand-tinted treatment as
+// Badge's other positive/verified states); every other role is a plain
+// member-level role, so it gets the neutral chip rather than its own
+// hand-rolled bordered variant.
+const ROLE_BADGE_VARIANT: Record<CompanyMemberRole, BadgeVariant> = {
+  OWNER: "positive",
+  RECRUITER: "muted",
+  HIRING_MANAGER: "muted",
+  INTERVIEWER: "muted",
 };
 
 export const roleLabel = (role: CompanyMemberRole): string => ROLE_LABELS[role];
 
 export const RoleBadge = ({ role }: { role: CompanyMemberRole }) => (
-  <span
-    className={cn(
-      "inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11.5px] font-medium",
-      ROLE_CLASSES[role]
-    )}
-  >
-    {ROLE_LABELS[role]}
-  </span>
+  <Badge variant={ROLE_BADGE_VARIANT[role]}>{ROLE_LABELS[role]}</Badge>
 );

@@ -25,7 +25,7 @@ export const EmployerCtaSection = () => (
           </p>
           <div className="flex gap-3">
             <Link
-              className="inline-flex h-11 items-center gap-2 rounded-12 bg-brand-600 px-5 text-sm font-medium text-white transition-colors hover:bg-brand-700"
+              className="inline-flex h-11 items-center gap-2 rounded-12 bg-brand-600 px-5 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.employer}
             >
               Post a job — from $150 <ArrowRight size={14} />
@@ -33,7 +33,7 @@ export const EmployerCtaSection = () => (
             {/* Same mailto the employer-marketing CTAs use — this was a dead
                 to="#" link that just scrolled to the top. */}
             <a
-              className="inline-flex h-11 items-center px-5 text-sm font-medium text-neutral-300 transition-colors hover:text-white"
+              className="inline-flex h-11 items-center rounded-8 px-5 text-sm font-medium text-neutral-300 transition-colors hover:text-white focus-visible:shadow-focus focus-visible:outline-none"
               href="mailto:hello@remotesea.io"
             >
               Talk to founder

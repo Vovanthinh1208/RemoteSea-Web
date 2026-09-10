@@ -103,7 +103,7 @@ export const VisibilitySection = ({
         {VIS_CARDS.map(({ id, icon: Icon, title, desc }) => (
           <button
             className={cn(
-              "rounded-16 border p-4 text-left transition-all",
+              "rounded-16 border p-4 text-left transition-all focus-visible:shadow-focus focus-visible:outline-none",
               selected === id
                 ? "border-brand-600 bg-brand-50"
                 : "border-neutral-200 bg-white hover:border-neutral-300"

@@ -85,7 +85,7 @@ export const ScorecardSection = ({
       <div className="flex items-center justify-between rounded-16 border border-neutral-100 bg-white px-4 py-3.5 text-[12.5px] text-neutral-400">
         Couldn't load team feedback.
         <button
-          className="inline-flex items-center gap-1 font-medium text-brand-600 transition-colors hover:text-brand-700"
+          className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={() => refetch()}
         >

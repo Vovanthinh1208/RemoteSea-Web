@@ -51,7 +51,7 @@ export const FAQSection = () => {
               key={item.q}
             >
               <button
-                className="flex w-full items-center justify-between gap-4 px-6 py-[18px] text-left"
+                className="flex w-full items-center justify-between gap-4 rounded-12 px-6 py-[18px] text-left focus-visible:shadow-focus focus-visible:outline-none"
                 onClick={() => setOpenIndex(openIndex === i ? NO_ITEM_OPEN : i)}
               >
                 <span className="text-[15px] font-medium tracking-tight text-neutral-900">

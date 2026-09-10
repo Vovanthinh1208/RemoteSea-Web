@@ -24,10 +24,7 @@ export const SalaryBenchmark = ({ benches }: SalaryBenchmarkProps) => {
             <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-500">
               Salary data
             </p>
-            <h2
-              className="mb-4 font-serif text-[36px] leading-tight tracking-tight text-white"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
+            <h2 className="mb-4 font-serif text-[36px] leading-tight tracking-tight text-white">
               Know your worth <em className="italic text-brand-400">before</em>{" "}
               you negotiate.
             </h2>
@@ -71,7 +68,7 @@ export const SalaryBenchmark = ({ benches }: SalaryBenchmarkProps) => {
                 salary ranges employers are offering right now.
               </p>
               <Link
-                className="inline-flex items-center gap-2 rounded-12 border border-brand-600 px-5 py-2.5 text-sm font-medium text-brand-400 transition-colors hover:bg-brand-600 hover:text-white"
+                className="inline-flex items-center gap-2 rounded-12 border border-brand-600 px-5 py-2.5 text-sm font-medium text-brand-400 transition-colors hover:bg-brand-600 hover:text-white focus-visible:shadow-focus focus-visible:outline-none"
                 to={ROUTES.salary}
               >
                 See full salary guide <ArrowRight size={14} />

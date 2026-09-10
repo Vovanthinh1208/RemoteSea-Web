@@ -80,13 +80,8 @@ export const ChannelsThreadsSection = () => (
         <Eyebrow className="mb-2">Inside</Eyebrow>
         <h2 className="mb-3 text-[32px] font-semibold text-neutral-900">
           What people{" "}
-          <em
-            className="font-serif text-brand-700"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            actually
-          </em>{" "}
-          talk about.
+          <em className="font-serif-italic text-brand-700">actually</em> talk
+          about.
         </h2>
         <p className="mx-auto max-w-lg text-neutral-500">
           A peek at the channels and a few threads from this week. Names

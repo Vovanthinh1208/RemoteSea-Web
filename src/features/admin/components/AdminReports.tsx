@@ -84,7 +84,7 @@ const ReportRow = memo(function ReportRow({
               type="button"
               disabled={isPending}
               onClick={() => onResolve(r.id, "resolve")}
-              className="inline-flex h-8 items-center justify-center gap-1 rounded-8 border border-brand-200 bg-brand-50 px-2.5 text-xs font-medium text-brand-700 transition-all hover:bg-brand-100 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex h-8 items-center justify-center gap-1 rounded-8 border border-brand-200 bg-brand-50 px-2.5 text-xs font-medium text-brand-700 transition-all hover:bg-brand-100 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
             >
               <CheckCircle2 size={12} /> Resolve
             </button>
@@ -98,7 +98,7 @@ const ReportRow = memo(function ReportRow({
                   type="button"
                   disabled={isPending}
                   onClick={onClick}
-                  className="inline-flex h-8 items-center justify-center gap-1 rounded-8 border border-neutral-200 bg-white px-2.5 text-xs font-medium text-neutral-600 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex h-8 items-center justify-center gap-1 rounded-8 border border-neutral-200 bg-white px-2.5 text-xs font-medium text-neutral-600 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <XCircle size={12} /> Dismiss
                 </button>

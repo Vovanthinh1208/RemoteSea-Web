@@ -32,7 +32,7 @@ export const ReviewerChecklist = ({
           return (
             <button
               aria-checked={done}
-              className={`flex w-full items-start gap-3 rounded-10 border p-3 text-left transition-all disabled:cursor-not-allowed ${done ? "border-brand-200 bg-brand-50" : "border-neutral-100 bg-white hover:border-neutral-200"}`}
+              className={`flex w-full items-start gap-3 rounded-10 border p-3 text-left transition-all focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed ${done ? "border-brand-200 bg-brand-50" : "border-neutral-100 bg-white hover:border-neutral-200"}`}
               disabled={disabled}
               key={c.label}
               role="checkbox"
