@@ -19,7 +19,7 @@ export const SalaryBenchmark = ({ benches }: SalaryBenchmarkProps) => {
   return (
     <section className="py-20" style={{ background: "#1A1917" }}>
       <div className="mx-auto max-w-[1240px] px-6">
-        <div className="grid gap-12 lg:grid-cols-[1fr_360px]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_360px]">
           <div>
             <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-500">
               Salary data

@@ -45,7 +45,7 @@ export const ProcessSection = () => (
         List → review →{" "}
         <em className="font-serif-italic text-brand-700">match.</em>
       </h2>
-      <div className="grid items-stretch gap-4 md:grid-cols-[1fr_auto_1fr_auto_1fr]">
+      <div className="grid grid-cols-1 items-stretch gap-4 md:grid-cols-[1fr_auto_1fr_auto_1fr]">
         {PROCESS.map((step, i) => (
           <Fragment key={step.num}>
             <div className="flex flex-col gap-3 rounded-24 border border-neutral-100 p-7">

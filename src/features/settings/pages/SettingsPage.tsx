@@ -55,7 +55,7 @@ export const SettingsPage = () => {
           </p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[180px_1fr]">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[180px_1fr]">
           <SettingsNav />
 
           <div className="space-y-2">

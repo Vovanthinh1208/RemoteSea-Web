@@ -38,7 +38,7 @@ const WorkspaceSkeleton = () => (
     <div className="mx-auto max-w-[900px] px-6 py-10">
       <Skeleton className="mb-6 h-9 w-64" />
       <Skeleton className="mb-6 h-16 w-full rounded-16" />
-      <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
         <div className="space-y-4">
           <Skeleton className="h-40 w-full rounded-16" />
           <Skeleton className="h-32 w-full rounded-16" />
@@ -251,7 +251,7 @@ export const ApplicationWorkspacePage = () => {
           )}
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
           <div className="space-y-4">
             <CvAnalysisCard
               applicationId={applicant.id}

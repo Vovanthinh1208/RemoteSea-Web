@@ -16,7 +16,7 @@ export const FounderStorySection = () => (
         Built by someone who&apos;s{" "}
         <em className="font-serif-italic text-brand-700">actually done it.</em>
       </h2>
-      <div className="grid gap-10 lg:grid-cols-[280px_1fr]">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[280px_1fr]">
         {/* Aside */}
         <div>
           <div className="mb-4 h-48 w-48 rounded-24 bg-gradient-to-br from-brand-200 to-brand-600" />

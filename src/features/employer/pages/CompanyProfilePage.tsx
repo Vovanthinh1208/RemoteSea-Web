@@ -68,7 +68,7 @@ export const CompanyProfilePage = () => {
               <Skeleton className="h-4 w-2/3 max-w-sm" />
             </div>
           </div>
-          <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
             <div className="space-y-3">
               <Skeleton className="h-5 w-32" />
               {Array.from({ length: JOB_LIST_SKELETON_COUNT }, (_, i) => (
@@ -171,7 +171,7 @@ export const CompanyProfilePage = () => {
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
           <div className="space-y-4">
             <h2 className="text-[17px] font-semibold text-neutral-900">
               Open positions{" "}

@@ -275,7 +275,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
         </div>
 
         <form
-          className="grid gap-8 lg:grid-cols-[180px_1fr]"
+          className="grid grid-cols-1 gap-8 lg:grid-cols-[180px_1fr]"
           onSubmit={handleSubmit(onSubmit)}
         >
           <ProfileFormNav />

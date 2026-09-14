@@ -83,7 +83,7 @@ const ProfileSkeleton = () => (
       </div>
       <Skeleton className="h-24 w-full rounded-16 lg:w-[200px]" />
     </div>
-    <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
       <div className="space-y-5">
         <Skeleton className="h-40 rounded-20" />
         <Skeleton className="h-52 rounded-20" />
@@ -352,7 +352,7 @@ export const PublicTalentProfilePage = () => {
           )}
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
           <div className="space-y-5">
             <ReviewsSection
               categories={TALENT_REVIEW_CATEGORIES}

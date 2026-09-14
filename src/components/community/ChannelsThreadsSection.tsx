@@ -88,7 +88,7 @@ export const ChannelsThreadsSection = () => (
           redacted out of respect — when you join, the full archive is yours.
         </p>
       </div>
-      <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_1fr]">
         {/* Channels list */}
         <div className="rounded-16 border border-neutral-100 bg-white p-4">
           <div className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">

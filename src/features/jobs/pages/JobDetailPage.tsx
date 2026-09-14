@@ -50,7 +50,7 @@ export const JobDetailPage = () => {
     return (
       <div className="mx-auto max-w-[1240px] px-6 py-10">
         <Skeleton className="mb-8 h-4 w-24" />
-        <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
           <div className="space-y-6">
             <Skeleton className="h-32 rounded-16" />
             <Skeleton className="h-48 rounded-16" />
@@ -91,7 +91,7 @@ export const JobDetailPage = () => {
         <ArrowLeft size={14} /> Back to jobs
       </Link>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
         {/* Main content */}
         <div>
           <JobHeaderCard job={job} />

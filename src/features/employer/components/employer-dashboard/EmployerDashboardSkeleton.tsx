@@ -28,7 +28,7 @@ export const EmployerDashboardSkeleton = () => (
         ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
         <div className="space-y-6">
           <div className="overflow-hidden rounded-16 border border-neutral-100 bg-white">
             <div className="border-b border-neutral-100 px-5 py-4">

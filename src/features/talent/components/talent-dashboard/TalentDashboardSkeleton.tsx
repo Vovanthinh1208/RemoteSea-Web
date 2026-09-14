@@ -28,7 +28,7 @@ export const TalentDashboardSkeleton = () => (
       ))}
     </div>
 
-    <div className="grid gap-5 lg:grid-cols-[1fr_300px]">
+    <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_300px]">
       <div className="overflow-hidden rounded-16 border border-neutral-100 bg-white">
         <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
           <Skeleton className="h-4 w-40" />

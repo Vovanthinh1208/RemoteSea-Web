@@ -171,7 +171,7 @@ export const BlogPage = () => {
           </p>
 
           {/* Featured */}
-          <article className="grid gap-8 overflow-hidden rounded-20 border border-neutral-100 bg-white shadow-card transition-shadow hover:shadow-[0_4px_24px_rgba(26,25,23,0.10)] lg:grid-cols-[420px_1fr]">
+          <article className="grid grid-cols-1 gap-8 overflow-hidden rounded-20 border border-neutral-100 bg-white shadow-card transition-shadow hover:shadow-[0_4px_24px_rgba(26,25,23,0.10)] lg:grid-cols-[420px_1fr]">
             <div className="overflow-hidden rounded-l-20">
               <div
                 className="h-full min-h-[260px] w-full"
@@ -251,7 +251,7 @@ export const BlogPage = () => {
             </div>
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_300px]">
             {/* Grid */}
             <div className="grid gap-5 sm:grid-cols-2">
               {filtered.map((p) => (

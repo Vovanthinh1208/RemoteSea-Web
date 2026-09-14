@@ -35,7 +35,7 @@ export const Pipeline = ({ applications }: PipelineProps) => {
       {stages.map((s, i) => (
         <div
           className={cn(
-            "flex flex-1 flex-col items-center gap-0.5 px-2 py-3 text-center",
+            "flex min-w-0 flex-1 flex-col items-center gap-0.5 px-1.5 py-3 text-center sm:px-2",
             i < stages.length - 1 && "border-r border-neutral-100",
             s.active && "border-b-2 border-brand-600 bg-white"
           )}
@@ -49,9 +49,13 @@ export const Pipeline = ({ applications }: PipelineProps) => {
           >
             {s.n.toString().padStart(2, "0")}
           </span>
+          {/* Column width is 1/5 of the card and can't grow past that (no
+              horizontal scroll on this row), so a single long word like
+              "Interviewing" needs to truncate instead of forcing the whole
+              row — and the page — wider than the viewport on narrow phones. */}
           <span
             className={cn(
-              "text-[11px]",
+              "w-full truncate text-[11px]",
               s.active ? "font-medium text-brand-600" : "text-neutral-400"
             )}
           >

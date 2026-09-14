@@ -509,7 +509,7 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
   // instant real data loaded.
   return (
     <div className="rounded-16 border border-neutral-100 bg-white p-5">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-[14px] font-semibold text-neutral-900">
           Recent applicants
         </h3>
