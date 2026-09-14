@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle, Briefcase, Building2, MapPin } from "lucide-react";
+import { Briefcase, Building2, MapPin } from "lucide-react";
 import { Toggle } from "@/features/talent/components/profile-form/Toggle";
+import { FieldError } from "@/components/shared/FieldError";
 import {
   TEXT_INPUT_CLASS,
   TEXTAREA_INPUT_CLASS,
@@ -111,13 +112,6 @@ const MonthYearSelect = ({
     </div>
   );
 };
-
-const FieldError = ({ message }: { message?: string }) =>
-  message ? (
-    <p className="mt-1 flex items-center gap-1 text-[11.5px] text-red-600">
-      <AlertCircle size={11} /> {message}
-    </p>
-  ) : null;
 
 const toDefaultValues = (
   initial?: WorkExperience

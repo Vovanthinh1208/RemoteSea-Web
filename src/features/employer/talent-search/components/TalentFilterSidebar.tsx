@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useSkills } from "@/features/taxonomy/taxonomy.queries";
+import { FilterGroup } from "@/components/shared/FilterGroup";
+import { CheckRow } from "@/components/shared/CheckRow";
 import {
   COUNTRY_OPTIONS,
   EMPLOYMENT_TYPE_OPTIONS,
@@ -17,55 +19,6 @@ interface TalentFilterSidebarProps {
   filters: TalentSearchFilters;
   onChange: (filters: TalentSearchFilters) => void;
 }
-
-interface CheckRowProps {
-  checked: boolean;
-  label: string;
-  onToggle: () => void;
-}
-
-const CheckRow = ({ checked, label, onToggle }: CheckRowProps) => (
-  <label
-    className={cn(
-      "flex cursor-pointer select-none items-center gap-2.5 py-1.5 text-[13.5px] transition-colors",
-      checked ? "text-neutral-900" : "text-neutral-500 hover:text-neutral-900"
-    )}
-  >
-    <input
-      checked={checked}
-      className="peer sr-only"
-      type="checkbox"
-      onChange={onToggle}
-    />
-    <span
-      aria-hidden="true"
-      className={cn(
-        "grid h-4 w-4 flex-shrink-0 place-items-center rounded-4 border transition-all",
-        "peer-focus-visible:shadow-focus",
-        checked
-          ? "border-brand-600 bg-brand-600"
-          : "border-neutral-300 bg-white"
-      )}
-    >
-      {checked && <Check className="text-white" size={10} strokeWidth={3} />}
-    </span>
-    <span className="flex-1">{label}</span>
-  </label>
-);
-
-interface FilterGroupProps {
-  label: string;
-  children: React.ReactNode;
-}
-
-const FilterGroup = ({ label, children }: FilterGroupProps) => (
-  <div className="border-b border-neutral-100 py-4 last:border-0">
-    <div className="mb-2 text-[10.5px] font-semibold uppercase tracking-widest text-neutral-400">
-      {label}
-    </div>
-    {children}
-  </div>
-);
 
 const SKILL_SUGGESTION_LIMIT = 8;
 

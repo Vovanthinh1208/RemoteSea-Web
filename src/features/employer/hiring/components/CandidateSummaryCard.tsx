@@ -2,29 +2,19 @@ import { useState } from "react";
 import { Paperclip } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
+import { formatSalaryWithCurrency } from "@/utils/format";
 import type { ApplicantWithJob } from "@/features/employer/employer.queries";
 
 interface CandidateSummaryCardProps {
   applicant: ApplicantWithJob;
 }
 
-const formatSalary = (
-  min: number | null,
-  max: number | null,
-  currency: string
-): string | null => {
-  if (!min && !max) return null;
-  const fmt = (n: number) => `${currency} ${n.toLocaleString()}`;
-  if (min && max) return `${fmt(min)}–${fmt(max)}`;
-  return fmt((min ?? max)!);
-};
-
 export const CandidateSummaryCard = ({
   applicant,
 }: CandidateSummaryCardProps) => {
   const [coverLetterOpen, setCoverLetterOpen] = useState(false);
   const { talent } = applicant;
-  const salary = formatSalary(
+  const salary = formatSalaryWithCurrency(
     talent.desiredSalaryMin,
     talent.desiredSalaryMax,
     talent.currency

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
@@ -11,6 +11,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Dropdown } from "@/components/ui/dropdown";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { useSyncedState } from "@/hooks/useSyncedState";
+import { useDebouncedSearchSync } from "@/hooks/useDebouncedSearchSync";
 import { useJobsQuery, prefetchJobsList } from "@/features/jobs/jobs.queries";
 import { useCategories } from "@/features/taxonomy/taxonomy.queries";
 import { buildActivePills } from "@/features/jobs/jobs.utils";
@@ -29,7 +30,6 @@ interface JobsBoardProps {
   onFiltersChange: (filters: JobFilters) => void;
 }
 
-const SEARCH_DEBOUNCE_MS = 400;
 const JOB_LIST_SKELETON_COUNT = 6;
 
 const SORT_OPTIONS = [
@@ -44,7 +44,6 @@ export const JobsBoard = ({
   onFiltersChange,
 }: JobsBoardProps) => {
   const [search, setSearch] = useSyncedState(query.q);
-  const firstRender = useRef(true);
   const queryClient = useQueryClient();
   const { data, isLoading, isFetching, isError, isPlaceholderData, refetch } =
     useJobsQuery(query);
@@ -63,27 +62,16 @@ export const JobsBoard = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, queryClient]);
 
-  // Debounced search → filters
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
-    const t = setTimeout(() => {
-      if (search !== query.q) {
-        // Mirrors the API's own default: ranks by relevance once a search
-        // starts (unless the user already picked a different sort), and
-        // reverts to recency once the search is cleared — never overrides an
-        // explicit choice like "salary"/"featured".
-        let sort = query.sort;
-        if (search && query.sort === "recent") sort = "relevance";
-        if (!search && query.sort === "relevance") sort = "recent";
-        onFiltersChange({ ...query, q: search, sort, page: 1 });
-      }
-    }, SEARCH_DEBOUNCE_MS);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  // Debounced search → filters. Mirrors the API's own default: ranks by
+  // relevance once a search starts (unless the user already picked a
+  // different sort), and reverts to recency once the search is cleared —
+  // never overrides an explicit choice like "salary"/"featured".
+  useDebouncedSearchSync(search, query.q, (s) => {
+    let sort = query.sort;
+    if (s && query.sort === "recent") sort = "relevance";
+    if (!s && query.sort === "relevance") sort = "recent";
+    onFiltersChange({ ...query, q: s, sort, page: 1 });
+  });
 
   const setFilters = (filters: Filters) =>
     onFiltersChange({ ...query, filters, q: search, page: 1 });

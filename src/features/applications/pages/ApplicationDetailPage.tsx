@@ -17,6 +17,7 @@ import { CompanyLogo } from "@/components/ui/company-logo";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { cn } from "@/utils/cn";
+import { formatSalaryWithCurrency } from "@/utils/format";
 import { ROUTES } from "@/constants/routes";
 import type { ApplicationStatus } from "@/types/application";
 
@@ -54,17 +55,6 @@ const STATUS_GUIDANCE: Partial<Record<ApplicationStatus, string>> = {
   WITHDRAWN: "You withdrew this application.",
 };
 
-const formatSalary = (
-  min: number | null,
-  max: number | null,
-  currency: string
-): string | null => {
-  if (!min && !max) return null;
-  const fmt = (n: number) => `${currency} ${n.toLocaleString()}`;
-  if (min && max) return `${fmt(min)}–${fmt(max)}`;
-  return fmt((min ?? max)!);
-};
-
 export const ApplicationDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const applicationId = id ?? "";
@@ -83,7 +73,7 @@ export const ApplicationDetailPage = () => {
   );
 
   const salary = application
-    ? formatSalary(
+    ? formatSalaryWithCurrency(
         application.job.salaryMin,
         application.job.salaryMax,
         application.job.currency

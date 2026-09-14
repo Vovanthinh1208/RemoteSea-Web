@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PillToggle } from "@/components/shared/PillToggle";
+import { FieldError } from "@/components/shared/FieldError";
 import {
   SELECT_INPUT_CLASS,
   TEXT_INPUT_CLASS,
@@ -94,11 +95,7 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
             placeholder="e.g. Senior remote engineering"
             {...register("name")}
           />
-          {errors.name && (
-            <p className="mt-1 text-[12px] text-red-600">
-              {errors.name.message}
-            </p>
-          )}
+          <FieldError message={errors.name?.message} />
         </div>
         <div className="space-y-1.5">
           <label

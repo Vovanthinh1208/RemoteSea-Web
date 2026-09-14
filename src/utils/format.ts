@@ -27,6 +27,17 @@ export const formatSalaryRange = (
 export const formatUsd = (amount: number): string =>
   `$${amount.toLocaleString()}`;
 
+export const formatSalaryWithCurrency = (
+  min: number | null,
+  max: number | null,
+  currency: string
+): string | null => {
+  if (!min && !max) return null;
+  const fmt = (n: number) => `${currency} ${n.toLocaleString()}`;
+  if (min && max) return `${fmt(min)}–${fmt(max)}`;
+  return fmt((min ?? max)!);
+};
+
 const HOURS_PER_DAY = 24;
 
 /**

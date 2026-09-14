@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useSyncedState } from "@/hooks/useSyncedState";
 import { useCategories } from "@/features/taxonomy/taxonomy.queries";
+import { FilterGroup } from "@/components/shared/FilterGroup";
+import { CheckRow } from "@/components/shared/CheckRow";
 import {
   DEFAULT_FILTERS,
   FILTER_OPTIONS,
@@ -18,60 +20,6 @@ interface FilterSidebarProps {
   onChange: (filters: Filters) => void;
   facets: JobFacets;
 }
-
-interface CheckRowProps {
-  checked: boolean;
-  label: string;
-  count: number;
-  onToggle: () => void;
-}
-
-const CheckRow = ({ checked, label, count, onToggle }: CheckRowProps) => (
-  <label
-    className={cn(
-      "flex cursor-pointer select-none items-center gap-2.5 py-1.5 text-[13.5px] transition-colors",
-      checked ? "text-neutral-900" : "text-neutral-500 hover:text-neutral-900"
-    )}
-  >
-    {/* A <label> with no associated form control isn't in the tab order and
-        doesn't respond to Enter/Space — this was previously just a styled
-        <span>, making every filter in this sidebar keyboard-inoperable. */}
-    <input
-      checked={checked}
-      className="peer sr-only"
-      type="checkbox"
-      onChange={onToggle}
-    />
-    <span
-      aria-hidden="true"
-      className={cn(
-        "grid h-4 w-4 flex-shrink-0 place-items-center rounded-4 border transition-all",
-        "peer-focus-visible:shadow-focus",
-        checked
-          ? "border-brand-600 bg-brand-600"
-          : "border-neutral-300 bg-white"
-      )}
-    >
-      {checked && <Check className="text-white" size={10} strokeWidth={3} />}
-    </span>
-    <span className="flex-1">{label}</span>
-    <span className="text-[11px] tabular-nums text-neutral-400">{count}</span>
-  </label>
-);
-
-interface FilterGroupProps {
-  label: string;
-  children: React.ReactNode;
-}
-
-const FilterGroup = ({ label, children }: FilterGroupProps) => (
-  <div className="border-b border-neutral-100 py-4 last:border-0">
-    <div className="mb-2 text-[10.5px] font-semibold uppercase tracking-widest text-neutral-400">
-      {label}
-    </div>
-    {children}
-  </div>
-);
 
 const TIMEZONE_OPTIONS = [
   { key: "sea", label: "SEA / APAC (UTC+7 to +10)" },

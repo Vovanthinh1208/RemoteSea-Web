@@ -35,7 +35,8 @@ import {
 } from "@/features/talent/talent-dashboard.utils";
 import { ROUTES } from "@/constants/routes";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/utils/cn";
 import { percent } from "@/utils/percent";
 
 const MORNING_END_HOUR = 12;
@@ -144,7 +145,10 @@ export const TalentDashboard = () => {
         </div>
         <div className="flex gap-2">
           <Link
-            className="inline-flex h-10 items-center gap-2 rounded-12 border border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none"
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900"
+            )}
             to={ROUTES.alerts}
           >
             <Bell size={14} />
@@ -155,10 +159,7 @@ export const TalentDashboard = () => {
               </span>
             )}
           </Link>
-          <Link
-            className="inline-flex h-10 items-center gap-2 rounded-12 bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
-            to={ROUTES.jobs}
-          >
+          <Link className={buttonVariants()} to={ROUTES.jobs}>
             <Search size={14} /> Browse jobs
           </Link>
         </div>
@@ -193,7 +194,7 @@ export const TalentDashboard = () => {
             </p>
           </div>
           <Link
-            className="inline-flex h-10 flex-shrink-0 items-center gap-2 rounded-12 bg-brand-600 px-5 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
+            className={cn(buttonVariants(), "flex-shrink-0")}
             to={ROUTES.profile}
           >
             Complete profile <ArrowRight size={14} />
@@ -244,10 +245,7 @@ export const TalentDashboard = () => {
                 ? "Couldn't load"
                 : `${profileViewAnalytics?.uniqueViewers ?? 0} unique`
           }
-          // Real employer views, deduplicated server-side to one per employer
-          // per day — not a fake/static number. "—" while loading or on a
-          // failed fetch (never a misleading 0), same convention as
-          // savedJobIds above.
+
           value={
             profileViewsLoading || profileViewsErrored
               ? "—"

@@ -13,6 +13,7 @@ import {
 import { roleLabel } from "@/features/team/components/RoleBadge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { FieldError } from "@/components/shared/FieldError";
 import {
   TEXT_INPUT_CLASS,
   SELECT_INPUT_CLASS,
@@ -93,11 +94,7 @@ export const InviteMemberSection = () => {
             type="email"
             {...register("email")}
           />
-          {errors.email && (
-            <p className="mt-1 text-[12px] text-red-600">
-              {errors.email.message}
-            </p>
-          )}
+          <FieldError message={errors.email?.message} />
         </div>
         <div className="space-y-1.5 sm:w-44">
           <label

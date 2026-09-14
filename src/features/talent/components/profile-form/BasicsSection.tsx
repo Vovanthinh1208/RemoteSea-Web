@@ -5,6 +5,7 @@ import {
   SectionHead,
   EMPHASIS_STYLE,
 } from "@/features/talent/components/profile-form/SectionHead";
+import { FieldError } from "@/components/shared/FieldError";
 import {
   SELECT_INPUT_CLASS,
   TEXT_INPUT_CLASS,
@@ -181,9 +182,7 @@ export const BasicsSection = ({
             id="p-name"
             {...register("name")}
           />
-          {nameError && (
-            <p className="text-[11.5px] text-red-600">{nameError}</p>
-          )}
+          <FieldError message={nameError} />
         </div>
         <div className="space-y-1.5">
           <p className="text-[12.5px] font-medium text-neutral-700">
@@ -213,9 +212,7 @@ export const BasicsSection = ({
             placeholder="Role · timezone · standout signal"
             {...register("headline")}
           />
-          {headlineError && (
-            <p className="text-[11.5px] text-red-600">{headlineError}</p>
-          )}
+          <FieldError message={headlineError} />
         </div>
         <div className="space-y-1.5">
           <label

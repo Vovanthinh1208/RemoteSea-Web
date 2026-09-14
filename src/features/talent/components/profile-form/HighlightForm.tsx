@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle } from "lucide-react";
 import { Toggle } from "@/features/talent/components/profile-form/Toggle";
+import { FieldError } from "@/components/shared/FieldError";
 import {
   SELECT_INPUT_CLASS,
   TEXT_INPUT_CLASS,
@@ -46,13 +46,6 @@ const toDefaultValues = (initial?: ProfileHighlight): HighlightFormValues => ({
   isOngoing: initial ? initial.endYear === null : true,
   endYear: initial?.endYear ? String(initial.endYear) : "",
 });
-
-const FieldError = ({ message }: { message?: string }) =>
-  message ? (
-    <p className="mt-1 flex items-center gap-1 text-[11.5px] text-red-600">
-      <AlertCircle size={11} /> {message}
-    </p>
-  ) : null;
 
 export const HighlightForm = ({
   type,

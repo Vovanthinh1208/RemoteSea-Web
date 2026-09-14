@@ -36,7 +36,12 @@ export const TalentCard = memo(function TalentCard({
   const country = talent.country ?? "Remote";
 
   return (
-    <article className="group relative flex items-start gap-4 rounded-12 border border-neutral-100 bg-white p-5 transition-all duration-150 hover:border-neutral-200 hover:shadow-card">
+    // flex-wrap (not a viewport breakpoint) so this adapts to the card's own
+    // rendered width — the same squeeze JobCard had, and the same fix: below
+    // ~420px of available width the metadata column (match/availability/
+    // salary/invite) wraps below the candidate's name instead of squeezing
+    // it into a sliver.
+    <article className="group relative flex flex-wrap items-start gap-4 rounded-12 border border-neutral-100 bg-white p-5 transition-all duration-150 hover:border-neutral-200 hover:shadow-card">
       <div
         className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-full text-[15px] font-semibold text-white"
         style={{ background: colorFor(name) }}
@@ -44,7 +49,7 @@ export const TalentCard = memo(function TalentCard({
         {initial}
       </div>
 
-      <div className="min-w-0 flex-1">
+      <div className="min-w-[240px] flex-1">
         <div className="mb-1 flex flex-wrap items-center gap-1.5">
           <span className="text-[13px] font-medium text-neutral-600">
             {name}
@@ -82,7 +87,7 @@ export const TalentCard = memo(function TalentCard({
         </div>
       </div>
 
-      <div className="flex flex-shrink-0 flex-col items-end gap-2">
+      <div className="ml-auto flex flex-shrink-0 flex-col items-end gap-2">
         {match && <MatchBadge match={match} />}
         <AvailabilityBadge isOpenToWork noticePeriod={talent.noticePeriod} />
         <SalaryBadge

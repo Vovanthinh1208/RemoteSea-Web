@@ -3,6 +3,7 @@ import {
   SectionHead,
   EMPHASIS_STYLE,
 } from "@/features/talent/components/profile-form/SectionHead";
+import { FieldError } from "@/components/shared/FieldError";
 import {
   SELECT_INPUT_CLASS,
   TEXTAREA_INPUT_CLASS,
@@ -68,7 +69,7 @@ export const AboutSection = ({
           rows={4}
           {...register("bio")}
         />
-        {bioError && <p className="text-[11.5px] text-red-600">{bioError}</p>}
+        <FieldError message={bioError} />
       </div>
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="space-y-1.5">

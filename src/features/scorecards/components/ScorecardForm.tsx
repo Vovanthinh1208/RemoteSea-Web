@@ -2,6 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { FieldError } from "@/components/shared/FieldError";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useCreateScorecard } from "@/features/scorecards/scorecard.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
@@ -128,11 +129,7 @@ export const ScorecardForm = ({
           </div>
         )}
       />
-      {errors.recommendation && (
-        <p className="text-[12px] text-red-600">
-          {errors.recommendation.message}
-        </p>
-      )}
+      <FieldError message={errors.recommendation?.message} />
 
       <div>
         <label
@@ -149,9 +146,7 @@ export const ScorecardForm = ({
           rows={4}
           {...register("note")}
         />
-        {errors.note && (
-          <p className="mt-1 text-[12px] text-red-600">{errors.note.message}</p>
-        )}
+        <FieldError message={errors.note?.message} />
       </div>
 
       <div className="flex gap-2">

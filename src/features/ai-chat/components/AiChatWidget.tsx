@@ -115,12 +115,6 @@ export const AiChatWidget = () => {
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  // undefined = no explicit choice made yet (resume the most recent
-  // conversation, if any); null = explicitly starting a new/blank one
-  // ("New chat"); a string = a real conversation id. Deriving the id to
-  // actually use from this (below) instead of syncing it via a useEffect
-  // avoids an extra render pass on open — no state to keep "in sync," just
-  // a value computed straight from what's already in hand.
   const [selectedConversationId, setSelectedConversationId] = useState<
     string | null | undefined
   >(undefined);
@@ -128,8 +122,6 @@ export const AiChatWidget = () => {
   const [pendingQuestion, setPendingQuestion] = useState<string | null>(null);
 
   const conversations = useConversations();
-  // ChatService.list_conversations on the backend already orders by
-  // updatedAt desc, so conversations.data[0] is the most recent.
   const activeConversationId =
     selectedConversationId === undefined
       ? (conversations.data?.[0]?.id ?? null)
@@ -143,37 +135,16 @@ export const AiChatWidget = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  // A ref, not state — read synchronously inside the message-count effect
-  // below, which must react to the *latest* scroll position at the instant
-  // a new turn arrives, not whatever isNearBottom happened to be as of this
-  // component's last render (state read inside that effect's closure could
-  // be one render behind a scroll event that just fired).
   const isNearBottomRef = useRef(true);
   const [hasNewMessageBelow, setHasNewMessageBelow] = useState(false);
-  // Opening the panel (or switching conversations) jumps straight to the
-  // bottom — animating a smooth scroll through the entire history on every
-  // open reads as sluggish, not "friendly." Only a message count increase
-  // *after* that (sending, or a new one arriving) gets the smooth scroll,
-  // so it reads as "a new message just appeared." Reset whenever the
-  // conversation identity changes, not just once ever, so switching to a
-  // different past conversation also jumps instead of smooth-scrolling
-  // through it.
   const hasLoadedOnce = useRef(false);
 
   const firstName = user?.name?.split(" ")[0];
 
-  // Defined before the effects below (not after the `if (!user) return
-  // null` guard) so the click-outside/Escape effect's closure always
-  // resolves a real function, not a binding that's only initialized on
-  // renders where a user exists.
   const requestClose = () => setClosing(true);
 
   useEffect(() => {
     if (!open) return;
-    // setClosing directly, not the requestClose wrapper — setClosing's
-    // identity is stable across renders (React's useState guarantee), so
-    // this effect's dependency array can stay just [open], same pattern
-    // NotificationBell uses with its own setOpen(false).
     const onPointerDown = (e: PointerEvent) => {
       if (!rootRef.current?.contains(e.target as Node)) {
         setClosing(true);
@@ -185,9 +156,6 @@ export const AiChatWidget = () => {
     };
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
-      // Escape closes the nearest open layer first — the history dropdown,
-      // if it's open — rather than jumping straight to closing the whole
-      // panel, matching the click-outside handler's two-layer treatment.
       setShowHistory((wasShowingHistory) => {
         if (wasShowingHistory) return false;
         setClosing(true);
@@ -209,11 +177,6 @@ export const AiChatWidget = () => {
     el.style.height = `${Math.min(el.scrollHeight, COMPOSE_MAX_HEIGHT_PX)}px`;
   }, [draft]);
 
-  // Tracks scroll position while the panel is open — read (via the ref
-  // above) whenever a new turn arrives, so that arrival only auto-scrolls
-  // if the user was already at/near the bottom. Someone scrolled up to
-  // re-read an earlier answer shouldn't get yanked back down the instant a
-  // new one comes in; they get the "New message" pill below instead.
   useEffect(() => {
     if (!open) return;
     const el = scrollContainerRef.current;
@@ -238,9 +201,6 @@ export const AiChatWidget = () => {
         block: "end",
       });
     } else if (hasLoadedOnce.current) {
-      // Only surface the pill for a turn that arrived *after* the initial
-      // load, not for "you opened a long conversation already scrolled
-      // somewhere" — there's nothing new to point at in that case.
       setHasNewMessageBelow(true);
     }
     hasLoadedOnce.current = true;
@@ -341,7 +301,7 @@ export const AiChatWidget = () => {
             // full-height mobile sheet's own bottom edge (and the composer
             // sitting near it) is exactly where a notched phone's home
             // indicator would otherwise overlap it.
-            "fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] top-16 z-40 flex origin-bottom flex-col overflow-hidden rounded-24 border border-brand-100/70 bg-white shadow-[0_8px_24px_rgba(26,25,23,0.10),0_2px_10px_rgba(46,155,82,0.08)]",
+            "fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] top-14 z-40 flex origin-bottom flex-col overflow-hidden rounded-24 border border-brand-100/70 bg-white shadow-[0_8px_24px_rgba(26,25,23,0.10),0_2px_10px_rgba(46,155,82,0.08)]",
             "sm:inset-x-auto sm:inset-y-auto sm:bottom-[92px] sm:right-5 sm:top-auto sm:h-[min(680px,calc(100vh-8rem))] sm:w-[420px] sm:max-w-[calc(100vw-2.5rem)] sm:origin-bottom-right",
             "lg:w-[460px]",
             closing ? "animate-chat-pop-out" : "animate-chat-pop-in"

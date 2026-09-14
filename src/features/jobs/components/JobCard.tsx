@@ -64,13 +64,19 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
     // sibling, not a descendant, of the anchor.
     <article
       className={cn(
-        "group relative flex items-start gap-4 rounded-12 border border-neutral-100 bg-white p-5 transition-all duration-150 hover:border-neutral-200 hover:shadow-card",
+        // flex-wrap (not a viewport breakpoint) so this adapts to the card's own
+        // rendered width, not just the screen's — the same card sits in a full-width
+        // column on mobile AND squeezed next to FilterSidebar's 220px on tablet, and a
+        // fixed sm/md cutoff would fix one and miss the other. Below ~420px of
+        // available width the metadata column (match/salary/date/save) wraps below
+        // the title instead of squeezing it into a sliver.
+        "group relative flex flex-wrap items-start gap-4 rounded-12 border border-neutral-100 bg-white p-5 transition-all duration-150 hover:border-neutral-200 hover:shadow-card",
         job.isFeatured && "border-l-2 border-l-amber-400"
       )}
     >
       <CompanyLogo name={job.employer.companyName} size={44} />
 
-      <div className="min-w-0 flex-1">
+      <div className="min-w-[240px] flex-1">
         {/* Row 1 — company + badges */}
         <div className="mb-1 flex flex-wrap items-center gap-1.5">
           {job.employer.isVerified && (
@@ -133,8 +139,11 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
         </div>
       </div>
 
-      {/* Right side */}
-      <div className="flex flex-shrink-0 flex-col items-end gap-2">
+      {/* Right side. ml-auto is a no-op when this sits in the same row as the
+          content column (flex-1 already pushes it flush right) but keeps it
+          pinned to the right edge on its own wrapped row instead of falling
+          back to flex-start under the logo. */}
+      <div className="ml-auto flex flex-shrink-0 flex-col items-end gap-2">
         {match && <MatchBadge match={match} />}
         <SalaryBadge max={job.salaryMax} min={job.salaryMin} />
         <span className="text-[12px] text-neutral-400">

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
 import { TalentFilterSidebar } from "@/features/employer/talent-search/components/TalentFilterSidebar";
 import { TalentCard } from "@/features/employer/talent-search/components/TalentCard";
@@ -8,6 +8,7 @@ import { Pagination } from "@/features/jobs/components/Pagination";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { useSyncedState } from "@/hooks/useSyncedState";
+import { useDebouncedSearchSync } from "@/hooks/useDebouncedSearchSync";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { ApiError } from "@/core/errors/api-error";
 import { useTalentSearchQuery } from "@/features/employer/talent-search/talent-search.queries";
@@ -26,7 +27,6 @@ interface TalentSearchBoardProps {
   onFiltersChange: (filters: TalentSearchFilters) => void;
 }
 
-const SEARCH_DEBOUNCE_MS = 400;
 const TALENT_LIST_SKELETON_COUNT = 6;
 
 export const TalentSearchBoard = ({
@@ -43,7 +43,6 @@ export const TalentSearchBoard = ({
   );
   const runWithToast = useToastMutation();
   const sendInvitation = useSendInvitation();
-  const firstRender = useRef(true);
   const { data, isLoading, isFetching, isError, isPlaceholderData, refetch } =
     useTalentSearchQuery(query);
   const { data: jobsData } = useEmployerJobs();
@@ -52,17 +51,9 @@ export const TalentSearchBoard = ({
   );
   const selectedJob = activeJobs.find((j) => j.id === query.forJob);
 
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
-    const t = setTimeout(() => {
-      if (search !== query.q) onFiltersChange({ ...query, q: search, page: 1 });
-    }, SEARCH_DEBOUNCE_MS);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  useDebouncedSearchSync(search, query.q, (s) =>
+    onFiltersChange({ ...query, q: s, page: 1 })
+  );
 
   const setFilters = (next: TalentSearchFilters) =>
     onFiltersChange({ ...next, q: search, page: 1 });
