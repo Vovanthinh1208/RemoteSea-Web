@@ -66,7 +66,29 @@ export const useEmployerJobs = () => {
   const { user } = useAuth();
   return useQuery({
     queryKey: employerKeys.jobs(),
-    queryFn: ({ signal }) => listEmployerJobs(undefined, { signal }),
+    // Same catch as useEmployerProfile above, for the same reason: a
+    // newly-registered EMPLOYER with no company yet gets a 403 here
+    // (COMPANY_MEMBERSHIP_REQUIRED), not a real failure — before this,
+    // EmployerDashboard's `profileErrored || jobsErrored` check treated
+    // that as a generic "Couldn't load your dashboard" error with a "Try
+    // again" that could never succeed. Returning null (not undefined —
+    // React Query itself throws "Query data cannot be undefined" and
+    // turns that into an error state, defeating this exact catch) lets
+    // the dashboard's own existing `jobsData?.jobs ?? []` /
+    // `jobsData?.stats ?? {...}` fallbacks render its normal empty state.
+    queryFn: async ({ signal }) => {
+      try {
+        return await listEmployerJobs(undefined, { signal });
+      } catch (err) {
+        if (
+          err instanceof ApiError &&
+          (err.status === NOT_FOUND_STATUS || err.status === FORBIDDEN_STATUS)
+        ) {
+          return null;
+        }
+        throw err;
+      }
+    },
     enabled: !!user && user.role === "EMPLOYER",
   });
 };
@@ -99,7 +121,22 @@ export const useEmployerApplicationsAggregate = () => {
     refetch: refetchAll,
   } = useQuery({
     queryKey: employerKeys.recentApplications(),
-    queryFn: ({ signal }) => listRecentApplications({ signal }),
+    // Same 403/404-is-not-an-error catch as useEmployerProfile/
+    // useEmployerJobs above, for the same company-less-employer case —
+    // this endpoint hits the same COMPANY_MEMBERSHIP_REQUIRED 403.
+    queryFn: async ({ signal }) => {
+      try {
+        return await listRecentApplications({ signal });
+      } catch (err) {
+        if (
+          err instanceof ApiError &&
+          (err.status === NOT_FOUND_STATUS || err.status === FORBIDDEN_STATUS)
+        ) {
+          return null;
+        }
+        throw err;
+      }
+    },
     ...TIER.live,
   });
 

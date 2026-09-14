@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { ChevronRight, Check, Shield, Tag, Zap } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useToast } from "@/components/ui/toast";
@@ -29,7 +28,6 @@ import {
   loadPostJobDraft,
   usePostJobDraftPersistence,
 } from "@/features/post-job/use-post-job-draft";
-import { ROUTES } from "@/constants/routes";
 import { formatUsd } from "@/utils/format";
 
 const STEPS = [
@@ -67,8 +65,6 @@ export const PostJobWizard = () => {
   const createJobMutation = useCreateJob();
   const createCheckoutMutation = useCreateCheckoutSession();
 
-  // Default the category once real categories load — adjusted during render (not in
-  // an effect) so it's applied in the same pass, guarded to run only once.
   const [categoryDefaulted, setCategoryDefaulted] = useState(false);
   if (!categoryDefaulted && categories && categories.length > 0) {
     setCategoryDefaulted(true);
@@ -141,7 +137,6 @@ export const PostJobWizard = () => {
         hqCountry: hqToCountry(form.coHq),
       });
     } catch (err) {
-      // A 409 just means this employer already has a profile — fine, continue.
       if (!(
         err instanceof ApiError && err.status === PROFILE_ALREADY_EXISTS_STATUS
       )) {
@@ -191,8 +186,6 @@ export const PostJobWizard = () => {
         return;
       }
     } catch (err) {
-      // Stripe not configured — job saved as DRAFT; show the honest fallback below.
-      // Still worth reporting since it may also mean Stripe *was* configured and failed.
       reportError(err);
     }
 
@@ -207,16 +200,13 @@ export const PostJobWizard = () => {
 
   return (
     <div className="min-h-screen bg-neutral-50">
-      {/* Top bar */}
+      {/* Top bar — no RemoteSEA wordmark here: the global Navbar directly
+          above this page already shows the logo and a link home, so
+          repeating it in this second bar was pure duplication, not a
+          second piece of information. */}
       <div className="border-b border-neutral-200 bg-white px-6 py-4">
         <h1 className="sr-only">Post a job</h1>
         <div className="mx-auto flex max-w-[1200px] items-center justify-between">
-          <Link
-            className="text-[15px] font-semibold text-neutral-900"
-            to={ROUTES.home}
-          >
-            RemoteSEA
-          </Link>
           <div className="flex items-center gap-1">
             {STEPS.map((s, i) => (
               <div className="flex items-center gap-1" key={s.id}>

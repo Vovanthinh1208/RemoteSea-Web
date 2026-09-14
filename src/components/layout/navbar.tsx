@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Bell, Bookmark, Settings } from "lucide-react";
+import { Bell, Bookmark, Menu, Settings, X } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useAuth } from "@/contexts/AuthContext";
 import { ROUTES } from "@/constants/routes";
@@ -13,12 +14,31 @@ const NAV_LINKS = [
   { href: "/blog", label: "Blog" },
 ];
 
+// Shared by both the desktop row and the mobile panel below — same content,
+// laid out differently — so a role/link change can't update one and miss
+// the other the way two independently hand-written lists could.
+const ACTION_LINK_CLASS =
+  "rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none";
+
 export const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const dashboardHref =
     user?.role === "EMPLOYER" ? ROUTES.employerDashboard : ROUTES.talent;
+  const [mobileOpen, setMobileOpen] = useState(false);
+  // Reset-during-render (React's own pattern for "adjust state when a prop
+  // changes"), not a setState-in-effect — a route change never reloads the
+  // page (react-router), so a menu left open from before a nav-link tap
+  // would otherwise still be sitting open over the new page. Doing this in
+  // an effect would commit the still-open menu for one frame first, then
+  // close it on the next render; this closes it in the same render as the
+  // navigation.
+  const [prevPathname, setPrevPathname] = useState(location.pathname);
+  if (location.pathname !== prevPathname) {
+    setPrevPathname(location.pathname);
+    setMobileOpen(false);
+  }
 
   const handleSignOut = () => {
     logout();
@@ -48,8 +68,8 @@ export const Navbar = () => {
           </span>
         </Link>
 
-        {/* Nav links */}
-        <nav className="ml-4 flex gap-1">
+        {/* Nav links — desktop only; the mobile panel below repeats these */}
+        <nav className="ml-4 hidden gap-1 md:flex">
           {NAV_LINKS.map(({ href, label }) => (
             <Link
               className={cn(
@@ -70,12 +90,9 @@ export const Navbar = () => {
 
         <div className="flex-1" />
 
-        {/* Actions */}
-        <div className="flex items-center gap-2">
-          <Link
-            className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
-            to={ROUTES.employer}
-          >
+        {/* Actions — desktop only */}
+        <div className="hidden items-center gap-2 md:flex">
+          <Link className={ACTION_LINK_CLASS} to={ROUTES.employer}>
             For employers
           </Link>
 
@@ -89,17 +106,11 @@ export const Navbar = () => {
 
           {user ? (
             <>
-              <Link
-                className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
-                to={dashboardHref}
-              >
+              <Link className={ACTION_LINK_CLASS} to={dashboardHref}>
                 Dashboard
               </Link>
               {user.role === "ADMIN" && (
-                <Link
-                  className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
-                  to={ROUTES.admin}
-                >
+                <Link className={ACTION_LINK_CLASS} to={ROUTES.admin}>
                   Admin
                 </Link>
               )}
@@ -112,7 +123,7 @@ export const Navbar = () => {
                 <Settings size={17} />
               </Link>
               <button
-                className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
+                className={ACTION_LINK_CLASS}
                 type="button"
                 onClick={handleSignOut}
               >
@@ -121,10 +132,7 @@ export const Navbar = () => {
             </>
           ) : (
             <>
-              <Link
-                className="rounded-8 px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
-                to={ROUTES.login}
-              >
+              <Link className={ACTION_LINK_CLASS} to={ROUTES.login}>
                 Sign in
               </Link>
 
@@ -138,7 +146,109 @@ export const Navbar = () => {
             </>
           )}
         </div>
+
+        {/* Mobile: notifications (self-contained, frequent enough to keep at
+            a glance) stay visible; everything else collapses into the panel
+            below the hamburger toggle. */}
+        <div className="flex items-center gap-1 md:hidden">
+          {user && <NotificationBell />}
+          <button
+            aria-expanded={mobileOpen}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            className="grid h-9 w-9 place-items-center rounded-8 text-neutral-600 transition-colors hover:bg-neutral-100 focus-visible:shadow-focus focus-visible:outline-none"
+            type="button"
+            onClick={() => setMobileOpen((open) => !open)}
+          >
+            {mobileOpen ? <X size={19} /> : <Menu size={19} />}
+          </button>
+        </div>
       </div>
+
+      {mobileOpen && (
+        <nav className="border-t border-neutral-100 bg-neutral-50 px-4 py-3 md:hidden">
+          <div className="flex flex-col">
+            {NAV_LINKS.map(({ href, label }) => (
+              <Link
+                className={cn(
+                  "rounded-8 px-3 py-2.5 text-[15px] transition-colors focus-visible:shadow-focus focus-visible:outline-none",
+                  location.pathname.startsWith(href)
+                    ? "font-medium text-neutral-900"
+                    : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
+                )}
+                key={href}
+                to={href}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="my-2 border-t border-neutral-200" />
+
+          <div className="flex flex-col">
+            <Link
+              className="rounded-8 px-3 py-2.5 text-[15px] text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
+              to={ROUTES.employer}
+            >
+              For employers
+            </Link>
+            <Link
+              className="rounded-8 px-3 py-2.5 text-[15px] text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
+              to={ROUTES.saved}
+            >
+              Saved jobs
+            </Link>
+
+            {user ? (
+              <>
+                <Link
+                  className="rounded-8 px-3 py-2.5 text-[15px] text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
+                  to={dashboardHref}
+                >
+                  Dashboard
+                </Link>
+                {user.role === "ADMIN" && (
+                  <Link
+                    className="rounded-8 px-3 py-2.5 text-[15px] text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
+                    to={ROUTES.admin}
+                  >
+                    Admin
+                  </Link>
+                )}
+                <Link
+                  className="rounded-8 px-3 py-2.5 text-[15px] text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
+                  to={ROUTES.settings}
+                >
+                  Settings
+                </Link>
+                <button
+                  className="rounded-8 px-3 py-2.5 text-left text-[15px] text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
+                  type="button"
+                  onClick={handleSignOut}
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  className="rounded-8 px-3 py-2.5 text-[15px] text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
+                  to={ROUTES.login}
+                >
+                  Sign in
+                </Link>
+                <Link
+                  className="mt-2 inline-flex h-11 items-center justify-center gap-1.5 rounded-8 bg-brand-600 px-4 text-sm font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
+                  to={ROUTES.register}
+                >
+                  <Bell size={14} />
+                  Get job alerts
+                </Link>
+              </>
+            )}
+          </div>
+        </nav>
+      )}
     </header>
   );
 };

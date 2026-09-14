@@ -10,6 +10,7 @@ import {
 import type { Notification } from "@/types/notification";
 import { ROUTES } from "@/constants/routes";
 import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyRow } from "@/components/shared/EmptyRow";
 import { timeAgoShort } from "@/utils/time";
 import { cn } from "@/utils/cn";
 import { EVENT_ICON } from "@/utils/notification-icons";
@@ -121,9 +122,7 @@ export const NotificationBell = () => {
                 </div>
               ))
             ) : notifications.length === 0 ? (
-              <div className="px-4 py-8 text-center text-[13px] text-neutral-400">
-                No notifications yet
-              </div>
+              <EmptyRow className="px-4">No notifications yet</EmptyRow>
             ) : (
               notifications.map((n) => {
                 const TypeIcon = EVENT_ICON[n.type];

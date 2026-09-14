@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Plus, RefreshCw } from "lucide-react";
 import { useAlerts } from "@/features/alerts/alerts.queries";
 import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyRow } from "@/components/shared/EmptyRow";
 import { ROUTES } from "@/constants/routes";
 import { cn } from "@/utils/cn";
 import type { JobAlert } from "@/types/alert";
@@ -51,11 +52,6 @@ export const AlertsPanel = () => {
             </div>
           ))
         ) : isError ? (
-          // Was previously conflated with "no saved searches" — a fetch
-          // failure rendered the exact same empty-state text as genuinely
-          // having none, silently misreporting the error (matching the
-          // loading -> error+retry -> empty structure ActivityFeed.tsx, the
-          // sibling dashboard panel, already uses).
           <div className="flex items-center justify-between px-5 py-4 text-[12.5px] text-neutral-400">
             Couldn't load your saved searches.
             <button
@@ -67,9 +63,7 @@ export const AlertsPanel = () => {
             </button>
           </div>
         ) : visible.length === 0 ? (
-          <p className="px-5 py-4 text-[12.5px] text-neutral-400">
-            No saved searches yet.
-          </p>
+          <EmptyRow className="px-5">No saved searches yet.</EmptyRow>
         ) : (
           visible.map((alert) => (
             <div
@@ -86,10 +80,10 @@ export const AlertsPanel = () => {
               </div>
               <span
                 className={cn(
-                  "flex-shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold",
+                  "flex-shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium",
                   alert.isActive
                     ? "bg-brand-50 text-brand-700"
-                    : "bg-neutral-100 text-neutral-400"
+                    : "bg-neutral-100 text-neutral-500"
                 )}
               >
                 {alert.isActive ? "Active" : "Paused"}

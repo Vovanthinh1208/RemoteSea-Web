@@ -19,6 +19,7 @@ import {
 import { AiMarkdown } from "@/features/ai-chat/components/AiMarkdown";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyRow } from "@/components/shared/EmptyRow";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useAuth } from "@/contexts/AuthContext";
@@ -395,9 +396,9 @@ export const AiChatWidget = () => {
                         <Skeleton className="h-9 w-full rounded-8" />
                       </div>
                     ) : hasNoConversations ? (
-                      <p className="px-2.5 py-3 text-center text-[12px] text-neutral-400">
+                      <EmptyRow className="px-2.5">
                         No previous conversations yet.
-                      </p>
+                      </EmptyRow>
                     ) : (
                       conversations.data?.map((c) => (
                         <button

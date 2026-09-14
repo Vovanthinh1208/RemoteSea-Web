@@ -64,7 +64,12 @@ export const TalentCard = memo(function TalentCard({
         </h3>
 
         <div className="flex flex-wrap items-center gap-1.5">
-          <Tag>{LEVEL_LABELS[talent.level]}</Tag>
+          {/* The title above already falls back to this same level label
+              when there's no headline (a common state — a new or
+              incomplete profile) — showing it again as the first tag here
+              would repeat the identical word twice in a row. Only tag it
+              separately once the title is showing the headline instead. */}
+          {talent.headline && <Tag>{LEVEL_LABELS[talent.level]}</Tag>}
           {talent.timezone && (
             <Tag>
               <Clock size={11} />
@@ -79,8 +84,6 @@ export const TalentCard = memo(function TalentCard({
 
       <div className="flex flex-shrink-0 flex-col items-end gap-2">
         {match && <MatchBadge match={match} />}
-        {/* Talent search already filters to isOpenToWork:true (see
-            buildTalentSearchWhere) — always true here, no need to select it. */}
         <AvailabilityBadge isOpenToWork noticePeriod={talent.noticePeriod} />
         <SalaryBadge
           max={talent.desiredSalaryMax}
@@ -89,12 +92,6 @@ export const TalentCard = memo(function TalentCard({
         <button
           className={cn(
             "relative z-10 inline-flex items-center gap-1 rounded-8 px-2 py-1 text-[11px] font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed",
-            // neutral, not emerald — this button sits right below
-            // MatchBadge/AvailabilityBadge on the same card (both already
-            // brand-family, see TIER_BADGE_CLASS), so a third unrelated
-            // green here reintroduced the exact color-pileup those two
-            // were just fixed for. Neutral also reads correctly as "done/
-            // inactive," matching this button's disabled state once invited.
             invited
               ? "bg-neutral-100 text-neutral-500"
               : "bg-brand-50 text-brand-700 hover:bg-brand-100 disabled:opacity-50"

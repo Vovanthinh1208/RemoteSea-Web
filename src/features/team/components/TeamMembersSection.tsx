@@ -6,7 +6,7 @@ import {
 } from "@/features/team/team.queries";
 import { RoleBadge, roleLabel } from "@/features/team/components/RoleBadge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
+import { EmptyRow } from "@/components/shared/EmptyRow";
 import { GradientInitial } from "@/components/ui/gradient-initial";
 import { SELECT_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useToastMutation } from "@/hooks/useToastMutation";
@@ -141,14 +141,16 @@ export const TeamMembersSection = ({
       ) : isError ? (
         <div className="flex items-center justify-between px-5 py-8 text-[13px] text-neutral-400">
           Couldn't load your team.
-          <Button size="sm" variant="outline" onClick={() => refetch()}>
-            <RefreshCw size={12} /> Retry
-          </Button>
+          <button
+            className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
+            type="button"
+            onClick={() => refetch()}
+          >
+            <RefreshCw size={11} /> Retry
+          </button>
         </div>
       ) : !data || data.length === 0 ? (
-        <p className="px-5 py-8 text-center text-[13px] text-neutral-400">
-          No team members yet.
-        </p>
+        <EmptyRow className="px-5">No team members yet.</EmptyRow>
       ) : (
         data.map((member) => (
           <MemberRow

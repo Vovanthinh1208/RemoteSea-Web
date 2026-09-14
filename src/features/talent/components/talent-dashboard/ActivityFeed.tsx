@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { RefreshCw } from "lucide-react";
 import { useTalentActivity } from "@/features/talent/activity.queries";
 import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyRow } from "@/components/shared/EmptyRow";
 import { cn } from "@/utils/cn";
 import { timeAgoLong } from "@/utils/time";
 import { EVENT_BULLET_CLASS, EVENT_ICON } from "@/utils/notification-icons";
@@ -84,9 +85,7 @@ export const ActivityFeed = () => {
         ) : activity && activity.length > 0 ? (
           activity.map((item) => <ActivityRow item={item} key={item.id} />)
         ) : (
-          <p className="px-2 py-4 text-[12.5px] text-neutral-400">
-            No activity yet.
-          </p>
+          <EmptyRow className="px-2">No activity yet.</EmptyRow>
         )}
       </div>
     </div>

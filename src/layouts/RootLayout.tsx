@@ -56,11 +56,13 @@ export const RootLayout = () => {
       </a>
       <OfflineBanner />
       <Navbar />
-      <main className="flex-1" id="main-content" ref={mainRef} tabIndex={-1}>
-        {/* Scoped so a crash on one page doesn't take the whole shell (nav/footer) down,
-            and resets when the route changes so navigating away recovers automatically.
-            Suspense is scoped here too — not at the router root — so a lazy route chunk
-            loading only replaces the page body, not the whole nav/footer shell. */}
+
+      <main
+        className="flex-1 outline-none"
+        id="main-content"
+        ref={mainRef}
+        tabIndex={-1}
+      >
         <ErrorBoundary resetKey={pathname} scoped>
           <Suspense fallback={<FullPageLoader />}>
             <Outlet />
@@ -68,9 +70,6 @@ export const RootLayout = () => {
         </ErrorBoundary>
       </main>
       <Footer />
-      {/* Gated on `user`, not just lazy — this also means the widget's own
-          useConversations() query never fires for a logged-out visitor,
-          not just that its code doesn't load for one. */}
       {user && (
         <Suspense fallback={null}>
           <AiChatWidget />
