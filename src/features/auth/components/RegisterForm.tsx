@@ -41,7 +41,6 @@ export const RegisterForm = () => {
   const { registerAccount } = useAuth();
   const { toast } = useToast();
   const [formError, setFormError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -63,7 +62,6 @@ export const RegisterForm = () => {
   const role = watch("role");
 
   const onSubmit = async (values: RegisterFormValues) => {
-    setIsLoading(true);
     setFormError(null);
     try {
       const user = await registerAccount(values);
@@ -82,8 +80,6 @@ export const RegisterForm = () => {
         )
       );
       toast({ title: "Registration failed", variant: "error" });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -144,10 +140,10 @@ export const RegisterForm = () => {
 
         <Button
           className="w-full rounded-12"
-          disabled={isSubmitting || isLoading}
+          disabled={isSubmitting}
           size="lg"
           type="submit"
-          isLoading={isLoading}
+          isLoading={isSubmitting}
         >
           Create account
         </Button>

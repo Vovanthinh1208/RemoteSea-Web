@@ -28,7 +28,6 @@ export const LoginForm = () => {
   const { login } = useAuth();
   const { toast } = useToast();
   const [formError, setFormError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [challenge, setChallenge] = useState<{
     challengeToken: string;
     remember: boolean;
@@ -46,7 +45,6 @@ export const LoginForm = () => {
 
   const onSubmit = async (values: LoginFormValues) => {
     setFormError(null);
-    setIsLoading(true);
     try {
       const result = await login(
         values.email,
@@ -70,8 +68,6 @@ export const LoginForm = () => {
         )
       );
       toast({ title: "Sign in failed", variant: "error" });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -136,7 +132,7 @@ export const LoginForm = () => {
           disabled={isSubmitting}
           size="lg"
           type="submit"
-          isLoading={isLoading}
+          isLoading={isSubmitting}
         >
           Sign in
         </Button>

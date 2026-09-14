@@ -34,7 +34,7 @@ import { cn } from "@/utils/cn";
 import { ROUTES } from "@/constants/routes";
 
 const WorkspaceSkeleton = () => (
-  <div className="min-h-screen bg-[#F8F7F4]">
+  <div className="min-h-screen bg-neutral-50">
     <div className="mx-auto max-w-[900px] px-6 py-10">
       <Skeleton className="mb-6 h-9 w-64" />
       <Skeleton className="mb-6 h-16 w-full rounded-16" />
@@ -85,7 +85,7 @@ export const ApplicationWorkspacePage = () => {
 
   if (applicantsError) {
     return (
-      <div className="min-h-screen bg-[#F8F7F4]">
+      <div className="min-h-screen bg-neutral-50">
         <div className="mx-auto max-w-[900px] px-6 py-10">
           <EmptyState
             action={
@@ -108,7 +108,7 @@ export const ApplicationWorkspacePage = () => {
 
   if (!applicant) {
     return (
-      <div className="min-h-screen bg-[#F8F7F4]">
+      <div className="min-h-screen bg-neutral-50">
         <div className="mx-auto max-w-[900px] px-6 py-10">
           <EmptyState
             action={
@@ -182,7 +182,7 @@ export const ApplicationWorkspacePage = () => {
     );
   };
   return (
-    <div className="min-h-screen bg-[#F8F7F4]">
+    <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-[900px] px-6 py-10">
         <div className="mb-5 flex items-start justify-between gap-3">
           <ApplicationDetailHeader

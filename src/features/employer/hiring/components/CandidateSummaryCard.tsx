@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Paperclip } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
+import { Tag } from "@/components/ui/tag";
 import { cn } from "@/utils/cn";
 import { formatSalaryWithCurrency } from "@/utils/format";
 import type { ApplicantWithJob } from "@/features/employer/employer.queries";
@@ -65,12 +66,7 @@ export const CandidateSummaryCard = ({
       {talent.skills.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {talent.skills.map(({ skill }) => (
-            <span
-              className="rounded-full bg-neutral-100 px-2.5 py-1 text-[11.5px] text-neutral-600"
-              key={skill.id}
-            >
-              {skill.name}
-            </span>
+            <Tag key={skill.id}>{skill.name}</Tag>
           ))}
         </div>
       )}

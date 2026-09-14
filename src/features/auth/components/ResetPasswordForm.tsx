@@ -22,7 +22,6 @@ export const ResetPasswordForm = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const [formError, setFormError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -39,7 +38,6 @@ export const ResetPasswordForm = () => {
       return;
     }
     setFormError(null);
-    setIsLoading(true);
     try {
       await resetPassword({ token, password: values.password });
       toast({
@@ -56,8 +54,6 @@ export const ResetPasswordForm = () => {
           "Something went wrong. Please try again."
         )
       );
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -96,10 +92,10 @@ export const ResetPasswordForm = () => {
 
       <Button
         className="w-full rounded-12"
-        disabled={isSubmitting || isLoading}
+        disabled={isSubmitting}
         size="lg"
         type="submit"
-        isLoading={isLoading}
+        isLoading={isSubmitting}
       >
         Update password
       </Button>

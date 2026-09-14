@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 export const ForgotPasswordForm = () => {
   const [isSent, setIsSent] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -25,7 +24,6 @@ export const ForgotPasswordForm = () => {
   });
 
   const onSubmit = async (values: ForgotPasswordFormValues) => {
-    setIsLoading(true);
     setFormError(null);
     try {
       await forgotPassword(values.email);
@@ -65,10 +63,10 @@ export const ForgotPasswordForm = () => {
 
       <Button
         className="w-full rounded-12"
-        disabled={isSubmitting || isLoading}
+        disabled={isSubmitting}
         size="lg"
         type="submit"
-        isLoading={isLoading}
+        isLoading={isSubmitting}
       >
         Send reset link
       </Button>

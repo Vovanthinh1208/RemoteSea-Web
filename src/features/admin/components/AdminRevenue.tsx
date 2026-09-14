@@ -15,6 +15,12 @@ const PLAN_BAR_COLOR: Record<string, string> = {
   HANDS_ON: "#0D3D1F",
 };
 
+// Named (like AdminEmployers/AdminReports' own *_GRID_COLUMNS) rather than
+// the same literal retyped in both the header row and every transaction
+// row — a future column change to only one of those two spots would
+// otherwise silently misalign the table.
+const TRANSACTION_GRID_COLUMNS = "minmax(200px,1fr) 140px 100px 90px";
+
 const monthTotal = (month: RevenueMonthBucket): number =>
   month.standard + month.featured + month.handsOn;
 
@@ -224,7 +230,7 @@ export const AdminRevenue = () => {
         <div
           className="grid border-b border-neutral-50 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-400"
           style={{
-            gridTemplateColumns: "minmax(200px,1fr) 140px 100px 90px",
+            gridTemplateColumns: TRANSACTION_GRID_COLUMNS,
           }}
         >
           <span>Employer</span>
@@ -240,7 +246,7 @@ export const AdminRevenue = () => {
               className="grid items-center border-b border-neutral-50 px-5 py-3.5 last:border-0"
               key={t.jobId}
               style={{
-                gridTemplateColumns: "minmax(200px,1fr) 140px 100px 90px",
+                gridTemplateColumns: TRANSACTION_GRID_COLUMNS,
               }}
             >
               <div className="min-w-0">

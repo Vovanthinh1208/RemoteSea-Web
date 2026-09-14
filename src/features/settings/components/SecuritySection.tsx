@@ -102,7 +102,10 @@ export const SecuritySection = () => {
               {!s.current && (
                 <button
                   className="flex flex-shrink-0 items-center gap-1.5 rounded-8 border border-neutral-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-neutral-600 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
-                  disabled={revokeMutation.isPending}
+                  disabled={
+                    revokeMutation.isPending &&
+                    revokeMutation.variables === s.id
+                  }
                   type="button"
                   onClick={() => revoke(s.id)}
                 >
