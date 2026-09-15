@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useSkills } from "@/features/taxonomy/taxonomy.queries";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { FilterGroup } from "@/components/shared/FilterGroup";
 import { CheckRow } from "@/components/shared/CheckRow";
 import {
@@ -36,7 +37,12 @@ export const TalentFilterSidebar = ({
   onChange,
 }: TalentFilterSidebarProps) => {
   const [skillQuery, setSkillQuery] = useState("");
-  const { data: allSkills } = useSkills(skillQuery);
+  // The input stays fully responsive to every keystroke; only the query
+  // itself (GET /skills?q=...) waits for typing to pause — without this,
+  // typing e.g. "JavaScript" fired 10 separate server requests, one per
+  // keystroke, each racing the next.
+  const debouncedSkillQuery = useDebouncedValue(skillQuery);
+  const { data: allSkills } = useSkills(debouncedSkillQuery);
   const skillOptions = (allSkills ?? []).slice(0, SKILL_SUGGESTION_LIMIT);
   const activeCount = countActiveTalentFilters(filters);
   // Mobile only — same fix as jobs/FilterSidebar.tsx (identical bug: six

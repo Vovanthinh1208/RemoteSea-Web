@@ -25,7 +25,7 @@ export const LoginPage = () => {
   useDocumentTitle("Sign In");
 
   return (
-    <div className="grid min-h-[calc(100vh-64px)] lg:grid-cols-2">
+    <div className="grid min-h-[calc(100vh-56px)] lg:grid-cols-2">
       {/* Left panel */}
       <div className="auth-panel-gradient hidden flex-col justify-between p-12 text-white lg:flex">
         <div className="flex items-center gap-2 text-lg font-semibold">

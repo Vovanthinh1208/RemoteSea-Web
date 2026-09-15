@@ -35,7 +35,7 @@ export const EmployerVerifyPage = () => {
   if (status === "loading") return <FullPageLoader />;
 
   return (
-    <div className="mx-auto flex min-h-[calc(100vh-64px)] w-full max-w-md flex-col items-center justify-center px-8 py-12 text-center">
+    <div className="mx-auto flex min-h-[calc(100vh-56px)] w-full max-w-md flex-col items-center justify-center px-8 py-12 text-center">
       {status === "success" ? (
         <>
           <CheckCircle2 className="mb-4 text-brand-600" size={40} />

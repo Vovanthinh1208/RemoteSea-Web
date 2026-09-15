@@ -8,7 +8,7 @@ export const ResetPasswordPage = () => {
   useDocumentTitle("Reset Password");
 
   return (
-    <div className="mx-auto flex min-h-[calc(100vh-64px)] w-full max-w-md flex-col justify-center px-8 py-12">
+    <div className="mx-auto flex min-h-[calc(100vh-56px)] w-full max-w-md flex-col justify-center px-8 py-12">
       <Link
         className="mb-10 inline-flex items-center gap-1.5 rounded-8 text-sm text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
         to={ROUTES.login}

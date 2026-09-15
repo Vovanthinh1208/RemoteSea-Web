@@ -138,7 +138,7 @@ export const MessageThreadPage = () => {
   };
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-64px)] max-w-[720px] flex-col px-6 py-6">
+    <div className="mx-auto flex h-[calc(100vh-56px)] max-w-[720px] flex-col px-6 py-6">
       <ApplicationDetailHeader
         backHref={backHref}
         className="mb-4"

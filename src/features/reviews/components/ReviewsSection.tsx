@@ -94,6 +94,18 @@ interface ReviewsSectionProps {
 
 export const ReviewsSection = ({ userId, categories }: ReviewsSectionProps) => {
   const [page, setPage] = useState(1);
+  // Reset to page 1 when viewing a different person's reviews. Both callers
+  // (PublicTalentProfilePage, CompanyProfilePage) key this off a route param
+  // that React Router re-renders in place rather than remounts, so paging to
+  // page 3 on one profile and then navigating to a different one's — with no
+  // full remount in between — otherwise carried the stale page number over,
+  // requesting a page that may not exist for the new user. Reset-during-render
+  // (not an effect), same pattern as navbar.tsx's route-change handling.
+  const [prevUserId, setPrevUserId] = useState(userId);
+  if (userId !== prevUserId) {
+    setPrevUserId(userId);
+    setPage(1);
+  }
   const { data, isLoading, isError, refetch } = useUserReviews(userId, page);
 
   if (isLoading) {
