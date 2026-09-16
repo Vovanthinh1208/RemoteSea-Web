@@ -25,6 +25,11 @@ export type AdminJob = {
   status: JobStatus;
   planType: PlanType;
   planPaid: boolean;
+  // Always set once a job reaches PENDING_REVIEW — that transition only
+  // happens via payment — so AdminQueue sorts/labels the PENDING_REVIEW
+  // queue by this instead of createdAt (time-since-paid, not
+  // time-since-drafted).
+  paidAt: string | null;
   benefits: string[];
   vnHireCount: number;
   reviewNote: string | null;

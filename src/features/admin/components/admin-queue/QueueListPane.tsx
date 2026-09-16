@@ -5,6 +5,7 @@ import { VerifiedBadge } from "@/components/shared/VerifiedBadge";
 import {
   colorFor,
   hoursSince,
+  queuedAt,
   waitCls,
   waitFmt,
 } from "@/features/admin/admin.utils";
@@ -47,9 +48,9 @@ const QueueListRow = memo(function QueueListRow({
         </div>
         <div className="mt-1 flex flex-wrap gap-1">
           <span
-            className={`font-mono text-[11px] ${waitCls(hoursSince(j.createdAt))}`}
+            className={`font-mono text-[11px] ${waitCls(hoursSince(queuedAt(j)))}`}
           >
-            {waitFmt(hoursSince(j.createdAt))}
+            {waitFmt(hoursSince(queuedAt(j)))}
           </span>
           {j.planType === "FEATURED" && (
             <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-700">

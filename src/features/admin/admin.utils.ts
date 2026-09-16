@@ -31,6 +31,15 @@ const HOURS_PER_DAY = 24;
 export const hoursSince = (dateString: string): number =>
   Math.floor((Date.now() - new Date(dateString).getTime()) / MS_PER_HOUR);
 
+// PENDING_REVIEW is only ever reached via payment (BillingRepository.
+// markJobPaidAndSubmitted on the backend), so paidAt is the real
+// "submitted for review" moment — createdAt is just when the DRAFT was
+// first started, which can be days or weeks earlier and would otherwise
+// make the queue's "waited Xh" / oldest-first ordering measure the wrong
+// thing. Falls back to createdAt only defensively, for a row that somehow
+// reaches here without paidAt.
+export const queuedAt = (job: AdminJob): string => job.paidAt ?? job.createdAt;
+
 export const waitFmt = (h: number): string => {
   if (h < HOURS_PER_DAY) return `${h}h`;
   const d = Math.floor(h / HOURS_PER_DAY);

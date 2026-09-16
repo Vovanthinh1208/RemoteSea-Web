@@ -7,6 +7,7 @@ import {
   hoursSince,
   JOB_TYPE_LABELS,
   LEVEL_LABELS,
+  queuedAt,
   waitCls,
   waitFmt,
 } from "@/features/admin/admin.utils";
@@ -29,7 +30,7 @@ interface JobSummaryHeaderProps {
 }
 
 export const JobSummaryHeader = ({ job }: JobSummaryHeaderProps) => {
-  const waitHours = hoursSince(job.createdAt);
+  const waitHours = hoursSince(queuedAt(job));
   const tags = [
     job.categories[0]?.category.name ?? "Other",
     LEVEL_LABELS[job.level],
@@ -68,7 +69,7 @@ export const JobSummaryHeader = ({ job }: JobSummaryHeaderProps) => {
             /mo
           </div>
           <div className="text-[12px] text-neutral-400">
-            {submittedLabel(job.createdAt)}
+            {submittedLabel(queuedAt(job))}
           </div>
           <span
             className={`mt-1 inline-block font-mono text-[12px] ${waitCls(waitHours)}`}

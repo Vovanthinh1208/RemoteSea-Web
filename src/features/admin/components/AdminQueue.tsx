@@ -6,6 +6,7 @@ import {
 } from "@/features/admin/admin.queries";
 import {
   hoursSince,
+  queuedAt,
   REVIEW_CHECKLIST,
   URGENT_WAIT_HOURS,
 } from "@/features/admin/admin.utils";
@@ -150,11 +151,12 @@ export const AdminQueue = () => {
   const doneCount = selChecked.size;
   const allDone = doneCount === reqCount;
   const overdue = active.filter(
-    (j) => hoursSince(j.createdAt) >= URGENT_WAIT_HOURS
+    (j) => hoursSince(queuedAt(j)) >= URGENT_WAIT_HOURS
   ).length;
   const avgWait = active.length
     ? Math.round(
-        active.reduce((a, j) => a + hoursSince(j.createdAt), 0) / active.length
+        active.reduce((a, j) => a + hoursSince(queuedAt(j)), 0) /
+          active.length
       )
     : 0;
   const approvedCount = Object.values(resolved).filter(
