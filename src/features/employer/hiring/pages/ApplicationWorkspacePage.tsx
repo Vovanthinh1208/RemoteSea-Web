@@ -18,6 +18,7 @@ import { countEligibleReviewers } from "@/features/scorecards/scorecard.utils";
 import { buildActivityEvents } from "@/features/employer/hiring/activity.utils";
 import { HiringProgressStepper } from "@/features/employer/hiring/components/HiringProgressStepper";
 import { CandidateSummaryCard } from "@/features/employer/hiring/components/CandidateSummaryCard";
+import { CandidateNotesCard } from "@/features/employer/hiring/components/CandidateNotesCard";
 import { HiringDecisionCard } from "@/features/employer/hiring/components/HiringDecisionCard";
 import { ApplicationActivityTimeline } from "@/features/employer/hiring/components/ApplicationActivityTimeline";
 import { UpcomingInterviewCard } from "@/features/interviews/components/UpcomingInterviewCard";
@@ -283,6 +284,8 @@ export const ApplicationWorkspacePage = () => {
             <div className="lg:hidden">
               <CandidateSummaryCard applicant={applicant} />
             </div>
+
+            <CandidateNotesCard applicant={applicant} />
 
             <ApplicationActivityTimeline events={activityEvents} />
           </div>

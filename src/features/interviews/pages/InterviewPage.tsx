@@ -1,5 +1,8 @@
 import { useParams } from "react-router-dom";
-import { useInterview } from "@/features/interviews/interview.queries";
+import {
+  useCancelInterview,
+  useInterview,
+} from "@/features/interviews/interview.queries";
 import { ProposeInterviewForm } from "@/features/interviews/components/ProposeInterviewForm";
 import { ConfirmInterviewForm } from "@/features/interviews/components/ConfirmInterviewForm";
 import { UpcomingInterviewCard } from "@/features/interviews/components/UpcomingInterviewCard";
@@ -7,10 +10,12 @@ import { ReviewCTA } from "@/features/reviews/components/ReviewCTA";
 import { ScorecardSection } from "@/features/scorecards/components/ScorecardSection";
 import { hasOccurred } from "@/features/interviews/interview.utils";
 import { Button } from "@/components/ui/button";
+import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ApplicationDetailHeader } from "@/components/shared/ApplicationDetailHeader";
 import { useApplicationHeaderContext } from "@/hooks/useApplicationHeaderContext";
+import { useToastMutation } from "@/hooks/useToastMutation";
 
 export const InterviewPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,6 +24,31 @@ export const InterviewPage = () => {
   const { isEmployerViewer, backHref, title } = useApplicationHeaderContext(
     data,
     "Interview"
+  );
+  const cancelMutation = useCancelInterview(applicationId);
+  const runWithToast = useToastMutation();
+
+  const handleCancel = async (): Promise<void> => {
+    await runWithToast(() => cancelMutation.mutateAsync(), {
+      success: "Interview cancelled.",
+      error: "Couldn't cancel the interview. Please try again.",
+    });
+  };
+
+  const cancelInterviewAction = (
+    <ConfirmAction
+      confirmLabel="Cancel interview"
+      isPending={cancelMutation.isPending}
+      message="Cancel this interview?"
+      pendingLabel="Cancelling…"
+      onConfirm={handleCancel}
+    >
+      {({ onClick }) => (
+        <Button size="sm" type="button" variant="outline" onClick={onClick}>
+          Cancel interview
+        </Button>
+      )}
+    </ConfirmAction>
   );
 
   return (
@@ -76,6 +106,9 @@ export const InterviewPage = () => {
       ) : data.interview.status === "CONFIRMED" ? (
         <div className="space-y-4">
           <UpcomingInterviewCard interview={data.interview} />
+          {isEmployerViewer && !hasOccurred(data.interview.confirmedSlot) && (
+            <div className="flex justify-end">{cancelInterviewAction}</div>
+          )}
           {isEmployerViewer && (
             <ScorecardSection
               applicationId={applicationId}
@@ -91,6 +124,23 @@ export const InterviewPage = () => {
             }
           />
         </div>
+      ) : data.interview.status === "CANCELLED" ? (
+        <div className="rounded-16 border border-neutral-100 bg-white p-5">
+          {isEmployerViewer ? (
+            <div className="space-y-5">
+              <div className="rounded-10 border border-neutral-200 bg-neutral-50 p-3.5 text-[12.5px] text-neutral-600">
+                This interview was cancelled. Propose new times below to
+                reschedule.
+              </div>
+              <ProposeInterviewForm applicationId={applicationId} existing={null} />
+            </div>
+          ) : (
+            <EmptyState
+              description="The employer cancelled this interview."
+              title="Interview cancelled"
+            />
+          )}
+        </div>
       ) : isEmployerViewer ? (
         <div className="rounded-16 border border-neutral-100 bg-white p-5">
           <div className="space-y-5">
@@ -102,6 +152,7 @@ export const InterviewPage = () => {
               applicationId={applicationId}
               existing={data.interview}
             />
+            <div className="flex justify-end">{cancelInterviewAction}</div>
           </div>
         </div>
       ) : (

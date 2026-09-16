@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  cancelInterview,
   confirmInterview,
   getInterview,
   getUpcomingInterviews,
@@ -75,6 +76,20 @@ export const useConfirmInterview = (applicationId: string) => {
       // mutation was first written, so nothing invalidated it on this path
       // until now.
       queryClient.invalidateQueries({ queryKey: activityKeys.mine() });
+    },
+  });
+};
+
+// Employer-only — cancels a PENDING or CONFIRMED interview.
+export const useCancelInterview = (applicationId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => cancelInterview(applicationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: interviewKeys.detail(applicationId),
+      });
+      queryClient.invalidateQueries({ queryKey: interviewKeys.upcoming() });
     },
   });
 };

@@ -27,6 +27,8 @@ describe("stageLabel", () => {
     expect(stageLabel("INTERVIEW", false)).toBe("Interview");
     expect(stageLabel("INTERVIEW", true)).toBe("Awaiting decision");
     expect(stageLabel("OFFERED", false)).toBe("Offer sent");
+    expect(stageLabel("OFFER_ACCEPTED", false)).toBe("Hired");
+    expect(stageLabel("OFFER_DECLINED", false)).toBe("Offer declined");
     expect(stageLabel("REJECTED", false)).toBe("Rejected");
   });
 });
@@ -49,6 +51,8 @@ describe("stageBadgeVariant", () => {
 
   it("gives terminal statuses their own distinct colors", () => {
     expect(stageBadgeVariant("OFFERED", false)).toBe("success");
+    expect(stageBadgeVariant("OFFER_ACCEPTED", false)).toBe("success");
+    expect(stageBadgeVariant("OFFER_DECLINED", false)).toBe("muted");
     expect(stageBadgeVariant("REJECTED", false)).toBe("muted");
     expect(stageBadgeVariant("WITHDRAWN", false)).toBe("muted");
   });
@@ -92,12 +96,28 @@ describe("buildHiringPipeline", () => {
     expect(byKey.decision?.current).toBe(true);
   });
 
-  it("marks decision and hired both reached once OFFERED", () => {
+  it("marks decision reached but hired NOT reached yet once OFFERED (awaiting the candidate's response)", () => {
     const { steps } = buildHiringPipeline("OFFERED", null, false);
+    const byKey = Object.fromEntries(steps.map((s) => [s.key, s]));
+    expect(byKey.decision?.reached).toBe(true);
+    expect(byKey.hired?.reached).toBe(false);
+    expect(byKey.hired?.current).toBe(true);
+  });
+
+  it("marks hired reached and current once OFFER_ACCEPTED", () => {
+    const { steps } = buildHiringPipeline("OFFER_ACCEPTED", null, false);
     const byKey = Object.fromEntries(steps.map((s) => [s.key, s]));
     expect(byKey.decision?.reached).toBe(true);
     expect(byKey.hired?.reached).toBe(true);
     expect(byKey.hired?.current).toBe(true);
+  });
+
+  it("OFFER_DECLINED reaches the same steps as OFFERED but leaves nothing current", () => {
+    const { steps } = buildHiringPipeline("OFFER_DECLINED", null, false);
+    const byKey = Object.fromEntries(steps.map((s) => [s.key, s]));
+    expect(byKey.decision?.reached).toBe(true);
+    expect(byKey.hired?.reached).toBe(false);
+    expect(steps.every((s) => !s.current)).toBe(true);
   });
 });
 
@@ -112,6 +132,8 @@ describe("getPrimaryAction", () => {
   it("returns null (no action) for a terminal outcome", () => {
     expect(getPrimaryAction({ ...base, status: "REJECTED" })).toBeNull();
     expect(getPrimaryAction({ ...base, status: "OFFERED" })).toBeNull();
+    expect(getPrimaryAction({ ...base, status: "OFFER_ACCEPTED" })).toBeNull();
+    expect(getPrimaryAction({ ...base, status: "OFFER_DECLINED" })).toBeNull();
   });
 
   it("walks the real PENDING→REVIEWING→SHORTLISTED progression", () => {

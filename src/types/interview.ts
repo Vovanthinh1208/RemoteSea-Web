@@ -1,4 +1,4 @@
-export type InterviewStatus = "PENDING" | "CONFIRMED";
+export type InterviewStatus = "PENDING" | "CONFIRMED" | "CANCELLED";
 
 export type Interview = {
   id: string;

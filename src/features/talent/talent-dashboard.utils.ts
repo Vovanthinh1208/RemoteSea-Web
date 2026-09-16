@@ -11,6 +11,8 @@ export const STATUS_TO_BUCKET: Record<ApplicationStatus, AppStatusBucket> = {
   SHORTLISTED: "review",
   INTERVIEW: "interview",
   OFFERED: "offer",
+  OFFER_ACCEPTED: "offer",
+  OFFER_DECLINED: "closed",
   REJECTED: "closed",
   WITHDRAWN: "closed",
 };
@@ -21,6 +23,8 @@ export const STAGE_LABEL: Record<ApplicationStatus, string> = {
   SHORTLISTED: "Shortlisted",
   INTERVIEW: "Interviewing",
   OFFERED: "Offer received",
+  OFFER_ACCEPTED: "Offer accepted",
+  OFFER_DECLINED: "Offer declined",
   REJECTED: "Not selected",
   WITHDRAWN: "Withdrawn",
 };
@@ -77,7 +81,13 @@ export const buildTimelineSteps = (
     reached: eventAt.has(status),
   }));
 
-  if (application.status === "REJECTED" || application.status === "WITHDRAWN") {
+  const terminalStatuses: ApplicationStatus[] = [
+    "OFFER_ACCEPTED",
+    "OFFER_DECLINED",
+    "REJECTED",
+    "WITHDRAWN",
+  ];
+  if (terminalStatuses.includes(application.status)) {
     steps.push({
       status: application.status,
       label: STAGE_LABEL[application.status],

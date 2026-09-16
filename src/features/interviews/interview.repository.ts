@@ -63,4 +63,12 @@ export const interviewRepository = {
     );
     return data;
   },
+
+  // Employer-only, same reasoning as listUpcoming above.
+  cancel: async (applicationId: string): Promise<InterviewDto> => {
+    const { data } = await apiClient.patch<InterviewDto>(
+      `/employer/applications/${applicationId}/interview/cancel`
+    );
+    return data;
+  },
 };

@@ -6,6 +6,10 @@ export type ApplicationStatus =
   | "SHORTLISTED"
   | "INTERVIEW"
   | "OFFERED"
+  // The talent's own response to an extended offer — set via
+  // useRespondToOffer, never something an employer PATCH can set directly.
+  | "OFFER_ACCEPTED"
+  | "OFFER_DECLINED"
   | "REJECTED"
   | "WITHDRAWN";
 

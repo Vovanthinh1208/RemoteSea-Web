@@ -5,6 +5,8 @@ import {
   getMyApplicationStats,
   listMyApplicationIds,
   listMyApplications,
+  respondToOffer,
+  withdrawApplication,
 } from "@/features/applications/applications.service";
 import { TIER } from "@/core/query/query-client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -78,6 +80,37 @@ export const useApplyToJob = () => {
       queryClient.invalidateQueries({
         queryKey: jobKeys.detail(jobId),
       });
+    },
+  });
+};
+
+// Talent self-withdraw — invalidates the same broad `all` prefix apply()
+// does, since a withdrawal changes both this application's own detail and
+// the dashboard's stats/list tiles.
+export const useWithdrawApplication = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: withdrawApplication,
+    onSuccess: (updated) => {
+      queryClient.invalidateQueries({ queryKey: applicationKeys.all });
+      queryClient.setQueryData(applicationKeys.detail(updated.id), updated);
+    },
+  });
+};
+
+export const useRespondToOffer = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      id,
+      response,
+    }: {
+      id: string;
+      response: "ACCEPTED" | "DECLINED";
+    }) => respondToOffer(id, response),
+    onSuccess: (updated) => {
+      queryClient.invalidateQueries({ queryKey: applicationKeys.all });
+      queryClient.setQueryData(applicationKeys.detail(updated.id), updated);
     },
   });
 };

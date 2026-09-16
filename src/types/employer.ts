@@ -136,6 +136,10 @@ export type EmployerApplicant = {
   updatedAt: string;
   coverLetter: string | null;
   resumeUrl: string | null;
+  // Previously write-only (only ever sent alongside a status-change PATCH,
+  // never read back) — see CandidateNotesCard, which is the first UI to
+  // display and edit it independent of a status change.
+  notes: string | null;
   talent: {
     id: string;
     slug: string;

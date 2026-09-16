@@ -13,6 +13,7 @@ export const STATUS_GROUP: Record<JobStatus, ListingStatusGroup> = {
   ACTIVE: "live",
   CLOSED: "closed",
   REJECTED: "closed",
+  EXPIRED: "closed",
 };
 
 export const STATUS_LABEL: Record<JobStatus, string> = {
@@ -23,6 +24,7 @@ export const STATUS_LABEL: Record<JobStatus, string> = {
   // expired or the employer pulled it, not just because it was filled.
   CLOSED: "Closed",
   REJECTED: "Rejected",
+  EXPIRED: "Expired",
 };
 
 export const APPLICANT_STATUS: Record<ApplicationStatus, ApplicantStatusGroup> =
@@ -32,6 +34,8 @@ export const APPLICANT_STATUS: Record<ApplicationStatus, ApplicantStatusGroup> =
     SHORTLISTED: "shortlisted",
     INTERVIEW: "shortlisted",
     OFFERED: "shortlisted",
+    OFFER_ACCEPTED: "archived",
+    OFFER_DECLINED: "archived",
     REJECTED: "archived",
     WITHDRAWN: "archived",
   };

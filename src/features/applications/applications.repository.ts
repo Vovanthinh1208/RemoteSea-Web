@@ -66,4 +66,22 @@ export const applicationsRepository = {
     );
     return data;
   },
+
+  withdraw: async (id: string): Promise<ApplicationWithJobDto> => {
+    const { data } = await apiClient.patch<ApplicationWithJobDto>(
+      `/applications/${id}/withdraw`
+    );
+    return data;
+  },
+
+  respondToOffer: async (
+    id: string,
+    response: "ACCEPTED" | "DECLINED"
+  ): Promise<ApplicationWithJobDto> => {
+    const { data } = await apiClient.patch<ApplicationWithJobDto>(
+      `/applications/${id}/offer-response`,
+      { response }
+    );
+    return data;
+  },
 };

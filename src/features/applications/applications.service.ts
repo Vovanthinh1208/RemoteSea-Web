@@ -41,3 +41,16 @@ export const listMyApplicationIds = async (
   opts?: RequestOptions
 ): Promise<string[]> =>
   (await applicationsRepository.listMyApplicationIds(opts)).jobIds;
+
+export const withdrawApplication = async (
+  id: string
+): Promise<ApplicationWithJob> =>
+  toApplicationWithJob(await applicationsRepository.withdraw(id));
+
+export const respondToOffer = async (
+  id: string,
+  response: "ACCEPTED" | "DECLINED"
+): Promise<ApplicationWithJob> =>
+  toApplicationWithJob(
+    await applicationsRepository.respondToOffer(id, response)
+  );

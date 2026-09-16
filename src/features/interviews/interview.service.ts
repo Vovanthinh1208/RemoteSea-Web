@@ -44,3 +44,8 @@ export const getUpcomingInterviews = async (
   opts?: RequestOptions
 ): Promise<UpcomingInterviewsResponse> =>
   toUpcomingInterviewsResponse(await interviewRepository.listUpcoming(opts));
+
+export const cancelInterview = async (
+  applicationId: string
+): Promise<Interview> =>
+  toInterview(await interviewRepository.cancel(applicationId));

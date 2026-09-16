@@ -28,6 +28,7 @@ const HAPPY_PATH: ApplicationStatus[] = [
   "SHORTLISTED",
   "INTERVIEW",
   "OFFERED",
+  "OFFER_ACCEPTED",
 ];
 
 export const isTerminalNegative = (status: ApplicationStatus): boolean =>
@@ -55,7 +56,9 @@ export const stageBadgeVariant = (
     case "INTERVIEW":
       return interviewOccurred ? "warning" : "positive";
     case "OFFERED":
+    case "OFFER_ACCEPTED":
       return "success";
+    case "OFFER_DECLINED":
     case "REJECTED":
     case "WITHDRAWN":
       return "muted";
@@ -75,11 +78,12 @@ export const stageLabel = (
       return "Shortlisted";
     case "INTERVIEW":
       return interviewOccurred ? "Awaiting decision" : "Interview";
-    // OFFERED means an offer was extended, not accepted — ApplicationStatus
-    // has no distinct "accepted" state. "Hired" here overstated that as
-    // fact; "Offer sent" says only what's actually confirmed.
     case "OFFERED":
       return "Offer sent";
+    case "OFFER_ACCEPTED":
+      return "Hired";
+    case "OFFER_DECLINED":
+      return "Offer declined";
     case "REJECTED":
       return "Rejected";
     case "WITHDRAWN":
@@ -112,10 +116,16 @@ export const buildHiringPipeline = (
     return { steps: [], terminal: status as "REJECTED" | "WITHDRAWN" };
   }
 
-  const happyIndex = HAPPY_PATH.indexOf(status);
+  // OFFER_DECLINED reached exactly as far as OFFERED did (it's only
+  // reachable from there) — same position in HAPPY_PATH for "how far did
+  // this get" purposes, distinguished from OFFER_ACCEPTED by the `hired`
+  // step and by `current` below, not by a different index.
+  const progressStatus = status === "OFFER_DECLINED" ? "OFFERED" : status;
+  const happyIndex = HAPPY_PATH.indexOf(progressStatus);
   const interviewIndex = HAPPY_PATH.indexOf("INTERVIEW");
+  const offeredIndex = HAPPY_PATH.indexOf("OFFERED");
   const occurred = hasOccurred(interview?.confirmedSlot ?? null);
-  // Once the status has moved *past* INTERVIEW (i.e. OFFERED), the
+  // Once the status has moved *past* INTERVIEW (i.e. OFFERED or later), the
   // interview stage is behind the candidate by definition — feedback
   // reached shouldn't depend on whatever the (possibly stale/unloaded)
   // interview object says at that point.
@@ -126,13 +136,16 @@ export const buildHiringPipeline = (
     reviewing: happyIndex >= HAPPY_PATH.indexOf("REVIEWING"),
     interview: happyIndex >= interviewIndex,
     feedback: happyIndex >= interviewIndex && (pastInterviewStage || occurred),
-    decision: status === "OFFERED",
-    hired: status === "OFFERED",
+    decision: happyIndex >= offeredIndex,
+    hired: status === "OFFER_ACCEPTED",
   };
 
-  let current: HiringStepKey =
+  let current: HiringStepKey | null =
     STEP_ORDER.map(([key]) => key).find((key) => !reached[key]) ?? "hired";
   if (current === "decision" && !readyForDecision) current = "feedback";
+  // A declined offer is resolved, not "in progress" — no step should read
+  // as current (the stage badge already conveys the outcome).
+  if (status === "OFFER_DECLINED") current = null;
 
   const steps = STEP_ORDER.map(([key, label]) => ({
     key,
@@ -177,7 +190,13 @@ export const getPrimaryAction = (ctx: PrimaryActionContext): HiringAction => {
     eligibleReviewerCount,
   } = ctx;
 
-  if (status === "REJECTED" || status === "WITHDRAWN" || status === "OFFERED") {
+  if (
+    status === "REJECTED" ||
+    status === "WITHDRAWN" ||
+    status === "OFFERED" ||
+    status === "OFFER_ACCEPTED" ||
+    status === "OFFER_DECLINED"
+  ) {
     return null; // outcome is already visible in the stage badge — no action to take
   }
   if (status === "PENDING") {

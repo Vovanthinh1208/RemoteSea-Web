@@ -1,7 +1,7 @@
 export type JobType = "FULL_TIME" | "PART_TIME" | "CONTRACT" | "FREELANCE";
 export type ExperienceLevel = "ENTRY" | "MID" | "SENIOR" | "LEAD" | "EXECUTIVE";
 export type JobStatus =
-  "DRAFT" | "PENDING_REVIEW" | "ACTIVE" | "CLOSED" | "REJECTED";
+  "DRAFT" | "PENDING_REVIEW" | "ACTIVE" | "CLOSED" | "REJECTED" | "EXPIRED";
 export type PlanType = "STANDARD" | "FEATURED" | "HANDS_ON";
 
 export type Category = {
