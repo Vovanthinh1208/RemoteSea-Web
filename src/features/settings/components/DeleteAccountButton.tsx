@@ -1,6 +1,7 @@
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useDeleteMyAccount } from "@/features/users/users.queries";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
+import { ApiError } from "@/core/errors/api-error";
 
 export const DeleteAccountButton = () => {
   const runWithToast = useToastMutation();
@@ -10,6 +11,7 @@ export const DeleteAccountButton = () => {
     await runWithToast(() => deleteAccountMutation.mutateAsync(), {
       error: "Couldn't delete account",
       errorDescription: "Please try again.",
+      onError: (err) => (err instanceof ApiError ? err.message : undefined),
     });
   };
 
