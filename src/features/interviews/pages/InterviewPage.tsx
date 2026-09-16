@@ -132,7 +132,10 @@ export const InterviewPage = () => {
                 This interview was cancelled. Propose new times below to
                 reschedule.
               </div>
-              <ProposeInterviewForm applicationId={applicationId} existing={null} />
+              <ProposeInterviewForm
+                applicationId={applicationId}
+                existing={null}
+              />
             </div>
           ) : (
             <EmptyState
