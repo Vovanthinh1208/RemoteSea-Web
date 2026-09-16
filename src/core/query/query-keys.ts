@@ -29,6 +29,8 @@ export const adminKeys = {
       : (["admin", "reports"] as const),
   auditLog: (page: number, targetType?: string, targetId?: string) =>
     ["admin", "audit-log", page, targetType, targetId] as const,
+  users: (role?: string, banned?: string, q?: string) =>
+    ["admin", "users", role, banned, q] as const,
 };
 
 export const alertKeys = {
@@ -57,6 +59,7 @@ export const employerKeys = {
     ["employer", "job-applications", jobId] as const,
   recentApplications: () => ["employer", "recent-applications"] as const,
   public: (slug: string | undefined) => ["employer", "public", slug] as const,
+  funnel: () => ["employer", "funnel"] as const,
 };
 
 export const invitationKeys = {

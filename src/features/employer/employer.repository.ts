@@ -13,6 +13,7 @@ import type {
   EmployerProfileDto,
   EmployerProfileSummaryDto,
   EmployerRecentApplicationsResponseDto,
+  HiringFunnelResponseDto,
   PublicCompanyProfileDto,
   SubmitVerificationRequestDto,
   SubmitVerificationResponseDto,
@@ -89,6 +90,16 @@ export const employerRepository = {
   ): Promise<EmployerRecentApplicationsResponseDto> => {
     const { data } = await apiClient.get<EmployerRecentApplicationsResponseDto>(
       "/employer/applications/recent",
+      { signal: opts?.signal }
+    );
+    return data;
+  },
+
+  getHiringFunnel: async (
+    opts?: RequestOptions
+  ): Promise<HiringFunnelResponseDto> => {
+    const { data } = await apiClient.get<HiringFunnelResponseDto>(
+      "/employer/analytics/funnel",
       { signal: opts?.signal }
     );
     return data;

@@ -5,6 +5,7 @@ import {
   toAdminEmployersResponse,
   toAdminJobReportsResponse,
   toAdminJobsResponse,
+  toAdminUsersResponse,
   toRevenueResponse,
 } from "@/features/admin/admin.mapper";
 import type { JobStatus } from "@/types/job";
@@ -15,8 +16,10 @@ import type {
   AdminEmployersResponse,
   AdminJobReportsResponse,
   AdminJobsResponse,
+  AdminUsersResponse,
   RevenueResponse,
 } from "@/types/admin";
+import type { UserRole } from "@/types/user";
 
 export const listAdminEmployers = async (
   params: {
@@ -73,3 +76,20 @@ export const listAdminAuditLog = async (
   opts?: RequestOptions
 ): Promise<AdminAuditLogResponse> =>
   toAdminAuditLogResponse(await adminRepository.listAuditLog(params, opts));
+
+export const listAdminUsers = async (
+  params: {
+    role?: UserRole;
+    banned?: "true" | "false";
+    q?: string;
+    page?: number;
+    limit?: number;
+  } = {},
+  opts?: RequestOptions
+): Promise<AdminUsersResponse> =>
+  toAdminUsersResponse(await adminRepository.listUsers(params, opts));
+
+export const updateAdminUser = async (
+  id: string,
+  body: { action: "ban" | "unban" | "change-role"; role?: UserRole }
+): Promise<{ success: true }> => adminRepository.updateUser(id, body);

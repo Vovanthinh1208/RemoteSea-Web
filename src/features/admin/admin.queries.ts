@@ -5,15 +5,18 @@ import {
   listAdminEmployers,
   listAdminJobs,
   listAdminReports,
+  listAdminUsers,
   resolveAdminReport,
   reviewAdminJob,
   updateAdminEmployer,
+  updateAdminUser,
 } from "@/features/admin/admin.service";
 import { useAuth } from "@/contexts/AuthContext";
 import { adminKeys, jobKeys } from "@/core/query/query-keys";
 import type { JobStatus } from "@/types/job";
 import type { JobReportStatus } from "@/types/job-report";
 import type { AdminAuditTargetType } from "@/types/admin";
+import type { UserRole } from "@/types/user";
 
 export const ADMIN_JOBS_KEY = adminKeys.jobs();
 export const ADMIN_EMPLOYERS_KEY = adminKeys.employers();
@@ -155,5 +158,36 @@ export const useAdminAuditLog = (
         { signal }
       ),
     enabled: !!user && user.role === "ADMIN",
+  });
+};
+
+// Fetches one large page, same as useAdminEmployers — AdminUsers filters
+// role/banned/search client-side over that page rather than round-tripping
+// on every keystroke or toggle.
+export const useAdminUsers = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: adminKeys.users(),
+    queryFn: ({ signal }) =>
+      listAdminUsers({ limit: ADMIN_LIST_LIMIT }, { signal }),
+    enabled: !!user && user.role === "ADMIN",
+  });
+};
+
+export const useUpdateAdminUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      id,
+      action,
+      role,
+    }: {
+      id: string;
+      action: "ban" | "unban" | "change-role";
+      role?: UserRole;
+    }) => updateAdminUser(id, { action, role }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: adminKeys.users() });
+    },
   });
 };

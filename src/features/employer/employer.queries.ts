@@ -5,6 +5,7 @@ import {
   confirmEmployerVerification,
   createEmployerProfile,
   getEmployerProfile,
+  getHiringFunnel,
   getPublicCompanyProfile,
   listEmployerJobs,
   listRecentApplications,
@@ -170,6 +171,30 @@ export const useEmployerApplicationsAggregate = () => {
     byJobId,
     refetchAll,
   };
+};
+
+export const useHiringFunnel = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: employerKeys.funnel(),
+    // Same 403/404-is-not-an-error catch as the other employer-dashboard
+    // queries above — a company-less EMPLOYER hits the same
+    // COMPANY_MEMBERSHIP_REQUIRED 403 here.
+    queryFn: async ({ signal }) => {
+      try {
+        return await getHiringFunnel({ signal });
+      } catch (err) {
+        if (
+          err instanceof ApiError &&
+          (err.status === NOT_FOUND_STATUS || err.status === FORBIDDEN_STATUS)
+        ) {
+          return null;
+        }
+        throw err;
+      }
+    },
+    enabled: !!user && user.role === "EMPLOYER",
+  });
 };
 
 export const useUpdateApplicationStatus = () => {

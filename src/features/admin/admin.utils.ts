@@ -135,6 +135,9 @@ export const AUDIT_ACTION_LABEL: Record<AdminAuditAction, string> = {
   JOB_REJECTED: "Rejected job",
   JOB_REPORT_RESOLVED: "Resolved report",
   JOB_REPORT_DISMISSED: "Dismissed report",
+  USER_BANNED: "Banned user",
+  USER_UNBANNED: "Unbanned user",
+  USER_ROLE_CHANGED: "Changed role",
 };
 
 // Reject/suspend/dismiss read as the "negative" branch of their pair —
@@ -147,12 +150,16 @@ export const AUDIT_ACTION_IS_NEGATIVE: Record<AdminAuditAction, boolean> = {
   JOB_REJECTED: true,
   JOB_REPORT_RESOLVED: false,
   JOB_REPORT_DISMISSED: true,
+  USER_BANNED: true,
+  USER_UNBANNED: false,
+  USER_ROLE_CHANGED: false,
 };
 
 export const AUDIT_TARGET_TAB_LABEL: Record<AdminAuditTargetType, string> = {
   EMPLOYER: "Employers",
   JOB: "Jobs",
   JOB_REPORT: "Reports",
+  USER: "Users",
 };
 
 export type AuditDiffRow = { key: string; before: string; after: string };

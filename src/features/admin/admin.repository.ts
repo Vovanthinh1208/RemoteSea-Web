@@ -7,9 +7,11 @@ import type {
   AdminEmployersResponseDto,
   AdminJobReportsResponseDto,
   AdminJobsResponseDto,
+  AdminUsersResponseDto,
   RevenueResponseDto,
 } from "@/features/admin/admin.dto";
 import type { AdminAuditTargetType } from "@/types/admin";
+import type { UserRole } from "@/types/user";
 
 export const adminRepository = {
   listEmployers: async (
@@ -116,6 +118,34 @@ export const adminRepository = {
     const { data } = await apiClient.get<AdminAuditLogResponseDto>(
       "/admin/audit-log",
       { params, signal: opts?.signal }
+    );
+    return data;
+  },
+
+  listUsers: async (
+    params: {
+      role?: UserRole;
+      banned?: "true" | "false";
+      q?: string;
+      page?: number;
+      limit?: number;
+    } = {},
+    opts?: RequestOptions
+  ): Promise<AdminUsersResponseDto> => {
+    const { data } = await apiClient.get<AdminUsersResponseDto>(
+      "/admin/users",
+      { params, signal: opts?.signal }
+    );
+    return data;
+  },
+
+  updateUser: async (
+    id: string,
+    body: { action: "ban" | "unban" | "change-role"; role?: UserRole }
+  ): Promise<{ success: true }> => {
+    const { data } = await apiClient.patch<{ success: true }>(
+      `/admin/users/${id}`,
+      body
     );
     return data;
   },

@@ -1,4 +1,11 @@
-import { Briefcase, Building, Flag, History, Wallet } from "lucide-react";
+import {
+  Briefcase,
+  Building,
+  Flag,
+  History,
+  Users,
+  Wallet,
+} from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { AdminQueue } from "@/features/admin/components/AdminQueue";
@@ -6,11 +13,13 @@ import { AdminEmployers } from "@/features/admin/components/AdminEmployers";
 import { AdminReports } from "@/features/admin/components/AdminReports";
 import { AdminRevenue } from "@/features/admin/components/AdminRevenue";
 import { AdminAuditLog } from "@/features/admin/components/AdminAuditLog";
+import { AdminUsers } from "@/features/admin/components/AdminUsers";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
 const TABS = [
   { id: "queue", label: "Review queue", icon: Briefcase },
   { id: "employers", label: "Employers", icon: Building },
+  { id: "users", label: "Users", icon: Users },
   { id: "reports", label: "Reports", icon: Flag },
   { id: "revenue", label: "Revenue", icon: Wallet },
   { id: "audit-log", label: "Audit log", icon: History },
@@ -102,6 +111,7 @@ export const AdminConsole = () => {
           <div className="min-w-0 flex-1">
             {tab === "queue" && <AdminQueue />}
             {tab === "employers" && <AdminEmployers />}
+            {tab === "users" && <AdminUsers />}
             {tab === "reports" && <AdminReports />}
             {tab === "revenue" && <AdminRevenue />}
             {tab === "audit-log" && <AdminAuditLog />}

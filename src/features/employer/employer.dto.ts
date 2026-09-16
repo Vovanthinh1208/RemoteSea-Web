@@ -5,6 +5,7 @@ import type {
   EmployerJobsResponse,
   EmployerProfile,
   EmployerProfileSummary,
+  HiringFunnelResponse,
   PublicCompanyProfile,
   UpdateEmployerProfilePayload,
 } from "@/types/employer";
@@ -33,6 +34,8 @@ export type EmployerRecentApplicationsResponseDto = {
     job: { title: string };
   })[];
 };
+
+export type HiringFunnelResponseDto = HiringFunnelResponse;
 
 export type SubmitVerificationRequestDto = { email: string };
 export type SubmitVerificationResponseDto = { message: string };

@@ -187,3 +187,26 @@ export type EmployerJobApplicationsResponse = {
 export type EmployerRecentApplicationsResponse = {
   applications: (EmployerApplicant & { jobId: string; jobTitle: string })[];
 };
+
+// GET /employer/analytics/funnel — each stage counts DISTINCT applications
+// that ever reached that status at least once (from ApplicationStatusEvent),
+// not a live snapshot of Application.status — an application currently at
+// OFFERED still counts toward Shortlisted/Interview below it.
+export type HiringFunnelStage = {
+  status: ApplicationStatus;
+  label: string;
+  count: number;
+  conversionFromFirst: number;
+  conversionFromPrevious: number;
+};
+
+export type HiringFunnelDropOff = {
+  status: ApplicationStatus;
+  label: string;
+  count: number;
+};
+
+export type HiringFunnelResponse = {
+  stages: HiringFunnelStage[];
+  dropOff: HiringFunnelDropOff[];
+};

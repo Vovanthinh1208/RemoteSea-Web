@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Briefcase, Building, ChevronDown, Flag } from "lucide-react";
+import { Briefcase, Building, ChevronDown, Flag, User } from "lucide-react";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { useAdminAuditLog } from "@/features/admin/admin.queries";
 import { AdminAuditLogSkeleton } from "@/features/admin/components/AdminAuditLogSkeleton";
@@ -24,12 +24,14 @@ const TARGET_FILTERS: { id: AdminAuditTargetType | "ALL"; label: string }[] = [
   { id: "EMPLOYER", label: AUDIT_TARGET_TAB_LABEL.EMPLOYER },
   { id: "JOB", label: AUDIT_TARGET_TAB_LABEL.JOB },
   { id: "JOB_REPORT", label: AUDIT_TARGET_TAB_LABEL.JOB_REPORT },
+  { id: "USER", label: AUDIT_TARGET_TAB_LABEL.USER },
 ];
 
 const TARGET_ICON: Record<AdminAuditTargetType, typeof Building> = {
   EMPLOYER: Building,
   JOB: Briefcase,
   JOB_REPORT: Flag,
+  USER: User,
 };
 
 const isTargetFilterId = (v: string): v is AdminAuditTargetType | "ALL" =>

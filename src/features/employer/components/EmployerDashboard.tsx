@@ -253,7 +253,7 @@ export const EmployerDashboard = () => {
             >
               <Users size={13} /> Team members
             </Link>
-            <FunnelPanel applicants={applications} />
+            <FunnelPanel />
           </div>
         </div>
       </div>

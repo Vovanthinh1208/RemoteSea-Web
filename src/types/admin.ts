@@ -6,6 +6,7 @@ import type {
   PlanType,
 } from "@/types/job";
 import type { JobReportReason, JobReportStatus } from "@/types/job-report";
+import type { UserRole } from "@/types/user";
 
 export type AdminJob = {
   id: string;
@@ -155,9 +156,12 @@ export type AdminAuditAction =
   | "JOB_APPROVED"
   | "JOB_REJECTED"
   | "JOB_REPORT_RESOLVED"
-  | "JOB_REPORT_DISMISSED";
+  | "JOB_REPORT_DISMISSED"
+  | "USER_BANNED"
+  | "USER_UNBANNED"
+  | "USER_ROLE_CHANGED";
 
-export type AdminAuditTargetType = "EMPLOYER" | "JOB" | "JOB_REPORT";
+export type AdminAuditTargetType = "EMPLOYER" | "JOB" | "JOB_REPORT" | "USER";
 
 export type AdminAuditLogEntry = {
   id: string;
@@ -176,6 +180,25 @@ export type AdminAuditLogEntry = {
 
 export type AdminAuditLogResponse = {
   entries: AdminAuditLogEntry[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+};
+
+export type AdminUser = {
+  id: string;
+  email: string;
+  name: string | null;
+  role: UserRole;
+  bannedAt: string | null;
+  createdAt: string;
+};
+
+export type AdminUsersResponse = {
+  users: AdminUser[];
   pagination: {
     page: number;
     limit: number;

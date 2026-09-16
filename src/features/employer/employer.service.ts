@@ -6,6 +6,7 @@ import {
   toEmployerProfile,
   toEmployerProfileSummary,
   toEmployerRecentApplicationsResponse,
+  toHiringFunnelResponse,
   toPublicCompanyProfile,
 } from "@/features/employer/employer.mapper";
 import type {
@@ -21,6 +22,7 @@ import type {
   EmployerProfile,
   EmployerProfileSummary,
   EmployerRecentApplicationsResponse,
+  HiringFunnelResponse,
   PublicCompanyProfile,
 } from "@/types/employer";
 
@@ -64,6 +66,11 @@ export const listRecentApplications = async (
   toEmployerRecentApplicationsResponse(
     await employerRepository.listRecentApplications(opts)
   );
+
+export const getHiringFunnel = async (
+  opts?: RequestOptions
+): Promise<HiringFunnelResponse> =>
+  toHiringFunnelResponse(await employerRepository.getHiringFunnel(opts));
 
 export const updateApplicationStatus = async (
   applicationId: string,
