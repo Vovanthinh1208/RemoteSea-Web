@@ -173,8 +173,13 @@ export const PostJobWizard = () => {
       jobId = job.id;
     } catch (err) {
       reportError(err);
+      // A blocked action (e.g. a suspended company) has an actionable,
+      // specific reason from the backend — showing it beats a generic
+      // "check the required fields" message that doesn't apply here at all.
       fail(
-        "Could not create the job. Check the required fields and try again."
+        err instanceof ApiError
+          ? err.message
+          : "Could not create the job. Check the required fields and try again."
       );
       return;
     }
@@ -187,6 +192,15 @@ export const PostJobWizard = () => {
       }
     } catch (err) {
       reportError(err);
+      // The job itself was already created above — only checkout failed, so
+      // this must not fall through to the "published" step below as if
+      // nothing went wrong.
+      fail(
+        err instanceof ApiError
+          ? err.message
+          : "Your job was saved, but we couldn't start checkout. Please try again."
+      );
+      return;
     }
 
     setPublishing(false);
