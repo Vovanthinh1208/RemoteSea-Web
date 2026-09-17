@@ -239,7 +239,10 @@ export const ApplicationDetailPage = () => {
                   <Skeleton className="h-4 w-64" />
                 ) : interview?.status === "CONFIRMED" &&
                   !hasOccurred(interview.confirmedSlot) ? (
-                  <UpcomingInterviewCard interview={interview} />
+                  <UpcomingInterviewCard
+                    applicationId={applicationId}
+                    interview={interview}
+                  />
                 ) : (
                   <p className="text-[13px] text-neutral-600">
                     {interview

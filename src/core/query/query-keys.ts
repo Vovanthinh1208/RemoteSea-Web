@@ -189,6 +189,10 @@ export const scorecardKeys = {
     ["scorecards", "list", applicationId] as const,
 };
 
+export const commentKeys = {
+  list: (applicationId: string) => ["comments", "list", applicationId] as const,
+};
+
 export const cvAnalysisKeys = {
   detail: (applicationId: string) =>
     ["cv-analysis", "detail", applicationId] as const,

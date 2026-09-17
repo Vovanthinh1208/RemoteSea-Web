@@ -71,4 +71,15 @@ export const interviewRepository = {
     );
     return data;
   },
+
+  // responseType: "blob" — the backend returns raw text/calendar bytes, not
+  // JSON, so this needs to bypass axios's default JSON parsing the same way
+  // every other call in this file relies on it.
+  getIcs: async (applicationId: string, role: UserRole): Promise<Blob> => {
+    const { data } = await apiClient.get<Blob>(
+      `${interviewPath(applicationId, role)}/ics`,
+      { responseType: "blob" }
+    );
+    return data;
+  },
 };

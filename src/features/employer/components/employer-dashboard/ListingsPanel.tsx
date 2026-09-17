@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight, Plus } from "lucide-react";
+import { ChevronRight, Download, Plus } from "lucide-react";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import {
@@ -12,6 +12,8 @@ import type { EmployerApplicant, EmployerJobListItem } from "@/types/employer";
 import { ROUTES } from "@/constants/routes";
 import { buttonVariants } from "@/components/ui/button";
 import { percent } from "@/utils/percent";
+import { useExportJobApplicantsCsv } from "@/features/employer/employer.queries";
+import { useToastMutation } from "@/hooks/useToastMutation";
 
 const STATUS_VARIANT: Record<string, BadgeVariant> = {
   review: "warning",
@@ -42,6 +44,20 @@ const ListingRow = memo(function ListingRow({
   // employer's own row through when it's actually live; otherwise render the
   // same row without navigation instead of sending them to a broken page.
   const isPubliclyViewable = j.status === "ACTIVE";
+
+  const exportCsvMutation = useExportJobApplicantsCsv();
+  const runWithToast = useToastMutation();
+  const handleExport = async (e: React.MouseEvent): Promise<void> => {
+    // The row itself is a Link (or, for a non-live job, a div with no
+    // navigation at all) — this button lives inside it purely for layout,
+    // not to trigger that row's own click behavior.
+    e.preventDefault();
+    e.stopPropagation();
+    await runWithToast(
+      () => exportCsvMutation.mutateAsync({ jobId: j.id, jobTitle: j.title }),
+      { error: "Couldn't export applicants. Please try again." }
+    );
+  };
 
   const rowContent = (
     <>
@@ -115,23 +131,44 @@ const ListingRow = memo(function ListingRow({
     </>
   );
 
+  // Only worth offering once there's something to export — an empty CSV
+  // (header row only) isn't a useful download.
+  const exportButton = total > 0 && (
+    <button
+      aria-label={`Export ${j.title} applicants as CSV`}
+      className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+      disabled={exportCsvMutation.isPending}
+      title="Export applicants as CSV"
+      type="button"
+      onClick={handleExport}
+    >
+      <Download size={14} />
+    </button>
+  );
+
   if (isPubliclyViewable) {
     return (
-      <Link
-        className="grid cursor-pointer grid-cols-[1fr_64px_88px_20px] items-center gap-2 rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
-        to={ROUTES.jobDetail(j.id)}
-      >
-        {rowContent}
-      </Link>
+      <div className="flex items-center gap-1 rounded-12 transition-colors hover:bg-neutral-50">
+        <Link
+          className="grid flex-1 cursor-pointer grid-cols-[1fr_64px_88px_20px] items-center gap-2 px-2 py-3 focus-visible:shadow-focus focus-visible:outline-none sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
+          to={ROUTES.jobDetail(j.id)}
+        >
+          {rowContent}
+        </Link>
+        {exportButton}
+      </div>
     );
   }
 
   return (
-    <div
-      className="grid grid-cols-[1fr_64px_88px_20px] items-center gap-2 rounded-12 px-2 py-3 sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
-      title="This listing isn't live yet, so it doesn't have a public page to view."
-    >
-      {rowContent}
+    <div className="flex items-center gap-1 rounded-12">
+      <div
+        className="grid flex-1 grid-cols-[1fr_64px_88px_20px] items-center gap-2 px-2 py-3 sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
+        title="This listing isn't live yet, so it doesn't have a public page to view."
+      >
+        {rowContent}
+      </div>
+      {exportButton}
     </div>
   );
 });

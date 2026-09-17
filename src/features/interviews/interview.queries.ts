@@ -3,12 +3,14 @@ import {
   cancelInterview,
   confirmInterview,
   getInterview,
+  getInterviewIcs,
   getUpcomingInterviews,
   proposeInterview,
 } from "@/features/interviews/interview.service";
 import { useAuth } from "@/contexts/AuthContext";
 import { activityKeys, interviewKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
+import { downloadBlob } from "@/utils/download-blob";
 
 // No polling here (unlike useMessages' 8s interval) — an interview changes
 // far less often than a chat thread; an ordinary revisit-triggered refetch
@@ -76,6 +78,19 @@ export const useConfirmInterview = (applicationId: string) => {
       // mutation was first written, so nothing invalidated it on this path
       // until now.
       queryClient.invalidateQueries({ queryKey: activityKeys.mine() });
+    },
+  });
+};
+
+// Fetches the .ics file and immediately saves it — there's no cached "data"
+// here worth a useQuery, the whole point is the one-off browser download,
+// same shape as users.queries.ts's useExportMyData.
+export const useDownloadInterviewIcs = (applicationId: string) => {
+  const { user } = useAuth();
+  return useMutation({
+    mutationFn: async () => {
+      const blob = await getInterviewIcs(applicationId, user!.role);
+      downloadBlob(blob, "interview.ics");
     },
   });
 };

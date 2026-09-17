@@ -24,6 +24,7 @@ import { ApplicationActivityTimeline } from "@/features/employer/hiring/componen
 import { UpcomingInterviewCard } from "@/features/interviews/components/UpcomingInterviewCard";
 import { ScorecardSection } from "@/features/scorecards/components/ScorecardSection";
 import { CvAnalysisCard } from "@/features/cv-analysis/components/CvAnalysisCard";
+import { DiscussionThreadCard } from "@/features/comments/components/DiscussionThreadCard";
 import { ApplicationDetailHeader } from "@/components/shared/ApplicationDetailHeader";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -260,7 +261,10 @@ export const ApplicationWorkspacePage = () => {
             />
 
             {interview?.status === "CONFIRMED" && !occurred && (
-              <UpcomingInterviewCard interview={interview} />
+              <UpcomingInterviewCard
+                applicationId={applicationId}
+                interview={interview}
+              />
             )}
 
             <div id="team-feedback">
@@ -286,6 +290,8 @@ export const ApplicationWorkspacePage = () => {
             </div>
 
             <CandidateNotesCard applicant={applicant} />
+
+            <DiscussionThreadCard applicationId={applicant.id} />
 
             <ApplicationActivityTimeline events={activityEvents} />
           </div>

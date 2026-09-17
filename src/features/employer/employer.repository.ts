@@ -85,6 +85,16 @@ export const employerRepository = {
     return data;
   },
 
+  // responseType: "blob" — the backend returns a raw text/csv body, not
+  // JSON, same reasoning as interviewRepository.getIcs.
+  exportJobApplicantsCsv: async (jobId: string): Promise<Blob> => {
+    const { data } = await apiClient.get<Blob>(
+      `/employer/jobs/${jobId}/applications/export`,
+      { responseType: "blob" }
+    );
+    return data;
+  },
+
   listRecentApplications: async (
     opts?: RequestOptions
   ): Promise<EmployerRecentApplicationsResponseDto> => {

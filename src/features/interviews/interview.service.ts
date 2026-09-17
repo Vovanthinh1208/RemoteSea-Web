@@ -49,3 +49,8 @@ export const cancelInterview = async (
   applicationId: string
 ): Promise<Interview> =>
   toInterview(await interviewRepository.cancel(applicationId));
+
+export const getInterviewIcs = (
+  applicationId: string,
+  role: UserRole
+): Promise<Blob> => interviewRepository.getIcs(applicationId, role);

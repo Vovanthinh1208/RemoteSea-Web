@@ -60,6 +60,9 @@ export const listJobApplications = async (
     await employerRepository.listJobApplications(jobId, params, opts)
   );
 
+export const exportJobApplicantsCsv = (jobId: string): Promise<Blob> =>
+  employerRepository.exportJobApplicantsCsv(jobId);
+
 export const listRecentApplications = async (
   opts?: RequestOptions
 ): Promise<EmployerRecentApplicationsResponse> =>

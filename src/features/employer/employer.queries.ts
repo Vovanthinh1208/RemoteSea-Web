@@ -4,6 +4,7 @@ import {
   bulkUpdateApplicationStatus,
   confirmEmployerVerification,
   createEmployerProfile,
+  exportJobApplicantsCsv,
   getEmployerProfile,
   getHiringFunnel,
   getPublicCompanyProfile,
@@ -12,6 +13,7 @@ import {
   submitEmployerVerification,
   updateApplicationStatus,
 } from "@/features/employer/employer.service";
+import { downloadBlob } from "@/utils/download-blob";
 import { ApiError } from "@/core/errors/api-error";
 import { useAuth } from "@/contexts/AuthContext";
 import { MY_APPLICATIONS_KEY } from "@/features/applications/applications.queries";
@@ -172,6 +174,28 @@ export const useEmployerApplicationsAggregate = () => {
     refetchAll,
   };
 };
+
+// Fetches the CSV and immediately saves it — no cached "data" here worth a
+// useQuery, same one-off-download shape as
+// interview.queries.ts's useDownloadInterviewIcs.
+export const useExportJobApplicantsCsv = () =>
+  useMutation({
+    mutationFn: async ({
+      jobId,
+      jobTitle,
+    }: {
+      jobId: string;
+      jobTitle: string;
+    }) => {
+      const blob = await exportJobApplicantsCsv(jobId);
+      // Matches non-alphanumeric runs to a single dash — a job title is
+      // free text (could contain "/", quotes, emoji) and any of those would
+      // otherwise either break the filename or get silently stripped by
+      // the browser's own save-as sanitization.
+      const safeTitle = jobTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      downloadBlob(blob, `applicants-${safeTitle}.csv`);
+    },
+  });
 
 export const useHiringFunnel = () => {
   const { user } = useAuth();

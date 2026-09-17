@@ -105,7 +105,10 @@ export const InterviewPage = () => {
         </div>
       ) : data.interview.status === "CONFIRMED" ? (
         <div className="space-y-4">
-          <UpcomingInterviewCard interview={data.interview} />
+          <UpcomingInterviewCard
+            applicationId={applicationId}
+            interview={data.interview}
+          />
           {isEmployerViewer && !hasOccurred(data.interview.confirmedSlot) && (
             <div className="flex justify-end">{cancelInterviewAction}</div>
           )}
