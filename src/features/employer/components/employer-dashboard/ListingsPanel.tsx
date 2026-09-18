@@ -55,7 +55,10 @@ const ListingRow = memo(function ListingRow({
     e.stopPropagation();
     await runWithToast(
       () => exportCsvMutation.mutateAsync({ jobId: j.id, jobTitle: j.title }),
-      { error: "Couldn't export applicants. Please try again." }
+      {
+        success: "Applicant export downloaded",
+        error: "We couldn't export the applicants. Please try again.",
+      }
     );
   };
 
@@ -132,23 +135,41 @@ const ListingRow = memo(function ListingRow({
   );
 
   // Only worth offering once there's something to export — an empty CSV
-  // (header row only) isn't a useful download.
+  // (header row only) isn't a useful download. "Export applicants" (not
+  // "Export CSV") names the action, not its file format — CSV is an
+  // implementation detail, and this label doesn't need to change if a
+  // second format is ever added. A labeled chip (not a bare icon) so the
+  // action reads on its own — this sits outside the row's own fixed-width
+  // grid, so there's no column budget forcing it icon-only the way an
+  // in-grid action would need. Text stays visible at every width (rather
+  // than collapsing to icon-only on mobile); the grid's own `1fr` title
+  // column absorbs the squeeze via its existing truncate, so this never
+  // pushes the row into horizontal overflow. Muted/outlined styling keeps
+  // it reading as a secondary utility, not a workflow action, next to the
+  // row's own primary affordance (viewing the listing).
   const exportButton = total > 0 && (
     <button
-      aria-label={`Export ${j.title} applicants as CSV`}
-      className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+      aria-busy={exportCsvMutation.isPending}
+      aria-label={`Export ${j.title} applicants as a CSV file`}
+      className="inline-flex h-8 flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-8 border border-neutral-200 px-2.5 text-[11px] font-medium text-neutral-500 transition-colors hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       disabled={exportCsvMutation.isPending}
-      title="Export applicants as CSV"
+      title="Download every applicant for this listing as a CSV file"
       type="button"
       onClick={handleExport}
     >
-      <Download size={14} />
+      <Download size={12} />
+      {exportCsvMutation.isPending ? "Exporting…" : "Export applicants"}
     </button>
   );
 
+  // flex-wrap (not nowrap) — at the mobile grid's tightest column widths,
+  // an inline "Export applicants" button doesn't fit without crushing the
+  // title column's truncate down to near-nothing; wrapping it onto its own
+  // line below costs a little row height instead of squeezing content that
+  // matters more (the job title) just to keep a secondary action inline.
   if (isPubliclyViewable) {
     return (
-      <div className="flex items-center gap-1 rounded-12 transition-colors hover:bg-neutral-50">
+      <div className="flex flex-wrap items-center gap-1 rounded-12 transition-colors hover:bg-neutral-50">
         <Link
           className="grid flex-1 cursor-pointer grid-cols-[1fr_64px_88px_20px] items-center gap-2 px-2 py-3 focus-visible:shadow-focus focus-visible:outline-none sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
           to={ROUTES.jobDetail(j.id)}
@@ -161,7 +182,7 @@ const ListingRow = memo(function ListingRow({
   }
 
   return (
-    <div className="flex items-center gap-1 rounded-12">
+    <div className="flex flex-wrap items-center gap-1 rounded-12">
       <div
         className="grid flex-1 grid-cols-[1fr_64px_88px_20px] items-center gap-2 px-2 py-3 sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
         title="This listing isn't live yet, so it doesn't have a public page to view."
