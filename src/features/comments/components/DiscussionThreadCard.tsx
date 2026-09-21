@@ -13,6 +13,10 @@ import { timeAgoLong } from "@/utils/time";
 
 const COMMENT_SKELETON_COUNT = 2;
 const COMMENT_BODY_MAX_LENGTH = 4000;
+// Only surfaced once it's actually relevant — a counter visible from the
+// first keystroke is noise; one appearing as the limit approaches is useful
+// information about a real constraint the recruiter's about to hit.
+const COMMENT_COUNTER_THRESHOLD = COMMENT_BODY_MAX_LENGTH - 800;
 
 const DiscussionThreadCardSkeleton = () => (
   <div className="space-y-3 rounded-16 border border-neutral-100 bg-white p-4">
@@ -73,6 +77,16 @@ export const DiscussionThreadCard = ({
     if (posted) setBody("");
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+    // Cmd/Ctrl+Enter to post — the standard shortcut for "submit this text
+    // block" (Slack, GitHub, Linear all use it), so a plain Enter stays free
+    // for the multi-line notes this textarea is for.
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+      e.preventDefault();
+      void handlePost();
+    }
+  };
+
   return (
     <div className="space-y-3 rounded-16 border border-neutral-100 bg-white p-4">
       <div className="flex items-center gap-2">
@@ -120,12 +134,24 @@ export const DiscussionThreadCard = ({
         <textarea
           className={TEXTAREA_INPUT_CLASS}
           maxLength={COMMENT_BODY_MAX_LENGTH}
-          placeholder="Leave a note for your team…"
+          placeholder="Leave a note for your team… (⌘/Ctrl+Enter to post)"
           rows={2}
           value={body}
           onChange={(e) => setBody(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
-        <div className="flex justify-end">
+        <div className="flex items-center justify-end gap-3">
+          {body.length >= COMMENT_COUNTER_THRESHOLD && (
+            <span
+              className={
+                body.length >= COMMENT_BODY_MAX_LENGTH
+                  ? "text-[11px] text-red-500"
+                  : "text-[11px] text-neutral-400"
+              }
+            >
+              {body.length}/{COMMENT_BODY_MAX_LENGTH}
+            </span>
+          )}
           <Button
             disabled={!body.trim() || createCommentMutation.isPending}
             isLoading={createCommentMutation.isPending}
