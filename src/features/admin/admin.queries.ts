@@ -1,18 +1,24 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  getAdminJobModerationFlag,
   getAdminRevenue,
   listAdminAuditLog,
   listAdminEmployers,
   listAdminJobs,
   listAdminReports,
   listAdminUsers,
+  regenerateAdminJobModerationFlag,
   resolveAdminReport,
   reviewAdminJob,
   updateAdminEmployer,
   updateAdminUser,
 } from "@/features/admin/admin.service";
 import { useAuth } from "@/contexts/AuthContext";
-import { adminKeys, jobKeys } from "@/core/query/query-keys";
+import {
+  adminKeys,
+  jobKeys,
+  jobModerationFlagKeys,
+} from "@/core/query/query-keys";
 import type { JobStatus } from "@/types/job";
 import type { JobReportStatus } from "@/types/job-report";
 import type { AdminAuditTargetType } from "@/types/admin";
@@ -71,6 +77,39 @@ export const useReviewAdminJob = () => {
       // minute (default staleTime) after an approval.
       queryClient.invalidateQueries({ queryKey: jobKeys.all });
       queryClient.invalidateQueries({ queryKey: jobKeys.detail(id) });
+    },
+  });
+};
+
+// enabled: false — this GET is not a cheap read, it's a real (billed) LLM
+// call the first time it runs for a given job (a few seconds; the backend
+// caches after that). Firing it implicitly for every row in the queue would
+// silently rack up LLM cost/latency just from an admin scrolling past
+// listings — it only ever runs when the admin explicitly clicks "Run AI
+// risk check" (see AiRiskFlag) via refetch(). staleTime: Infinity because
+// the result never changes once generated (no invalidation path — a job's
+// description doesn't change once submitted for review), so there's
+// nothing to silently go stale. Same pattern as useCvAnalysis.
+export const useJobModerationFlag = (jobId: string) =>
+  useQuery({
+    queryKey: jobModerationFlagKeys.detail(jobId),
+    queryFn: ({ signal }) => getAdminJobModerationFlag(jobId, { signal }),
+    enabled: false,
+    staleTime: Infinity,
+    gcTime: Infinity,
+  });
+
+// Explicit "run this again" action (AiRiskFlag's Re-check button) — always
+// calls the LLM, even if useJobModerationFlag already has a cached result.
+export const useRegenerateJobModerationFlag = (jobId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => regenerateAdminJobModerationFlag(jobId),
+    onSuccess: (data) => {
+      // Same reasoning as useRegenerateCvAnalysis: write straight into the
+      // cache entry rather than invalidating a staleTime: Infinity,
+      // enabled: false query, which wouldn't refetch on its own.
+      queryClient.setQueryData(jobModerationFlagKeys.detail(jobId), data);
     },
   });
 };

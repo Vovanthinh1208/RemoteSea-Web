@@ -10,8 +10,17 @@ import type {
   AdminUsersResponseDto,
   RevenueResponseDto,
 } from "@/features/admin/admin.dto";
-import type { AdminAuditTargetType } from "@/types/admin";
+import type {
+  AdminAuditTargetType,
+  AdminJobModerationFlag,
+} from "@/types/admin";
 import type { UserRole } from "@/types/user";
+
+// The first call for a given job is a real (billed) LLM completion — a few
+// seconds, comfortably able to exceed axios's global 15s default
+// (http-client.ts) — not just a pathological outlier. Same reasoning as
+// cv-analysis.repository.ts's CV_ANALYSIS_TIMEOUT_MS.
+const MODERATION_FLAG_TIMEOUT_MS = 45_000;
 
 export const adminRepository = {
   listEmployers: async (
@@ -69,6 +78,33 @@ export const adminRepository = {
       status: JobStatus;
       publishedAt: string | null;
     }>(`/admin/jobs/${id}`, { action, note });
+    return data;
+  },
+
+  // Advisory only — see JobModerationService on the backend. Lazily
+  // generated: the first call for a job runs the LLM, every call after
+  // returns the cached row instantly.
+  getJobModerationFlag: async (
+    id: string,
+    opts?: RequestOptions
+  ): Promise<AdminJobModerationFlag> => {
+    const { data } = await apiClient.get<AdminJobModerationFlag>(
+      `/admin/jobs/${id}/moderation-flag`,
+      { signal: opts?.signal, timeout: MODERATION_FLAG_TIMEOUT_MS }
+    );
+    return data;
+  },
+
+  // Always calls the LLM and overwrites the cached row — see
+  // JobModerationService.regenerate on the backend.
+  regenerateJobModerationFlag: async (
+    id: string
+  ): Promise<AdminJobModerationFlag> => {
+    const { data } = await apiClient.post<AdminJobModerationFlag>(
+      `/admin/jobs/${id}/moderation-flag/regenerate`,
+      undefined,
+      { timeout: MODERATION_FLAG_TIMEOUT_MS }
+    );
     return data;
   },
 

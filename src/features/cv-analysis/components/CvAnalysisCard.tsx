@@ -1,11 +1,31 @@
 import { useState } from "react";
 import { Check, Copy, Minus, RefreshCw, Sparkles } from "lucide-react";
-import { useCvAnalysis } from "@/features/cv-analysis/cv-analysis.queries";
+import {
+  useCvAnalysis,
+  useRegenerateCvAnalysis,
+} from "@/features/cv-analysis/cv-analysis.queries";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ApiError } from "@/core/errors/api-error";
 import { timeAgoLong } from "@/utils/time";
 import { cn } from "@/utils/cn";
+import type { CvRecommendation } from "@/types/cv-analysis";
+
+const RECOMMENDATION_LABEL: Record<CvRecommendation, string> = {
+  ADVANCE: "Suggested: Advance",
+  HOLD: "Suggested: Hold",
+  REJECT: "Suggested: Reject",
+};
+
+// Same "shade, not a new hue, carries the tier" rule as scoreTier below —
+// ADVANCE/HOLD stay in this card's existing brand/neutral palette, REJECT is
+// the one genuinely different signal worth a distinct (but still muted, not
+// alarming-red) color.
+const RECOMMENDATION_CLASS: Record<CvRecommendation, string> = {
+  ADVANCE: "bg-brand-50 text-brand-700",
+  HOLD: "bg-neutral-100 text-neutral-600",
+  REJECT: "bg-amber-50 text-amber-700",
+};
 
 const COPIED_FEEDBACK_MS = 1500;
 
@@ -85,6 +105,7 @@ export const CvAnalysisCard = ({
 }: CvAnalysisCardProps) => {
   const { data, isFetching, isError, error, fetchStatus, refetch } =
     useCvAnalysis(applicationId);
+  const regenerateMutation = useRegenerateCvAnalysis(applicationId);
 
   const hasRequested = fetchStatus !== "idle" || !!data;
 
@@ -145,10 +166,55 @@ export const CvAnalysisCard = ({
 
   return (
     <div className="animate-fade-up space-y-3 rounded-16 border border-neutral-100 bg-white p-4">
-      <h3 className="flex items-center gap-1.5 text-[13.5px] font-medium text-neutral-900">
-        <Sparkles className="flex-shrink-0 text-brand-600" size={15} />
-        AI CV Analysis
-      </h3>
+      <div className="flex items-center justify-between gap-2">
+        <h3 className="flex items-center gap-1.5 text-[13.5px] font-medium text-neutral-900">
+          <Sparkles className="flex-shrink-0 text-brand-600" size={15} />
+          AI CV Analysis
+        </h3>
+        {/* Null for analyses generated before this field existed — no badge
+            rather than a misleading default, since there's no real signal
+            to show. */}
+        <div className="flex flex-shrink-0 items-center gap-1.5">
+          {data.recommendation && (
+            <span
+              className={cn(
+                "rounded-full px-2 py-0.5 text-[10.5px] font-medium",
+                RECOMMENDATION_CLASS[data.recommendation]
+              )}
+            >
+              {RECOMMENDATION_LABEL[data.recommendation]}
+            </span>
+          )}
+          <button
+            aria-label="Regenerate analysis"
+            className="rounded-6 grid h-6 w-6 flex-shrink-0 place-items-center text-neutral-300 transition-colors hover:bg-neutral-100 hover:text-neutral-600 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={regenerateMutation.isPending}
+            title="Regenerate — runs the analysis again and replaces this one"
+            type="button"
+            onClick={() => regenerateMutation.mutate()}
+          >
+            <RefreshCw
+              className={cn(regenerateMutation.isPending && "animate-spin")}
+              size={12}
+            />
+          </button>
+        </div>
+      </div>
+
+      {regenerateMutation.isError && (
+        <p aria-live="polite" className="text-[11.5px] text-red-500">
+          Couldn&rsquo;t regenerate — showing the previous analysis.
+        </p>
+      )}
+
+      {/* Visible text, not just the badge's hover title — the one-sentence
+          reason is the actual "what supports this" content a recruiter
+          needs, not a decorative detail worth hiding behind a mouseover. */}
+      {data.recommendation && data.recommendationReason && (
+        <p className="text-[11.5px] text-neutral-400">
+          {data.recommendationReason}
+        </p>
+      )}
 
       <div className="flex items-center gap-3 rounded-10 bg-neutral-50 p-3">
         <span

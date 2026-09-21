@@ -26,4 +26,15 @@ export const cvAnalysisRepository = {
     );
     return data;
   },
+
+  // Always calls the LLM and overwrites the cached row — see
+  // CvAnalysisService.regenerate on the backend.
+  regenerate: async (applicationId: string): Promise<CvAnalysisDto> => {
+    const { data } = await apiClient.post<CvAnalysisDto>(
+      `/employer/applications/${applicationId}/ai-cv-analysis/regenerate`,
+      undefined,
+      { timeout: CV_ANALYSIS_TIMEOUT_MS }
+    );
+    return data;
+  },
 };

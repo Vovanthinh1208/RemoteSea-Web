@@ -14,6 +14,7 @@ import type {
   AdminAuditLogResponse,
   AdminAuditTargetType,
   AdminEmployersResponse,
+  AdminJobModerationFlag,
   AdminJobReportsResponse,
   AdminJobsResponse,
   AdminUsersResponse,
@@ -48,6 +49,17 @@ export const reviewAdminJob = async (
   note?: string
 ): Promise<{ status: JobStatus; publishedAt: string | null }> =>
   adminRepository.reviewJob(id, action, note);
+
+export const getAdminJobModerationFlag = async (
+  id: string,
+  opts?: RequestOptions
+): Promise<AdminJobModerationFlag> =>
+  adminRepository.getJobModerationFlag(id, opts);
+
+export const regenerateAdminJobModerationFlag = async (
+  id: string
+): Promise<AdminJobModerationFlag> =>
+  adminRepository.regenerateJobModerationFlag(id);
 
 export const getAdminRevenue = async (
   opts?: RequestOptions

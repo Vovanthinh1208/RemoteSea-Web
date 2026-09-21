@@ -197,3 +197,7 @@ export const cvAnalysisKeys = {
   detail: (applicationId: string) =>
     ["cv-analysis", "detail", applicationId] as const,
 };
+
+export const jobModerationFlagKeys = {
+  detail: (jobId: string) => ["job-moderation-flag", "detail", jobId] as const,
+};

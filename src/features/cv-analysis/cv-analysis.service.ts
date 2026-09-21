@@ -8,3 +8,8 @@ export const getCvAnalysis = async (
   opts?: RequestOptions
 ): Promise<CvAnalysis> =>
   toCvAnalysis(await cvAnalysisRepository.get(applicationId, opts));
+
+export const regenerateCvAnalysis = async (
+  applicationId: string
+): Promise<CvAnalysis> =>
+  toCvAnalysis(await cvAnalysisRepository.regenerate(applicationId));

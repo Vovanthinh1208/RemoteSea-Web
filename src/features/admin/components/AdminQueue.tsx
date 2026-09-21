@@ -20,6 +20,7 @@ import {
 import { JobSummaryHeader } from "@/features/admin/components/admin-queue/JobSummaryHeader";
 import { SubmissionSummary } from "@/features/admin/components/admin-queue/SubmissionSummary";
 import { AutomatedChecks } from "@/features/admin/components/admin-queue/AutomatedChecks";
+import { AiRiskFlag } from "@/features/admin/components/admin-queue/AiRiskFlag";
 import { ReviewerChecklist } from "@/features/admin/components/admin-queue/ReviewerChecklist";
 import { DecisionBar } from "@/features/admin/components/admin-queue/DecisionBar";
 import { EmptyState } from "@/components/shared/EmptyState";
@@ -206,6 +207,7 @@ export const AdminQueue = () => {
           >
             <SubmissionSummary job={sel} />
             <AutomatedChecks job={sel} />
+            <AiRiskFlag job={sel} />
             <ReviewerChecklist
               checkedIndices={selChecked}
               disabled={!!isResolved}

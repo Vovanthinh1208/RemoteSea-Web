@@ -47,6 +47,21 @@ export type AdminJob = {
     slug: string;
   };
   categories: { category: Category }[];
+  // null until an admin has actually run the AI risk check for this job
+  // (GET /admin/jobs/:id/moderation-flag) — see AiRiskFlag's "Run AI risk
+  // check" trigger. Advisory only: never affects reviewJob's approve/reject.
+  moderationFlag: AdminJobModerationFlag | null;
+};
+
+export type AdminJobModerationRiskLevel = "LOW" | "MEDIUM" | "HIGH";
+
+export type AdminJobModerationFlag = {
+  id: string;
+  riskLevel: AdminJobModerationRiskLevel;
+  reasons: string[];
+  summary: string;
+  model: string;
+  createdAt: string;
 };
 
 export type AdminJobsResponse = {
