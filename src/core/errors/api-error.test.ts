@@ -40,6 +40,16 @@ describe("parseErrorBody", () => {
       "Something went wrong. Please try again."
     );
   });
+
+  it("carries requestId through regardless of the error shape, for support/log correlation", () => {
+    expect(
+      parseErrorBody({ error: "Email already in use", requestId: "req-1" })
+    ).toEqual({ message: "Email already in use", requestId: "req-1" });
+    expect(parseErrorBody({ nonsense: true, requestId: "req-1" })).toEqual({
+      message: "Something went wrong. Please try again.",
+      requestId: "req-1",
+    });
+  });
 });
 
 describe("ApiError", () => {
@@ -54,5 +64,13 @@ describe("ApiError", () => {
     expect(err.message).toBe("Too short");
     expect(err.fieldErrors).toEqual({ password: ["Too short"] });
     expect(err).toBeInstanceOf(Error);
+  });
+
+  it("carries requestId from the response body", () => {
+    const err = new ApiError(404, {
+      error: "Job not found",
+      requestId: "req-1",
+    });
+    expect(err.requestId).toBe("req-1");
   });
 });
