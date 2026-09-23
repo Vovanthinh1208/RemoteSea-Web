@@ -100,3 +100,26 @@ const COLORS = [
 export const colorFor = (s: string): string => pickColorFromString(s, COLORS);
 
 export const timeAgo = timeAgoLong;
+
+// ApplicantsPanel's empty state — distinguishes "this employer has no
+// applicants at all" from "this filter matched none" (e.g. the Shortlisted
+// tab with zero shortlisted candidates, while other tabs are non-empty).
+// The generic message read as "you have no applicants" in the filtered
+// case, which isn't true and could read as a bug to an employer who knows
+// they've received applications.
+export const applicantsEmptyMessage = (
+  activeFilterLabel: string | null
+): string =>
+  activeFilterLabel
+    ? `No ${activeFilterLabel.toLowerCase()} applicants.`
+    : "No applicants yet.";
+
+// ApplicantsPanel used to hard-cap display at 8 rows with no way to see the
+// rest, even though the underlying data (up to RECENT_APPLICATIONS_LIST_CAP
+// applicants, already fetched by useEmployerDashboard) was already in
+// memory — "Show all" reveals more of it, no extra request. Capped at 50
+// (not `list.length`) to match BULK_UPDATE_MAX_ITEMS on the backend — the
+// "select all eligible" checkbox must never be able to select more than a
+// single bulk-update call can carry.
+export const INITIAL_VISIBLE_APPLICANTS = 8;
+export const MAX_VISIBLE_APPLICANTS = 50;

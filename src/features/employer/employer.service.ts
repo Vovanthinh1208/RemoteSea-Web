@@ -1,6 +1,7 @@
 import type { RequestOptions } from "@/core/http/request-config";
 import { employerRepository } from "@/features/employer/employer.repository";
 import {
+  toEmployerDashboardResponse,
   toEmployerJobApplicationsResponse,
   toEmployerJobsResponse,
   toEmployerProfile,
@@ -17,6 +18,7 @@ import type {
 import type { ApplicationStatus } from "@/types/application";
 import type { JobStatus } from "@/types/job";
 import type {
+  EmployerDashboardResponse,
   EmployerJobApplicationsResponse,
   EmployerJobsResponse,
   EmployerProfile,
@@ -74,6 +76,11 @@ export const getHiringFunnel = async (
   opts?: RequestOptions
 ): Promise<HiringFunnelResponse> =>
   toHiringFunnelResponse(await employerRepository.getHiringFunnel(opts));
+
+export const getEmployerDashboard = async (
+  opts?: RequestOptions
+): Promise<EmployerDashboardResponse> =>
+  toEmployerDashboardResponse(await employerRepository.getDashboard(opts));
 
 export const updateApplicationStatus = async (
   applicationId: string,

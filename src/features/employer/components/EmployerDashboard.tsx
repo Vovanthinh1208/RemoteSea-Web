@@ -10,11 +10,7 @@ import {
   Users,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import {
-  useEmployerApplicationsAggregate,
-  useEmployerJobs,
-  useEmployerProfile,
-} from "@/features/employer/employer.queries";
+import { useEmployerDashboard } from "@/features/employer/employer.queries";
 import { StatCard } from "@/components/ui/stat-card";
 import { ListingsPanel } from "@/features/employer/components/employer-dashboard/ListingsPanel";
 import { ApplicantsPanel } from "@/features/employer/components/employer-dashboard/ApplicantsPanel";
@@ -35,30 +31,21 @@ const AFTERNOON_END_HOUR = 18;
 export const EmployerDashboard = () => {
   const { user } = useAuth();
   const {
-    data: profile,
-    isLoading: profileLoading,
-    isError: profileErrored,
-    refetch: refetchProfile,
-  } = useEmployerProfile();
-  const {
-    data: jobsData,
-    isLoading: jobsLoading,
-    isError: jobsErrored,
-    refetch: refetchJobs,
-  } = useEmployerJobs();
-  const {
+    profile,
+    jobs: jobsData,
     applications,
     byJobId,
-    isLoading: applicationsLoading,
-    isError: applicationsErrored,
-    refetchAll: refetchApplications,
-  } = useEmployerApplicationsAggregate();
+    funnel,
+    isLoading,
+    isError,
+    refetch,
+  } = useEmployerDashboard();
 
-  if (profileLoading || jobsLoading || applicationsLoading) {
+  if (isLoading) {
     return <EmployerDashboardSkeleton />;
   }
 
-  if (profileErrored || jobsErrored) {
+  if (isError) {
     return (
       <div className="min-h-screen bg-neutral-50">
         <div className="mx-auto max-w-[1240px] px-6 py-8">
@@ -67,10 +54,7 @@ export const EmployerDashboard = () => {
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => {
-                  void refetchProfile();
-                  void refetchJobs();
-                }}
+                onClick={() => void refetch()}
               >
                 Try again
               </Button>
@@ -218,20 +202,6 @@ export const EmployerDashboard = () => {
           />
         </div>
 
-        {applicationsErrored && (
-          <div className="mb-6 flex items-center justify-between gap-4 rounded-16 border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] text-amber-800">
-            Some applicant data couldn't load, so counts below may be
-            incomplete.
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => void refetchApplications()}
-            >
-              Retry
-            </Button>
-          </div>
-        )}
-
         {/* Main grid */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
           <div className="space-y-6">
@@ -253,7 +223,7 @@ export const EmployerDashboard = () => {
             >
               <Users size={13} /> Team members
             </Link>
-            <FunnelPanel />
+            <FunnelPanel data={funnel} isLoading={isLoading} />
           </div>
         </div>
       </div>

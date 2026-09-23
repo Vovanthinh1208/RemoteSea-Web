@@ -9,16 +9,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import {
-  useMyApplications,
-  useMyApplicationStats,
-} from "@/features/applications/applications.queries";
-import {
-  useMyTalentProfile,
-  useProfileViewAnalytics,
-} from "@/features/talent/talent.queries";
-import { useSavedJobIds } from "@/features/saved/saved.queries";
-import { useAlerts } from "@/features/alerts/alerts.queries";
+import { useTalentDashboard } from "@/features/talent/talent.queries";
 import { CompletionRing } from "@/features/talent/components/talent-dashboard/CompletionRing";
 import { StatCard } from "@/components/ui/stat-card";
 import { ApplicationsTable } from "@/features/talent/components/talent-dashboard/ApplicationsTable";
@@ -42,51 +33,34 @@ import { percent } from "@/utils/percent";
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
 
-// Matches saved-jobs' precedent: the backend's paginated max, so the table/
-// recommendations below still show a complete picture for the vast majority of
-// talents without needing pager UI on the dashboard itself. The KPI tiles above
-// them use useMyApplicationStats() instead, which is accurate beyond this cap.
-const DASHBOARD_APPLICATIONS_LIMIT = 50;
-
 export const TalentDashboard = () => {
   const { user } = useAuth();
   const {
-    data: applicationsData,
-    isLoading: applicationsLoading,
-    isError: applicationsErrored,
-    refetch: refetchApplications,
-  } = useMyApplications(1, DASHBOARD_APPLICATIONS_LIMIT);
+    profile,
+    applications: applicationsData,
+    applicationStats: stats,
+    savedJobIds,
+    profileViewAnalytics,
+    alerts,
+    invitations,
+    activity,
+    isLoading,
+    isError,
+    refetch,
+  } = useTalentDashboard();
   const applications = applicationsData?.applications ?? [];
-  const { data: stats, isLoading: statsLoading } = useMyApplicationStats();
-  const { data: profile, isLoading: profileLoading } = useMyTalentProfile();
-  const { data: savedJobIds } = useSavedJobIds();
-  const {
-    data: profileViewAnalytics,
-    isLoading: profileViewsLoading,
-    isError: profileViewsErrored,
-  } = useProfileViewAnalytics();
-  const { data: alerts } = useAlerts();
   const activeAlertsCount = alerts?.filter((a) => a.isActive).length ?? 0;
 
-  // savedJobIds feeds only the secondary "Saved jobs" count stat, so it's kept
-  // out of the blocking gate — the core dashboard (greeting, application stats,
-  // profile, applications table) renders as soon as those three queries are
-  // ready, and the saved count streams in on its own (shows "—" until then)
-  // instead of the whole page waiting on it.
-  if (applicationsLoading || statsLoading || profileLoading) {
+  if (isLoading) {
     return <TalentDashboardSkeleton />;
   }
 
-  if (applicationsErrored) {
+  if (isError) {
     return (
       <div className="mx-auto max-w-[1240px] px-6 py-10">
         <EmptyState
           action={
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => refetchApplications()}
-            >
+            <Button size="sm" variant="outline" onClick={() => void refetch()}>
               Try again
             </Button>
           }
@@ -216,9 +190,7 @@ export const TalentDashboard = () => {
           label="Saved jobs"
           size="md"
           sub="current"
-          // "—" while its query streams in (it's no longer in the loading gate),
-          // rather than flashing a wrong "0" before the real count arrives.
-          value={savedJobIds === undefined ? "—" : savedJobIds.length}
+          value={savedJobIds === null ? "—" : savedJobIds.length}
         />
         <StatCard
           icon={Bell}
@@ -239,18 +211,11 @@ export const TalentDashboard = () => {
           label="Profile views"
           size="md"
           sub={
-            profileViewsLoading
-              ? undefined
-              : profileViewsErrored
-                ? "Couldn't load"
-                : `${profileViewAnalytics?.uniqueViewers ?? 0} unique`
+            profileViewAnalytics
+              ? `${profileViewAnalytics.uniqueViewers} unique`
+              : undefined
           }
-
-          value={
-            profileViewsLoading || profileViewsErrored
-              ? "—"
-              : (profileViewAnalytics?.totalViews ?? 0)
-          }
+          value={profileViewAnalytics ? profileViewAnalytics.totalViews : "—"}
         />
       </div>
 
@@ -261,10 +226,24 @@ export const TalentDashboard = () => {
           <RecommendedJobs applications={applications} />
         </div>
         <div>
-          <ProfileSnapshot />
-          <InvitationsPanel />
-          <AlertsPanel />
-          <ActivityFeed />
+          <ProfileSnapshot profile={profile} />
+          <InvitationsPanel
+            invitations={invitations}
+            isError={isError}
+            refetch={refetch}
+          />
+          <AlertsPanel
+            alerts={alerts}
+            isLoading={isLoading}
+            isError={isError}
+            refetch={refetch}
+          />
+          <ActivityFeed
+            activity={activity}
+            isLoading={isLoading}
+            isError={isError}
+            refetch={refetch}
+          />
         </div>
       </div>
     </div>

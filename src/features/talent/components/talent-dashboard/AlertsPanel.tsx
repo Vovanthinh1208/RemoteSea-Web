@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Plus, RefreshCw } from "lucide-react";
-import { useAlerts } from "@/features/alerts/alerts.queries";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { ROUTES } from "@/constants/routes";
@@ -20,8 +19,22 @@ const summarizeAlert = (alert: JobAlert): string =>
     .filter(Boolean)
     .join(" · ") || "All jobs";
 
-export const AlertsPanel = () => {
-  const { data: alerts, isLoading, isError, refetch } = useAlerts();
+type AlertsPanelProps = {
+  alerts: JobAlert[] | null;
+  isLoading: boolean;
+  isError: boolean;
+  refetch: () => void;
+};
+
+// Presentational — TalentDashboard (its only caller) now sources this from
+// useTalentDashboard's single aggregate request instead of this component
+// firing its own useAlerts() call.
+export const AlertsPanel = ({
+  alerts,
+  isLoading,
+  isError,
+  refetch,
+}: AlertsPanelProps) => {
   const visible = alerts?.slice(0, DASHBOARD_ALERTS_LIMIT) ?? [];
 
   return (

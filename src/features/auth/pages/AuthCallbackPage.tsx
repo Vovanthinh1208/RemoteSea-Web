@@ -7,12 +7,15 @@ import { ROUTES } from "@/constants/routes";
 
 /**
  * Landing target for the backend's OAuth redirect:
- * `<FRONTEND_URL>/auth/callback?token=<accessToken>` (see remotesea-api docs/API.md, GET /auth/google|github).
+ * `<FRONTEND_URL>/auth/callback?code=<exchangeCode>` (see remotesea-api docs/API.md,
+ * GET /auth/google|github|linkedin). `code` is short-lived and single-purpose —
+ * never the real access token itself (see POST /auth/oauth/exchange) — so it's
+ * safe for it to sit in this URL/browser history the way a raw token wouldn't be.
  */
 export const AuthCallbackPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { loginWithToken } = useAuth();
+  const { completeOAuthExchange } = useAuth();
   const { toast } = useToast();
   const ranOnce = useRef(false);
 
@@ -20,18 +23,18 @@ export const AuthCallbackPage = () => {
     if (ranOnce.current) return;
     ranOnce.current = true;
 
-    const token = searchParams.get("token");
-    if (!token) {
+    const code = searchParams.get("code");
+    if (!code) {
       toast({
         title: "Sign in failed",
-        description: "Missing authentication token.",
+        description: "Missing authentication code.",
         variant: "error",
       });
       navigate(ROUTES.login, { replace: true });
       return;
     }
 
-    loginWithToken(token)
+    completeOAuthExchange(code)
       .then((user) => {
         navigate(
           user.role === "EMPLOYER" ? ROUTES.employerDashboard : ROUTES.talent,
@@ -48,7 +51,7 @@ export const AuthCallbackPage = () => {
         });
         navigate(ROUTES.login, { replace: true });
       });
-  }, [searchParams, loginWithToken, navigate, toast]);
+  }, [searchParams, completeOAuthExchange, navigate, toast]);
 
   return <FullPageLoader />;
 };

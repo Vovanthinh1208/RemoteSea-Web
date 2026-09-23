@@ -6,6 +6,7 @@ import type {
   ProfileViewAnalyticsDto,
   SubmitVerificationRequestDto,
   SubmitVerificationResponseDto,
+  TalentDashboardResponseDto,
   TalentProfileDto,
   UpdateTalentProfileRequestDto,
 } from "@/features/talent/talent.dto";
@@ -63,6 +64,16 @@ export const talentRepository = {
   ): Promise<ProfileViewAnalyticsDto> => {
     const { data } = await apiClient.get<ProfileViewAnalyticsDto>(
       "/talent/me/profile-views",
+      { signal: opts?.signal }
+    );
+    return data;
+  },
+
+  getDashboard: async (
+    opts?: RequestOptions
+  ): Promise<TalentDashboardResponseDto> => {
+    const { data } = await apiClient.get<TalentDashboardResponseDto>(
+      "/talent/me/dashboard",
       { signal: opts?.signal }
     );
     return data;

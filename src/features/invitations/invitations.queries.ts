@@ -5,7 +5,11 @@ import {
   sendInvitation,
 } from "@/features/invitations/invitations.service";
 import { useAuth } from "@/contexts/AuthContext";
-import { applicationKeys, invitationKeys } from "@/core/query/query-keys";
+import {
+  applicationKeys,
+  invitationKeys,
+  talentKeys,
+} from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 import type { RespondInvitationAction } from "@/types/invitation";
 
@@ -39,6 +43,12 @@ export const useRespondToInvitation = () => {
       // invalidation ApplicationsPanel's status-update mutation already does
       // for the mirror case (employer action -> talent-visible list).
       queryClient.invalidateQueries({ queryKey: applicationKeys.all });
+      // TalentDashboard now sources its invitations/applications panels from
+      // useTalentDashboard's own aggregate snapshot (GET /talent/me/dashboard),
+      // not the two queries above directly — without this, responding to an
+      // invitation from the dashboard left that snapshot showing the
+      // pre-response state until its next unrelated refetch.
+      queryClient.invalidateQueries({ queryKey: talentKeys.dashboard() });
     },
   });
 };

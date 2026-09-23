@@ -210,3 +210,15 @@ export type HiringFunnelResponse = {
   stages: HiringFunnelStage[];
   dropOff: HiringFunnelDropOff[];
 };
+
+// GET /employer/dashboard — combines the profile/jobs/recent-applications/
+// funnel reads above into one response. Each field is independently
+// nullable: an EMPLOYER with no company yet (or a company role, e.g.
+// INTERVIEWER, that can see the profile but not review applications) gets
+// `null` for whichever piece doesn't apply to them.
+export type EmployerDashboardResponse = {
+  profile: EmployerProfileSummary | null;
+  jobs: EmployerJobsResponse | null;
+  recentApplications: EmployerRecentApplicationsResponse | null;
+  funnel: HiringFunnelResponse | null;
+};

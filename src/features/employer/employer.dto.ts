@@ -37,6 +37,16 @@ export type EmployerRecentApplicationsResponseDto = {
 
 export type HiringFunnelResponseDto = HiringFunnelResponse;
 
+// GET /employer/dashboard — combines the four DTOs above into one response;
+// each field is independently nullable, same as its standalone endpoint
+// (see EmployerDashboardResponseDto on the backend).
+export type EmployerDashboardResponseDto = {
+  profile: EmployerProfileSummaryDto | null;
+  jobs: EmployerJobsResponseDto | null;
+  recentApplications: EmployerRecentApplicationsResponseDto | null;
+  funnel: HiringFunnelResponseDto | null;
+};
+
 export type SubmitVerificationRequestDto = { email: string };
 export type SubmitVerificationResponseDto = { message: string };
 export type ConfirmVerificationRequestDto = { token: string };

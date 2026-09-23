@@ -5,6 +5,7 @@ import {
   confirmEmployerVerification,
   createEmployerProfile,
   exportJobApplicantsCsv,
+  getEmployerDashboard,
   getEmployerProfile,
   getHiringFunnel,
   getPublicCompanyProfile,
@@ -20,7 +21,11 @@ import { MY_APPLICATIONS_KEY } from "@/features/applications/applications.querie
 import { employerKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 import type { ApplicationStatus } from "@/types/application";
-import type { EmployerApplicant } from "@/types/employer";
+import type {
+  EmployerApplicant,
+  EmployerJobListItem,
+  EmployerRecentApplicationsResponse,
+} from "@/types/employer";
 import {
   computeMatchScore,
   type MatchResult,
@@ -102,6 +107,35 @@ export type ApplicantWithJob = EmployerApplicant & {
   match: MatchResult | null;
 };
 
+// Shared by useEmployerApplicationsAggregate and useEmployerDashboard below —
+// both end up with the same two raw pieces (a company's jobs, its recent
+// applications) and need the same match-scored, per-job-grouped shape built
+// from them; pulled out once so that computation can't drift between the
+// two call sites.
+const buildApplicantsAggregate = (
+  jobs: EmployerJobListItem[],
+  applications: EmployerRecentApplicationsResponse["applications"]
+): { byJobId: Map<string, EmployerApplicant[]>; all: ApplicantWithJob[] } => {
+  const jobById = new Map(jobs.map((j) => [j.id, j]));
+
+  const byJobId = new Map<string, EmployerApplicant[]>();
+  const all: ApplicantWithJob[] = applications.map((a) => {
+    const { jobId, jobTitle, ...applicant } = a;
+    const existing = byJobId.get(jobId);
+    if (existing) existing.push(applicant);
+    else byJobId.set(jobId, [applicant]);
+    const job = jobById.get(jobId);
+    return {
+      ...applicant,
+      jobId,
+      jobTitle,
+      match: job ? computeMatchScore(job, applicant.talent) : null,
+    };
+  });
+
+  return { byJobId, all };
+};
+
 // Used to be N parallel GET /employer/jobs/:id/applications requests (one
 // per job with any applicants, via useQueries) merged client-side — an
 // employer with N active listings paid N full request/auth/DB round trips
@@ -143,28 +177,11 @@ export const useEmployerApplicationsAggregate = () => {
     ...TIER.live,
   });
 
-  const { byJobId, all } = useMemo(() => {
-    const applications = data?.applications ?? [];
-    const jobById = new Map(jobs.map((j) => [j.id, j]));
-
-    const byJobId = new Map<string, EmployerApplicant[]>();
-    const all: ApplicantWithJob[] = applications.map((a) => {
-      const { jobId, jobTitle, ...applicant } = a;
-      const existing = byJobId.get(jobId);
-      if (existing) existing.push(applicant);
-      else byJobId.set(jobId, [applicant]);
-      const job = jobById.get(jobId);
-      return {
-        ...applicant,
-        jobId,
-        jobTitle,
-        match: job ? computeMatchScore(job, applicant.talent) : null,
-      };
-    });
-
-    return { byJobId, all };
+  const { byJobId, all } = useMemo(
+    () => buildApplicantsAggregate(jobs, data?.applications ?? []),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataUpdatedAt, jobs]);
+    [dataUpdatedAt, jobs]
+  );
 
   return {
     isLoading,
@@ -221,6 +238,57 @@ export const useHiringFunnel = () => {
   });
 };
 
+// Backs the dashboard screen with one request instead of the four
+// (useEmployerProfile/useEmployerJobs/useEmployerApplicationsAggregate/
+// useHiringFunnel each firing separately — see GET /employer/dashboard).
+// Also seeds each of those four queries' own caches on success, so any of
+// those hooks — used independently elsewhere, e.g. TalentSearchBoard's
+// useEmployerJobs or ApplicationWorkspacePage's
+// useEmployerApplicationsAggregate — gets an instant cache hit instead of
+// re-fetching if the user navigates there next, within TIER.live's
+// staleness window.
+export const useEmployerDashboard = () => {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: employerKeys.dashboard(),
+    queryFn: async ({ signal }) => {
+      const dashboard = await getEmployerDashboard({ signal });
+      queryClient.setQueryData(employerKeys.profile(), dashboard.profile);
+      queryClient.setQueryData(employerKeys.jobs(), dashboard.jobs);
+      queryClient.setQueryData(
+        employerKeys.recentApplications(),
+        dashboard.recentApplications
+      );
+      queryClient.setQueryData(employerKeys.funnel(), dashboard.funnel);
+      return dashboard;
+    },
+    enabled: !!user && user.role === "EMPLOYER",
+    ...TIER.live,
+  });
+
+  const { byJobId, all } = useMemo(
+    () =>
+      buildApplicantsAggregate(
+        data?.jobs?.jobs ?? [],
+        data?.recentApplications?.applications ?? []
+      ),
+    [data]
+  );
+
+  return {
+    profile: data?.profile ?? null,
+    jobs: data?.jobs ?? null,
+    applications: all,
+    byJobId,
+    funnel: data?.funnel ?? null,
+    isLoading,
+    isError,
+    refetch,
+  };
+};
+
 export const useUpdateApplicationStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -252,6 +320,13 @@ export const useUpdateApplicationStatus = () => {
       queryClient.invalidateQueries({
         queryKey: MY_APPLICATIONS_KEY,
       });
+      // EmployerDashboard now sources its own applicants panel from
+      // useEmployerDashboard's aggregate snapshot (GET /employer/dashboard),
+      // not employerKeys.recentApplications()/jobs() directly — without
+      // this, a status change made from that same dashboard's
+      // ApplicantsPanel left the snapshot showing the pre-update status
+      // until its next unrelated refetch.
+      queryClient.invalidateQueries({ queryKey: employerKeys.dashboard() });
     },
   });
 };
@@ -294,6 +369,8 @@ export const useBulkUpdateApplicationStatus = () => {
       queryClient.invalidateQueries({
         queryKey: MY_APPLICATIONS_KEY,
       });
+      // Same reasoning as useUpdateApplicationStatus's own comment above.
+      queryClient.invalidateQueries({ queryKey: employerKeys.dashboard() });
     },
   });
 };
@@ -304,8 +381,12 @@ export const useSubmitEmployerVerification = () => {
     mutationFn: submitEmployerVerification,
     onSuccess: () => {
       // Flips verificationStatus to PENDING — the dashboard's "Verify your
-      // company" card reads that off the same profile query.
+      // company" card reads that off the same profile query. It also reads
+      // from useEmployerDashboard's own aggregate snapshot now, hence the
+      // second invalidation below (same reasoning as
+      // useUpdateApplicationStatus's own comment).
       queryClient.invalidateQueries({ queryKey: employerKeys.profile() });
+      queryClient.invalidateQueries({ queryKey: employerKeys.dashboard() });
     },
   });
 };
@@ -316,6 +397,7 @@ export const useConfirmEmployerVerification = () => {
     mutationFn: confirmEmployerVerification,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: employerKeys.profile() });
+      queryClient.invalidateQueries({ queryKey: employerKeys.dashboard() });
     },
   });
 };

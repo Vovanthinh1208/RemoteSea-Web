@@ -60,6 +60,7 @@ export const employerKeys = {
   recentApplications: () => ["employer", "recent-applications"] as const,
   public: (slug: string | undefined) => ["employer", "public", slug] as const,
   funnel: () => ["employer", "funnel"] as const,
+  dashboard: () => ["employer", "dashboard"] as const,
 };
 
 export const invitationKeys = {
@@ -112,6 +113,7 @@ export const talentKeys = {
   publicAll: () => ["talent", "public"] as const,
   public: (slug: string | undefined) => ["talent", "public", slug] as const,
   profileViews: () => ["talent", "me", "profile-views"] as const,
+  dashboard: () => ["talent", "me", "dashboard"] as const,
 };
 
 export const workExperienceKeys = {

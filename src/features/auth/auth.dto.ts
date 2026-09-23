@@ -42,6 +42,14 @@ export type ResetPasswordPayload = {
 };
 export type OAuthProvider = "google" | "github" | "linkedin";
 
+// The `?code=` on the OAuth redirect target (<FRONTEND_URL>/auth/callback) —
+// short-lived and single-purpose, not the real access token itself. See
+// AuthCallbackPage.tsx and POST /auth/oauth/exchange.
+export type OAuthExchangeResponseDto = {
+  accessToken: string;
+  user: AuthUser;
+};
+
 export type OAuthLinkUrlDto = { url: string };
 
 // Wire shape of GET /auth/session — identical to AuthUser today (see auth.mapper.ts).

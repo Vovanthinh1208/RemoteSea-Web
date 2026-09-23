@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { RefreshCw } from "lucide-react";
-import { useTalentActivity } from "@/features/talent/activity.queries";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { cn } from "@/utils/cn";
@@ -58,9 +57,22 @@ const ActivityRowSkeleton = () => (
 
 const ACTIVITY_SKELETON_COUNT = 3;
 
-export const ActivityFeed = () => {
-  const { data: activity, isLoading, isError, refetch } = useTalentActivity();
+type ActivityFeedProps = {
+  activity: ActivityItem[] | null;
+  isLoading: boolean;
+  isError: boolean;
+  refetch: () => void;
+};
 
+// Presentational — TalentDashboard (its only caller) now sources this from
+// useTalentDashboard's single aggregate request instead of this component
+// firing its own useTalentActivity() call.
+export const ActivityFeed = ({
+  activity,
+  isLoading,
+  isError,
+  refetch,
+}: ActivityFeedProps) => {
   return (
     <div className="overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">
       <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">

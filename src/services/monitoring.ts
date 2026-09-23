@@ -4,13 +4,15 @@ const TRACES_SAMPLE_RATE = 0.2;
 const REPLAY_SESSION_SAMPLE_RATE = 0.1; // 10% of normal sessions
 const REPLAY_ERROR_SAMPLE_RATE = 1.0; // 100% of sessions that hit an error
 
-// The auth flows carry live credentials in the query string —
-// /auth/callback?token=<accessToken> (a working access token) and
-// /reset-password?token=<resetToken>. Sentry attaches the page URL to every
-// error event and to navigation/fetch breadcrumbs (which Session Replay also
-// records), so without this a single error while one of those routes is open
-// would ship a usable token to a third-party service. Redact the sensitive
-// params everywhere a URL can reach Sentry.
+// The auth flows carry sensitive tokens in the query string —
+// /auth/callback?code=<exchangeCode> (short-lived, single-purpose — see POST
+// /auth/oauth/exchange, kept deliberately out of the OAuth redirect as a real
+// access token never sitting in a URL) and /reset-password?token=<resetToken>
+// (a genuine credential). Sentry attaches the page URL to every error event
+// and to navigation/fetch breadcrumbs (which Session Replay also records), so
+// without this a single error while one of those routes is open would ship a
+// live or reusable-within-its-TTL value to a third-party service. Redact the
+// sensitive params everywhere a URL can reach Sentry.
 const SENSITIVE_URL_PARAM =
   /(^|[?&])((?:token|access_token|refresh_token|code|password)=)[^&#]*/gi;
 export const scrubUrl = (url: string): string =>

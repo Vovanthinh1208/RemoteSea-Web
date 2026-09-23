@@ -58,7 +58,7 @@ type AuthContextValue = {
     code: string,
     remember?: boolean
   ) => Promise<AuthUser>;
-  loginWithToken: (token: string) => Promise<AuthUser>;
+  completeOAuthExchange: (code: string) => Promise<AuthUser>;
   registerAccount: (input: RegisterInput) => Promise<AuthUser>;
   logout: () => void;
   patchUser: (partial: Partial<AuthUser>) => void;
@@ -190,34 +190,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     [queryClient]
   );
 
-  // Only used by the OAuth callback flow: a provider redirect can only carry
-  // a bare token (no room for a JSON body), so this is the one path that
-  // still has to hydrate the user via GET /auth/session after the fact.
-  const loginWithToken = useCallback(
-    async (token: string, remember = true) => {
-      setAccessToken(token, remember);
-      try {
-        const sessionUser = await hydrateFromSession();
-        if (!sessionUser)
-          throw new Error("Could not load session after authentication");
-        flushSync(() => {
-          queryClient.setQueryData(SESSION_KEY, sessionUser);
-          setHasToken(true);
-        });
-        return sessionUser;
-      } catch (err) {
-        // Establishing a brand-new session must be all-or-nothing: don't leave a
-        // token persisted (and hasToken=true) if we couldn't confirm it works,
-        // or every future load will silently repeat this same failure.
-        clearAccessToken();
-        queryClient.setQueryData(SESSION_KEY, null);
-        setHasToken(false);
-        throw err;
-      }
-    },
-    [queryClient]
-  );
-
   const login = useCallback(
     async (
       email: string,
@@ -257,6 +229,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     [commitSession]
   );
 
+  // The OAuth callback page's landing action: trades the short-lived `?code=`
+  // from the redirect for a real session, the same shape login/register/2FA
+  // already return — no separate GET /auth/session round trip, and no real
+  // access token ever has to sit in the URL for this to work (see POST
+  // /auth/oauth/exchange).
+  const completeOAuthExchange = useCallback(
+    async (code: string) => {
+      const { accessToken, user } =
+        await authService.completeOAuthExchange(code);
+      return commitSession(user, accessToken, true);
+    },
+    [commitSession]
+  );
+
   const logout = useCallback(() => {
     clearAccessToken();
     queryClient.setQueryData(SESSION_KEY, null);
@@ -278,7 +264,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       status,
       login,
       completeTwoFactorChallenge,
-      loginWithToken,
+      completeOAuthExchange,
       registerAccount,
       logout,
       patchUser,
@@ -289,7 +275,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       status,
       login,
       completeTwoFactorChallenge,
-      loginWithToken,
+      completeOAuthExchange,
       registerAccount,
       logout,
       patchUser,

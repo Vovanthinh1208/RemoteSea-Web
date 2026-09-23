@@ -1,4 +1,5 @@
 import type {
+  EmployerDashboardResponseDto,
   EmployerJobApplicationsResponseDto,
   EmployerJobsResponseDto,
   EmployerProfileDto,
@@ -8,6 +9,7 @@ import type {
   PublicCompanyProfileDto,
 } from "@/features/employer/employer.dto";
 import type {
+  EmployerDashboardResponse,
   EmployerJobApplicationsResponse,
   EmployerJobsResponse,
   EmployerProfile,
@@ -48,3 +50,13 @@ export const toPublicCompanyProfile = (
 export const toHiringFunnelResponse = (
   dto: HiringFunnelResponseDto
 ): HiringFunnelResponse => dto;
+export const toEmployerDashboardResponse = (
+  dto: EmployerDashboardResponseDto
+): EmployerDashboardResponse => ({
+  profile: dto.profile ? toEmployerProfileSummary(dto.profile) : null,
+  jobs: dto.jobs ? toEmployerJobsResponse(dto.jobs) : null,
+  recentApplications: dto.recentApplications
+    ? toEmployerRecentApplicationsResponse(dto.recentApplications)
+    : null,
+  funnel: dto.funnel ? toHiringFunnelResponse(dto.funnel) : null,
+});

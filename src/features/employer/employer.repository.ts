@@ -8,6 +8,7 @@ import type {
   ConfirmVerificationResponseDto,
   CreateEmployerProfileRequestDto,
   CreateEmployerProfileResponseDto,
+  EmployerDashboardResponseDto,
   EmployerJobApplicationsResponseDto,
   EmployerJobsResponseDto,
   EmployerProfileDto,
@@ -110,6 +111,16 @@ export const employerRepository = {
   ): Promise<HiringFunnelResponseDto> => {
     const { data } = await apiClient.get<HiringFunnelResponseDto>(
       "/employer/analytics/funnel",
+      { signal: opts?.signal }
+    );
+    return data;
+  },
+
+  getDashboard: async (
+    opts?: RequestOptions
+  ): Promise<EmployerDashboardResponseDto> => {
+    const { data } = await apiClient.get<EmployerDashboardResponseDto>(
+      "/employer/dashboard",
       { signal: opts?.signal }
     );
     return data;

@@ -1,6 +1,10 @@
 import type { RequestOptions } from "@/core/http/request-config";
 import { talentRepository } from "@/features/talent/talent.repository";
-import { toTalentProfile } from "@/features/talent/talent.mapper";
+import {
+  toTalentDashboardResponse,
+  toTalentProfile,
+  type TalentDashboardResponse,
+} from "@/features/talent/talent.mapper";
 import type {
   ProfileViewAnalyticsDto,
   UpdateTalentProfileRequestDto,
@@ -37,3 +41,8 @@ export const getProfileViewAnalytics = async (
   opts?: RequestOptions
 ): Promise<ProfileViewAnalyticsDto> =>
   talentRepository.getProfileViewAnalytics(opts);
+
+export const getTalentDashboard = async (
+  opts?: RequestOptions
+): Promise<TalentDashboardResponse> =>
+  toTalentDashboardResponse(await talentRepository.getDashboard(opts));

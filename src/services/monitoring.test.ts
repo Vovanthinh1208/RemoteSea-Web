@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 import { scrubUrl } from "@/services/monitoring";
 
 describe("scrubUrl", () => {
-  it("redacts the OAuth access token in the callback URL", () => {
+  it("redacts the OAuth exchange code in the callback URL", () => {
     expect(
-      scrubUrl("https://app.example.com/auth/callback?token=abc123.def.ghi")
-    ).toBe("https://app.example.com/auth/callback?token=[REDACTED]");
+      scrubUrl("https://app.example.com/auth/callback?code=abc123.def.ghi")
+    ).toBe("https://app.example.com/auth/callback?code=[REDACTED]");
   });
 
   it("redacts the password-reset token", () => {

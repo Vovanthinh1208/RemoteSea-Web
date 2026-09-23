@@ -1,6 +1,6 @@
 import { cn } from "@/utils/cn";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useHiringFunnel } from "@/features/employer/employer.queries";
+import type { HiringFunnelResponse } from "@/types/employer";
 
 const MIN_FUNNEL_BAR_PCT = 6;
 const SKELETON_BAR_COUNT = 6;
@@ -8,9 +8,16 @@ const SKELETON_BAR_COUNT = 6;
 // this is noise (a handful of rejections isn't a hiring-pipeline signal).
 const NOTABLE_REJECTION_PCT = 20;
 
-export const FunnelPanel = () => {
-  const { data, isLoading } = useHiringFunnel();
+type FunnelPanelProps = {
+  data: HiringFunnelResponse | null;
+  isLoading: boolean;
+};
 
+// Presentational — EmployerDashboard (its only caller) now sources this from
+// useEmployerDashboard's single aggregate request instead of this component
+// firing its own useHiringFunnel() call, same reasoning as ListingsPanel/
+// ApplicantsPanel taking their data as props.
+export const FunnelPanel = ({ data, isLoading }: FunnelPanelProps) => {
   if (isLoading) {
     return (
       <div className="rounded-20 border border-neutral-100 bg-white p-5">

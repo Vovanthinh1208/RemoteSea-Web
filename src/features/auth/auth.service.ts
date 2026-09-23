@@ -6,6 +6,7 @@ import { sessionResponseSchema } from "@/features/auth/auth.dto";
 import type {
   LoginPayload,
   LoginResponseDto,
+  OAuthExchangeResponseDto,
   OAuthLinkUrlDto,
   OAuthProvider,
   RegisterPayload,
@@ -81,3 +82,8 @@ export const oauthUrl = (provider: OAuthProvider): string =>
 export const getOAuthLinkUrl = async (
   provider: OAuthProvider
 ): Promise<OAuthLinkUrlDto> => authRepository.getOAuthLinkUrl(provider);
+
+export const completeOAuthExchange = async (
+  code: string
+): Promise<OAuthExchangeResponseDto> =>
+  authRepository.completeOAuthExchange(code);

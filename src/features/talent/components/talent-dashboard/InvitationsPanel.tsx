@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
 import { Check, Loader2, Mail, RefreshCw, X } from "lucide-react";
-import {
-  useMyInvitations,
-  useRespondToInvitation,
-} from "@/features/invitations/invitations.queries";
+import { useRespondToInvitation } from "@/features/invitations/invitations.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { ApiError } from "@/core/errors/api-error";
 import { ROUTES } from "@/constants/routes";
@@ -11,8 +8,22 @@ import type { Invitation } from "@/types/invitation";
 
 const DASHBOARD_INVITATIONS_LIMIT = 4;
 
-export const InvitationsPanel = () => {
-  const { data: invitations, isError, refetch } = useMyInvitations();
+type InvitationsPanelProps = {
+  invitations: Invitation[] | null;
+  isError: boolean;
+  refetch: () => void;
+};
+
+// Presentational read (data/isError/refetch as props) — TalentDashboard (its
+// only caller) now sources these from useTalentDashboard's single aggregate
+// request instead of this component firing its own useMyInvitations() call.
+// The accept/decline mutation stays owned here — it's independent of where
+// the read comes from.
+export const InvitationsPanel = ({
+  invitations,
+  isError,
+  refetch,
+}: InvitationsPanelProps) => {
   const respond = useRespondToInvitation();
   const runWithToast = useToastMutation();
   const pending = (invitations ?? []).filter((i) => i.status === "PENDING");

@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { backlogDays } from "./employer-dashboard.utils";
+import {
+  applicantsEmptyMessage,
+  backlogDays,
+} from "./employer-dashboard.utils";
 
 describe("backlogDays", () => {
   const now = new Date("2026-08-14T00:00:00.000Z").getTime();
@@ -58,5 +61,17 @@ describe("backlogDays", () => {
         now
       )
     ).toBeNull();
+  });
+});
+
+describe("applicantsEmptyMessage", () => {
+  it("reads as a true empty state with no active filter", () => {
+    expect(applicantsEmptyMessage(null)).toBe("No applicants yet.");
+  });
+
+  it("names the active filter instead of implying there are no applicants at all", () => {
+    expect(applicantsEmptyMessage("Shortlisted")).toBe(
+      "No shortlisted applicants."
+    );
   });
 });

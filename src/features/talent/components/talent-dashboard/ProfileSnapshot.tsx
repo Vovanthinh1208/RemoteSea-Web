@@ -1,14 +1,20 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useMyTalentProfile } from "@/features/talent/talent.queries";
 import { ROUTES } from "@/constants/routes";
 import { formatSalaryRange } from "@/utils/format";
 import { GradientInitial } from "@/components/ui/gradient-initial";
+import type { TalentProfile } from "@/types/talent";
 
-export const ProfileSnapshot = () => {
+type ProfileSnapshotProps = {
+  profile: TalentProfile | null;
+};
+
+// Presentational — TalentDashboard (its only caller) now sources this from
+// useTalentDashboard's single aggregate request instead of this component
+// firing its own useMyTalentProfile() call.
+export const ProfileSnapshot = ({ profile }: ProfileSnapshotProps) => {
   const { user } = useAuth();
-  const { data: profile } = useMyTalentProfile();
 
   return (
     <div className="mb-5 overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">

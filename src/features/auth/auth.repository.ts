@@ -3,6 +3,7 @@ import type { RequestOptions } from "@/core/http/request-config";
 import type {
   LoginPayload,
   LoginResponseDto,
+  OAuthExchangeResponseDto,
   OAuthLinkUrlDto,
   OAuthProvider,
   RegisterPayload,
@@ -105,6 +106,16 @@ export const authRepository = {
 
   oauthUrl: (provider: OAuthProvider): string =>
     `${API_BASE_URL}/auth/${provider}`,
+
+  completeOAuthExchange: async (
+    code: string
+  ): Promise<OAuthExchangeResponseDto> => {
+    const { data } = await apiClient.post<OAuthExchangeResponseDto>(
+      "/auth/oauth/exchange",
+      { code }
+    );
+    return data;
+  },
 
   // Unlike oauthUrl above (a plain <a href>, used for sign-in), this is a
   // real authenticated request — Settings > Connected accounts "Connect"
