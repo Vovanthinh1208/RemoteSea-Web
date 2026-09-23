@@ -9,6 +9,7 @@ export const toNotification = (dto: NotificationDto): Notification => dto;
 
 export type NotificationListResponse = {
   notifications: Notification[];
+  unreadCount: number;
   pagination: PaginationMeta;
 };
 
@@ -16,5 +17,6 @@ export const toNotificationListResponse = (
   dto: NotificationListResponseDto
 ): NotificationListResponse => ({
   notifications: dto.notifications.map(toNotification),
+  unreadCount: dto.unreadCount,
   pagination: dto.pagination,
 });

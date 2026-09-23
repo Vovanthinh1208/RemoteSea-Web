@@ -5,7 +5,6 @@ import {
   useMarkAllNotificationsRead,
   useMarkNotificationRead,
   useNotifications,
-  useUnreadNotificationCount,
 } from "@/features/notifications/notification.queries";
 import type { Notification } from "@/types/notification";
 import { ROUTES } from "@/constants/routes";
@@ -25,12 +24,17 @@ export const NotificationBell = () => {
   const rootRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  const { data: unreadCount = 0 } = useUnreadNotificationCount();
-  const { data, isLoading } = useNotifications(1, PANEL_ITEM_LIMIT);
+  // Bundled unreadCount from the same response — no separate
+  // GET /notifications/unread-count round trip (see notifications.service.ts).
+  // `poll: true` keeps the badge live while the panel is closed.
+  const { data, isLoading } = useNotifications(1, PANEL_ITEM_LIMIT, {
+    poll: true,
+  });
   const markRead = useMarkNotificationRead();
   const markAllRead = useMarkAllNotificationsRead();
   const runWithToast = useToastMutation();
   const notifications = data?.notifications ?? [];
+  const unreadCount = data?.unreadCount ?? 0;
 
   useEffect(() => {
     if (!open) return;

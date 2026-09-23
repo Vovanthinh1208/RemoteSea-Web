@@ -17,7 +17,16 @@ import { TIER } from "@/core/query/query-client";
 
 const UNREAD_COUNT_POLL_MS = 30_000;
 
-export const useNotifications = (page: number, limit: number) => {
+// `poll`: NotificationBell passes true so its badge (unreadCount, bundled in
+// this same response — see notifications.service.ts's listForUser) stays live
+// without a second GET /notifications/unread-count request. NotificationsPage
+// leaves it off — no reason to re-fetch a page the user is actively reading
+// every 30s.
+export const useNotifications = (
+  page: number,
+  limit: number,
+  options?: { poll?: boolean }
+) => {
   const { user } = useAuth();
   return useQuery({
     queryKey: notificationKeys.list(page, limit),
@@ -29,9 +38,15 @@ export const useNotifications = (page: number, limit: number) => {
     // jobs.queries.ts/talent-search.queries.ts's paginated lists.
     placeholderData: keepPreviousData,
     ...TIER.live,
+    refetchInterval: options?.poll ? UNREAD_COUNT_POLL_MS : undefined,
   });
 };
 
+// Standalone count-only fetch — kept for any caller that wants just the
+// badge number without the notification list itself (e.g. a lighter-weight
+// surface than NotificationBell). NotificationBell no longer uses this: it
+// gets unreadCount bundled from useNotifications instead, so it doesn't fire
+// both requests on every render.
 export const useUnreadNotificationCount = () => {
   const { user } = useAuth();
   return useQuery({
@@ -70,8 +85,13 @@ export const useMarkNotificationRead = () => {
         { queryKey: notificationKeys.listsPrefix },
         (old) => {
           if (!old) return old;
+          // Every cached list response's unreadCount mirrors the same
+          // global per-user count (see notifications.service.ts's
+          // listForUser) — decremented unconditionally here, not just on
+          // pages that happen to contain this notification.
           return {
             ...old,
+            unreadCount: Math.max(0, old.unreadCount - 1),
             notifications: old.notifications.map((n) =>
               n.id === id ? { ...n, readAt: new Date().toISOString() } : n
             ),
@@ -137,6 +157,7 @@ export const useMarkAllNotificationsRead = () => {
           if (!old) return old;
           return {
             ...old,
+            unreadCount: 0,
             notifications: old.notifications.map((n) =>
               n.readAt ? n : { ...n, readAt: now }
             ),

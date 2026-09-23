@@ -9,6 +9,7 @@ import type {
   OAuthLinkUrlDto,
   OAuthProvider,
   RegisterPayload,
+  RegisterResponseDto,
   ResetPasswordPayload,
   TwoFactorChallengePayload,
   TwoFactorChallengeResponseDto,
@@ -52,12 +53,7 @@ export const disableTwoFactor = async (
 
 export const register = async (
   payload: RegisterPayload
-): Promise<{
-  id: string;
-  email: string;
-  name: string;
-  role: AuthUser["role"];
-}> => authRepository.register(payload);
+): Promise<RegisterResponseDto> => authRepository.register(payload);
 
 export const getSession = async (
   opts?: RequestOptions

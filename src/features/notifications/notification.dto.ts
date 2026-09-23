@@ -5,6 +5,7 @@ export type NotificationDto = Notification;
 
 export type NotificationListResponseDto = {
   notifications: NotificationDto[];
+  unreadCount: number;
   pagination: PaginationMeta;
 };
 

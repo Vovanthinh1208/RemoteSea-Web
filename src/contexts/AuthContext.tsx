@@ -165,6 +165,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return () => window.removeEventListener("storage", onStorage);
   }, [queryClient]);
 
+  // Login/register/2FA-challenge responses already bundle the session's user
+  // alongside the token — this commits both to storage/cache in one shot
+  // instead of firing a follow-up GET /auth/session to learn who just signed
+  // in. Unlike loginWithToken below, there's nothing to roll back on failure:
+  // by the time this runs, the API call that produced `user` already
+  // succeeded, so there's no partially-established session to unwind.
+  const commitSession = useCallback(
+    (user: AuthUser, token: string, remember: boolean) => {
+      setAccessToken(token, remember);
+      // flushSync, not two plain setState calls — the caller (login/2FA/
+      // register forms) navigates immediately after this resolves. Without
+      // forcing the commit here, that navigate() can run before React has
+      // actually re-rendered with the new hasToken/session data, so the
+      // destination route's ProtectedRoute reads a still-stale `user: null`
+      // and bounces straight back to /login — "I signed in and got logged
+      // right back out."
+      flushSync(() => {
+        queryClient.setQueryData(SESSION_KEY, user);
+        setHasToken(true);
+      });
+      return user;
+    },
+    [queryClient]
+  );
+
+  // Only used by the OAuth callback flow: a provider redirect can only carry
+  // a bare token (no room for a JSON body), so this is the one path that
+  // still has to hydrate the user via GET /auth/session after the fact.
   const loginWithToken = useCallback(
     async (token: string, remember = true) => {
       setAccessToken(token, remember);
@@ -172,13 +200,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const sessionUser = await hydrateFromSession();
         if (!sessionUser)
           throw new Error("Could not load session after authentication");
-        // flushSync, not two plain setState calls — the caller (login/2FA
-        // forms) navigates immediately after this resolves. Without forcing
-        // the commit here, that navigate() can run before React has actually
-        // re-rendered with the new hasToken/session data, so the destination
-        // route's ProtectedRoute reads a still-stale `user: null` and bounces
-        // straight back to /login — "I verified the code and got logged
-        // right back out."
         flushSync(() => {
           queryClient.setQueryData(SESSION_KEY, sessionUser);
           setHasToken(true);
@@ -210,37 +231,30 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           challengeToken: result.challengeToken,
         };
       }
-      const user = await loginWithToken(result.accessToken, remember);
+      const user = commitSession(result.user, result.accessToken, remember);
       return { status: "success", user };
     },
-    [loginWithToken]
+    [commitSession]
   );
 
   const completeTwoFactorChallenge = useCallback(
     async (challengeToken: string, code: string, remember = true) => {
-      const { accessToken } = await authService.completeTwoFactorChallenge({
-        challengeToken,
-        code,
-      });
-      return loginWithToken(accessToken, remember);
+      const { accessToken, user } =
+        await authService.completeTwoFactorChallenge({
+          challengeToken,
+          code,
+        });
+      return commitSession(user, accessToken, remember);
     },
-    [loginWithToken]
+    [commitSession]
   );
 
   const registerAccount = useCallback(
     async (input: RegisterInput) => {
-      await authService.register(input);
-      // A brand-new account never has 2FA enabled yet, so this is always the
-      // "success" branch — but login()'s return type doesn't know that.
-      const result = await login(input.email, input.password, true);
-      if (result.status !== "success") {
-        throw new Error(
-          "Unexpected two-factor challenge right after registration"
-        );
-      }
-      return result.user;
+      const { accessToken, user } = await authService.register(input);
+      return commitSession(user, accessToken, true);
     },
-    [login]
+    [commitSession]
   );
 
   const logout = useCallback(() => {

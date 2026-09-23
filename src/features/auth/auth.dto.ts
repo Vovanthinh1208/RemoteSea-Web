@@ -3,13 +3,17 @@ import type { AuthUser, UserRole } from "@/types/user";
 
 export type LoginPayload = { email: string; password: string };
 export type LoginResponseDto =
-  { accessToken: string } | { twoFactorRequired: true; challengeToken: string };
+  | { accessToken: string; user: AuthUser }
+  | { twoFactorRequired: true; challengeToken: string };
 
 export type TwoFactorChallengePayload = {
   challengeToken: string;
   code: string;
 };
-export type TwoFactorChallengeResponseDto = { accessToken: string };
+export type TwoFactorChallengeResponseDto = {
+  accessToken: string;
+  user: AuthUser;
+};
 
 export type TwoFactorStatusDto = { enabled: boolean };
 export type TwoFactorSetupDto = {
@@ -28,10 +32,8 @@ export type RegisterPayload = {
   role: Extract<UserRole, "TALENT" | "EMPLOYER">;
 };
 export type RegisterResponseDto = {
-  id: string;
-  email: string;
-  name: string;
-  role: UserRole;
+  accessToken: string;
+  user: AuthUser;
 };
 
 export type ResetPasswordPayload = {
