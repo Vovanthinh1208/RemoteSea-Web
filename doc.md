@@ -21,7 +21,7 @@ RemoteSEA là nền tảng tuyển dụng từ xa cho Đông Nam Á, gồm 3 d�
 | 2 | **Employer (Nhà tuyển dụng)** | Người dùng đại diện cho doanh nghiệp để thực hiện các hoạt động tuyển dụng trên hệ thống. | Quản lý công ty, đăng và quản lý tin tuyển dụng, xem và xử lý ứng viên, thực hiện các hoạt động trong quy trình tuyển dụng. | `UserRole.EMPLOYER` |
 | 3 | **Admin (Quản trị viên)** | Người chịu trách nhiệm quản trị, kiểm soát và giám sát hoạt động của nền tảng. | Quản lý người dùng, công ty, tin tuyển dụng và các nội dung/quy trình quản trị của hệ thống. | `UserRole.ADMIN`, `RolesGuard` + `@Roles("ADMIN")` toàn bộ `admin.controller.ts` |
 
-> **Quy ước gọi tên trong backlog:** "Talent / Employer" = người dùng đã đăng nhập thuộc một trong hai vai trò; "Employer (Owner / Recruiter / …)" = thành viên công ty có vai trò tương ứng; "Khách (Public)" = người truy cập chưa đăng nhập (không phải một `UserRole`).
+> **Quy ước gọi tên trong backlog:** "Talent / Employer" = người dùng thuộc một trong hai vai trò (kể cả khi chức năng không yêu cầu đăng nhập); "Employer (Owner / Recruiter / …)" = thành viên công ty có vai trò tương ứng.
 
 #### Các vai trò thuộc Employer
 Vai trò chi tiết trong công ty do `CompanyMemberRole` (schema.prisma:1172-1177) quyết định — 1 user = 1 company (`userId` `@unique`).
@@ -66,7 +66,7 @@ Xem README `remotesea-ai` + `docs/intelligent-rag.md`. Điểm mấu chốt cho 
 
 | ID | Epic | User Story | Actor | Priority | Status | SP |
 |---|---|---|---|---|---|---|
-| US-AUTH-001 | 01. Auth & Account | Đăng ký tài khoản (TALENT/EMPLOYER) | Khách (người dùng mới) | P0 | Implemented | 3 |
+| US-AUTH-001 | 01. Auth & Account | Đăng ký tài khoản (TALENT/EMPLOYER) | Talent / Employer (người dùng mới) | P0 | Implemented | 3 |
 | US-AUTH-002 | 01. Auth & Account | Đăng nhập bằng email/mật khẩu | Talent / Employer | P0 | Implemented | 3 |
 | US-AUTH-003 | 01. Auth & Account | Xác thực 2 lớp khi đăng nhập (2FA challenge) | Talent / Employer (đã bật 2FA) | P1 | Implemented | 3 |
 | US-AUTH-004 | 01. Auth & Account | Đăng nhập bằng Google/GitHub/LinkedIn OAuth | Talent / Employer | P1 | Implemented | 5 |
@@ -98,7 +98,7 @@ Xem README `remotesea-ai` + `docs/intelligent-rag.md`. Điểm mấu chốt cho 
 | US-EMP-001 | 03. Employer & Company | Tạo hồ sơ công ty (trở thành Employer) | Talent → Employer | P0 | Implemented | 3 |
 | US-EMP-002 | 03. Employer & Company | Cập nhật hồ sơ công ty | Employer (Owner) | P1 | Partial | 3 |
 | US-EMP-003 | 03. Employer & Company | Xác minh công ty qua email domain | Employer (Owner) | P1 | Implemented | 3 |
-| US-EMP-004 | 03. Employer & Company | Xem hồ sơ công ty công khai | Khách (Public) | P1 | Implemented | 2 |
+| US-EMP-004 | 03. Employer & Company | Xem hồ sơ công ty công khai | Talent / Employer | P1 | Implemented | 2 |
 | US-EMP-005 | 03. Employer & Company | Xem bảng điều khiển nhà tuyển dụng | Employer (mọi vai trò) | P0 | Implemented | 3 |
 | US-TEAM-001 | 04. Team Management | Mời thành viên vào công ty | Employer (Owner) | P1 | Implemented | 3 |
 | US-TEAM-002 | 04. Team Management | Chấp nhận lời mời gia nhập công ty | Talent / Employer (được mời) | P1 | Implemented | 3 |
@@ -112,12 +112,12 @@ Xem README `remotesea-ai` + `docs/intelligent-rag.md`. Điểm mấu chốt cho 
 | US-JOB-004 | 05. Job Management | Tự động duyệt tin đủ điều kiện | System | P0 | Implemented | 3 |
 | US-JOB-005 | 05. Job Management | Đóng tin tuyển dụng | Employer (Owner / Recruiter) / Admin | P1 | Implemented | 2 |
 | US-JOB-006 | 05. Job Management | Tin tuyển dụng tự hết hạn | System (cron) | P1 | Implemented | 2 |
-| US-JOB-007 | 05. Job Management | Tìm kiếm & lọc tin tuyển dụng | Khách (Public) / Talent | P0 | Implemented | 5 |
-| US-JOB-008 | 05. Job Management | Xem chi tiết tin tuyển dụng | Khách (Public) | P0 | Implemented | 2 |
+| US-JOB-007 | 05. Job Management | Tìm kiếm & lọc tin tuyển dụng | Talent / Employer | P0 | Implemented | 5 |
+| US-JOB-008 | 05. Job Management | Xem chi tiết tin tuyển dụng | Talent / Employer | P0 | Implemented | 2 |
 | US-JOB-009 | 05. Job Management | Lưu / Bỏ lưu tin tuyển dụng | Talent / Employer (đã đăng nhập) | P2 | Implemented | 2 |
 | US-JOB-010 | 05. Job Management | Xem điểm phù hợp với công việc | Talent | P2 | Implemented | 3 |
-| US-TAXO-001 | 06. Taxonomy | Xem danh mục ngành nghề | Khách (Public) | P2 | Implemented | 1 |
-| US-TAXO-002 | 06. Taxonomy | Tìm kiếm kỹ năng | Khách (Public) | P2 | Implemented | 1 |
+| US-TAXO-001 | 06. Taxonomy | Xem danh mục ngành nghề | Talent / Employer | P2 | Implemented | 1 |
+| US-TAXO-002 | 06. Taxonomy | Tìm kiếm kỹ năng | Talent / Employer | P2 | Implemented | 1 |
 | US-APP-001 | 07. Applications | Ứng tuyển vào tin tuyển dụng | Talent | P0 | Implemented | 5 |
 | US-APP-002 | 07. Applications | Xem chi tiết đơn & dòng thời gian trạng thái | Talent | P0 | Implemented | 3 |
 | US-APP-003 | 07. Applications | Rút đơn ứng tuyển | Talent | P1 | Implemented | 2 |
@@ -137,7 +137,7 @@ Xem README `remotesea-ai` + `docs/intelligent-rag.md`. Điểm mấu chốt cho 
 | US-COM-001 | 12. Internal Comments | Thảo luận nội bộ về 1 ứng viên | Employer (team công ty) | P2 | Implemented | 2 |
 | US-REV-001 | 13. Reviews | Kiểm tra điều kiện được phép đánh giá | Talent / Employer | P2 | Implemented | 1 |
 | US-REV-002 | 13. Reviews | Viết đánh giá hai chiều sau phỏng vấn | Talent / Employer | P2 | Implemented | 3 |
-| US-REV-003 | 13. Reviews | Xem đánh giá công khai của 1 người dùng | Khách (Public) | P2 | Implemented | 2 |
+| US-REV-003 | 13. Reviews | Xem đánh giá công khai của 1 người dùng | Talent / Employer | P2 | Implemented | 2 |
 | US-NOTIF-001 | 14. Notifications | Nhận thông báo trong ứng dụng | Talent / Employer | P1 | Implemented | 3 |
 | US-NOTIF-002 | 14. Notifications | Xem số thông báo chưa đọc | Talent / Employer | P2 | Implemented | 1 |
 | US-NOTIF-003 | 14. Notifications | Đánh dấu đã đọc thông báo | Talent / Employer | P2 | Implemented | 1 |
@@ -147,7 +147,7 @@ Xem README `remotesea-ai` + `docs/intelligent-rag.md`. Điểm mấu chốt cho 
 | US-JINV-001 | 16. Job Invitations | Mời 1 ứng viên cụ thể ứng tuyển vào job | Employer (Owner / Recruiter) | P2 | Implemented | 3 |
 | US-BILL-001 | 17. Billing | Thanh toán đăng tin qua Stripe Checkout | Employer (Owner) | P0 | Implemented | 5 |
 | US-BILL-002 | 17. Billing | Xử lý xác nhận thanh toán tự động | System (Stripe webhook) | P0 | Implemented | 5 |
-| US-SAL-001 | 18. Salary Insights | Xem số liệu tham khảo mức lương | Khách (Public) | P2 | Implemented | 2 |
+| US-SAL-001 | 18. Salary Insights | Xem số liệu tham khảo mức lương | Talent / Employer | P2 | Implemented | 2 |
 | US-ADM-EMP-001 | 19. Admin: Employer | Xác minh thủ công 1 nhà tuyển dụng | Admin | P1 | Implemented | 2 |
 | US-ADM-EMP-002 | 19. Admin: Employer | Đình chỉ 1 nhà tuyển dụng | Admin | P1 | Implemented | 3 |
 | US-ADM-JOB-001 | 20. Admin: Job Moderation | Xem hàng đợi tin chờ duyệt | Admin | P0 | Implemented | 2 |
@@ -172,7 +172,7 @@ Xem README `remotesea-ai` + `docs/intelligent-rag.md`. Điểm mấu chốt cho 
 ### EPIC 01 — Authentication & Account
 
 #### [US-AUTH-001] — Đăng ký tài khoản
-**Epic:** Auth & Account | **Actor:** Khách (người dùng mới) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+**Epic:** Auth & Account | **Actor:** Talent / Employer (người dùng mới) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
 
 > Là một **người dùng mới**, tôi muốn **đăng ký tài khoản bằng email/mật khẩu và chọn vai trò (TALENT/EMPLOYER)**, để **bắt đầu sử dụng nền tảng**.
 
@@ -788,7 +788,7 @@ Frontend: TalentDashboard.tsx:214-218
 ---
 
 #### [US-TALENT-008] — Xem hồ sơ công khai của ứng viên
-**Epic:** Talent Profile | **Actor:** Employer (và Khách tuỳ visibility) | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Talent Profile | **Actor:** Employer | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là một **nhà tuyển dụng**, tôi muốn **xem hồ sơ công khai của 1 ứng viên qua slug**, để **đánh giá sự phù hợp trước khi liên hệ**.
 
@@ -898,7 +898,7 @@ Frontend: remotesea-web/src/features/employer/pages/EmployerVerifyPage.tsx; comp
 ---
 
 #### [US-EMP-004] — Xem hồ sơ công ty công khai
-**Epic:** Employer & Company | **Actor:** Khách (Public) | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+**Epic:** Employer & Company | **Actor:** Talent / Employer | **Priority:** P1 | **Status:** Implemented | **SP:** 2
 
 > Là một **khách truy cập**, tôi muốn **xem trang công ty công khai**, để **tìm hiểu về nhà tuyển dụng trước khi ứng tuyển**.
 
@@ -1187,7 +1187,7 @@ Backend: jobs.controller.ts:95-103; jobs.repository.ts:264-271
 ---
 
 #### [US-JOB-007] — Tìm kiếm & lọc tin tuyển dụng
-**Epic:** Job Management | **Actor:** Khách (Public) / Talent | **Priority:** P0 | **Status:** Implemented | **SP:** 5
+**Epic:** Job Management | **Actor:** Talent / Employer | **Priority:** P0 | **Status:** Implemented | **SP:** 5
 
 > Là một **người tìm việc**, tôi muốn **tìm kiếm và lọc tin tuyển dụng theo từ khoá, loại hình, cấp bậc, ngành nghề, mức lương**, để **nhanh chóng tìm được công việc phù hợp**.
 
@@ -1208,7 +1208,7 @@ Frontend: remotesea-web/src/features/jobs (search/filter UI)
 ---
 
 #### [US-JOB-008] — Xem chi tiết tin tuyển dụng
-**Epic:** Job Management | **Actor:** Khách (Public) | **Priority:** P0 | **Status:** Implemented | **SP:** 2
+**Epic:** Job Management | **Actor:** Talent / Employer | **Priority:** P0 | **Status:** Implemented | **SP:** 2
 
 > Là một **người tìm việc**, tôi muốn **xem chi tiết 1 tin tuyển dụng**, để **quyết định có ứng tuyển hay không**.
 
@@ -1269,7 +1269,7 @@ Frontend: remotesea-web/src/features/matching/match.util.ts:1-258; useMyMatch.ts
 ### EPIC 06 — Taxonomy
 
 #### [US-TAXO-001] — Xem danh mục ngành nghề
-**Epic:** Taxonomy | **Actor:** Khách (Public) | **Priority:** P2 | **Status:** Implemented | **SP:** 1
+**Epic:** Taxonomy | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** Implemented | **SP:** 1
 
 > Là một **người dùng**, tôi muốn **xem danh sách ngành nghề/danh mục**, để **lọc/gắn thẻ tin tuyển dụng và hồ sơ**.
 
@@ -1288,7 +1288,7 @@ Backend: remotesea-api/src/modules/taxonomy/categories.controller.ts:1-20
 ---
 
 #### [US-TAXO-002] — Tìm kiếm kỹ năng
-**Epic:** Taxonomy | **Actor:** Khách (Public) | **Priority:** P2 | **Status:** Implemented | **SP:** 1
+**Epic:** Taxonomy | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** Implemented | **SP:** 1
 
 > Là một **người dùng**, tôi muốn **tìm kiếm kỹ năng theo tên**, để **gắn kỹ năng vào hồ sơ hoặc tin tuyển dụng**.
 
@@ -1726,7 +1726,7 @@ Backend: reviews.controller.ts:34-85; reviews.service.ts:125-198; prisma/schema.
 ---
 
 #### [US-REV-003] — Xem đánh giá công khai của 1 người dùng
-**Epic:** Reviews | **Actor:** Khách (Public) | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+**Epic:** Reviews | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** Implemented | **SP:** 2
 
 > Là một **khách truy cập**, tôi muốn **xem các đánh giá công khai về 1 ứng viên hoặc nhà tuyển dụng**, để **có thêm thông tin tham khảo**.
 
@@ -1939,7 +1939,7 @@ Backend: billing.controller.ts:53-64; billing.service.ts:116-194; main.ts:94-109
 ### EPIC 18 — Salary Insights
 
 #### [US-SAL-001] — Xem số liệu tham khảo mức lương
-**Epic:** Salary Insights | **Actor:** Khách (Public) | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+**Epic:** Salary Insights | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** Implemented | **SP:** 2
 
 > Là một **người tìm việc**, tôi muốn **xem mức lương tham khảo theo ngành/cấp bậc/quốc gia**, để **có cơ sở đàm phán lương**.
 
