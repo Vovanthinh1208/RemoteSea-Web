@@ -35,12 +35,7 @@ Vai trò chi tiết trong công ty do `CompanyMemberRole` (schema.prisma:1172-11
 
 Một `User` có đúng 1 `UserRole` cấp tài khoản; nếu là Employer, quyền chi tiết trong công ty do `CompanyMemberRole` quyết định (không phải `UserRole`).
 
-#### Tác nhân phụ (hệ thống / bên ngoài)
-| Tác nhân | Mô tả | Nguồn xác nhận |
-|---|---|---|
-| **System (cron/webhook)** | Tác vụ tự động: hết hạn tin, gửi job alert, đối soát thanh toán, nhận webhook Stripe. | `CronSecretGuard` (jobs/cron/expire, alerts/cron/dispatch, billing/cron/reconcile); Stripe webhook (không auth, verify chữ ký) |
-| **AI Orchestrator (remotesea-ai)** | Dịch vụ AI gọi ngược remotesea-api, đóng vai "assistant", không phải user thật. | Context JWT ký bằng `AI_SERVICE_SECRET` |
-| **OAuth Provider (Google/GitHub/LinkedIn)** | Bên thứ ba xác thực danh tính người dùng. | `auth.module.ts:18-28`, đăng ký strategy có điều kiện theo ENV |
+> Các cơ chế tự động (cron, Stripe webhook), AI Orchestrator (remotesea-ai) và OAuth Provider (Google/GitHub/LinkedIn) không được coi là tác nhân riêng; các chức năng do chúng thực hiện được gán cho tác nhân chính được hưởng lợi (Talent / Employer).
 
 ### Kiến trúc & luồng nghiệp vụ chính
 1. **Đăng ký/xác thực** → tạo `User` (TALENT hoặc EMPLOYER) → nếu EMPLOYER, tạo `EmployerProfile`+`CompanyMember(OWNER)` khi "tạo hồ sơ công ty" (không phải lúc đăng ký).
@@ -73,7 +68,7 @@ Xem README `remotesea-ai` + `docs/intelligent-rag.md`. Điểm mấu chốt cho 
 | US-AUTH-005 | 01. Auth & Account | Liên kết tài khoản OAuth vào tài khoản hiện có | Talent / Employer | P2 | Implemented | 3 |
 | US-AUTH-006 | 01. Auth & Account | Quên mật khẩu | Talent / Employer | P0 | Implemented | 2 |
 | US-AUTH-007 | 01. Auth & Account | Đặt lại mật khẩu qua email | Talent / Employer | P0 | Implemented | 2 |
-| US-AUTH-008 | 01. Auth & Account | Đọc trạng thái phiên đăng nhập hiện tại | Talent / Employer / System | P1 | Implemented | 1 |
+| US-AUTH-008 | 01. Auth & Account | Đọc trạng thái phiên đăng nhập hiện tại | Talent / Employer | P1 | Implemented | 1 |
 | US-AUTH-009 | 01. Auth & Account | Đăng xuất | Talent / Employer | P2 | Partial | 1 |
 | US-AUTH-010 | 01. Auth & Account | Bật xác thực 2 lớp (setup + verify) | Talent / Employer | P1 | Implemented | 5 |
 | US-AUTH-011 | 01. Auth & Account | Tắt xác thực 2 lớp | Talent / Employer | P1 | Implemented | 3 |
@@ -109,9 +104,9 @@ Xem README `remotesea-ai` + `docs/intelligent-rag.md`. Điểm mấu chốt cho 
 | US-JOB-001 | 05. Job Management | Tạo tin tuyển dụng (nháp) | Employer (Owner / Recruiter) | P0 | Implemented | 5 |
 | US-JOB-002 | 05. Job Management | Chỉnh sửa tin tuyển dụng | Employer (Owner / Recruiter) / Admin | P1 | Implemented | 3 |
 | US-JOB-003 | 05. Job Management | Thanh toán để đăng tin | Employer (Owner) | P0 | Implemented | 5 |
-| US-JOB-004 | 05. Job Management | Tự động duyệt tin đủ điều kiện | System | P0 | Implemented | 3 |
+| US-JOB-004 | 05. Job Management | Tự động duyệt tin đủ điều kiện | Employer (Owner) | P0 | Implemented | 3 |
 | US-JOB-005 | 05. Job Management | Đóng tin tuyển dụng | Employer (Owner / Recruiter) / Admin | P1 | Implemented | 2 |
-| US-JOB-006 | 05. Job Management | Tin tuyển dụng tự hết hạn | System (cron) | P1 | Implemented | 2 |
+| US-JOB-006 | 05. Job Management | Tin tuyển dụng tự hết hạn | Talent | P1 | Implemented | 2 |
 | US-JOB-007 | 05. Job Management | Tìm kiếm & lọc tin tuyển dụng | Talent / Employer | P0 | Implemented | 5 |
 | US-JOB-008 | 05. Job Management | Xem chi tiết tin tuyển dụng | Talent / Employer | P0 | Implemented | 2 |
 | US-JOB-009 | 05. Job Management | Lưu / Bỏ lưu tin tuyển dụng | Talent / Employer (đã đăng nhập) | P2 | Implemented | 2 |
@@ -143,10 +138,10 @@ Xem README `remotesea-ai` + `docs/intelligent-rag.md`. Điểm mấu chốt cho 
 | US-NOTIF-003 | 14. Notifications | Đánh dấu đã đọc thông báo | Talent / Employer | P2 | Implemented | 1 |
 | US-ALERT-001 | 15. Job Alerts | Tạo cảnh báo việc làm theo tiêu chí | Talent | P2 | Implemented | 3 |
 | US-ALERT-002 | 15. Job Alerts | Quản lý cảnh báo việc làm (sửa/bật-tắt/xoá) | Talent | P2 | Implemented | 2 |
-| US-ALERT-003 | 15. Job Alerts | Gửi email khi có job khớp cảnh báo | System | P2 | Implemented | 5 |
+| US-ALERT-003 | 15. Job Alerts | Gửi email khi có job khớp cảnh báo | Talent | P2 | Implemented | 5 |
 | US-JINV-001 | 16. Job Invitations | Mời 1 ứng viên cụ thể ứng tuyển vào job | Employer (Owner / Recruiter) | P2 | Implemented | 3 |
 | US-BILL-001 | 17. Billing | Thanh toán đăng tin qua Stripe Checkout | Employer (Owner) | P0 | Implemented | 5 |
-| US-BILL-002 | 17. Billing | Xử lý xác nhận thanh toán tự động | System (Stripe webhook) | P0 | Implemented | 5 |
+| US-BILL-002 | 17. Billing | Xử lý xác nhận thanh toán tự động | Employer (Owner) | P0 | Implemented | 5 |
 | US-SAL-001 | 18. Salary Insights | Xem số liệu tham khảo mức lương | Talent / Employer | P2 | Implemented | 2 |
 | US-ADM-EMP-001 | 19. Admin: Employer | Xác minh thủ công 1 nhà tuyển dụng | Admin | P1 | Implemented | 2 |
 | US-ADM-EMP-002 | 19. Admin: Employer | Đình chỉ 1 nhà tuyển dụng | Admin | P1 | Implemented | 3 |
@@ -354,9 +349,9 @@ Frontend: remotesea-web/src/features/auth/pages/ResetPasswordPage.tsx; auth.sche
 ---
 
 #### [US-AUTH-008] — Đọc trạng thái phiên đăng nhập hiện tại
-**Epic:** Auth & Account | **Actor:** Talent / Employer (qua Frontend) | **Priority:** P1 | **Status:** Implemented | **SP:** 1
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P1 | **Status:** Implemented | **SP:** 1
 
-> Là một **ứng dụng frontend**, tôi muốn **kiểm tra token hiện tại còn hợp lệ hay không**, để **quyết định hiển thị trạng thái đăng nhập/đăng xuất**.
+> Là một **Talent hoặc Employer**, tôi muốn **hệ thống kiểm tra token hiện tại còn hợp lệ hay không**, để **quyết định hiển thị trạng thái đăng nhập/đăng xuất**.
 
 **Acceptance Criteria:**
 - AC-01: Given có Bearer token hợp lệ với session chưa bị revoke, When `GET /auth/session`, Then trả `{user: AuthenticatedUser}`, HTTP 200.
@@ -900,7 +895,7 @@ Frontend: remotesea-web/src/features/employer/pages/EmployerVerifyPage.tsx; comp
 #### [US-EMP-004] — Xem hồ sơ công ty công khai
 **Epic:** Employer & Company | **Actor:** Talent / Employer | **Priority:** P1 | **Status:** Implemented | **SP:** 2
 
-> Là một **khách truy cập**, tôi muốn **xem trang công ty công khai**, để **tìm hiểu về nhà tuyển dụng trước khi ứng tuyển**.
+> Là một **Talent hoặc Employer**, tôi muốn **xem trang công ty công khai**, để **tìm hiểu về nhà tuyển dụng trước khi ứng tuyển**.
 
 **Acceptance Criteria:**
 - AC-01: When `GET /companies/:slug` (không cần đăng nhập), Then trả thông tin công ty + `avgFirstResponseHours` (nếu đủ mẫu tối thiểu) như tín hiệu tin cậy.
@@ -1128,9 +1123,9 @@ Frontend: remotesea-web/src/features/post-job/components/PostJobWizard.tsx:158-1
 ---
 
 #### [US-JOB-004] — Tự động duyệt tin đủ điều kiện
-**Epic:** Job Management | **Actor:** System | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+**Epic:** Job Management | **Actor:** Employer (Owner) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
 
-> Là **hệ thống**, khi thanh toán thành công tôi muốn **tự động duyệt (ACTIVE) những tin đạt đủ tiêu chuẩn chất lượng**, để **rút ngắn thời gian chờ cho nhà tuyển dụng uy tín, giảm tải hàng đợi cho admin**.
+> Là một **Employer (Owner)**, khi thanh toán thành công tôi muốn **tin đạt đủ tiêu chuẩn chất lượng được tự động duyệt (ACTIVE)**, để **rút ngắn thời gian chờ đăng tin**.
 
 **Acceptance Criteria:**
 - AC-01 (Happy path): Given Stripe webhook `checkout.session.completed` xác nhận thanh toán VÀ employer `isVerified=true` VÀ `description.length≥100` VÀ có `salaryMin` VÀ ≥1 category, Then job chuyển thẳng `PENDING_REVIEW → ACTIVE`, set `publishedAt=now`, `expiresAt` theo `PLAN_DURATION_DAYS[planType]`.
@@ -1168,9 +1163,9 @@ Backend: jobs.service.ts:246-264; jobs.repository.ts:187-197
 ---
 
 #### [US-JOB-006] — Tin tuyển dụng tự hết hạn
-**Epic:** Job Management | **Actor:** System (cron) | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+**Epic:** Job Management | **Actor:** Talent | **Priority:** P1 | **Status:** Implemented | **SP:** 2
 
-> Là **hệ thống**, tôi muốn **tự động chuyển các tin đã quá hạn (`expiresAt`) sang `EXPIRED`**, để **giữ trang tìm việc chỉ hiển thị tin còn hiệu lực**.
+> Là một **Talent**, tôi muốn **các tin đã quá hạn (`expiresAt`) tự động chuyển sang `EXPIRED`**, để **trang tìm việc chỉ hiển thị tin còn hiệu lực**.
 
 **Acceptance Criteria:**
 - AC-01: Given `job.status=ACTIVE && expiresAt < now()`, When `GET /jobs/cron/expire` được gọi, Then job chuyển `EXPIRED` (updateMany hàng loạt).
@@ -1728,7 +1723,7 @@ Backend: reviews.controller.ts:34-85; reviews.service.ts:125-198; prisma/schema.
 #### [US-REV-003] — Xem đánh giá công khai của 1 người dùng
 **Epic:** Reviews | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** Implemented | **SP:** 2
 
-> Là một **khách truy cập**, tôi muốn **xem các đánh giá công khai về 1 ứng viên hoặc nhà tuyển dụng**, để **có thêm thông tin tham khảo**.
+> Là một **Talent hoặc Employer**, tôi muốn **xem các đánh giá công khai về 1 ứng viên hoặc nhà tuyển dụng**, để **có thêm thông tin tham khảo**.
 
 **Acceptance Criteria:**
 - AC-01: When `GET /reviews/user/:userId` (**không cần đăng nhập** — "a published review is public profile content"), Then trả danh sách review `PUBLISHED` + số liệu tổng hợp (AVG/COUNT tính ở DB qua `.aggregate()`, không load-all-rồi-tính ở app).
@@ -1854,9 +1849,9 @@ Frontend: remotesea-web/src/features/alerts/alerts.queries.ts
 ---
 
 #### [US-ALERT-003] — Gửi email khi có job khớp cảnh báo
-**Epic:** Job Alerts | **Actor:** System | **Priority:** P2 | **Status:** Implemented | **SP:** 5
+**Epic:** Job Alerts | **Actor:** Talent | **Priority:** P2 | **Status:** Implemented | **SP:** 5
 
-> Là **hệ thống**, tôi muốn **tự động gửi email cho ứng viên khi có tin tuyển dụng mới khớp tiêu chí cảnh báo của họ**, để **giữ chân người dùng quay lại nền tảng**.
+> Là một **Talent**, tôi muốn **tự động nhận email khi có tin tuyển dụng mới khớp tiêu chí cảnh báo của tôi**, để **không bỏ lỡ cơ hội phù hợp**.
 
 **Acceptance Criteria:**
 - AC-01 (Happy path): When `GET /alerts/cron/dispatch` được gọi (bởi scheduler ngoài), Then với mỗi alert `isActive`, nếu `now - lastSentAt ≥ FREQUENCY_GAP_MS[frequency]` (IMMEDIATE=0, DAILY=24h, WEEKLY=7 ngày) VÀ preference tương ứng bật (`weeklyDigestEnabled` cho WEEKLY, `instantMatchAlertsEnabled` cho IMMEDIATE/DAILY), Then tìm job `ACTIVE` khớp tiêu chí (keywords/jobType/level/country/salaryMin/category) đăng sau `lastSentAt`, gửi email, cập nhật `lastSentAt` (atomic claim chống double-send).
@@ -1917,9 +1912,9 @@ Frontend: remotesea-web/src/features/post-job/components/StepPlan.tsx (3 gói); 
 ---
 
 #### [US-BILL-002] — Xử lý xác nhận thanh toán tự động (Webhook)
-**Epic:** Billing | **Actor:** System (Stripe webhook) | **Priority:** P0 | **Status:** Implemented | **SP:** 5
+**Epic:** Billing | **Actor:** Employer (Owner) | **Priority:** P0 | **Status:** Implemented | **SP:** 5
 
-> Là **hệ thống**, khi Stripe xác nhận 1 giao dịch thành công, tôi muốn **tự động cập nhật trạng thái job và kích hoạt quy trình duyệt**, để **nhà tuyển dụng không cần thao tác thủ công sau khi trả tiền**.
+> Là một **Employer (Owner)**, khi Stripe xác nhận giao dịch thành công, tôi muốn **trạng thái job được tự động cập nhật và quy trình duyệt được kích hoạt**, để **không cần thao tác thủ công sau khi trả tiền**.
 
 **Acceptance Criteria:**
 - AC-01 (Happy path): Given `event.type = checkout.session.completed`, When `POST /billing/webhook`, Then `Job.planPaid=true, paidAt=now, status: DRAFT→PENDING_REVIEW, isFeatured = (planType≠STANDARD)`.
