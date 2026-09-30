@@ -12,18 +12,35 @@ RemoteSEA là nền tảng tuyển dụng từ xa cho Đông Nam Á, gồm 3 d�
 - **remotesea-api** — NestJS 10, kiến trúc Controller → Service → Repository, Prisma 5 + PostgreSQL, JWT/Passport (Google/GitHub/LinkedIn OAuth), Stripe billing, S3 uploads.
 - **remotesea-ai** — FastAPI (Python), Clean Architecture 4 tầng, mô hình mặc định Qwen2.5-3B-Instruct tự triển khai qua Ollama, RAG lai (Qdrant + PostgreSQL full-text), là "AI Orchestrator" gọi ngược vào remotesea-api qua context token JWT.
 
-### Actors (xác định từ code, không mặc định)
-| Actor | Nguồn xác nhận |
-|---|---|
-| **TALENT** | `UserRole.TALENT` (schema.prisma:15-19) |
-| **EMPLOYER** (tài khoản) | `UserRole.EMPLOYER` |
-| **ADMIN** | `UserRole.ADMIN`, `RolesGuard` + `@Roles("ADMIN")` toàn bộ `admin.controller.ts` |
-| **CompanyMember: OWNER / RECRUITER / HIRING_MANAGER / INTERVIEWER** | `CompanyMemberRole` enum (schema.prisma:1172-1177) — 1 user = 1 company (userId `@unique`) |
-| **System (cron/webhook)** | `CronSecretGuard` (jobs/cron/expire, alerts/cron/dispatch, billing/cron/reconcile), Stripe webhook (không auth, verify chữ ký) |
-| **AI Orchestrator (remotesea-ai)** | Gọi ngược remotesea-api qua context JWT ký bằng `AI_SERVICE_SECRET`, đóng vai "assistant", không phải user thật |
-| **OAuth Provider (Google/GitHub/LinkedIn)** | `auth.module.ts:18-28`, đăng ký strategy có điều kiện theo ENV |
+### Tác nhân của hệ thống (Actors)
 
-Một `User` có đúng 1 `UserRole` cấp tài khoản; nếu là EMPLOYER, quyền chi tiết trong công ty do `CompanyMemberRole` quyết định (không phải `UserRole`).
+#### Tác nhân chính
+| STT | Tác nhân | Mô tả | Vai trò / Phạm vi hoạt động | Nguồn xác nhận |
+|---|---|---|---|---|
+| 1 | **Talent (Ứng viên)** | Người sử dụng nền tảng để tìm kiếm và ứng tuyển các công việc remote. | Quản lý hồ sơ cá nhân, CV, kỹ năng; tìm kiếm việc làm; lưu việc; ứng tuyển và theo dõi quá trình ứng tuyển. | `UserRole.TALENT` (schema.prisma:15-19) |
+| 2 | **Employer (Nhà tuyển dụng)** | Người dùng đại diện cho doanh nghiệp để thực hiện các hoạt động tuyển dụng trên hệ thống. | Quản lý công ty, đăng và quản lý tin tuyển dụng, xem và xử lý ứng viên, thực hiện các hoạt động trong quy trình tuyển dụng. | `UserRole.EMPLOYER` |
+| 3 | **Admin (Quản trị viên)** | Người chịu trách nhiệm quản trị, kiểm soát và giám sát hoạt động của nền tảng. | Quản lý người dùng, công ty, tin tuyển dụng và các nội dung/quy trình quản trị của hệ thống. | `UserRole.ADMIN`, `RolesGuard` + `@Roles("ADMIN")` toàn bộ `admin.controller.ts` |
+
+> **Quy ước gọi tên trong backlog:** "Talent / Employer" = người dùng đã đăng nhập thuộc một trong hai vai trò; "Employer (Owner / Recruiter / …)" = thành viên công ty có vai trò tương ứng; "Khách (Public)" = người truy cập chưa đăng nhập (không phải một `UserRole`).
+
+#### Các vai trò thuộc Employer
+Vai trò chi tiết trong công ty do `CompanyMemberRole` (schema.prisma:1172-1177) quyết định — 1 user = 1 company (`userId` `@unique`).
+
+| Vai trò | Mô tả | Một số hoạt động chính |
+|---|---|---|
+| **Owner (Chủ doanh nghiệp)** | Người sở hữu/quản lý công ty trên hệ thống. | Quản lý thông tin công ty, thành viên và quyền truy cập; quản lý tin tuyển dụng và hoạt động tuyển dụng. |
+| **Recruiter (Nhà tuyển dụng)** | Người trực tiếp thực hiện các hoạt động tuyển dụng. | Đăng/quản lý tin tuyển dụng, xem và sàng lọc ứng viên, cập nhật trạng thái ứng tuyển. |
+| **Hiring Manager (Quản lý tuyển dụng)** | Người phụ trách đánh giá và ra quyết định trong quy trình tuyển dụng. | Xem ứng viên, đánh giá ứng viên và tham gia quyết định tuyển dụng. |
+| **Interviewer (Người phỏng vấn)** | Người tham gia đánh giá ứng viên thông qua phỏng vấn. | Xem thông tin ứng viên được phân công và thực hiện/ghi nhận kết quả phỏng vấn. |
+
+Một `User` có đúng 1 `UserRole` cấp tài khoản; nếu là Employer, quyền chi tiết trong công ty do `CompanyMemberRole` quyết định (không phải `UserRole`).
+
+#### Tác nhân phụ (hệ thống / bên ngoài)
+| Tác nhân | Mô tả | Nguồn xác nhận |
+|---|---|---|
+| **System (cron/webhook)** | Tác vụ tự động: hết hạn tin, gửi job alert, đối soát thanh toán, nhận webhook Stripe. | `CronSecretGuard` (jobs/cron/expire, alerts/cron/dispatch, billing/cron/reconcile); Stripe webhook (không auth, verify chữ ký) |
+| **AI Orchestrator (remotesea-ai)** | Dịch vụ AI gọi ngược remotesea-api, đóng vai "assistant", không phải user thật. | Context JWT ký bằng `AI_SERVICE_SECRET` |
+| **OAuth Provider (Google/GitHub/LinkedIn)** | Bên thứ ba xác thực danh tính người dùng. | `auth.module.ts:18-28`, đăng ký strategy có điều kiện theo ENV |
 
 ### Kiến trúc & luồng nghiệp vụ chính
 1. **Đăng ký/xác thực** → tạo `User` (TALENT hoặc EMPLOYER) → nếu EMPLOYER, tạo `EmployerProfile`+`CompanyMember(OWNER)` khi "tạo hồ sơ công ty" (không phải lúc đăng ký).
@@ -49,102 +66,102 @@ Xem README `remotesea-ai` + `docs/intelligent-rag.md`. Điểm mấu chốt cho 
 
 | ID | Epic | User Story | Actor | Priority | Status | SP |
 |---|---|---|---|---|---|---|
-| US-AUTH-001 | 01. Auth & Account | Đăng ký tài khoản (TALENT/EMPLOYER) | User (mới) | P0 | Implemented | 3 |
-| US-AUTH-002 | 01. Auth & Account | Đăng nhập bằng email/mật khẩu | User | P0 | Implemented | 3 |
-| US-AUTH-003 | 01. Auth & Account | Xác thực 2 lớp khi đăng nhập (2FA challenge) | User (đã bật 2FA) | P1 | Implemented | 3 |
-| US-AUTH-004 | 01. Auth & Account | Đăng nhập bằng Google/GitHub/LinkedIn OAuth | User | P1 | Implemented | 5 |
-| US-AUTH-005 | 01. Auth & Account | Liên kết tài khoản OAuth vào tài khoản hiện có | User | P2 | Implemented | 3 |
-| US-AUTH-006 | 01. Auth & Account | Quên mật khẩu | User | P0 | Implemented | 2 |
-| US-AUTH-007 | 01. Auth & Account | Đặt lại mật khẩu qua email | User | P0 | Implemented | 2 |
-| US-AUTH-008 | 01. Auth & Account | Đọc trạng thái phiên đăng nhập hiện tại | User/System | P1 | Implemented | 1 |
-| US-AUTH-009 | 01. Auth & Account | Đăng xuất | User | P2 | Partial | 1 |
-| US-AUTH-010 | 01. Auth & Account | Bật xác thực 2 lớp (setup + verify) | User | P1 | Implemented | 5 |
-| US-AUTH-011 | 01. Auth & Account | Tắt xác thực 2 lớp | User | P1 | Implemented | 3 |
-| US-AUTH-012 | 01. Auth & Account | Đổi mật khẩu (đã đăng nhập) | User | P0 | Implemented | 3 |
-| US-AUTH-013 | 01. Auth & Account | Cập nhật tên hiển thị | User | P3 | Implemented | 1 |
-| US-AUTH-014 | 01. Auth & Account | Cập nhật thông tin tài khoản (phone/ngôn ngữ/khu vực/tiền tệ/avatar) | User | P2 | Partial | 3 |
-| US-AUTH-015 | 01. Auth & Account | Cấu hình tuỳ chọn thông báo | User | P2 | Partial | 2 |
-| US-AUTH-016 | 01. Auth & Account | Tạm dừng / Kích hoạt lại tài khoản | User | P3 | Implemented | 2 |
-| US-AUTH-017 | 01. Auth & Account | Xuất dữ liệu cá nhân | User | P3 | Implemented | 1 |
-| US-AUTH-018 | 01. Auth & Account | Quản lý tài khoản liên kết (connections) | User | P3 | Implemented | 2 |
-| US-AUTH-019 | 01. Auth & Account | Quản lý phiên đăng nhập đang hoạt động | User | P2 | Implemented | 3 |
-| US-AUTH-020 | 01. Auth & Account | Xoá tài khoản | User | P1 | Implemented | 5 |
-| US-TALENT-001 | 02. Talent Profile | Tạo/cập nhật hồ sơ ứng viên | TALENT | P0 | Implemented | 5 |
-| US-TALENT-002 | 02. Talent Profile | Xác minh email ứng viên | TALENT | P2 | Implemented | 2 |
-| US-TALENT-003 | 02. Talent Profile | Thiết lập chế độ hiển thị hồ sơ | TALENT | P1 | Partial | 2 |
-| US-TALENT-004 | 02. Talent Profile | Quản lý kinh nghiệm làm việc | TALENT | P1 | Implemented | 3 |
-| US-TALENT-005 | 02. Talent Profile | Quản lý điểm nhấn hồ sơ (portfolio/học vấn/ngôn ngữ) | TALENT | P2 | Implemented | 3 |
-| US-TALENT-006 | 02. Talent Profile | Xem bảng điều khiển ứng viên | TALENT | P1 | Implemented | 3 |
-| US-TALENT-007 | 02. Talent Profile | Xem thống kê lượt xem hồ sơ | TALENT | P2 | Implemented | 2 |
-| US-TALENT-008 | 02. Talent Profile | Xem hồ sơ công khai của ứng viên | EMPLOYER | P1 | Implemented | 3 |
-| US-TALENT-009 | 02. Talent Profile | Tìm kiếm ứng viên | EMPLOYER | P1 | Implemented | 5 |
-| US-EMP-001 | 03. Employer & Company | Tạo hồ sơ công ty (trở thành Employer) | User → EMPLOYER | P0 | Implemented | 3 |
-| US-EMP-002 | 03. Employer & Company | Cập nhật hồ sơ công ty | OWNER | P1 | Partial | 3 |
-| US-EMP-003 | 03. Employer & Company | Xác minh công ty qua email domain | OWNER | P1 | Implemented | 3 |
-| US-EMP-004 | 03. Employer & Company | Xem hồ sơ công ty công khai | Public | P1 | Implemented | 2 |
-| US-EMP-005 | 03. Employer & Company | Xem bảng điều khiển nhà tuyển dụng | CompanyMember | P0 | Implemented | 3 |
-| US-TEAM-001 | 04. Team Management | Mời thành viên vào công ty | OWNER | P1 | Implemented | 3 |
-| US-TEAM-002 | 04. Team Management | Chấp nhận lời mời gia nhập công ty | User được mời | P1 | Implemented | 3 |
-| US-TEAM-003 | 04. Team Management | Xem danh sách thành viên công ty | CompanyMember | P1 | Implemented | 1 |
-| US-TEAM-004 | 04. Team Management | Thu hồi lời mời đang chờ | OWNER | P2 | Implemented | 1 |
-| US-TEAM-005 | 04. Team Management | Đổi vai trò thành viên / Chuyển giao OWNER | OWNER | P1 | Implemented | 5 |
-| US-TEAM-006 | 04. Team Management | Xoá thành viên khỏi công ty | OWNER | P1 | Implemented | 2 |
-| US-JOB-001 | 05. Job Management | Tạo tin tuyển dụng (nháp) | OWNER/RECRUITER | P0 | Implemented | 5 |
-| US-JOB-002 | 05. Job Management | Chỉnh sửa tin tuyển dụng | OWNER/RECRUITER/ADMIN | P1 | Implemented | 3 |
-| US-JOB-003 | 05. Job Management | Thanh toán để đăng tin | OWNER | P0 | Implemented | 5 |
+| US-AUTH-001 | 01. Auth & Account | Đăng ký tài khoản (TALENT/EMPLOYER) | Khách (người dùng mới) | P0 | Implemented | 3 |
+| US-AUTH-002 | 01. Auth & Account | Đăng nhập bằng email/mật khẩu | Talent / Employer | P0 | Implemented | 3 |
+| US-AUTH-003 | 01. Auth & Account | Xác thực 2 lớp khi đăng nhập (2FA challenge) | Talent / Employer (đã bật 2FA) | P1 | Implemented | 3 |
+| US-AUTH-004 | 01. Auth & Account | Đăng nhập bằng Google/GitHub/LinkedIn OAuth | Talent / Employer | P1 | Implemented | 5 |
+| US-AUTH-005 | 01. Auth & Account | Liên kết tài khoản OAuth vào tài khoản hiện có | Talent / Employer | P2 | Implemented | 3 |
+| US-AUTH-006 | 01. Auth & Account | Quên mật khẩu | Talent / Employer | P0 | Implemented | 2 |
+| US-AUTH-007 | 01. Auth & Account | Đặt lại mật khẩu qua email | Talent / Employer | P0 | Implemented | 2 |
+| US-AUTH-008 | 01. Auth & Account | Đọc trạng thái phiên đăng nhập hiện tại | Talent / Employer / System | P1 | Implemented | 1 |
+| US-AUTH-009 | 01. Auth & Account | Đăng xuất | Talent / Employer | P2 | Partial | 1 |
+| US-AUTH-010 | 01. Auth & Account | Bật xác thực 2 lớp (setup + verify) | Talent / Employer | P1 | Implemented | 5 |
+| US-AUTH-011 | 01. Auth & Account | Tắt xác thực 2 lớp | Talent / Employer | P1 | Implemented | 3 |
+| US-AUTH-012 | 01. Auth & Account | Đổi mật khẩu (đã đăng nhập) | Talent / Employer | P0 | Implemented | 3 |
+| US-AUTH-013 | 01. Auth & Account | Cập nhật tên hiển thị | Talent / Employer | P3 | Implemented | 1 |
+| US-AUTH-014 | 01. Auth & Account | Cập nhật thông tin tài khoản (phone/ngôn ngữ/khu vực/tiền tệ/avatar) | Talent / Employer | P2 | Partial | 3 |
+| US-AUTH-015 | 01. Auth & Account | Cấu hình tuỳ chọn thông báo | Talent / Employer | P2 | Partial | 2 |
+| US-AUTH-016 | 01. Auth & Account | Tạm dừng / Kích hoạt lại tài khoản | Talent / Employer | P3 | Implemented | 2 |
+| US-AUTH-017 | 01. Auth & Account | Xuất dữ liệu cá nhân | Talent / Employer | P3 | Implemented | 1 |
+| US-AUTH-018 | 01. Auth & Account | Quản lý tài khoản liên kết (connections) | Talent / Employer | P3 | Implemented | 2 |
+| US-AUTH-019 | 01. Auth & Account | Quản lý phiên đăng nhập đang hoạt động | Talent / Employer | P2 | Implemented | 3 |
+| US-AUTH-020 | 01. Auth & Account | Xoá tài khoản | Talent / Employer | P1 | Implemented | 5 |
+| US-TALENT-001 | 02. Talent Profile | Tạo/cập nhật hồ sơ ứng viên | Talent | P0 | Implemented | 5 |
+| US-TALENT-002 | 02. Talent Profile | Xác minh email ứng viên | Talent | P2 | Implemented | 2 |
+| US-TALENT-003 | 02. Talent Profile | Thiết lập chế độ hiển thị hồ sơ | Talent | P1 | Partial | 2 |
+| US-TALENT-004 | 02. Talent Profile | Quản lý kinh nghiệm làm việc | Talent | P1 | Implemented | 3 |
+| US-TALENT-005 | 02. Talent Profile | Quản lý điểm nhấn hồ sơ (portfolio/học vấn/ngôn ngữ) | Talent | P2 | Implemented | 3 |
+| US-TALENT-006 | 02. Talent Profile | Xem bảng điều khiển ứng viên | Talent | P1 | Implemented | 3 |
+| US-TALENT-007 | 02. Talent Profile | Xem thống kê lượt xem hồ sơ | Talent | P2 | Implemented | 2 |
+| US-TALENT-008 | 02. Talent Profile | Xem hồ sơ công khai của ứng viên | Employer | P1 | Implemented | 3 |
+| US-TALENT-009 | 02. Talent Profile | Tìm kiếm ứng viên | Employer | P1 | Implemented | 5 |
+| US-EMP-001 | 03. Employer & Company | Tạo hồ sơ công ty (trở thành Employer) | Talent → Employer | P0 | Implemented | 3 |
+| US-EMP-002 | 03. Employer & Company | Cập nhật hồ sơ công ty | Employer (Owner) | P1 | Partial | 3 |
+| US-EMP-003 | 03. Employer & Company | Xác minh công ty qua email domain | Employer (Owner) | P1 | Implemented | 3 |
+| US-EMP-004 | 03. Employer & Company | Xem hồ sơ công ty công khai | Khách (Public) | P1 | Implemented | 2 |
+| US-EMP-005 | 03. Employer & Company | Xem bảng điều khiển nhà tuyển dụng | Employer (mọi vai trò) | P0 | Implemented | 3 |
+| US-TEAM-001 | 04. Team Management | Mời thành viên vào công ty | Employer (Owner) | P1 | Implemented | 3 |
+| US-TEAM-002 | 04. Team Management | Chấp nhận lời mời gia nhập công ty | Talent / Employer (được mời) | P1 | Implemented | 3 |
+| US-TEAM-003 | 04. Team Management | Xem danh sách thành viên công ty | Employer (mọi vai trò) | P1 | Implemented | 1 |
+| US-TEAM-004 | 04. Team Management | Thu hồi lời mời đang chờ | Employer (Owner) | P2 | Implemented | 1 |
+| US-TEAM-005 | 04. Team Management | Đổi vai trò thành viên / Chuyển giao OWNER | Employer (Owner) | P1 | Implemented | 5 |
+| US-TEAM-006 | 04. Team Management | Xoá thành viên khỏi công ty | Employer (Owner) | P1 | Implemented | 2 |
+| US-JOB-001 | 05. Job Management | Tạo tin tuyển dụng (nháp) | Employer (Owner / Recruiter) | P0 | Implemented | 5 |
+| US-JOB-002 | 05. Job Management | Chỉnh sửa tin tuyển dụng | Employer (Owner / Recruiter) / Admin | P1 | Implemented | 3 |
+| US-JOB-003 | 05. Job Management | Thanh toán để đăng tin | Employer (Owner) | P0 | Implemented | 5 |
 | US-JOB-004 | 05. Job Management | Tự động duyệt tin đủ điều kiện | System | P0 | Implemented | 3 |
-| US-JOB-005 | 05. Job Management | Đóng tin tuyển dụng | OWNER/RECRUITER/ADMIN | P1 | Implemented | 2 |
+| US-JOB-005 | 05. Job Management | Đóng tin tuyển dụng | Employer (Owner / Recruiter) / Admin | P1 | Implemented | 2 |
 | US-JOB-006 | 05. Job Management | Tin tuyển dụng tự hết hạn | System (cron) | P1 | Implemented | 2 |
-| US-JOB-007 | 05. Job Management | Tìm kiếm & lọc tin tuyển dụng | Public/TALENT | P0 | Implemented | 5 |
-| US-JOB-008 | 05. Job Management | Xem chi tiết tin tuyển dụng | Public | P0 | Implemented | 2 |
-| US-JOB-009 | 05. Job Management | Lưu / Bỏ lưu tin tuyển dụng | User đã đăng nhập | P2 | Implemented | 2 |
-| US-JOB-010 | 05. Job Management | Xem điểm phù hợp với công việc | TALENT | P2 | Implemented | 3 |
-| US-TAXO-001 | 06. Taxonomy | Xem danh mục ngành nghề | Public | P2 | Implemented | 1 |
-| US-TAXO-002 | 06. Taxonomy | Tìm kiếm kỹ năng | Public | P2 | Implemented | 1 |
-| US-APP-001 | 07. Applications | Ứng tuyển vào tin tuyển dụng | TALENT | P0 | Implemented | 5 |
-| US-APP-002 | 07. Applications | Xem chi tiết đơn & dòng thời gian trạng thái | TALENT | P0 | Implemented | 3 |
-| US-APP-003 | 07. Applications | Rút đơn ứng tuyển | TALENT | P1 | Implemented | 2 |
-| US-APP-004 | 07. Applications | Phản hồi lời mời làm việc (Accept/Decline) | TALENT | P0 | Implemented | 3 |
-| US-EMPAPP-001 | 07. Applications | Xem danh sách ứng viên của 1 job | OWNER/RECRUITER/HIRING_MANAGER | P0 | Implemented | 3 |
-| US-EMPAPP-002 | 07. Applications | Cập nhật trạng thái đơn ứng tuyển | OWNER/RECRUITER/HIRING_MANAGER | P0 | Implemented | 5 |
-| US-EMPAPP-003 | 07. Applications | Cập nhật hàng loạt trạng thái đơn | OWNER/RECRUITER/HIRING_MANAGER | P1 | Implemented | 3 |
-| US-INT-001 | 08. Interviews | Đề xuất lịch phỏng vấn | OWNER/RECRUITER/HIRING_MANAGER | P0 | Implemented | 5 |
-| US-INT-002 | 08. Interviews | Xác nhận lịch phỏng vấn | TALENT | P0 | Implemented | 3 |
-| US-INT-003 | 08. Interviews | Huỷ lịch phỏng vấn | OWNER/RECRUITER/HIRING_MANAGER | P1 | Implemented | 2 |
-| US-INT-004 | 08. Interviews | Tải file lịch (.ics) buổi phỏng vấn | TALENT/Employer team | P2 | Implemented | 1 |
-| US-SC-001 | 09. Scorecards | Chấm điểm ứng viên sau phỏng vấn | Company team + assigned INTERVIEWER | P1 | Implemented | 3 |
-| US-SC-002 | 09. Scorecards | Xem tổng hợp scorecard của 1 đơn | Company team + assigned INTERVIEWER | P1 | Implemented | 2 |
-| US-CV-001 | 10. CV Analysis (AI) | Phân tích CV ứng viên bằng AI | OWNER/RECRUITER/HIRING_MANAGER/INTERVIEWER (assigned) | P1 | Implemented | 5 |
+| US-JOB-007 | 05. Job Management | Tìm kiếm & lọc tin tuyển dụng | Khách (Public) / Talent | P0 | Implemented | 5 |
+| US-JOB-008 | 05. Job Management | Xem chi tiết tin tuyển dụng | Khách (Public) | P0 | Implemented | 2 |
+| US-JOB-009 | 05. Job Management | Lưu / Bỏ lưu tin tuyển dụng | Talent / Employer (đã đăng nhập) | P2 | Implemented | 2 |
+| US-JOB-010 | 05. Job Management | Xem điểm phù hợp với công việc | Talent | P2 | Implemented | 3 |
+| US-TAXO-001 | 06. Taxonomy | Xem danh mục ngành nghề | Khách (Public) | P2 | Implemented | 1 |
+| US-TAXO-002 | 06. Taxonomy | Tìm kiếm kỹ năng | Khách (Public) | P2 | Implemented | 1 |
+| US-APP-001 | 07. Applications | Ứng tuyển vào tin tuyển dụng | Talent | P0 | Implemented | 5 |
+| US-APP-002 | 07. Applications | Xem chi tiết đơn & dòng thời gian trạng thái | Talent | P0 | Implemented | 3 |
+| US-APP-003 | 07. Applications | Rút đơn ứng tuyển | Talent | P1 | Implemented | 2 |
+| US-APP-004 | 07. Applications | Phản hồi lời mời làm việc (Accept/Decline) | Talent | P0 | Implemented | 3 |
+| US-EMPAPP-001 | 07. Applications | Xem danh sách ứng viên của 1 job | Employer (Owner / Recruiter / Hiring Manager) | P0 | Implemented | 3 |
+| US-EMPAPP-002 | 07. Applications | Cập nhật trạng thái đơn ứng tuyển | Employer (Owner / Recruiter / Hiring Manager) | P0 | Implemented | 5 |
+| US-EMPAPP-003 | 07. Applications | Cập nhật hàng loạt trạng thái đơn | Employer (Owner / Recruiter / Hiring Manager) | P1 | Implemented | 3 |
+| US-INT-001 | 08. Interviews | Đề xuất lịch phỏng vấn | Employer (Owner / Recruiter / Hiring Manager) | P0 | Implemented | 5 |
+| US-INT-002 | 08. Interviews | Xác nhận lịch phỏng vấn | Talent | P0 | Implemented | 3 |
+| US-INT-003 | 08. Interviews | Huỷ lịch phỏng vấn | Employer (Owner / Recruiter / Hiring Manager) | P1 | Implemented | 2 |
+| US-INT-004 | 08. Interviews | Tải file lịch (.ics) buổi phỏng vấn | Talent / Employer (team công ty) | P2 | Implemented | 1 |
+| US-SC-001 | 09. Scorecards | Chấm điểm ứng viên sau phỏng vấn | Employer (team công ty + Interviewer được gán) | P1 | Implemented | 3 |
+| US-SC-002 | 09. Scorecards | Xem tổng hợp scorecard của 1 đơn | Employer (team công ty + Interviewer được gán) | P1 | Implemented | 2 |
+| US-CV-001 | 10. CV Analysis (AI) | Phân tích CV ứng viên bằng AI | Employer (Owner / Recruiter / Hiring Manager / Interviewer được gán) | P1 | Implemented | 5 |
 | US-CV-002 | 10. CV Analysis (AI) | Chạy lại phân tích CV | (như trên) | P2 | Implemented | 2 |
-| US-MSG-001 | 11. Messaging | Nhắn tin theo ngữ cảnh 1 đơn ứng tuyển | TALENT & Employer team | P0 | Implemented | 5 |
-| US-COM-001 | 12. Internal Comments | Thảo luận nội bộ về 1 ứng viên | Company team (ApplicationAccessGuard) | P2 | Implemented | 2 |
-| US-REV-001 | 13. Reviews | Kiểm tra điều kiện được phép đánh giá | TALENT/EMPLOYER | P2 | Implemented | 1 |
-| US-REV-002 | 13. Reviews | Viết đánh giá hai chiều sau phỏng vấn | TALENT/EMPLOYER | P2 | Implemented | 3 |
-| US-REV-003 | 13. Reviews | Xem đánh giá công khai của 1 người dùng | Public | P2 | Implemented | 2 |
-| US-NOTIF-001 | 14. Notifications | Nhận thông báo trong ứng dụng | User | P1 | Implemented | 3 |
-| US-NOTIF-002 | 14. Notifications | Xem số thông báo chưa đọc | User | P2 | Implemented | 1 |
-| US-NOTIF-003 | 14. Notifications | Đánh dấu đã đọc thông báo | User | P2 | Implemented | 1 |
-| US-ALERT-001 | 15. Job Alerts | Tạo cảnh báo việc làm theo tiêu chí | TALENT | P2 | Implemented | 3 |
-| US-ALERT-002 | 15. Job Alerts | Quản lý cảnh báo việc làm (sửa/bật-tắt/xoá) | TALENT | P2 | Implemented | 2 |
+| US-MSG-001 | 11. Messaging | Nhắn tin theo ngữ cảnh 1 đơn ứng tuyển | Talent & Employer (team công ty) | P0 | Implemented | 5 |
+| US-COM-001 | 12. Internal Comments | Thảo luận nội bộ về 1 ứng viên | Employer (team công ty) | P2 | Implemented | 2 |
+| US-REV-001 | 13. Reviews | Kiểm tra điều kiện được phép đánh giá | Talent / Employer | P2 | Implemented | 1 |
+| US-REV-002 | 13. Reviews | Viết đánh giá hai chiều sau phỏng vấn | Talent / Employer | P2 | Implemented | 3 |
+| US-REV-003 | 13. Reviews | Xem đánh giá công khai của 1 người dùng | Khách (Public) | P2 | Implemented | 2 |
+| US-NOTIF-001 | 14. Notifications | Nhận thông báo trong ứng dụng | Talent / Employer | P1 | Implemented | 3 |
+| US-NOTIF-002 | 14. Notifications | Xem số thông báo chưa đọc | Talent / Employer | P2 | Implemented | 1 |
+| US-NOTIF-003 | 14. Notifications | Đánh dấu đã đọc thông báo | Talent / Employer | P2 | Implemented | 1 |
+| US-ALERT-001 | 15. Job Alerts | Tạo cảnh báo việc làm theo tiêu chí | Talent | P2 | Implemented | 3 |
+| US-ALERT-002 | 15. Job Alerts | Quản lý cảnh báo việc làm (sửa/bật-tắt/xoá) | Talent | P2 | Implemented | 2 |
 | US-ALERT-003 | 15. Job Alerts | Gửi email khi có job khớp cảnh báo | System | P2 | Implemented | 5 |
-| US-JINV-001 | 16. Job Invitations | Mời 1 ứng viên cụ thể ứng tuyển vào job | OWNER/RECRUITER | P2 | Implemented | 3 |
-| US-BILL-001 | 17. Billing | Thanh toán đăng tin qua Stripe Checkout | OWNER | P0 | Implemented | 5 |
+| US-JINV-001 | 16. Job Invitations | Mời 1 ứng viên cụ thể ứng tuyển vào job | Employer (Owner / Recruiter) | P2 | Implemented | 3 |
+| US-BILL-001 | 17. Billing | Thanh toán đăng tin qua Stripe Checkout | Employer (Owner) | P0 | Implemented | 5 |
 | US-BILL-002 | 17. Billing | Xử lý xác nhận thanh toán tự động | System (Stripe webhook) | P0 | Implemented | 5 |
-| US-SAL-001 | 18. Salary Insights | Xem số liệu tham khảo mức lương | Public | P2 | Implemented | 2 |
-| US-ADM-EMP-001 | 19. Admin: Employer | Xác minh thủ công 1 nhà tuyển dụng | ADMIN | P1 | Implemented | 2 |
-| US-ADM-EMP-002 | 19. Admin: Employer | Đình chỉ 1 nhà tuyển dụng | ADMIN | P1 | Implemented | 3 |
-| US-ADM-JOB-001 | 20. Admin: Job Moderation | Xem hàng đợi tin chờ duyệt | ADMIN | P0 | Implemented | 2 |
-| US-ADM-JOB-002 | 20. Admin: Job Moderation | Duyệt / Từ chối tin tuyển dụng | ADMIN | P0 | Implemented | 5 |
-| US-ADM-JOB-003 | 20. Admin: Job Moderation | Kiểm tra rủi ro tin bằng AI (advisory) | ADMIN | P2 | Implemented | 3 |
-| US-ADM-REP-001 | 21. Admin: Job Reports | Báo cáo 1 tin tuyển dụng vi phạm | User đã đăng nhập | P1 | Implemented | 2 |
-| US-ADM-REP-002 | 21. Admin: Job Reports | Xử lý báo cáo vi phạm | ADMIN | P1 | Implemented | 3 |
-| US-ADM-USR-001 | 22. Admin: Users | Xem/tìm kiếm danh sách người dùng | ADMIN | P1 | Partial | 2 |
-| US-ADM-USR-002 | 22. Admin: Users | Cấm / Bỏ cấm người dùng | ADMIN | P1 | Implemented | 3 |
-| US-ADM-USR-003 | 22. Admin: Users | Đổi vai trò người dùng | ADMIN | P2 | Implemented | 2 |
-| US-ADM-AUD-001 | 23. Admin: Audit Log | Xem nhật ký hành động quản trị | ADMIN | P2 | Implemented | 3 |
-| US-AI-001 | 24. AI Chat | Đặt câu hỏi cho trợ lý AI có căn cứ dữ liệu | TALENT/EMPLOYER | P1 | Implemented | 8 |
-| US-AI-002 | 24. AI Chat | Trò chuyện nhiều lượt với trợ lý AI | TALENT/EMPLOYER | P1 | Implemented | 5 |
-| US-AI-003 | 24. AI Chat | Xem lại các cuộc hội thoại AI trước đó | TALENT/EMPLOYER | P2 | Implemented | 2 |
+| US-SAL-001 | 18. Salary Insights | Xem số liệu tham khảo mức lương | Khách (Public) | P2 | Implemented | 2 |
+| US-ADM-EMP-001 | 19. Admin: Employer | Xác minh thủ công 1 nhà tuyển dụng | Admin | P1 | Implemented | 2 |
+| US-ADM-EMP-002 | 19. Admin: Employer | Đình chỉ 1 nhà tuyển dụng | Admin | P1 | Implemented | 3 |
+| US-ADM-JOB-001 | 20. Admin: Job Moderation | Xem hàng đợi tin chờ duyệt | Admin | P0 | Implemented | 2 |
+| US-ADM-JOB-002 | 20. Admin: Job Moderation | Duyệt / Từ chối tin tuyển dụng | Admin | P0 | Implemented | 5 |
+| US-ADM-JOB-003 | 20. Admin: Job Moderation | Kiểm tra rủi ro tin bằng AI (advisory) | Admin | P2 | Implemented | 3 |
+| US-ADM-REP-001 | 21. Admin: Job Reports | Báo cáo 1 tin tuyển dụng vi phạm | Talent / Employer (đã đăng nhập) | P1 | Implemented | 2 |
+| US-ADM-REP-002 | 21. Admin: Job Reports | Xử lý báo cáo vi phạm | Admin | P1 | Implemented | 3 |
+| US-ADM-USR-001 | 22. Admin: Users | Xem/tìm kiếm danh sách người dùng | Admin | P1 | Partial | 2 |
+| US-ADM-USR-002 | 22. Admin: Users | Cấm / Bỏ cấm người dùng | Admin | P1 | Implemented | 3 |
+| US-ADM-USR-003 | 22. Admin: Users | Đổi vai trò người dùng | Admin | P2 | Implemented | 2 |
+| US-ADM-AUD-001 | 23. Admin: Audit Log | Xem nhật ký hành động quản trị | Admin | P2 | Implemented | 3 |
+| US-AI-001 | 24. AI Chat | Đặt câu hỏi cho trợ lý AI có căn cứ dữ liệu | Talent / Employer | P1 | Implemented | 8 |
+| US-AI-002 | 24. AI Chat | Trò chuyện nhiều lượt với trợ lý AI | Talent / Employer | P1 | Implemented | 5 |
+| US-AI-003 | 24. AI Chat | Xem lại các cuộc hội thoại AI trước đó | Talent / Employer | P2 | Implemented | 2 |
 
 **Tổng: 24 Epic, 93 User Story.** (Không tính các API infra-only của remotesea-ai — xem Phần 5.)
 
@@ -155,7 +172,7 @@ Xem README `remotesea-ai` + `docs/intelligent-rag.md`. Điểm mấu chốt cho 
 ### EPIC 01 — Authentication & Account
 
 #### [US-AUTH-001] — Đăng ký tài khoản
-**Epic:** Auth & Account | **Actor:** User (mới) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+**Epic:** Auth & Account | **Actor:** Khách (người dùng mới) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
 
 > Là một **người dùng mới**, tôi muốn **đăng ký tài khoản bằng email/mật khẩu và chọn vai trò (TALENT/EMPLOYER)**, để **bắt đầu sử dụng nền tảng**.
 
@@ -185,7 +202,7 @@ Frontend: remotesea-web/src/features/auth/pages/RegisterPage.tsx; auth.schemas.t
 ---
 
 #### [US-AUTH-002] — Đăng nhập bằng email/mật khẩu
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P0 | **Status:** Implemented | **SP:** 3
 
 > Là một **người dùng đã có tài khoản**, tôi muốn **đăng nhập bằng email/mật khẩu**, để **truy cập vào tài khoản của mình**.
 
@@ -215,7 +232,7 @@ Frontend: remotesea-web/src/features/auth/pages/LoginPage.tsx; auth.schemas.ts:1
 ---
 
 #### [US-AUTH-003] — Xác thực 2 lớp khi đăng nhập (2FA challenge)
-**Epic:** Auth & Account | **Actor:** User đã bật 2FA | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Auth & Account | **Actor:** Talent / Employer (đã bật 2FA) | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là một **người dùng đã bật 2FA**, tôi muốn **nhập mã OTP hoặc backup code để hoàn tất đăng nhập**, để **bảo vệ tài khoản khỏi truy cập trái phép chỉ bằng mật khẩu**.
 
@@ -243,7 +260,7 @@ Frontend: remotesea-web/src/features/auth/components/TwoFactorChallengeForm.tsx
 ---
 
 #### [US-AUTH-004] — Đăng nhập bằng Google/GitHub/LinkedIn OAuth
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P1 | **Status:** Implemented | **SP:** 5
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P1 | **Status:** Implemented | **SP:** 5
 
 > Là một **người dùng**, tôi muốn **đăng nhập bằng tài khoản Google/GitHub/LinkedIn**, để **không phải nhớ thêm mật khẩu riêng cho RemoteSEA**.
 
@@ -270,7 +287,7 @@ Frontend: remotesea-web/src/features/auth/components/OAuthButtons.tsx; pages/Aut
 ---
 
 #### [US-AUTH-005] — Liên kết tài khoản OAuth vào tài khoản hiện có
-**Epic:** Auth & Account | **Actor:** User đã đăng nhập | **Priority:** P2 | **Status:** Implemented | **SP:** 3
+**Epic:** Auth & Account | **Actor:** Talent / Employer (đã đăng nhập) | **Priority:** P2 | **Status:** Implemented | **SP:** 3
 
 > Là một **người dùng đã đăng nhập**, tôi muốn **liên kết thêm 1 tài khoản Google/GitHub/LinkedIn vào tài khoản hiện tại**, để **có nhiều cách đăng nhập cho cùng 1 tài khoản**.
 
@@ -292,7 +309,7 @@ Frontend: remotesea-web/src/features/settings (Connected accounts section)
 ---
 
 #### [US-AUTH-006] — Quên mật khẩu
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P0 | **Status:** Implemented | **SP:** 2
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P0 | **Status:** Implemented | **SP:** 2
 
 > Là một **người dùng quên mật khẩu**, tôi muốn **nhận email chứa link đặt lại mật khẩu**, để **khôi phục quyền truy cập tài khoản**.
 
@@ -314,7 +331,7 @@ Frontend: remotesea-web/src/features/auth/pages/ForgotPasswordPage.tsx
 ---
 
 #### [US-AUTH-007] — Đặt lại mật khẩu qua email
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P0 | **Status:** Implemented | **SP:** 2
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P0 | **Status:** Implemented | **SP:** 2
 
 > Là một **người dùng có link reset password**, tôi muốn **đặt mật khẩu mới**, để **đăng nhập lại được**.
 
@@ -337,7 +354,7 @@ Frontend: remotesea-web/src/features/auth/pages/ResetPasswordPage.tsx; auth.sche
 ---
 
 #### [US-AUTH-008] — Đọc trạng thái phiên đăng nhập hiện tại
-**Epic:** Auth & Account | **Actor:** Frontend (mọi trang) | **Priority:** P1 | **Status:** Implemented | **SP:** 1
+**Epic:** Auth & Account | **Actor:** Talent / Employer (qua Frontend) | **Priority:** P1 | **Status:** Implemented | **SP:** 1
 
 > Là một **ứng dụng frontend**, tôi muốn **kiểm tra token hiện tại còn hợp lệ hay không**, để **quyết định hiển thị trạng thái đăng nhập/đăng xuất**.
 
@@ -358,7 +375,7 @@ Frontend: remotesea-web/src/contexts/AuthContext.tsx (4 trạng thái: loading/a
 ---
 
 #### [US-AUTH-009] — Đăng xuất
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P2 | **Status:** [PARTIAL] | **SP:** 1
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** [PARTIAL] | **SP:** 1
 
 > Là một **người dùng**, tôi muốn **đăng xuất khỏi tài khoản**, để **ngăn người khác dùng chung máy truy cập tài khoản của tôi**.
 
@@ -383,7 +400,7 @@ Frontend: remotesea-web/src/contexts/AuthContext.tsx:246-250; components/layout/
 ---
 
 #### [US-AUTH-010] — Bật xác thực 2 lớp (Setup + Verify)
-**Epic:** Auth & Account | **Actor:** User đã đăng nhập | **Priority:** P1 | **Status:** Implemented | **SP:** 5
+**Epic:** Auth & Account | **Actor:** Talent / Employer (đã đăng nhập) | **Priority:** P1 | **Status:** Implemented | **SP:** 5
 
 > Là một **người dùng**, tôi muốn **bật xác thực 2 lớp bằng ứng dụng authenticator**, để **tăng bảo mật tài khoản**.
 
@@ -407,7 +424,7 @@ Frontend: remotesea-web/src/features/settings/components/TwoFactorSection.tsx (s
 ---
 
 #### [US-AUTH-011] — Tắt xác thực 2 lớp
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là một **người dùng**, tôi muốn **tắt 2FA bằng cách xác nhận lại mật khẩu**, để **đơn giản hoá đăng nhập nếu không còn cần thiết**.
 
@@ -431,7 +448,7 @@ Frontend: TwoFactorSection.tsx (state "disabling")
 ---
 
 #### [US-AUTH-012] — Đổi mật khẩu (đã đăng nhập)
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P0 | **Status:** Implemented | **SP:** 3
 
 > Là một **người dùng đã đăng nhập**, tôi muốn **đổi mật khẩu bằng cách xác nhận mật khẩu cũ**, để **bảo vệ tài khoản nếu nghi ngờ bị lộ**.
 
@@ -454,7 +471,7 @@ Frontend: remotesea-web/src/features/settings/components/ChangePasswordForm.tsx;
 ---
 
 #### [US-AUTH-013] — Cập nhật tên hiển thị
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P3 | **Status:** Implemented | **SP:** 1
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P3 | **Status:** Implemented | **SP:** 1
 
 > Là một **người dùng**, tôi muốn **đổi tên hiển thị**, để **thông tin cá nhân luôn chính xác**.
 
@@ -473,7 +490,7 @@ Frontend: remotesea-web/src/features/settings (Account section)
 ---
 
 #### [US-AUTH-014] — Cập nhật thông tin tài khoản
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P2 | **Status:** [PARTIAL] | **SP:** 3
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** [PARTIAL] | **SP:** 3
 
 > Là một **người dùng**, tôi muốn **cập nhật số điện thoại/ngôn ngữ/khu vực/đơn vị tiền tệ/ảnh đại diện**, để **cá nhân hoá trải nghiệm**.
 
@@ -495,7 +512,7 @@ Frontend: remotesea-web/src/features/settings/components/AccountSection.tsx (kh�
 ---
 
 #### [US-AUTH-015] — Cấu hình tuỳ chọn thông báo
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P2 | **Status:** [PARTIAL] | **SP:** 2
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** [PARTIAL] | **SP:** 2
 
 > Là một **người dùng**, tôi muốn **bật/tắt các loại thông báo email**, để **kiểm soát lượng email nhận được**.
 
@@ -517,7 +534,7 @@ Frontend: remotesea-web/src/features/settings (Notifications section)
 ---
 
 #### [US-AUTH-016] — Tạm dừng / Kích hoạt lại tài khoản
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P3 | **Status:** Implemented | **SP:** 2
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P3 | **Status:** Implemented | **SP:** 2
 
 > Là một **người dùng**, tôi muốn **tạm dừng tài khoản thay vì xoá hẳn**, để **ẩn hồ sơ tạm thời và có thể quay lại sau**.
 
@@ -538,7 +555,7 @@ Frontend: remotesea-web/src/features/settings (Danger zone)
 ---
 
 #### [US-AUTH-017] — Xuất dữ liệu cá nhân
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P3 | **Status:** Implemented | **SP:** 1
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P3 | **Status:** Implemented | **SP:** 1
 
 > Là một **người dùng**, tôi muốn **tải xuống dữ liệu tài khoản của mình**, để **có bản sao lưu/tuân thủ quyền riêng tư dữ liệu**.
 
@@ -556,7 +573,7 @@ Frontend: remotesea-web/src/features/settings (Privacy section)
 ---
 
 #### [US-AUTH-018] — Quản lý tài khoản liên kết (Connections)
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P3 | **Status:** Implemented | **SP:** 2
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P3 | **Status:** Implemented | **SP:** 2
 
 > Là một **người dùng**, tôi muốn **xem và gỡ các tài khoản OAuth đã liên kết**, để **kiểm soát các phương thức đăng nhập của mình**.
 
@@ -576,7 +593,7 @@ Frontend: remotesea-web/src/features/settings (Connected accounts)
 ---
 
 #### [US-AUTH-019] — Quản lý phiên đăng nhập đang hoạt động
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P2 | **Status:** Implemented | **SP:** 3
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** Implemented | **SP:** 3
 
 > Là một **người dùng**, tôi muốn **xem danh sách thiết bị/phiên đang đăng nhập và thu hồi phiên bất kỳ**, để **phát hiện và ngăn truy cập trái phép**.
 
@@ -598,7 +615,7 @@ Frontend: remotesea-web/src/features/settings/components/SecuritySection.tsx:102
 ---
 
 #### [US-AUTH-020] — Xoá tài khoản
-**Epic:** Auth & Account | **Actor:** User | **Priority:** P1 | **Status:** Implemented | **SP:** 5
+**Epic:** Auth & Account | **Actor:** Talent / Employer | **Priority:** P1 | **Status:** Implemented | **SP:** 5
 
 > Là một **người dùng**, tôi muốn **xoá vĩnh viễn tài khoản của mình**, để **rời khỏi nền tảng hoàn toàn**.
 
@@ -622,7 +639,7 @@ Frontend: remotesea-web/src/features/settings/components/DeleteAccountButton.tsx
 ### EPIC 02 — Talent Profile
 
 #### [US-TALENT-001] — Tạo/cập nhật hồ sơ ứng viên
-**Epic:** Talent Profile | **Actor:** TALENT | **Priority:** P0 | **Status:** Implemented | **SP:** 5
+**Epic:** Talent Profile | **Actor:** Talent | **Priority:** P0 | **Status:** Implemented | **SP:** 5
 
 > Là một **ứng viên**, tôi muốn **tạo và cập nhật hồ sơ của mình (kỹ năng, mong muốn công việc, CV)**, để **nhà tuyển dụng có đủ thông tin đánh giá tôi**.
 
@@ -645,7 +662,7 @@ Frontend: remotesea-web/src/features/talent/pages/ProfilePage.tsx; components/pr
 ---
 
 #### [US-TALENT-002] — Xác minh email ứng viên
-**Epic:** Talent Profile | **Actor:** TALENT | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+**Epic:** Talent Profile | **Actor:** Talent | **Priority:** P2 | **Status:** Implemented | **SP:** 2
 
 > Là một **ứng viên**, tôi muốn **xác minh email của mình**, để **tăng độ tin cậy của hồ sơ**.
 
@@ -666,7 +683,7 @@ Backend: talent.controller.ts:109-138; talent.repository.ts:114-135; constants.t
 ---
 
 #### [US-TALENT-003] — Thiết lập chế độ hiển thị hồ sơ
-**Epic:** Talent Profile | **Actor:** TALENT | **Priority:** P1 | **Status:** [PARTIAL] | **SP:** 2
+**Epic:** Talent Profile | **Actor:** Talent | **Priority:** P1 | **Status:** [PARTIAL] | **SP:** 2
 
 > Là một **ứng viên**, tôi muốn **chọn ai được xem hồ sơ của mình (công khai / chỉ nhà tuyển dụng đã xác minh)**, để **kiểm soát quyền riêng tư**.
 
@@ -689,7 +706,7 @@ Frontend: remotesea-web/src/features/talent/components/profile-form/VisibilitySe
 ---
 
 #### [US-TALENT-004] — Quản lý kinh nghiệm làm việc
-**Epic:** Talent Profile | **Actor:** TALENT | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Talent Profile | **Actor:** Talent | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là một **ứng viên**, tôi muốn **thêm/sửa/xoá các mục kinh nghiệm làm việc**, để **thể hiện quá trình sự nghiệp của mình**.
 
@@ -710,7 +727,7 @@ Frontend: remotesea-web/src/features/talent/components/profile-form/ExperienceSe
 ---
 
 #### [US-TALENT-005] — Quản lý điểm nhấn hồ sơ (Portfolio/Học vấn/Ngôn ngữ)
-**Epic:** Talent Profile | **Actor:** TALENT | **Priority:** P2 | **Status:** Implemented | **SP:** 3
+**Epic:** Talent Profile | **Actor:** Talent | **Priority:** P2 | **Status:** Implemented | **SP:** 3
 
 > Là một **ứng viên**, tôi muốn **thêm các điểm nhấn (dự án nổi bật, học vấn, ngôn ngữ)**, để **làm nổi bật hồ sơ của mình**.
 
@@ -731,7 +748,7 @@ Frontend: remotesea-web/src/features/talent/components/profile-form/HighlightsSe
 ---
 
 #### [US-TALENT-006] — Xem bảng điều khiển ứng viên
-**Epic:** Talent Profile | **Actor:** TALENT | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Talent Profile | **Actor:** Talent | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là một **ứng viên**, tôi muốn **xem tổng quan hồ sơ, đơn ứng tuyển, tin đã lưu, lượt xem hồ sơ và cảnh báo việc làm trong 1 màn hình**, để **theo dõi tiến trình tìm việc nhanh chóng**.
 
@@ -750,7 +767,7 @@ Frontend: remotesea-web/src/features/talent/components/TalentDashboard.tsx
 ---
 
 #### [US-TALENT-007] — Xem thống kê lượt xem hồ sơ
-**Epic:** Talent Profile | **Actor:** TALENT | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+**Epic:** Talent Profile | **Actor:** Talent | **Priority:** P2 | **Status:** Implemented | **SP:** 2
 
 > Là một **ứng viên**, tôi muốn **biết có bao nhiêu lượt/người xem hồ sơ của mình**, để **đánh giá mức độ thu hút của hồ sơ**.
 
@@ -771,7 +788,7 @@ Frontend: TalentDashboard.tsx:214-218
 ---
 
 #### [US-TALENT-008] — Xem hồ sơ công khai của ứng viên
-**Epic:** Talent Profile | **Actor:** EMPLOYER (và Public tuỳ visibility) | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Talent Profile | **Actor:** Employer (và Khách tuỳ visibility) | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là một **nhà tuyển dụng**, tôi muốn **xem hồ sơ công khai của 1 ứng viên qua slug**, để **đánh giá sự phù hợp trước khi liên hệ**.
 
@@ -792,7 +809,7 @@ Frontend: remotesea-web/src/features/talent/pages/PublicTalentProfilePage.tsx:42
 ---
 
 #### [US-TALENT-009] — Tìm kiếm ứng viên
-**Epic:** Talent Profile | **Actor:** EMPLOYER | **Priority:** P1 | **Status:** Implemented | **SP:** 5
+**Epic:** Talent Profile | **Actor:** Employer | **Priority:** P1 | **Status:** Implemented | **SP:** 5
 
 > Là một **nhà tuyển dụng**, tôi muốn **tìm kiếm ứng viên đang mở cơ hội việc làm**, để **chủ động tiếp cận nhân tài phù hợp**.
 
@@ -813,7 +830,7 @@ Backend: talent.controller.ts:144-154; talent-search.util.ts
 ### EPIC 03 — Employer & Company
 
 #### [US-EMP-001] — Tạo hồ sơ công ty (trở thành Employer)
-**Epic:** Employer & Company | **Actor:** User → EMPLOYER | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+**Epic:** Employer & Company | **Actor:** Talent → Employer | **Priority:** P0 | **Status:** Implemented | **SP:** 3
 
 > Là một **người dùng**, tôi muốn **tạo hồ sơ công ty**, để **bắt đầu đăng tin tuyển dụng**.
 
@@ -835,7 +852,7 @@ Frontend: remotesea-web/src/features/post-job/components/PostJobWizard.tsx (Step
 ---
 
 #### [US-EMP-002] — Cập nhật hồ sơ công ty
-**Epic:** Employer & Company | **Actor:** OWNER | **Priority:** P1 | **Status:** [PARTIAL] | **SP:** 3
+**Epic:** Employer & Company | **Actor:** Employer (Owner) | **Priority:** P1 | **Status:** [PARTIAL] | **SP:** 3
 
 > Là **chủ công ty (OWNER)**, tôi muốn **cập nhật thông tin công ty (mô tả, website, logo)**, để **hồ sơ công ty luôn cập nhật và chuyên nghiệp**.
 
@@ -858,7 +875,7 @@ Frontend: remotesea-web/src/features/employer/pages/CompanyProfilePage.tsx (ch�
 ---
 
 #### [US-EMP-003] — Xác minh công ty qua email domain
-**Epic:** Employer & Company | **Actor:** OWNER | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Employer & Company | **Actor:** Employer (Owner) | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là **chủ công ty**, tôi muốn **xác minh công ty bằng email trùng domain website**, để **có huy hiệu Verified và tăng độ tin cậy**.
 
@@ -881,7 +898,7 @@ Frontend: remotesea-web/src/features/employer/pages/EmployerVerifyPage.tsx; comp
 ---
 
 #### [US-EMP-004] — Xem hồ sơ công ty công khai
-**Epic:** Employer & Company | **Actor:** Public | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+**Epic:** Employer & Company | **Actor:** Khách (Public) | **Priority:** P1 | **Status:** Implemented | **SP:** 2
 
 > Là một **khách truy cập**, tôi muốn **xem trang công ty công khai**, để **tìm hiểu về nhà tuyển dụng trước khi ứng tuyển**.
 
@@ -900,7 +917,7 @@ Frontend: remotesea-web/src/features/employer/pages/CompanyProfilePage.tsx
 ---
 
 #### [US-EMP-005] — Xem bảng điều khiển nhà tuyển dụng
-**Epic:** Employer & Company | **Actor:** CompanyMember (mọi role) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+**Epic:** Employer & Company | **Actor:** Employer (mọi vai trò) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
 
 > Là một **thành viên công ty**, tôi muốn **xem tổng quan job đang đăng, đơn ứng tuyển và số liệu SLA phản hồi**, để **quản lý hoạt động tuyển dụng hiệu quả**.
 
@@ -920,7 +937,7 @@ Backend: employer.controller.ts; employer.service.ts:203-209,382-397; employer.r
 ### EPIC 04 — Team Membership & Invitations
 
 #### [US-TEAM-001] — Mời thành viên vào công ty
-**Epic:** Team Management | **Actor:** OWNER | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Team Management | **Actor:** Employer (Owner) | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là **chủ công ty (OWNER)**, tôi muốn **mời người khác vào công ty với vai trò cụ thể**, để **phân chia công việc tuyển dụng cho đội nhóm**.
 
@@ -941,7 +958,7 @@ Frontend: remotesea-web/src/features/team/components/InviteMemberSection.tsx (IN
 ---
 
 #### [US-TEAM-002] — Chấp nhận lời mời gia nhập công ty
-**Epic:** Team Management | **Actor:** User được mời | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Team Management | **Actor:** Talent / Employer (được mời) | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là **người được mời**, tôi muốn **chấp nhận lời mời gia nhập công ty**, để **trở thành thành viên với vai trò được giao**.
 
@@ -963,7 +980,7 @@ Frontend: remotesea-web/src/features/team/pages/TeamInvitePage.tsx (3 trạng th
 ---
 
 #### [US-TEAM-003] — Xem danh sách thành viên công ty
-**Epic:** Team Management | **Actor:** CompanyMember (mọi role) | **Priority:** P1 | **Status:** Implemented | **SP:** 1
+**Epic:** Team Management | **Actor:** Employer (mọi vai trò) | **Priority:** P1 | **Status:** Implemented | **SP:** 1
 
 > Là một **thành viên công ty**, tôi muốn **xem toàn bộ đội nhóm**, để **biết ai đang phụ trách việc gì**.
 
@@ -981,7 +998,7 @@ Frontend: remotesea-web/src/features/team/components/TeamMembersSection.tsx
 ---
 
 #### [US-TEAM-004] — Thu hồi lời mời đang chờ
-**Epic:** Team Management | **Actor:** OWNER | **Priority:** P2 | **Status:** Implemented | **SP:** 1
+**Epic:** Team Management | **Actor:** Employer (Owner) | **Priority:** P2 | **Status:** Implemented | **SP:** 1
 
 > Là **OWNER**, tôi muốn **thu hồi lời mời chưa được chấp nhận**, để **huỷ quyền truy cập nếu mời nhầm hoặc đổi ý**.
 
@@ -999,7 +1016,7 @@ Backend: team.controller.ts (DELETE invitations/:id), requireOwner
 ---
 
 #### [US-TEAM-005] — Đổi vai trò thành viên / Chuyển giao quyền OWNER
-**Epic:** Team Management | **Actor:** OWNER | **Priority:** P1 | **Status:** Implemented | **SP:** 5
+**Epic:** Team Management | **Actor:** Employer (Owner) | **Priority:** P1 | **Status:** Implemented | **SP:** 5
 
 > Là **OWNER**, tôi muốn **đổi vai trò của thành viên khác (kể cả promote lên OWNER)**, để **phân quyền lại đội nhóm hoặc chuyển giao quyền sở hữu công ty**.
 
@@ -1023,7 +1040,7 @@ Frontend: remotesea-web/src/features/team/components/TeamMembersSection.tsx (ASS
 ---
 
 #### [US-TEAM-006] — Xoá thành viên khỏi công ty
-**Epic:** Team Management | **Actor:** OWNER | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+**Epic:** Team Management | **Actor:** Employer (Owner) | **Priority:** P1 | **Status:** Implemented | **SP:** 2
 
 > Là **OWNER**, tôi muốn **xoá 1 thành viên khỏi công ty**, để **thu hồi quyền truy cập khi họ không còn làm việc cùng**.
 
@@ -1044,7 +1061,7 @@ Backend: team.controller.ts (DELETE members/:id)
 ### EPIC 05 — Job Management
 
 #### [US-JOB-001] — Tạo tin tuyển dụng (nháp)
-**Epic:** Job Management | **Actor:** OWNER/RECRUITER | **Priority:** P0 | **Status:** Implemented | **SP:** 5
+**Epic:** Job Management | **Actor:** Employer (Owner / Recruiter) | **Priority:** P0 | **Status:** Implemented | **SP:** 5
 
 > Là **OWNER hoặc RECRUITER**, tôi muốn **tạo tin tuyển dụng ở trạng thái nháp**, để **chuẩn bị nội dung trước khi thanh toán đăng tin**.
 
@@ -1067,7 +1084,7 @@ Frontend: remotesea-web/src/features/post-job/components/PostJobWizard.tsx (wiza
 ---
 
 #### [US-JOB-002] — Chỉnh sửa tin tuyển dụng
-**Epic:** Job Management | **Actor:** OWNER/RECRUITER/ADMIN | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Job Management | **Actor:** Employer (Owner / Recruiter) / Admin | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là **OWNER/RECRUITER**, tôi muốn **sửa nội dung tin khi còn ở trạng thái nháp hoặc bị từ chối**, để **hoàn thiện trước khi đăng lại**.
 
@@ -1086,7 +1103,7 @@ Backend: jobs.service.ts:202-239; guards/job-ownership.guard.ts
 ---
 
 #### [US-JOB-003] — Thanh toán để đăng tin
-**Epic:** Job Management | **Actor:** OWNER | **Priority:** P0 | **Status:** Implemented | **SP:** 5
+**Epic:** Job Management | **Actor:** Employer (Owner) | **Priority:** P0 | **Status:** Implemented | **SP:** 5
 
 > Là **OWNER**, tôi muốn **thanh toán qua Stripe để đăng tin lên hệ thống**, để **tin của tôi được xét duyệt và hiển thị công khai**.
 
@@ -1133,7 +1150,7 @@ Backend: jobs/job-verification.util.ts:14-24; billing.service.ts:116-257; jobs.r
 ---
 
 #### [US-JOB-005] — Đóng tin tuyển dụng
-**Epic:** Job Management | **Actor:** OWNER/RECRUITER/ADMIN | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+**Epic:** Job Management | **Actor:** Employer (Owner / Recruiter) / Admin | **Priority:** P1 | **Status:** Implemented | **SP:** 2
 
 > Là **OWNER/RECRUITER**, tôi muốn **chủ động đóng tin đang active**, để **ngừng nhận thêm ứng viên khi đã tuyển đủ**.
 
@@ -1170,7 +1187,7 @@ Backend: jobs.controller.ts:95-103; jobs.repository.ts:264-271
 ---
 
 #### [US-JOB-007] — Tìm kiếm & lọc tin tuyển dụng
-**Epic:** Job Management | **Actor:** Public/TALENT | **Priority:** P0 | **Status:** Implemented | **SP:** 5
+**Epic:** Job Management | **Actor:** Khách (Public) / Talent | **Priority:** P0 | **Status:** Implemented | **SP:** 5
 
 > Là một **người tìm việc**, tôi muốn **tìm kiếm và lọc tin tuyển dụng theo từ khoá, loại hình, cấp bậc, ngành nghề, mức lương**, để **nhanh chóng tìm được công việc phù hợp**.
 
@@ -1191,7 +1208,7 @@ Frontend: remotesea-web/src/features/jobs (search/filter UI)
 ---
 
 #### [US-JOB-008] — Xem chi tiết tin tuyển dụng
-**Epic:** Job Management | **Actor:** Public | **Priority:** P0 | **Status:** Implemented | **SP:** 2
+**Epic:** Job Management | **Actor:** Khách (Public) | **Priority:** P0 | **Status:** Implemented | **SP:** 2
 
 > Là một **người tìm việc**, tôi muốn **xem chi tiết 1 tin tuyển dụng**, để **quyết định có ứng tuyển hay không**.
 
@@ -1210,7 +1227,7 @@ Frontend: remotesea-web/src/constants/routes.ts:9; features/jobs/pages/job-detai
 ---
 
 #### [US-JOB-009] — Lưu / Bỏ lưu tin tuyển dụng
-**Epic:** Job Management | **Actor:** User đã đăng nhập | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+**Epic:** Job Management | **Actor:** Talent / Employer (đã đăng nhập) | **Priority:** P2 | **Status:** Implemented | **SP:** 2
 
 > Là một **người dùng đã đăng nhập**, tôi muốn **lưu tin tuyển dụng quan tâm để xem lại sau**, để **không bỏ lỡ cơ hội phù hợp**.
 
@@ -1231,7 +1248,7 @@ Frontend: remotesea-web/src/features/saved/saved.queries.ts:56-154 (optimistic +
 ---
 
 #### [US-JOB-010] — Xem điểm phù hợp với công việc
-**Epic:** Job Management | **Actor:** TALENT | **Priority:** P2 | **Status:** Implemented | **SP:** 3
+**Epic:** Job Management | **Actor:** Talent | **Priority:** P2 | **Status:** Implemented | **SP:** 3
 
 > Là một **ứng viên**, tôi muốn **thấy điểm phù hợp (%) giữa hồ sơ của tôi và 1 tin tuyển dụng**, để **ưu tiên ứng tuyển vào công việc phù hợp nhất**.
 
@@ -1252,7 +1269,7 @@ Frontend: remotesea-web/src/features/matching/match.util.ts:1-258; useMyMatch.ts
 ### EPIC 06 — Taxonomy
 
 #### [US-TAXO-001] — Xem danh mục ngành nghề
-**Epic:** Taxonomy | **Actor:** Public | **Priority:** P2 | **Status:** Implemented | **SP:** 1
+**Epic:** Taxonomy | **Actor:** Khách (Public) | **Priority:** P2 | **Status:** Implemented | **SP:** 1
 
 > Là một **người dùng**, tôi muốn **xem danh sách ngành nghề/danh mục**, để **lọc/gắn thẻ tin tuyển dụng và hồ sơ**.
 
@@ -1271,7 +1288,7 @@ Backend: remotesea-api/src/modules/taxonomy/categories.controller.ts:1-20
 ---
 
 #### [US-TAXO-002] — Tìm kiếm kỹ năng
-**Epic:** Taxonomy | **Actor:** Public | **Priority:** P2 | **Status:** Implemented | **SP:** 1
+**Epic:** Taxonomy | **Actor:** Khách (Public) | **Priority:** P2 | **Status:** Implemented | **SP:** 1
 
 > Là một **người dùng**, tôi muốn **tìm kiếm kỹ năng theo tên**, để **gắn kỹ năng vào hồ sơ hoặc tin tuyển dụng**.
 
@@ -1291,7 +1308,7 @@ Backend: remotesea-api/src/modules/taxonomy/skills.controller.ts:1-24; taxonomy.
 ### EPIC 07 — Applications
 
 #### [US-APP-001] — Ứng tuyển vào tin tuyển dụng
-**Epic:** Applications | **Actor:** TALENT | **Priority:** P0 | **Status:** Implemented | **SP:** 5
+**Epic:** Applications | **Actor:** Talent | **Priority:** P0 | **Status:** Implemented | **SP:** 5
 
 > Là một **ứng viên**, tôi muốn **ứng tuyển vào 1 tin tuyển dụng, có thể đính kèm CV riêng cho lần ứng tuyển này**, để **thể hiện sự quan tâm và được nhà tuyển dụng xem xét**.
 
@@ -1311,7 +1328,7 @@ Frontend: remotesea-web/src/features/jobs/components/ApplyButton.tsx:141-153
 ---
 
 #### [US-APP-002] — Xem chi tiết đơn & dòng thời gian trạng thái
-**Epic:** Applications | **Actor:** TALENT | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+**Epic:** Applications | **Actor:** Talent | **Priority:** P0 | **Status:** Implemented | **SP:** 3
 
 > Là một **ứng viên**, tôi muốn **xem chi tiết đơn ứng tuyển của mình và toàn bộ lịch sử thay đổi trạng thái**, để **theo dõi tiến trình tuyển dụng minh bạch**.
 
@@ -1331,7 +1348,7 @@ Frontend: remotesea-web/src/features/talent/components/talent-dashboard/Applicat
 ---
 
 #### [US-APP-003] — Rút đơn ứng tuyển
-**Epic:** Applications | **Actor:** TALENT | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+**Epic:** Applications | **Actor:** Talent | **Priority:** P1 | **Status:** Implemented | **SP:** 2
 
 > Là một **ứng viên**, tôi muốn **rút đơn ứng tuyển đã nộp**, để **ngừng tham gia quy trình tuyển dụng nếu đổi ý**.
 
@@ -1351,7 +1368,7 @@ Frontend: remotesea-web/src/features/applications/pages/ApplicationDetailPage.ts
 ---
 
 #### [US-APP-004] — Phản hồi lời mời làm việc (Accept/Decline Offer)
-**Epic:** Applications | **Actor:** TALENT | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+**Epic:** Applications | **Actor:** Talent | **Priority:** P0 | **Status:** Implemented | **SP:** 3
 
 > Là một **ứng viên nhận được lời mời làm việc**, tôi muốn **chấp nhận hoặc từ chối offer**, để **xác nhận quyết định cuối cùng của mình**.
 
@@ -1371,7 +1388,7 @@ Frontend: ApplicationDetailPage.tsx:260-294 (nút Accept/Decline + ConfirmAction
 ---
 
 #### [US-EMPAPP-001] — Xem danh sách ứng viên của 1 job
-**Epic:** Applications | **Actor:** OWNER/RECRUITER/HIRING_MANAGER (+ INTERVIEWER được gán) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+**Epic:** Applications | **Actor:** Employer (Owner / Recruiter / Hiring Manager / Interviewer được gán) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
 
 > Là **nhà tuyển dụng**, tôi muốn **xem danh sách ứng viên đã nộp đơn vào tin của mình**, để **sàng lọc và ra quyết định tuyển dụng**.
 
@@ -1389,7 +1406,7 @@ Backend: remotesea-api/src/modules/employer/guards/{application-ownership,applic
 ---
 
 #### [US-EMPAPP-002] — Cập nhật trạng thái đơn ứng tuyển
-**Epic:** Applications | **Actor:** OWNER/RECRUITER/HIRING_MANAGER | **Priority:** P0 | **Status:** Implemented | **SP:** 5
+**Epic:** Applications | **Actor:** Employer (Owner / Recruiter / Hiring Manager) | **Priority:** P0 | **Status:** Implemented | **SP:** 5
 
 > Là **nhà tuyển dụng**, tôi muốn **cập nhật trạng thái đơn ứng tuyển theo đúng quy trình tuyển dụng**, để **theo dõi và điều phối pipeline tuyển dụng**.
 
@@ -1419,7 +1436,7 @@ Frontend: remotesea-web/src/features/employer/employer.queries.ts:292-332 (useUp
 ---
 
 #### [US-EMPAPP-003] — Cập nhật hàng loạt trạng thái đơn
-**Epic:** Applications | **Actor:** OWNER/RECRUITER/HIRING_MANAGER | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Applications | **Actor:** Employer (Owner / Recruiter / Hiring Manager) | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là **nhà tuyển dụng**, tôi muốn **cập nhật trạng thái cho nhiều đơn cùng lúc**, để **xử lý nhanh khi có nhiều ứng viên cùng giai đoạn**.
 
@@ -1440,7 +1457,7 @@ Backend: employer.service.ts:558-574; employer.repository.ts:762-795
 ### EPIC 08 — Interviews
 
 #### [US-INT-001] — Đề xuất lịch phỏng vấn
-**Epic:** Interviews | **Actor:** OWNER/RECRUITER/HIRING_MANAGER | **Priority:** P0 | **Status:** Implemented | **SP:** 5
+**Epic:** Interviews | **Actor:** Employer (Owner / Recruiter / Hiring Manager) | **Priority:** P0 | **Status:** Implemented | **SP:** 5
 
 > Là **nhà tuyển dụng**, tôi muốn **đề xuất tối đa 2 khung giờ phỏng vấn cho ứng viên ở giai đoạn INTERVIEW**, để **sắp lịch phỏng vấn**.
 
@@ -1464,7 +1481,7 @@ Frontend: remotesea-web/src/features/interviews/pages/InterviewPage.tsx (nhánh 
 ---
 
 #### [US-INT-002] — Xác nhận lịch phỏng vấn
-**Epic:** Interviews | **Actor:** TALENT | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+**Epic:** Interviews | **Actor:** Talent | **Priority:** P0 | **Status:** Implemented | **SP:** 3
 
 > Là một **ứng viên**, tôi muốn **chọn 1 trong các khung giờ mà nhà tuyển dụng đề xuất**, để **chốt lịch phỏng vấn**.
 
@@ -1487,7 +1504,7 @@ Frontend: remotesea-web/src/features/interviews/components/ConfirmInterviewForm.
 ---
 
 #### [US-INT-003] — Huỷ lịch phỏng vấn
-**Epic:** Interviews | **Actor:** OWNER/RECRUITER/HIRING_MANAGER | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+**Epic:** Interviews | **Actor:** Employer (Owner / Recruiter / Hiring Manager) | **Priority:** P1 | **Status:** Implemented | **SP:** 2
 
 > Là **nhà tuyển dụng**, tôi muốn **huỷ lịch phỏng vấn đã đề xuất hoặc đã xác nhận**, để **xử lý khi có thay đổi kế hoạch**.
 
@@ -1506,7 +1523,7 @@ Backend: interviews.service.ts:254-276
 ---
 
 #### [US-INT-004] — Tải file lịch (.ics) buổi phỏng vấn
-**Epic:** Interviews | **Actor:** TALENT / Employer team | **Priority:** P2 | **Status:** Implemented | **SP:** 1
+**Epic:** Interviews | **Actor:** Talent / Employer (team công ty) | **Priority:** P2 | **Status:** Implemented | **SP:** 1
 
 > Là một **người tham gia phỏng vấn**, tôi muốn **tải file .ics để thêm vào lịch cá nhân**, để **không quên lịch phỏng vấn**.
 
@@ -1526,7 +1543,7 @@ Backend: interviews.controller.ts (GET .../interview/ics)
 ### EPIC 09 — Interview Scorecards
 
 #### [US-SC-001] — Chấm điểm ứng viên sau phỏng vấn
-**Epic:** Scorecards | **Actor:** Company team (OWNER/RECRUITER/HIRING_MANAGER) + INTERVIEWER được gán | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Scorecards | **Actor:** Employer (Owner / Recruiter / Hiring Manager + Interviewer được gán) | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là một **thành viên đội tuyển dụng đã tham gia phỏng vấn**, tôi muốn **ghi nhận đánh giá và khuyến nghị tuyển dụng của mình**, để **đóng góp ý kiến cho quyết định tuyển dụng tập thể**.
 
@@ -1547,7 +1564,7 @@ Frontend: remotesea-web/src/features/scorecards/components/ScorecardSection.tsx 
 ---
 
 #### [US-SC-002] — Xem tổng hợp scorecard của 1 đơn
-**Epic:** Scorecards | **Actor:** Company team + INTERVIEWER được gán | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+**Epic:** Scorecards | **Actor:** Employer (team công ty + Interviewer được gán) | **Priority:** P1 | **Status:** Implemented | **SP:** 2
 
 > Là một **thành viên đội tuyển dụng**, tôi muốn **xem tổng hợp các đánh giá scorecard của mọi người đã phỏng vấn ứng viên này**, để **có cái nhìn tổng thể trước khi ra quyết định**.
 
@@ -1570,7 +1587,7 @@ Frontend: scorecard.utils.ts (countEligibleReviewers)
 > **Lưu ý quan trọng:** Đây là pipeline AI CV **hoàn toàn khác** với `CANDIDATE_ANALYSIS` của `remotesea-ai` (xem Phần 5). Pipeline này gọi thẳng Anthropic/Gemini từ NestJS (`remotesea-api/src/modules/ai/ai.service.ts`), lưu vào model `CvAnalysis` riêng, **là tính năng AI đang chạy thật** trong sản phẩm.
 
 #### [US-CV-001] — Phân tích CV ứng viên bằng AI
-**Epic:** CV Analysis (AI) | **Actor:** OWNER/RECRUITER/HIRING_MANAGER/INTERVIEWER (được gán) | **Priority:** P1 | **Status:** Implemented | **SP:** 5
+**Epic:** CV Analysis (AI) | **Actor:** Employer (Owner / Recruiter / Hiring Manager / Interviewer được gán) | **Priority:** P1 | **Status:** Implemented | **SP:** 5
 
 > Là **nhà tuyển dụng**, tôi muốn **yêu cầu AI phân tích mức độ phù hợp giữa CV ứng viên và tin tuyển dụng**, để **rút ngắn thời gian sàng lọc hồ sơ**.
 
@@ -1614,7 +1631,7 @@ Frontend: CvAnalysisCard.tsx (icon RefreshCw, disabled khi đang pending)
 ### EPIC 11 — Messaging
 
 #### [US-MSG-001] — Nhắn tin theo ngữ cảnh 1 đơn ứng tuyển
-**Epic:** Messaging | **Actor:** TALENT & Employer team | **Priority:** P0 | **Status:** Implemented | **SP:** 5
+**Epic:** Messaging | **Actor:** Talent & Employer (team công ty) | **Priority:** P0 | **Status:** Implemented | **SP:** 5
 
 > Là **ứng viên hoặc nhà tuyển dụng**, tôi muốn **nhắn tin trực tiếp trong ngữ cảnh 1 đơn ứng tuyển cụ thể**, để **trao đổi thông tin nhanh chóng về vị trí đang ứng tuyển**.
 
@@ -1644,7 +1661,7 @@ Frontend: remotesea-web/src/features/messages/message.queries.ts:15 (THREAD_POLL
 ### EPIC 12 — Internal Comments
 
 #### [US-COM-001] — Thảo luận nội bộ về 1 ứng viên
-**Epic:** Internal Comments | **Actor:** Company team (ApplicationAccessGuard) | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+**Epic:** Internal Comments | **Actor:** Employer (team công ty) | **Priority:** P2 | **Status:** Implemented | **SP:** 2
 
 > Là một **thành viên đội tuyển dụng**, tôi muốn **để lại ghi chú/thảo luận nội bộ trên 1 đơn ứng tuyển**, để **phối hợp đánh giá ứng viên với đồng nghiệp mà không lộ ra ngoài**.
 
@@ -1668,7 +1685,7 @@ Frontend: remotesea-web/src/features/comments/components/DiscussionThreadCard.ts
 ### EPIC 13 — Reviews (đánh giá hai chiều)
 
 #### [US-REV-001] — Kiểm tra điều kiện được phép đánh giá
-**Epic:** Reviews | **Actor:** TALENT/EMPLOYER | **Priority:** P2 | **Status:** Implemented | **SP:** 1
+**Epic:** Reviews | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** Implemented | **SP:** 1
 
 > Là **ứng viên hoặc nhà tuyển dụng đã từng phỏng vấn nhau**, tôi muốn **biết mình có đủ điều kiện để viết đánh giá hay chưa**, để **quyết định có nên viết đánh giá không**.
 
@@ -1687,7 +1704,7 @@ Frontend: remotesea-web/src/features/reviews/components/ReviewCTA.tsx
 ---
 
 #### [US-REV-002] — Viết đánh giá hai chiều sau phỏng vấn
-**Epic:** Reviews | **Actor:** TALENT/EMPLOYER | **Priority:** P2 | **Status:** Implemented | **SP:** 3
+**Epic:** Reviews | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** Implemented | **SP:** 3
 
 > Là **ứng viên hoặc nhà tuyển dụng**, tôi muốn **viết đánh giá về đối tác sau khi đã phỏng vấn xong**, để **giúp cộng đồng người dùng khác có thêm thông tin tham khảo**.
 
@@ -1709,7 +1726,7 @@ Backend: reviews.controller.ts:34-85; reviews.service.ts:125-198; prisma/schema.
 ---
 
 #### [US-REV-003] — Xem đánh giá công khai của 1 người dùng
-**Epic:** Reviews | **Actor:** Public | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+**Epic:** Reviews | **Actor:** Khách (Public) | **Priority:** P2 | **Status:** Implemented | **SP:** 2
 
 > Là một **khách truy cập**, tôi muốn **xem các đánh giá công khai về 1 ứng viên hoặc nhà tuyển dụng**, để **có thêm thông tin tham khảo**.
 
@@ -1728,7 +1745,7 @@ Backend: reviews.controller.ts:73-75; reviews.repository.ts:37-73
 ### EPIC 14 — Notifications
 
 #### [US-NOTIF-001] — Nhận thông báo trong ứng dụng
-**Epic:** Notifications | **Actor:** User | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Notifications | **Actor:** Talent / Employer | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là một **người dùng**, tôi muốn **nhận thông báo trong ứng dụng khi có sự kiện liên quan đến tôi**, để **không bỏ lỡ cập nhật quan trọng**.
 
@@ -1760,7 +1777,7 @@ Backend: remotesea-api/src/modules/notifications/notifications.service.ts:19-35;
 ---
 
 #### [US-NOTIF-002] — Xem số thông báo chưa đọc
-**Epic:** Notifications | **Actor:** User | **Priority:** P2 | **Status:** Implemented | **SP:** 1
+**Epic:** Notifications | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** Implemented | **SP:** 1
 
 > Là một **người dùng**, tôi muốn **thấy số lượng thông báo chưa đọc trên biểu tượng chuông**, để **biết ngay khi có cập nhật mới mà không cần mở danh sách**.
 
@@ -1779,7 +1796,7 @@ Frontend: remotesea-web/src/components/layout/NotificationBell.tsx:29-31; notifi
 ---
 
 #### [US-NOTIF-003] — Đánh dấu đã đọc thông báo
-**Epic:** Notifications | **Actor:** User | **Priority:** P2 | **Status:** Implemented | **SP:** 1
+**Epic:** Notifications | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** Implemented | **SP:** 1
 
 > Là một **người dùng**, tôi muốn **đánh dấu 1 hoặc tất cả thông báo là đã đọc**, để **giữ danh sách thông báo gọn gàng**.
 
@@ -1801,7 +1818,7 @@ Frontend: notification.queries.ts:61-194
 ### EPIC 15 — Job Alerts
 
 #### [US-ALERT-001] — Tạo cảnh báo việc làm theo tiêu chí
-**Epic:** Job Alerts | **Actor:** TALENT | **Priority:** P2 | **Status:** Implemented | **SP:** 3
+**Epic:** Job Alerts | **Actor:** Talent | **Priority:** P2 | **Status:** Implemented | **SP:** 3
 
 > Là một **ứng viên**, tôi muốn **thiết lập cảnh báo theo từ khoá/loại hình/cấp bậc/ngành nghề/mức lương**, để **được thông báo khi có tin phù hợp mới mà không phải tự tìm kiếm liên tục**.
 
@@ -1819,7 +1836,7 @@ Backend: remotesea-api/src/modules/alerts/alerts.controller.ts; dto/create-alert
 ---
 
 #### [US-ALERT-002] — Quản lý cảnh báo việc làm
-**Epic:** Job Alerts | **Actor:** TALENT | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+**Epic:** Job Alerts | **Actor:** Talent | **Priority:** P2 | **Status:** Implemented | **SP:** 2
 
 > Là một **ứng viên**, tôi muốn **sửa, bật/tắt, hoặc xoá cảnh báo đã tạo**, để **điều chỉnh tiêu chí tìm việc theo thời gian**.
 
@@ -1862,7 +1879,7 @@ Backend: alerts.controller.ts:103-108; alerts.service.ts:47-156; alerts/guards/c
 > Khác biệt hoàn toàn với "Team Invitations" (EPIC 04) — đây là lời mời 1 ứng viên **ứng tuyển vào 1 job cụ thể**, dùng model `JobInvitation`.
 
 #### [US-JINV-001] — Mời 1 ứng viên cụ thể ứng tuyển vào job
-**Epic:** Job Invitations | **Actor:** OWNER/RECRUITER | **Priority:** P2 | **Status:** Implemented | **SP:** 3
+**Epic:** Job Invitations | **Actor:** Employer (Owner / Recruiter) | **Priority:** P2 | **Status:** Implemented | **SP:** 3
 
 > Là **nhà tuyển dụng**, tôi muốn **chủ động mời 1 ứng viên tiềm năng ứng tuyển vào job đang mở**, để **tiếp cận nhân tài thay vì chỉ chờ ứng viên tự nộp đơn**.
 
@@ -1882,7 +1899,7 @@ Backend: remotesea-api/src/modules/invitations/invitations.service.ts:29-126; in
 ### EPIC 17 — Billing & Payment
 
 #### [US-BILL-001] — Thanh toán đăng tin qua Stripe Checkout
-**Epic:** Billing | **Actor:** OWNER | **Priority:** P0 | **Status:** Implemented | **SP:** 5
+**Epic:** Billing | **Actor:** Employer (Owner) | **Priority:** P0 | **Status:** Implemented | **SP:** 5
 
 *(Xem chi tiết đầy đủ tại US-JOB-003 — cùng 1 tính năng, 2 góc nhìn Epic khác nhau theo yêu cầu không gộp Epic Job và Epic Billing.)*
 
@@ -1922,7 +1939,7 @@ Backend: billing.controller.ts:53-64; billing.service.ts:116-194; main.ts:94-109
 ### EPIC 18 — Salary Insights
 
 #### [US-SAL-001] — Xem số liệu tham khảo mức lương
-**Epic:** Salary Insights | **Actor:** Public | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+**Epic:** Salary Insights | **Actor:** Khách (Public) | **Priority:** P2 | **Status:** Implemented | **SP:** 2
 
 > Là một **người tìm việc**, tôi muốn **xem mức lương tham khảo theo ngành/cấp bậc/quốc gia**, để **có cơ sở đàm phán lương**.
 
@@ -1944,7 +1961,7 @@ Frontend: remotesea-web/src/pages/SalaryPage.tsx; components/salary/SubmitSectio
 ### EPIC 19 — Admin: Employer Verification & Suspension
 
 #### [US-ADM-EMP-001] — Xác minh thủ công 1 nhà tuyển dụng
-**Epic:** Admin | **Actor:** ADMIN | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+**Epic:** Admin | **Actor:** Admin | **Priority:** P1 | **Status:** Implemented | **SP:** 2
 
 > Là **quản trị viên**, tôi muốn **xác minh thủ công 1 nhà tuyển dụng**, để **cấp huy hiệu Verified cho các công ty đáng tin cậy dù họ chưa/không tự xác minh qua email domain**.
 
@@ -1966,7 +1983,7 @@ Frontend: remotesea-web/src/features/admin/components/AdminEmployers.tsx:117-124
 ---
 
 #### [US-ADM-EMP-002] — Đình chỉ 1 nhà tuyển dụng
-**Epic:** Admin | **Actor:** ADMIN | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Admin | **Actor:** Admin | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là **quản trị viên**, tôi muốn **đình chỉ 1 nhà tuyển dụng vi phạm**, để **ngăn họ tiếp tục hoạt động trên nền tảng và gỡ các tin đang hiển thị**.
 
@@ -1988,7 +2005,7 @@ Frontend: AdminEmployers.tsx:100-115
 ### EPIC 20 — Admin: Job Moderation
 
 #### [US-ADM-JOB-001] — Xem hàng đợi tin chờ duyệt
-**Epic:** Admin | **Actor:** ADMIN | **Priority:** P0 | **Status:** [PARTIAL] | **SP:** 2
+**Epic:** Admin | **Actor:** Admin | **Priority:** P0 | **Status:** [PARTIAL] | **SP:** 2
 
 > Là **quản trị viên**, tôi muốn **xem danh sách tin tuyển dụng đang chờ duyệt**, để **xử lý theo thứ tự ưu tiên**.
 
@@ -2007,7 +2024,7 @@ Frontend: remotesea-web/src/features/admin/components/AdminQueue.tsx; admin.quer
 ---
 
 #### [US-ADM-JOB-002] — Duyệt / Từ chối tin tuyển dụng
-**Epic:** Admin | **Actor:** ADMIN | **Priority:** P0 | **Status:** [PARTIAL] | **SP:** 5
+**Epic:** Admin | **Actor:** Admin | **Priority:** P0 | **Status:** [PARTIAL] | **SP:** 5
 
 > Là **quản trị viên**, tôi muốn **duyệt hoặc từ chối 1 tin tuyển dụng đang chờ xét**, để **đảm bảo chất lượng nội dung trên nền tảng**.
 
@@ -2029,7 +2046,7 @@ Frontend: remotesea-web/src/features/admin/components/admin-queue/DecisionBar.ts
 ---
 
 #### [US-ADM-JOB-003] — Kiểm tra rủi ro tin bằng AI (advisory)
-**Epic:** Admin | **Actor:** ADMIN | **Priority:** P2 | **Status:** Implemented | **SP:** 3
+**Epic:** Admin | **Actor:** Admin | **Priority:** P2 | **Status:** Implemented | **SP:** 3
 
 > Là **quản trị viên**, tôi muốn **xem đánh giá rủi ro của AI (LOW/MEDIUM/HIGH) cho 1 tin đang chờ duyệt**, để **có thêm góc nhìn tham khảo khi ra quyết định**.
 
@@ -2052,7 +2069,7 @@ Frontend: remotesea-web/src/features/admin/components/admin-queue/AiRiskFlag.tsx
 ### EPIC 21 — Admin: Job Reports
 
 #### [US-ADM-REP-001] — Báo cáo 1 tin tuyển dụng vi phạm
-**Epic:** Admin | **Actor:** User đã đăng nhập (TALENT/EMPLOYER) | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+**Epic:** Admin | **Actor:** Talent / Employer (đã đăng nhập) | **Priority:** P1 | **Status:** Implemented | **SP:** 2
 
 > Là một **người dùng**, tôi muốn **báo cáo 1 tin tuyển dụng có dấu hiệu vi phạm (lừa đảo, sai sự thật...)**, để **giúp nền tảng loại bỏ nội dung xấu**.
 
@@ -2072,7 +2089,7 @@ Backend: remotesea-api/src/modules/job-reports/job-reports.controller.ts:35-51; 
 ---
 
 #### [US-ADM-REP-002] — Xử lý báo cáo vi phạm
-**Epic:** Admin | **Actor:** ADMIN | **Priority:** P1 | **Status:** [PARTIAL] | **SP:** 3
+**Epic:** Admin | **Actor:** Admin | **Priority:** P1 | **Status:** [PARTIAL] | **SP:** 3
 
 > Là **quản trị viên**, tôi muốn **xử lý (resolve/dismiss) các báo cáo vi phạm**, để **dọn dẹp hàng đợi và phản hồi người báo cáo**.
 
@@ -2095,7 +2112,7 @@ Frontend: remotesea-web/src/features/admin/components/AdminReports.tsx:83-106
 ### EPIC 22 — Admin: User Management
 
 #### [US-ADM-USR-001] — Xem/tìm kiếm danh sách người dùng
-**Epic:** Admin | **Actor:** ADMIN | **Priority:** P1 | **Status:** [PARTIAL] | **SP:** 2
+**Epic:** Admin | **Actor:** Admin | **Priority:** P1 | **Status:** [PARTIAL] | **SP:** 2
 
 > Là **quản trị viên**, tôi muốn **xem và tìm kiếm toàn bộ người dùng trên hệ thống**, để **quản lý tài khoản khi cần**.
 
@@ -2116,7 +2133,7 @@ Frontend: admin.queries.ts:31,56,211
 ---
 
 #### [US-ADM-USR-002] — Cấm / Bỏ cấm người dùng
-**Epic:** Admin | **Actor:** ADMIN | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+**Epic:** Admin | **Actor:** Admin | **Priority:** P1 | **Status:** Implemented | **SP:** 3
 
 > Là **quản trị viên**, tôi muốn **cấm hoặc bỏ cấm 1 người dùng vi phạm**, để **bảo vệ cộng đồng người dùng khác**.
 
@@ -2134,7 +2151,7 @@ Backend: admin.service.ts:360-369
 ---
 
 #### [US-ADM-USR-003] — Đổi vai trò người dùng
-**Epic:** Admin | **Actor:** ADMIN | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+**Epic:** Admin | **Actor:** Admin | **Priority:** P2 | **Status:** Implemented | **SP:** 2
 
 > Là **quản trị viên**, tôi muốn **đổi vai trò (TALENT/EMPLOYER/ADMIN) của 1 người dùng**, để **xử lý các trường hợp đặc biệt (vd cấp quyền admin cho nhân sự mới)**.
 
@@ -2153,7 +2170,7 @@ Backend: admin.service.ts (change-role branch)
 ### EPIC 23 — Admin: Audit Log
 
 #### [US-ADM-AUD-001] — Xem nhật ký hành động quản trị
-**Epic:** Admin | **Actor:** ADMIN | **Priority:** P2 | **Status:** [PARTIAL] | **SP:** 3
+**Epic:** Admin | **Actor:** Admin | **Priority:** P2 | **Status:** [PARTIAL] | **SP:** 3
 
 > Là **quản trị viên**, tôi muốn **xem lại lịch sử mọi hành động quản trị đã thực hiện (ai, làm gì, khi nào, trước/sau)**, để **minh bạch và truy vết khi cần điều tra**.
 
@@ -2179,7 +2196,7 @@ Frontend: remotesea-web/src/features/admin/components/AdminAuditLog.tsx (tab duy
 > Tính năng AI **thật, đang chạy sống động end-to-end** (khác hẳn nhóm CANDIDATE_ANALYSIS/Feedback/Dataset/Model-Registry ở Phần 5 — nhóm đó infra-only, chưa có caller).
 
 #### [US-AI-001] — Đặt câu hỏi cho trợ lý AI có căn cứ dữ liệu thật
-**Epic:** AI Chat | **Actor:** TALENT/EMPLOYER | **Priority:** P1 | **Status:** Implemented | **SP:** 8
+**Epic:** AI Chat | **Actor:** Talent / Employer | **Priority:** P1 | **Status:** Implemented | **SP:** 8
 
 > Là một **người dùng (ứng viên hoặc nhà tuyển dụng)**, tôi muốn **hỏi trợ lý AI về chính sách nền tảng hoặc dữ liệu công việc/đơn ứng tuyển của tôi**, để **nhận câu trả lời nhanh, chính xác, có căn cứ thay vì phải tự tìm kiếm**.
 
@@ -2205,7 +2222,7 @@ Frontend: remotesea-web/src/features/ai-chat/components/AiChatWidget.tsx:43-111 
 ---
 
 #### [US-AI-002] — Trò chuyện nhiều lượt với trợ lý AI
-**Epic:** AI Chat | **Actor:** TALENT/EMPLOYER | **Priority:** P1 | **Status:** Implemented | **SP:** 5
+**Epic:** AI Chat | **Actor:** Talent / Employer | **Priority:** P1 | **Status:** Implemented | **SP:** 5
 
 > Là một **người dùng**, tôi muốn **tiếp tục hội thoại nhiều lượt với trợ lý AI (AI nhớ ngữ cảnh câu hỏi trước)**, để **không phải lặp lại thông tin đã cung cấp**.
 
@@ -2228,7 +2245,7 @@ Frontend: AiChatWidget.tsx:546-573 (composer, DRAFT_MAX_LENGTH=2000); ai-chat.re
 ---
 
 #### [US-AI-003] — Xem lại các cuộc hội thoại AI trước đó
-**Epic:** AI Chat | **Actor:** TALENT/EMPLOYER | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+**Epic:** AI Chat | **Actor:** Talent / Employer | **Priority:** P2 | **Status:** Implemented | **SP:** 2
 
 > Là một **người dùng**, tôi muốn **xem lại danh sách và nội dung các cuộc hội thoại AI đã có trước đây**, để **tra cứu lại thông tin đã hỏi**.
 
