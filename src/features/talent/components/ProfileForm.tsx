@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, ArrowUpRight, Eye } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
+import { StickyBottomBar } from "@/components/ui/sticky-bottom-bar";
 import { SkillTagEditor } from "@/components/shared/SkillTagEditor";
 import { useSyncedState } from "@/hooks/useSyncedState";
 import { useUpdateMyTalentProfile } from "@/features/talent/talent.queries";
@@ -348,27 +349,27 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
             />
 
             {/* Save bar */}
-            <div className="sticky bottom-0 flex items-center justify-between rounded-20 border border-neutral-200 bg-white/90 px-5 py-3 shadow-card backdrop-blur-sm">
-              <span className="flex items-center gap-2 text-[12.5px] text-neutral-500">
-                <span className="h-2 w-2 rounded-full bg-brand-500" />
-                {saving ? "Saving…" : "Save your changes"}
-              </span>
-              <div className="flex items-center gap-2">
-                <button
-                  className="rounded-10 border border-neutral-200 bg-white px-4 py-2 text-[13px] font-medium text-neutral-700 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
-                  disabled={saving}
-                  type="submit"
-                >
-                  {saving ? "Saving…" : "Save"}
-                </button>
-                <Link
-                  className="inline-flex items-center gap-1.5 rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
-                  to={ROUTES.talent}
-                >
-                  Done <ArrowRight size={13} />
-                </Link>
-              </div>
-            </div>
+            <StickyBottomBar
+              actions={
+                <>
+                  <button
+                    className="rounded-10 border border-neutral-200 bg-white px-4 py-2 text-[13px] font-medium text-neutral-700 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
+                    disabled={saving}
+                    type="submit"
+                  >
+                    {saving ? "Saving…" : "Save"}
+                  </button>
+                  <Link
+                    className="inline-flex items-center gap-1.5 rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
+                    to={ROUTES.talent}
+                  >
+                    Done <ArrowRight size={13} />
+                  </Link>
+                </>
+              }
+              isSaving={saving}
+              statusText={saving ? "Saving…" : "Save your changes"}
+            />
           </div>
         </form>
       </div>

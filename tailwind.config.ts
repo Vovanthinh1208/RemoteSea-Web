@@ -66,9 +66,11 @@ const config: Config = {
       },
       borderRadius: {
         "4": "4px",
+        "6": "6px",
         "8": "8px",
         "10": "10px",
         "12": "12px",
+        "14": "14px",
         "16": "16px",
         // 20 was missing from the scale but `rounded-20` is used in ~29 places
         // (cards across settings, post-job, employer, talent) — the class

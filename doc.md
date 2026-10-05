@@ -21,6 +21,8 @@ RemoteSEA là nền tảng tuyển dụng từ xa cho Đông Nam Á, gồm 3 d�
 | 2 | **Employer (Nhà tuyển dụng)** | Người dùng đại diện cho doanh nghiệp để thực hiện các hoạt động tuyển dụng trên hệ thống. | Quản lý công ty, đăng và quản lý tin tuyển dụng, xem và xử lý ứng viên, thực hiện các hoạt động trong quy trình tuyển dụng. | `UserRole.EMPLOYER` |
 | 3 | **Admin (Quản trị viên)** | Người chịu trách nhiệm quản trị, kiểm soát và giám sát hoạt động của nền tảng. | Quản lý người dùng, công ty, tin tuyển dụng và các nội dung/quy trình quản trị của hệ thống. | `UserRole.ADMIN`, `RolesGuard` + `@Roles("ADMIN")` toàn bộ `admin.controller.ts` |
 
+> **Guest (Khách vãng lai):** người dùng chưa đăng nhập; không phải một `UserRole` mà là trạng thái chưa xác thực (`useAuth().user === null`), đi qua các route public và các endpoint `Auth: None`. Guest được mô tả riêng ở Epic 25.
+
 > **Quy ước gọi tên trong backlog:** "Talent / Employer" = người dùng thuộc một trong hai vai trò (kể cả khi chức năng không yêu cầu đăng nhập); "Employer (Owner / Recruiter / …)" = thành viên công ty có vai trò tương ứng.
 
 #### Các vai trò thuộc Employer
@@ -157,8 +159,25 @@ Xem README `remotesea-ai` + `docs/intelligent-rag.md`. Điểm mấu chốt cho 
 | US-AI-001 | 24. AI Chat | Đặt câu hỏi cho trợ lý AI có căn cứ dữ liệu | Talent / Employer | P1 | Implemented | 8 |
 | US-AI-002 | 24. AI Chat | Trò chuyện nhiều lượt với trợ lý AI | Talent / Employer | P1 | Implemented | 5 |
 | US-AI-003 | 24. AI Chat | Xem lại các cuộc hội thoại AI trước đó | Talent / Employer | P2 | Implemented | 2 |
+| US-GUEST-001 | 25. Guest | Xem trang chủ | Guest (Khách vãng lai) | P1 | Implemented | 2 |
+| US-GUEST-002 | 25. Guest | Xem danh sách việc làm công khai | Guest (Khách vãng lai) | P0 | Implemented | 3 |
+| US-GUEST-003 | 25. Guest | Tìm kiếm việc làm theo từ khoá | Guest (Khách vãng lai) | P0 | Implemented | 2 |
+| US-GUEST-004 | 25. Guest | Lọc, sắp xếp và phân trang việc làm | Guest (Khách vãng lai) | P0 | Implemented | 3 |
+| US-GUEST-005 | 25. Guest | Xem chi tiết tin tuyển dụng | Guest (Khách vãng lai) | P0 | Implemented | 2 |
+| US-GUEST-006 | 25. Guest | Xem hồ sơ công ty công khai | Guest (Khách vãng lai) | P1 | Implemented | 2 |
+| US-GUEST-007 | 25. Guest | Xem hồ sơ công khai của ứng viên | Guest (Khách vãng lai) | P1 | Implemented | 3 |
+| US-GUEST-008 | 25. Guest | Xem số liệu tham khảo mức lương | Guest (Khách vãng lai) | P2 | Implemented | 2 |
+| US-GUEST-009 | 25. Guest | Tìm hiểu dịch vụ dành cho nhà tuyển dụng | Guest (Khách vãng lai) | P2 | Implemented | 2 |
+| US-GUEST-010 | 25. Guest | Đăng ký tài khoản | Guest (Khách vãng lai) | P0 | Implemented | 3 |
+| US-GUEST-011 | 25. Guest | Đăng nhập | Guest (Khách vãng lai) | P0 | Implemented | 3 |
+| US-GUEST-012 | 25. Guest | Đăng nhập bằng Google/GitHub/LinkedIn | Guest (Khách vãng lai) | P1 | Partial | 5 |
+| US-GUEST-013 | 25. Guest | Quên và đặt lại mật khẩu | Guest (Khách vãng lai) | P0 | Implemented | 3 |
+| US-GUEST-014 | 25. Guest | Được yêu cầu đăng nhập khi bấm ứng tuyển | Guest (Khách vãng lai) | P1 | Implemented | 1 |
+| US-GUEST-015 | 25. Guest | Được yêu cầu đăng nhập khi lưu việc làm | Guest (Khách vãng lai) | P2 | Implemented | 1 |
+| US-GUEST-016 | 25. Guest | Được chuyển tới đăng nhập khi vào trang dành cho thành viên | Guest (Khách vãng lai) | P1 | Implemented | 2 |
+| US-GUEST-017 | 25. Guest | Xem lời mời vào công ty khi chưa đăng nhập | Guest (Khách vãng lai) | P1 | Implemented | 3 |
 
-**Tổng: 24 Epic, 93 User Story.** (Không tính các API infra-only của remotesea-ai — xem Phần 5.)
+**Tổng: 25 Epic, 113 User Story.** (Không tính các API infra-only của remotesea-ai — xem Phần 5.)
 
 ---
 
@@ -2254,6 +2273,437 @@ Frontend: AiChatWidget.tsx:546-573 (composer, DRAFT_MAX_LENGTH=2000); ai-chat.re
 **Source Traceability:**
 ```
 Frontend: AiChatWidget.tsx:253-257,338-397,398-406
+```
+
+---
+
+### EPIC 25 — Guest (Khách vãng lai)
+
+> **Guest** là người dùng chưa đăng nhập, không phải một `UserRole`. Epic này mô tả những gì Guest làm được (xem nội dung public, đăng ký/đăng nhập) và ranh giới xác thực (ứng tuyển, lưu việc, trang thành viên). Chưa có Priority/SP chính thức từ PO — giá trị dưới đây là **ước lượng theo các story tương đương** (US-JOB-007/008, US-EMP-004, US-AUTH-001/002/004/006/007).
+
+#### [US-GUEST-001] — Xem trang chủ
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+
+> Là một **khách vãng lai**, tôi muốn **mở trang chủ RemoteSEA**, để **hiểu nền tảng cung cấp gì và chuyển tiếp sang xem việc làm hoặc đăng ký tài khoản**.
+
+**Mô tả:** Trang `/` là route public. Hero có CTA tới `/jobs` và `/register`; trang gọi `GET /jobs` (việc nổi bật) và `GET /salary/benchmarks` không cần xác thực.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given chưa đăng nhập, When mở `/`, Then trang chủ hiển thị kèm CTA xem việc làm (`/jobs`) và đăng ký (`/register`).
+- AC-02: Given chưa đăng nhập, When trang tải, Then danh sách việc nổi bật và số liệu lương tham khảo hiển thị mà không cần token.
+- AC-03 (Authorization): Given đã đăng nhập, When mở `/`, Then vẫn xem được (trang chủ không nằm trong `GuestOnlyRoute`).
+
+**Business Rules:**
+- Cách hiển thị khi API việc nổi bật/lương lỗi chưa được xác nhận `[NEEDS_VERIFICATION]`.
+
+**Dependencies:** US-GUEST-002.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/pages/HomePage.tsx; components/home/HeroSection.tsx; router/AppRouter.tsx (route index)
+Backend: jobs.controller.ts (GET /jobs); salary.controller.ts (GET /salary/benchmarks)
+```
+
+---
+
+#### [US-GUEST-002] — Xem danh sách việc làm công khai
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+
+> Là một **khách vãng lai**, tôi muốn **duyệt danh sách các việc làm remote đang mở**, để **khám phá cơ hội trước khi quyết định tạo tài khoản**.
+
+**Mô tả:** `/jobs` là route public; `GET /jobs` có `Auth: None`, chỉ trả job `status: ACTIVE`, xếp job nổi bật trước rồi theo `publishedAt` mới nhất. Mỗi trang 12 job.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given chưa đăng nhập, When mở `/jobs`, Then thấy danh sách job đang tuyển, có phân trang (12 job/trang).
+- AC-02 (Loading): Given đang tải, Then hiển thị skeleton card.
+- AC-03 (Error handling): Given API lỗi, Then hiển thị "Couldn't load jobs" cùng nút "Try again" để tải lại.
+- AC-04 (Empty state): Given không có job phù hợp, Then hiển thị "No jobs match these filters".
+
+**Business Rules:**
+- Chỉ job `ACTIVE` đã publish xuất hiện; DRAFT/PENDING/CLOSED/EXPIRED/REJECTED không hiển thị.
+
+**Dependencies:** Không có.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/jobs/pages/JobsPage.tsx; components/JobsBoard.tsx, JobCardSkeleton.tsx, Pagination.tsx
+Backend: jobs.controller.ts (GET /jobs, @Get())
+```
+
+---
+
+#### [US-GUEST-003] — Tìm kiếm việc làm theo từ khoá
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P0 | **Status:** Implemented | **SP:** 2
+
+> Là một **khách vãng lai**, tôi muốn **tìm việc làm theo từ khoá**, để **nhanh chóng thấy các cơ hội liên quan**.
+
+**Mô tả:** `SearchBar` trên `/jobs` gửi `q` (debounce) tới `GET /jobs`; tìm tự do trên title/description.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given đang ở `/jobs`, When nhập từ khoá, Then danh sách cập nhật theo từ khoá và quay về trang 1.
+- AC-02: Given đang sắp xếp "recent", When có từ khoá, Then tự chuyển sang xếp theo "relevance"; khi xoá từ khoá thì trở lại "recent".
+- AC-03 (Empty state): Given không có kết quả, Then hiển thị "No jobs match these filters" kèm "Clear filters" và "Create a job alert instead".
+- AC-04 (Validation): Given từ khoá rỗng hoặc ký tự đặc biệt, Then hành vi validate phía API `[NEEDS_VERIFICATION]`.
+
+**Business Rules:**
+- Nút "Create a job alert instead" dẫn tới `/alerts` là route protected — Guest bị chuyển sang đăng nhập (xem US-GUEST-016).
+
+**Dependencies:** US-GUEST-002.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/jobs/components/SearchBar.tsx, JobsBoard.tsx; job-filters.ts
+Backend: jobs.controller.ts (GET /jobs?q=)
+```
+
+---
+
+#### [US-GUEST-004] — Lọc, sắp xếp và phân trang việc làm
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+
+> Là một **khách vãng lai**, tôi muốn **lọc theo loại hình, múi giờ, ngành, cấp bậc, khoảng lương và sắp xếp kết quả**, để **thu hẹp danh sách theo nhu cầu của mình**.
+
+**Mô tả:** `FilterSidebar` + `job-filters.ts`: jobType (Full-time/Contract/Part-time), timezone, category, seniority, khoảng lương; sort: recent / salary / featured / relevance.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given đang ở `/jobs`, When chọn bộ lọc hoặc khoảng lương, Then danh sách làm mới theo tiêu chí và quay về trang 1.
+- AC-02: Given chọn kiểu sắp xếp, Then danh sách được xếp lại tương ứng.
+- AC-03 (Loading): Given đang tải kết quả mới, Then kết quả cũ vẫn hiển thị mờ cho tới khi dữ liệu mới về.
+- AC-04 (Empty state): Given bộ lọc không có kết quả, When bấm "Clear filters", Then bộ lọc trở về mặc định.
+
+**Business Rules:**
+- Bộ lọc được đưa vào URL query (`parseJobQuery`) — mức độ đồng bộ URL `[NEEDS_VERIFICATION]`.
+
+**Dependencies:** US-GUEST-002.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/jobs/job-filters.ts; components/FilterSidebar.tsx, JobsBoard.tsx
+Backend: jobs.controller.ts (GET /jobs)
+```
+
+---
+
+#### [US-GUEST-005] — Xem chi tiết tin tuyển dụng
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P0 | **Status:** Implemented | **SP:** 2
+
+> Là một **khách vãng lai**, tôi muốn **xem chi tiết một tin tuyển dụng (mô tả, kỹ năng, quyền lợi, thông tin nhanh, công ty, mức lương tham khảo)**, để **đánh giá cơ hội trước khi quyết định đăng ký hoặc ứng tuyển**.
+
+**Mô tả:** `/jobs/:id` là route public; `GET /jobs/:id` có `Auth: None`, tra theo **id**. Điểm phù hợp (match score) không hiển thị cho Guest vì chỉ tính khi `user.role === "TALENT"`.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given chưa đăng nhập, When mở `/jobs/:id` của job `ACTIVE`, Then thấy đầy đủ chi tiết job.
+- AC-02 (Not found): Given job không tồn tại hoặc không còn ACTIVE (nháp/chờ duyệt/đã đóng/hết hạn/bị từ chối), Then hiển thị "Job not found".
+- AC-03: Given là Guest, Then không hiển thị điểm phù hợp cá nhân hoá.
+- AC-04 (Loading/Error): Given đang tải hoặc API lỗi, Then hiển thị trạng thái tải; lỗi mạng cũng rơi vào "Job not found" (`isError || !job`).
+
+**Business Rules:**
+- Mỗi lượt xem tăng `viewCount` (best-effort, bất đồng bộ).
+
+**Dependencies:** US-GUEST-002. Xem thêm US-JOB-008 (bug link email dùng slug).
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/jobs/pages/JobDetailPage.tsx, job-detail/*; matching/useMyMatch.ts
+Backend: jobs.controller.ts (GET /jobs/:id, @Get(":id"))
+```
+
+---
+
+#### [US-GUEST-006] — Xem hồ sơ công ty công khai
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+
+> Là một **khách vãng lai**, tôi muốn **xem trang công ty công khai**, để **tìm hiểu về nhà tuyển dụng trước khi ứng tuyển**.
+
+**Mô tả:** `/companies/:slug` là route public; `companies.controller.ts` không có guard.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given chưa đăng nhập, When mở `/companies/:slug`, Then thấy hồ sơ công ty công khai.
+- AC-02 (Not found): Given slug không tồn tại, Then hiển thị "Company not found" kèm liên kết về danh sách việc làm.
+- AC-03: Given công ty bị đình chỉ hoặc không còn công khai, Then hành vi chưa được tài liệu hoá `[NEEDS_VERIFICATION]`.
+
+**Business Rules:**
+- Trùng hành vi với US-EMP-004 (đang ghi actor Talent / Employer).
+
+**Dependencies:** US-GUEST-005 (điểm vào thường là Company card).
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/employer/pages/CompanyProfilePage.tsx
+Backend: remotesea-api/src/modules/employer/companies.controller.ts
+```
+
+---
+
+#### [US-GUEST-007] — Xem hồ sơ công khai của ứng viên
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+
+> Là một **khách vãng lai**, tôi muốn **mở trang hồ sơ công khai của một ứng viên**, để **xem những thông tin nghề nghiệp mà ứng viên đã chọn công khai**.
+
+**Mô tả:** `/talent/:slug` là route public; `GET /talent/:slug` không bắt buộc đăng nhập nhưng đọc JWT nếu có (route duy nhất "optionally auth-aware").
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given `visibility = PUBLIC`, When Guest mở `/talent/:slug`, Then hồ sơ hiển thị.
+- AC-02 (Authorization): Given `visibility = VERIFIED_EMPLOYERS`, When Guest mở URL, Then hiển thị "Profile not found" (không lộ việc hồ sơ tồn tại).
+- AC-03: Given ứng viên không mở cơ hội việc làm (`isOpenToWork=false`), Then các trường lương mong muốn bị ẩn hoàn toàn.
+- AC-04 (Not found): Given slug không tồn tại, Then hiển thị "Profile not found".
+
+**Business Rules:**
+- `CONFLICT — NEEDS PRODUCT DECISION`: US-TALENT-008 ghi actor Employer, trong khi API.md và router cho phép bất kỳ ai xem hồ sơ `PUBLIC`.
+
+**Dependencies:** US-TALENT-003, US-TALENT-008.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/talent/pages/PublicTalentProfilePage.tsx
+Backend: talent.controller.ts (GET /talent/:slug); remotesea-api/docs/API.md (GET /talent/:slug)
+```
+
+---
+
+#### [US-GUEST-008] — Xem số liệu tham khảo mức lương
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+
+> Là một **khách vãng lai**, tôi muốn **xem số liệu tham khảo mức lương trên nền tảng**, để **cân nhắc mức lương trước khi ứng tuyển hoặc đăng ký**.
+
+**Mô tả:** `/salary` là route public; `salary.controller.ts` (`benchmarks`, `benchmarks/by-seniority`, `benchmarks/by-country`) không có guard.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given chưa đăng nhập, When mở `/salary`, Then số liệu lương tham khảo hiển thị.
+- AC-02 (Error handling): Given API lỗi, Then thông báo lỗi chưa được xác nhận `[NEEDS_VERIFICATION]`.
+
+**Business Rules:**
+- Trùng hành vi với US-SAL-001.
+
+**Dependencies:** Không có.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/pages/SalaryPage.tsx
+Backend: remotesea-api/src/modules/salary/salary.controller.ts
+```
+
+---
+
+#### [US-GUEST-009] — Tìm hiểu dịch vụ dành cho nhà tuyển dụng
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P2 | **Status:** Implemented | **SP:** 2
+
+> Là một **khách vãng lai**, tôi muốn **đọc trang giới thiệu dành cho nhà tuyển dụng, gồm bảng giá**, để **quyết định có đăng ký làm nhà tuyển dụng và đăng tin hay không**.
+
+**Mô tả:** `/employer` là route public (`EmployerMarketingPage` + `PricingSection`). Gói giá theo `plan.constants.ts` (STANDARD / FEATURED / HANDS_ON).
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given chưa đăng nhập, When mở `/employer`, Then trang giới thiệu và bảng giá hiển thị.
+- AC-02 (Authorization): Given chưa đăng nhập, When bấm hành động đăng tin (`/post-job` là route protected), Then bị chuyển sang đăng nhập (xem US-GUEST-016).
+
+**Business Rules:**
+- Không đưa số liệu giá vào story; nguồn là `plan.constants.ts`.
+
+**Dependencies:** US-GUEST-010, US-GUEST-016. Liên quan US-JOB-003, US-BILL-001.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/employer/pages/EmployerMarketingPage.tsx; employer/components/PricingSection.tsx
+```
+
+---
+
+#### [US-GUEST-010] — Đăng ký tài khoản
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+
+> Là một **khách vãng lai**, tôi muốn **đăng ký tài khoản và chọn vai trò Talent hoặc Employer**, để **dùng được các chức năng ứng tuyển hoặc đăng tin dành cho thành viên**.
+
+**Mô tả:** `/register` thuộc `GuestOnlyRoute`: người đã đăng nhập bị chuyển về trang chủ. Chi tiết nghiệp vụ API xem US-AUTH-001.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given nhập tên, email, mật khẩu ≥ 8 ký tự và vai trò hợp lệ, Then tài khoản được tạo và tự đăng nhập.
+- AC-02 (Conflict): Given email đã đăng ký, Then hiển thị lỗi email đã tồn tại.
+- AC-03 (Validation): Given mật khẩu < 8 ký tự hoặc vai trò không hợp lệ, Then hiển thị lỗi validation.
+- AC-04 (Redirect): Given URL có `callbackUrl`, Then sau đăng ký quay về đường dẫn đó; nếu không, Employer vào employer dashboard còn Talent vào `/profile`.
+- AC-05 (Authorization): Given đã đăng nhập, When mở `/register`, Then bị chuyển về trang chủ.
+- AC-06 (Rate limit): Given đăng ký quá giới hạn từ cùng IP, Then hiển thị lỗi giới hạn tần suất.
+
+**Business Rules:**
+- Không thể tự đăng ký role ADMIN; không có bước xác thực email bắt buộc.
+
+**Dependencies:** US-AUTH-001.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/auth/pages/RegisterPage.tsx; components/RegisterForm.tsx; router/GuestOnlyRoute.tsx
+```
+
+---
+
+#### [US-GUEST-011] — Đăng nhập
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+
+> Là một **khách vãng lai đã có tài khoản**, tôi muốn **đăng nhập bằng email và mật khẩu (kèm mã 2FA nếu đã bật)**, để **truy cập tài khoản và các chức năng yêu cầu xác thực**.
+
+**Mô tả:** `/login` thuộc `GuestOnlyRoute`. `callbackUrl` chỉ được dùng nếu là đường dẫn nội bộ an toàn (`isSafeInternalPath`); mặc định chuyển tới `/jobs`.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given thông tin đúng, Then đăng nhập thành công và chuyển tới `callbackUrl` hợp lệ, nếu không thì `/jobs`.
+- AC-02 (2FA): Given tài khoản bật 2FA, Then phải nhập OTP hoặc backup code trước khi vào.
+- AC-03 (Error handling): Given sai email hoặc mật khẩu, Then hiển thị lỗi chung, không phân biệt nguyên nhân.
+- AC-04 (Authorization): Given tài khoản bị cấm, Then đăng nhập bị từ chối.
+- AC-05 (Security): Given `callbackUrl` trỏ ra ngoài (ví dụ `//evil.com`), Then bị bỏ qua và chuyển tới `/jobs`.
+
+**Business Rules:**
+- Rate limit kép theo IP và email (US-AUTH-002).
+
+**Dependencies:** US-AUTH-002, US-AUTH-003.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/auth/components/LoginForm.tsx; utils/safe-redirect.ts
+```
+
+---
+
+#### [US-GUEST-012] — Đăng nhập bằng Google/GitHub/LinkedIn
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P1 | **Status:** Partial | **SP:** 5
+
+> Là một **khách vãng lai**, tôi muốn **đăng nhập bằng tài khoản Google, GitHub hoặc LinkedIn**, để **không phải tạo và nhớ thêm mật khẩu riêng**.
+
+**Mô tả:** Xem US-AUTH-004. Điểm riêng của luồng Guest: sau OAuth, `AuthCallbackPage` chuyển tới dashboard theo role và **không** quay lại trang Guest đang xem.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given email từ provider đã xác minh, When hoàn tất OAuth, Then đăng nhập (tạo tài khoản nếu chưa có).
+- AC-02 (Validation): Given email chưa xác minh, Then đăng nhập bị từ chối.
+- AC-03 (Error handling): Given quá trình lỗi, Then hiển thị "Sign in failed" và chuyển về `/login`.
+- AC-04 (Gap): Given Guest bắt đầu từ `/jobs/:id`, When đăng nhập bằng OAuth, Then bị chuyển tới employer dashboard hoặc `/talent`, không quay lại `/jobs/:id` (khác luồng email/mật khẩu) — `NEEDS_VERIFICATION` đây có chủ ý hay không.
+
+**Business Rules:**
+- Giao diện hiện cả 3 nút kể cả khi backend chưa cấu hình provider (US-AUTH-004).
+
+**Dependencies:** US-AUTH-004.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/auth/components/OAuthButtons.tsx; pages/AuthCallbackPage.tsx
+```
+
+---
+
+#### [US-GUEST-013] — Quên và đặt lại mật khẩu
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P0 | **Status:** Implemented | **SP:** 3
+
+> Là một **khách vãng lai quên mật khẩu**, tôi muốn **yêu cầu link đặt lại mật khẩu và đặt mật khẩu mới**, để **khôi phục quyền truy cập tài khoản**.
+
+**Mô tả:** `/forgot-password` và `/reset-password` thuộc `GuestOnlyRoute`. Chi tiết nghiệp vụ xem US-AUTH-006, US-AUTH-007.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given nhập email bất kỳ, Then luôn nhận cùng một thông báo xác nhận (không lộ email có tồn tại hay không).
+- AC-02: Given token hợp lệ và mật khẩu mới ≥ 8 ký tự, Then đổi mật khẩu thành công và token không dùng lại được.
+- AC-03 (Error handling): Given token hết hạn, không tồn tại hoặc đã dùng, Then hiển thị lỗi token không hợp lệ.
+- AC-04 (Rate limit): Given gửi quá giới hạn từ cùng IP, Then hiển thị lỗi giới hạn tần suất.
+
+**Business Rules:**
+- Reset password không tự revoke các session hiện có (xem GAP ở US-AUTH-007).
+
+**Dependencies:** US-AUTH-006, US-AUTH-007.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/auth/pages/ForgotPasswordPage.tsx, ResetPasswordPage.tsx
+```
+
+---
+
+#### [US-GUEST-014] — Được yêu cầu đăng nhập khi bấm ứng tuyển
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P1 | **Status:** Implemented | **SP:** 1
+
+> Là một **khách vãng lai đang xem một tin tuyển dụng**, tôi muốn **được dẫn tới đăng nhập khi bấm "Apply now"**, để **nộp đơn ứng tuyển bằng chính tài khoản của mình**.
+
+**Mô tả:** `ApplyButton.openApplyForm`: nếu chưa có `user` thì chuyển tới `/login?callbackUrl=/jobs/:id` và không mở form ứng tuyển.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given đang ở `/jobs/:id`, When bấm "Apply now", Then chuyển tới `/login?callbackUrl=/jobs/:id`, form ứng tuyển không mở.
+- AC-02: Given đăng nhập hoặc đăng ký với `callbackUrl` đó, Then quay lại trang chi tiết job và có thể bấm "Apply now" lần nữa.
+- AC-03 (Edge): Given đăng nhập bằng OAuth, Then không quay lại trang job (xem US-GUEST-012).
+
+**Business Rules:**
+- Ứng tuyển cần tài khoản Talent có hồ sơ (US-APP-001); Guest chỉ được xem.
+
+**Dependencies:** US-GUEST-005, US-GUEST-010/011, US-APP-001.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/jobs/components/ApplyButton.tsx
+```
+
+---
+
+#### [US-GUEST-015] — Được yêu cầu đăng nhập khi lưu việc làm
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P2 | **Status:** Implemented | **SP:** 1
+
+> Là một **khách vãng lai**, tôi muốn **được dẫn tới đăng nhập khi bấm lưu một tin tuyển dụng**, để **việc làm đã lưu được giữ trong tài khoản của mình**.
+
+**Mô tả:** `useSavedJobToggle`: nếu chưa có `user` thì chuyển tới `/login?callbackUrl=<trang hiện tại>`. Biểu tượng bookmark trên navbar trỏ tới `/saved` (route protected).
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given đang xem job card hoặc chi tiết job, When bấm lưu, Then chuyển tới `/login?callbackUrl=<trang hiện tại>`.
+- AC-02: Given bấm bookmark "Saved jobs" trên navbar, Then bị chuyển tới đăng nhập với `callbackUrl=/saved`.
+
+**Business Rules:**
+- Không có chức năng lưu việc không cần tài khoản.
+
+**Dependencies:** US-JOB-009, US-GUEST-011.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/jobs/useSavedJobToggle.ts, components/SaveJobButton.tsx; components/layout/navbar.tsx
+```
+
+---
+
+#### [US-GUEST-016] — Được chuyển tới đăng nhập khi vào trang dành cho thành viên
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P1 | **Status:** Implemented | **SP:** 2
+
+> Là một **khách vãng lai**, tôi muốn **được đưa tới trang đăng nhập khi mở trang yêu cầu tài khoản**, để **đăng nhập xong thì tiếp tục đúng nơi đang dở**.
+
+**Mô tả:** `ProtectedRoute` chuyển Guest tới `/login?callbackUrl=<path+query>`. Trang chỉ cho mọi tài khoản: `/post-job`, `/alerts`, `/settings`, `/saved`, `/notifications`. Trang theo role: `/profile`, `/talent`, `/applications/:id` (TALENT); `/employer-dashboard/**` (EMPLOYER); `/admin` (ADMIN); `/applications/:id/messages`, `/applications/:id/interview` (TALENT, EMPLOYER).
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given chưa đăng nhập, When mở một trang protected, Then chuyển tới `/login?callbackUrl=<path+query>`.
+- AC-02: Given bấm "Create a job alert instead" ở trạng thái rỗng của tìm kiếm, Then chuyển tới đăng nhập với `callbackUrl=/alerts`.
+- AC-03 (Error handling): Given có token nhưng không xác nhận được phiên (lỗi mạng/5xx), Then hiển thị "Couldn't confirm your session" kèm Retry thay vì bị đăng xuất.
+- AC-04 (Authorization): Given đã đăng nhập nhưng sai role, Then bị chuyển về trang chủ.
+
+**Business Rules:**
+- 401 ẩn danh không hiển thị toast "Session expired"; chỉ phiên thật hết hạn mới có toast.
+
+**Dependencies:** US-GUEST-011.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/router/ProtectedRoute.tsx, AppRouter.tsx; core/http/http-client.ts; contexts/AuthContext.tsx
+```
+
+---
+
+#### [US-GUEST-017] — Xem lời mời vào công ty khi chưa đăng nhập
+**Epic:** Guest | **Actor:** Guest (Khách vãng lai) | **Priority:** P1 | **Status:** Implemented | **SP:** 3
+
+> Là một **khách vãng lai nhận được lời mời gia nhập công ty**, tôi muốn **xem lời mời và đăng nhập hoặc đăng ký ngay trên trang đó**, để **tham gia công ty sau khi xác thực**.
+
+**Mô tả:** `/team/invitations/:token` là route public có chủ ý (người được mời có thể chưa có tài khoản). `TeamInvitePage` hiện nút Login/Register kèm `callbackUrl` là chính URL lời mời.
+
+**Acceptance Criteria:**
+- AC-01 (Happy path): Given mở link mời hợp lệ khi chưa đăng nhập, Then thấy thông tin lời mời cùng nút Login và Register.
+- AC-02: Given đăng nhập hoặc đăng ký từ trang này, Then quay lại đúng trang lời mời.
+- AC-03: Given đang đăng nhập bằng email khác email được mời, Then hiển thị cảnh báo không khớp.
+- AC-04 (Error handling): Given token không hợp lệ, hết hạn hoặc bị thu hồi, Then hiển thị trạng thái lỗi kèm liên kết về trang chủ.
+
+**Business Rules:**
+- Chấp nhận lời mời cần tài khoản (US-TEAM-002).
+
+**Dependencies:** US-TEAM-001, US-TEAM-002.
+
+**Source Traceability:**
+```
+Frontend: remotesea-web/src/features/team/pages/TeamInvitePage.tsx; router/AppRouter.tsx (route team/invitations/:token)
 ```
 
 ---

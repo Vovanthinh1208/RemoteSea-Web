@@ -123,3 +123,21 @@ export const applicantsEmptyMessage = (
 // single bulk-update call can carry.
 export const INITIAL_VISIBLE_APPLICANTS = 8;
 export const MAX_VISIBLE_APPLICANTS = 50;
+
+export type ApplicantTabId = "all" | "new" | "shortlisted";
+export type ApplicantSortId = "recent" | "match";
+
+export const isApplicantTabId = (v: string): v is ApplicantTabId =>
+  (["all", "new", "shortlisted"] as const).includes(v as ApplicantTabId);
+
+export const isApplicantSortId = (v: string): v is ApplicantSortId =>
+  (["recent", "match"] as const).includes(v as ApplicantSortId);
+
+export const SORT_OPTIONS: { value: ApplicantSortId; label: string }[] = [
+  { value: "recent", label: "Most recent" },
+  { value: "match", label: "Best match" },
+];
+
+export const isRejectable = (status: ApplicationStatus): boolean =>
+  status !== "REJECTED" && status !== "WITHDRAWN";
+

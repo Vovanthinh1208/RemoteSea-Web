@@ -7,7 +7,7 @@
 // announce it as soon as it appears).
 export const FieldError = ({ message }: { message?: string }) =>
   message ? (
-    <p className="mt-1 text-[12px] text-red-600" role="alert">
+    <p className="mt-1 text-[12px] text-danger-600" role="alert">
       {message}
     </p>
   ) : null;

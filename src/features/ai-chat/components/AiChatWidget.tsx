@@ -1,13 +1,8 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
-  ArrowRight,
-  Check,
-  Copy,
-  History,
   MessageCircleQuestion,
   Plus,
-  Send,
   Sparkles,
   X,
 } from "lucide-react";
@@ -16,99 +11,20 @@ import {
   useConversations,
   useSendChatMessage,
 } from "@/features/ai-chat/ai-chat.queries";
-import { AiMarkdown } from "@/features/ai-chat/components/AiMarkdown";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmptyRow } from "@/components/shared/EmptyRow";
-import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/utils/cn";
-import { timeAgoShort } from "@/utils/time";
+import { AiChatMessageBubble } from "./AiChatMessageBubble";
+import { AiChatComposer } from "./AiChatComposer";
+import { AiChatHistoryMenu } from "./AiChatHistoryMenu";
+import { AiChatEmptyState } from "./AiChatEmptyState";
 
-const COMPOSE_MAX_HEIGHT_PX = 120;
-const DRAFT_MAX_LENGTH = 2000;
-const DRAFT_WARN_LENGTH = 1800;
 // Within this many px of the true bottom still counts as "at the bottom" —
 // a user who scrolled up even slightly to re-read the last line shouldn't
 // be treated as having left the conversation's end.
 const NEAR_BOTTOM_THRESHOLD_PX = 80;
-
-const SUGGESTED_PROMPTS = [
-  "What's our remote hiring policy?",
-  "How do I review a candidate's application?",
-  "What are the steps in our hiring process?",
-];
-
-const AnswerBubble = ({
-  question,
-  answer,
-  sources,
-  pending,
-}: {
-  question: string;
-  answer?: string;
-  sources?: string[];
-  pending?: boolean;
-}) => {
-  const [copied, setCopied] = useState(false);
-
-  return (
-    <div className="mt-5 animate-fade-up space-y-3 first:mt-0">
-      <div className="flex justify-end">
-        <div className="max-w-[85%] rounded-16 rounded-br-4 bg-gradient-to-br from-brand-500 to-brand-600 px-4 py-3 text-[14.5px] leading-relaxed text-white shadow-chip sm:max-w-[78%]">
-          <p className="whitespace-pre-wrap break-words">{question}</p>
-        </div>
-      </div>
-      <div className="group/msg flex items-start gap-2.5">
-        <div className="mt-0.5 grid h-7 w-7 flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-chip">
-          <Sparkles size={14} />
-        </div>
-        <div className="min-w-0 max-w-[85%] sm:max-w-[78%]">
-          <div className="rounded-16 rounded-tl-4 border border-neutral-100 bg-neutral-50 px-4 py-3 text-[14.5px] leading-relaxed text-neutral-900 shadow-chip">
-            {pending ? (
-              <div className="flex items-center gap-1.5 py-1.5 text-brand-500">
-                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-brand-500 [animation-delay:-0.3s]" />
-                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-brand-500 [animation-delay:-0.15s]" />
-                <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-brand-500" />
-              </div>
-            ) : (
-              <>
-                <AiMarkdown text={answer ?? ""} />
-                {!!sources?.length && (
-                  <p className="mt-2.5 border-t border-neutral-200 pt-2.5 text-[11.5px] text-neutral-500">
-                    Sources: {sources.join(" · ")}
-                  </p>
-                )}
-              </>
-            )}
-          </div>
-          {!pending && answer && (
-            <button
-              className="mt-1 flex items-center gap-1 rounded-8 px-1.5 py-1 text-[11px] text-neutral-400 opacity-60 transition-opacity hover:text-brand-600 focus-visible:opacity-100 focus-visible:shadow-focus focus-visible:outline-none sm:opacity-0 sm:group-hover/msg:opacity-100"
-              type="button"
-              onClick={() => {
-                void navigator.clipboard.writeText(answer);
-                setCopied(true);
-                setTimeout(() => setCopied(false), 1500);
-              }}
-            >
-              {copied ? (
-                <>
-                  <Check size={12} /> Copied
-                </>
-              ) : (
-                <>
-                  <Copy size={12} /> Copy
-                </>
-              )}
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export const AiChatWidget = () => {
   const { user } = useAuth();
@@ -169,13 +85,6 @@ export const AiChatWidget = () => {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [open]);
-
-  useLayoutEffect(() => {
-    const el = textareaRef.current;
-    if (!el) return;
-    el.style.height = "auto";
-    el.style.height = `${Math.min(el.scrollHeight, COMPOSE_MAX_HEIGHT_PX)}px`;
-  }, [draft]);
 
   useEffect(() => {
     if (!open) return;
@@ -257,7 +166,6 @@ export const AiChatWidget = () => {
   };
 
   const hasNoConversations = conversations.data?.length === 0;
-  const draftLength = draft.length;
 
   return (
     <div ref={rootRef}>
@@ -335,66 +243,15 @@ export const AiChatWidget = () => {
             </div>
 
             <div className="flex flex-shrink-0 items-center gap-1">
-              <div className="relative" ref={historyRef}>
-                <button
-                  aria-label="Conversation history"
-                  className={cn(
-                    "grid h-8 w-8 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none",
-                    showHistory && "bg-neutral-100 text-neutral-900"
-                  )}
-                  title="Conversation history"
-                  type="button"
-                  onClick={() => setShowHistory((v) => !v)}
-                >
-                  <History size={16} />
-                </button>
-                {showHistory && (
-                  <div className="scrollbar-thin absolute right-0 top-10 z-10 max-h-72 w-72 origin-top-right animate-fade-up overflow-y-auto rounded-12 border border-neutral-200 bg-white p-2 shadow-card-lg">
-                    {conversations.isLoading ? (
-                      <div className="space-y-1.5 p-1.5">
-                        <Skeleton className="h-9 w-full rounded-8" />
-                        <Skeleton className="h-9 w-full rounded-8" />
-                      </div>
-                    ) : hasNoConversations ? (
-                      <EmptyRow className="px-2.5">
-                        No previous conversations yet.
-                      </EmptyRow>
-                    ) : (
-                      conversations.data?.map((c) => (
-                        <button
-                          className={cn(
-                            "relative flex w-full flex-col items-start gap-0.5 rounded-8 px-3 py-2 pl-3.5 text-left transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none",
-                            c.id === activeConversationId && "bg-brand-50"
-                          )}
-                          key={c.id}
-                          type="button"
-                          onClick={() => {
-                            setSelectedConversationId(c.id);
-                            setShowHistory(false);
-                          }}
-                        >
-                          {c.id === activeConversationId && (
-                            <span className="absolute bottom-1.5 left-1 top-1.5 w-[3px] rounded-full bg-brand-500" />
-                          )}
-                          <span
-                            className={cn(
-                              "w-full truncate text-[13px] font-medium",
-                              c.id === activeConversationId
-                                ? "text-brand-700"
-                                : "text-neutral-800"
-                            )}
-                          >
-                            {c.title || "Untitled conversation"}
-                          </span>
-                          <span className="text-[11px] text-neutral-400">
-                            {timeAgoShort(c.updatedAt)}
-                          </span>
-                        </button>
-                      ))
-                    )}
-                  </div>
-                )}
-              </div>
+              <AiChatHistoryMenu
+                activeConversationId={activeConversationId}
+                conversations={conversations.data}
+                historyRef={historyRef}
+                isLoading={conversations.isLoading}
+                setShowHistory={setShowHistory}
+                showHistory={showHistory}
+                onSelectConversation={(id) => setSelectedConversationId(id)}
+              />
               <button
                 aria-label="New chat"
                 className="flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-1.5 text-[12px] font-medium text-brand-700 transition-colors hover:bg-brand-100 focus-visible:shadow-focus focus-visible:outline-none"
@@ -424,45 +281,11 @@ export const AiChatWidget = () => {
               ref={scrollContainerRef}
             >
               {!activeConversationId && !pendingQuestion ? (
-                <div className="flex h-full animate-fade-up flex-col items-center justify-center gap-5 py-6 text-center">
-                  <div className="relative grid h-14 w-14 place-items-center">
-                    <span className="absolute inset-[-14px] -z-10 animate-pulse rounded-full bg-brand-300/30 blur-xl" />
-                    <div className="grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-card ring-8 ring-brand-50">
-                      <Sparkles size={22} />
-                    </div>
-                  </div>
-                  <div>
-                    <p className="mb-1.5 text-[16px] font-semibold text-neutral-900">
-                      Hi{firstName ? `, ${firstName}` : ""} — how can I help?
-                    </p>
-                    <p className="mx-auto max-w-[280px] text-[13.5px] leading-relaxed text-neutral-500">
-                      Ask a question about RemoteSea's hiring policies or
-                      process to get started.
-                    </p>
-                  </div>
-                  <div className="flex w-full flex-col gap-2">
-                    {SUGGESTED_PROMPTS.map((prompt, i) => (
-                      <button
-                        className="group flex animate-fade-up items-center gap-2.5 rounded-12 border border-neutral-200 bg-white px-3.5 py-2.5 text-left text-[13px] text-neutral-700 shadow-chip transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:bg-brand-50 hover:shadow-card focus-visible:shadow-focus focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60"
-                        disabled={sendMessage.isPending}
-                        key={prompt}
-                        style={{ animationDelay: `${i * 60 + 80}ms` }}
-                        type="button"
-                        onClick={() => void handleSend(prompt)}
-                      >
-                        <MessageCircleQuestion
-                          className="flex-shrink-0 text-brand-500"
-                          size={15}
-                        />
-                        <span className="flex-1">{prompt}</span>
-                        <ArrowRight
-                          className="flex-shrink-0 text-neutral-300 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:text-brand-500 group-hover:opacity-100"
-                          size={14}
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                <AiChatEmptyState
+                  firstName={firstName}
+                  isPending={sendMessage.isPending}
+                  onSelectPrompt={(prompt) => void handleSend(prompt)}
+                />
               ) : conversation.isLoading && activeConversationId ? (
                 <div className="space-y-3">
                   <div className="flex justify-end">
@@ -479,7 +302,7 @@ export const AiChatWidget = () => {
                     <MessageCircleQuestion size={20} />
                   </div>
                   <p className="font-medium text-neutral-900">
-                    Couldn't load conversation
+                    Couldn&apos;t load conversation
                   </p>
                   <p className="text-sm text-neutral-500">
                     Something went wrong loading this conversation.
@@ -495,7 +318,7 @@ export const AiChatWidget = () => {
               ) : (
                 <div aria-live="polite" role="log">
                   {conversation.data?.turns.map((t) => (
-                    <AnswerBubble
+                    <AiChatMessageBubble
                       answer={t.answer}
                       key={t.id}
                       question={t.question}
@@ -503,7 +326,10 @@ export const AiChatWidget = () => {
                     />
                   ))}
                   {pendingQuestion && (
-                    <AnswerBubble pending question={pendingQuestion} />
+                    <AiChatMessageBubble
+                      pending
+                      question={pendingQuestion}
+                    />
                   )}
                 </div>
               )}
@@ -521,57 +347,13 @@ export const AiChatWidget = () => {
             )}
           </div>
 
-          <div className="flex-shrink-0 px-4 pb-1 sm:px-5">
-            {draftLength > DRAFT_WARN_LENGTH && (
-              <p
-                className={cn(
-                  "pb-1 text-right text-[11px] tabular-nums",
-                  draftLength >= DRAFT_MAX_LENGTH
-                    ? "font-medium text-red-500"
-                    : "text-neutral-400"
-                )}
-              >
-                {draftLength}/{DRAFT_MAX_LENGTH}
-              </p>
-            )}
-          </div>
-
-          <form
-            className="mx-4 mb-4 mt-0 flex flex-shrink-0 items-end gap-2 rounded-24 border border-neutral-200 bg-white py-2 pl-[18px] pr-2 shadow-chip transition-all focus-within:border-brand-600 focus-within:shadow-focus sm:mx-5"
-            onSubmit={(e) => {
-              e.preventDefault();
-              void handleSend();
-            }}
-          >
-            <textarea
-              aria-label="Message"
-              className={cn(
-                TEXTAREA_INPUT_CLASS,
-                "min-h-[26px] resize-none border-none bg-transparent p-0 py-1.5 text-[14.5px] leading-relaxed shadow-none focus:border-none focus:shadow-none"
-              )}
-              maxLength={DRAFT_MAX_LENGTH}
-              placeholder="Ask the RemoteSea assistant…"
-              ref={textareaRef}
-              rows={1}
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  void handleSend();
-                }
-              }}
-            />
-            <Button
-              aria-label="Send message"
-              className="h-10 w-10 flex-shrink-0 rounded-full border-none bg-gradient-to-br from-brand-500 to-brand-700 p-0 shadow-chip transition-transform enabled:hover:scale-105 enabled:hover:from-brand-500 enabled:hover:to-brand-700 disabled:from-neutral-300 disabled:to-neutral-300"
-              disabled={!draft.trim() || sendMessage.isPending}
-              isLoading={sendMessage.isPending}
-              type="submit"
-            >
-              <Send size={16} />
-            </Button>
-          </form>
+          <AiChatComposer
+            draft={draft}
+            isPending={sendMessage.isPending}
+            setDraft={setDraft}
+            textareaRef={textareaRef}
+            onSend={() => void handleSend()}
+          />
         </div>
       )}
     </div>

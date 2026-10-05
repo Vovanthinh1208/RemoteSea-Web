@@ -59,7 +59,7 @@ export const VerifiedBadge = ({
 
   return (
     <span
-      className={`inline-flex items-center ${gap} rounded-full bg-red-50 ${padding} py-0.5 ${text} text-red-600`}
+      className={`inline-flex items-center ${gap} rounded-full bg-danger-50 ${padding} py-0.5 ${text} text-danger-600`}
     >
       <Flag size={unverifiedIcon} /> {label ?? "Unverified"}
     </span>

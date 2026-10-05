@@ -5,6 +5,7 @@ import { CompanyLogo } from "@/components/ui/company-logo";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabList, Tab } from "@/components/ui/tabs";
 import { cn } from "@/utils/cn";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { countryFlag } from "@/utils/color";
@@ -39,19 +40,13 @@ const ApplicationRow = memo(function ApplicationRow({
   const dotFillClass = bucket === "closed" ? "bg-neutral-300" : "bg-brand-500";
   return (
     <div className="border-b border-neutral-50 last:border-none">
-      <button
-        aria-expanded={expanded}
-        className="grid w-full cursor-pointer grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-4 px-5 py-3.5 text-left transition-colors hover:bg-neutral-50/60 focus-visible:relative focus-visible:z-10 focus-visible:shadow-focus focus-visible:outline-none"
-        type="button"
-        onClick={() => setExpanded((v) => !v)}
-      >
+      <div className="grid w-full grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-4 px-5 py-3.5 text-left transition-colors hover:bg-neutral-50/60">
         <div className="flex min-w-0 items-center gap-3">
           <CompanyLogo name={company} size={36} />
           <div className="min-w-0">
             <Link
-              className="block truncate text-[13.5px] font-medium text-neutral-900 hover:text-brand-700 hover:underline"
+              className="block truncate text-[13.5px] font-medium text-neutral-900 hover:text-brand-700 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.jobDetail(a.jobId)}
-              onClick={(e) => e.stopPropagation()}
             >
               {a.job.title}
             </Link>
@@ -91,7 +86,6 @@ const ApplicationRow = memo(function ApplicationRow({
             aria-label="Message about this application"
             className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.applicationMessages(a.id)}
-            onClick={(e) => e.stopPropagation()}
           >
             <MessageCircle size={16} />
           </Link>
@@ -100,19 +94,26 @@ const ApplicationRow = memo(function ApplicationRow({
               aria-label="View interview"
               className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.applicationInterview(a.id)}
-              onClick={(e) => e.stopPropagation()}
             >
               <CalendarClock size={16} />
             </Link>
           )}
         </div>
-        <ChevronDown
-          className={cn(
-            "h-5 w-5 flex-shrink-0 text-neutral-300 transition-transform",
-            expanded && "rotate-180"
-          )}
-        />
-      </button>
+        <button
+          type="button"
+          aria-expanded={expanded}
+          aria-label={expanded ? "Collapse application timeline" : "Expand application timeline"}
+          className="grid h-8 w-8 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
+          onClick={() => setExpanded((v) => !v)}
+        >
+          <ChevronDown
+            className={cn(
+              "h-5 w-5 text-neutral-400 transition-transform",
+              expanded && "rotate-180"
+            )}
+          />
+        </button>
+      </div>
       {expanded && <ApplicationTimeline application={a} />}
     </div>
   );
@@ -202,25 +203,15 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
             · {grouped.notClosedCount} active
           </span>
         </h3>
-        <div className="flex items-center gap-0.5 rounded-8 bg-neutral-100 p-0.5">
-          {tabs.map((t) => (
-            <button
-              aria-pressed={tab === t.id}
-              className={cn(
-                "rounded-8 px-3 py-1 text-[12px] font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none",
-                tab === t.id
-                  ? "bg-white text-neutral-900 shadow-chip"
-                  : "text-neutral-500 hover:text-neutral-700"
-              )}
-              key={t.id}
-              type="button"
-              onClick={() => setTab(t.id)}
-            >
-              {t.label}{" "}
-              <span className="ml-0.5 text-neutral-400">{t.count}</span>
-            </button>
-          ))}
-        </div>
+        <Tabs value={tab} onValueChange={(v) => setTab(v as TabId)}>
+          <TabList variant="segmented">
+            {tabs.map((t) => (
+              <Tab count={t.count} key={t.id} value={t.id}>
+                {t.label}
+              </Tab>
+            ))}
+          </TabList>
+        </Tabs>
       </div>
 
       <Pipeline applications={applications} />

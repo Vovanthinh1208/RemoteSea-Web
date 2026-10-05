@@ -1,4 +1,4 @@
-import { Toggle } from "@/features/talent/components/profile-form/Toggle";
+import { Toggle } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 
 interface ToggleRowProps {
