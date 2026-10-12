@@ -17,11 +17,7 @@ import { isSafeInternalPath } from "@/utils/safe-redirect";
 import { ROUTES } from "@/constants/routes";
 import { cn } from "@/utils/cn";
 import { Button } from "@/components/ui/button";
-
-const ROLE_OPTIONS = [
-  { value: "TALENT", label: "I'm looking for work" },
-  { value: "EMPLOYER", label: "I'm hiring" },
-] as const;
+import { useTranslation } from "@/i18n";
 
 const DUPLICATE_EMAIL_STATUS = 409;
 
@@ -31,6 +27,7 @@ const resolveRegisterErrorMessage = (error: ApiError): string =>
     : error.message;
 
 export const RegisterForm = () => {
+  const { t } = useTranslation("auth");
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const rawCallbackUrl = searchParams.get("callbackUrl");
@@ -86,7 +83,12 @@ export const RegisterForm = () => {
   return (
     <>
       <div className="mb-6 grid grid-cols-2 gap-2">
-        {ROLE_OPTIONS.map((option) => (
+        {(
+          [
+            { value: "TALENT", label: t("register.roleTalent") },
+            { value: "EMPLOYER", label: t("register.roleEmployer") },
+          ] as const
+        ).map((option) => (
           <button
             className={cn(
               "h-10 rounded-12 border text-sm font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none",
@@ -104,14 +106,14 @@ export const RegisterForm = () => {
       </div>
 
       <OAuthButtons />
-      <OrDivider label="or with email" />
+      <OrDivider label={t("register.orDivider")} />
 
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <TextField
           error={errors.name?.message}
           id="name"
-          label="Full name"
-          placeholder="Phạm Tuấn"
+          label={t("register.nameLabel")}
+          placeholder={t("register.namePlaceholder")}
           autoComplete="name"
           registration={register("name")}
         />
@@ -119,8 +121,8 @@ export const RegisterForm = () => {
         <TextField
           error={errors.email?.message}
           id="email"
-          label="Email"
-          placeholder="you@example.com"
+          label={t("register.emailLabel")}
+          placeholder={t("register.emailPlaceholder")}
           autoComplete="email"
           registration={register("email")}
           type="email"
@@ -129,8 +131,8 @@ export const RegisterForm = () => {
         <TextField
           error={errors.password?.message}
           id="password"
-          label="Password"
-          placeholder="At least 8 characters"
+          label={t("register.passwordLabel")}
+          placeholder={t("register.passwordPlaceholder")}
           autoComplete="new-password"
           registration={register("password")}
           type="password"
@@ -145,7 +147,7 @@ export const RegisterForm = () => {
           type="submit"
           isLoading={isSubmitting}
         >
-          Create account
+          {isSubmitting ? t("register.submitting") : t("register.submit")}
         </Button>
         <p className="text-center text-[12px] text-neutral-400">
           By signing up you agree to our{" "}

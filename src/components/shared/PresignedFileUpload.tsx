@@ -99,7 +99,7 @@ export const PresignedFileUpload = ({
       />
       <div className="flex items-center gap-2">
         <button
-          className="inline-flex items-center gap-2 rounded-10 border border-neutral-200 bg-white px-3.5 py-2 text-[13px] font-medium text-neutral-700 transition-colors hover:border-neutral-300 disabled:opacity-60 focus-visible:shadow-focus focus-visible:outline-none"
+          className="inline-flex items-center gap-2 rounded-10 border border-neutral-200 bg-white px-3.5 py-2 text-[13px] font-medium text-neutral-700 transition-colors hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
           disabled={state === "uploading"}
           type="button"
           onClick={() => inputRef.current?.click()}
@@ -131,7 +131,11 @@ export const PresignedFileUpload = ({
           />
         </div>
       )}
-      {error && <p className="text-[12px] text-danger-600" role="alert">{error}</p>}
+      {error && (
+        <p className="text-[12px] text-danger-600" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 };

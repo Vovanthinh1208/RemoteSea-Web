@@ -140,4 +140,3 @@ export const SORT_OPTIONS: { value: ApplicantSortId; label: string }[] = [
 
 export const isRejectable = (status: ApplicationStatus): boolean =>
   status !== "REJECTED" && status !== "WITHDRAWN";
-

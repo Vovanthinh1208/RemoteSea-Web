@@ -1,0 +1,70 @@
+{
+  "dashboard": {
+    "title": "Bảng điều khiển Ứng viên",
+    "welcome": "Chào mừng trở lại, {{name}}",
+    "subtitle": "Theo dõi hồ sơ ứng tuyển, việc làm phù hợp và phát triển sự nghiệp của bạn.",
+    "profileStrength": "Độ hoàn thiện hồ sơ",
+    "completeness": "Hoàn thiện {{percent}}%",
+    "improveProfile": "Bổ sung thêm thông tin để tăng cơ hội tiếp cận nhà tuyển dụng hàng đầu.",
+    "viewPublicProfile": "Xem hồ sơ công khai",
+    "editProfile": "Chỉnh sửa hồ sơ",
+    "stats": {
+      "applications": "Đã ứng tuyển",
+      "savedJobs": "Việc đã lưu",
+      "interviews": "Lịch phỏng vấn",
+      "profileViews": "Lượt xem hồ sơ"
+    },
+    "recentApplications": "Đơn ứng tuyển gần đây",
+    "noApplications": "Bạn chưa nộp đơn ứng tuyển nào.",
+    "exploreJobs": "Khám phá việc làm",
+    "recommendedJobs": "Việc làm gợi ý cho bạn",
+    "openToWorkTitle": "Sẵn sàng nhận cơ hội mới",
+    "openToWorkSubtitle": "Báo hiệu cho nhà tuyển dụng biết bạn đang tìm kiếm việc làm từ xa."
+  },
+  "profile": {
+    "title": "Hồ sơ cá nhân",
+    "subtitle": "Quản lý CV công khai, kinh nghiệm chuyên môn và thông tin cá nhân của bạn.",
+    "basics": "Thông tin cơ bản",
+    "experience": "Kinh nghiệm làm việc",
+    "skills": "Kỹ năng chuyên môn",
+    "education": "Học vấn",
+    "resume": "Hồ sơ / CV",
+    "headline": "Chức danh chuyên môn",
+    "headlinePlaceholder": "Ví dụ: Kỹ sư Full-Stack cấp cao · React & Node.js",
+    "bio": "Giới thiệu bản thân",
+    "bioPlaceholder": "Mô tả ngắn gọn về kinh nghiệm, điểm mạnh và định hướng công việc của bạn...",
+    "location": "Địa điểm / Quốc gia",
+    "website": "Website cá nhân / Portfolio",
+    "resumeUploadTitle": "Tải lên CV của bạn",
+    "resumeUploadDesc": "Định dạng PDF tối đa 5MB. Nhà tuyển dụng sẽ xem CV này khi bạn nộp đơn.",
+    "uploadSuccess": "Đã tải lên CV thành công.",
+    "openToWork": "Sẵn sàng nhận việc",
+    "openToWorkDesc": "Cho phép nhà tuyển dụng tìm thấy hồ sơ của bạn trong danh mục ứng viên.",
+    "addExperience": "Thêm kinh nghiệm",
+    "roleTitle": "Vị trí công việc",
+    "companyName": "Tên công ty",
+    "startDate": "Ngày bắt đầu",
+    "endDate": "Ngày kết thúc",
+    "currentJob": "Tôi đang làm việc tại đây",
+    "addSkill": "Thêm kỹ năng",
+    "addEducation": "Thêm học vấn"
+  },
+  "applications": {
+    "title": "Hồ sơ ứng tuyển",
+    "subtitle": "Theo dõi tiến độ xét duyệt tất cả các đơn ứng tuyển của bạn.",
+    "emptyTitle": "Chưa có đơn ứng tuyển nào",
+    "emptyDesc": "Bắt đầu ứng tuyển các công việc remote chất lượng cao khắp Đông Nam Á.",
+    "browseJobs": "Tìm kiếm việc làm",
+    "appliedDate": "Đã ứng tuyển ngày {{date}}",
+    "timeline": "Tiến trình xét duyệt",
+    "messages": "Tin nhắn với nhà tuyển dụng",
+    "interviewSchedule": "Chi tiết phỏng vấn"
+  },
+  "saved": {
+    "title": "Việc làm đã lưu",
+    "subtitle": "Lưu lại các cơ hội việc làm để ứng tuyển sau.",
+    "emptyTitle": "Chưa có việc làm nào được lưu",
+    "emptyDesc": "Các công việc bạn đánh dấu lưu khi xem sẽ hiển thị tại đây.",
+    "browseJobs": "Khám phá việc làm"
+  }
+}

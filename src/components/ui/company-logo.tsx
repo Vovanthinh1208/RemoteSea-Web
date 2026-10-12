@@ -1,1 +1,4 @@
-export { CompanyLogo, type CompanyLogoProps } from "@/components/domain/CompanyLogo";
+export {
+  CompanyLogo,
+  type CompanyLogoProps,
+} from "@/components/domain/CompanyLogo";

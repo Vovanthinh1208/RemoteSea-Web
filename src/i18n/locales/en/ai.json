@@ -1,0 +1,33 @@
+{
+  "chat": {
+    "title": "RemoteSEA Assistant",
+    "greeting": "Hi{{name}} — how can I help?",
+    "subtitle": "Ask a question about RemoteSEA's hiring policies or process to get started.",
+    "inputPlaceholder": "Ask a question or type a prompt...",
+    "send": "Send",
+    "sending": "Thinking...",
+    "clearHistory": "Clear conversation",
+    "suggestedTitle": "Suggested questions",
+    "suggested1": "What's our remote hiring policy?",
+    "suggested2": "How do I review a candidate's application?",
+    "suggested3": "What are the steps in our hiring process?",
+    "confidence": "Confidence: {{percent}}%",
+    "sources": "Sources referenced",
+    "helpful": "Helpful",
+    "unhelpful": "Not helpful",
+    "error": "Failed to get AI response. Please try again."
+  },
+  "cvAnalysis": {
+    "title": "Smart CV Analysis",
+    "subtitle": "AI-powered candidate profile scoring and qualification breakdown.",
+    "fitScore": "Candidate Fit Score",
+    "strengths": "Key Strengths",
+    "areasForImprovement": "Experience Gaps",
+    "interviewQuestions": "Recommended Interview Questions",
+    "recommendation": "Hiring Recommendation",
+    "analyzing": "Analyzing resume with AI...",
+    "scoreHigh": "Strong Fit",
+    "scoreMedium": "Moderate Fit",
+    "scoreLow": "Low Fit"
+  }
+}

@@ -46,7 +46,8 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
     },
     ref
   ) => {
-    const [uncontrolledValue, setUncontrolledValue] = React.useState(defaultValue);
+    const [uncontrolledValue, setUncontrolledValue] =
+      React.useState(defaultValue);
     const isControlled = controlledValue !== undefined;
     const value = isControlled ? controlledValue : uncontrolledValue;
 
@@ -92,7 +93,8 @@ const tabListVariants = cva("flex items-center", {
 });
 
 export interface TabListProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends
+    React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof tabListVariants> {}
 
 export const TabList = React.forwardRef<HTMLDivElement, TabListProps>(
@@ -114,8 +116,7 @@ TabList.displayName = "TabList";
 // Tab (Trigger)
 // ---------------------------------------------------------------------------
 
-export interface TabProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface TabProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   value: string;
   count?: number | string;
 }
@@ -134,7 +135,9 @@ export const Tab = React.forwardRef<HTMLButtonElement, TabProps>(
     if (variant === "segmented") {
       style = cn(
         "rounded-8 transition-all focus-visible:shadow-focus focus-visible:outline-none whitespace-nowrap",
-        size === "sm" ? "px-3 py-1 text-[12px] font-medium" : "px-3.5 py-1.5 text-[13px] font-medium",
+        size === "sm"
+          ? "px-3 py-1 text-[12px] font-medium"
+          : "px-3.5 py-1.5 text-[13px] font-medium",
         isActive
           ? "bg-white text-neutral-900 shadow-chip"
           : "text-neutral-500 hover:text-neutral-700"
@@ -171,8 +174,10 @@ export const Tab = React.forwardRef<HTMLButtonElement, TabProps>(
         {count !== undefined && (
           <span
             className={cn(
-              "ml-1 tabular-nums text-[11px]",
-              isActive && variant === "pills" ? "text-white/80" : "text-neutral-400"
+              "ml-1 text-[11px] tabular-nums",
+              isActive && variant === "pills"
+                ? "text-white/80"
+                : "text-neutral-400"
             )}
           >
             {count}

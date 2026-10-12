@@ -53,10 +53,7 @@ export const PublicTalentHero = ({
         <div className="flex flex-wrap gap-x-5 gap-y-1.5">
           {profile.location && (
             <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
-              <MapPin
-                className="flex-shrink-0 text-neutral-400"
-                size={12}
-              />
+              <MapPin className="flex-shrink-0 text-neutral-400" size={12} />
               {profile.location}
             </span>
           )}
@@ -68,10 +65,7 @@ export const PublicTalentHero = ({
           )}
           {profile.yearsExperience !== null && (
             <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
-              <Briefcase
-                className="flex-shrink-0 text-neutral-400"
-                size={12}
-              />
+              <Briefcase className="flex-shrink-0 text-neutral-400" size={12} />
               {profile.yearsExperience}+ yrs experience
             </span>
           )}
@@ -89,9 +83,7 @@ export const PublicTalentHero = ({
                 <Zap className="flex-shrink-0 text-neutral-400" size={12} />
                 Replies in ~6h
               </span>
-              <span className="text-[13px] text-neutral-500">
-                Active today
-              </span>
+              <span className="text-[13px] text-neutral-500">Active today</span>
             </>
           )}
         </div>

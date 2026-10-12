@@ -1,0 +1,94 @@
+{
+  "dashboard": {
+    "title": "Bảng điều khiển Nhà tuyển dụng",
+    "subtitle": "Quản lý các tin đăng tuyển, quy trình tuyển dụng và đội ngũ nhân sự.",
+    "postJobBtn": "Đăng tin tuyển dụng",
+    "stats": {
+      "activeJobs": "Tin đang đăng",
+      "totalApplicants": "Tổng ứng viên",
+      "underReview": "Đang xem xét",
+      "interviewsScheduled": "Lịch phỏng vấn"
+    },
+    "activeJobsSection": "Tin tuyển dụng đang hoạt động",
+    "noActiveJobs": "Hiện tại bạn chưa có tin tuyển dụng nào đang hoạt động.",
+    "recentApplicants": "Ứng viên mới nộp",
+    "viewCandidates": "Xem luồng ứng viên"
+  },
+  "postJob": {
+    "title": "Đăng tin tuyển dụng remote mới",
+    "editTitle": "Chỉnh sửa tin tuyển dụng",
+    "subtitle": "Tiếp cận hàng nghìn chuyên gia làm việc từ xa chất lượng cao tại Đông Nam Á.",
+    "stepBasics": "1. Thông tin công việc",
+    "stepDescription": "2. Mô tả vị trí",
+    "stepReview": "3. Gói đăng & Quảng bá",
+    "jobTitle": "Chức danh công việc",
+    "jobTitlePlaceholder": "Ví dụ: Kỹ sư Backend cấp cao (NestJS / PostgreSQL)",
+    "department": "Bộ phận / Phòng ban",
+    "remoteRegion": "Khu vực làm việc từ xa / Múi giờ cho phép",
+    "jobType": "Hình thức làm việc",
+    "experienceLevel": "Cấp bậc kinh nghiệm",
+    "salaryRange": "Mức lương (Năm hoặc Tháng)",
+    "salaryMin": "Lương tối thiểu",
+    "salaryMax": "Lương tối đa",
+    "description": "Mô tả công việc",
+    "requirements": "Yêu cầu chuyên môn",
+    "benefits": "Quyền lợi & Đãi ngộ",
+    "standardPlan": "Tin tiêu chuẩn",
+    "standardPlanDesc": "Hiển thị trên bảng việc làm trong 30 ngày.",
+    "featuredPlan": "Tin nổi bật (Featured)",
+    "featuredPlanDesc": "Ghim đầu trang tìm kiếm, gắn nhãn nổi bật và gửi trong bản tin việc làm hàng tuần.",
+    "submit": "Đăng tin tuyển dụng",
+    "submitting": "Đang đăng tin...",
+    "successTitle": "Đăng tin tuyển dụng thành công!",
+    "successDesc": "Tin tuyển dụng của bạn đã được xuất bản và sẵn sàng nhận hồ sơ.",
+    "viewListing": "Xem tin trực tiếp"
+  },
+  "talentSearch": {
+    "title": "Tìm kiếm Nhân sự Remote",
+    "subtitle": "Khám phá các kỹ sư, nhà thiết kế và quản lý sẵn sàng cho cơ hội mới.",
+    "searchPlaceholder": "Tìm theo vị trí, kỹ năng, từ khóa...",
+    "inviteToApply": "Mời ứng tuyển",
+    "viewProfile": "Xem hồ sơ",
+    "noCandidatesFound": "Không tìm thấy ứng viên phù hợp với tiêu chí tìm kiếm."
+  },
+  "team": {
+    "title": "Đội ngũ Tuyển dụng",
+    "subtitle": "Cộng tác cùng đồng nghiệp và quản lý phân quyền theo vai trò.",
+    "inviteBtn": "Mời thành viên mới",
+    "memberEmail": "Email của đồng nghiệp",
+    "role": "Vai trò",
+    "roles": {
+      "OWNER": "Chủ sở hữu công ty",
+      "RECRUITER": "Chuyên viên tuyển dụng chính",
+      "HIRING_MANAGER": "Quản lý tuyển dụng",
+      "INTERVIEWER": "Người phỏng vấn"
+    },
+    "removeConfirm": "Bạn có chắc chắn muốn xóa thành viên này khỏi đội ngũ?",
+    "pendingInvites": "Lời mời đang chờ phản hồi"
+  },
+  "kanban": {
+    "title": "Quy trình Ứng viên (ATS)",
+    "stages": {
+      "NEW": "Ứng viên mới",
+      "REVIEWING": "Sàng lọc hồ sơ",
+      "INTERVIEWING": "Phỏng vấn",
+      "OFFERED": "Đề nghị tuyển dụng",
+      "HIRED": "Đã tuyển",
+      "REJECTED": "Lưu trữ / Từ chối"
+    },
+    "moveTo": "Chuyển giai đoạn",
+    "viewScorecard": "Phiếu đánh giá (Scorecard)",
+    "notes": "Ghi chú nội bộ",
+    "emptyStage": "Chưa có ứng viên trong giai đoạn này."
+  },
+  "company": {
+    "title": "Hồ sơ Doanh nghiệp",
+    "subtitle": "Giới thiệu văn hóa công ty, phúc lợi và các văn phòng đến ứng viên.",
+    "name": "Tên công ty",
+    "website": "Địa chỉ website",
+    "industry": "Lĩnh vực hoạt động",
+    "size": "Quy mô công ty",
+    "about": "Giới thiệu công ty",
+    "save": "Lưu thay đổi hồ sơ"
+  }
+}

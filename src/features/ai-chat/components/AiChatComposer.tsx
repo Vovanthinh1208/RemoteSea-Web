@@ -3,6 +3,7 @@ import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 import { cn } from "@/utils/cn";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const COMPOSE_MAX_HEIGHT_PX = 120;
 export const DRAFT_MAX_LENGTH = 2000;
@@ -23,6 +24,7 @@ export const AiChatComposer = ({
   isPending,
   textareaRef,
 }: AiChatComposerProps) => {
+  const { t } = useTranslation("ai");
   const draftLength = draft.length;
 
   useLayoutEffect(() => {
@@ -57,13 +59,13 @@ export const AiChatComposer = ({
         }}
       >
         <textarea
-          aria-label="Message"
+          aria-label={t("chat.inputPlaceholder")}
           className={cn(
             TEXTAREA_INPUT_CLASS,
             "min-h-[26px] resize-none border-none bg-transparent p-0 py-1.5 text-[14.5px] leading-relaxed shadow-none focus:border-none focus:shadow-none"
           )}
           maxLength={DRAFT_MAX_LENGTH}
-          placeholder="Ask the RemoteSea assistant…"
+          placeholder={t("chat.inputPlaceholder")}
           ref={textareaRef}
           rows={1}
           value={draft}
@@ -76,7 +78,7 @@ export const AiChatComposer = ({
           }}
         />
         <Button
-          aria-label="Send message"
+          aria-label={t("chat.send")}
           className="h-10 w-10 flex-shrink-0 rounded-full border-none bg-gradient-to-br from-brand-500 to-brand-700 p-0 shadow-chip transition-transform enabled:hover:scale-105 enabled:hover:from-brand-500 enabled:hover:to-brand-700 disabled:from-neutral-300 disabled:to-neutral-300"
           disabled={!draft.trim() || isPending}
           isLoading={isPending}

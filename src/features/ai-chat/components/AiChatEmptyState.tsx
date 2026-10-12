@@ -1,10 +1,5 @@
 import { ArrowRight, MessageCircleQuestion, Sparkles } from "lucide-react";
-
-const SUGGESTED_PROMPTS = [
-  "What's our remote hiring policy?",
-  "How do I review a candidate's application?",
-  "What are the steps in our hiring process?",
-];
+import { useTranslation } from "@/i18n/useTranslation";
 
 export interface AiChatEmptyStateProps {
   firstName?: string;
@@ -17,6 +12,14 @@ export const AiChatEmptyState = ({
   isPending,
   onSelectPrompt,
 }: AiChatEmptyStateProps) => {
+  const { t } = useTranslation("ai");
+
+  const suggestedPrompts = [
+    t("chat.suggested1"),
+    t("chat.suggested2"),
+    t("chat.suggested3"),
+  ];
+
   return (
     <div className="flex h-full animate-fade-up flex-col items-center justify-center gap-5 py-6 text-center">
       <div className="relative grid h-14 w-14 place-items-center">
@@ -27,15 +30,14 @@ export const AiChatEmptyState = ({
       </div>
       <div>
         <p className="mb-1.5 text-[16px] font-semibold text-neutral-900">
-          Hi{firstName ? `, ${firstName}` : ""} — how can I help?
+          {t("chat.greeting", { name: firstName ? `, ${firstName}` : "" })}
         </p>
         <p className="mx-auto max-w-[280px] text-[13.5px] leading-relaxed text-neutral-500">
-          Ask a question about RemoteSea&apos;s hiring policies or process to get
-          started.
+          {t("chat.subtitle")}
         </p>
       </div>
       <div className="flex w-full flex-col gap-2">
-        {SUGGESTED_PROMPTS.map((prompt, i) => (
+        {suggestedPrompts.map((prompt, i) => (
           <button
             className="group flex animate-fade-up items-center gap-2.5 rounded-12 border border-neutral-200 bg-white px-3.5 py-2.5 text-left text-[13px] text-neutral-700 shadow-chip transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:bg-brand-50 hover:shadow-card focus-visible:shadow-focus focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60"
             disabled={isPending}

@@ -12,11 +12,10 @@ import { useToast } from "@/components/ui/toast";
 import { applyFormSubmitError } from "@/utils/form-errors";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
-
-const MISSING_TOKEN_MESSAGE =
-  "This reset link is missing its token. Request a new one.";
+import { useTranslation } from "@/i18n";
 
 export const ResetPasswordForm = () => {
+  const { t } = useTranslation("auth");
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
@@ -34,15 +33,15 @@ export const ResetPasswordForm = () => {
 
   const onSubmit = async (values: ResetPasswordFormValues) => {
     if (!token) {
-      setFormError(MISSING_TOKEN_MESSAGE);
+      setFormError(t("resetPassword.invalidToken"));
       return;
     }
     setFormError(null);
     try {
       await resetPassword({ token, password: values.password });
       toast({
-        title: "Password updated",
-        description: "Sign in with your new password.",
+        title: t("resetPassword.successTitle"),
+        description: t("resetPassword.successDesc"),
         variant: "success",
       });
       navigate(ROUTES.login, { replace: true });
@@ -60,8 +59,7 @@ export const ResetPasswordForm = () => {
   if (!token) {
     return (
       <div className="rounded-12 border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-        This reset link is invalid or missing its token. Please request a new
-        one.
+        {t("resetPassword.invalidToken")}
       </div>
     );
   }
@@ -71,8 +69,8 @@ export const ResetPasswordForm = () => {
       <TextField
         error={errors.password?.message}
         id="password"
-        label="New password"
-        placeholder="At least 8 characters"
+        label={t("resetPassword.newPasswordLabel")}
+        placeholder={t("resetPassword.newPasswordPlaceholder")}
         autoComplete="new-password"
         registration={register("password")}
         type="password"
@@ -81,8 +79,8 @@ export const ResetPasswordForm = () => {
       <TextField
         error={errors.confirmPassword?.message}
         id="confirmPassword"
-        label="Confirm new password"
-        placeholder="Repeat your password"
+        label={t("resetPassword.confirmPasswordLabel")}
+        placeholder={t("resetPassword.confirmPasswordPlaceholder")}
         autoComplete="new-password"
         registration={register("confirmPassword")}
         type="password"
@@ -97,7 +95,9 @@ export const ResetPasswordForm = () => {
         type="submit"
         isLoading={isSubmitting}
       >
-        Update password
+        {isSubmitting
+          ? t("resetPassword.submitting")
+          : t("resetPassword.submit")}
       </Button>
     </form>
   );

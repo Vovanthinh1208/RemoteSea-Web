@@ -102,7 +102,11 @@ const ApplicationRow = memo(function ApplicationRow({
         <button
           type="button"
           aria-expanded={expanded}
-          aria-label={expanded ? "Collapse application timeline" : "Expand application timeline"}
+          aria-label={
+            expanded
+              ? "Collapse application timeline"
+              : "Expand application timeline"
+          }
           className="grid h-8 w-8 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
           onClick={() => setExpanded((v) => !v)}
         >

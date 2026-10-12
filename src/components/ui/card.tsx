@@ -29,7 +29,8 @@ export const cardVariants = cva(
 );
 
 export interface CardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends
+    React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof cardVariants> {}
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
@@ -53,7 +54,7 @@ export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
       ref={ref}
       className={cn(
         "flex flex-col space-y-1.5",
-        bordered && "border-b border-neutral-100 pb-4 mb-4",
+        bordered && "mb-4 border-b border-neutral-100 pb-4",
         className
       )}
       {...props}
@@ -107,7 +108,7 @@ export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
       ref={ref}
       className={cn(
         "flex items-center",
-        bordered && "border-t border-neutral-100 pt-4 mt-4",
+        bordered && "mt-4 border-t border-neutral-100 pt-4",
         className
       )}
       {...props}

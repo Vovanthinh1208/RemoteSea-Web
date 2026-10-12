@@ -187,7 +187,7 @@ export const CvAnalysisCard = ({
           )}
           <button
             aria-label="Regenerate analysis"
-            className="rounded-6 grid h-6 w-6 flex-shrink-0 place-items-center text-neutral-300 transition-colors hover:bg-neutral-100 hover:text-neutral-600 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            className="grid h-6 w-6 flex-shrink-0 place-items-center rounded-6 text-neutral-300 transition-colors hover:bg-neutral-100 hover:text-neutral-600 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             disabled={regenerateMutation.isPending}
             title="Regenerate — runs the analysis again and replaces this one"
             type="button"

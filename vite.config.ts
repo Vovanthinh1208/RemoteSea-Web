@@ -62,6 +62,7 @@ export default defineConfig(({ mode, command }) => {
           // (Bundling them into one "app-shared" chunk was measured worse: it
           // forced 275KB / 87KB gzip onto the initial load.)
           manualChunks(id: string) {
+            if (id.includes("src/i18n/locales")) return "i18n-locales";
             if (!id.includes("node_modules")) return undefined;
             if (/[\\/]node_modules[\\/](react|react-dom)[\\/]/.test(id))
               return "vendor-react";

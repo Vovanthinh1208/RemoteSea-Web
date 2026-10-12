@@ -1,0 +1,94 @@
+{
+  "dashboard": {
+    "title": "Employer Dashboard",
+    "subtitle": "Manage your open listings, candidate pipelines, and hiring team.",
+    "postJobBtn": "Post a job",
+    "stats": {
+      "activeJobs": "Active Jobs",
+      "totalApplicants": "Total Applicants",
+      "underReview": "Under Review",
+      "interviewsScheduled": "Interviews"
+    },
+    "activeJobsSection": "Active Job Listings",
+    "noActiveJobs": "You don't have any active job listings right now.",
+    "recentApplicants": "Recent Applicants",
+    "viewCandidates": "View candidate pipeline"
+  },
+  "postJob": {
+    "title": "Post a new remote job",
+    "editTitle": "Edit job listing",
+    "subtitle": "Reach thousands of vetted remote professionals across Southeast Asia.",
+    "stepBasics": "1. Job details",
+    "stepDescription": "2. Role description",
+    "stepReview": "3. Promotion & Plan",
+    "jobTitle": "Job Title",
+    "jobTitlePlaceholder": "e.g. Senior Backend Engineer (NestJS / PostgreSQL)",
+    "department": "Department",
+    "remoteRegion": "Remote Region / Allowed Timezones",
+    "jobType": "Employment Type",
+    "experienceLevel": "Experience Level",
+    "salaryRange": "Salary Range (Annual or Monthly)",
+    "salaryMin": "Min salary",
+    "salaryMax": "Max salary",
+    "description": "Job Description",
+    "requirements": "Key Requirements",
+    "benefits": "Benefits & Perks",
+    "standardPlan": "Standard Listing",
+    "standardPlanDesc": "Published on job board for 30 days.",
+    "featuredPlan": "Featured Listing",
+    "featuredPlanDesc": "Pinned to top of search, highlighted styling, and included in email digests.",
+    "submit": "Publish job listing",
+    "submitting": "Publishing...",
+    "successTitle": "Job published successfully!",
+    "successDesc": "Your job is now live and accepting applications.",
+    "viewListing": "View live listing"
+  },
+  "talentSearch": {
+    "title": "Search Remote Talent",
+    "subtitle": "Discover pre-vetted engineers, designers, and managers open to new opportunities.",
+    "searchPlaceholder": "Search by role, skills, keywords...",
+    "inviteToApply": "Invite to apply",
+    "viewProfile": "View profile",
+    "noCandidatesFound": "No talent found matching your search criteria."
+  },
+  "team": {
+    "title": "Hiring Team",
+    "subtitle": "Collaborate with colleagues and manage role-based permissions.",
+    "inviteBtn": "Invite team member",
+    "memberEmail": "Colleague's email",
+    "role": "Role",
+    "roles": {
+      "OWNER": "Company Owner",
+      "RECRUITER": "Lead Recruiter",
+      "HIRING_MANAGER": "Hiring Manager",
+      "INTERVIEWER": "Interviewer"
+    },
+    "removeConfirm": "Are you sure you want to remove this member?",
+    "pendingInvites": "Pending Invitations"
+  },
+  "kanban": {
+    "title": "Applicant Pipeline",
+    "stages": {
+      "NEW": "New Applicants",
+      "REVIEWING": "Screening",
+      "INTERVIEWING": "Interviewing",
+      "OFFERED": "Offered",
+      "HIRED": "Hired",
+      "REJECTED": "Archived"
+    },
+    "moveTo": "Move to stage",
+    "viewScorecard": "Scorecard",
+    "notes": "Internal Notes",
+    "emptyStage": "No candidates in this stage."
+  },
+  "company": {
+    "title": "Company Profile",
+    "subtitle": "Showcase your company culture, benefits, and office locations to candidates.",
+    "name": "Company Name",
+    "website": "Website URL",
+    "industry": "Industry",
+    "size": "Company Size",
+    "about": "About the Company",
+    "save": "Save profile changes"
+  }
+}

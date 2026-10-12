@@ -59,13 +59,15 @@ FormField.displayName = "FormField";
 // Label
 // ---------------------------------------------------------------------------
 
-export interface LabelProps
-  extends React.LabelHTMLAttributes<HTMLLabelElement> {
+export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
   required?: boolean;
 }
 
 export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(
-  ({ className, children, htmlFor, required: explicitRequired, ...props }, ref) => {
+  (
+    { className, children, htmlFor, required: explicitRequired, ...props },
+    ref
+  ) => {
     const field = useFormField();
     const id = htmlFor ?? field?.id;
     const isRequired = explicitRequired ?? field?.required;
@@ -96,13 +98,15 @@ Label.displayName = "Label";
 // Input
 // ---------------------------------------------------------------------------
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   hasError?: boolean;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, hasError: explicitHasError, id: explicitId, ...props }, ref) => {
+  (
+    { className, hasError: explicitHasError, id: explicitId, ...props },
+    ref
+  ) => {
     const field = useFormField();
     const id = explicitId ?? field?.id;
     const hasError = explicitHasError ?? !!field?.error;
@@ -115,10 +119,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         aria-invalid={hasError || undefined}
         aria-describedby={errorId}
         className={cn(
-          "h-10 w-full rounded-10 border border-neutral-200 bg-white px-3.5 text-[13.5px] text-neutral-900 placeholder:text-neutral-400 outline-none transition-all duration-150",
+          "h-10 w-full rounded-10 border border-neutral-200 bg-white px-3.5 text-[13.5px] text-neutral-900 outline-none transition-all duration-150 placeholder:text-neutral-400",
           "focus:border-brand-600 focus:shadow-focus",
           "disabled:cursor-not-allowed disabled:bg-neutral-50 disabled:text-neutral-500",
-          hasError && "border-danger-400 focus:border-danger-600 focus:shadow-[0_0_0_3px_rgba(220,38,38,0.15)]",
+          hasError &&
+            "border-danger-400 focus:border-danger-600 focus:shadow-[0_0_0_3px_rgba(220,38,38,0.15)]",
           className
         )}
         {...props}
@@ -132,13 +137,15 @@ Input.displayName = "Input";
 // Textarea
 // ---------------------------------------------------------------------------
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   hasError?: boolean;
 }
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, hasError: explicitHasError, id: explicitId, ...props }, ref) => {
+  (
+    { className, hasError: explicitHasError, id: explicitId, ...props },
+    ref
+  ) => {
     const field = useFormField();
     const id = explicitId ?? field?.id;
     const hasError = explicitHasError ?? !!field?.error;
@@ -151,10 +158,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         aria-invalid={hasError || undefined}
         aria-describedby={errorId}
         className={cn(
-          "w-full rounded-10 resize-none border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 placeholder:text-neutral-400 outline-none transition-all duration-150",
+          "w-full resize-none rounded-10 border border-neutral-200 bg-white px-3.5 py-2.5 text-[13.5px] text-neutral-900 outline-none transition-all duration-150 placeholder:text-neutral-400",
           "focus:border-brand-600 focus:shadow-focus",
           "disabled:cursor-not-allowed disabled:bg-neutral-50 disabled:text-neutral-500",
-          hasError && "border-danger-400 focus:border-danger-600 focus:shadow-[0_0_0_3px_rgba(220,38,38,0.15)]",
+          hasError &&
+            "border-danger-400 focus:border-danger-600 focus:shadow-[0_0_0_3px_rgba(220,38,38,0.15)]",
           className
         )}
         {...props}
@@ -168,13 +176,15 @@ Textarea.displayName = "Textarea";
 // Select
 // ---------------------------------------------------------------------------
 
-export interface SelectProps
-  extends React.SelectHTMLAttributes<HTMLSelectElement> {
+export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   hasError?: boolean;
 }
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, hasError: explicitHasError, id: explicitId, ...props }, ref) => {
+  (
+    { className, hasError: explicitHasError, id: explicitId, ...props },
+    ref
+  ) => {
     const field = useFormField();
     const id = explicitId ?? field?.id;
     const hasError = explicitHasError ?? !!field?.error;
@@ -204,8 +214,10 @@ Select.displayName = "Select";
 // Checkbox
 // ---------------------------------------------------------------------------
 
-export interface CheckboxProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "onChange"> {
+export interface CheckboxProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type" | "onChange"
+> {
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
   onChange?: (checked: boolean) => void;
@@ -244,7 +256,9 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         className={cn(
           "flex cursor-pointer select-none items-center gap-2.5 py-1.5 text-[13.5px] transition-colors",
           disabled && "cursor-not-allowed opacity-60",
-          checked ? "text-neutral-900" : "text-neutral-500 hover:text-neutral-900",
+          checked
+            ? "text-neutral-900"
+            : "text-neutral-500 hover:text-neutral-900",
           className
         )}
       >
@@ -268,11 +282,15 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
               : "border-neutral-300 bg-white"
           )}
         >
-          {checked && <Check className="text-white" size={10} strokeWidth={3} />}
+          {checked && (
+            <Check className="text-white" size={10} strokeWidth={3} />
+          )}
         </span>
         {label && <span className="flex-1">{label}</span>}
         {count !== undefined && (
-          <span className="text-[11px] tabular-nums text-neutral-400">{count}</span>
+          <span className="text-[11px] tabular-nums text-neutral-400">
+            {count}
+          </span>
         )}
       </label>
     );
@@ -302,8 +320,7 @@ export const FieldDescription = React.forwardRef<
 });
 FieldDescription.displayName = "FieldDescription";
 
-export interface FormFieldErrorProps
-  extends React.HTMLAttributes<HTMLParagraphElement> {
+export interface FormFieldErrorProps extends React.HTMLAttributes<HTMLParagraphElement> {
   message?: string;
 }
 
@@ -312,7 +329,10 @@ export const FormFieldError = React.forwardRef<
   FormFieldErrorProps
 >(({ className, message, children, ...props }, ref) => {
   const field = useFormField();
-  const text = message ?? (typeof children === "string" ? children : undefined) ?? field?.error;
+  const text =
+    message ??
+    (typeof children === "string" ? children : undefined) ??
+    field?.error;
   if (!text) return null;
 
   return (

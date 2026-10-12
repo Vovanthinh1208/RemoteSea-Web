@@ -1,0 +1,56 @@
+{
+  "search": {
+    "title": "Find Remote Jobs in Southeast Asia",
+    "subtitle": "Discover curated remote software engineering, design, marketing, and leadership opportunities.",
+    "searchPlaceholder": "Job title, keywords, or company...",
+    "locationPlaceholder": "Country or timezone (e.g. Vietnam, Singapore)",
+    "filterType": "Job Type",
+    "filterLevel": "Experience",
+    "filterCategory": "Category",
+    "filterSalary": "Min Salary",
+    "featuredOnly": "Featured only",
+    "resultsFound": "{{count}} remote jobs available",
+    "noJobsTitle": "No remote jobs found",
+    "noJobsDesc": "Try adjusting your search criteria or clearing selected filters."
+  },
+  "card": {
+    "featured": "Featured",
+    "urgent": "Urgent",
+    "remote": "Remote",
+    "salaryNotSpecified": "Competitive",
+    "viewRole": "View job"
+  },
+  "detail": {
+    "applyNow": "Apply for this role",
+    "applied": "You applied for this job",
+    "saveJob": "Save job",
+    "saved": "Saved",
+    "aboutRole": "About the Role",
+    "responsibilities": "Responsibilities",
+    "requirements": "Requirements",
+    "benefits": "Benefits & Culture",
+    "aboutCompany": "About {{company}}",
+    "viewCompanyProfile": "View company profile",
+    "shareRole": "Share this job",
+    "similarJobs": "Similar Remote Opportunities"
+  },
+  "applyModal": {
+    "title": "Apply for {{title}}",
+    "subtitle": "Review your application before submitting to {{company}}.",
+    "resume": "Your Resume",
+    "resumeHelp": "Your active profile resume will be shared with the recruiter.",
+    "coverNote": "Cover Note (optional)",
+    "coverNotePlaceholder": "Briefly highlight why you're a great fit for this position...",
+    "submit": "Submit application",
+    "submitting": "Submitting...",
+    "successTitle": "Application submitted!",
+    "successDesc": "Your application has been received by {{company}}. You can track its status in your dashboard."
+  },
+  "salary": {
+    "title": "Remote Tech Salary Benchmarks",
+    "subtitle": "Transparent compensation benchmarks for remote tech roles across Southeast Asia.",
+    "selectRole": "Select Role",
+    "medianSalary": "Median Salary",
+    "range": "Salary Range"
+  }
+}

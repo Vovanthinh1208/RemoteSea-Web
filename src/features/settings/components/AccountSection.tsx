@@ -14,6 +14,7 @@ import {
 } from "@/features/users/users.queries";
 import { useSyncedState } from "@/hooks/useSyncedState";
 import { useToastMutation } from "@/hooks/useToastMutation";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const LANGUAGES = ["English", "Tiếng Việt"] as const;
 const REGIONS = ["Vietnam", "Singapore", "Australia"] as const;
@@ -24,23 +25,31 @@ export const AccountSection = () => {
   const runWithToast = useToastMutation();
   const { data: account } = useMyAccount();
   const updateAccountMutation = useUpdateMyAccount();
+  const { t, setLocale } = useTranslation();
 
   const [phone, setPhone] = useSyncedState(account?.phone ?? "");
 
   const savePhone = () => {
     if (phone === (account?.phone ?? "")) return;
     void runWithToast(() => updateAccountMutation.mutateAsync({ phone }), {
-      error: "Couldn't update phone number",
+      error: t("settings.account.phoneUpdateError"),
     });
   };
 
   const saveField = (
     field: "language" | "region" | "currencyDisplay",
     value: string
-  ) =>
-    runWithToast(() => updateAccountMutation.mutateAsync({ [field]: value }), {
-      error: "Couldn't update that setting",
-    });
+  ) => {
+    if (field === "language") {
+      setLocale(value === "Tiếng Việt" ? "vi" : "en");
+    }
+    return runWithToast(
+      () => updateAccountMutation.mutateAsync({ [field]: value }),
+      {
+        error: t("settings.account.settingUpdateError"),
+      }
+    );
+  };
 
   return (
     <section
@@ -48,16 +57,16 @@ export const AccountSection = () => {
       id="account"
     >
       <SectionHead
-        eyebrow="01 · Identity"
-        help="The email you sign in with and how the product is localised for you."
+        eyebrow={t("settings.account.eyebrow")}
+        help={t("settings.account.help")}
         title={
           <>
-            Your{" "}
+            {t("settings.account.title")}{" "}
             <em
               className="font-serif italic text-brand-700"
               style={EMPHASIS_STYLE}
             >
-              account.
+              .
             </em>
           </>
         }
@@ -65,9 +74,9 @@ export const AccountSection = () => {
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5 sm:col-span-2">
           <label className="block text-[12.5px] font-medium text-neutral-700">
-            Email{" "}
+            {t("settings.account.emailLabel")}{" "}
             <span className="font-normal text-neutral-400">
-              Used to sign in
+              {t("settings.account.emailHelp")}
             </span>
           </label>
           <div className="flex items-center gap-2">
@@ -77,14 +86,16 @@ export const AccountSection = () => {
               value={user?.email ?? ""}
             />
             <span className="inline-flex flex-shrink-0 items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2 py-1 text-[11px] font-medium text-brand-700">
-              <ShieldCheck size={10} /> Verified
+              <ShieldCheck size={10} /> {t("settings.account.verified")}
             </span>
           </div>
         </div>
         <div className="space-y-1.5">
           <label className="block text-[12.5px] font-medium text-neutral-700">
-            Phone{" "}
-            <span className="font-normal text-neutral-400">(optional)</span>
+            {t("settings.account.phoneLabel")}{" "}
+            <span className="font-normal text-neutral-400">
+              {t("settings.account.phoneHelp")}
+            </span>
           </label>
           <input
             className={TEXT_INPUT_CLASS}
@@ -97,7 +108,7 @@ export const AccountSection = () => {
         <div className="grid gap-4 sm:col-span-2 sm:grid-cols-3">
           <div className="space-y-1.5">
             <label className="block text-[12.5px] font-medium text-neutral-700">
-              Language
+              {t("settings.account.languageLabel")}
             </label>
             <select
               className={SELECT_INPUT_CLASS}
@@ -111,7 +122,7 @@ export const AccountSection = () => {
           </div>
           <div className="space-y-1.5">
             <label className="block text-[12.5px] font-medium text-neutral-700">
-              Region
+              {t("settings.account.regionLabel")}
             </label>
             <select
               className={SELECT_INPUT_CLASS}
@@ -125,7 +136,7 @@ export const AccountSection = () => {
           </div>
           <div className="space-y-1.5">
             <label className="block text-[12.5px] font-medium text-neutral-700">
-              Currency display
+              {t("settings.account.currencyLabel")}
             </label>
             <select
               className={SELECT_INPUT_CLASS}

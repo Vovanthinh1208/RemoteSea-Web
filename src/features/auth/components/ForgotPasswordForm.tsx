@@ -9,9 +9,12 @@ import { forgotPassword } from "@/features/auth/auth.service";
 import { TextField } from "@/components/shared/TextField";
 import { applyFormSubmitError } from "@/utils/form-errors";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/i18n";
 
 export const ForgotPasswordForm = () => {
+  const { t } = useTranslation("auth");
   const [isSent, setIsSent] = useState(false);
+  const [sentEmail, setSentEmail] = useState("");
   const [formError, setFormError] = useState<string | null>(null);
   const {
     register,
@@ -27,6 +30,7 @@ export const ForgotPasswordForm = () => {
     setFormError(null);
     try {
       await forgotPassword(values.email);
+      setSentEmail(values.email);
       setIsSent(true);
     } catch (err) {
       setFormError(
@@ -42,7 +46,7 @@ export const ForgotPasswordForm = () => {
   if (isSent) {
     return (
       <div className="rounded-12 border border-brand-200 bg-brand-50 p-4 text-sm text-brand-700">
-        If that email exists, we&apos;ve sent a reset link. Check your inbox.
+        {t("forgotPassword.successDesc", { email: sentEmail })}
       </div>
     );
   }
@@ -52,8 +56,8 @@ export const ForgotPasswordForm = () => {
       <TextField
         error={errors.email?.message}
         id="email"
-        label="Email"
-        placeholder="you@example.com"
+        label={t("forgotPassword.emailLabel")}
+        placeholder={t("forgotPassword.emailPlaceholder")}
         autoComplete="email"
         registration={register("email")}
         type="email"
@@ -68,7 +72,9 @@ export const ForgotPasswordForm = () => {
         type="submit"
         isLoading={isSubmitting}
       >
-        Send reset link
+        {isSubmitting
+          ? t("forgotPassword.submitting")
+          : t("forgotPassword.submit")}
       </Button>
     </form>
   );

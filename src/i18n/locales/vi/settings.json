@@ -1,0 +1,51 @@
+{
+  "nav": {
+    "account": "Tài khoản",
+    "security": "Bảo mật",
+    "connected": "Tài khoản liên kết",
+    "notifications": "Thông báo",
+    "privacy": "Quyền riêng tư & dữ liệu",
+    "danger": "Vùng nguy hiểm"
+  },
+  "account": {
+    "eyebrow": "01 · Định danh",
+    "title": "Tài khoản của bạn",
+    "help": "Email dùng để đăng nhập và các tùy chọn bản địa hóa trải nghiệm của bạn.",
+    "emailLabel": "Email",
+    "emailHelp": "Dùng để đăng nhập",
+    "verified": "Đã xác minh",
+    "phoneLabel": "Số điện thoại",
+    "phoneHelp": "(không bắt buộc)",
+    "phonePlaceholder": "+84 90 123 4567",
+    "languageLabel": "Ngôn ngữ hiển thị",
+    "regionLabel": "Khu vực",
+    "currencyLabel": "Hiển thị tiền tệ",
+    "phoneUpdateError": "Không thể cập nhật số điện thoại",
+    "settingUpdateError": "Không thể lưu cài đặt đó"
+  },
+  "security": {
+    "eyebrow": "02 · Xác thực",
+    "title": "Bảo mật & truy cập",
+    "help": "Bảo vệ tài khoản của bạn bằng mật khẩu mạnh và xác thực nhiều yếu tố.",
+    "changePassword": "Đổi mật khẩu",
+    "currentPassword": "Mật khẩu hiện tại",
+    "newPassword": "Mật khẩu mới",
+    "confirmPassword": "Xác nhận mật khẩu mới",
+    "savePassword": "Cập nhật mật khẩu",
+    "twoFactor": "Xác thực hai yếu tố (2FA)",
+    "twoFactorHelp": "Tăng cường bảo mật với lớp xác thực bổ sung khi đăng nhập tài khoản.",
+    "sessions": "Phiên đăng nhập đang hoạt động",
+    "revokeOthers": "Đăng xuất khỏi tất cả phiên khác"
+  },
+  "danger": {
+    "eyebrow": "06 · Vùng nguy hiểm",
+    "title": "Thao tác tài khoản",
+    "pauseTitle": "Tạm dừng tài khoản",
+    "pauseDesc": "Tạm thời ẩn hồ sơ và đơn ứng tuyển của bạn. Bạn có thể kích hoạt lại bất kỳ lúc nào.",
+    "pauseBtn": "Tạm dừng tài khoản",
+    "reactivateBtn": "Kích hoạt lại tài khoản",
+    "deleteTitle": "Xóa tài khoản",
+    "deleteDesc": "Xóa vĩnh viễn tài khoản, dữ liệu cá nhân và các tin tuyển dụng đang mở của bạn.",
+    "deleteBtn": "Xóa tài khoản của tôi"
+  }
+}

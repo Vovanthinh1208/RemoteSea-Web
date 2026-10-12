@@ -1,0 +1,32 @@
+{
+  "dashboard": {
+    "title": "Bảng Điều Khiển Quản Trị",
+    "subtitle": "Giám sát hệ thống, hàng đợi kiểm duyệt, quản trị người dùng và thống kê nền tảng.",
+    "stats": {
+      "totalUsers": "Tổng người dùng",
+      "activeJobs": "Tin đang mở",
+      "companies": "Doanh nghiệp xác thực",
+      "grossRevenue": "Tổng doanh thu"
+    }
+  },
+  "moderation": {
+    "title": "Hàng Đợi Kiểm Duyệt Tin Tuyển Dụng",
+    "subtitle": "Xem xét các tin tuyển dụng bị gắn cờ và đánh giá rủi ro từ trợ lý AI.",
+    "riskLevel": "Mức độ rủi ro AI",
+    "riskLow": "Rủi ro thấp",
+    "riskMedium": "Rủi ro trung bình",
+    "riskHigh": "Rủi ro cao",
+    "flaggedReasons": "Lý do cảnh báo",
+    "approve": "Duyệt tin",
+    "reject": "Từ chối & Khóa",
+    "emptyQueue": "Không có tin tuyển dụng nào đang chờ kiểm duyệt."
+  },
+  "users": {
+    "title": "Danh Mục Người Dùng",
+    "searchPlaceholder": "Tìm theo tên, email, hoặc vai trò...",
+    "role": "Vai trò",
+    "status": "Trạng thái tài khoản",
+    "ban": "Khóa tài khoản",
+    "unban": "Khôi phục tài khoản"
+  }
+}

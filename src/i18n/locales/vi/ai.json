@@ -1,0 +1,33 @@
+{
+  "chat": {
+    "title": "Trợ lý Tuyển dụng AI RemoteSEA",
+    "greeting": "Xin chào{{name}} — tôi có thể giúp gì cho bạn?",
+    "subtitle": "Đặt câu hỏi về chính sách tuyển dụng hoặc quy trình của RemoteSEA để bắt đầu.",
+    "inputPlaceholder": "Nhập câu hỏi hoặc yêu cầu...",
+    "send": "Gửi",
+    "sending": "Đang suy nghĩ...",
+    "clearHistory": "Xóa cuộc trò chuyện",
+    "suggestedTitle": "Câu hỏi gợi ý",
+    "suggested1": "Chính sách tuyển dụng từ xa của chúng tôi là gì?",
+    "suggested2": "Làm thế nào để đánh giá hồ sơ ứng viên?",
+    "suggested3": "Các bước trong quy trình tuyển dụng của chúng tôi là gì?",
+    "confidence": "Độ tin cậy: {{percent}}%",
+    "sources": "Nguồn tài liệu tham chiếu",
+    "helpful": "Hữu ích",
+    "unhelpful": "Chưa hữu ích",
+    "error": "Không thể nhận phản hồi từ AI. Vui lòng thử lại."
+  },
+  "cvAnalysis": {
+    "title": "Phân Tích CV Thông Minh",
+    "subtitle": "Chấm điểm mức độ tương thích và phân tích hồ sơ ứng viên bằng AI.",
+    "fitScore": "Điểm tương thích ứng viên",
+    "strengths": "Điểm mạnh nổi bật",
+    "areasForImprovement": "Điểm cần cải thiện",
+    "interviewQuestions": "Câu hỏi phỏng vấn đề xuất",
+    "recommendation": "Khuyến nghị tuyển dụng",
+    "analyzing": "Đang phân tích CV bằng AI...",
+    "scoreHigh": "Rất phù hợp",
+    "scoreMedium": "Phù hợp vừa phải",
+    "scoreLow": "Ít phù hợp"
+  }
+}

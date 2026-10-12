@@ -1,0 +1,51 @@
+{
+  "nav": {
+    "account": "Account",
+    "security": "Security",
+    "connected": "Connected",
+    "notifications": "Notifications",
+    "privacy": "Privacy & data",
+    "danger": "Danger zone"
+  },
+  "account": {
+    "eyebrow": "01 · Identity",
+    "title": "Your account",
+    "help": "The email you sign in with and how the product is localised for you.",
+    "emailLabel": "Email",
+    "emailHelp": "Used to sign in",
+    "verified": "Verified",
+    "phoneLabel": "Phone",
+    "phoneHelp": "(optional)",
+    "phonePlaceholder": "+84 90 123 4567",
+    "languageLabel": "Display Language",
+    "regionLabel": "Region",
+    "currencyLabel": "Currency Display",
+    "phoneUpdateError": "Couldn't update phone number",
+    "settingUpdateError": "Couldn't update that setting"
+  },
+  "security": {
+    "eyebrow": "02 · Authentication",
+    "title": "Security & access",
+    "help": "Protect your account with passwords and multi-factor authentication.",
+    "changePassword": "Change Password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "savePassword": "Update password",
+    "twoFactor": "Two-Factor Authentication",
+    "twoFactorHelp": "Add an extra layer of security when signing into your account.",
+    "sessions": "Active Sessions",
+    "revokeOthers": "Log out of all other sessions"
+  },
+  "danger": {
+    "eyebrow": "06 · Danger Zone",
+    "title": "Account actions",
+    "pauseTitle": "Pause my account",
+    "pauseDesc": "Temporarily hides your profile and applications. You can reactivate anytime.",
+    "pauseBtn": "Pause account",
+    "reactivateBtn": "Reactivate account",
+    "deleteTitle": "Delete account",
+    "deleteDesc": "Permanently deletes your account, personal data, and active listings.",
+    "deleteBtn": "Delete my account"
+  }
+}

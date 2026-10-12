@@ -1,8 +1,7 @@
 import * as React from "react";
 import { cn } from "@/utils/cn";
 
-export interface StickyBottomBarProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface StickyBottomBarProps extends React.HTMLAttributes<HTMLDivElement> {
   statusText?: React.ReactNode;
   isSaving?: boolean;
   statusDotColor?: string;

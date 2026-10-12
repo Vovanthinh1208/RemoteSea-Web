@@ -16,8 +16,10 @@ import { applyFormSubmitError } from "@/utils/form-errors";
 import { isSafeInternalPath } from "@/utils/safe-redirect";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/i18n";
 
 export const LoginForm = () => {
+  const { t } = useTranslation("auth");
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const rawCallbackUrl = searchParams.get("callbackUrl");
@@ -85,14 +87,14 @@ export const LoginForm = () => {
   return (
     <>
       <OAuthButtons />
-      <OrDivider label="or with email" />
+      <OrDivider label={t("login.orDivider")} />
 
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <TextField
           error={errors.email?.message}
           id="email"
-          label="Email"
-          placeholder="you@example.com"
+          label={t("login.emailLabel")}
+          placeholder={t("login.emailPlaceholder")}
           autoComplete="email"
           registration={register("email")}
           type="email"
@@ -101,16 +103,16 @@ export const LoginForm = () => {
         <TextField
           error={errors.password?.message}
           id="password"
-          label="Password"
+          label={t("login.passwordLabel")}
           labelSlot={
             <Link
               className="rounded-4 text-xs text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.forgotPassword}
             >
-              Forgot?
+              {t("login.forgotPassword")}
             </Link>
           }
-          placeholder="••••••••"
+          placeholder={t("login.passwordPlaceholder")}
           autoComplete="current-password"
           registration={register("password")}
           type="password"
@@ -122,7 +124,7 @@ export const LoginForm = () => {
             type="checkbox"
             {...register("remember")}
           />
-          Remember me
+          {t("login.rememberMe")}
         </label>
 
         {formError && <p className="text-sm text-red-600">{formError}</p>}
@@ -134,7 +136,7 @@ export const LoginForm = () => {
           type="submit"
           isLoading={isSubmitting}
         >
-          Sign in
+          {isSubmitting ? t("login.submitting") : t("login.submit")}
         </Button>
       </form>
     </>

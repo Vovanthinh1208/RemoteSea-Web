@@ -137,7 +137,7 @@ export const TwoFactorSection = () => {
 
       {step === "setting_up" && setup && (
         <div className="py-4">
-          <div className="rounded-14 space-y-4 border border-neutral-100 bg-neutral-50/60 p-4">
+          <div className="space-y-4 rounded-14 border border-neutral-100 bg-neutral-50/60 p-4">
             <p className="text-[12.5px] leading-relaxed text-neutral-600">
               Scan this QR code with your authenticator app (Google
               Authenticator, 1Password, Authy…), then enter the 6-digit code it
@@ -197,7 +197,7 @@ export const TwoFactorSection = () => {
 
       {step === "backup_codes" && (
         <div className="py-4">
-          <div className="rounded-14 space-y-4 border border-brand-100 bg-brand-50/40 p-4">
+          <div className="space-y-4 rounded-14 border border-brand-100 bg-brand-50/40 p-4">
             <p className="flex items-center gap-2 text-[13px] font-medium text-neutral-900">
               <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-brand-600 text-white">
                 <Check size={12} />
@@ -243,7 +243,7 @@ export const TwoFactorSection = () => {
 
       {step === "disabling" && (
         <div className="py-4">
-          <div className="rounded-14 space-y-3 border border-red-100 bg-red-50/40 p-4">
+          <div className="space-y-3 rounded-14 border border-red-100 bg-red-50/40 p-4">
             <p className="text-[12.5px] leading-relaxed text-neutral-600">
               Enter your password to disable two-factor authentication.
             </p>

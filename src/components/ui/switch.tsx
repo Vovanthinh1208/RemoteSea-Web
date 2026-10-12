@@ -1,8 +1,10 @@
 import * as React from "react";
 import { cn } from "@/utils/cn";
 
-export interface SwitchProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onChange"> {
+export interface SwitchProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  "onChange"
+> {
   checked?: boolean;
   /** Backward-compatible alias for checked */
   on?: boolean;

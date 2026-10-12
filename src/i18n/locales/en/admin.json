@@ -1,0 +1,32 @@
+{
+  "dashboard": {
+    "title": "Admin Console",
+    "subtitle": "System health, moderation queues, user management, and platform analytics.",
+    "stats": {
+      "totalUsers": "Total Users",
+      "activeJobs": "Active Jobs",
+      "companies": "Verified Companies",
+      "grossRevenue": "Gross Revenue"
+    }
+  },
+  "moderation": {
+    "title": "Job Moderation Queue",
+    "subtitle": "Review flagged listings and automated AI risk assessments.",
+    "riskLevel": "AI Risk Level",
+    "riskLow": "Low Risk",
+    "riskMedium": "Medium Risk",
+    "riskHigh": "High Risk",
+    "flaggedReasons": "Flagged Reasons",
+    "approve": "Approve Job",
+    "reject": "Reject & Flag",
+    "emptyQueue": "No listings awaiting moderation."
+  },
+  "users": {
+    "title": "User Directory",
+    "searchPlaceholder": "Search by name, email, or role...",
+    "role": "Role",
+    "status": "Account Status",
+    "ban": "Suspend Account",
+    "unban": "Restore Account"
+  }
+}

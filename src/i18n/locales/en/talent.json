@@ -1,0 +1,70 @@
+{
+  "dashboard": {
+    "title": "Talent Dashboard",
+    "welcome": "Welcome back, {{name}}",
+    "subtitle": "Track your applications, discover tailored job matches, and grow your career.",
+    "profileStrength": "Profile Strength",
+    "completeness": "{{percent}}% complete",
+    "improveProfile": "Add more details to boost visibility to top employers.",
+    "viewPublicProfile": "View public profile",
+    "editProfile": "Edit profile",
+    "stats": {
+      "applications": "Applications",
+      "savedJobs": "Saved Jobs",
+      "interviews": "Interviews",
+      "profileViews": "Profile Views"
+    },
+    "recentApplications": "Recent Applications",
+    "noApplications": "You haven't submitted any applications yet.",
+    "exploreJobs": "Explore open roles",
+    "recommendedJobs": "Recommended For You",
+    "openToWorkTitle": "Open to opportunities",
+    "openToWorkSubtitle": "Signal to employers that you are available for remote roles."
+  },
+  "profile": {
+    "title": "Your Profile",
+    "subtitle": "Manage your public resume, professional experience, and preferences.",
+    "basics": "Basic Info",
+    "experience": "Work Experience",
+    "skills": "Skills & Expertise",
+    "education": "Education",
+    "resume": "Resume / CV",
+    "headline": "Professional Headline",
+    "headlinePlaceholder": "e.g. Senior Full-Stack Engineer · React & Node.js",
+    "bio": "About You",
+    "bioPlaceholder": "Briefly describe your background, strengths, and what you're looking for...",
+    "location": "Location / Country",
+    "website": "Personal Website / Portfolio",
+    "resumeUploadTitle": "Upload your resume",
+    "resumeUploadDesc": "PDF format up to 5MB. Employers will review this when you apply.",
+    "uploadSuccess": "Resume uploaded successfully.",
+    "openToWork": "Open to work",
+    "openToWorkDesc": "Allow verified employers to discover your profile in candidate search.",
+    "addExperience": "Add Experience",
+    "roleTitle": "Job Title",
+    "companyName": "Company Name",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "currentJob": "I currently work here",
+    "addSkill": "Add Skill",
+    "addEducation": "Add Education"
+  },
+  "applications": {
+    "title": "My Applications",
+    "subtitle": "Track the hiring progress for all your job submissions.",
+    "emptyTitle": "No applications yet",
+    "emptyDesc": "Start applying to curated remote roles across Southeast Asia.",
+    "browseJobs": "Browse open jobs",
+    "appliedDate": "Applied on {{date}}",
+    "timeline": "Application Timeline",
+    "messages": "Messages with Recruiter",
+    "interviewSchedule": "Interview Details"
+  },
+  "saved": {
+    "title": "Saved Jobs",
+    "subtitle": "Bookmark opportunities you want to apply for later.",
+    "emptyTitle": "No saved jobs",
+    "emptyDesc": "Jobs you save while browsing will show up here.",
+    "browseJobs": "Explore jobs"
+  }
+}

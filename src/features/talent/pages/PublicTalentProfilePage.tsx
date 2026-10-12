@@ -87,9 +87,7 @@ export const PublicTalentProfilePage = () => {
               timezone={profile.timezone}
             />
 
-            <PublicTalentExperience
-              workExperiences={profile.workExperiences}
-            />
+            <PublicTalentExperience workExperiences={profile.workExperiences} />
 
             <PublicTalentHighlights
               hasBio={!!profile.bio}

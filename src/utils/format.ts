@@ -8,13 +8,14 @@
 export const formatSalaryRange = (
   min: number | null | undefined,
   max: number | null | undefined,
-  opts: { prefix?: string } = {}
+  opts: { prefix?: string; locale?: string } = {}
 ): string | null => {
   const prefix = opts.prefix ?? "$";
+  const loc = opts.locale ?? "en-US";
   if (min != null && max != null)
-    return `${prefix}${min.toLocaleString()}–${max.toLocaleString()}`;
-  if (min != null) return `${prefix}${min.toLocaleString()}+`;
-  if (max != null) return `Up to ${prefix}${max.toLocaleString()}`;
+    return `${prefix}${min.toLocaleString(loc)}–${max.toLocaleString(loc)}`;
+  if (min != null) return `${prefix}${min.toLocaleString(loc)}+`;
+  if (max != null) return `Up to ${prefix}${max.toLocaleString(loc)}`;
   return null;
 };
 
@@ -24,16 +25,17 @@ export const formatSalaryRange = (
  * toLocaleString'd on the pricing page ("$1,200"); the same number showed two
  * ways. This is the one formatter for those.
  */
-export const formatUsd = (amount: number): string =>
-  `$${amount.toLocaleString()}`;
+export const formatUsd = (amount: number, locale: string = "en-US"): string =>
+  `$${amount.toLocaleString(locale)}`;
 
 export const formatSalaryWithCurrency = (
   min: number | null,
   max: number | null,
-  currency: string
+  currency: string,
+  locale: string = "en-US"
 ): string | null => {
   if (!min && !max) return null;
-  const fmt = (n: number) => `${currency} ${n.toLocaleString()}`;
+  const fmt = (n: number) => `${currency} ${n.toLocaleString(locale)}`;
   if (min && max) return `${fmt(min)}–${fmt(max)}`;
   return fmt((min ?? max)!);
 };
@@ -48,10 +50,17 @@ const HOURS_PER_DAY = 24;
  * collapses "no data" to 0 in the private aggregate, so 0 is ambiguous with
  * "responds instantly" and must not be shown as a real number.
  */
-export const formatResponseTime = (hours: number): string => {
+export const formatResponseTime = (
+  hours: number,
+  locale: string = "en"
+): string => {
   if (hours === 0) return "—";
-  if (hours < HOURS_PER_DAY) return `${Math.round(hours)}h`;
-  return `${Math.round((hours / HOURS_PER_DAY) * 10) / 10}d`;
+  const isVi = locale.startsWith("vi");
+  if (hours < HOURS_PER_DAY) {
+    return isVi ? `${Math.round(hours)} giờ` : `${Math.round(hours)}h`;
+  }
+  const days = Math.round((hours / HOURS_PER_DAY) * 10) / 10;
+  return isVi ? `${days} ngày` : `${days}d`;
 };
 
 /**
@@ -62,8 +71,11 @@ export const formatResponseTime = (hours: number): string => {
  * meaning, so a local-time read near a month boundary shouldn't be able to
  * shift which month renders.
  */
-export const formatMonthYear = (iso: string): string =>
-  new Date(iso).toLocaleDateString("en-US", {
+export const formatMonthYear = (
+  iso: string,
+  locale: string = "en-US"
+): string =>
+  new Date(iso).toLocaleDateString(locale, {
     month: "short",
     year: "numeric",
     timeZone: "UTC",
@@ -77,7 +89,8 @@ export const formatMonthYear = (iso: string): string =>
  */
 export const formatDuration = (
   startIso: string,
-  endIso: string | null
+  endIso: string | null,
+  locale: string = "en"
 ): string => {
   const start = new Date(startIso);
   const end = endIso ? new Date(endIso) : new Date();
@@ -88,6 +101,16 @@ export const formatDuration = (
   );
   const years = Math.floor(totalMonths / 12);
   const months = totalMonths % 12;
+  const isVi = locale.startsWith("vi");
+
+  if (isVi) {
+    return (
+      [years ? `${years} năm` : null, months ? `${months} tháng` : null]
+        .filter(Boolean)
+        .join(" ") || "< 1 tháng"
+    );
+  }
+
   return (
     [
       years ? `${years} yr${years > 1 ? "s" : ""}` : null,

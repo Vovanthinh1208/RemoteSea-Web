@@ -1,0 +1,56 @@
+{
+  "search": {
+    "title": "Tìm Việc Làm Từ Xa tại Đông Nam Á",
+    "subtitle": "Khám phá các cơ hội việc làm lập trình, thiết kế, marketing và quản lý từ xa chất lượng cao.",
+    "searchPlaceholder": "Chức danh, từ khóa, hoặc tên công ty...",
+    "locationPlaceholder": "Quốc gia hoặc múi giờ (ví dụ: Việt Nam, Singapore)",
+    "filterType": "Hình thức",
+    "filterLevel": "Kinh nghiệm",
+    "filterCategory": "Danh mục",
+    "filterSalary": "Mức lương tối thiểu",
+    "featuredOnly": "Chỉ tin nổi bật",
+    "resultsFound": "Hiện có {{count}} việc làm remote",
+    "noJobsTitle": "Không tìm thấy việc làm phù hợp",
+    "noJobsDesc": "Thử điều chỉnh từ khóa tìm kiếm hoặc xóa các bộ lọc đã chọn."
+  },
+  "card": {
+    "featured": "Nổi bật",
+    "urgent": "Tuyển gấp",
+    "remote": "Làm từ xa",
+    "salaryNotSpecified": "Thỏa thuận",
+    "viewRole": "Xem chi tiết"
+  },
+  "detail": {
+    "applyNow": "Ứng tuyển vị trí này",
+    "applied": "Bạn đã nộp đơn ứng tuyển",
+    "saveJob": "Lưu việc làm",
+    "saved": "Đã lưu",
+    "aboutRole": "Mô tả công việc",
+    "responsibilities": "Trách nhiệm chính",
+    "requirements": "Yêu cầu ứng viên",
+    "benefits": "Quyền lợi & Văn hóa",
+    "aboutCompany": "Về {{company}}",
+    "viewCompanyProfile": "Xem hồ sơ công ty",
+    "shareRole": "Chia sẻ việc làm",
+    "similarJobs": "Các cơ hội việc làm tương tự"
+  },
+  "applyModal": {
+    "title": "Ứng tuyển vị trí {{title}}",
+    "subtitle": "Xem lại thông tin ứng tuyển trước khi gửi đến {{company}}.",
+    "resume": "CV của bạn",
+    "resumeHelp": "CV hiện tại trong hồ sơ sẽ được chia sẻ trực tiếp tới nhà tuyển dụng.",
+    "coverNote": "Thư giới thiệu ngắn (không bắt buộc)",
+    "coverNotePlaceholder": "Nêu ngắn gọn lý do bạn phù hợp nhất với vị trí này...",
+    "submit": "Gửi hồ sơ ứng tuyển",
+    "submitting": "Đang gửi hồ sơ...",
+    "successTitle": "Nộp đơn ứng tuyển thành công!",
+    "successDesc": "Hồ sơ của bạn đã được chuyển tới {{company}}. Bạn có thể theo dõi tiến độ trong bảng điều khiển."
+  },
+  "salary": {
+    "title": "Bảng Mức Lương Công Nghệ Remote",
+    "subtitle": "Thống kê mức thu nhập minh bạch cho các vị trí làm việc từ xa tại Đông Nam Á.",
+    "selectRole": "Chọn vị trí",
+    "medianSalary": "Mức lương trung vị",
+    "range": "Khoảng thu nhập"
+  }
+}

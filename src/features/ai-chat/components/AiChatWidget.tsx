@@ -16,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/utils/cn";
+import { useTranslation } from "@/i18n/useTranslation";
 import { AiChatMessageBubble } from "./AiChatMessageBubble";
 import { AiChatComposer } from "./AiChatComposer";
 import { AiChatHistoryMenu } from "./AiChatHistoryMenu";
@@ -28,6 +29,7 @@ const NEAR_BOTTOM_THRESHOLD_PX = 80;
 
 export const AiChatWidget = () => {
   const { user } = useAuth();
+  const { t, locale } = useTranslation("ai");
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -152,7 +154,7 @@ export const AiChatWidget = () => {
         });
         setSelectedConversationId(result.conversationId);
       },
-      { error: "Couldn't get an answer — try again" }
+      { error: t("chat.error") }
     );
 
     setPendingQuestion(null);
@@ -229,7 +231,7 @@ export const AiChatWidget = () => {
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
                   <p className="truncate bg-gradient-to-r from-brand-700 to-brand-500 bg-clip-text text-[15px] font-semibold text-transparent">
-                    RemoteSea Assistant
+                    {t("chat.title")}
                   </p>
                   <span className="relative flex h-1.5 w-1.5 flex-shrink-0">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
@@ -237,7 +239,9 @@ export const AiChatWidget = () => {
                   </span>
                 </div>
                 <p className="truncate text-[12.5px] text-neutral-400">
-                  Ask about hiring policies, or a specific application.
+                  {locale === "vi"
+                    ? "Hỏi về chính sách tuyển dụng hoặc hồ sơ ứng viên."
+                    : "Ask about hiring policies, or a specific application."}
                 </p>
               </div>
             </div>
@@ -253,13 +257,15 @@ export const AiChatWidget = () => {
                 onSelectConversation={(id) => setSelectedConversationId(id)}
               />
               <button
-                aria-label="New chat"
+                aria-label={
+                  locale === "vi" ? "Cuộc trò chuyện mới" : "New chat"
+                }
                 className="flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-1.5 text-[12px] font-medium text-brand-700 transition-colors hover:bg-brand-100 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
                 onClick={startNewChat}
               >
                 <Plus size={14} />
-                New chat
+                {locale === "vi" ? "Đoạn chat mới" : "New chat"}
               </button>
               <button
                 aria-label="Close"
@@ -326,10 +332,7 @@ export const AiChatWidget = () => {
                     />
                   ))}
                   {pendingQuestion && (
-                    <AiChatMessageBubble
-                      pending
-                      question={pendingQuestion}
-                    />
+                    <AiChatMessageBubble pending question={pendingQuestion} />
                   )}
                 </div>
               )}

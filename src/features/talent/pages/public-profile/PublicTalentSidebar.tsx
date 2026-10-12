@@ -11,7 +11,11 @@ import {
 } from "lucide-react";
 import { safeExternalUrl } from "@/utils/safe-url";
 import { ROUTES } from "@/constants/routes";
-import type { EmploymentType, TalentProfile, TimezoneOverlap } from "@/types/talent";
+import type {
+  EmploymentType,
+  TalentProfile,
+  TimezoneOverlap,
+} from "@/types/talent";
 
 const EMPLOYMENT_LABELS: Record<EmploymentType, string> = {
   FULL_TIME: "Full-time",
@@ -115,9 +119,7 @@ export const PublicTalentSidebar = ({
               )}
               <div className="flex items-center justify-between gap-2">
                 <dt className="text-neutral-500">Remote level</dt>
-                <dd className="font-medium text-neutral-800">
-                  {remoteLevel}
-                </dd>
+                <dd className="font-medium text-neutral-800">{remoteLevel}</dd>
               </div>
               {profile.timezoneOverlap.length > 0 && (
                 <div className="flex items-center justify-between gap-2">
@@ -162,9 +164,7 @@ export const PublicTalentSidebar = ({
                     size={14}
                   />
                   <div>
-                    <p className="font-medium text-neutral-800">
-                      {lang.title}
-                    </p>
+                    <p className="font-medium text-neutral-800">{lang.title}</p>
                     {lang.subtitle && (
                       <p className="text-[11px] text-neutral-400">
                         {lang.subtitle}
@@ -215,10 +215,7 @@ export const PublicTalentSidebar = ({
                     size={14}
                   />
                 ) : (
-                  <Mail
-                    className="flex-shrink-0 text-neutral-300"
-                    size={14}
-                  />
+                  <Mail className="flex-shrink-0 text-neutral-300" size={14} />
                 )}
                 <div className="min-w-0">
                   <p className="font-medium text-neutral-800">
@@ -247,14 +244,9 @@ export const PublicTalentSidebar = ({
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <Mail
-                  className="flex-shrink-0 text-neutral-300"
-                  size={14}
-                />
+                <Mail className="flex-shrink-0 text-neutral-300" size={14} />
                 <div>
-                  <p className="font-medium text-neutral-800">
-                    ID verified
-                  </p>
+                  <p className="font-medium text-neutral-800">ID verified</p>
                   <p className="text-[11px] text-neutral-400">
                     Not yet uploaded
                   </p>
