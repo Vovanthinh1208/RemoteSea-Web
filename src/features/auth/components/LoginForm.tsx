@@ -87,7 +87,7 @@ export const LoginForm = () => {
   return (
     <>
       <OAuthButtons />
-      <OrDivider label={t("login.orDivider")} />
+      <OrDivider label={t("login.orContinueWith")} />
 
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <TextField

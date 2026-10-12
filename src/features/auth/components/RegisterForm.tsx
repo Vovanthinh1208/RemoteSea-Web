@@ -106,7 +106,7 @@ export const RegisterForm = () => {
       </div>
 
       <OAuthButtons />
-      <OrDivider label={t("register.orDivider")} />
+      <OrDivider label={t("login.orContinueWith")} />
 
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <TextField

@@ -4,14 +4,19 @@ import type { TranslationParams } from "@/i18n/types";
 
 export const useTranslation = (namespace?: string) => {
   const i18n = useI18n();
+  const { t: translate } = i18n;
 
   const t = useCallback(
     (key: string, params?: TranslationParams) => {
-      const fullKey =
-        namespace && !key.includes(".") ? `${namespace}.${key}` : key;
-      return i18n.t(fullKey, params);
+      if (!namespace) return translate(key, params);
+
+      // Scope to the namespace first (supports nested keys like "login.submit"),
+      // then fall back to the unscoped key (e.g. "common.save" or "auth.login.x").
+      const scopedKey = `${namespace}.${key}`;
+      const scoped = translate(scopedKey, params);
+      return scoped !== scopedKey ? scoped : translate(key, params);
     },
-    [i18n, namespace]
+    [translate, namespace]
   );
 
   return {
