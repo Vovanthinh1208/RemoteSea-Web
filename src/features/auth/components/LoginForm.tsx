@@ -17,6 +17,7 @@ import { useSubmitError } from "@/hooks/useSubmitError";
 import { isSafeInternalPath } from "@/utils/safe-redirect";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
+import { resolveVisiblePath } from "@/features/sprints/sprint-visibility";
 import { useTranslation } from "@/i18n";
 
 export const LoginForm = () => {
@@ -27,7 +28,7 @@ export const LoginForm = () => {
   const callbackUrl =
     rawCallbackUrl && isSafeInternalPath(rawCallbackUrl)
       ? rawCallbackUrl
-      : ROUTES.jobs;
+      : resolveVisiblePath(ROUTES.jobs, ROUTES.settings);
   const { login } = useAuth();
   const { toast } = useToast();
   const submitError = useSubmitError();

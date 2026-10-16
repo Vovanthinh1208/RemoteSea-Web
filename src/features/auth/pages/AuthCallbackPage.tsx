@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/toast";
 import { FullPageLoader } from "@/components/ui/spinner";
 import { ROUTES } from "@/constants/routes";
+import { resolveVisiblePath } from "@/features/sprints/sprint-visibility";
 import { useTranslation } from "@/i18n/useTranslation";
 
 /**
@@ -39,7 +40,10 @@ export const AuthCallbackPage = () => {
     completeOAuthExchange(code)
       .then((user) => {
         navigate(
-          user.role === "EMPLOYER" ? ROUTES.employerDashboard : ROUTES.talent,
+          resolveVisiblePath(
+            user.role === "EMPLOYER" ? ROUTES.employerDashboard : ROUTES.talent,
+            ROUTES.settings
+          ),
           {
             replace: true,
           }

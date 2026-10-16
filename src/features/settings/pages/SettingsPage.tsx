@@ -11,6 +11,7 @@ import { PrivacyDataSection } from "@/features/settings/components/PrivacyDataSe
 import { DangerZoneSection } from "@/features/settings/components/DangerZoneSection";
 import { SettingsSaveBar } from "@/features/settings/components/SettingsSaveBar";
 import type { UserRole } from "@/types/user";
+import { resolveVisiblePath } from "@/features/sprints/sprint-visibility";
 import { useTranslation } from "@/i18n/useTranslation";
 
 const dashboardRouteForRole = (role?: UserRole): string => {
@@ -23,7 +24,10 @@ export const SettingsPage = () => {
   const { t } = useTranslation("settings");
   useDocumentTitle(t("page.docTitle"));
   const { user } = useAuth();
-  const dashboardRoute = dashboardRouteForRole(user?.role);
+  const dashboardRoute = resolveVisiblePath(
+    dashboardRouteForRole(user?.role),
+    ROUTES.home
+  );
 
   return (
     <div className="min-h-screen bg-neutral-50">

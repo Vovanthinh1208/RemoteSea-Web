@@ -10,6 +10,10 @@ import { NotificationBell } from "@/components/layout/NotificationBell";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { useTranslation } from "@/i18n/useTranslation";
+import {
+  isPathVisible,
+  isSprintShown,
+} from "@/features/sprints/sprint-visibility";
 
 // Shared by both the desktop row and the mobile panel below
 const ACTION_LINK_CLASS =
@@ -29,10 +33,15 @@ export const Navbar = () => {
     { href: "/salary", label: t("nav.salary") },
     { href: "/community", label: t("nav.community") },
     { href: "/blog", label: t("nav.blog") },
-  ];
+  ].filter(({ href }) => isPathVisible(href));
 
   const dashboardHref =
     user?.role === "EMPLOYER" ? ROUTES.employerDashboard : ROUTES.talent;
+  const showEmployers = isPathVisible(ROUTES.employer);
+  const showSaved = isPathVisible(ROUTES.saved);
+  const showDashboard = isPathVisible(dashboardHref);
+  const showAdmin = isPathVisible(ROUTES.admin);
+  const showNotifications = isSprintShown(3);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [confirmSignOut, setConfirmSignOut] = useState(false);
 
@@ -97,31 +106,37 @@ export const Navbar = () => {
 
         {/* Actions — desktop only */}
         <div className="hidden items-center gap-2 xl:flex">
-          <Link className={ACTION_LINK_CLASS} to={ROUTES.employer}>
-            {t("nav.forEmployers")}
-          </Link>
+          {showEmployers && (
+            <Link className={ACTION_LINK_CLASS} to={ROUTES.employer}>
+              {t("nav.forEmployers")}
+            </Link>
+          )}
 
-          <Link
-            aria-label={t("nav.saved")}
-            className="grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
-            to={ROUTES.saved}
-          >
-            <Bookmark size={17} />
-          </Link>
+          {showSaved && (
+            <Link
+              aria-label={t("nav.saved")}
+              className="grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
+              to={ROUTES.saved}
+            >
+              <Bookmark size={17} />
+            </Link>
+          )}
 
           <LanguageSwitcher />
 
           {user ? (
             <>
-              <Link className={ACTION_LINK_CLASS} to={dashboardHref}>
-                {t("nav.dashboard")}
-              </Link>
-              {user.role === "ADMIN" && (
+              {showDashboard && (
+                <Link className={ACTION_LINK_CLASS} to={dashboardHref}>
+                  {t("nav.dashboard")}
+                </Link>
+              )}
+              {user.role === "ADMIN" && showAdmin && (
                 <Link className={ACTION_LINK_CLASS} to={ROUTES.admin}>
                   {t("nav.admin")}
                 </Link>
               )}
-              <NotificationBell />
+              {showNotifications && <NotificationBell />}
               <Link
                 aria-label={t("nav.settings")}
                 className="grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
@@ -153,7 +168,7 @@ export const Navbar = () => {
 
         {/* Mobile controls */}
         <div className="flex items-center gap-1 xl:hidden">
-          {user && <NotificationBell />}
+          {user && showNotifications && <NotificationBell />}
           <button
             aria-expanded={mobileOpen}
             aria-label={mobileOpen ? t("nav.closeMenu") : t("nav.openMenu")}
@@ -192,19 +207,25 @@ export const Navbar = () => {
           <div className="my-2 border-t border-neutral-200" />
 
           <div className="flex flex-col">
-            <Link className={MOBILE_ACTION_LINK_CLASS} to={ROUTES.employer}>
-              {t("nav.forEmployers")}
-            </Link>
-            <Link className={MOBILE_ACTION_LINK_CLASS} to={ROUTES.saved}>
-              {t("nav.saved")}
-            </Link>
+            {showEmployers && (
+              <Link className={MOBILE_ACTION_LINK_CLASS} to={ROUTES.employer}>
+                {t("nav.forEmployers")}
+              </Link>
+            )}
+            {showSaved && (
+              <Link className={MOBILE_ACTION_LINK_CLASS} to={ROUTES.saved}>
+                {t("nav.saved")}
+              </Link>
+            )}
 
             {user ? (
               <>
-                <Link className={MOBILE_ACTION_LINK_CLASS} to={dashboardHref}>
-                  {t("nav.dashboard")}
-                </Link>
-                {user.role === "ADMIN" && (
+                {showDashboard && (
+                  <Link className={MOBILE_ACTION_LINK_CLASS} to={dashboardHref}>
+                    {t("nav.dashboard")}
+                  </Link>
+                )}
+                {user.role === "ADMIN" && showAdmin && (
                   <Link className={MOBILE_ACTION_LINK_CLASS} to={ROUTES.admin}>
                     {t("nav.admin")}
                   </Link>

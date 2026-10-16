@@ -7,6 +7,12 @@ import { FullPageLoader } from "@/components/ui/spinner";
 import { OfflineBanner } from "@/components/shared/OfflineBanner";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "@/i18n/useTranslation";
+import { SprintUnavailablePage } from "@/features/sprints/pages/SprintUnavailablePage";
+import { sprintForPath } from "@/features/sprints/sprint-routes";
+import {
+  getSprintFocus,
+  isSprintShown,
+} from "@/features/sprints/sprint-visibility";
 
 // Lazy, not a static import: AiChatWidget pulls in react-markdown +
 // remark-breaks (AiMarkdown.tsx) — that chain alone put the boot-critical
@@ -25,6 +31,8 @@ export const RootLayout = () => {
   const navigationType = useNavigationType();
   const mainRef = useRef<HTMLElement>(null);
   const { user } = useAuth();
+  const sprintFocus = getSprintFocus();
+  const routeSprint = sprintForPath(pathname);
 
   // Without this, a screen-reader user clicking a nav link gets no indication
   // navigation happened — focus stays wherever it was on the old page. Skipped
@@ -67,12 +75,16 @@ export const RootLayout = () => {
       >
         <ErrorBoundary resetKey={pathname} scoped>
           <Suspense fallback={<FullPageLoader />}>
-            <Outlet />
+            {isSprintShown(routeSprint, sprintFocus) ? (
+              <Outlet />
+            ) : (
+              <SprintUnavailablePage focus={sprintFocus} sprint={routeSprint} />
+            )}
           </Suspense>
         </ErrorBoundary>
       </main>
       <Footer />
-      {user && (
+      {user && isSprintShown(4, sprintFocus) && (
         <Suspense fallback={null}>
           <AiChatWidget />
         </Suspense>

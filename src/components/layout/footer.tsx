@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/i18n/useTranslation";
+import { isPathVisible } from "@/features/sprints/sprint-visibility";
 
 export const Footer = () => {
   const { t } = useTranslation();
@@ -95,16 +96,21 @@ export const Footer = () => {
                 {col.heading}
               </h5>
               <ul className="space-y-2">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      className="text-sm text-neutral-500 transition-colors hover:text-neutral-900"
-                      to={link.href}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
+                {col.links
+                  .filter(
+                    (link) =>
+                      !link.href.startsWith("/") || isPathVisible(link.href)
+                  )
+                  .map((link) => (
+                    <li key={link.label}>
+                      <Link
+                        className="text-sm text-neutral-500 transition-colors hover:text-neutral-900"
+                        to={link.href}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
               </ul>
             </div>
           ))}

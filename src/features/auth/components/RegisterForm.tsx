@@ -16,6 +16,7 @@ import { isSafeInternalPath } from "@/utils/safe-redirect";
 import { ROUTES } from "@/constants/routes";
 import { cn } from "@/utils/cn";
 import { Button } from "@/components/ui/button";
+import { resolveVisiblePath } from "@/features/sprints/sprint-visibility";
 import { useTranslation } from "@/i18n";
 
 export const RegisterForm = () => {
@@ -56,7 +57,10 @@ export const RegisterForm = () => {
       const user = await registerAccount(values);
       navigate(
         callbackUrl ??
-          (user.role === "EMPLOYER" ? ROUTES.employerDashboard : "/profile"),
+          resolveVisiblePath(
+            user.role === "EMPLOYER" ? ROUTES.employerDashboard : "/profile",
+            ROUTES.settings
+          ),
         { replace: true }
       );
     } catch (err) {

@@ -21,5 +21,13 @@
   "empty": {
     "title": "Không có sprint để hiển thị",
     "desc": "VITE_VISIBLE_SPRINTS không khớp sprint nào. Dùng số sprint như 1, hoặc all."
+  },
+  "unavailable": {
+    "title": "Màn hình này đang được ẩn",
+    "descSprint": "Màn hình thuộc Sprint {{sprint}}. Trong giai đoạn kiểm thử này chỉ mở các màn hình của Sprint {{focus}}.",
+    "descUnassigned": "Màn hình không thuộc backlog của sprint nào. Trong giai đoạn kiểm thử này chỉ mở các màn hình của Sprint {{focus}}.",
+    "restore": "Bỏ biến VITE_SPRINT_FOCUS để hiển thị lại mọi màn hình.",
+    "home": "Về trang chủ",
+    "settings": "Cài đặt tài khoản"
   }
 }

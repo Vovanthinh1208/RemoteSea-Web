@@ -21,5 +21,13 @@
   "empty": {
     "title": "No sprint to show",
     "desc": "VITE_VISIBLE_SPRINTS does not match any sprint. Use a sprint number such as 1, or all."
+  },
+  "unavailable": {
+    "title": "This screen is hidden for now",
+    "descSprint": "It belongs to Sprint {{sprint}}. Only Sprint {{focus}} screens are available during this testing phase.",
+    "descUnassigned": "It is not part of any sprint's backlog. Only Sprint {{focus}} screens are available during this testing phase.",
+    "restore": "Unset VITE_SPRINT_FOCUS to show every screen again.",
+    "home": "Back to home",
+    "settings": "Account settings"
   }
 }
