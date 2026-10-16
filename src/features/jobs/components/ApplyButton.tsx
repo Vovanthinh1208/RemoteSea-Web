@@ -76,7 +76,11 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
         description: t("apply.sentDesc"),
       });
     } catch (err) {
-      if (err instanceof ApiError && err.status === ALREADY_APPLIED_STATUS) {
+      if (
+        err instanceof ApiError &&
+        err.status === ALREADY_APPLIED_STATUS &&
+        err.code === "ALREADY_APPLIED"
+      ) {
         setState("applied");
         toast({ variant: "info", title: t("apply.alreadyApplied") });
         return;

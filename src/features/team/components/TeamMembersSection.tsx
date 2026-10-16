@@ -82,8 +82,10 @@ const MemberRow = ({ member, isOwner, isSelf }: MemberRowProps) => {
   };
 
   const handleTransfer = async () => {
-    await applyRole("OWNER", password);
-    closeConfirm();
+    // Stay open on a wrong password so it can be retyped; close once it worked.
+    const done = await applyRole("OWNER", password);
+    if (done) closeConfirm();
+    else setPassword("");
   };
 
   const handleRemove = async () => {

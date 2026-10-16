@@ -110,8 +110,10 @@ export const JobDetailPage = () => {
       </Link>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
-        {/* Main content */}
-        <div>
+        {/* Main content. min-w-0: a grid item won't shrink below its content's
+            min-content width, so one long unbroken word/URL in the description
+            used to stretch the whole page sideways. */}
+        <div className="min-w-0">
           <JobHeaderCard job={job} />
           <JobDescriptionCard description={job.description} />
           <JobSkillsCard skills={job.skills} />

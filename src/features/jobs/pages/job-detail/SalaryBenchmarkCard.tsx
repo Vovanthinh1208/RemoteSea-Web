@@ -56,7 +56,8 @@ export const SalaryBenchmarkCard = ({
             <div
               className="h-full rounded-full bg-brand-600"
               style={{
-                width: `${Math.max(MIN_BENCH_BAR_PCT, benchPos)}%`,
+                // Clamped to 100: a job paying above the market max made this thousands of % wide.
+                width: `${Math.min(100, Math.max(MIN_BENCH_BAR_PCT, benchPos))}%`,
               }}
             />
           </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { InlineForm } from "@/features/talent/components/profile-form/InlineForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Briefcase, Building2, MapPin } from "lucide-react";
@@ -142,13 +143,15 @@ export const WorkExperienceForm = ({
     "description",
   ]);
 
+  const submit = handleSubmit(async (values) => {
+    const ok = await onSubmit(values);
+    if (ok) onCancel();
+  });
+
   return (
-    <form
+    <InlineForm
       className="animate-fade-up space-y-4 rounded-16 border border-neutral-100 bg-white p-4 sm:p-5"
-      onSubmit={handleSubmit(async (values) => {
-        const ok = await onSubmit(values);
-        if (ok) onCancel();
-      })}
+      onSubmit={() => void submit()}
     >
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="flex items-center gap-3">
@@ -261,7 +264,8 @@ export const WorkExperienceForm = ({
         <button
           className="rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
           disabled={isSubmitting}
-          type="submit"
+          type="button"
+          onClick={() => void submit()}
         >
           {isSubmitting
             ? t("expForm.saving")
@@ -277,6 +281,6 @@ export const WorkExperienceForm = ({
           {t("common.actions.cancel")}
         </button>
       </div>
-    </form>
+    </InlineForm>
   );
 };

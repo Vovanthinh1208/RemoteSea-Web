@@ -215,7 +215,7 @@ export const MessageThreadPage = () => {
             TEXTAREA_INPUT_CLASS,
             "min-h-[24px] resize-none border-none bg-transparent p-0 py-1.5 shadow-none focus:border-none focus:shadow-none"
           )}
-          maxLength={4000}
+          maxLength={2000}
           placeholder={t("page.placeholder")}
           ref={textareaRef}
           rows={1}

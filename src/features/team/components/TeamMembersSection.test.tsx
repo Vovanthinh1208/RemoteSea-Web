@@ -207,6 +207,32 @@ describe("TeamMembersSection — guarded owner actions (PB39 / PB40)", () => {
     );
   });
 
+  it("a wrong password keeps the dialog open and clears the field for a retry", async () => {
+    const mutateAsync = vi
+      .fn()
+      .mockRejectedValue(new Error("Current password is incorrect"));
+    mockedUseUpdateTeamMemberRole.mockReturnValue({
+      mutateAsync,
+      isPending: false,
+    } as never);
+    ownerView();
+    fireEvent.change(screen.getByRole("combobox"), {
+      target: { value: "OWNER" },
+    });
+
+    const pw = screen.getByLabelText(/your password/i) as HTMLInputElement;
+    fireEvent.change(pw, { target: { value: "wrong-password" } });
+    fireEvent.click(
+      screen.getByText("Transfer ownership", { selector: "button" })
+    );
+
+    await vi.waitFor(() => expect(mutateAsync).toHaveBeenCalled());
+    await vi.waitFor(() => expect(pw.value).toBe(""));
+    expect(document.body.textContent).toMatch(
+      /lose the highest level of ownership/i
+    );
+  });
+
   it("a non-owner role change applies immediately, without a dialog", () => {
     const mutateAsync = vi.fn().mockResolvedValue({});
     mockedUseUpdateTeamMemberRole.mockReturnValue({

@@ -39,7 +39,10 @@ export const SkillTagEditor = ({
     }
   };
 
-  const suggestedSkills = suggestions.filter((name) => !skills.includes(name));
+  const query = inputValue.trim().toLowerCase();
+  const suggestedSkills = suggestions.filter(
+    (name) => !skills.includes(name) && name.toLowerCase().includes(query)
+  );
 
   return (
     <div className="space-y-3">
@@ -88,6 +91,7 @@ export const SkillTagEditor = ({
               className="rounded-full border border-neutral-200 px-2.5 py-0.5 text-[11.5px] text-neutral-600 hover:border-brand-300 hover:text-brand-700"
               key={skill}
               type="button"
+              onMouseDown={(event) => event.preventDefault()}
               onClick={() => addSkill(skill)}
             >
               <Plus className="mr-1 inline" size={9} />

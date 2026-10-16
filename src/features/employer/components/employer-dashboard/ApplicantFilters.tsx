@@ -34,7 +34,7 @@ export const ApplicantFilters = ({
       <h3 className="text-[14px] font-semibold text-neutral-900">
         {t("applicantsPanel.title")}
       </h3>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <Dropdown
           aria-label={t("applicantsPanel.sortAria")}
           options={sortOptions()}

@@ -20,6 +20,19 @@ export const MatchCard = ({ match }: MatchCardProps) => {
           {match.score}%
         </span>
       </div>
+      <div
+        aria-label={t("matching.yourMatch")}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={match.score}
+        className="mb-3 h-1.5 overflow-hidden rounded-full bg-neutral-100"
+        role="progressbar"
+      >
+        <div
+          className="h-full rounded-full bg-brand-600"
+          style={{ width: `${match.score}%` }}
+        />
+      </div>
       {match.reasons.length > 0 ? (
         <ul className="space-y-1.5">
           {match.reasons.map((reason) => (

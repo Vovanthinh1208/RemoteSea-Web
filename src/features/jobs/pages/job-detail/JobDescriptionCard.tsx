@@ -12,7 +12,7 @@ export const JobDescriptionCard = ({
       <h2 className="mb-3 text-[15px] font-semibold text-neutral-900">
         {t("detail.aboutRole")}
       </h2>
-      <p className="whitespace-pre-line text-[14px] leading-relaxed text-neutral-600">
+      <p className="whitespace-pre-line break-words text-[14px] leading-relaxed text-neutral-600">
         {description}
       </p>
     </div>
