@@ -3,6 +3,7 @@
   "emailInvalid": "Enter a valid email",
   "passwordMin": "Password must be at least 8 characters",
   "nameRequired": "Name is required",
+  "nameMin": "Name must be at least 2 characters",
   "nameTooLong": "Name is too long",
   "confirmPassword": "Please confirm your password",
   "passwordsMismatch": "Passwords don't match",

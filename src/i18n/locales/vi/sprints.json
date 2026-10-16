@@ -1,0 +1,25 @@
+{
+  "page": {
+    "docTitle": "Bảng Sprint",
+    "eyebrow": "Kiểm thử Sprint",
+    "title": "Sprint {{id}}",
+    "goal": "Mục tiêu Sprint",
+    "start": "Bắt đầu",
+    "due": "Hạn chót",
+    "datesUnknown": "Chưa có trong tài liệu dự án",
+    "pbiHeading": "Các hạng mục Product Backlog",
+    "pbiCount_other": "{{count}} hạng mục",
+    "colId": "Mã",
+    "colTitle": "Chức năng",
+    "pbiCount_one": "{{count}} hạng mục"
+  },
+  "mode": {
+    "banner_other": "Chế độ kiểm thử: đang ẩn {{count}} sprint khác — dữ liệu được giữ nguyên.",
+    "restore": "Đặt VITE_VISIBLE_SPRINTS=all để hiển thị lại mọi sprint.",
+    "banner_one": "Chế độ kiểm thử: đang ẩn {{count}} sprint khác — dữ liệu được giữ nguyên."
+  },
+  "empty": {
+    "title": "Không có sprint để hiển thị",
+    "desc": "VITE_VISIBLE_SPRINTS không khớp sprint nào. Dùng số sprint như 1, hoặc all."
+  }
+}

@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { ROUTES } from "@/constants/routes";
 import { prefetchRoute } from "@/router/route-prefetch";
 import { NotificationBell } from "@/components/layout/NotificationBell";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { useTranslation } from "@/i18n/useTranslation";
 
@@ -33,6 +34,7 @@ export const Navbar = () => {
   const dashboardHref =
     user?.role === "EMPLOYER" ? ROUTES.employerDashboard : ROUTES.talent;
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [confirmSignOut, setConfirmSignOut] = useState(false);
 
   const [prevPathname, setPrevPathname] = useState(location.pathname);
   if (location.pathname !== prevPathname) {
@@ -40,7 +42,10 @@ export const Navbar = () => {
     setMobileOpen(false);
   }
 
-  const handleSignOut = () => {
+  const handleSignOut = () => setConfirmSignOut(true);
+
+  const performSignOut = () => {
+    setConfirmSignOut(false);
     logout();
     navigate(ROUTES.home);
   };
@@ -232,6 +237,15 @@ export const Navbar = () => {
           </div>
         </nav>
       )}
+      <ConfirmDialog
+        cancelLabel={t("actions.cancel")}
+        confirmLabel={t("nav.signOut")}
+        description={t("nav.signOutDesc")}
+        open={confirmSignOut}
+        title={t("nav.signOutTitle")}
+        onCancel={() => setConfirmSignOut(false)}
+        onConfirm={performSignOut}
+      />
     </header>
   );
 };

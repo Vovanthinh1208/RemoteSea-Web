@@ -12,6 +12,8 @@
     "settings": "Cài đặt",
     "signIn": "Đăng nhập",
     "signOut": "Đăng xuất",
+    "signOutTitle": "Đăng xuất?",
+    "signOutDesc": "Bạn sẽ được đăng xuất khỏi thiết bị này và quay về trang chủ.",
     "getJobAlerts": "Nhận thông báo việc làm",
     "skipToContent": "Chuyển đến nội dung chính",
     "openMenu": "Mở danh mục",

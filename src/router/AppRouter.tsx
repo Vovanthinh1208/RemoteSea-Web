@@ -4,6 +4,7 @@ import { RootLayout } from "@/layouts/RootLayout";
 import { GuestOnlyRoute } from "@/router/GuestOnlyRoute";
 import { ProtectedRoute } from "@/router/ProtectedRoute";
 import { useAnalyticsPageview } from "@/hooks/useAnalyticsPageview";
+import { isSprintBoardEnabled } from "@/features/sprints/sprint-visibility";
 
 const HomePage = lazy(() =>
   import("@/pages/HomePage").then((m) => ({ default: m.HomePage }))
@@ -11,6 +12,11 @@ const HomePage = lazy(() =>
 const NotFoundPage = lazy(() =>
   import("@/pages/NotFoundPage").then((m) => ({
     default: m.NotFoundPage,
+  }))
+);
+const SprintBoardPage = lazy(() =>
+  import("@/features/sprints/pages/SprintBoardPage").then((m) => ({
+    default: m.SprintBoardPage,
   }))
 );
 const SalaryPage = lazy(() =>
@@ -209,6 +215,9 @@ export const AppRouter = () => {
         <Route element={<JobsPage />} path="jobs" />
         <Route element={<JobDetailPage />} path="jobs/:id" />
 
+        {isSprintBoardEnabled() && (
+          <Route element={<SprintBoardPage />} path="sprints" />
+        )}
         <Route element={<SalaryPage />} path="salary" />
         <Route element={<BlogPage />} path="blog" />
         <Route element={<CommunityPage />} path="community" />

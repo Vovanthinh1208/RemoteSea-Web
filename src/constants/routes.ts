@@ -8,6 +8,7 @@ export const ROUTES = {
   jobs: "/jobs",
   jobDetail: (id: string) => `/jobs/${id}`,
   salary: "/salary",
+  sprints: "/sprints",
   blog: "/blog",
   community: "/community",
   employer: "/employer",

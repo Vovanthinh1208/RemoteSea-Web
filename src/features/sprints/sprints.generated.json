@@ -1,0 +1,421 @@
+{
+  "generatedFrom": ["docs/PRODUCT_BACKLOG_OFFICIAL.md", "docs/PROJECT_PLAN.md"],
+  "sprints": [
+    {
+      "id": 1,
+      "name": "Xác thực, Tài khoản & Danh mục chuẩn",
+      "startDate": "2026-10-06",
+      "dueDate": "2026-10-28",
+      "pbis": [
+        {
+          "id": "PB01",
+          "title": "Đăng ký tài khoản"
+        },
+        {
+          "id": "PB02",
+          "title": "Đăng nhập bằng email và mật khẩu"
+        },
+        {
+          "id": "PB03",
+          "title": "Xác thực hai lớp khi đăng nhập (2FA Challenge)"
+        },
+        {
+          "id": "PB04",
+          "title": "Đăng nhập bằng Google, GitHub hoặc LinkedIn (OAuth)"
+        },
+        {
+          "id": "PB05",
+          "title": "Liên kết tài khoản đăng nhập mạng xã hội"
+        },
+        {
+          "id": "PB06",
+          "title": "Yêu cầu quên mật khẩu"
+        },
+        {
+          "id": "PB07",
+          "title": "Đặt lại mật khẩu qua email"
+        },
+        {
+          "id": "PB08",
+          "title": "Xem trạng thái phiên đăng nhập"
+        },
+        {
+          "id": "PB09",
+          "title": "Đăng xuất khỏi hệ thống"
+        },
+        {
+          "id": "PB10",
+          "title": "Bật xác thực hai lớp (2FA Setup & Verify)"
+        },
+        {
+          "id": "PB11",
+          "title": "Tắt xác thực hai lớp"
+        },
+        {
+          "id": "PB12",
+          "title": "Đổi mật khẩu tài khoản"
+        },
+        {
+          "id": "PB13",
+          "title": "Cập nhật tên hiển thị"
+        },
+        {
+          "id": "PB14",
+          "title": "Cập nhật thông tin tài khoản cá nhân"
+        },
+        {
+          "id": "PB15",
+          "title": "Cấu hình tùy chọn nhận thông báo"
+        },
+        {
+          "id": "PB16",
+          "title": "Tạm dừng hoặc kích hoạt lại tài khoản"
+        },
+        {
+          "id": "PB17",
+          "title": "Xuất dữ liệu cá nhân (Export Personal Data)"
+        },
+        {
+          "id": "PB18",
+          "title": "Quản lý các tài khoản xã hội đã liên kết"
+        },
+        {
+          "id": "PB19",
+          "title": "Quản lý các phiên đăng nhập đang hoạt động"
+        },
+        {
+          "id": "PB20",
+          "title": "Xóa vĩnh viễn tài khoản"
+        },
+        {
+          "id": "PB21",
+          "title": "Tạo và cập nhật hồ sơ ứng viên"
+        },
+        {
+          "id": "PB22",
+          "title": "Xác minh email ứng viên"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Hồ sơ ứng viên, Doanh nghiệp & Đăng tin",
+      "startDate": "2026-10-29",
+      "dueDate": "2026-11-18",
+      "pbis": [
+        {
+          "id": "PB23",
+          "title": "Thiết lập chế độ hiển thị hồ sơ ứng viên"
+        },
+        {
+          "id": "PB24",
+          "title": "Quản lý kinh nghiệm làm việc của ứng viên"
+        },
+        {
+          "id": "PB25",
+          "title": "Quản lý điểm nhấn hồ sơ, portfolio, học vấn, ngôn ngữ"
+        },
+        {
+          "id": "PB26",
+          "title": "Xem bảng điều khiển ứng viên (Talent Dashboard)"
+        },
+        {
+          "id": "PB27",
+          "title": "Xem thống kê lượt xem hồ sơ của ứng viên"
+        },
+        {
+          "id": "PB28",
+          "title": "Xem hồ sơ công khai của ứng viên"
+        },
+        {
+          "id": "PB29",
+          "title": "Tìm kiếm ứng viên (Talent Search)"
+        },
+        {
+          "id": "PB30",
+          "title": "Tạo hồ sơ công ty (Onboarding Employer)"
+        },
+        {
+          "id": "PB31",
+          "title": "Cập nhật hồ sơ công ty"
+        },
+        {
+          "id": "PB32",
+          "title": "Xác minh công ty qua tên miền email doanh nghiệp"
+        },
+        {
+          "id": "PB33",
+          "title": "Xem trang hồ sơ công ty công khai"
+        },
+        {
+          "id": "PB34",
+          "title": "Xem bảng điều khiển nhà tuyển dụng (Employer Dashboard)"
+        },
+        {
+          "id": "PB35",
+          "title": "Mời thành viên vào đội ngũ tuyển dụng công ty"
+        },
+        {
+          "id": "PB36",
+          "title": "Chấp nhận lời mời gia nhập công ty"
+        },
+        {
+          "id": "PB37",
+          "title": "Xem danh sách thành viên trong công ty"
+        },
+        {
+          "id": "PB38",
+          "title": "Thu hồi lời mời tham gia đang chờ"
+        },
+        {
+          "id": "PB39",
+          "title": "Đổi vai trò thành viên hoặc chuyển giao quyền OWNER"
+        },
+        {
+          "id": "PB40",
+          "title": "Xóa thành viên khỏi công ty"
+        },
+        {
+          "id": "PB41",
+          "title": "Tạo tin tuyển dụng ở trạng thái nháp (Draft Job)"
+        },
+        {
+          "id": "PB42",
+          "title": "Chỉnh sửa tin tuyển dụng"
+        },
+        {
+          "id": "PB43",
+          "title": "Thanh toán đăng tin tuyển dụng qua Stripe"
+        },
+        {
+          "id": "PB44",
+          "title": "Tự động duyệt tin tuyển dụng đủ điều kiện"
+        },
+        {
+          "id": "PB45",
+          "title": "Đóng tin tuyển dụng"
+        },
+        {
+          "id": "PB46",
+          "title": "Tự động hết hạn tin tuyển dụng (Cron Job)"
+        },
+        {
+          "id": "PB47",
+          "title": "Tìm kiếm và lọc tin tuyển dụng"
+        },
+        {
+          "id": "PB48",
+          "title": "Xem chi tiết tin tuyển dụng"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Ứng tuyển, Phỏng vấn, Scorecard, Nhắn tin &",
+      "startDate": "2026-11-19",
+      "dueDate": "2026-12-08",
+      "pbis": [
+        {
+          "id": "PB49",
+          "title": "Lưu hoặc bỏ lưu tin tuyển dụng"
+        },
+        {
+          "id": "PB50",
+          "title": "Xem điểm phù hợp giữa hồ sơ và công việc (Match Score)"
+        },
+        {
+          "id": "PB51",
+          "title": "Xem danh mục ngành nghề (Taxonomy Categories)"
+        },
+        {
+          "id": "PB52",
+          "title": "Tìm kiếm và gợi ý kỹ năng chuẩn (Skills Taxonomy)"
+        },
+        {
+          "id": "PB53",
+          "title": "Ứng tuyển vào tin tuyển dụng"
+        },
+        {
+          "id": "PB54",
+          "title": "Xem chi tiết đơn ứng tuyển và dòng thời gian trạng thái"
+        },
+        {
+          "id": "PB55",
+          "title": "Rút đơn ứng tuyển"
+        },
+        {
+          "id": "PB56",
+          "title": "Phản hồi lời mời làm việc (Chấp nhận hoặc Từ chối Offer)"
+        },
+        {
+          "id": "PB57",
+          "title": "Xem danh sách ứng viên của tin tuyển dụng (Applicants Panel)"
+        },
+        {
+          "id": "PB58",
+          "title": "Cập nhật trạng thái đơn ứng tuyển theo pipeline"
+        },
+        {
+          "id": "PB59",
+          "title": "Cập nhật hàng loạt trạng thái đơn ứng tuyển (Bulk Action)"
+        },
+        {
+          "id": "PB60",
+          "title": "Đề xuất lịch phỏng vấn cho ứng viên"
+        },
+        {
+          "id": "PB61",
+          "title": "Ứng viên xác nhận lịch phỏng vấn"
+        },
+        {
+          "id": "PB62",
+          "title": "Hủy lịch phỏng vấn"
+        },
+        {
+          "id": "PB63",
+          "title": "Tải tệp lịch phỏng vấn (.ics)"
+        },
+        {
+          "id": "PB64",
+          "title": "Chấm điểm và đánh giá ứng viên sau phỏng vấn (Scorecard)"
+        },
+        {
+          "id": "PB65",
+          "title": "Xem tổng hợp phiếu đánh giá ứng viên"
+        },
+        {
+          "id": "PB66",
+          "title": "Phân tích hồ sơ CV ứng viên bằng AI"
+        },
+        {
+          "id": "PB67",
+          "title": "Chạy lại phân tích CV bằng AI (Regenerate)"
+        },
+        {
+          "id": "PB68",
+          "title": "Nhắn tin trao đổi theo ngữ cảnh đơn ứng tuyển"
+        },
+        {
+          "id": "PB69",
+          "title": "Thảo luận và ghi chú nội bộ về ứng viên"
+        },
+        {
+          "id": "PB70",
+          "title": "Kiểm tra điều kiện được phép đánh giá hai chiều"
+        },
+        {
+          "id": "PB71",
+          "title": "Viết đánh giá hai chiều sau phỏng vấn"
+        },
+        {
+          "id": "PB72",
+          "title": "Xem đánh giá công khai của người dùng / công ty"
+        },
+        {
+          "id": "PB73",
+          "title": "Nhận thông báo trong ứng dụng (In-app Notifications)"
+        },
+        {
+          "id": "PB74",
+          "title": "Xem số lượng thông báo chưa đọc"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Dịch vụ AI, Cảnh báo, Quản trị Admin & Tích",
+      "startDate": "2026-12-09",
+      "dueDate": "2026-12-22",
+      "pbis": [
+        {
+          "id": "PB75",
+          "title": "Đánh dấu thông báo đã đọc"
+        },
+        {
+          "id": "PB76",
+          "title": "Tạo cảnh báo việc làm theo tiêu chí (Job Alert)"
+        },
+        {
+          "id": "PB77",
+          "title": "Quản lý cảnh báo việc làm (Sửa, Bật/Tắt, Xóa)"
+        },
+        {
+          "id": "PB78",
+          "title": "Tự động gửi email thông báo việc làm phù hợp cảnh báo"
+        },
+        {
+          "id": "PB79",
+          "title": "Mời ứng viên tiềm năng ứng tuyển vào việc làm"
+        },
+        {
+          "id": "PB80",
+          "title": "Khởi tạo thanh toán đăng tin qua cổng Stripe Checkout"
+        },
+        {
+          "id": "PB81",
+          "title": "Xác nhận kết quả thanh toán tự động qua Stripe Webhook"
+        },
+        {
+          "id": "PB82",
+          "title": "Xem thông tin tham khảo mức lương (Salary Insights)"
+        },
+        {
+          "id": "PB83",
+          "title": "Quản trị viên xác minh thủ công nhà tuyển dụng"
+        },
+        {
+          "id": "PB84",
+          "title": "Quản trị viên đình chỉ hoạt động nhà tuyển dụng"
+        },
+        {
+          "id": "PB85",
+          "title": "Xem hàng đợi tin tuyển dụng chờ kiểm duyệt"
+        },
+        {
+          "id": "PB86",
+          "title": "Duyệt hoặc từ chối tin tuyển dụng"
+        },
+        {
+          "id": "PB87",
+          "title": "Kiểm tra mức độ rủi ro tin tuyển dụng bằng AI (AI Risk Advisory)"
+        },
+        {
+          "id": "PB88",
+          "title": "Báo cáo tin tuyển dụng có dấu hiệu vi phạm"
+        },
+        {
+          "id": "PB89",
+          "title": "Quản trị viên xử lý báo cáo vi phạm"
+        },
+        {
+          "id": "PB90",
+          "title": "Xem và tìm kiếm danh sách người dùng toàn hệ thống"
+        },
+        {
+          "id": "PB91",
+          "title": "Khóa hoặc mở khóa tài khoản người dùng (Ban / Unban User)"
+        },
+        {
+          "id": "PB92",
+          "title": "Thay đổi vai trò người dùng (Change User Role)"
+        },
+        {
+          "id": "PB93",
+          "title": "Xem nhật ký hành động quản trị (Admin Audit Log)"
+        },
+        {
+          "id": "PB94",
+          "title": "Đặt câu hỏi cho trợ lý AI thông minh (AI Chat Assistant)"
+        },
+        {
+          "id": "PB95",
+          "title": "Trò chuyện nhiều lượt liên tục với trợ lý AI (Multi-turn Conversation)"
+        },
+        {
+          "id": "PB96",
+          "title": "Xem lại danh sách và nội dung các cuộc hội thoại AI trước đây"
+        }
+      ]
+    }
+  ]
+}

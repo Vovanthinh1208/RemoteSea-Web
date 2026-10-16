@@ -12,6 +12,8 @@
     "settings": "Settings",
     "signIn": "Sign in",
     "signOut": "Sign out",
+    "signOutTitle": "Sign out?",
+    "signOutDesc": "You will be signed out on this device and sent back to the home page.",
     "getJobAlerts": "Get job alerts",
     "skipToContent": "Skip to main content",
     "openMenu": "Open menu",

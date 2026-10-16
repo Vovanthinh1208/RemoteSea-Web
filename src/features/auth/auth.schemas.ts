@@ -23,6 +23,7 @@ export const registerSchema = z.object({
   name: z
     .string()
     .min(1, m("validation.nameRequired"))
+    .min(2, m("validation.nameMin"))
     .max(120, m("validation.nameTooLong")),
   email: emailField,
   password: passwordField,

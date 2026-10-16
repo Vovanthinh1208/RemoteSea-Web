@@ -1,0 +1,25 @@
+{
+  "page": {
+    "docTitle": "Sprint board",
+    "eyebrow": "Sprint testing",
+    "title": "Sprint {{id}}",
+    "goal": "Sprint goal",
+    "start": "Starts",
+    "due": "Due",
+    "datesUnknown": "Not set in the project documents",
+    "pbiHeading": "Product backlog items",
+    "pbiCount_one": "{{count}} item",
+    "pbiCount_other": "{{count}} items",
+    "colId": "ID",
+    "colTitle": "Function"
+  },
+  "mode": {
+    "banner_one": "Testing mode: {{count}} other sprint is hidden — its data is untouched.",
+    "banner_other": "Testing mode: {{count}} other sprints are hidden — their data is untouched.",
+    "restore": "Set VITE_VISIBLE_SPRINTS=all to show every sprint again."
+  },
+  "empty": {
+    "title": "No sprint to show",
+    "desc": "VITE_VISIBLE_SPRINTS does not match any sprint. Use a sprint number such as 1, or all."
+  }
+}
