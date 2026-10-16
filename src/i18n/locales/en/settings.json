@@ -18,6 +18,7 @@
     "verified": "Verified",
     "phoneLabel": "Phone",
     "phoneHelp": "(optional)",
+    "phoneInvalid": "Enter the phone number in international format, e.g. +84 90 123 4567",
     "phonePlaceholder": "+84 90 123 4567",
     "languageLabel": "Display Language",
     "regionLabel": "Region",
@@ -181,7 +182,11 @@
     "confirm": "Yes, delete",
     "message": "Are you sure? This cannot be undone.",
     "deleting": "Deleting…",
-    "button": "Delete account"
+    "button": "Delete account",
+    "passwordLabel": "Current password",
+    "passwordHint": "Leave blank if you sign in only with Google, GitHub or LinkedIn.",
+    "confirmLabel": "Type DELETE to confirm",
+    "confirmHint": "This permanently erases your account and data."
   },
   "tfa": {
     "startFailed": "Couldn't start two-factor setup",

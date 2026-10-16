@@ -5,6 +5,7 @@
   "nameRequired": "Name is required",
   "nameMin": "Name must be at least 2 characters",
   "nameTooLong": "Name is too long",
+  "nameInvalid": "Name must not contain < or >",
   "confirmPassword": "Please confirm your password",
   "passwordsMismatch": "Passwords don't match",
   "currentPasswordRequired": "Current password is required",

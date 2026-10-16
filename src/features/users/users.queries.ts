@@ -92,10 +92,14 @@ export const useMyPauseState = () => {
 
 export const usePauseMyAccount = () => {
   const queryClient = useQueryClient();
+  const { logout } = useAuth();
   return useMutation({
     mutationFn: pauseMyAccount,
     onSuccess: (result) => {
       queryClient.setQueryData(usersKeys.pauseState(), result);
+      // PB16 step 4: pausing signs the user out (the server has already
+      // revoked every session); signing back in offers "Reactivate".
+      logout();
     },
   });
 };

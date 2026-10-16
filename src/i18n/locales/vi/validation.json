@@ -5,6 +5,7 @@
   "nameRequired": "Vui lòng nhập tên",
   "nameMin": "Tên phải có ít nhất 2 ký tự",
   "nameTooLong": "Tên quá dài",
+  "nameInvalid": "Tên không được chứa < hoặc >",
   "confirmPassword": "Vui lòng xác nhận mật khẩu",
   "passwordsMismatch": "Mật khẩu không khớp",
   "currentPasswordRequired": "Vui lòng nhập mật khẩu hiện tại",

@@ -17,6 +17,8 @@
     "INSUFFICIENT_ROLE": "Your account type can't access this feature.",
     "TWO_FACTOR_SETUP_REQUIRED": "Two-factor authentication must be set up first.",
     "TWO_FACTOR_NOT_ENABLED": "Two-factor authentication is not enabled.",
+    "TWO_FACTOR_ALREADY_ENABLED": "Two-factor authentication is already enabled.",
+    "NEW_PASSWORD_SAME_AS_CURRENT": "Your new password must be different from the current one.",
     "INVALID_TWO_FACTOR_CODE": "The verification code is incorrect.",
     "INVALID_CHALLENGE_TOKEN": "Your sign-in attempt expired. Please sign in again.",
     "INVALID_OAUTH_STATE": "Sign-in could not be verified. Please try again.",

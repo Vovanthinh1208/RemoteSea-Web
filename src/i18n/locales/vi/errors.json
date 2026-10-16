@@ -17,6 +17,8 @@
     "INSUFFICIENT_ROLE": "Loại tài khoản của bạn không thể dùng tính năng này.",
     "TWO_FACTOR_SETUP_REQUIRED": "Cần thiết lập xác thực hai lớp trước.",
     "TWO_FACTOR_NOT_ENABLED": "Xác thực hai lớp chưa được bật.",
+    "TWO_FACTOR_ALREADY_ENABLED": "Xác thực hai lớp đã được bật.",
+    "NEW_PASSWORD_SAME_AS_CURRENT": "Mật khẩu mới phải khác mật khẩu hiện tại.",
     "INVALID_TWO_FACTOR_CODE": "Mã xác minh không đúng.",
     "INVALID_CHALLENGE_TOKEN": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
     "INVALID_OAUTH_STATE": "Không thể xác minh đăng nhập. Vui lòng thử lại.",

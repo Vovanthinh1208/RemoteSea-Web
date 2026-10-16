@@ -3,6 +3,7 @@ import type {
   AccountFieldsDto,
   ChangePasswordRequestDto,
   ConnectionDto,
+  DeleteAccountPayload,
   ExportDataDto,
   NotificationPreferencesDto,
   PauseStateDto,
@@ -22,9 +23,11 @@ export const changeMyPassword = async (
   payload: ChangePasswordPayload
 ): Promise<{ message: string }> => usersRepository.changeMyPassword(payload);
 
-export const deleteMyAccount = async (): Promise<{
+export const deleteMyAccount = async (
+  payload: DeleteAccountPayload
+): Promise<{
   success: boolean;
-}> => usersRepository.deleteMyAccount();
+}> => usersRepository.deleteMyAccount(payload);
 
 export const getMyAccount = async (): Promise<AccountFieldsDto> =>
   usersRepository.getAccount();

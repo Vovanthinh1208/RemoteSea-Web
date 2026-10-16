@@ -6,6 +6,12 @@ export type ChangePasswordRequestDto = {
   newPassword: string;
 };
 
+export type DeleteAccountPayload = {
+  /** Empty/omitted for accounts that sign in only through OAuth. */
+  password?: string;
+  confirmation: "DELETE";
+};
+
 export type AccountFieldsDto = {
   id: string;
   phone: string | null;

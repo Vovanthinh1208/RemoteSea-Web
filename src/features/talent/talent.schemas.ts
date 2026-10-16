@@ -9,7 +9,13 @@ import {
 } from "@/features/talent/talent.constants";
 
 export const profileFormSchema = z.object({
-  name: z.string().min(1, m("validation.nameRequired")).max(120),
+  name: z
+    .string()
+    .trim()
+    .min(1, m("validation.nameRequired"))
+    .min(2, m("validation.nameMin"))
+    .max(100, m("validation.nameTooLong"))
+    .refine((v) => !/[<>]/.test(v), m("validation.nameInvalid")),
   headline: z.string().max(80, m("validation.max80")).optional(),
   location: z.string().optional(),
   timezone: z.string().optional(),

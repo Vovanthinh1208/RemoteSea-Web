@@ -28,7 +28,7 @@ export const StickyBottomBar = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "sticky bottom-0 z-20 flex items-center justify-between gap-4 rounded-20 border border-neutral-200 bg-white/90 px-5 py-3 shadow-card backdrop-blur-sm",
+          "sticky bottom-0 z-20 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-20 border border-neutral-200 bg-white/90 px-5 py-3 shadow-card backdrop-blur-sm",
           className
         )}
         {...props}

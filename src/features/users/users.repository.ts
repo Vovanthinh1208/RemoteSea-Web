@@ -3,6 +3,7 @@ import type {
   AccountFieldsDto,
   ChangePasswordRequestDto,
   ConnectionDto,
+  DeleteAccountPayload,
   ExportDataDto,
   NotificationPreferencesDto,
   PauseStateDto,
@@ -31,8 +32,12 @@ export const usersRepository = {
     return data;
   },
 
-  deleteMyAccount: async (): Promise<{ success: boolean }> => {
-    const { data } = await apiClient.delete<{ success: boolean }>("/users/me");
+  deleteMyAccount: async (
+    payload: DeleteAccountPayload
+  ): Promise<{ success: boolean }> => {
+    const { data } = await apiClient.delete<{ success: boolean }>("/users/me", {
+      data: payload,
+    });
     return data;
   },
 

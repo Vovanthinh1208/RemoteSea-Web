@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,18 @@ const TotpInput = ({
   const { t } = useTranslation("auth");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const digits = Array.from({ length: TOTP_LENGTH }, (_, i) => value[i] ?? "");
+
+  // The boxes are disabled while a code is being verified, which drops browser
+  // focus onto <body>. When they re-enable (e.g. after a wrong code), put the
+  // cursor back on the first empty box so the user can retype immediately.
+  const wasDisabled = useRef(false);
+  useEffect(() => {
+    if (wasDisabled.current && !disabled) {
+      inputRefs.current[Math.min(value.length, TOTP_LENGTH - 1)]?.focus();
+    }
+    wasDisabled.current = disabled;
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only react to the disabled flip
+  }, [disabled]);
 
   const commit = (nextDigits: string[]) => {
     const joined = nextDigits.join("");
@@ -119,6 +131,9 @@ export const TwoFactorChallengeForm = ({
     } catch (err) {
       submitError.fail(err);
       toast({ title: t("twoFactor.failedToast"), variant: "error" });
+      // A rejected authenticator code is useless; leaving it in the boxes made
+      // the user clear six digits by hand. (A backup code is kept for editing.)
+      if (mode === "totp") setCode("");
     } finally {
       setIsSubmitting(false);
     }

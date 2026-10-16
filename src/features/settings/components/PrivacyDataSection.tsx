@@ -97,7 +97,11 @@ export const PrivacyDataSection = () => {
                 </strong>
               </p>
             </div>
-            <Toggle on={isRestricted} onChange={toggleVisibility} />
+            <Toggle
+              aria-label={t("priv2.visibility")}
+              on={isRestricted}
+              onChange={toggleVisibility}
+            />
           </div>
         )}
         <div className="flex items-center gap-3 px-4 py-3.5">

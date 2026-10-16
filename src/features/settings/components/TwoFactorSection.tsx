@@ -130,6 +130,7 @@ export const TwoFactorSection = () => {
           </div>
         </div>
         <Toggle
+          aria-label={t("tfa.title")}
           disabled={setupMutation.isPending}
           on={enabled}
           onChange={(on) => {

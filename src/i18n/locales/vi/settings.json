@@ -18,6 +18,7 @@
     "verified": "Đã xác minh",
     "phoneLabel": "Số điện thoại",
     "phoneHelp": "(không bắt buộc)",
+    "phoneInvalid": "Nhập số điện thoại theo định dạng quốc tế, ví dụ +84 90 123 4567",
     "phonePlaceholder": "+84 90 123 4567",
     "languageLabel": "Ngôn ngữ hiển thị",
     "regionLabel": "Khu vực",
@@ -181,7 +182,11 @@
     "confirm": "Có, xóa",
     "message": "Bạn có chắc không? Không thể hoàn tác.",
     "deleting": "Đang xóa…",
-    "button": "Xóa tài khoản"
+    "button": "Xóa tài khoản",
+    "passwordLabel": "Mật khẩu hiện tại",
+    "passwordHint": "Để trống nếu bạn chỉ đăng nhập bằng Google, GitHub hoặc LinkedIn.",
+    "confirmLabel": "Nhập DELETE để xác nhận",
+    "confirmHint": "Thao tác này xóa vĩnh viễn tài khoản và dữ liệu của bạn."
   },
   "tfa": {
     "startFailed": "Không thể bắt đầu thiết lập xác thực hai lớp",

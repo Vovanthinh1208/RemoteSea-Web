@@ -14,6 +14,7 @@ import {
 } from "@/features/users/users.queries";
 import { useSyncedState } from "@/hooks/useSyncedState";
 import { useToastMutation } from "@/hooks/useToastMutation";
+import { useToast } from "@/components/ui/toast";
 import { useTranslation } from "@/i18n/useTranslation";
 
 const LANGUAGES = ["English", "Tiếng Việt"] as const;
@@ -28,6 +29,7 @@ const CURRENCIES = ["USD ($)", "VND (₫)", "SGD (S$)"] as const;
 export const AccountSection = () => {
   const { user } = useAuth();
   const runWithToast = useToastMutation();
+  const { toast } = useToast();
   const { data: account } = useMyAccount();
   const updateAccountMutation = useUpdateMyAccount();
   const { t, setLocale } = useTranslation();
@@ -35,10 +37,20 @@ export const AccountSection = () => {
   const [phone, setPhone] = useSyncedState(account?.phone ?? "");
 
   const savePhone = () => {
-    if (phone === (account?.phone ?? "")) return;
-    void runWithToast(() => updateAccountMutation.mutateAsync({ phone }), {
-      error: t("settings.account.phoneUpdateError"),
-    });
+    // The placeholder shows "+84 90 123 4567"; the API wants E.164, so strip the
+    // separators people type and reject anything that still isn't +<country><digits>.
+    const normalized = phone.replace(/[\s().-]/g, "");
+    if (normalized === (account?.phone ?? "")) return;
+    if (normalized !== "" && !/^\+[1-9]\d{1,14}$/.test(normalized)) {
+      toast({ title: t("settings.account.phoneInvalid"), variant: "error" });
+      return;
+    }
+    void runWithToast(
+      () => updateAccountMutation.mutateAsync({ phone: normalized }),
+      {
+        error: t("settings.account.phoneUpdateError"),
+      }
+    );
   };
 
   const saveField = (
@@ -86,6 +98,7 @@ export const AccountSection = () => {
           </label>
           <div className="flex items-center gap-2">
             <input
+              aria-label={t("settings.account.emailLabel")}
               className={TEXT_INPUT_CLASS}
               readOnly
               value={user?.email ?? ""}
@@ -103,7 +116,10 @@ export const AccountSection = () => {
             </span>
           </label>
           <input
+            aria-label={t("settings.account.phoneLabel")}
+            autoComplete="tel"
             className={TEXT_INPUT_CLASS}
+            inputMode="tel"
             placeholder={t("settings.acct.phonePlaceholder")}
             value={phone}
             onBlur={savePhone}
@@ -116,6 +132,7 @@ export const AccountSection = () => {
               {t("settings.account.languageLabel")}
             </label>
             <select
+              aria-label={t("settings.account.languageLabel")}
               className={SELECT_INPUT_CLASS}
               value={account?.language ?? "English"}
               onChange={(e) => saveField("language", e.target.value)}
@@ -132,6 +149,7 @@ export const AccountSection = () => {
               {t("settings.account.regionLabel")}
             </label>
             <select
+              aria-label={t("settings.account.regionLabel")}
               className={SELECT_INPUT_CLASS}
               value={account?.region ?? "Vietnam"}
               onChange={(e) => saveField("region", e.target.value)}
@@ -148,6 +166,7 @@ export const AccountSection = () => {
               {t("settings.account.currencyLabel")}
             </label>
             <select
+              aria-label={t("settings.account.currencyLabel")}
               className={SELECT_INPUT_CLASS}
               value={account?.currencyDisplay ?? "USD ($)"}
               onChange={(e) => saveField("currencyDisplay", e.target.value)}
