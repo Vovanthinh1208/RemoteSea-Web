@@ -1,0 +1,191 @@
+{
+  "page": {
+    "title": "Dành cho nhà tuyển dụng — Tuyển nhân sự remote Việt Nam",
+    "description": "Tuyển nhân sự remote đã được kiểm chứng tại Việt Nam — tin đăng được xác minh, bắt buộc có mức lương, có kết quả trong hai tuần hoặc hoàn tiền."
+  },
+  "hero": {
+    "badge": "Dành cho đội ngũ tuyển dụng",
+    "title1": "Tuyển dụng từ Việt Nam.",
+    "title2": "Đúng cách.",
+    "desc": "Hơn 500 chuyên gia VN/ĐNÁ chất lượng. Chỉ nhà tuyển dụng đã xác minh. Bắt buộc có mức lương. Chất lượng hồ sơ như LinkedIn với chi phí chỉ bằng một phần nhỏ.",
+    "cta": "Đăng tin — từ $150",
+    "talk": "Trò chuyện với nhà sáng lập",
+    "guarantee": "Hoàn tiền trong 30 ngày · Không cần lưu thẻ",
+    "mockTitle": "Frontend cao cấp · Nhóm Editor",
+    "mockLive": "Đang đăng · còn 4 ngày",
+    "views": "Lượt xem",
+    "applications": "Hồ sơ",
+    "shortlisted": "Đã chọn",
+    "recent": "Hồ sơ gần đây",
+    "match": "Phù hợp {{n}}%",
+    "a1": {
+      "role": "Frontend cao cấp · 6 năm"
+    },
+    "a2": {
+      "role": "Frontend / Kỹ sư thiết kế · 5 năm"
+    },
+    "a3": {
+      "role": "Frontend cao cấp · 7 năm"
+    }
+  },
+  "logos": {
+    "title": "Được tin dùng bởi các đội tuyển dụng tại"
+  },
+  "why": {
+    "eyebrow": "Vì sao nên đăng tại đây",
+    "title": "Nguồn ứng viên nhỏ hơn. ",
+    "titleEm": "Chất lượng cao hơn.",
+    "desc": "Chúng tôi không cố trở thành nền tảng lớn nhất. Chúng tôi muốn là nơi những ứng viên VN phù hợp thực sự ứng tuyển — để bạn phỏng vấn năm người thay vì năm trăm.",
+    "1": {
+      "title": "Tỉ lệ phản hồi tốt hơn",
+      "desc": "Ứng viên VN được khảo sát cho biết họ ứng tuyển nhiều hơn 3,5 lần các vị trí phù hợp ở đây so với LinkedIn. Tín hiệu “thân thiện với remote từ VN” giúp họ tiết kiệm hàng giờ đoán mò."
+    },
+    "2": {
+      "title": "Thời gian tuyển trung vị",
+      "num": "14 ngày",
+      "desc": "Từ lúc đăng tin đến khi ký offer, trung vị của chúng tôi là 14 ngày. Vì ứng viên tự chọn lọc — nhà tuyển dụng đã xác minh, có mức lương, múi giờ rõ ràng."
+    },
+    "3": {
+      "title": "Tin đăng đã tuyển được",
+      "desc": "Trong tất cả tin đăng năm 2025, 87% đã tuyển được trong 30 ngày. 13% còn lại hoặc tạm dừng, hoặc đăng lại với mức lương điều chỉnh."
+    }
+  },
+  "compare": {
+    "eyebrow": "So sánh trực tiếp",
+    "title": "So với ",
+    "titleEm": "các lựa chọn khác.",
+    "partial": "một phần",
+    "f1": "Nguồn ứng viên chuyên về VN",
+    "f2": "Bắt buộc có mức lương",
+    "f3": "Dấu hiệu nhà tuyển dụng đã xác minh",
+    "f4": "Liên hệ trực tiếp nhà sáng lập",
+    "f5": "Trả theo tin đăng (không thuê bao)",
+    "f6": "Tùy chọn sàng lọc trực tiếp",
+    "f7": "Cam kết hoàn tiền"
+  },
+  "process": {
+    "eyebrow": "Quy trình",
+    "title": "Đăng → duyệt → ",
+    "titleEm": "kết nối.",
+    "1": {
+      "title": "Gửi vị trí của bạn",
+      "desc": "Biểu mẫu 15 phút: vị trí, cấp bậc, mức lương, yêu cầu múi giờ, điều kiện bắt buộc. Bạn có thể dán từ JD có sẵn; chúng tôi sẽ cấu trúc lại.",
+      "i1": "Bắt buộc có mức lương (chúng tôi nghiêm túc)",
+      "i2": "Bắt buộc nêu rõ múi giờ",
+      "i3": "Tùy chọn: cổ phần, phúc lợi, thiết bị"
+    },
+    "2": {
+      "title": "Chúng tôi duyệt & xác minh",
+      "desc": "Trong 4–8 giờ làm việc, một người thật tại RemoteSEA kiểm tra công ty, đối chiếu mức lương với dữ liệu của chúng tôi và nêu các vấn đề.",
+      "i1": "Nhà sáng lập duyệt thủ công",
+      "i2": "Mức lương được đối chiếu với 847 điểm dữ liệu",
+      "i3": "Chỉnh sửa rồi mới đăng"
+    },
+    "3": {
+      "title": "Nhận ứng viên phù hợp",
+      "desc": "Tin được đăng, thông báo gửi tới người đăng ký trong lĩnh vực của bạn và hồ sơ đổ về một bảng điều khiển. Trung vị đến lần tuyển đầu tiên: 14 ngày.",
+      "i1": "Hộp thư hồ sơ tập trung",
+      "i2": "Điểm phù hợp cho mọi hồ sơ",
+      "i3": "Tùy chọn sàng lọc cao cấp"
+    }
+  },
+  "case": {
+    "eyebrow": "Câu chuyện thực tế",
+    "quote1": "\"Chúng tôi đã tuyển kỹ sư sáng lập trong ",
+    "quoteEm": "11 ngày",
+    "quote2": " nhờ RemoteSEA.\"",
+    "desc": "Finch Labs (SG) cần một kỹ sư full-stack cho hạ tầng thanh toán xuyên biên giới — vòng Series A, 22 người, tìm người dày dạn kinh nghiệm với Postgres.",
+    "s1": "Từ đăng đến offer",
+    "s1num": "11 ngày",
+    "s2": "Tổng hồ sơ",
+    "s3": "Đã phỏng vấn",
+    "s4": "Offer cuối/tháng",
+    "company": "Finch Labs",
+    "companyMeta": "SG · Series A · 22 người",
+    "quote": "\"LinkedIn gửi cho chúng tôi 200 hồ sơ, phần lớn là nhiễu. RemoteSEA gửi 42 — và 12 trong số đó thực sự mạnh. Chúng tôi đã tuyển người thứ 4.\"",
+    "author": "Đồng sáng lập & CTO · Finch Labs"
+  },
+  "pricing": {
+    "eyebrow": "Bảng giá",
+    "title": "Trả một lần, ",
+    "titleEm": "không thuê bao.",
+    "desc": "Không có \"phí truy cập mạng lưới ứng viên\". Không tính theo số ghế. Trả theo từng vị trí, chỉ khi bạn tuyển dụng.",
+    "perRole": "Theo vị trí",
+    "annual": "Theo năm",
+    "save": "tiết kiệm 20%",
+    "perYear": "/năm",
+    "perPost": "/tin",
+    "quote": "Báo giá",
+    "popular": "Phổ biến nhất",
+    "talk": "Liên hệ chúng tôi",
+    "start": "Bắt đầu",
+    "guarantee": "Hoàn tiền trong 30 ngày. Có hồ sơ đạt chuẩn hoặc hoàn tiền toàn bộ.",
+    "STANDARD": {
+      "name": "Tiêu chuẩn",
+      "tag": "Cho vị trí đơn lẻ",
+      "desc": "Một tin đăng gọn gàng trong 30 ngày.",
+      "f1": "Tin đăng hoạt động 30 ngày",
+      "f2": "Huy hiệu nhà tuyển dụng đã xác minh",
+      "f3": "Hộp thư hồ sơ",
+      "f4": "Email khi có hồ sơ mới",
+      "f5": "Gia hạn giảm 50%"
+    },
+    "FEATURED": {
+      "name": "Nổi bật",
+      "tag": "Phổ biến nhất",
+      "desc": "Ưu tiên đầu danh sách, viền nổi bật, gửi thông báo tới người đăng ký.",
+      "f1": "Mọi thứ trong gói Tiêu chuẩn",
+      "f2": "Hiển thị đầu danh sách",
+      "f3": "Viền nổi bật màu hổ phách",
+      "f4": "Có mặt trong bản tin hằng tuần",
+      "f5": "Trung bình nhiều hồ sơ gấp 2 lần"
+    },
+    "HANDS_ON": {
+      "name": "Hỗ trợ trực tiếp",
+      "tag": "Chúng tôi làm giúp bạn",
+      "desc": "Chúng tôi sàng lọc ứng viên. Bạn chỉ xem top 5.",
+      "f1": "Mọi thứ trong gói Nổi bật",
+      "f2": "Nhà sáng lập trực tiếp sàng lọc",
+      "f3": "Phỏng vấn ứng viên 1:1",
+      "f4": "Kiểm tra tham chiếu thay bạn",
+      "f5": "Nhận danh sách rút gọn trong 10 ngày"
+    }
+  },
+  "faq": {
+    "eyebrow": "Câu hỏi thường gặp",
+    "title": "Trả lời ",
+    "titleEm": "thẳng thắn.",
+    "1": {
+      "q": "\"Nhà tuyển dụng đã xác minh\" thực sự nghĩa là gì?",
+      "a": "Một người thật tại RemoteSEA (hiện tại là nhà sáng lập) kiểm tra website công ty, LinkedIn, trang tuyển dụng và ít nhất một thành viên nhóm. Chúng tôi xác nhận vị trí đang mở, đội ngũ có thật và mức lương trung thực. Mất 4–8 giờ làm việc."
+    },
+    "2": {
+      "q": "Vì sao bắt buộc có mức lương?",
+      "a": "Vì giấu mức lương làm mất thời gian của mọi người. Ứng viên không bao giờ chấp nhận mức tối đa của bạn vẫn nộp hồ sơ; ứng viên sẽ thích vị trí của bạn lại bỏ qua vì nghĩ điều tệ nhất. Chúng tôi đã đăng hơn 200 tin có mức lương — dữ liệu cho thấy số hồ sơ tăng chứ không giảm."
+    },
+    "3": {
+      "q": "Tôi có thể đăng vị trí trả lương bằng VND không?",
+      "a": "Được, nhưng tin đăng cần quy đổi sang USD/tháng để so sánh (chúng tôi sẽ hỗ trợ). Ứng viên VN so sánh vị trí của bạn với vị trí ở SG cần một con số tương đương. Chúng tôi làm việc này tự động."
+    },
+    "4": {
+      "q": "Nếu tôi muốn thuê theo hợp đồng chứ không phải toàn thời gian thì sao?",
+      "a": "Hoàn toàn được. Khoảng 30% vị trí của chúng tôi là hợp đồng. Chúng tôi không thu phần trăm thanh toán hay bắt bạn dùng EOR cụ thể — bạn tự xử lý phần đó. Wise, Deel và chuyển khoản trực tiếp đều phổ biến."
+    },
+    "5": {
+      "q": "Các bạn có thu phí ứng viên không?",
+      "a": "Không. Miễn phí cho ứng viên. Mãi mãi. Doanh thu chỉ đến từ tin đăng của nhà tuyển dụng."
+    },
+    "6": {
+      "q": "Nếu tin đăng của tôi không hiệu quả thì sao?",
+      "a": "Hoàn tiền trong 30 ngày. Nếu bạn không nhận được hồ sơ đạt chuẩn nào (chúng tôi sẽ đánh giá công bằng — đạt chuẩn nghĩa là đáp ứng điều kiện bắt buộc bạn nêu), bạn được hoàn tiền toàn bộ. Không hỏi lý do."
+    }
+  },
+  "final": {
+    "eyebrow": "Sẵn sàng khi bạn sẵn sàng",
+    "title1": "Đăng vị trí của bạn ngay hôm nay.",
+    "title2": "Nhận hồ sơ trước thứ Sáu.",
+    "desc": "Mười lăm phút để đăng. Tám giờ để duyệt. Hai tuần để tuyển.",
+    "cta": "Đăng tin — từ $150",
+    "talk": "Trò chuyện với nhà sáng lập trước"
+  }
+}

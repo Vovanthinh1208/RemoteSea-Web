@@ -12,7 +12,9 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { Button } from "@/components/ui/button";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 import { ApiError } from "@/core/errors/api-error";
+import { useSubmitError } from "@/hooks/useSubmitError";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const ALREADY_APPLIED_STATUS = 409;
 const PROFILE_REQUIRED_STATUS = 403;
@@ -28,11 +30,12 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation("jobs");
   const applyToJobMutation = useApplyToJob();
   const { data: appliedJobIds } = useMyApplicationIds();
   const { data: profile } = useMyTalentProfile();
   const [state, setState] = useState<ApplyState>("idle");
-  const [message, setMessage] = useState<string | null>(null);
+  const submitError = useSubmitError();
   const [resumeOverride, setResumeOverride] = useState<string | null>(null);
   const [coverLetter, setCoverLetter] = useState("");
 
@@ -55,7 +58,7 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
       );
       return;
     }
-    setMessage(null);
+    submitError.clear();
     setState("open");
   };
 
@@ -69,31 +72,31 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
       setState("applied");
       toast({
         variant: "success",
-        title: "Application sent",
-        description: "The employer has been notified.",
+        title: t("apply.sentTitle"),
+        description: t("apply.sentDesc"),
       });
     } catch (err) {
       if (err instanceof ApiError && err.status === ALREADY_APPLIED_STATUS) {
         setState("applied");
-        toast({ variant: "info", title: "Already applied" });
+        toast({ variant: "info", title: t("apply.alreadyApplied") });
         return;
       }
       if (err instanceof ApiError && err.status === PROFILE_REQUIRED_STATUS) {
-        setMessage("Create a talent profile first.");
+        submitError.failWithKey("jobs.apply.profileRequired");
         setState("error");
         toast({
           variant: "info",
-          title: "Finish your profile first",
+          title: t("apply.finishProfile"),
         });
         navigate(ROUTES.profile);
         return;
       }
       setState("error");
-      setMessage("Something went wrong. Please try again.");
+      submitError.fail(err);
       toast({
         variant: "error",
-        title: "Couldn't submit application",
-        description: "Please try again.",
+        title: t("apply.failedTitle"),
+        description: t("apply.tryAgain"),
       });
     }
   };
@@ -101,7 +104,7 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
   if (applied) {
     return (
       <div className="mb-2.5 flex w-full items-center justify-center gap-2 rounded-12 border border-brand-200 bg-brand-50 py-3 text-[15px] font-medium text-brand-700">
-        <Check size={16} /> Application sent
+        <Check size={16} /> {t("apply.sentTitle")}
       </div>
     );
   }
@@ -114,11 +117,11 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
           type="button"
           onClick={openApplyForm}
         >
-          Apply now <ArrowRight size={16} />
+          {t("apply.applyNow")} <ArrowRight size={16} />
         </button>
-        {message && (
+        {submitError.message && (
           <p className="mb-2.5 flex items-center justify-center gap-1 text-center text-[12px] text-red-600">
-            <AlertCircle size={11} /> {message}
+            <AlertCircle size={11} /> {submitError.message}
           </p>
         )}
       </>
@@ -137,19 +140,19 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
     <div className="mb-2.5 space-y-3 rounded-12 bg-white p-4">
       <div>
         <p className="mb-1.5 text-[13px] font-medium text-neutral-700">
-          Resume
+          {t("apply.resume")}
         </p>
         <FileUpload
           accept="application/pdf"
           key={resumeUrl ?? "none"}
-          label={resumeUrl ? "Replace resume" : "Attach resume"}
+          label={resumeUrl ? t("apply.replaceResume") : t("apply.attachResume")}
           type="resume"
           value={resumeUrl}
           onUploaded={(url) => setResumeOverride(url)}
         />
         {resumeUrl && !resumeOverride && (
           <p className="mt-1 text-[12px] text-neutral-400">
-            Using the resume from your profile.
+            {t("apply.usingProfileResume")}
           </p>
         )}
       </div>
@@ -158,13 +161,14 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
           className="mb-1.5 block text-[13px] font-medium text-neutral-700"
           htmlFor="cover-letter"
         >
-          Cover letter <span className="text-neutral-400">(optional)</span>
+          {t("apply.coverLetter")}{" "}
+          <span className="text-neutral-400">{t("apply.optional")}</span>
         </label>
         <textarea
           className={TEXTAREA_INPUT_CLASS}
           id="cover-letter"
           maxLength={COVER_LETTER_MAX_LENGTH}
-          placeholder="Why you're a good fit for this role…"
+          placeholder={t("apply.coverPlaceholder")}
           rows={4}
           value={coverLetter}
           onChange={(e) => setCoverLetter(e.target.value)}
@@ -178,15 +182,15 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
           type="button"
           onClick={handleSubmit}
         >
-          Send application
+          {t("apply.send")}
         </Button>
         <Button type="button" variant="ghost" onClick={() => setState("idle")}>
-          Cancel
+          {t("common.actions.cancel")}
         </Button>
       </div>
-      {message && (
+      {submitError.message && (
         <p className="flex items-center justify-center gap-1 text-center text-[12px] text-red-600">
-          <AlertCircle size={11} /> {message}
+          <AlertCircle size={11} /> {submitError.message}
         </p>
       )}
     </div>

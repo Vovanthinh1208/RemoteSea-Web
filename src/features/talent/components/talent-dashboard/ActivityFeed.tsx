@@ -6,6 +6,7 @@ import { cn } from "@/utils/cn";
 import { timeAgoLong } from "@/utils/time";
 import { EVENT_BULLET_CLASS, EVENT_ICON } from "@/utils/notification-icons";
 import type { ActivityItem } from "@/types/activity";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const ActivityRow = ({ item }: { item: ActivityItem }) => {
   const navigate = useNavigate();
@@ -73,10 +74,13 @@ export const ActivityFeed = ({
   isError,
   refetch,
 }: ActivityFeedProps) => {
+  const { t } = useTranslation("talent");
   return (
     <div className="overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">
       <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
-        <h3 className="text-[14px] font-semibold text-neutral-900">Activity</h3>
+        <h3 className="text-[14px] font-semibold text-neutral-900">
+          {t("activity.title")}
+        </h3>
       </div>
       <div className="p-3">
         {isLoading ? (
@@ -85,19 +89,19 @@ export const ActivityFeed = ({
           ))
         ) : isError ? (
           <div className="flex items-center justify-between px-2 py-4 text-[12.5px] text-neutral-400">
-            Couldn't load your activity.
+            {t("activity.error")}
             <button
               className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
               type="button"
               onClick={() => refetch()}
             >
-              <RefreshCw size={11} /> Retry
+              <RefreshCw size={11} /> {t("common.actions.retryShort")}
             </button>
           </div>
         ) : activity && activity.length > 0 ? (
           activity.map((item) => <ActivityRow item={item} key={item.id} />)
         ) : (
-          <EmptyRow className="px-2">No activity yet.</EmptyRow>
+          <EmptyRow className="px-2">{t("activity.empty")}</EmptyRow>
         )}
       </div>
     </div>

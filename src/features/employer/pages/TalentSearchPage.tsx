@@ -6,12 +6,11 @@ import {
   type TalentSearchFilters,
 } from "@/features/employer/talent-search/talent-search.filters";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const TalentSearchPage = () => {
-  useDocumentTitle(
-    "Find Talent",
-    "Search the RemoteSEA talent pool by skill, seniority, and timezone — only candidates who've opted into Open to work."
-  );
+  const { t } = useTranslation("employer");
+  useDocumentTitle(t("search.docTitle"), t("search.docDesc"));
   const [searchParams, setSearchParams] = useSearchParams();
   const filters = parseTalentSearchQuery(searchParams);
 

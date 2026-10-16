@@ -1,5 +1,6 @@
 import { timeAgoLong } from "@/utils/time";
 import type { ActivityEvent } from "@/features/employer/hiring/activity.utils";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface ApplicationActivityTimelineProps {
   events: ActivityEvent[];
@@ -8,12 +9,13 @@ interface ApplicationActivityTimelineProps {
 export const ApplicationActivityTimeline = ({
   events,
 }: ApplicationActivityTimelineProps) => {
+  const { t } = useTranslation("employer");
   if (events.length === 0) return null;
 
   return (
     <div>
       <h3 className="mb-2.5 text-[12px] font-medium uppercase tracking-wider text-neutral-400">
-        Activity
+        {t("timeline.title")}
       </h3>
       <ul className="space-y-2.5">
         {events.map((event) => (

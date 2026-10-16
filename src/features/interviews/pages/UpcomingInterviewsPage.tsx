@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const SKELETON_GROUP_COUNT = 2;
 const SKELETON_ROWS_PER_GROUP = 2;
@@ -44,7 +45,8 @@ const UpcomingInterviewsSkeleton = () => (
 );
 
 export const UpcomingInterviewsPage = () => {
-  useDocumentTitle("Interview schedule — Employer Dashboard");
+  const { t } = useTranslation("interviews");
+  useDocumentTitle(t("schedule.docTitle"));
   const { data, isLoading, isError, refetch } = useUpcomingInterviews();
 
   const groups = data ? groupInterviewsByDay(data.interviews) : [];
@@ -58,30 +60,32 @@ export const UpcomingInterviewsPage = () => {
               className="rounded-8 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.employerDashboard}
             >
-              ← Dashboard
+              {t("employer.ws.dashboardCrumb")}
             </Link>
             <span>·</span>
-            <span>Interview Schedule</span>
+            <span>{t("schedule.crumb")}</span>
           </div>
           <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
             {data?.scope === "mine" ? (
               <>
-                Your upcoming{" "}
+                {t("schedule.mineTitle")}
                 <em className="font-serif-italic text-brand-700">
-                  interviews.
+                  {t("schedule.mineEm")}
                 </em>
               </>
             ) : (
               <>
-                Team interview{" "}
-                <em className="font-serif-italic text-brand-700">schedule.</em>
+                {t("schedule.teamTitle")}
+                <em className="font-serif-italic text-brand-700">
+                  {t("schedule.teamEm")}
+                </em>
               </>
             )}
           </h1>
           <p className="text-[15px] text-neutral-500">
             {data?.scope === "mine"
-              ? "Every confirmed interview assigned to you, soonest first."
-              : "Every confirmed interview across the company, soonest first."}
+              ? t("schedule.mineDesc")
+              : t("schedule.teamDesc")}
           </p>
         </div>
 
@@ -91,16 +95,16 @@ export const UpcomingInterviewsPage = () => {
           <EmptyState
             action={
               <Button size="sm" variant="outline" onClick={() => refetch()}>
-                Try again
+                {t("common.actions.retry")}
               </Button>
             }
-            description="Something went wrong loading the schedule."
-            title="Couldn't load interviews"
+            description={t("schedule.errorDesc")}
+            title={t("schedule.errorTitle")}
           />
         ) : groups.length === 0 ? (
           <EmptyState
-            description="Confirmed interviews will show up here, grouped by day."
-            title="No upcoming interviews"
+            description={t("schedule.emptyDesc")}
+            title={t("schedule.emptyTitle")}
           />
         ) : (
           <div className="space-y-6">
@@ -121,19 +125,23 @@ export const UpcomingInterviewsPage = () => {
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-[13.5px] font-medium text-neutral-900">
-                          {interview.talentName ?? "Candidate"}
+                          {interview.talentName ?? t("common.party.candidate")}
                         </span>
                         <span className="block truncate text-[12px] text-neutral-500">
                           {interview.jobTitle}
                           {data?.scope === "team" &&
                             interview.interviewerName && (
-                              <> · with {interview.interviewerName}</>
+                              <>
+                                {t("schedule.with", {
+                                  name: interview.interviewerName,
+                                })}
+                              </>
                             )}
                         </span>
                       </span>
                       <span className="flex flex-shrink-0 items-center gap-3">
                         <span className="text-[12px] text-neutral-400">
-                          {interview.durationMinutes} min
+                          {t("schedule.min", { n: interview.durationMinutes })}
                         </span>
                         {interview.meetingUrl && (
                           <>
@@ -143,7 +151,7 @@ export const UpcomingInterviewsPage = () => {
                               size={15}
                             />
                             <span className="sr-only">
-                              Meeting link available
+                              {t("schedule.hasLink")}
                             </span>
                           </>
                         )}

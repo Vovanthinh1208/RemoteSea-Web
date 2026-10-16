@@ -85,10 +85,358 @@
     "title": "Company Profile",
     "subtitle": "Showcase your company culture, benefits, and office locations to candidates.",
     "name": "Company Name",
-    "website": "Website URL",
+    "website": "Website",
     "industry": "Industry",
     "size": "Company Size",
     "about": "About the Company",
-    "save": "Save profile changes"
+    "save": "Save profile changes",
+    "docTitle": "{{name}} — Company Profile",
+    "docTitleFallback": "Company Profile",
+    "meta": "{{name}}{{industry}}{{jobs}}. Hiring remote talent on RemoteSEA.",
+    "metaJobs_one": " · {{count}} open role",
+    "metaJobs_other": " · {{count}} open roles",
+    "review": {
+      "communication": "Communication",
+      "interviewProcess": "Interview process",
+      "professionalism": "Professionalism"
+    },
+    "notFound": "Company not found",
+    "notFoundDesc": "This company profile doesn't exist or was removed.",
+    "browseJobs": "Browse jobs",
+    "employees": "{{size}} employees",
+    "founded": "Founded {{year}}",
+    "openPositions": "Open positions ",
+    "noRoles": "No open roles right now",
+    "checkBack": "Check back later for new openings.",
+    "quickFacts": "Quick facts",
+    "openRoles": "Open roles",
+    "vnHires": "🇻🇳 VN hires",
+    "typicalResponse": "Typical response",
+    "verifiedSince": "Verified since",
+    "yourCompany": "This is your company · Edit"
+  },
+  "verifyCompany": {
+    "checkInbox": "Check your inbox",
+    "sentTo": "We sent a confirmation link to {{email}}. Click it to verify your company.",
+    "title": "Verify your company",
+    "expired": "That link expired. Enter your company email to try again.",
+    "prompt": "Confirm you control an email at your company domain to earn a Verified badge and skip manual job review.",
+    "emailLabel": "Company email",
+    "emailPlaceholder": "jane@yourcompany.com",
+    "send": "Send verification email"
+  },
+  "jobStatus": {
+    "DRAFT": "Draft",
+    "PENDING_REVIEW": "In review",
+    "ACTIVE": "Live",
+    "CLOSED": "Closed",
+    "REJECTED": "Rejected",
+    "EXPIRED": "Expired"
+  },
+  "next": {
+    "PENDING": "Review",
+    "REVIEWING": "Shortlist",
+    "SHORTLISTED": "Interview",
+    "INTERVIEW": "Offer"
+  },
+  "tab": {
+    "all": "All",
+    "new": "New",
+    "shortlisted": "Shortlisted"
+  },
+  "applicants": {
+    "emptyAll": "No applicants yet.",
+    "emptyFiltered": "No {{filter}} applicants."
+  },
+  "sort": {
+    "recent": "Most recent",
+    "match": "Best match"
+  },
+  "dash": {
+    "errorTitle": "Couldn't load your dashboard",
+    "errorDesc": "Something went wrong loading your dashboard.",
+    "greetMorning": "Good morning",
+    "greetAfternoon": "Good afternoon",
+    "greetEvening": "Good evening",
+    "there": "there",
+    "setupTitle": "Set up your company profile",
+    "setupDesc": "Create your employer profile to post jobs and receive applications.",
+    "getStarted": "Get started",
+    "eyebrow": "Employer dashboard",
+    "summary": "You have {{applicants}} across {{count}} live {{roles}}.",
+    "applicants": "{{count}} applicants",
+    "role_one": "role",
+    "role_other": "roles",
+    "findTalent": "Find talent",
+    "postJob": "Post a job",
+    "kpi": {
+      "active": "Active listings",
+      "inReview": "{{count}} in review",
+      "total": "Total applications",
+      "allListings": "all listings",
+      "shortlisted": "Shortlisted",
+      "acrossRoles": "across roles",
+      "timeToHire": "Avg. time to hire",
+      "applyToOffer": "from apply to offer",
+      "firstResponse": "Avg. first response",
+      "sla": "Employer Response SLA"
+    },
+    "schedule": "Interview schedule",
+    "team": "Team members",
+    "docTitle": "Employer Dashboard"
+  },
+  "listings": {
+    "title": "Your listings ",
+    "active": "· {{count}} active",
+    "postJob": "Post a job",
+    "empty": "No listings yet. Post your first job to start hiring.",
+    "col": {
+      "role": "Role",
+      "status": "Status",
+      "applications": "Applications",
+      "views": "Views"
+    },
+    "featured": "Featured",
+    "new": "+{{count}} new",
+    "awaiting": "Awaiting",
+    "views": "views",
+    "notLive": "This listing isn't live yet, so it doesn't have a public page to view.",
+    "exportDone": "Applicant export downloaded",
+    "exportFailed": "We couldn't export the applicants. Please try again.",
+    "exportAria": "Export {{title}} applicants as a CSV file",
+    "exportTitle": "Download every applicant for this listing as a CSV file",
+    "exporting": "Exporting…",
+    "export": "Export applicants"
+  },
+  "applicantsPanel": {
+    "title": "Recent applicants",
+    "sortAria": "Sort applicants",
+    "advanced": "Applicant advanced",
+    "rejected": "Applicant rejected",
+    "updateFailed": "Couldn't update applicant",
+    "viewAll": "View all applicants",
+    "showAll": "Show all {{count}} applicants",
+    "showSome": "Show {{shown}} of {{count}} applicants",
+    "bulkAdvanced_one": "{{count}} applicant advanced",
+    "bulkAdvanced_other": "{{count}} applicants advanced",
+    "bulkRejected_one": "{{count}} applicant rejected",
+    "bulkRejected_other": "{{count}} applicants rejected",
+    "bulkPartialAdvanced": "{{updated}} advanced, {{failed}} couldn't be updated",
+    "bulkPartialRejected": "{{updated}} rejected, {{failed}} couldn't be updated",
+    "bulkFailReject": "Couldn't reject applicants",
+    "bulkFailAdvance": "Couldn't advance applicants"
+  },
+  "bulk": {
+    "selectAll": "Select all eligible",
+    "selectAllTitle": "Selects every applicant not already rejected or withdrawn",
+    "selected": "{{count}} selected",
+    "advanceQ_one": "{{action}} {{count}} selected applicant?",
+    "advanceQ_other": "{{action}} {{count}} selected applicants?",
+    "note": "Add a shared note (optional)",
+    "updating": "Updating…",
+    "actionSelected": "{{action}} selected",
+    "reject": "Reject",
+    "rejectQ_one": "Reject {{count}} selected applicant?",
+    "rejectQ_other": "Reject {{count}} selected applicants?",
+    "rejecting": "Rejecting…",
+    "rejectSelected": "Reject selected",
+    "selectHint": "Select to update in bulk"
+  },
+  "row": {
+    "candidate": "Candidate",
+    "group": {
+      "new": "New",
+      "reviewing": "Reviewing",
+      "shortlisted": "Shortlisted",
+      "archived": "Archived"
+    },
+    "rejected": "Rejected",
+    "withdrawn": "Withdrawn",
+    "recommendHire": "{{hire}}/{{total}} recommend hire",
+    "rejectQ": "Reject this applicant?",
+    "rejectAria": "Reject applicant",
+    "advanceQ": "{{action}} this applicant?",
+    "selectAria": "Select {{name}}",
+    "already": "Already {{status}}",
+    "viewResume": "View resume",
+    "forJob": " · for {{title}}",
+    "stuck": "{{days}}d, awaiting review",
+    "stuckTitle": "Employer Response SLA — this is the same signal behind the reminder email",
+    "hideCover": "Hide cover letter",
+    "viewCover": "View cover letter"
+  },
+  "funnel": {
+    "title": "Hiring funnel ",
+    "allListings": "· all listings",
+    "empty": "No applications yet.",
+    "stage": {
+      "PENDING": "Applied",
+      "REVIEWING": "Reviewing",
+      "SHORTLISTED": "Shortlisted",
+      "INTERVIEW": "Interview",
+      "OFFERED": "Offered",
+      "OFFER_ACCEPTED": "Hired"
+    },
+    "ariaBar_one": "{{label}}: {{count}} applicant, {{pct}}% of total applied",
+    "ariaBar_other": "{{label}}: {{count}} applicants, {{pct}}% of total applied",
+    "note": "% shown is conversion from the stage above it.",
+    "rejectedNote": "{{rejected}} rejected ({{pct}}% of applicants)"
+  },
+  "step": {
+    "applied": "Applied",
+    "reviewing": "Reviewing",
+    "interview": "Interview",
+    "feedback": "Feedback",
+    "decision": "Decision",
+    "hired": "Hired"
+  },
+  "stage": {
+    "PENDING": "Applied",
+    "REVIEWING": "Reviewing",
+    "SHORTLISTED": "Shortlisted",
+    "INTERVIEW": "Interview",
+    "INTERVIEW_DONE": "Awaiting decision",
+    "OFFERED": "Offer sent",
+    "OFFER_ACCEPTED": "Hired",
+    "OFFER_DECLINED": "Offer declined",
+    "REJECTED": "Rejected",
+    "WITHDRAWN": "Withdrawn"
+  },
+  "action": {
+    "review": "Review application",
+    "shortlist": "Shortlist candidate",
+    "toInterview": "Move to interview",
+    "schedule": "Schedule interview",
+    "viewInterview": "View interview",
+    "addFeedback": "Add your feedback",
+    "feedbackStatus": "View feedback status",
+    "decide": "Make hiring decision"
+  },
+  "stepper": {
+    "rejected": "This application was rejected.",
+    "withdrawn": "The candidate withdrew this application."
+  },
+  "activity": {
+    "applied": "Candidate applied",
+    "viewed": "Viewed by your team",
+    "proposed": "Interview times proposed",
+    "confirmed": "Interview confirmed",
+    "feedback": "{{name}} submitted feedback ({{rec}})",
+    "teamMember": "A team member"
+  },
+  "rec": {
+    "STRONG_YES": "strong yes",
+    "YES": "yes",
+    "NO": "no",
+    "STRONG_NO": "strong no"
+  },
+  "ws": {
+    "docTitle": "{{name}} — Hiring",
+    "docTitleFallback": "Hiring",
+    "loadError": "Couldn't load this application",
+    "loadErrorDesc": "Something went wrong loading this candidate.",
+    "notFound": "Application not found",
+    "notFoundDesc": "This application may have been withdrawn, or you don't have access to it.",
+    "backDashboard": "Back to dashboard",
+    "updated": "Application updated.",
+    "updateFailed": "Couldn't update the application. Please try again.",
+    "message": "Message",
+    "confirm": "Confirm",
+    "confirmQ": "{{action}}?",
+    "dashboardCrumb": "← Dashboard"
+  },
+  "decision": {
+    "title": "Team decision",
+    "summary": "{{hire}}/{{total}} recommend hire. All required feedback has been submitted.",
+    "offered": "Offer extended to {{name}}.",
+    "rejected": "{{name}}'s application was rejected.",
+    "failed": "Couldn't update the application. Please try again.",
+    "extend": "Extend offer",
+    "extendQ": "Extend an offer to {{name}}?",
+    "extending": "Extending…",
+    "reject": "Reject",
+    "rejectQ": "Reject {{name}}'s application?",
+    "rejecting": "Rejecting…"
+  },
+  "notes": {
+    "saved": "Note saved.",
+    "failed": "Couldn't save the note. Please try again.",
+    "title": "Private notes",
+    "hint": "Visible only to your team — never shown to the candidate.",
+    "placeholder": "Add a note about this candidate…",
+    "save": "Save note"
+  },
+  "summary": {
+    "experience": "Experience",
+    "yrs": "{{years}} yrs · {{level}}",
+    "salary": "Expected salary",
+    "location": "Location",
+    "timezone": "Timezone",
+    "resume": "View resume"
+  },
+  "timeline": {
+    "title": "Activity"
+  },
+  "search": {
+    "docTitle": "Find Talent",
+    "docDesc": "Search the RemoteSEA talent pool by skill, seniority, and timezone — only candidates who've opted into Open to work.",
+    "heading": "Find talent",
+    "ariaLabel": "Search candidates",
+    "placeholder": "Search by headline or name — e.g. \"backend engineer\"",
+    "clear": "Clear search",
+    "loading": "Loading candidates… ",
+    "candidates_one": "candidate",
+    "candidates_other": "candidates",
+    "rankAgainst": "Rank against",
+    "sorted": "✓ Sorted by match",
+    "sortByMatch": "Sort this page by match",
+    "errorTitle": "Couldn't load candidates",
+    "errorDesc": "Something went wrong fetching candidates.",
+    "emptyTitle": "No candidates match these filters",
+    "emptyDesc": "Try removing a filter — only candidates who've opted into 'Open to work' are shown.",
+    "inviteSent": "Invitation sent",
+    "inviteFailed": "Couldn't send invitation",
+    "allCandidates": "All candidates",
+    "rankAria": "Rank against a job"
+  },
+  "filter": {
+    "skills": "Skills",
+    "skillsSearch": "Search skills…",
+    "availability": "Availability",
+    "seniority": "Seniority",
+    "employment": "Employment type",
+    "tzOverlap": "Timezone overlap",
+    "country": "Country",
+    "SG_HOURS": "SG hours",
+    "AU_HOURS": "AU hours",
+    "ASYNC_ONLY": "Async-friendly",
+    "type": {
+      "FULL_TIME": "Full-time",
+      "CONTRACT": "Contract",
+      "PART_TIME": "Part-time"
+    }
+  },
+  "country": {
+    "Vietnam": "Vietnam",
+    "Singapore": "Singapore",
+    "Indonesia": "Indonesia",
+    "Philippines": "Philippines",
+    "Malaysia": "Malaysia",
+    "Thailand": "Thailand"
+  },
+  "card": {
+    "remote": "Remote",
+    "invited": "Invited",
+    "sending": "Sending…",
+    "invite": "Invite to apply",
+    "inviteHint": "Select a job in “Rank against” above to invite"
+  },
+  "verify": {
+    "docTitle": "Verify Your Company",
+    "successTitle": "Company verified",
+    "successDesc": "Your Verified badge is live and eligible jobs now publish immediately.",
+    "errorTitle": "Link expired or invalid",
+    "errorDesc": "Request a new verification email from your employer dashboard.",
+    "goDashboard": "Go to dashboard"
   }
 }

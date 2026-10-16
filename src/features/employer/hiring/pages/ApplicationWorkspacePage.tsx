@@ -34,6 +34,7 @@ import { useUpdateApplicationStatus } from "@/features/employer/employer.queries
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { cn } from "@/utils/cn";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const WorkspaceSkeleton = () => (
   <div className="min-h-screen bg-neutral-50">
@@ -52,6 +53,7 @@ const WorkspaceSkeleton = () => (
 );
 
 export const ApplicationWorkspacePage = () => {
+  const { t } = useTranslation("employer");
   const { id } = useParams<{ id: string }>();
   const applicationId = id ?? "";
   const { user } = useAuth();
@@ -77,8 +79,10 @@ export const ApplicationWorkspacePage = () => {
 
   useDocumentTitle(
     applicant
-      ? `${applicant.talent.user.name ?? "Candidate"} — Hiring`
-      : "Hiring"
+      ? t("ws.docTitle", {
+          name: applicant.talent.user.name ?? t("row.candidate"),
+        })
+      : t("ws.docTitleFallback")
   );
 
   if (applicantsLoading || interviewLoading) {
@@ -97,11 +101,11 @@ export const ApplicationWorkspacePage = () => {
                 variant="outline"
                 onClick={() => refetchAll()}
               >
-                Try again
+                {t("common.actions.retry")}
               </Button>
             }
-            description="Something went wrong loading this candidate."
-            title="Couldn't load this application"
+            description={t("ws.loadErrorDesc")}
+            title={t("ws.loadError")}
           />
         </div>
       </div>
@@ -118,18 +122,18 @@ export const ApplicationWorkspacePage = () => {
                 className={buttonVariants({ variant: "outline", size: "sm" })}
                 to={ROUTES.employerDashboard}
               >
-                Back to dashboard
+                {t("ws.backDashboard")}
               </Link>
             }
-            description="This application may have been withdrawn, or you don't have access to it."
-            title="Application not found"
+            description={t("ws.notFoundDesc")}
+            title={t("ws.notFound")}
           />
         </div>
       </div>
     );
   }
 
-  const talentName = applicant.talent.user.name ?? "Candidate";
+  const talentName = applicant.talent.user.name ?? t("row.candidate");
   const eligibleReviewerCount = countEligibleReviewers(
     teamMembers ?? [],
     interview?.interviewerId
@@ -178,8 +182,8 @@ export const ApplicationWorkspacePage = () => {
           status: nextStatus,
         }),
       {
-        success: "Application updated.",
-        error: "Couldn't update the application. Please try again.",
+        success: t("ws.updated"),
+        error: t("ws.updateFailed"),
       }
     );
   };
@@ -213,13 +217,13 @@ export const ApplicationWorkspacePage = () => {
                 )}
                 to={ROUTES.applicationMessages(applicant.id)}
               >
-                <MessageCircle size={14} /> Message
+                <MessageCircle size={14} /> {t("ws.message")}
               </Link>
               {primaryAction.kind === "advance" ? (
                 <ConfirmAction
-                  confirmLabel="Confirm"
-                  message={`${primaryAction.label}?`}
-                  pendingLabel="Working…"
+                  confirmLabel={t("ws.confirm")}
+                  message={t("ws.confirmQ", { action: primaryAction.label })}
+                  pendingLabel={t("common.confirm.working")}
                   onConfirm={() =>
                     handleAdvance(
                       primaryAction.nextStatus as

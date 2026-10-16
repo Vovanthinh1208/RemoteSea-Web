@@ -1,0 +1,199 @@
+{
+  "opt": {
+    "size": {
+      "1_10": "1–10",
+      "11_50": "11–50",
+      "51_200": "51–200",
+      "201_500": "201–500",
+      "500": "500+"
+    },
+    "hq": {
+      "singapore": "🇸🇬 Singapore",
+      "australia": "🇦🇺 Úc",
+      "united_states": "🇺🇸 Hoa Kỳ",
+      "uk": "🇬🇧 Anh",
+      "europe": "🇪🇺 Châu Âu",
+      "other": "Khác"
+    },
+    "seniority": {
+      "intern": "Thực tập sinh",
+      "junior": "Junior",
+      "mid": "Trung cấp",
+      "senior": "Cao cấp",
+      "staff": "Staff",
+      "lead": "Trưởng nhóm",
+      "head": "Trưởng bộ phận"
+    },
+    "jobtype": {
+      "full": "Toàn thời gian",
+      "part": "Bán thời gian",
+      "contract": "Hợp đồng",
+      "freelance": "Freelance"
+    },
+    "tz": {
+      "sg_hours_utc_8": "Giờ SG · UTC+8",
+      "au_hours_utc_10": "Giờ Úc · UTC+10",
+      "us_east_utc_5": "Bờ Đông Mỹ · UTC-5",
+      "us_west_utc_8": "Bờ Tây Mỹ · UTC-8",
+      "eu_hours_utc_1": "Giờ Châu Âu · UTC+1",
+      "async_first": "Ưu tiên async"
+    },
+    "loc": {
+      "remote": "Remote",
+      "hybrid": "Kết hợp",
+      "onsite": "Tại văn phòng"
+    },
+    "period": {
+      "month": "/ tháng",
+      "year": "/ năm",
+      "hour": "/ giờ"
+    },
+    "benefit": {
+      "health_insurance": "Bảo hiểm sức khỏe",
+      "equity": "Cổ phần",
+      "home_office_stipend": "Hỗ trợ làm việc tại nhà",
+      "annual_learning_budget": "Ngân sách học tập hằng năm",
+      "flexible_hours": "Giờ làm việc linh hoạt",
+      "team_retreats": "Team building",
+      "equipment_provided": "Được cấp thiết bị"
+    }
+  },
+  "tier": {
+    "standard": {
+      "name": "Tiêu chuẩn",
+      "desc": "Đăng 30 ngày, hiển thị tìm kiếm cơ bản.",
+      "f1": "Đăng 30 ngày",
+      "f2": "Có trong kết quả tìm kiếm",
+      "f3": "Nhận hồ sơ qua email"
+    },
+    "featured": {
+      "name": "Nổi bật",
+      "desc": "Đứng đầu tìm kiếm, thẻ nổi bật, gửi qua bản tin.",
+      "f1": "Đăng 60 ngày",
+      "f2": "Vị trí đầu danh sách",
+      "f3": "Gửi qua bản tin",
+      "f4": "Chia sẻ mạng xã hội",
+      "ribbon": "Phổ biến"
+    },
+    "handson": {
+      "name": "Hỗ trợ trực tiếp",
+      "desc": "Chúng tôi tìm và sàng lọc ứng viên cho bạn.",
+      "f1": "Đăng không giới hạn",
+      "f2": "Ưu tiên hiển thị",
+      "f3": "Đội ngũ tìm kiếm ứng viên",
+      "f4": "Kênh Slack riêng"
+    }
+  },
+  "step": {
+    "company": "Công ty",
+    "role": "Vị trí",
+    "plan": "Gói",
+    "review": "Xem lại & thanh toán"
+  },
+  "wizard": {
+    "docTitle": "Đăng tin tuyển dụng",
+    "heading": "Đăng tin tuyển dụng",
+    "failedTitle": "Không thể đăng tin tuyển dụng",
+    "descMin": "Mô tả công việc phải có ít nhất {{min}} ký tự.",
+    "noCategories": "Không thể tải danh mục công việc. Vui lòng thử lại.",
+    "skillsFailed": "Không thể tải danh sách kỹ năng nên chưa gắn được các kỹ năng đã chọn. Vui lòng thử lại.",
+    "skillsLoading": "Danh sách kỹ năng đang được tải — vui lòng đợi một lát rồi thử lại.",
+    "profileFailed": "Không thể lưu hồ sơ công ty. Vui lòng thử lại.",
+    "createFailed": "Không thể tạo tin tuyển dụng. Hãy kiểm tra các trường bắt buộc và thử lại.",
+    "checkoutFailed": "Tin tuyển dụng đã được lưu nhưng không thể bắt đầu thanh toán. Vui lòng thử lại.",
+    "stepOf": "Bước {{step}} / {{total}}",
+    "back": "Quay lại",
+    "continue": "Tiếp tục",
+    "processing": "Đang xử lý…",
+    "pay": "Thanh toán & đăng",
+    "preview": "Xem trước",
+    "orderSummary": "Tóm tắt đơn hàng",
+    "total": "Tổng cộng",
+    "secured": "Bảo mật bởi Stripe · Mã hóa SSL"
+  },
+  "company": {
+    "title": "Về công ty của bạn",
+    "subtitle": "Thông tin này tạo thẻ nhà tuyển dụng mà ứng viên thấy trên tin của bạn.",
+    "name": "Tên công ty",
+    "namePlaceholder": "Công ty ABC",
+    "website": "Website",
+    "size": "Quy mô công ty",
+    "hq": "Trụ sở chính",
+    "tagline": "Khẩu hiệu một dòng",
+    "taglineHint": "Tối đa 80 ký tự, hiển thị dưới tên công ty",
+    "taglinePlaceholder": "Chúng tôi xây dựng công cụ giúp lập trình viên phát hành nhanh hơn.",
+    "overview": "Giới thiệu công ty",
+    "overviewHint": "Nên viết khoảng 80–150 từ.",
+    "overviewPlaceholder": "Hãy cho ứng viên biết bạn làm gì, phục vụ ai và vì sao điều đó quan trọng…",
+    "recruiter": "Nhà tuyển dụng / quản lý tuyển dụng",
+    "fullName": "Họ và tên",
+    "fullNamePlaceholder": "Nguyễn Văn An",
+    "role": "Chức vụ",
+    "rolePlaceholder": "Trưởng nhóm kỹ thuật",
+    "workEmail": "Email công việc"
+  },
+  "role": {
+    "title": "Chi tiết vị trí",
+    "subtitle": "Giúp ứng viên hiểu chính xác bạn cần gì.",
+    "jobTitle": "Chức danh",
+    "jobTitlePlaceholder": "Kỹ sư Frontend cao cấp",
+    "category": "Danh mục",
+    "seniority": "Cấp bậc",
+    "employmentType": "Loại hình làm việc",
+    "location": "Hình thức làm việc",
+    "tzOverlap": "Múi giờ làm việc chung",
+    "desc": "Mô tả công việc",
+    "descHint": "Người này sẽ làm gì hằng ngày? Thành công sau 6 tháng trông như thế nào? Tối thiểu 100 ký tự.",
+    "descPlaceholder": "Bạn sẽ làm gì...\n\nChúng tôi tìm kiếm...",
+    "requiredSkills": "Kỹ năng bắt buộc",
+    "niceSkills": "Kỹ năng ưu tiên",
+    "compensation": "Mức lương",
+    "min": "Tối thiểu",
+    "max": "Tối đa",
+    "currency": "Tiền tệ",
+    "period": "Chu kỳ",
+    "benefits": "Phúc lợi"
+  },
+  "plan": {
+    "title": "Chọn gói",
+    "subtitle": "Mọi gói đều có tin đăng công khai. Nâng cấp để tiếp cận nhiều hơn.",
+    "oneTime": "trả một lần"
+  },
+  "review": {
+    "title": "Xem lại & thanh toán",
+    "subtitle": "Bạn sẽ hoàn tất thanh toán an toàn trên trang thanh toán của Stripe.",
+    "untitled": "Vị trí chưa đặt tên",
+    "yourCompany": "Công ty của bạn",
+    "listing": "Tin đăng gói {{name}}",
+    "secured": "Bảo mật bởi Stripe · Mã hóa SSL · Không thu phí định kỳ"
+  },
+  "preview": {
+    "defaultTitle": "Kỹ sư Frontend cao cấp",
+    "defaultCompany": "Công ty của bạn"
+  },
+  "saved": {
+    "title": "Tin tuyển dụng của bạn đã được lưu",
+    "body": "{{role}} tại {{company}} đã được tạo dưới dạng bản nháp. Không thể bắt đầu thanh toán nên tin chưa được thanh toán hoặc gửi duyệt.",
+    "yourJob": "Tin tuyển dụng của bạn",
+    "yourCompanyLower": "công ty của bạn",
+    "details": "Chi tiết tin tuyển dụng",
+    "plan": "Gói đã chọn",
+    "company": "Công ty",
+    "role": "Vị trí",
+    "reference": "Mã tham chiếu",
+    "goDashboard": "Đến bảng điều khiển"
+  },
+  "success": {
+    "docTitle": "Đã nhận thanh toán",
+    "title": "Cảm ơn bạn đã gửi tin",
+    "desc": "Tin tuyển dụng của bạn đang được duyệt. Chúng tôi sẽ gửi email trong vòng 24 giờ khi tin được đăng.",
+    "goDashboard": "Đến bảng điều khiển"
+  },
+  "draft": {
+    "restoredTitle": "Đã khôi phục bản nháp",
+    "restoredDesc": "Tiếp tục từ nơi bạn đã dừng lại. Đăng tin sẽ xóa bản nháp."
+  },
+  "page": {
+    "docTitle": "Đăng tin tuyển dụng remote"
+  }
+}

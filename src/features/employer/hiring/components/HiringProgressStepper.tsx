@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import { cn } from "@/utils/cn";
 import type { HiringPipeline } from "@/features/employer/hiring/hiring-stage.utils";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface HiringProgressStepperProps {
   pipeline: HiringPipeline;
@@ -9,12 +10,13 @@ interface HiringProgressStepperProps {
 export const HiringProgressStepper = ({
   pipeline,
 }: HiringProgressStepperProps) => {
+  const { t } = useTranslation("employer");
   if (pipeline.terminal) {
     return (
       <div className="rounded-10 border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-[12.5px] font-medium text-neutral-500">
         {pipeline.terminal === "REJECTED"
-          ? "This application was rejected."
-          : "The candidate withdrew this application."}
+          ? t("stepper.rejected")
+          : t("stepper.withdrawn")}
       </div>
     );
   }

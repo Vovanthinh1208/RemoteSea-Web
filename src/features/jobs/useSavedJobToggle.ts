@@ -9,6 +9,7 @@ import {
 } from "@/features/saved/saved.queries";
 import { ROUTES } from "@/constants/routes";
 import { reportError } from "@/services/monitoring";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface UseSavedJobToggleResult {
   saved: boolean;
@@ -27,6 +28,7 @@ export const useSavedJobToggle = (
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation("jobs");
   const { data: isSaved, isLoading: savedStatusLoading } = useIsJobSaved(jobId);
   const saveMutation = useSaveJob();
   const unsaveMutation = useUnsaveJob();
@@ -58,13 +60,13 @@ export const useSavedJobToggle = (
       }
       toast({
         variant: "success",
-        title: prev ? "Removed from saved" : "Saved to your list",
+        title: prev ? t("save.removedToast") : t("save.savedToast"),
       });
     } catch (err) {
       reportError(err);
       toast({
         variant: "error",
-        title: "Couldn't update saved jobs",
+        title: t("save.failedToast"),
       });
     } finally {
       togglingRef.current = false;

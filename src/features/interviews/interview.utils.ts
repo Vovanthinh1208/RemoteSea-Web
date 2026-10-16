@@ -1,4 +1,5 @@
 import { dayKeyOf, relativeDayLabel } from "@/utils/time";
+import { formatLocalDateTime, formatLocalTime } from "@/utils/format";
 import type { UpcomingInterview } from "@/types/interview";
 
 export const DURATION_OPTIONS = [15, 30, 45, 60, 90];
@@ -13,7 +14,7 @@ export const hasOccurred = (confirmedSlot: string | null): boolean =>
   !!confirmedSlot && new Date(confirmedSlot).getTime() <= Date.now();
 
 export const formatSlot = (iso: string) =>
-  new Date(iso).toLocaleString("en-US", {
+  formatLocalDateTime(iso, {
     weekday: "short",
     month: "short",
     day: "numeric",
@@ -33,7 +34,7 @@ export const toLocalInputValue = (iso: string) => {
 };
 
 export const formatTime = (iso: string) =>
-  new Date(iso).toLocaleTimeString("en-US", {
+  formatLocalTime(iso, {
     hour: "numeric",
     minute: "2-digit",
   });

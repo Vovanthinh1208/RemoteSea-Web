@@ -13,6 +13,8 @@ import { LEVEL_LABELS } from "@/utils/labels";
 import { ROUTES } from "@/constants/routes";
 import { cn } from "@/utils/cn";
 import type { TalentSearchItem } from "@/types/talent-search";
+import { useTranslation } from "@/i18n/useTranslation";
+import { optionLabel } from "@/i18n/labels";
 
 interface TalentCardProps {
   talent: TalentSearchItem;
@@ -31,9 +33,10 @@ export const TalentCard = memo(function TalentCard({
   invited,
   inviting,
 }: TalentCardProps) {
-  const name = talent.user.name ?? "Candidate";
+  const { t } = useTranslation("employer");
+  const name = talent.user.name ?? t("row.candidate");
   const initial = personInitial(name);
-  const country = talent.country ?? "Remote";
+  const country = talent.country ?? t("card.remote");
 
   return (
     // flex-wrap (not a viewport breakpoint) so this adapts to the card's own
@@ -49,7 +52,7 @@ export const TalentCard = memo(function TalentCard({
         {initial}
       </div>
 
-      <div className="min-w-[240px] flex-1">
+      <div className="min-w-[min(240px,100%)] flex-1">
         <div className="mb-1 flex flex-wrap items-center gap-1.5">
           <span className="text-[13px] font-medium text-neutral-600">
             {name}
@@ -78,7 +81,7 @@ export const TalentCard = memo(function TalentCard({
           {talent.timezone && (
             <Tag>
               <Clock size={11} />
-              {talent.timezone}
+              {optionLabel("talent.opt.tz", talent.timezone)}
             </Tag>
           )}
           {talent.skills.slice(0, 4).map(({ skill }) => (
@@ -102,21 +105,18 @@ export const TalentCard = memo(function TalentCard({
               : "bg-brand-50 text-brand-700 hover:bg-brand-100 disabled:opacity-50"
           )}
           disabled={!onInvite || invited || inviting}
-          title={
-            onInvite
-              ? undefined
-              : "Select a job in “Rank against” above to invite"
-          }
+          title={onInvite ? undefined : t("card.inviteHint")}
           type="button"
           onClick={onInvite}
         >
           {invited ? (
             <>
-              <Check size={11} /> Invited
+              <Check size={11} /> {t("card.invited")}
             </>
           ) : (
             <>
-              <Send size={11} /> {inviting ? "Sending…" : "Invite to apply"}
+              <Send size={11} />{" "}
+              {inviting ? t("card.sending") : t("card.invite")}
             </>
           )}
         </button>

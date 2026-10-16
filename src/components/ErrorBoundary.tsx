@@ -1,6 +1,8 @@
-import { Component, type ErrorInfo, type ReactNode } from "react";
+import { Component, useContext, type ErrorInfo, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { reportError } from "@/services/monitoring";
+import { I18nContext } from "@/i18n/I18nContext";
+import { translate } from "@/i18n/runtime";
 
 // A stale JS chunk (deployed while the tab was already open) throws here when the
 // browser can't fetch it — the fix is a one-time reload to pick up the new build,
@@ -17,6 +19,48 @@ type Props = {
   scoped?: boolean;
 };
 type State = { error: Error | null };
+
+// The boundary itself is a class (no hooks), and may render above the
+// I18nProvider, so the fallback reads the optional context to re-render when
+// the locale changes and falls back to the runtime snapshot otherwise.
+const ErrorFallback = ({
+  isChunkError,
+  minHeight,
+}: {
+  isChunkError: boolean;
+  minHeight: string;
+}) => {
+  useContext(I18nContext);
+  return (
+    <div
+      className={`mx-auto flex ${minHeight} max-w-md flex-col items-center justify-center px-6 text-center`}
+    >
+      <h1 className="text-2xl font-semibold text-neutral-900">
+        {translate(
+          isChunkError
+            ? "common.errorBoundary.updating"
+            : "common.errorBoundary.title"
+        )}
+      </h1>
+      <p className="mt-2 text-sm text-neutral-500">
+        {translate(
+          isChunkError
+            ? "common.errorBoundary.updatingDesc"
+            : "common.errorBoundary.desc"
+        )}
+      </p>
+      {!isChunkError && (
+        <Button
+          className="mt-6"
+          variant="primary"
+          onClick={() => window.location.reload()}
+        >
+          {translate("common.errorBoundary.reload")}
+        </Button>
+      )}
+    </div>
+  );
+};
 
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { error: null };
@@ -58,27 +102,7 @@ export class ErrorBoundary extends Component<Props, State> {
       const minHeight = this.props.scoped ? "min-h-[40vh]" : "min-h-[70vh]";
 
       return (
-        <div
-          className={`mx-auto flex ${minHeight} max-w-md flex-col items-center justify-center px-6 text-center`}
-        >
-          <h1 className="text-2xl font-semibold text-neutral-900">
-            {isChunkError ? "Updating…" : "Something went wrong"}
-          </h1>
-          <p className="mt-2 text-sm text-neutral-500">
-            {isChunkError
-              ? "A new version of the app is available. Reloading…"
-              : "An unexpected error occurred. Try reloading the page."}
-          </p>
-          {!isChunkError && (
-            <Button
-              className="mt-6"
-              variant="primary"
-              onClick={() => window.location.reload()}
-            >
-              Reload
-            </Button>
-          )}
-        </div>
+        <ErrorFallback isChunkError={isChunkError} minHeight={minHeight} />
       );
     }
 

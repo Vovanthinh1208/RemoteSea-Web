@@ -51,7 +51,8 @@
     "continue": "Tiếp tục",
     "viewAll": "Xem tất cả",
     "more": "Xem thêm",
-    "less": "Thu gọn"
+    "less": "Thu gọn",
+    "retryShort": "Thử lại"
   },
   "status": {
     "active": "Đang hoạt động",
@@ -104,7 +105,19 @@
     "monthsAgo": "{{count}} tháng trước",
     "yearsAgo": "{{count}} năm trước",
     "today": "Hôm nay",
-    "yesterday": "Hôm qua"
+    "yesterday": "Hôm qua",
+    "justNowLower": "vừa xong",
+    "dayShort": "{{n}} ngày",
+    "hourShort": "{{n}} giờ",
+    "dayAgo": "{{n}} ngày trước",
+    "hourAgo": "{{n}} giờ trước",
+    "minuteAgo": "{{n}} phút trước",
+    "monthAgo": "{{n}} tháng trước",
+    "yearAgo": "{{n}} năm trước",
+    "tomorrow": "Ngày mai",
+    "notYet": "Chưa có",
+    "activeNow": "Đang hoạt động",
+    "ago": "{{time}} trước"
   },
   "language": {
     "label": "Ngôn ngữ",
@@ -120,11 +133,118 @@
     "resources": "Tài nguyên",
     "legal": "Pháp lý",
     "privacy": "Chính sách bảo mật",
-    "terms": "Điều khoản dịch vụ"
+    "terms": "Điều khoản dịch vụ",
+    "platform": "Nền tảng",
+    "salaryGuide": "Cẩm nang lương",
+    "newsletter": "Bản tin việc làm",
+    "remoteGuide": "Cẩm nang làm từ xa",
+    "cvTemplates": "Mẫu CV chuẩn",
+    "interviewPrep": "Kinh nghiệm phỏng vấn",
+    "about": "Giới thiệu",
+    "founderStory": "Câu chuyện sáng lập",
+    "contact": "Liên hệ",
+    "press": "Báo chí",
+    "cookies": "Cookie",
+    "description": "Việc làm remote từ Singapore, Úc và toàn cầu — tuyển chọn cho nhân sự Việt Nam.",
+    "madeIn": "Phát triển tại",
+    "location": "Đà Nẵng, Việt Nam 🇻🇳",
+    "builtBy": "Xây dựng bởi người làm việc từ xa, vì cộng đồng làm việc từ xa."
   },
   "notFound": {
     "title": "Không tìm thấy trang",
     "desc": "Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.",
     "backHome": "Về trang chủ"
-  }
+  },
+  "format": {
+    "upTo": "Tối đa {{amount}}",
+    "perMonth": "{{amount}}/tháng",
+    "hours": "{{n}} giờ",
+    "days": "{{n}} ngày",
+    "yearsOne": "{{n}} năm",
+    "yearsOther": "{{n}} năm",
+    "months": "{{n}} tháng",
+    "lessThanMonth": "< 1 tháng"
+  },
+  "labels": {
+    "level": {
+      "ENTRY": "Mới vào nghề",
+      "MID": "Trung cấp",
+      "SENIOR": "Cao cấp",
+      "LEAD": "Trưởng nhóm",
+      "EXECUTIVE": "Điều hành"
+    },
+    "jobType": {
+      "FULL_TIME": "Toàn thời gian",
+      "PART_TIME": "Bán thời gian",
+      "CONTRACT": "Hợp đồng",
+      "FREELANCE": "Freelance"
+    }
+  },
+  "a11y": {
+    "dismiss": "Đóng thông báo",
+    "loading": "Đang tải",
+    "back": "Quay lại"
+  },
+  "upload": {
+    "mustBePdf": "Phải là tệp PDF.",
+    "mustBeImage": "Phải là ảnh JPEG, PNG hoặc WebP.",
+    "tooLarge": "Tệp quá lớn — tối đa {{mb}}MB.",
+    "failed": "Tải lên thất bại. Vui lòng thử lại.",
+    "uploading": "Đang tải lên…",
+    "uploaded": "Đã tải lên {{label}}",
+    "cancel": "Hủy tải lên"
+  },
+  "skills": {
+    "remove": "Xóa kỹ năng: {{skill}}",
+    "typePrompt": "Nhập kỹ năng rồi nhấn Enter…",
+    "addAnother": "Thêm kỹ năng khác…",
+    "suggested": "Gợi ý:"
+  },
+  "confirm": {
+    "yes": "Có",
+    "working": "Đang xử lý…"
+  },
+  "newsletter": {
+    "soonTitle": "Bản tin sắp ra mắt",
+    "soonDesc": "Chưa mở đăng ký — hãy quay lại sau nhé.",
+    "emailLabel": "Địa chỉ email",
+    "emailPlaceholder": "email-cua-ban@example.com",
+    "subscribe": "Đăng ký"
+  },
+  "errorBoundary": {
+    "updating": "Đang cập nhật…",
+    "updatingDesc": "Đã có phiên bản mới của ứng dụng. Đang tải lại…",
+    "title": "Đã xảy ra lỗi",
+    "desc": "Đã xảy ra lỗi không mong muốn. Hãy thử tải lại trang.",
+    "reload": "Tải lại"
+  },
+  "session": {
+    "confirmFailedTitle": "Không thể xác nhận phiên đăng nhập",
+    "confirmFailedDesc": "Hãy kiểm tra kết nối và thử lại.",
+    "expiredTitle": "Phiên đăng nhập đã hết hạn",
+    "expiredDesc": "Vui lòng đăng nhập lại để tiếp tục."
+  },
+  "notifications": {
+    "title": "Thông báo",
+    "markAllRead": "Đánh dấu tất cả đã đọc",
+    "markReadFailed": "Không thể đánh dấu đã đọc",
+    "markAllReadFailed": "Không thể đánh dấu tất cả đã đọc",
+    "empty": "Chưa có thông báo nào",
+    "unread": "Chưa đọc: ",
+    "viewAll": "Xem tất cả"
+  },
+  "party": {
+    "candidate": "Ứng viên",
+    "employer": "Nhà tuyển dụng"
+  },
+  "stars": {
+    "n_one": "{{n}} sao",
+    "n_other": "{{n}} sao",
+    "outOf5": "{{value}} trên 5 sao"
+  },
+  "badge": {
+    "verified": "Đã xác minh",
+    "unverified": "Chưa xác minh"
+  },
+  "offline": "Bạn đang ngoại tuyến — thay đổi và kết quả mới sẽ được tải khi bạn kết nối lại."
 }

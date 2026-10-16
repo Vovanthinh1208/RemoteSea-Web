@@ -1,4 +1,5 @@
 import { hasOccurred } from "@/features/interviews/interview.utils";
+import { translate } from "@/i18n/runtime";
 import type { ApplicationStatus } from "@/types/application";
 import type { Interview } from "@/types/interview";
 import type { ScorecardSummary } from "@/types/scorecard";
@@ -13,13 +14,13 @@ export interface HiringStep {
   current: boolean;
 }
 
-const STEP_ORDER: [HiringStepKey, string][] = [
-  ["applied", "Applied"],
-  ["reviewing", "Reviewing"],
-  ["interview", "Interview"],
-  ["feedback", "Feedback"],
-  ["decision", "Decision"],
-  ["hired", "Hired"],
+const STEP_ORDER: HiringStepKey[] = [
+  "applied",
+  "reviewing",
+  "interview",
+  "feedback",
+  "decision",
+  "hired",
 ];
 
 const HAPPY_PATH: ApplicationStatus[] = [
@@ -69,26 +70,9 @@ export const stageLabel = (
   status: ApplicationStatus,
   interviewOccurred: boolean
 ): string => {
-  switch (status) {
-    case "PENDING":
-      return "Applied";
-    case "REVIEWING":
-      return "Reviewing";
-    case "SHORTLISTED":
-      return "Shortlisted";
-    case "INTERVIEW":
-      return interviewOccurred ? "Awaiting decision" : "Interview";
-    case "OFFERED":
-      return "Offer sent";
-    case "OFFER_ACCEPTED":
-      return "Hired";
-    case "OFFER_DECLINED":
-      return "Offer declined";
-    case "REJECTED":
-      return "Rejected";
-    case "WITHDRAWN":
-      return "Withdrawn";
-  }
+  const key =
+    status === "INTERVIEW" && interviewOccurred ? "INTERVIEW_DONE" : status;
+  return translate(`employer.stage.${key}`);
 };
 
 export interface HiringPipeline {
@@ -141,15 +125,15 @@ export const buildHiringPipeline = (
   };
 
   let current: HiringStepKey | null =
-    STEP_ORDER.map(([key]) => key).find((key) => !reached[key]) ?? "hired";
+    STEP_ORDER.find((key) => !reached[key]) ?? "hired";
   if (current === "decision" && !readyForDecision) current = "feedback";
   // A declined offer is resolved, not "in progress" — no step should read
   // as current (the stage badge already conveys the outcome).
   if (status === "OFFER_DECLINED") current = null;
 
-  const steps = STEP_ORDER.map(([key, label]) => ({
+  const steps = STEP_ORDER.map((key) => ({
     key,
-    label,
+    label: translate(`employer.step.${key}`),
     reached: reached[key],
     current: current === key,
   }));
@@ -202,38 +186,53 @@ export const getPrimaryAction = (ctx: PrimaryActionContext): HiringAction => {
   if (status === "PENDING") {
     return {
       kind: "advance",
-      label: "Review application",
+      label: translate("employer.action.review"),
       nextStatus: "REVIEWING",
     };
   }
   if (status === "REVIEWING") {
     return {
       kind: "advance",
-      label: "Shortlist candidate",
+      label: translate("employer.action.shortlist"),
       nextStatus: "SHORTLISTED",
     };
   }
   if (status === "SHORTLISTED") {
     return {
       kind: "advance",
-      label: "Move to interview",
+      label: translate("employer.action.toInterview"),
       nextStatus: "INTERVIEW",
     };
   }
 
   // status === "INTERVIEW"
   if (!interview) {
-    return { kind: "schedule-interview", label: "Schedule interview" };
+    return {
+      kind: "schedule-interview",
+      label: translate("employer.action.schedule"),
+    };
   }
   if (!hasOccurred(interview.confirmedSlot)) {
-    return { kind: "view-interview", label: "View interview" };
+    return {
+      kind: "view-interview",
+      label: translate("employer.action.viewInterview"),
+    };
   }
   if (!viewerHasSubmittedScorecard) {
-    return { kind: "add-feedback", label: "Add your feedback" };
+    return {
+      kind: "add-feedback",
+      label: translate("employer.action.addFeedback"),
+    };
   }
   const submitted = scorecardSummary?.total ?? 0;
   if (submitted < eligibleReviewerCount) {
-    return { kind: "view-feedback-status", label: "View feedback status" };
+    return {
+      kind: "view-feedback-status",
+      label: translate("employer.action.feedbackStatus"),
+    };
   }
-  return { kind: "make-decision", label: "Make hiring decision" };
+  return {
+    kind: "make-decision",
+    label: translate("employer.action.decide"),
+  };
 };

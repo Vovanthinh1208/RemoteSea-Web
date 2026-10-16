@@ -18,6 +18,11 @@ import { useTranslation } from "@/i18n/useTranslation";
 
 const LANGUAGES = ["English", "Tiếng Việt"] as const;
 const REGIONS = ["Vietnam", "Singapore", "Australia"] as const;
+const REGION_LABEL_KEYS = {
+  Vietnam: "settings.acct.regionVietnam",
+  Singapore: "settings.acct.regionSingapore",
+  Australia: "settings.acct.regionAustralia",
+} as const;
 const CURRENCIES = ["USD ($)", "VND (₫)", "SGD (S$)"] as const;
 
 export const AccountSection = () => {
@@ -99,7 +104,7 @@ export const AccountSection = () => {
           </label>
           <input
             className={TEXT_INPUT_CLASS}
-            placeholder="+84 90 123 4567"
+            placeholder={t("settings.acct.phonePlaceholder")}
             value={phone}
             onBlur={savePhone}
             onChange={(e) => setPhone(e.target.value)}
@@ -116,7 +121,9 @@ export const AccountSection = () => {
               onChange={(e) => saveField("language", e.target.value)}
             >
               {LANGUAGES.map((l) => (
-                <option key={l}>{l}</option>
+                <option key={l} value={l}>
+                  {l}
+                </option>
               ))}
             </select>
           </div>
@@ -130,7 +137,9 @@ export const AccountSection = () => {
               onChange={(e) => saveField("region", e.target.value)}
             >
               {REGIONS.map((r) => (
-                <option key={r}>{r}</option>
+                <option key={r} value={r}>
+                  {t(REGION_LABEL_KEYS[r])}
+                </option>
               ))}
             </select>
           </div>

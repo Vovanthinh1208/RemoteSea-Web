@@ -18,19 +18,14 @@ export const applyServerErrors = <T extends FieldValues>(
 };
 
 /**
- * Standard form submit-failure handling: applies any field-level errors from
- * an ApiError to the form, and returns the top-level message to show. Covers
- * the try/catch shape repeated across every auth/profile form in the app.
+ * Standard form submit-failure handling: applies any field-level errors from an
+ * ApiError to the form. The caller keeps the thrown error itself (see
+ * useSubmitError) and shows `getErrorMessage(error)`, so the top-level message
+ * is localized at render time rather than frozen into state.
  */
 export const applyFormSubmitError = <T extends FieldValues>(
   error: unknown,
-  setError: UseFormSetError<T>,
-  fallbackMessage: string,
-  resolveApiMessage?: (apiError: ApiError) => string
-): string => {
-  if (error instanceof ApiError) {
-    applyServerErrors(error, setError);
-    return resolveApiMessage?.(error) ?? error.message;
-  }
-  return fallbackMessage;
+  setError: UseFormSetError<T>
+): void => {
+  if (error instanceof ApiError) applyServerErrors(error, setError);
 };

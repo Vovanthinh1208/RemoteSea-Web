@@ -8,6 +8,7 @@ import {
 import { forgotPassword } from "@/features/auth/auth.service";
 import { TextField } from "@/components/shared/TextField";
 import { applyFormSubmitError } from "@/utils/form-errors";
+import { useSubmitError } from "@/hooks/useSubmitError";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/i18n";
 
@@ -15,7 +16,7 @@ export const ForgotPasswordForm = () => {
   const { t } = useTranslation("auth");
   const [isSent, setIsSent] = useState(false);
   const [sentEmail, setSentEmail] = useState("");
-  const [formError, setFormError] = useState<string | null>(null);
+  const submitError = useSubmitError();
   const {
     register,
     handleSubmit,
@@ -27,19 +28,14 @@ export const ForgotPasswordForm = () => {
   });
 
   const onSubmit = async (values: ForgotPasswordFormValues) => {
-    setFormError(null);
+    submitError.clear();
     try {
       await forgotPassword(values.email);
       setSentEmail(values.email);
       setIsSent(true);
     } catch (err) {
-      setFormError(
-        applyFormSubmitError(
-          err,
-          setError,
-          "Something went wrong. Please try again."
-        )
-      );
+      applyFormSubmitError(err, setError);
+      submitError.fail(err);
     }
   };
 
@@ -63,7 +59,11 @@ export const ForgotPasswordForm = () => {
         type="email"
       />
 
-      {formError && <p className="text-sm text-red-600">{formError}</p>}
+      {submitError.message && (
+        <p className="text-sm text-red-600" role="alert">
+          {submitError.message}
+        </p>
+      )}
 
       <Button
         className="w-full rounded-12"

@@ -1,0 +1,64 @@
+{
+  "role": {
+    "OWNER": "Owner",
+    "RECRUITER": "Recruiter",
+    "HIRING_MANAGER": "Hiring manager",
+    "INTERVIEWER": "Interviewer"
+  },
+  "members": {
+    "changeRoleFailed": "Couldn't change role",
+    "removed": "Removed {{name}}",
+    "removeFailed": "Couldn't remove member",
+    "you": "(you)",
+    "joined": "{{email}} · Joined {{time}}",
+    "removeAria": "Remove {{name}}",
+    "title": "Team members",
+    "count_one": "{{count}} member",
+    "count_other": "{{count}} members",
+    "whoHasAccess": "Who has access to this company",
+    "loadError": "Couldn't load your team.",
+    "empty": "No team members yet."
+  },
+  "invite": {
+    "expired": "expired",
+    "expiresDays": "expires in {{n}}d",
+    "expiresHours": "expires in {{n}}h",
+    "sent": "Invitation sent",
+    "sentDesc": "{{email}} has 7 days to accept.",
+    "sendFailed": "Couldn't send invitation",
+    "title": "Invite a team member",
+    "desc": "They'll get an email with a link to join, and sign in with their own account — never shared credentials.",
+    "email": "Email",
+    "emailPlaceholder": "teammate@company.com",
+    "role": "Role",
+    "send": "Send invite",
+    "revokeFailed": "Couldn't revoke invitation",
+    "pendingError": "Couldn't load pending invitations.",
+    "pending": "Pending invitations",
+    "revokeAria": "Revoke invitation to {{email}}"
+  },
+  "page": {
+    "docTitle": "Team — Company Settings",
+    "crumb": "Company Settings",
+    "title": "Team ",
+    "titleEm": "members.",
+    "desc": "Everyone on this list signs in with their own account — access is based on their role, never shared credentials."
+  },
+  "join": {
+    "docTitle": "Join your team — RemoteSEA",
+    "notFoundTitle": "Invitation not found",
+    "notFoundDesc": "This invitation link is invalid, has already been used, or has expired.",
+    "goHome": "Go home",
+    "in": "You're in",
+    "joined": "You've joined {{company}} as {{role}}.",
+    "dashboard": "Go to dashboard",
+    "title": "Join {{company}}",
+    "invitedAs": "You've been invited as ",
+    "signIn": ". Sign in or create an account with ",
+    "toAccept": " to accept.",
+    "mismatch": "You're signed in as {{current}}, but this invite is for {{invited}}. Log out and sign in with that address to accept.",
+    "accept": "Accept invitation",
+    "login": "Log in",
+    "register": "Create account"
+  }
+}

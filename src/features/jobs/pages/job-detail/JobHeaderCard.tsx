@@ -8,6 +8,7 @@ import {
   JOB_TYPE_LABELS,
   LEVEL_LABELS,
   countryFlag,
+  filterValueLabel,
   isAsyncTimezone,
   isVerifiedJob,
   timeAgo,
@@ -15,16 +16,21 @@ import {
 import { ROUTES } from "@/constants/routes";
 import type { Job } from "@/types/job";
 import { VerifiedInline } from "@/components/shared/VerifiedInline";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface JobHeaderCardProps {
   job: Job;
 }
 
 export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
-  const country = job.country ?? job.employer.hqCountry ?? "Remote";
-  const timezone = job.timezone ?? (job.isRemote ? "Remote" : country);
+  const { t } = useTranslation("jobs");
+  const country = job.country ?? job.employer.hqCountry ?? t("card.remote");
+  const timezone = job.timezone ?? (job.isRemote ? t("card.remote") : country);
   const isAsync = isAsyncTimezone(timezone);
-  const category = job.categories[0]?.category.name ?? "Other";
+  const categoryName = job.categories[0]?.category.name;
+  const category = categoryName
+    ? filterValueLabel(categoryName)
+    : t("card.other");
   return (
     <div className="mb-6 flex items-start gap-4 rounded-16 border border-neutral-100 bg-white p-6 shadow-card">
       <CompanyLogo name={job.employer.companyName} size={56} />
@@ -34,7 +40,7 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
             <VerifiedInline
               className="gap-1"
               iconSize={13}
-              label="Verified employer"
+              label={t("detail.verifiedEmployer")}
             />
           )}
           {job.employer.isVerified && <span>·</span>}
@@ -58,7 +64,7 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {job.isFeatured && (
             <Badge variant="featured">
-              <Star size={10} /> Featured
+              <Star size={10} /> {t("card.featured")}
             </Badge>
           )}
           {/* variant="positive" (brand green), not "info" (stock blue) —
@@ -67,7 +73,7 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
               share one accent instead of two. */}
           {isVerifiedJob(job) && (
             <Badge variant="positive">
-              <BadgeCheck size={10} /> Verified job
+              <BadgeCheck size={10} /> {t("card.verifiedJob")}
             </Badge>
           )}
           <Tag>{category}</Tag>
@@ -79,7 +85,8 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
           </Tag>
           {job.vnHireCount > 0 && (
             <Badge variant="vn">
-              <Users size={10} /> {job.vnHireCount} VN on team
+              <Users size={10} />{" "}
+              {t("detail.vnOnTeam", { count: job.vnHireCount })}
             </Badge>
           )}
         </div>
@@ -87,8 +94,12 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
       <div className="hidden flex-col items-end gap-2 sm:flex">
         <SalaryBadge max={job.salaryMax} min={job.salaryMin} />
         <span className="inline-flex items-center gap-1 text-[12px] text-neutral-400">
-          <Clock size={11} /> Posted {timeAgo(job.publishedAt ?? job.createdAt)}{" "}
-          ago
+          <Clock size={11} />{" "}
+          {t("detail.posted", {
+            time: t("common.time.ago", {
+              time: timeAgo(job.publishedAt ?? job.createdAt),
+            }),
+          })}
         </span>
       </div>
     </div>

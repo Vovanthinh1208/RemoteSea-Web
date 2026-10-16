@@ -2,20 +2,20 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "@/i18n/useTranslation";
 
 export const Footer = () => {
-  const { t, locale } = useTranslation();
+  const { t } = useTranslation();
 
   const footerCols = [
     {
-      heading: locale === "vi" ? "Nền tảng" : "Platform",
+      heading: t("footer.platform"),
       links: [
         { label: t("nav.jobs"), href: "/jobs" },
         {
-          label: locale === "vi" ? "Cẩm nang lương" : "Salary guide",
+          label: t("footer.salaryGuide"),
           href: "/salary",
         },
         { label: t("nav.forEmployers"), href: "/employer" },
         {
-          label: locale === "vi" ? "Bản tin việc làm" : "Newsletter",
+          label: t("footer.newsletter"),
           href: "/newsletter",
         },
       ],
@@ -24,12 +24,12 @@ export const Footer = () => {
       heading: t("footer.resources"),
       links: [
         {
-          label: locale === "vi" ? "Cẩm nang làm từ xa" : "Remote work guide",
+          label: t("footer.remoteGuide"),
           href: "#",
         },
-        { label: locale === "vi" ? "Mẫu CV chuẩn" : "CV templates", href: "#" },
+        { label: t("footer.cvTemplates"), href: "#" },
         {
-          label: locale === "vi" ? "Kinh nghiệm phỏng vấn" : "Interview prep",
+          label: t("footer.interviewPrep"),
           href: "#",
         },
         { label: t("nav.community"), href: "/community" },
@@ -38,16 +38,16 @@ export const Footer = () => {
     {
       heading: t("footer.company"),
       links: [
-        { label: locale === "vi" ? "Giới thiệu" : "About", href: "#" },
+        { label: t("footer.about"), href: "#" },
         {
-          label: locale === "vi" ? "Câu chuyện sáng lập" : "Founder story",
+          label: t("footer.founderStory"),
           href: "#",
         },
         {
-          label: locale === "vi" ? "Liên hệ" : "Contact",
+          label: t("footer.contact"),
           href: "mailto:hello@remotesea.io",
         },
-        { label: locale === "vi" ? "Báo chí" : "Press", href: "#" },
+        { label: t("footer.press"), href: "#" },
       ],
     },
     {
@@ -55,7 +55,7 @@ export const Footer = () => {
       links: [
         { label: t("footer.privacy"), href: "#" },
         { label: t("footer.terms"), href: "#" },
-        { label: "Cookies", href: "#" },
+        { label: t("footer.cookies"), href: "#" },
       ],
     },
   ];
@@ -78,15 +78,13 @@ export const Footer = () => {
               RemoteSEA
             </div>
             <p className="max-w-[220px] text-sm leading-relaxed text-neutral-500">
-              {locale === "vi"
-                ? "Việc làm remote từ Singapore, Úc và toàn cầu — tuyển chọn cho nhân sự Việt Nam."
-                : "Remote jobs from Singapore, Australia & beyond — curated for Vietnam talent."}
+              {t("footer.description")}
             </p>
             <div className="mt-4 flex items-center gap-1.5 text-xs text-neutral-400">
               <span className="font-medium uppercase tracking-widest">
-                {locale === "vi" ? "Phát triển tại" : "Made in"}
+                {t("footer.madeIn")}
               </span>
-              <span>Đà Nẵng, Việt Nam 🇻🇳</span>
+              <span>{t("footer.location")}</span>
             </div>
           </div>
 
@@ -116,11 +114,7 @@ export const Footer = () => {
       <div className="border-t border-neutral-100">
         <div className="mx-auto flex max-w-[1240px] items-center justify-between px-6 py-4 text-xs text-neutral-400">
           <span>© 2026 RemoteSEA · {t("footer.rightsReserved")}</span>
-          <span>
-            {locale === "vi"
-              ? "Xây dựng bởi người làm việc từ xa, vì cộng đồng làm việc từ xa."
-              : "Built by a remote worker, for remote workers."}
-          </span>
+          <span>{t("footer.builtBy")}</span>
         </div>
       </div>
     </footer>

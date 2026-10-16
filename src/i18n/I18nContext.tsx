@@ -10,6 +10,9 @@ import type {
   SupportedLocale,
   TranslationParams,
 } from "@/i18n/types";
+import { resolveTranslation } from "@/i18n/translate";
+import { setRuntimeLocale } from "@/i18n/runtime";
+import { applyZodLocale } from "@/i18n/zod";
 import {
   formatCurrency as fmtCurrency,
   formatDate as fmtDate,
@@ -17,109 +20,7 @@ import {
   formatRelativeTime as fmtRelativeTime,
 } from "@/i18n/formatters";
 
-// Static locale dictionaries
-import enCommon from "@/i18n/locales/en/common.json";
-import enAuth from "@/i18n/locales/en/auth.json";
-import enTalent from "@/i18n/locales/en/talent.json";
-import enEmployer from "@/i18n/locales/en/employer.json";
-import enJobs from "@/i18n/locales/en/jobs.json";
-import enSettings from "@/i18n/locales/en/settings.json";
-import enAdmin from "@/i18n/locales/en/admin.json";
-import enAi from "@/i18n/locales/en/ai.json";
-
-import viCommon from "@/i18n/locales/vi/common.json";
-import viAuth from "@/i18n/locales/vi/auth.json";
-import viTalent from "@/i18n/locales/vi/talent.json";
-import viEmployer from "@/i18n/locales/vi/employer.json";
-import viJobs from "@/i18n/locales/vi/jobs.json";
-import viSettings from "@/i18n/locales/vi/settings.json";
-import viAdmin from "@/i18n/locales/vi/admin.json";
-import viAi from "@/i18n/locales/vi/ai.json";
-
 export const LOCALES_STORAGE_KEY = "remotesea_locale";
-
-type TranslationTree = Record<string, unknown>;
-
-const RESOURCES: Record<SupportedLocale, Record<string, TranslationTree>> = {
-  en: {
-    common: enCommon,
-    auth: enAuth,
-    talent: enTalent,
-    employer: enEmployer,
-    jobs: enJobs,
-    settings: enSettings,
-    admin: enAdmin,
-    ai: enAi,
-  },
-  vi: {
-    common: viCommon,
-    auth: viAuth,
-    talent: viTalent,
-    employer: viEmployer,
-    jobs: viJobs,
-    settings: viSettings,
-    admin: viAdmin,
-    ai: viAi,
-  },
-};
-
-const getNestedValue = (obj: unknown, path: string[]): string | undefined => {
-  let curr: unknown = obj;
-  for (const seg of path) {
-    if (!curr || typeof curr !== "object" || !(seg in curr)) {
-      return undefined;
-    }
-    curr = (curr as Record<string, unknown>)[seg];
-  }
-  return typeof curr === "string" ? curr : undefined;
-};
-
-const interpolate = (template: string, params?: TranslationParams): string => {
-  if (!params) return template;
-  return template.replace(
-    /\{\{\s*(\w+)\s*\}\}|\{\s*(\w+)\s*\}/g,
-    (_, k1, k2) => {
-      const key = k1 || k2;
-      const val = params[key];
-      return val !== undefined && val !== null ? String(val) : "";
-    }
-  );
-};
-
-const resolveTranslation = (
-  locale: SupportedLocale,
-  key: string,
-  params?: TranslationParams
-): string => {
-  const parts = key.split(".");
-  let ns = parts[0];
-  let subPath = parts.slice(1);
-
-  // If key does not start with a known namespace, default to "common"
-  if (!(ns in RESOURCES.en)) {
-    ns = "common";
-    subPath = parts;
-  }
-
-  // 1. Try target locale
-  const targetDict = RESOURCES[locale]?.[ns];
-  const targetVal = getNestedValue(targetDict, subPath);
-  if (targetVal !== undefined) {
-    return interpolate(targetVal, params);
-  }
-
-  // 2. Fallback to English
-  if (locale !== "en") {
-    const enDict = RESOURCES.en?.[ns];
-    const enVal = getNestedValue(enDict, subPath);
-    if (enVal !== undefined) {
-      return interpolate(enVal, params);
-    }
-  }
-
-  // 3. Fallback: return key
-  return key;
-};
 
 const normalizeAccountLanguage = (
   val?: string | null
@@ -185,6 +86,10 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
       }
     }
   }
+
+  // Mirror the locale for non-React helpers (see runtime.ts) before children render
+  setRuntimeLocale(locale);
+  applyZodLocale(locale);
 
   // Keep <html lang="..."> attribute in sync
   useEffect(() => {

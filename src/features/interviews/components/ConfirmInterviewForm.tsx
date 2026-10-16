@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { cn } from "@/utils/cn";
 import type { Interview } from "@/types/interview";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const ConfirmInterviewForm = ({
   applicationId,
@@ -13,6 +14,7 @@ export const ConfirmInterviewForm = ({
   applicationId: string;
   interview: Interview;
 }) => {
+  const { t } = useTranslation("interviews");
   const confirmMutation = useConfirmInterview(applicationId);
   const runWithToast = useToastMutation();
   const [selected, setSelected] = useState<string | null>(null);
@@ -20,19 +22,17 @@ export const ConfirmInterviewForm = ({
   const handleConfirm = () => {
     if (!selected) return;
     void runWithToast(() => confirmMutation.mutateAsync(selected), {
-      success: "Interview confirmed",
-      error: "Couldn't confirm the interview",
+      success: t("confirm.done"),
+      error: t("confirm.failed"),
     });
   };
 
   return (
     <div className="space-y-3">
       <div>
-        <p className="text-[13px] text-neutral-600">
-          Pick the time that works for you:
-        </p>
+        <p className="text-[13px] text-neutral-600">{t("confirm.pick")}</p>
         <p className="text-[11.5px] text-neutral-400">
-          Shown in your local time · {interview.durationMinutes} minutes
+          {t("confirm.local", { n: interview.durationMinutes })}
         </p>
       </div>
       <div className="space-y-2">
@@ -62,7 +62,7 @@ export const ConfirmInterviewForm = ({
         isLoading={confirmMutation.isPending}
         onClick={handleConfirm}
       >
-        Confirm this time
+        {t("confirm.button")}
       </Button>
     </div>
   );

@@ -2,6 +2,7 @@ import { Check, X } from "lucide-react";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { NEXT_LABEL } from "@/features/employer/employer-dashboard.utils";
 import type { ApplicationStatus } from "@/types/application";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export interface ApplicantBulkActionsProps {
   allEligibleSelected: boolean;
@@ -24,30 +25,34 @@ export const ApplicantBulkActions = ({
   onToggleSelectAll,
   onBulkUpdate,
 }: ApplicantBulkActionsProps) => {
+  const { t } = useTranslation("employer");
   return (
     <div className="mb-1 flex items-center gap-2.5 px-2">
       <input
-        aria-label="Select all eligible"
+        aria-label={t("bulk.selectAll")}
         checked={allEligibleSelected}
         className="h-4 w-4 shrink-0 accent-brand-600 disabled:opacity-30"
         disabled={eligibleCount === 0}
-        title="Selects every applicant not already rejected or withdrawn"
+        title={t("bulk.selectAllTitle")}
         type="checkbox"
         onChange={onToggleSelectAll}
       />
       {selectedCount > 0 ? (
         <div className="flex flex-1 flex-wrap items-center justify-between gap-2">
           <span className="text-[12px] text-neutral-500">
-            {selectedCount} selected
+            {t("bulk.selected", { count: selectedCount })}
           </span>
           <div className="flex flex-wrap items-center gap-2">
             {bulkNextStatus && commonStatus && (
               <ConfirmAction
                 confirmLabel={NEXT_LABEL[commonStatus]}
                 isPending={isPending}
-                message={`${NEXT_LABEL[commonStatus]} ${selectedCount} selected applicant${selectedCount === 1 ? "" : "s"}?`}
-                notePlaceholder="Add a shared note (optional)"
-                pendingLabel="Updating…"
+                message={t("bulk.advanceQ", {
+                  action: NEXT_LABEL[commonStatus],
+                  count: selectedCount,
+                })}
+                notePlaceholder={t("bulk.note")}
+                pendingLabel={t("bulk.updating")}
                 onConfirm={(note) => onBulkUpdate(bulkNextStatus, note)}
               >
                 {({ onClick }) => (
@@ -56,17 +61,20 @@ export const ApplicantBulkActions = ({
                     type="button"
                     onClick={onClick}
                   >
-                    <Check size={12} /> {NEXT_LABEL[commonStatus]} selected
+                    <Check size={12} />{" "}
+                    {t("bulk.actionSelected", {
+                      action: NEXT_LABEL[commonStatus],
+                    })}
                   </button>
                 )}
               </ConfirmAction>
             )}
             <ConfirmAction
-              confirmLabel="Reject"
+              confirmLabel={t("bulk.reject")}
               isPending={isPending}
-              message={`Reject ${selectedCount} selected applicant${selectedCount === 1 ? "" : "s"}?`}
-              notePlaceholder="Add a shared note (optional)"
-              pendingLabel="Rejecting…"
+              message={t("bulk.rejectQ", { count: selectedCount })}
+              notePlaceholder={t("bulk.note")}
+              pendingLabel={t("bulk.rejecting")}
               onConfirm={(note) => onBulkUpdate("REJECTED", note)}
             >
               {({ onClick }) => (
@@ -75,7 +83,7 @@ export const ApplicantBulkActions = ({
                   type="button"
                   onClick={onClick}
                 >
-                  <X size={12} /> Reject selected
+                  <X size={12} /> {t("bulk.rejectSelected")}
                 </button>
               )}
             </ConfirmAction>
@@ -83,7 +91,7 @@ export const ApplicantBulkActions = ({
         </div>
       ) : (
         <span className="text-[12px] text-neutral-400">
-          Select to update in bulk
+          {t("bulk.selectHint")}
         </span>
       )}
     </div>

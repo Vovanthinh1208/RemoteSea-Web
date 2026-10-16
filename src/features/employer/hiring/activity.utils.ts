@@ -1,19 +1,13 @@
 import type { ApplicantWithJob } from "@/features/employer/employer.queries";
 import type { Interview } from "@/types/interview";
 import type { Scorecard } from "@/types/scorecard";
+import { translate } from "@/i18n/runtime";
 
 export interface ActivityEvent {
   id: string;
   label: string;
   at: string;
 }
-
-const RECOMMENDATION_LABEL: Record<Scorecard["recommendation"], string> = {
-  STRONG_YES: "strong yes",
-  YES: "yes",
-  NO: "no",
-  STRONG_NO: "strong no",
-};
 
 export const buildActivityEvents = (
   applicant: ApplicantWithJob,
@@ -23,7 +17,7 @@ export const buildActivityEvents = (
   const events: ActivityEvent[] = [
     {
       id: "applied",
-      label: "Candidate applied",
+      label: translate("employer.activity.applied"),
       at: applicant.appliedAt,
     },
   ];
@@ -31,7 +25,7 @@ export const buildActivityEvents = (
   if (applicant.viewedAt) {
     events.push({
       id: "viewed",
-      label: "Viewed by your team",
+      label: translate("employer.activity.viewed"),
       at: applicant.viewedAt,
     });
   }
@@ -39,13 +33,13 @@ export const buildActivityEvents = (
   if (interview) {
     events.push({
       id: `interview-proposed-${interview.id}`,
-      label: "Interview times proposed",
+      label: translate("employer.activity.proposed"),
       at: interview.createdAt,
     });
     if (interview.status === "CONFIRMED" && interview.confirmedSlot) {
       events.push({
         id: `interview-confirmed-${interview.id}`,
-        label: "Interview confirmed",
+        label: translate("employer.activity.confirmed"),
         at: interview.confirmedSlot,
       });
     }
@@ -54,7 +48,11 @@ export const buildActivityEvents = (
   for (const scorecard of scorecards) {
     events.push({
       id: `scorecard-${scorecard.id}`,
-      label: `${scorecard.author.name ?? "A team member"} submitted feedback (${RECOMMENDATION_LABEL[scorecard.recommendation]})`,
+      label: translate("employer.activity.feedback", {
+        name:
+          scorecard.author.name ?? translate("employer.activity.teamMember"),
+        rec: translate(`employer.rec.${scorecard.recommendation}`),
+      }),
       at: scorecard.createdAt,
     });
   }

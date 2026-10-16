@@ -1,0 +1,114 @@
+{
+  "meetups": {
+    "eyebrow": "In person",
+    "title": "Coffee, beers, & ",
+    "titleEm": "offline",
+    "titleEnd": " bandwidth.",
+    "desc": "Members organize meetups whenever 5+ folks are in the same city. Free, low-key, and the wifi is always passable.",
+    "going": "{{count}} going",
+    "rsvp": "RSVP →",
+    "online": "Online",
+    "1": {
+      "title": "Remoteo meetup · Đà Nẵng",
+      "desc": "Monthly coworking + dinner. Coast-facing café. Bring a laptop or just yourself.",
+      "month": "Apr",
+      "weekday": "Sat"
+    },
+    "2": {
+      "title": "Async tooling teardown",
+      "desc": "Three folks share their full async stack — Notion, Linear, Loom, beyond. Lightning talks.",
+      "month": "Apr",
+      "weekday": "Thu"
+    },
+    "3": {
+      "title": "Equity & options 101",
+      "desc": "Workshop with a tax lawyer from Singapore. RSUs, ISOs, double-trigger acceleration — the whole deal.",
+      "month": "Apr",
+      "weekday": "Thu"
+    },
+    "4": {
+      "title": "Founders & freelancers brunch",
+      "desc": "Hosted at Cộng Cafe, Ngô Đức Kế. For members building their own thing on the side or full-time.",
+      "month": "Apr",
+      "weekday": "Sat"
+    }
+  },
+  "join": {
+    "eyebrow": "Apply",
+    "title": "Ready to join the ",
+    "titleEm": "family",
+    "titleEnd": "?",
+    "desc": "One form, 4 questions, ~5 minutes. We review applications every Friday and reply by the following Tuesday — yes, even if the answer is “not yet.”",
+    "step1Title": "Apply",
+    "step1Desc": "4 questions about your role, time zone, and what you'd contribute.",
+    "step2Title": "Reviewed Fridays",
+    "step2Desc": "Two existing members read each application. ~5% rejection rate.",
+    "step3Title": "Welcome thread",
+    "step3Desc": "Intro yourself in #introductions. Lurk or contribute — both are fine.",
+    "request": "Request invite",
+    "conduct": "Read the code of conduct"
+  },
+  "hero": {
+    "badge": "Invite-only · 500+ members from 14 cities",
+    "title": "500+ remote-working Vietnamese, ",
+    "titleEm": "one Slack",
+    "desc": "Engineers, designers, marketers, ops people — all working remotely for companies abroad. We trade offer letters, debug async culture, and meet up in person when we're in the same city.",
+    "request": "Request an invite",
+    "tour": "Watch the tour (2 min)",
+    "vetted": "Vetted by current members. We look for senior craft and good-faith participation — not vibes."
+  },
+  "members": {
+    "eyebrow": "Members",
+    "title": "The people ",
+    "titleEm": "actually",
+    "titleEnd": " in here.",
+    "desc": "A small slice of who you'll meet. Everyone's vetted, everyone's remote, everyone's working for a company outside Vietnam.",
+    "yearsRemote": "{{count}} years remote",
+    "1": {
+      "role": "Sr. Frontend Engineer",
+      "quote": "After two years, I finally figured out how to do deep work in PJs without losing my mind."
+    },
+    "2": {
+      "role": "Product Designer",
+      "quote": "The async culture here means my best work happens between 5–11pm. The team in SF doesn't blink."
+    },
+    "3": {
+      "role": "Staff Engineer",
+      "quote": "Six timezones, zero standups. The PRs and docs do all the talking."
+    },
+    "4": {
+      "role": "Growth Marketer",
+      "quote": "Living in a tea farm town. Working on growth across 5 SEA markets. Wild, honestly."
+    }
+  },
+  "channels": {
+    "eyebrow": "Inside",
+    "title": "What people ",
+    "titleEm": "actually",
+    "titleEnd": " talk about.",
+    "desc": "A peek at the channels and a few threads from this week. Names redacted out of respect — when you join, the full archive is yours.",
+    "list": "Channels",
+    "more": "+ {{count}} more",
+    "replies_one": "{{count}} reply",
+    "replies_other": "{{count}} replies",
+    "topic": {
+      "introductions": "New members say hi",
+      "offerNegotiations": "Help with your counter",
+      "asyncRituals": "How teams actually work",
+      "equityExplained": "Stock options, RSUs, vesting",
+      "parentsWhoRemote": "WFH with kids around",
+      "colivingDaNang": "The unofficial HQ"
+    }
+  },
+  "page": {
+    "title": "Community — RemoteSEA",
+    "description": "500+ remote-working Vietnamese professionals in one community — trade offer letters, debug async culture, and meet up in person."
+  },
+  "stats": {
+    "members": "Members",
+    "cities": "Cities",
+    "senior": "Senior+",
+    "medianOffer": "Median offer",
+    "meetups": "Meetups in 2025"
+  }
+}

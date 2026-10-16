@@ -7,6 +7,8 @@ import { Pagination } from "@/features/jobs/components/Pagination";
 import { useUserReviews } from "@/features/reviews/reviews.queries";
 import { timeAgoLong } from "@/utils/time";
 import type { ReviewListItem, ReviewRatingBreakdown } from "@/types/review";
+import { useTranslation } from "@/i18n/useTranslation";
+import { translate } from "@/i18n/runtime";
 
 const REVIEW_CARD_SKELETON_COUNT = 2;
 
@@ -41,7 +43,7 @@ const ReviewsSectionSkeleton = () => (
 const reviewerLabel = (review: ReviewListItem): string =>
   review.reviewer.employer?.companyName ??
   review.reviewer.name ??
-  "RemoteSEA member";
+  translate("reviews.section.member");
 
 const ReviewCard = ({ review }: { review: ReviewListItem }) => (
   <div className="border-b border-neutral-50 py-4 last:border-none">
@@ -93,6 +95,7 @@ interface ReviewsSectionProps {
 }
 
 export const ReviewsSection = ({ userId, categories }: ReviewsSectionProps) => {
+  const { t } = useTranslation("reviews");
   const [page, setPage] = useState(1);
   // Reset to page 1 when viewing a different person's reviews. Both callers
   // (PublicTalentProfilePage, CompanyProfilePage) key this off a route param
@@ -116,16 +119,16 @@ export const ReviewsSection = ({ userId, categories }: ReviewsSectionProps) => {
     return (
       <section className="rounded-20 border border-neutral-100 bg-white p-7">
         <h2 className="mb-4 text-[17px] font-semibold text-neutral-900">
-          Reviews
+          {t("section.title")}
         </h2>
         <div className="flex items-center justify-between text-[12.5px] text-neutral-400">
-          Couldn't load reviews.
+          {t("section.error")}
           <button
             className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
             type="button"
             onClick={() => refetch()}
           >
-            <RefreshCw size={11} /> Retry
+            <RefreshCw size={11} /> {t("common.actions.retryShort")}
           </button>
         </div>
       </section>
@@ -136,7 +139,7 @@ export const ReviewsSection = ({ userId, categories }: ReviewsSectionProps) => {
   return (
     <section className="rounded-20 border border-neutral-100 bg-white p-7">
       <h2 className="mb-4 text-[17px] font-semibold text-neutral-900">
-        Reviews
+        {t("section.title")}
       </h2>
 
       <div className="mb-5 flex items-center gap-3">
@@ -145,8 +148,7 @@ export const ReviewsSection = ({ userId, categories }: ReviewsSectionProps) => {
           {data.averageRating?.toFixed(1) ?? "—"}
         </span>
         <span className="text-[13px] text-neutral-400">
-          Based on {data.totalReviews}{" "}
-          {data.totalReviews === 1 ? "review" : "reviews"}
+          {t("section.basedOn", { count: data.totalReviews })}
         </span>
       </div>
 

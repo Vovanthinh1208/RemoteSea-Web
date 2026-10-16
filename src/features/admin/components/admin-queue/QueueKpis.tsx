@@ -1,6 +1,7 @@
 import { Ban, Check, Clock, Inbox } from "lucide-react";
 import { StatCard } from "@/components/ui/stat-card";
 import { URGENT_WAIT_HOURS, waitFmt } from "@/features/admin/admin.utils";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface QueueKpisProps {
   activeCount: number;
@@ -17,36 +18,37 @@ export const QueueKpis = ({
   approvedCount,
   rejectedCount,
 }: QueueKpisProps) => {
+  const { t } = useTranslation("admin");
   const tiles = [
     {
       icon: Inbox,
-      label: "In queue",
+      label: t("kpi.inQueue"),
       val: activeCount,
-      sub: `${overdueCount} over SLA`,
+      sub: t("kpi.overSla", { count: overdueCount }),
     },
     {
       icon: Clock,
-      label: "Avg. wait",
+      label: t("kpi.avgWait"),
       val: waitFmt(avgWaitHours),
-      sub: "SLA 24h",
+      sub: t("kpi.sla"),
       warn: avgWaitHours >= URGENT_WAIT_HOURS,
     },
     {
       icon: Check,
-      label: "Approved this session",
+      label: t("kpi.approved"),
       val: approvedCount,
-      sub: "+ live now",
+      sub: t("kpi.approvedSub"),
     },
     {
       icon: Ban,
-      label: "Rejected this session",
+      label: t("kpi.rejected"),
       val: rejectedCount,
-      sub: "incl. changes requested",
+      sub: t("kpi.rejectedSub"),
     },
   ];
 
   return (
-    <div className="mb-6 grid grid-cols-4 gap-3">
+    <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
       {tiles.map((s) => (
         <StatCard
           icon={s.icon}

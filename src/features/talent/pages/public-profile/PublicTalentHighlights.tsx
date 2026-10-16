@@ -1,6 +1,7 @@
 import { GraduationCap } from "lucide-react";
 import { safeExternalUrl } from "@/utils/safe-url";
 import type { TalentProfile } from "@/types/talent";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface PublicTalentHighlightsProps {
   skills: TalentProfile["skills"];
@@ -15,6 +16,7 @@ export const PublicTalentHighlights = ({
   hasBio,
   hasWorkExperiences,
 }: PublicTalentHighlightsProps) => {
+  const { t } = useTranslation("talent");
   const portfolioHighlights = profileHighlights.filter(
     (h) => h.type === "PORTFOLIO"
   );
@@ -33,7 +35,7 @@ export const PublicTalentHighlights = ({
       {skills.length > 0 && (
         <section className="rounded-20 border border-neutral-100 bg-white p-7">
           <h2 className="mb-5 text-[17px] font-semibold text-neutral-900">
-            Skills
+            {t("public.skills")}
           </h2>
           <div className="flex flex-wrap gap-1.5">
             {skills.map(({ skill, yearsExp }) => (
@@ -42,7 +44,9 @@ export const PublicTalentHighlights = ({
                 key={skill.id}
               >
                 {skill.name}
-                {yearsExp ? ` · ${yearsExp}y` : ""}
+                {yearsExp
+                  ? ` · ${t("public.yearsShort", { n: yearsExp })}`
+                  : ""}
               </span>
             ))}
           </div>
@@ -52,7 +56,7 @@ export const PublicTalentHighlights = ({
       {portfolioHighlights.length > 0 && (
         <section className="rounded-20 border border-neutral-100 bg-white p-7">
           <h2 className="mb-5 text-[17px] font-semibold text-neutral-900">
-            Selected work
+            {t("public.selectedWork")}
           </h2>
           <div className="grid gap-3 sm:grid-cols-2">
             {portfolioHighlights.map((work) => {
@@ -94,7 +98,7 @@ export const PublicTalentHighlights = ({
       {educationHighlights.length > 0 && (
         <section className="rounded-20 border border-neutral-100 bg-white p-7">
           <h2 className="mb-5 text-[17px] font-semibold text-neutral-900">
-            Education
+            {t("public.education")}
           </h2>
           <div className="divide-y divide-neutral-50">
             {educationHighlights.map((edu) => (
@@ -111,7 +115,7 @@ export const PublicTalentHighlights = ({
                   </p>
                   <p className="text-[12px] text-neutral-500">
                     {edu.subtitle ? `${edu.subtitle} · ` : ""}
-                    {edu.startYear} – {edu.endYear ?? "Present"}
+                    {edu.startYear} – {edu.endYear ?? t("exp.present")}
                   </p>
                 </div>
               </div>
@@ -122,7 +126,7 @@ export const PublicTalentHighlights = ({
 
       {!hasAnyContent && (
         <section className="rounded-20 border border-neutral-100 bg-white p-7 text-center text-[13px] text-neutral-400">
-          This member hasn&apos;t filled out their profile yet.
+          {t("public.emptyProfile")}
         </section>
       )}
     </>

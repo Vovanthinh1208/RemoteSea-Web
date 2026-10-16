@@ -6,12 +6,11 @@ import {
   type JobFilters,
 } from "@/features/jobs/job-filters";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const JobsPage = () => {
-  useDocumentTitle(
-    "Browse Remote Jobs",
-    "Browse verified remote jobs hiring Vietnamese talent — filter by role, salary, timezone, and category. New listings reviewed before they go live."
-  );
+  const { t } = useTranslation("jobs");
+  useDocumentTitle(t("page.docTitle"), t("page.description"));
   const [searchParams, setSearchParams] = useSearchParams();
   const filters = parseJobQuery(searchParams);
 

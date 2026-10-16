@@ -5,6 +5,7 @@ import { useActiveSection } from "@/hooks/useActiveSection";
 import { useMyTalentProfile } from "@/features/talent/talent.queries";
 import { PROF_SECTIONS } from "@/features/talent/components/profile-form/profile-form.constants";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const SECTION_IDS = PROF_SECTIONS.map((s) => s.id);
 
@@ -13,6 +14,7 @@ const SECTION_IDS = PROF_SECTIONS.map((s) => s.id);
 // aren't memoized — every IntersectionObserver tick used to re-render the whole
 // form for state none of those sections care about.
 export const ProfileFormNav = () => {
+  const { t } = useTranslation("talent");
   const [activeSection, setActiveSection] = useActiveSection(SECTION_IDS);
   // Cache-shared with ProfileForm's own useMyTalentProfile() call — React
   // Query dedupes it, so this doesn't cost a second request.
@@ -44,7 +46,7 @@ export const ProfileFormNav = () => {
             >
               <span className="flex items-center gap-2">
                 <Icon size={13} />
-                {s.label}
+                {t(s.labelKey)}
               </span>
               <span
                 className={cn(
@@ -71,18 +73,18 @@ export const ProfileFormNav = () => {
           >
             <span className="flex items-center gap-2">
               <Eye size={13} />
-              Preview as recruiter
+              {t("nav.preview")}
             </span>
             <ArrowUpRight size={11} />
           </Link>
         ) : (
           <span
             className="flex w-full cursor-not-allowed items-center justify-between rounded-10 px-3 py-2 text-[13px] text-neutral-300"
-            title="Save your profile first"
+            title={t("nav.saveFirst")}
           >
             <span className="flex items-center gap-2">
               <Eye size={13} />
-              Preview as recruiter
+              {t("nav.preview")}
             </span>
             <ArrowUpRight size={11} />
           </span>

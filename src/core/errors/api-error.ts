@@ -10,6 +10,9 @@ export type ApiErrorBody = {
   // Present on every error response the backend itself produces (see
   // GlobalExceptionFilter) — absent only for a body that never reached it at
   // all (a network failure, or something outside this API entirely).
+  // Stable machine-readable identifier (see the API's ErrorCode). Switch on this
+  // — never on the English `error` text — to localize the message.
+  code?: string;
   requestId?: string;
 };
 
@@ -25,6 +28,7 @@ type ParsedErrorBody = {
   message: string;
   fieldErrors?: FieldErrors;
   formErrors?: string[];
+  code?: string;
   requestId?: string;
 };
 
@@ -34,9 +38,15 @@ export const parseErrorBody = (body: unknown): ParsedErrorBody => {
       ? ((body as ApiErrorBody).requestId ?? undefined)
       : undefined;
 
+  const rawCode =
+    body && typeof body === "object" && "code" in body
+      ? (body as ApiErrorBody).code
+      : undefined;
+  const code = typeof rawCode === "string" ? rawCode : undefined;
+
   if (body && typeof body === "object" && "error" in body) {
     const { error } = body as ApiErrorBody;
-    if (typeof error === "string") return { message: error, requestId };
+    if (typeof error === "string") return { message: error, code, requestId };
     if (isZodFlattenedError(error)) {
       const message =
         error.formErrors[0] ??
@@ -46,17 +56,23 @@ export const parseErrorBody = (body: unknown): ParsedErrorBody => {
         message,
         fieldErrors: error.fieldErrors,
         formErrors: error.formErrors,
+        code,
         requestId,
       };
     }
   }
-  return { message: "Something went wrong. Please try again.", requestId };
+  return {
+    message: "Something went wrong. Please try again.",
+    code,
+    requestId,
+  };
 };
 
 export class ApiError extends Error {
   status: number;
   fieldErrors?: FieldErrors;
   formErrors?: string[];
+  code?: string;
   // Ties this error back to the exact server-side log line — surface it in
   // a support/bug-report flow (e.g. "Error ref: {requestId}") rather than
   // asking the user to describe what happened.
@@ -69,6 +85,7 @@ export class ApiError extends Error {
     this.status = status;
     this.fieldErrors = parsed.fieldErrors;
     this.formErrors = parsed.formErrors;
+    this.code = parsed.code;
     this.requestId = parsed.requestId;
   }
 }

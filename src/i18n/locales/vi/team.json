@@ -1,0 +1,64 @@
+{
+  "role": {
+    "OWNER": "Chủ sở hữu",
+    "RECRUITER": "Chuyên viên tuyển dụng",
+    "HIRING_MANAGER": "Quản lý tuyển dụng",
+    "INTERVIEWER": "Người phỏng vấn"
+  },
+  "members": {
+    "changeRoleFailed": "Không thể đổi vai trò",
+    "removed": "Đã gỡ {{name}}",
+    "removeFailed": "Không thể gỡ thành viên",
+    "you": "(bạn)",
+    "joined": "{{email}} · Tham gia {{time}}",
+    "removeAria": "Gỡ {{name}}",
+    "title": "Thành viên nhóm",
+    "count_one": "{{count}} thành viên",
+    "count_other": "{{count}} thành viên",
+    "whoHasAccess": "Những ai có quyền truy cập công ty này",
+    "loadError": "Không thể tải nhóm của bạn.",
+    "empty": "Chưa có thành viên nhóm nào."
+  },
+  "invite": {
+    "expired": "đã hết hạn",
+    "expiresDays": "hết hạn sau {{n}} ngày",
+    "expiresHours": "hết hạn sau {{n}} giờ",
+    "sent": "Đã gửi lời mời",
+    "sentDesc": "{{email}} có 7 ngày để chấp nhận.",
+    "sendFailed": "Không thể gửi lời mời",
+    "title": "Mời thành viên nhóm",
+    "desc": "Họ sẽ nhận email có liên kết tham gia và đăng nhập bằng tài khoản riêng — không bao giờ dùng chung thông tin đăng nhập.",
+    "email": "Email",
+    "emailPlaceholder": "dongnghiep@congty.com",
+    "role": "Vai trò",
+    "send": "Gửi lời mời",
+    "revokeFailed": "Không thể thu hồi lời mời",
+    "pendingError": "Không thể tải các lời mời đang chờ.",
+    "pending": "Lời mời đang chờ",
+    "revokeAria": "Thu hồi lời mời gửi tới {{email}}"
+  },
+  "page": {
+    "docTitle": "Nhóm — Cài đặt công ty",
+    "crumb": "Cài đặt công ty",
+    "title": "Thành viên ",
+    "titleEm": "nhóm.",
+    "desc": "Mọi người trong danh sách này đăng nhập bằng tài khoản riêng — quyền truy cập dựa trên vai trò, không bao giờ dùng chung thông tin đăng nhập."
+  },
+  "join": {
+    "docTitle": "Tham gia nhóm của bạn — RemoteSEA",
+    "notFoundTitle": "Không tìm thấy lời mời",
+    "notFoundDesc": "Liên kết lời mời này không hợp lệ, đã được sử dụng hoặc đã hết hạn.",
+    "goHome": "Về trang chủ",
+    "in": "Bạn đã tham gia",
+    "joined": "Bạn đã tham gia {{company}} với vai trò {{role}}.",
+    "dashboard": "Đến bảng điều khiển",
+    "title": "Tham gia {{company}}",
+    "invitedAs": "Bạn được mời với vai trò ",
+    "signIn": ". Hãy đăng nhập hoặc tạo tài khoản bằng ",
+    "toAccept": " để chấp nhận.",
+    "mismatch": "Bạn đang đăng nhập bằng {{current}}, nhưng lời mời này dành cho {{invited}}. Hãy đăng xuất và đăng nhập bằng địa chỉ đó để chấp nhận.",
+    "accept": "Chấp nhận lời mời",
+    "login": "Đăng nhập",
+    "register": "Tạo tài khoản"
+  }
+}

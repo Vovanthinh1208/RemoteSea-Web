@@ -5,6 +5,8 @@ import { Tag } from "@/components/ui/tag";
 import { cn } from "@/utils/cn";
 import { formatSalaryWithCurrency } from "@/utils/format";
 import type { ApplicantWithJob } from "@/features/employer/employer.queries";
+import { useTranslation } from "@/i18n/useTranslation";
+import { optionLabel } from "@/i18n/labels";
 
 interface CandidateSummaryCardProps {
   applicant: ApplicantWithJob;
@@ -13,6 +15,7 @@ interface CandidateSummaryCardProps {
 export const CandidateSummaryCard = ({
   applicant,
 }: CandidateSummaryCardProps) => {
+  const { t } = useTranslation("employer");
   const [coverLetterOpen, setCoverLetterOpen] = useState(false);
   const { talent } = applicant;
   const salary = formatSalaryWithCurrency(
@@ -25,7 +28,7 @@ export const CandidateSummaryCard = ({
     <div className="space-y-4">
       <div>
         <p className="text-[13px] font-medium text-neutral-900">
-          {talent.user.name ?? "Candidate"}
+          {talent.user.name ?? t("row.candidate")}
         </p>
         {talent.headline && (
           <p className="mt-0.5 text-[12.5px] text-neutral-500">
@@ -37,28 +40,33 @@ export const CandidateSummaryCard = ({
       <dl className="space-y-2 text-[12.5px]">
         {talent.yearsExperience != null && (
           <div className="flex justify-between gap-3">
-            <dt className="text-neutral-400">Experience</dt>
+            <dt className="text-neutral-400">{t("summary.experience")}</dt>
             <dd className="text-neutral-700">
-              {talent.yearsExperience} yrs · {talent.level}
+              {t("summary.yrs", {
+                years: talent.yearsExperience,
+                level: talent.level,
+              })}
             </dd>
           </div>
         )}
         {salary && (
           <div className="flex justify-between gap-3">
-            <dt className="text-neutral-400">Expected salary</dt>
+            <dt className="text-neutral-400">{t("summary.salary")}</dt>
             <dd className="text-neutral-700">{salary}</dd>
           </div>
         )}
         {talent.country && (
           <div className="flex justify-between gap-3">
-            <dt className="text-neutral-400">Location</dt>
+            <dt className="text-neutral-400">{t("summary.location")}</dt>
             <dd className="text-neutral-700">{talent.country}</dd>
           </div>
         )}
         {talent.timezone && (
           <div className="flex justify-between gap-3">
-            <dt className="text-neutral-400">Timezone</dt>
-            <dd className="text-neutral-700">{talent.timezone}</dd>
+            <dt className="text-neutral-400">{t("summary.timezone")}</dt>
+            <dd className="text-neutral-700">
+              {optionLabel("talent.opt.tz", talent.timezone)}
+            </dd>
           </div>
         )}
       </dl>
@@ -81,7 +89,7 @@ export const CandidateSummaryCard = ({
           rel="noreferrer"
           target="_blank"
         >
-          <Paperclip size={13} /> View resume
+          <Paperclip size={13} /> {t("summary.resume")}
         </a>
       )}
 
@@ -92,7 +100,7 @@ export const CandidateSummaryCard = ({
             type="button"
             onClick={() => setCoverLetterOpen((open) => !open)}
           >
-            {coverLetterOpen ? "Hide cover letter" : "View cover letter"}
+            {coverLetterOpen ? t("row.hideCover") : t("row.viewCover")}
           </button>
           {coverLetterOpen && (
             <p className="mt-2 whitespace-pre-line rounded-10 bg-neutral-50 p-3 text-[12.5px] leading-relaxed text-neutral-600">

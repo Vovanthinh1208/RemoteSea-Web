@@ -31,24 +31,13 @@ import { formatSlot, hasOccurred } from "@/features/interviews/interview.utils";
 import type { ApplicantWithJob } from "@/features/employer/employer.queries";
 import type { ApplicationStatus } from "@/types/application";
 import { personInitial } from "@/utils/name";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const APPLICANT_STATUS_VARIANT: Record<ApplicantStatusGroup, BadgeVariant> = {
   new: "info",
   reviewing: "positive",
   shortlisted: "success",
   archived: "muted",
-};
-
-const APPLICANT_STATUS_LABEL: Record<ApplicantStatusGroup, string> = {
-  new: "New",
-  reviewing: "Reviewing",
-  shortlisted: "Shortlisted",
-  archived: "Archived",
-};
-
-const APPLICANT_ROW_STATUS_LABEL: Partial<Record<ApplicationStatus, string>> = {
-  REJECTED: "Rejected",
-  WITHDRAWN: "Withdrawn",
 };
 
 export interface ApplicantRowProps {
@@ -74,7 +63,12 @@ export const ApplicantRow = memo(function ApplicantRow({
   signal,
   currentUserId,
 }: ApplicantRowProps) {
-  const name = a.talent.user.name ?? "Candidate";
+  const { t } = useTranslation("employer");
+  const rowStatusLabel: Partial<Record<ApplicationStatus, string>> = {
+    REJECTED: t("row.rejected"),
+    WITHDRAWN: t("row.withdrawn"),
+  };
+  const name = a.talent.user.name ?? t("row.candidate");
   const initial = personInitial(name);
   const group = APPLICANT_STATUS[a.status];
   const nextStatus = NEXT_STAGE[a.status];
@@ -93,7 +87,10 @@ export const ApplicantRow = memo(function ApplicantRow({
         : signal.scorecardSummary && signal.scorecardSummary.total > 0
           ? {
               icon: Users,
-              text: `${signal.scorecardSummary.hireCount}/${signal.scorecardSummary.total} recommend hire`,
+              text: t("row.recommendHire", {
+                hire: signal.scorecardSummary.hireCount,
+                total: signal.scorecardSummary.total,
+              }),
             }
           : null
       : null;
@@ -130,15 +127,15 @@ export const ApplicantRow = memo(function ApplicantRow({
           <span className="h-7 w-20 animate-pulse rounded-8 bg-neutral-100" />
         )}
         <ConfirmAction
-          confirmLabel="Reject"
+          confirmLabel={t("bulk.reject")}
           isPending={isPending}
-          message="Reject this applicant?"
-          pendingLabel="Rejecting…"
+          message={t("row.rejectQ")}
+          pendingLabel={t("bulk.rejecting")}
           onConfirm={() => onStatusChange(a.id, a.jobId, "REJECTED")}
         >
           {({ onClick }) => (
             <button
-              aria-label="Reject applicant"
+              aria-label={t("row.rejectAria")}
               className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
               disabled={isPending}
               type="button"
@@ -154,8 +151,8 @@ export const ApplicantRow = memo(function ApplicantRow({
         <ConfirmAction
           confirmLabel={NEXT_LABEL[a.status]}
           isPending={isPending}
-          message={`${NEXT_LABEL[a.status]} this applicant?`}
-          pendingLabel="Updating…"
+          message={t("row.advanceQ", { action: NEXT_LABEL[a.status] })}
+          pendingLabel={t("bulk.updating")}
           onConfirm={() => onStatusChange(a.id, a.jobId, nextStatus)}
         >
           {({ onClick }) => (
@@ -170,15 +167,15 @@ export const ApplicantRow = memo(function ApplicantRow({
           )}
         </ConfirmAction>
         <ConfirmAction
-          confirmLabel="Reject"
+          confirmLabel={t("bulk.reject")}
           isPending={isPending}
-          message="Reject this applicant?"
-          pendingLabel="Rejecting…"
+          message={t("row.rejectQ")}
+          pendingLabel={t("bulk.rejecting")}
           onConfirm={() => onStatusChange(a.id, a.jobId, "REJECTED")}
         >
           {({ onClick }) => (
             <button
-              aria-label="Reject applicant"
+              aria-label={t("row.rejectAria")}
               className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
               disabled={isPending}
               type="button"
@@ -199,14 +196,16 @@ export const ApplicantRow = memo(function ApplicantRow({
     <div className="group rounded-12 px-2 py-3 transition-colors hover:bg-neutral-50">
       <div className="flex items-start gap-3">
         <input
-          aria-label={`Select ${name}`}
+          aria-label={t("row.selectAria", { name })}
           checked={selected}
           className="mt-2 h-4 w-4 shrink-0 accent-brand-600 disabled:opacity-30"
           disabled={!isRejectable(a.status) || isPending}
           title={
             isRejectable(a.status)
               ? undefined
-              : `Already ${(APPLICANT_ROW_STATUS_LABEL[a.status] ?? a.status).toLowerCase()}`
+              : t("row.already", {
+                  status: (rowStatusLabel[a.status] ?? a.status).toLowerCase(),
+                })
           }
           type="checkbox"
           onChange={() => onToggleSelect(a.id)}
@@ -234,12 +233,11 @@ export const ApplicantRow = memo(function ApplicantRow({
                 className="px-1.5 py-0.5 text-[10px]"
                 variant={APPLICANT_STATUS_VARIANT[group]}
               >
-                {APPLICANT_ROW_STATUS_LABEL[a.status] ??
-                  APPLICANT_STATUS_LABEL[group]}
+                {rowStatusLabel[a.status] ?? t(`row.group.${group}`)}
               </Badge>
               {a.resumeUrl && (
                 <a
-                  aria-label="View resume"
+                  aria-label={t("row.viewResume")}
                   className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                   href={a.resumeUrl}
                   rel="noreferrer"
@@ -258,7 +256,9 @@ export const ApplicantRow = memo(function ApplicantRow({
               to={ROUTES.employerApplicationDetail(a.id)}
             >
               {a.talent.headline ?? a.talent.level}
-              <span className="text-neutral-300"> · for {a.jobTitle}</span>
+              <span className="text-neutral-300">
+                {t("row.forJob", { title: a.jobTitle })}
+              </span>
             </Link>
             {a.match && <MatchBadge match={a.match} />}
             <AvailabilityBadge
@@ -268,9 +268,9 @@ export const ApplicantRow = memo(function ApplicantRow({
             {stuckDays !== null && (
               <span
                 className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700"
-                title="Employer Response SLA — this is the same signal behind the reminder email"
+                title={t("row.stuckTitle")}
               >
-                <Clock3 size={10} /> {stuckDays}d, awaiting review
+                <Clock3 size={10} /> {t("row.stuck", { days: stuckDays })}
               </span>
             )}
           </div>
@@ -288,7 +288,7 @@ export const ApplicantRow = memo(function ApplicantRow({
               type="button"
               onClick={() => setShowCoverLetter((v) => !v)}
             >
-              {showCoverLetter ? "Hide cover letter" : "View cover letter"}
+              {showCoverLetter ? t("row.hideCover") : t("row.viewCover")}
               <ChevronDown
                 className={cn(
                   "transition-transform",

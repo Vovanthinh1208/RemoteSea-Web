@@ -1,4 +1,7 @@
 import { pickColorFromString } from "@/utils/color";
+import { localizedRecord } from "@/utils/labels";
+import { translate } from "@/i18n/runtime";
+import { formatLocalNumber } from "@/utils/format";
 import type {
   AdminAuditAction,
   AdminAuditTargetType,
@@ -7,11 +10,10 @@ import type {
 
 export { LEVEL_LABELS, JOB_TYPE_LABELS } from "@/utils/labels";
 
-export const PLAN_LABELS: Record<string, string> = {
-  STANDARD: "Standard",
-  FEATURED: "Featured",
-  HANDS_ON: "Hands-on",
-};
+export const PLAN_LABELS: Record<string, string> = localizedRecord(
+  ["STANDARD", "FEATURED", "HANDS_ON"] as const,
+  "admin.plan"
+);
 
 const COLORS = [
   "#16766F",
@@ -41,10 +43,12 @@ export const hoursSince = (dateString: string): number =>
 export const queuedAt = (job: AdminJob): string => job.paidAt ?? job.createdAt;
 
 export const waitFmt = (h: number): string => {
-  if (h < HOURS_PER_DAY) return `${h}h`;
+  if (h < HOURS_PER_DAY) return translate("admin.wait.hours", { h });
   const d = Math.floor(h / HOURS_PER_DAY);
   const r = h % HOURS_PER_DAY;
-  return r ? `${d}d ${r}h` : `${d}d`;
+  return r
+    ? translate("admin.wait.daysHours", { d, h: r })
+    : translate("admin.wait.days", { d });
 };
 
 export const URGENT_WAIT_HOURS = 24;
@@ -64,42 +68,73 @@ const MIN_DESCRIPTION_LENGTH = 100;
 export const autoChecks = (job: AdminJob): AutoCheck[] => [
   {
     state: job.description.length >= MIN_DESCRIPTION_LENGTH ? "pass" : "fail",
-    t: "Description length",
-    d: `${job.description.length} characters`,
+    t: translate("admin.check.descLength"),
+    d: translate("admin.check.descChars", { n: job.description.length }),
   },
   {
     state: job.salaryMin ? "pass" : "warn",
-    t: "Salary disclosed",
-    d: job.salaryMin ? "Range provided" : "No salary range",
+    t: translate("admin.check.salary"),
+    d: translate(
+      job.salaryMin ? "admin.check.salaryYes" : "admin.check.salaryNo"
+    ),
   },
   {
     state: job.categories.length ? "pass" : "warn",
-    t: "Categorised",
-    d: job.categories.length ? "Has category" : "Missing category",
+    t: translate("admin.check.category"),
+    d: translate(
+      job.categories.length
+        ? "admin.check.categoryYes"
+        : "admin.check.categoryNo"
+    ),
   },
   {
     state: job.employer.isVerified ? "pass" : "warn",
-    t: "Employer verified",
-    d: job.employer.isVerified ? "Verified company" : "Not yet verified",
+    t: translate("admin.check.verified"),
+    d: translate(
+      job.employer.isVerified
+        ? "admin.check.verifiedYes"
+        : "admin.check.verifiedNo"
+    ),
   },
 ];
 
+// Items are identified by id; text lives in admin.checklist.<id>.{label,hint}
 export const REVIEW_CHECKLIST = [
   {
-    label: "Role is genuinely remote",
-    hint: "Not hybrid mislabeled as remote.",
+    id: 1,
+    get label() {
+      return translate("admin.checklist.1.label");
+    },
+    get hint() {
+      return translate("admin.checklist.1.hint");
+    },
   },
   {
-    label: "Salary within market band",
-    hint: "Compare against benchmark.",
+    id: 2,
+    get label() {
+      return translate("admin.checklist.2.label");
+    },
+    get hint() {
+      return translate("admin.checklist.2.hint");
+    },
   },
   {
-    label: "No discriminatory language",
-    hint: "Requirements read clean.",
+    id: 3,
+    get label() {
+      return translate("admin.checklist.3.label");
+    },
+    get hint() {
+      return translate("admin.checklist.3.hint");
+    },
   },
   {
-    label: "Company looks legitimate",
-    hint: "Website + contact check out.",
+    id: 4,
+    get label() {
+      return translate("admin.checklist.4.label");
+    },
+    get hint() {
+      return translate("admin.checklist.4.hint");
+    },
   },
 ];
 
@@ -108,8 +143,8 @@ export const formatSalary = (
   max: number | null,
   currency = "USD"
 ): string => {
-  if (!min) return "Not specified";
-  const fmt = (n: number) => n.toLocaleString();
+  if (!min) return translate("admin.salaryNotSpecified");
+  const fmt = (n: number) => formatLocalNumber(n);
   return max
     ? `${currency} ${fmt(min)}–${fmt(max)}`
     : `${currency} ${fmt(min)}+`;
@@ -123,22 +158,26 @@ const DOLLARS_PER_THOUSAND = 1000;
 // their own copies of the cents/thousand constants) — one shared home instead.
 /** Integer cents → "$1,200". */
 export const formatCents = (cents: number): string =>
-  `$${(cents / CENTS_PER_DOLLAR).toLocaleString()}`;
+  `$${formatLocalNumber(cents / CENTS_PER_DOLLAR)}`;
 /** Integer cents → "$1.2k", the compact form used on KPI tiles. */
 export const formatCentsCompact = (cents: number): string =>
   `$${(cents / CENTS_PER_DOLLAR / DOLLARS_PER_THOUSAND).toFixed(1)}k`;
 
-export const AUDIT_ACTION_LABEL: Record<AdminAuditAction, string> = {
-  EMPLOYER_VERIFIED: "Verified employer",
-  EMPLOYER_SUSPENDED: "Suspended employer",
-  JOB_APPROVED: "Approved job",
-  JOB_REJECTED: "Rejected job",
-  JOB_REPORT_RESOLVED: "Resolved report",
-  JOB_REPORT_DISMISSED: "Dismissed report",
-  USER_BANNED: "Banned user",
-  USER_UNBANNED: "Unbanned user",
-  USER_ROLE_CHANGED: "Changed role",
-};
+export const AUDIT_ACTION_LABEL: Record<AdminAuditAction, string> =
+  localizedRecord(
+    [
+      "EMPLOYER_VERIFIED",
+      "EMPLOYER_SUSPENDED",
+      "JOB_APPROVED",
+      "JOB_REJECTED",
+      "JOB_REPORT_RESOLVED",
+      "JOB_REPORT_DISMISSED",
+      "USER_BANNED",
+      "USER_UNBANNED",
+      "USER_ROLE_CHANGED",
+    ] as const,
+    "admin.audit"
+  );
 
 // Reject/suspend/dismiss read as the "negative" branch of their pair —
 // drives the row's bullet color, same amber/positive split ApplicantsPanel
@@ -155,12 +194,11 @@ export const AUDIT_ACTION_IS_NEGATIVE: Record<AdminAuditAction, boolean> = {
   USER_ROLE_CHANGED: false,
 };
 
-export const AUDIT_TARGET_TAB_LABEL: Record<AdminAuditTargetType, string> = {
-  EMPLOYER: "Employers",
-  JOB: "Jobs",
-  JOB_REPORT: "Reports",
-  USER: "Users",
-};
+export const AUDIT_TARGET_TAB_LABEL: Record<AdminAuditTargetType, string> =
+  localizedRecord(
+    ["EMPLOYER", "JOB", "JOB_REPORT", "USER"] as const,
+    "admin.auditTab"
+  );
 
 export type AuditDiffRow = { key: string; before: string; after: string };
 

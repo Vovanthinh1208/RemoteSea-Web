@@ -5,16 +5,15 @@ import { MembersSection } from "@/components/community/MembersSection";
 import { ChannelsThreadsSection } from "@/components/community/ChannelsThreadsSection";
 import { MeetupsSection } from "@/components/community/MeetupsSection";
 import { JoinCtaSection } from "@/components/community/JoinCtaSection";
+import { useTranslation } from "@/i18n/useTranslation";
 
 // Sections live in components/community/* (one file per section with its own
 // data — same convention as components/home/*, components/salary/*, and
 // employer-marketing/*).
 
 export const CommunityPage = () => {
-  useDocumentTitle(
-    "Community — RemoteSEA",
-    "500+ remote-working Vietnamese professionals in one community — trade offer letters, debug async culture, and meet up in person."
-  );
+  const { t } = useTranslation("community");
+  useDocumentTitle(t("page.title"), t("page.description"));
   return (
     <>
       <CommunityHeroSection />

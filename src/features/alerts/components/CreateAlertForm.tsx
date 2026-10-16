@@ -17,6 +17,10 @@ import {
   type CreateAlertFormValues,
 } from "@/features/alerts/alerts.schemas";
 import type { CreateAlertPayload } from "@/types/alert";
+import { useTranslation } from "@/i18n/useTranslation";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
+import { filterValueLabel } from "@/features/jobs/jobs.utils";
+import { JOB_TYPE_LABELS, LEVEL_LABELS } from "@/utils/labels";
 
 interface CreateAlertFormProps {
   onCreate: (payload: CreateAlertPayload) => Promise<boolean>;
@@ -33,8 +37,13 @@ const DEFAULT_FORM_VALUES: CreateAlertFormValues = {
 };
 
 export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
+  const { t } = useTranslation("alerts");
   const { data: categories } = useCategories();
 
+  const form = useForm<CreateAlertFormValues>({
+    resolver: zodResolver(createAlertFormSchema),
+    defaultValues: DEFAULT_FORM_VALUES,
+  });
   const {
     register,
     handleSubmit,
@@ -42,10 +51,8 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
     setValue,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<CreateAlertFormValues>({
-    resolver: zodResolver(createAlertFormSchema),
-    defaultValues: DEFAULT_FORM_VALUES,
-  });
+  } = form;
+  useRevalidateOnLocaleChange(form);
 
   const categoryIds = watch("categoryIds");
 
@@ -79,7 +86,7 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <h2 className="text-[14px] font-semibold text-neutral-900">
-        Create a new alert
+        {t("form.title")}
       </h2>
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="space-y-1.5">
@@ -87,12 +94,12 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
             className="block text-[12.5px] font-medium text-neutral-700"
             htmlFor="alert-name"
           >
-            Alert name
+            {t("form.name")}
           </label>
           <input
             className={TEXT_INPUT_CLASS}
             id="alert-name"
-            placeholder="e.g. Senior remote engineering"
+            placeholder={t("form.namePlaceholder")}
             {...register("name")}
           />
           <FieldError message={errors.name?.message} />
@@ -102,13 +109,15 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
             className="block text-[12.5px] font-medium text-neutral-700"
             htmlFor="alert-keywords"
           >
-            Keywords{" "}
-            <span className="font-normal text-neutral-400">(optional)</span>
+            {t("form.keywords")}{" "}
+            <span className="font-normal text-neutral-400">
+              {t("form.optional")}
+            </span>
           </label>
           <input
             className={TEXT_INPUT_CLASS}
             id="alert-keywords"
-            placeholder="e.g. React, remote"
+            placeholder={t("form.keywordsPlaceholder")}
             {...register("keywords")}
           />
         </div>
@@ -117,17 +126,17 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
             className="block text-[12.5px] font-medium text-neutral-700"
             htmlFor="alert-job-type"
           >
-            Job type
+            {t("form.jobType")}
           </label>
           <select
             className={SELECT_INPUT_CLASS}
             id="alert-job-type"
             {...register("jobType")}
           >
-            <option value="">Any job type</option>
+            <option value="">{t("form.anyJobType")}</option>
             {JOB_TYPES.map((jobType) => (
               <option key={jobType} value={jobType}>
-                {jobType.replace("_", " ").toLowerCase()}
+                {JOB_TYPE_LABELS[jobType]}
               </option>
             ))}
           </select>
@@ -137,17 +146,17 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
             className="block text-[12.5px] font-medium text-neutral-700"
             htmlFor="alert-level"
           >
-            Seniority level
+            {t("form.level")}
           </label>
           <select
             className={SELECT_INPUT_CLASS}
             id="alert-level"
             {...register("level")}
           >
-            <option value="">Any level</option>
+            <option value="">{t("form.anyLevel")}</option>
             {LEVELS.map((level) => (
               <option key={level} value={level}>
-                {level.toLowerCase()}
+                {LEVEL_LABELS[level]}
               </option>
             ))}
           </select>
@@ -157,16 +166,16 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
             className="block text-[12.5px] font-medium text-neutral-700"
             htmlFor="alert-salary-min"
           >
-            Minimum salary{" "}
+            {t("form.salary")}{" "}
             <span className="font-normal text-neutral-400">
-              (USD/mo, optional)
+              {t("form.salaryUnit")}
             </span>
           </label>
           <input
             className={TEXT_INPUT_CLASS}
             id="alert-salary-min"
             min={0}
-            placeholder="e.g. 2000"
+            placeholder={t("form.salaryPlaceholder")}
             type="number"
             {...register("salaryMin")}
           />
@@ -176,7 +185,7 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
             className="block text-[12.5px] font-medium text-neutral-700"
             htmlFor="alert-frequency"
           >
-            Notification frequency
+            {t("form.frequency")}
           </label>
           <select
             className={SELECT_INPUT_CLASS}
@@ -185,7 +194,7 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
           >
             {FREQUENCIES.map((frequency) => (
               <option key={frequency} value={frequency}>
-                {frequency.toLowerCase()}
+                {t(`freq.${frequency}`)}
               </option>
             ))}
           </select>
@@ -205,7 +214,7 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
                 key={category.id}
                 onClick={() => toggleCategory(category.id)}
               >
-                {category.name}
+                {filterValueLabel(category.name)}
               </PillToggle>
             );
           })}
@@ -213,7 +222,8 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
       )}
 
       <Button disabled={isSubmitting} type="submit">
-        <Plus size={14} /> {isSubmitting ? "Creating…" : "Create alert"}
+        <Plus size={14} />{" "}
+        {isSubmitting ? t("form.creating") : t("form.create")}
       </Button>
     </form>
   );

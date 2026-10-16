@@ -1,6 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface PartyNames {
   employerName: string;
@@ -17,11 +18,12 @@ export const useApplicationHeaderContext = (
   loadingTitle: string
 ) => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const isEmployerViewer = user?.role === "EMPLOYER";
   const backHref = isEmployerViewer ? ROUTES.employerDashboard : ROUTES.talent;
   const title = isEmployerViewer
-    ? (data?.talentName ?? "Candidate")
-    : (data?.employerName ?? "Employer");
+    ? (data?.talentName ?? t("common.party.candidate"))
+    : (data?.employerName ?? t("common.party.employer"));
   useDocumentTitle(data ? title : loadingTitle);
 
   return { isEmployerViewer, backHref, title };

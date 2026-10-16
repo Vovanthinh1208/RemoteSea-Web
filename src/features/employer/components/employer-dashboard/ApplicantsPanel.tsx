@@ -26,18 +26,14 @@ import type { ApplicationStatus } from "@/types/application";
 import { ApplicantFilters } from "./ApplicantFilters";
 import { ApplicantBulkActions } from "./ApplicantBulkActions";
 import { ApplicantRow } from "./ApplicantRow";
-
-const TAB_LABEL: Record<ApplicantTabId, string | null> = {
-  all: null,
-  new: "New",
-  shortlisted: "Shortlisted",
-};
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface ApplicantsPanelProps {
   applicants: ApplicantWithJob[];
 }
 
 export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
+  const { t } = useTranslation("employer");
   const runWithToast = useToastMutation();
   const updateStatusMutation = useUpdateApplicationStatus();
   const bulkUpdateMutation = useBulkUpdateApplicationStatus();
@@ -55,16 +51,16 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
   );
 
   const tabs = [
-    { id: "all" as const, label: "All", count: applicants.length },
+    { id: "all" as const, label: t("tab.all"), count: applicants.length },
     {
       id: "new" as const,
-      label: "New",
+      label: t("tab.new"),
       count: applicants.filter((a) => APPLICANT_STATUS[a.status] === "new")
         .length,
     },
     {
       id: "shortlisted" as const,
-      label: "Shortlisted",
+      label: t("tab.shortlisted"),
       count: applicants.filter(
         (a) => APPLICANT_STATUS[a.status] === "shortlisted"
       ).length,
@@ -102,11 +98,13 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
     (id: string, jobId: string, status: ApplicationStatus) =>
       runWithToast(() => updateStatus({ id, jobId, status }), {
         success:
-          status === "REJECTED" ? "Applicant rejected" : "Applicant advanced",
+          status === "REJECTED"
+            ? t("applicantsPanel.rejected")
+            : t("applicantsPanel.advanced"),
         successVariant: status === "REJECTED" ? "info" : "success",
-        error: "Couldn't update applicant",
+        error: t("applicantsPanel.updateFailed"),
       }),
-    [updateStatus, runWithToast]
+    [updateStatus, runWithToast, t]
   );
 
   // How many of `list` are actually rendered — starts small (a fast,
@@ -185,7 +183,7 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
 
   const runBulkUpdate = async (status: ApplicationStatus, notes?: string) => {
     const items = selectedApplicants.map((a) => ({ id: a.id, jobId: a.jobId }));
-    const verb = status === "REJECTED" ? "rejected" : "advanced";
+    const rejecting = status === "REJECTED";
     try {
       // Backend always returns 200 with a per-id updated/failed split —
       // partial failure isn't an exception, so the message has to be built
@@ -195,8 +193,18 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
         variant: failed.length > 0 ? "info" : "success",
         title:
           failed.length === 0
-            ? `${updated.length} applicant${updated.length === 1 ? "" : "s"} ${verb}`
-            : `${updated.length} ${verb}, ${failed.length} couldn't be updated`,
+            ? t(
+                rejecting
+                  ? "applicantsPanel.bulkRejected"
+                  : "applicantsPanel.bulkAdvanced",
+                { count: updated.length }
+              )
+            : t(
+                rejecting
+                  ? "applicantsPanel.bulkPartialRejected"
+                  : "applicantsPanel.bulkPartialAdvanced",
+                { updated: updated.length, failed: failed.length }
+              ),
       });
       // Only clear on a real response (even a partial one) — a thrown error
       // (network failure, rate limit) means nothing was updated, so wiping
@@ -206,7 +214,11 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
     } catch {
       toast({
         variant: "error",
-        title: `Couldn't ${status === "REJECTED" ? "reject" : "advance"} applicants`,
+        title: t(
+          rejecting
+            ? "applicantsPanel.bulkFailReject"
+            : "applicantsPanel.bulkFailAdvance"
+        ),
       });
     }
   };
@@ -227,7 +239,7 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
 
       {list.length === 0 ? (
         <EmptyRow>
-          {applicantsEmptyMessage(TAB_LABEL[tab])}
+          {applicantsEmptyMessage(tab === "all" ? null : t(`tab.${tab}`))}
           {tab !== "all" && applicants.length > 0 && (
             <>
               {" "}
@@ -236,7 +248,7 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
                 type="button"
                 onClick={() => setTab("all")}
               >
-                View all applicants
+                {t("applicantsPanel.viewAll")}
               </button>
             </>
           )}
@@ -281,8 +293,11 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
                 onClick={() => setVisibleCount(nextVisibleCount)}
               >
                 {nextVisibleCount === list.length
-                  ? `Show all ${list.length} applicants`
-                  : `Show ${nextVisibleCount} of ${list.length} applicants`}
+                  ? t("applicantsPanel.showAll", { count: list.length })
+                  : t("applicantsPanel.showSome", {
+                      shown: nextVisibleCount,
+                      count: list.length,
+                    })}
               </button>
             </div>
           )}

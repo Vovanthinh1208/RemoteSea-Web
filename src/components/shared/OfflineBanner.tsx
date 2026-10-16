@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { WifiOff } from "lucide-react";
+import { useTranslation } from "@/i18n/useTranslation";
 
 /**
  * Slim banner while the browser reports no connectivity. Without it, a user on
@@ -8,6 +9,7 @@ import { WifiOff } from "lucide-react";
  * broken). aria-live makes the state change audible to screen readers.
  */
 export const OfflineBanner = () => {
+  const { t } = useTranslation();
   const [offline, setOffline] = useState(() => !navigator.onLine);
 
   useEffect(() => {
@@ -30,8 +32,7 @@ export const OfflineBanner = () => {
       role="status"
     >
       <WifiOff size={13} />
-      You&apos;re offline — changes and new results will load once you
-      reconnect.
+      {t("common.offline")}
     </div>
   );
 };

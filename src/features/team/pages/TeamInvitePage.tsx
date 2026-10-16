@@ -10,33 +10,31 @@ import {
 import { roleLabel } from "@/features/team/components/RoleBadge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ApiError } from "@/core/errors/api-error";
 import { ROUTES } from "@/constants/routes";
+import { useSubmitError } from "@/hooks/useSubmitError";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const TeamInvitePage = () => {
-  useDocumentTitle("Join your team — RemoteSEA");
+  const { t } = useTranslation("team");
+  useDocumentTitle(t("join.docTitle"));
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data: preview, isLoading, isError } = useInvitationPreview(token);
   const acceptMutation = useAcceptTeamInvitation();
-  const [error, setError] = useState<string | null>(null);
+  const submitError = useSubmitError();
   const [accepted, setAccepted] = useState(false);
 
   const callbackUrl = encodeURIComponent(ROUTES.teamInvite(token ?? ""));
 
   const handleAccept = async () => {
     if (!token) return;
-    setError(null);
+    submitError.clear();
     try {
       await acceptMutation.mutateAsync(token);
       setAccepted(true);
     } catch (err) {
-      setError(
-        err instanceof ApiError
-          ? err.message
-          : "Something went wrong. Please try again."
-      );
+      submitError.fail(err);
     }
   };
 
@@ -51,55 +49,60 @@ export const TeamInvitePage = () => {
       ) : isError || !preview || !preview.valid ? (
         <div className="rounded-20 border border-neutral-100 bg-white p-8 text-center">
           <h1 className="mb-2 text-[20px] font-semibold text-neutral-900">
-            Invitation not found
+            {t("join.notFoundTitle")}
           </h1>
           <p className="text-[13.5px] text-neutral-500">
-            This invitation link is invalid, has already been used, or has
-            expired.
+            {t("join.notFoundDesc")}
           </p>
           <Link className="mt-6 inline-block" to={ROUTES.home}>
-            <Button variant="outline">Go home</Button>
+            <Button variant="outline">{t("join.goHome")}</Button>
           </Link>
         </div>
       ) : accepted ? (
         <div className="rounded-20 border border-brand-100 bg-brand-50/60 p-8 text-center">
           <CheckCircle2 className="mx-auto mb-3 text-brand-600" size={32} />
           <h1 className="mb-2 text-[20px] font-semibold text-neutral-900">
-            You're in
+            {t("join.in")}
           </h1>
           <p className="mb-6 text-[13.5px] text-neutral-500">
-            You've joined {preview.companyName} as {roleLabel(preview.role)}.
+            {t("join.joined", {
+              company: preview.companyName,
+              role: roleLabel(preview.role),
+            })}
           </p>
           <Button onClick={() => navigate(ROUTES.employerDashboard)}>
-            Go to dashboard
+            {t("join.dashboard")}
           </Button>
         </div>
       ) : (
         <div className="rounded-20 border border-neutral-100 bg-white p-8 text-center">
           <h1 className="mb-2 text-[20px] font-semibold text-neutral-900">
-            Join {preview.companyName}
+            {t("join.title", { company: preview.companyName })}
           </h1>
           <p className="mb-6 text-[13.5px] text-neutral-500">
-            You've been invited as{" "}
+            {t("join.invitedAs")}
             <strong className="text-neutral-700">
               {roleLabel(preview.role)}
             </strong>
-            . Sign in or create an account with{" "}
-            <strong className="text-neutral-700">{preview.email}</strong> to
-            accept.
+            {t("join.signIn")}
+            <strong className="text-neutral-700">{preview.email}</strong>
+            {t("join.toAccept")}
           </p>
 
           {user ? (
             <>
               {user.email.toLowerCase() !== preview.email.toLowerCase() && (
                 <p className="mb-4 rounded-10 border border-amber-200 bg-amber-50 p-3 text-[12.5px] text-amber-700">
-                  You're signed in as {user.email}, but this invite is for{" "}
-                  {preview.email}. Log out and sign in with that address to
-                  accept.
+                  {t("join.mismatch", {
+                    current: user.email,
+                    invited: preview.email,
+                  })}
                 </p>
               )}
-              {error && (
-                <p className="mb-4 text-[12.5px] text-red-600">{error}</p>
+              {submitError.message && (
+                <p className="mb-4 text-[12.5px] text-red-600">
+                  {submitError.message}
+                </p>
               )}
               <Button
                 className="w-full"
@@ -107,7 +110,7 @@ export const TeamInvitePage = () => {
                 isLoading={acceptMutation.isPending}
                 onClick={() => void handleAccept()}
               >
-                Accept invitation
+                {t("join.accept")}
               </Button>
             </>
           ) : (
@@ -117,14 +120,14 @@ export const TeamInvitePage = () => {
                 to={`${ROUTES.login}?callbackUrl=${callbackUrl}`}
               >
                 <Button className="w-full" variant="outline">
-                  Log in
+                  {t("join.login")}
                 </Button>
               </Link>
               <Link
                 className="flex-1"
                 to={`${ROUTES.register}?callbackUrl=${callbackUrl}`}
               >
-                <Button className="w-full">Create account</Button>
+                <Button className="w-full">{t("join.register")}</Button>
               </Link>
             </div>
           )}

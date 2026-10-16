@@ -4,6 +4,7 @@ import { FullPageLoader } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
 import type { UserRole } from "@/types/user";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface ProtectedRouteProps {
   roles?: UserRole[];
@@ -11,6 +12,7 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute = ({ roles }: ProtectedRouteProps) => {
   const { user, status, retrySession } = useAuth();
+  const { t } = useTranslation();
   const location = useLocation();
 
   if (status === "loading") return <FullPageLoader />;
@@ -21,13 +23,13 @@ export const ProtectedRoute = ({ roles }: ProtectedRouteProps) => {
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-6 text-center">
         <h1 className="text-lg font-semibold text-neutral-900">
-          Couldn't confirm your session
+          {t("common.session.confirmFailedTitle")}
         </h1>
         <p className="mt-2 text-sm text-neutral-500">
-          Check your connection and try again.
+          {t("common.session.confirmFailedDesc")}
         </p>
         <Button className="mt-5" variant="primary" onClick={retrySession}>
-          Retry
+          {t("common.actions.retry")}
         </Button>
       </div>
     );

@@ -6,6 +6,7 @@ import { FullPageLoader } from "@/components/ui/spinner";
 import { buttonVariants } from "@/components/ui/button";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 // Landing target for the link in EmailService.sendEmployerVerificationEmail:
 // `<FRONTEND_URL>/employer/verify?token=<token>`. Unauthenticated by design —
@@ -13,7 +14,8 @@ import { ROUTES } from "@/constants/routes";
 // so this renders its own success/error state rather than assuming a
 // logged-in session to redirect into.
 export const EmployerVerifyPage = () => {
-  useDocumentTitle("Verify Your Company");
+  const { t } = useTranslation("employer");
+  useDocumentTitle(t("verify.docTitle"));
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const confirmVerification = useConfirmEmployerVerification();
@@ -40,27 +42,26 @@ export const EmployerVerifyPage = () => {
         <>
           <CheckCircle2 className="mb-4 text-brand-600" size={40} />
           <h1 className="mb-1 text-[24px] font-semibold tracking-tight text-neutral-900">
-            Company verified
+            {t("verify.successTitle")}
           </h1>
           <p className="mb-8 text-sm text-neutral-500">
-            Your Verified badge is live and eligible jobs now publish
-            immediately.
+            {t("verify.successDesc")}
           </p>
           <Link className={buttonVariants()} to={ROUTES.employerDashboard}>
-            Go to dashboard
+            {t("verify.goDashboard")}
           </Link>
         </>
       ) : (
         <>
           <XCircle className="mb-4 text-red-500" size={40} />
           <h1 className="mb-1 text-[24px] font-semibold tracking-tight text-neutral-900">
-            Link expired or invalid
+            {t("verify.errorTitle")}
           </h1>
           <p className="mb-8 text-sm text-neutral-500">
-            Request a new verification email from your employer dashboard.
+            {t("verify.errorDesc")}
           </p>
           <Link className={buttonVariants()} to={ROUTES.employerDashboard}>
-            Go to dashboard
+            {t("verify.goDashboard")}
           </Link>
         </>
       )}

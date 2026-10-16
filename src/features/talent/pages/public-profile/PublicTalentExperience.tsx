@@ -1,6 +1,7 @@
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { formatDuration, formatMonthYear } from "@/utils/format";
 import type { WorkExperience } from "@/types/work-experience";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface PublicTalentExperienceProps {
   workExperiences: WorkExperience[];
@@ -9,12 +10,13 @@ interface PublicTalentExperienceProps {
 export const PublicTalentExperience = ({
   workExperiences,
 }: PublicTalentExperienceProps) => {
+  const { t } = useTranslation("talent");
   if (workExperiences.length === 0) return null;
 
   return (
     <section className="rounded-20 border border-neutral-100 bg-white p-7">
       <h2 className="mb-5 text-[17px] font-semibold text-neutral-900">
-        Experience
+        {t("public.experience")}
       </h2>
       <div className="divide-y divide-neutral-50">
         {workExperiences.map((experience: WorkExperience) => (
@@ -24,7 +26,7 @@ export const PublicTalentExperience = ({
               <p className="text-[13.5px] font-semibold text-neutral-900">
                 {experience.title}{" "}
                 <span className="font-normal text-neutral-500">
-                  at {experience.company}
+                  {t("exp.at", { company: experience.company })}
                 </span>
               </p>
               <p className="mb-1.5 flex flex-wrap items-center gap-1.5 text-[12px] text-neutral-400">
@@ -38,7 +40,7 @@ export const PublicTalentExperience = ({
                   {formatMonthYear(experience.startDate)} →{" "}
                   {experience.endDate
                     ? formatMonthYear(experience.endDate)
-                    : "Present"}
+                    : t("exp.present")}
                 </span>
                 <span className="h-0.5 w-0.5 rounded-full bg-neutral-300" />
                 <span>

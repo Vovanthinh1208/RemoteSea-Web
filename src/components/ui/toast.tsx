@@ -7,6 +7,7 @@ import {
 } from "react";
 import { AlertCircle, CheckCircle2, Info, X } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { useTranslation } from "@/i18n/useTranslation";
 
 type Variant = "success" | "error" | "info";
 
@@ -46,6 +47,7 @@ const ACCENT = {
 } as const;
 
 export const ToastProvider = ({ children }: ToastProviderProps) => {
+  const { t: translateText } = useTranslation();
   const [toasts, setToasts] = useState<ToastItem[]>([]);
 
   const remove = useCallback((id: number) => {
@@ -95,7 +97,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
                 )}
               </div>
               <button
-                aria-label="Dismiss"
+                aria-label={translateText("common.a11y.dismiss")}
                 className="flex-shrink-0 text-neutral-400 transition-colors hover:text-neutral-700"
                 onClick={() => remove(t.id)}
               >

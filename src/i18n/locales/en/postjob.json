@@ -1,0 +1,199 @@
+{
+  "opt": {
+    "size": {
+      "1_10": "1–10",
+      "11_50": "11–50",
+      "51_200": "51–200",
+      "201_500": "201–500",
+      "500": "500+"
+    },
+    "hq": {
+      "singapore": "🇸🇬 Singapore",
+      "australia": "🇦🇺 Australia",
+      "united_states": "🇺🇸 United States",
+      "uk": "🇬🇧 UK",
+      "europe": "🇪🇺 Europe",
+      "other": "Other"
+    },
+    "seniority": {
+      "intern": "Intern",
+      "junior": "Junior",
+      "mid": "Mid",
+      "senior": "Senior",
+      "staff": "Staff",
+      "lead": "Lead",
+      "head": "Head"
+    },
+    "jobtype": {
+      "full": "Full-time",
+      "part": "Part-time",
+      "contract": "Contract",
+      "freelance": "Freelance"
+    },
+    "tz": {
+      "sg_hours_utc_8": "SG hours · UTC+8",
+      "au_hours_utc_10": "AU hours · UTC+10",
+      "us_east_utc_5": "US East · UTC-5",
+      "us_west_utc_8": "US West · UTC-8",
+      "eu_hours_utc_1": "EU hours · UTC+1",
+      "async_first": "Async-first"
+    },
+    "loc": {
+      "remote": "Remote",
+      "hybrid": "Hybrid",
+      "onsite": "On-site"
+    },
+    "period": {
+      "month": "/ month",
+      "year": "/ year",
+      "hour": "/ hour"
+    },
+    "benefit": {
+      "health_insurance": "Health insurance",
+      "equity": "Equity",
+      "home_office_stipend": "Home-office stipend",
+      "annual_learning_budget": "Annual learning budget",
+      "flexible_hours": "Flexible hours",
+      "team_retreats": "Team retreats",
+      "equipment_provided": "Equipment provided"
+    }
+  },
+  "tier": {
+    "standard": {
+      "name": "Standard",
+      "desc": "Listed for 30 days, basic search placement.",
+      "f1": "30-day listing",
+      "f2": "Search results",
+      "f3": "Email apply"
+    },
+    "featured": {
+      "name": "Featured",
+      "desc": "Top of search, highlighted card, pushed to newsletter.",
+      "f1": "60-day listing",
+      "f2": "Top placement",
+      "f3": "Newsletter blast",
+      "f4": "Social share",
+      "ribbon": "Popular"
+    },
+    "handson": {
+      "name": "Hands-on",
+      "desc": "We source & screen candidates for you.",
+      "f1": "Unlimited listing",
+      "f2": "Priority placement",
+      "f3": "Sourcing by team",
+      "f4": "Slack channel"
+    }
+  },
+  "step": {
+    "company": "Company",
+    "role": "Role",
+    "plan": "Plan",
+    "review": "Review & pay"
+  },
+  "wizard": {
+    "docTitle": "Post a job",
+    "heading": "Post a job",
+    "failedTitle": "Couldn't publish job",
+    "descMin": "Job description must be at least {{min}} characters.",
+    "noCategories": "Could not load job categories. Please try again.",
+    "skillsFailed": "Could not load the skills list, so your selected skills can't be attached. Please try again.",
+    "skillsLoading": "Still loading the skills list — please wait a moment and try again.",
+    "profileFailed": "Could not save your company profile. Please try again.",
+    "createFailed": "Could not create the job. Check the required fields and try again.",
+    "checkoutFailed": "Your job was saved, but we couldn't start checkout. Please try again.",
+    "stepOf": "Step {{step}} / {{total}}",
+    "back": "Back",
+    "continue": "Continue",
+    "processing": "Processing…",
+    "pay": "Pay & publish",
+    "preview": "Live preview",
+    "orderSummary": "Order summary",
+    "total": "Total",
+    "secured": "Secured by Stripe · SSL encrypted"
+  },
+  "company": {
+    "title": "About your company",
+    "subtitle": "This builds the employer card candidates see on your listing.",
+    "name": "Company name",
+    "namePlaceholder": "Acme Corp",
+    "website": "Website",
+    "size": "Company size",
+    "hq": "Headquarters",
+    "tagline": "One-line tagline",
+    "taglineHint": "Max 80 chars, shown under company name",
+    "taglinePlaceholder": "We build tools that help developers ship faster.",
+    "overview": "Company overview",
+    "overviewHint": "Aim for 80–150 words.",
+    "overviewPlaceholder": "Tell candidates what you do, who you serve, and why it matters…",
+    "recruiter": "Recruiter / hiring manager",
+    "fullName": "Full name",
+    "fullNamePlaceholder": "Alex Chen",
+    "role": "Role",
+    "rolePlaceholder": "Engineering Manager",
+    "workEmail": "Work email"
+  },
+  "role": {
+    "title": "Role details",
+    "subtitle": "Help candidates understand exactly what you need.",
+    "jobTitle": "Job title",
+    "jobTitlePlaceholder": "Senior Frontend Engineer",
+    "category": "Category",
+    "seniority": "Seniority",
+    "employmentType": "Employment type",
+    "location": "Location",
+    "tzOverlap": "Timezone overlap",
+    "desc": "Job description",
+    "descHint": "What will this person do day-to-day? What does success look like in 6 months? Minimum 100 characters.",
+    "descPlaceholder": "What you'll do...\n\nWhat we're looking for...",
+    "requiredSkills": "Required skills",
+    "niceSkills": "Nice-to-have skills",
+    "compensation": "Compensation",
+    "min": "Min",
+    "max": "Max",
+    "currency": "Currency",
+    "period": "Period",
+    "benefits": "Benefits"
+  },
+  "plan": {
+    "title": "Choose a plan",
+    "subtitle": "All plans include a public listing. Upgrade for more reach.",
+    "oneTime": "one-time"
+  },
+  "review": {
+    "title": "Review & pay",
+    "subtitle": "You'll complete payment securely on Stripe's checkout page.",
+    "untitled": "Untitled role",
+    "yourCompany": "Your company",
+    "listing": "{{name}} listing",
+    "secured": "Secured by Stripe · SSL encrypted · No recurring billing"
+  },
+  "preview": {
+    "defaultTitle": "Senior Frontend Engineer",
+    "defaultCompany": "Your Company"
+  },
+  "saved": {
+    "title": "Your job has been saved",
+    "body": "{{role}} at {{company}} was created as a draft. Checkout couldn't be started, so it hasn't been paid or submitted for review yet.",
+    "yourJob": "Your job",
+    "yourCompanyLower": "your company",
+    "details": "Job details",
+    "plan": "Plan selected",
+    "company": "Company",
+    "role": "Role",
+    "reference": "Reference",
+    "goDashboard": "Go to dashboard"
+  },
+  "success": {
+    "docTitle": "Payment received",
+    "title": "Thanks for your submission",
+    "desc": "Your job is under review. We'll email you within 24 hours once it's live.",
+    "goDashboard": "Go to dashboard"
+  },
+  "draft": {
+    "restoredTitle": "Draft restored",
+    "restoredDesc": "Picked up where you left off. Publishing clears the draft."
+  },
+  "page": {
+    "docTitle": "Post a Remote Job"
+  }
+}

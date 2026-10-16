@@ -5,6 +5,7 @@ import { EmptyRow } from "@/components/shared/EmptyRow";
 import { cn } from "@/utils/cn";
 import { timeAgoShort } from "@/utils/time";
 import type { ConversationSummaryDto } from "@/features/ai-chat/ai-chat.dto";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export interface AiChatHistoryMenuProps {
   showHistory: boolean;
@@ -25,17 +26,18 @@ export const AiChatHistoryMenu = ({
   onSelectConversation,
   historyRef,
 }: AiChatHistoryMenuProps) => {
+  const { t } = useTranslation("ai");
   const hasNoConversations = conversations?.length === 0;
 
   return (
     <div className="relative" ref={historyRef}>
       <button
-        aria-label="Conversation history"
+        aria-label={t("chat.history")}
         className={cn(
           "grid h-8 w-8 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none",
           showHistory && "bg-neutral-100 text-neutral-900"
         )}
-        title="Conversation history"
+        title={t("chat.history")}
         type="button"
         onClick={() => setShowHistory((v) => !v)}
       >
@@ -49,9 +51,7 @@ export const AiChatHistoryMenu = ({
               <Skeleton className="h-9 w-full rounded-8" />
             </div>
           ) : hasNoConversations ? (
-            <EmptyRow className="px-2.5">
-              No previous conversations yet.
-            </EmptyRow>
+            <EmptyRow className="px-2.5">{t("chat.noHistory")}</EmptyRow>
           ) : (
             conversations?.map((c) => (
               <button
@@ -77,7 +77,7 @@ export const AiChatHistoryMenu = ({
                       : "text-neutral-800"
                   )}
                 >
-                  {c.title || "Untitled conversation"}
+                  {c.title || t("chat.untitled")}
                 </span>
                 <span className="text-[11px] text-neutral-400">
                   {timeAgoShort(c.updatedAt)}

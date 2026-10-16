@@ -19,7 +19,40 @@
     "exploreJobs": "Explore open roles",
     "recommendedJobs": "Recommended For You",
     "openToWorkTitle": "Open to opportunities",
-    "openToWorkSubtitle": "Signal to employers that you are available for remote roles."
+    "openToWorkSubtitle": "Signal to employers that you are available for remote roles.",
+    "docTitle": "Dashboard",
+    "errorTitle": "Couldn't load your dashboard",
+    "errorDesc": "Something went wrong loading your dashboard.",
+    "greetMorning": "Good morning",
+    "greetAfternoon": "Good afternoon",
+    "greetEvening": "Good evening",
+    "there": "there",
+    "eyebrow": "Dashboard",
+    "summary": "You have {{interviews}} in progress and {{offers}} on the table.",
+    "interviews_one": "{{count}} interview",
+    "interviews_other": "{{count}} interviews",
+    "offers_one": "{{count}} offer",
+    "offers_other": "{{count}} offers",
+    "alerts": "Alerts",
+    "browseJobs": "Browse jobs",
+    "profileIs": "Your profile is ",
+    "complete": "{{pct}}% complete",
+    "addPrefix": "Add ",
+    "addSuffix": " to show up in more searches.",
+    "goodShape": "Nice — your profile is in good shape.",
+    "completeProfile": "Complete profile",
+    "kpi": {
+      "sent": "Applications sent",
+      "allTime": "all time",
+      "saved": "Saved jobs",
+      "current": "current",
+      "alerts": "Job alerts",
+      "active": "active",
+      "rate": "Interview rate",
+      "ofSubmitted": "of submitted",
+      "views": "Profile views",
+      "unique": "{{count}} unique"
+    }
   },
   "profile": {
     "title": "Your Profile",
@@ -61,10 +94,549 @@
     "interviewSchedule": "Interview Details"
   },
   "saved": {
-    "title": "Saved Jobs",
-    "subtitle": "Bookmark opportunities you want to apply for later.",
-    "emptyTitle": "No saved jobs",
-    "emptyDesc": "Jobs you save while browsing will show up here.",
-    "browseJobs": "Explore jobs"
+    "title": "Saved jobs",
+    "subtitle": "Jobs you've bookmarked to come back to later.",
+    "emptyTitle": "No saved jobs yet",
+    "emptyDesc": "Bookmark a job from its listing to save it here.",
+    "browseJobs": "Explore jobs",
+    "docTitle": "Saved Jobs",
+    "errorTitle": "Couldn't load saved jobs",
+    "errorDesc": "Something went wrong loading your saved jobs.",
+    "browse": "Browse jobs"
+  },
+  "verifyEmail": {
+    "checkInbox": "Check your inbox",
+    "sentTo": "We sent a confirmation link to {{email}}. Click it to verify your email.",
+    "title": "Verify your email",
+    "expired": "That link expired. Enter your email to try again.",
+    "prompt": "Confirm an email address to earn a Verified badge on your profile — employers trust verified profiles more.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "jane@example.com",
+    "send": "Send verification email"
+  },
+  "stage": {
+    "PENDING": "Sent",
+    "REVIEWING": "Under review",
+    "SHORTLISTED": "Shortlisted",
+    "INTERVIEW": "Interviewing",
+    "OFFERED": "Offer received",
+    "OFFER_ACCEPTED": "Offer accepted",
+    "OFFER_DECLINED": "Offer declined",
+    "REJECTED": "Not selected",
+    "WITHDRAWN": "Withdrawn"
+  },
+  "bucket": {
+    "applied": "Applied",
+    "review": "In review",
+    "interview": "Interviewing",
+    "offer": "Offer",
+    "closed": "Closed",
+    "offers": "Offers"
+  },
+  "missing": {
+    "headline": "a headline",
+    "bio": "a bio",
+    "skills": "skills",
+    "salary": "your salary expectation",
+    "cv": "your CV"
+  },
+  "snapshot": {
+    "noHeadline": "No headline yet",
+    "edit": "Edit profile",
+    "basedIn": "Based in",
+    "timezone": "Timezone",
+    "expecting": "Expecting",
+    "remote": "Remote"
+  },
+  "apps": {
+    "messageAria": "Message about this application",
+    "interviewAria": "View interview",
+    "collapse": "Collapse application timeline",
+    "expand": "Expand application timeline",
+    "empty": {
+      "all": {
+        "title": "No applications yet",
+        "desc": "Jobs you apply to will show up here."
+      },
+      "active": {
+        "title": "No active applications",
+        "desc": "Applications you're still waiting to hear back on will show up here."
+      },
+      "offers": {
+        "title": "No offers yet",
+        "desc": "Offers you receive will show up here."
+      },
+      "closed": {
+        "title": "No closed applications",
+        "desc": "Applications that were withdrawn or didn't move forward will show up here."
+      }
+    },
+    "tab": {
+      "all": "All",
+      "active": "Active",
+      "offers": "Offers",
+      "closed": "Closed"
+    },
+    "title": "Your applications ",
+    "activeCount": "· {{count}} active",
+    "browseJobs": "Browse jobs",
+    "col": {
+      "role": "Role & company",
+      "status": "Status",
+      "stage": "Stage",
+      "applied": "Applied"
+    }
+  },
+  "timeline": {
+    "applied": "Applied",
+    "viewed": "Viewed by employer"
+  },
+  "activity": {
+    "title": "Activity",
+    "error": "Couldn't load your activity.",
+    "empty": "No activity yet."
+  },
+  "savedSearches": {
+    "title": "Saved searches",
+    "new": "New",
+    "error": "Couldn't load your saved searches.",
+    "empty": "No saved searches yet.",
+    "active": "Active",
+    "paused": "Paused",
+    "allJobs": "All jobs"
+  },
+  "invitations": {
+    "title": "Invitations",
+    "error": "Couldn't load your invitations.",
+    "invited": "invited you to apply — {{title}}",
+    "accept": "Accept & apply",
+    "decline": "Decline",
+    "acceptedToast": "Application submitted",
+    "declinedToast": "Invitation declined",
+    "failedToast": "Couldn't respond to invitation"
+  },
+  "recommended": {
+    "title": "Picked for you ",
+    "sub": "· newest & featured",
+    "browseAll": "Browse all jobs",
+    "matchesProfile": "Matches your profile"
+  },
+  "verifyPage": {
+    "docTitle": "Verify Your Email",
+    "successTitle": "Email verified",
+    "successDesc": "Your Verified badge is now live on your profile.",
+    "errorTitle": "Link expired or invalid",
+    "errorDesc": "Request a new verification email from your dashboard.",
+    "goDashboard": "Go to dashboard"
+  },
+  "appDetail": {
+    "fallbackTitle": "Application",
+    "withdrawn": "Application withdrawn.",
+    "withdrawFailed": "Couldn't withdraw the application. Please try again.",
+    "offerAccepted": "Offer accepted!",
+    "offerDeclined": "Offer declined.",
+    "offerFailed": "Couldn't submit your response. Please try again.",
+    "loadError": "Couldn't load this application",
+    "loadErrorDesc": "This application doesn't exist, or isn't yours.",
+    "message": "Message",
+    "interview": "Interview",
+    "withdrawLabel": "Withdraw",
+    "withdrawQ": "Withdraw this application?",
+    "withdrawing": "Withdrawing…",
+    "withdrawTitle": "Withdraw application",
+    "interviewProposed": "The employer proposed interview times — pick one to lock it in.",
+    "interviewWaiting": "The employer will reach out to schedule an interview.",
+    "accept": "Accept",
+    "acceptQ": "Accept this offer?",
+    "accepting": "Accepting…",
+    "acceptOffer": "Accept offer",
+    "decline": "Decline",
+    "declineQ": "Decline this offer?",
+    "declining": "Declining…",
+    "declineOffer": "Decline offer"
+  },
+  "guidance": {
+    "PENDING": "Your application is in the queue. Most employers respond within a few days.",
+    "REVIEWING": "The employer is currently reviewing your application.",
+    "SHORTLISTED": "You've been shortlisted — the employer may reach out to schedule an interview soon.",
+    "OFFERED": "This employer has extended you an offer. Congratulations! Accept or decline below.",
+    "OFFER_ACCEPTED": "You accepted this offer. Congratulations!",
+    "OFFER_DECLINED": "You declined this offer.",
+    "REJECTED": "This employer decided to move forward with other candidates this time.",
+    "WITHDRAWN": "You withdrew this application."
+  },
+  "opt": {
+    "seniority": {
+      "junior": "Junior",
+      "mid": "Mid-level",
+      "senior": "Senior",
+      "staff": "Staff",
+      "principal_lead": "Principal / Lead"
+    },
+    "years": {
+      "0_2": "0–2 yrs",
+      "2_5": "2–5 yrs",
+      "5_10": "5–10 yrs",
+      "10": "10+ yrs"
+    },
+    "role": {
+      "software_engineer_frontend": "Software Engineer · Frontend",
+      "software_engineer_backend": "Software Engineer · Backend",
+      "software_engineer_full_stack": "Software Engineer · Full-stack",
+      "product_designer": "Product Designer",
+      "product_manager": "Product Manager",
+      "data_analyst": "Data Analyst"
+    },
+    "rtw": {
+      "vietnam_only": "Vietnam only",
+      "vietnam_singapore": "Vietnam + Singapore",
+      "vietnam_australia": "Vietnam + Australia",
+      "open_to_relocation_sponsorship": "Open to relocation / sponsorship"
+    },
+    "notice": {
+      "immediate": "Immediate",
+      "2_weeks": "2 weeks",
+      "1_month": "1 month",
+      "2_months": "2+ months"
+    },
+    "tz": {
+      "utc_7_hanoi_bangkok_jakarta": "UTC+7 (Hanoi · Bangkok · Jakarta)",
+      "utc_8_singapore_manila_kl": "UTC+8 (Singapore · Manila · KL)",
+      "utc_9_tokyo_seoul": "UTC+9 (Tokyo · Seoul)",
+      "utc_10_sydney_melbourne": "UTC+10 (Sydney · Melbourne)"
+    }
+  },
+  "nav": {
+    "basics": "Basics",
+    "about": "About you",
+    "experience": "Experience",
+    "skills": "Skills",
+    "prefs": "Preferences",
+    "links": "Links & CV",
+    "highlights": "Highlights",
+    "visibility": "Visibility",
+    "preview": "Preview as recruiter",
+    "saveFirst": "Save your profile first"
+  },
+  "form": {
+    "dashboard": "← Dashboard",
+    "setup": "Profile setup",
+    "title": "Make sure recruiters ",
+    "titleEm": "see what matters.",
+    "subtitle": "Your profile is what gets surfaced to founders and hiring managers. Keep it honest, keep it short — they read dozens a day.",
+    "skillsEyebrow": "04 · What you use",
+    "skillsHelp": "5–12 specific skills. Tools and stacks, not soft skills. We match jobs based on this.",
+    "skillsTitle": "Skills.",
+    "skillsLoadFailed": "Couldn't load the skills list",
+    "skillsLoading": "Still loading the skills list",
+    "skillsRetry": "Your selected skills can't be saved yet — please try again in a moment.",
+    "saved": "Profile saved",
+    "saveFailed": "Couldn't save profile",
+    "saveFailedNamePartial": "Your name was updated, but the rest of the profile didn't save. Please try again.",
+    "saveStatus": "Save your changes",
+    "done": "Done"
+  },
+  "basics": {
+    "eyebrow": "01 · Identity",
+    "help": "Your name, headline, location and timezone. This appears at the top of your profile.",
+    "title": "The ",
+    "titleEm": "basics.",
+    "photoUploadFailed": "Couldn't upload photo",
+    "photoUpdated": "Photo updated",
+    "photoUpdateFailed": "Couldn't update your photo",
+    "uploadFailed": "Upload failed",
+    "tryAgain": "Please try again.",
+    "photoRemoved": "Photo removed",
+    "photoRemoveFailed": "Couldn't remove your photo",
+    "yourName": "Your name",
+    "photoHint": "JPG or PNG · square crop · max 2 MB",
+    "uploading": "Uploading…",
+    "upload": "Upload photo",
+    "remove": "Remove",
+    "fullName": "Full name",
+    "pronouns": "Pronouns",
+    "optional": "(optional)",
+    "comingSoon": "Coming soon",
+    "headline": "Headline",
+    "headlinePlaceholder": "Role · timezone · standout signal",
+    "location": "Where are you based?",
+    "timezone": "Working timezone"
+  },
+  "about": {
+    "eyebrow": "02 · Story",
+    "help": "A short, plain-English summary. No buzzwords — write like you'd describe yourself in an email.",
+    "title": "About ",
+    "titleEm": "you.",
+    "bio": "Bio",
+    "bioHint": "2–4 sentences",
+    "seniority": "Seniority",
+    "years": "Years of experience",
+    "role": "Primary role",
+    "rtw": "Right to work",
+    "notice": "Notice period"
+  },
+  "links": {
+    "eyebrow": "06 · Where to look",
+    "help": "Attach your CV and a couple of links. Hiring managers want to read your writing or code.",
+    "title": "Links & ",
+    "titleEm": "CV.",
+    "cv": "CV / Resume (PDF)",
+    "uploadCv": "Upload CV",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "portfolio": "Portfolio / personal site"
+  },
+  "prefs": {
+    "eyebrow": "05 · What you want",
+    "help": "Used to filter and surface roles. You can update these anytime.",
+    "title": "Job ",
+    "titleEm": "preferences.",
+    "salary": "Salary expectation",
+    "salaryVisible": "Visible only to verified employers",
+    "usdMonth": "USD / month",
+    "median": "Median for Senior Frontend in VN: {{median}} · You're asking {{pct}} above median, in line with SG market.",
+    "minimum": "Minimum",
+    "maximum": "Maximum",
+    "minSalaryAria": "Minimum salary",
+    "maxSalaryAria": "Maximum salary",
+    "employmentType": "Employment type",
+    "ft": "Full-time",
+    "ftDesc": "Standard, salaried, employment contract via EOR or direct.",
+    "contract": "Contract / freelance",
+    "contractDesc": "3–12 month engagements. Day-rate or monthly retainer.",
+    "pt": "Part-time",
+    "ptDesc": "20–30 hours / week. Useful if you're consulting on the side.",
+    "tzOverlap": "Timezone overlap",
+    "sg": "Singapore hours",
+    "sgDesc": "1 hour ahead of Vietnam. Most SEA startups operate here.",
+    "au": "Sydney / Melbourne hours",
+    "auDesc": "Early mornings from VN. Canva, Atlassian, Airwallex operate here.",
+    "async": "Async-only",
+    "asyncDesc": "No required overlap. US / EU teams that work entirely async.",
+    "notifications": "Notifications",
+    "digest": "Weekly digest",
+    "digestWhen": "· Monday 9am",
+    "digestDesc": "Top 5 matches for your saved filters, every Monday.",
+    "instant": "Instant high-match alerts",
+    "instantDesc": "Email when a role scores 90%+ against your profile. Usually 1–2 a month.",
+    "notifFailed": "Couldn't update notification preference",
+    "perMonthShort": "mo"
+  },
+  "vis": {
+    "eyebrow": "07 · Who sees you",
+    "help": "Control who can find your profile and reach out. Change anytime.",
+    "title": "Visibility.",
+    "open": {
+      "title": "Open to everyone",
+      "desc": "Any signed-in employer on RemoteSEA can find you. Fastest, most matches."
+    },
+    "verified": {
+      "title": "Verified employers only",
+      "desc": "Recommended. Only employers we've manually verified. No recruiter spam."
+    },
+    "invited": {
+      "title": "Invited only",
+      "desc": "Only employers you apply to can see you. Slower, but private."
+    },
+    "off": {
+      "title": "Paused",
+      "desc": "Profile hidden. You can still browse jobs and save. Resume anytime."
+    },
+    "showSalary": "Show my salary expectation",
+    "showSalaryDesc": "Verified employers see your range. Helps filter out lowball outreach.",
+    "hideEmployer": "Hide profile from my current employer",
+    "hideEmployerDesc": "We'll block this domain from seeing your profile or activity. They'll never know."
+  },
+  "exp": {
+    "eyebrow": "03 · Track record",
+    "title": "Experience.",
+    "help": "List up to 5 roles. Recruiters skim — the most recent two get 80% of attention.",
+    "emptyTitle": "No roles added yet",
+    "emptyDesc": "Add your most recent role first — it's the one recruiters read first.",
+    "addFirst": "Add your first role",
+    "addAnother": "Add another role",
+    "limit": "You've reached the 5-role limit — remove one to add another.",
+    "added": "Experience added",
+    "addFailed": "Couldn't add experience",
+    "updated": "Experience updated",
+    "updateFailed": "Couldn't update experience",
+    "removed": "Experience removed",
+    "removeFailed": "Couldn't remove experience",
+    "at": "at {{company}}",
+    "current": "Current",
+    "present": "Present",
+    "editRole": "Edit role",
+    "deleteRole": "Delete role",
+    "deleteQ": "Delete?"
+  },
+  "expForm": {
+    "company": "Company",
+    "title": "Job title",
+    "location": "Location",
+    "locationPlaceholder": "Location (optional) — e.g. Singapore",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "currentRole": "Current role",
+    "month": "Month",
+    "year": "Year",
+    "monthAria": "{{prefix}} month",
+    "yearAria": "{{prefix}} year",
+    "startPrefix": "Start",
+    "endPrefix": "End",
+    "whatWork": "What did you work on?",
+    "optional": "(optional)",
+    "descPlaceholder": "A sentence or two on your impact — recruiters skim this.",
+    "saving": "Saving…",
+    "saveChanges": "Save changes",
+    "addRole": "Add role"
+  },
+  "hl": {
+    "portfolio": {
+      "title": "Selected work",
+      "help": "A couple of projects you're proud of — recruiters click through these.",
+      "add": "Add project",
+      "empty": "No projects added yet",
+      "added": "Project added"
+    },
+    "education": {
+      "title": "Education",
+      "help": "Degrees or programs. Most recent first isn't enforced — add in any order.",
+      "add": "Add education",
+      "empty": "No education added yet",
+      "added": "Education added"
+    },
+    "language": {
+      "title": "Languages",
+      "help": "Languages you can work in, and how comfortably.",
+      "add": "Add language",
+      "empty": "No languages added yet",
+      "added": "Language added"
+    },
+    "addFailed": "Couldn't add entry",
+    "updated": "Entry updated",
+    "updateFailed": "Couldn't update entry",
+    "removed": "Entry removed",
+    "removeFailed": "Couldn't remove entry",
+    "edit": "Edit",
+    "delete": "Delete",
+    "eyebrow": "08 · Show, don't tell",
+    "help": "Optional, but recruiters skim these before reading your bio. Shown on your public profile.",
+    "sectionTitle": "Highlights."
+  },
+  "hlForm": {
+    "portfolio": {
+      "title": "Project title",
+      "subtitle": "Role · duration"
+    },
+    "education": {
+      "title": "School",
+      "subtitle": "Degree · field of study"
+    },
+    "language": {
+      "title": "Language",
+      "subtitle": "Proficiency (e.g. Native, Fluent, Conversational)"
+    },
+    "description": "Description",
+    "descPlaceholder": "What was this project? (optional)",
+    "tag": "Category tag",
+    "tagPlaceholder": "Category (optional) — e.g. Product · Production",
+    "link": "Project link",
+    "linkPlaceholder": "Link (optional) — https://…",
+    "startYear": "Start year",
+    "endYear": "End year",
+    "year": "Year",
+    "ongoing": "Ongoing",
+    "saving": "Saving…",
+    "saveChanges": "Save changes",
+    "add": "Add"
+  },
+  "public": {
+    "docTitle": "{{name}} — Talent Profile",
+    "docTitleFallback": "Talent Profile",
+    "member": "RemoteSEA member",
+    "review": {
+      "communication": "Communication",
+      "professionalism": "Professionalism",
+      "reliability": "Reliability"
+    },
+    "preview": {
+      "role": "Senior Full-stack Engineer"
+    },
+    "notFoundTitle": "Profile not found",
+    "notFoundDesc": "This talent profile doesn't exist or was removed.",
+    "browseJobs": "Browse jobs",
+    "verified": "Verified",
+    "yearsExp": "{{years}}+ yrs experience",
+    "replies": "Replies in ~6h",
+    "activeToday": "Active today",
+    "expecting": "Expecting",
+    "perMonth": " / mo",
+    "vnMedian": "VN median",
+    "sgMarket": "SG market",
+    "about": "About",
+    "lookingFor": "What I'm looking for",
+    "lf1": "Senior or Staff title — IC track",
+    "lf2": "Async-first or {{tz}} hours",
+    "flexible": "flexible",
+    "lf3": "Small team",
+    "lf4": "{{range}} {{currency}} / month",
+    "experience": "Experience",
+    "skills": "Skills",
+    "selectedWork": "Selected work",
+    "education": "Education",
+    "emptyProfile": "This member hasn't filled out their profile yet.",
+    "yearsShort": "{{n}}y",
+    "banner": {
+      "viewing": "Viewing as recruiter · {{company}}",
+      "hiring": "Hiring for {{role}}",
+      "match": "Profile match",
+      "shortlist": "Add to shortlist",
+      "save": "Save",
+      "message": "Send message"
+    },
+    "side": {
+      "quickFacts": "Quick facts",
+      "notice": "Notice period",
+      "employmentLabel": "Employment",
+      "notSpecified": "Not specified",
+      "remoteLevel": "Remote level",
+      "remote": "Remote",
+      "remoteAsync": "Remote · Async-first",
+      "hoursOverlap": "Hours overlap",
+      "rtw": "Right to work",
+      "employment": {
+        "FULL_TIME": "Full-time",
+        "CONTRACT": "Contract",
+        "PART_TIME": "Part-time"
+      },
+      "overlap": {
+        "SG_HOURS": "SG",
+        "AU_HOURS": "AU",
+        "ASYNC_ONLY": "async"
+      },
+      "languages": "Languages",
+      "links": "Links",
+      "resume": "Resume / CV",
+      "trust": "Trust signals",
+      "emailVerified": "Email verified",
+      "emailNotVerified": "Email not verified",
+      "employmentVerified": "Employment verified",
+      "rolesOf": "· {{n}} of {{total}} roles",
+      "idVerified": "ID verified",
+      "idNotUploaded": "Not yet uploaded",
+      "yourProfile": "This is your profile · Edit"
+    }
+  },
+  "availability": {
+    "now": "Available now",
+    "2weeks": "Available in 2 weeks",
+    "1month": "Available in 1 month",
+    "2months": "Available in 2+ months",
+    "open": "Open to work"
+  },
+  "page": {
+    "profileSetup": "Profile Setup",
+    "loadError": "Couldn't load profile",
+    "loadErrorDesc": "Something went wrong loading your profile."
   }
 }

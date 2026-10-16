@@ -51,7 +51,8 @@
     "continue": "Continue",
     "viewAll": "View all",
     "more": "More",
-    "less": "Less"
+    "less": "Less",
+    "retryShort": "Retry"
   },
   "status": {
     "active": "Active",
@@ -104,7 +105,19 @@
     "monthsAgo": "{{count}}mo ago",
     "yearsAgo": "{{count}}y ago",
     "today": "Today",
-    "yesterday": "Yesterday"
+    "yesterday": "Yesterday",
+    "justNowLower": "just now",
+    "dayShort": "{{n}}d",
+    "hourShort": "{{n}}h",
+    "dayAgo": "{{n}}d ago",
+    "hourAgo": "{{n}}h ago",
+    "minuteAgo": "{{n}}m ago",
+    "monthAgo": "{{n}}mo ago",
+    "yearAgo": "{{n}}y ago",
+    "tomorrow": "Tomorrow",
+    "notYet": "Not yet",
+    "activeNow": "Active now",
+    "ago": "{{time}} ago"
   },
   "language": {
     "label": "Language",
@@ -120,11 +133,118 @@
     "resources": "Resources",
     "legal": "Legal",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "platform": "Platform",
+    "salaryGuide": "Salary guide",
+    "newsletter": "Newsletter",
+    "remoteGuide": "Remote work guide",
+    "cvTemplates": "CV templates",
+    "interviewPrep": "Interview prep",
+    "about": "About",
+    "founderStory": "Founder story",
+    "contact": "Contact",
+    "press": "Press",
+    "cookies": "Cookies",
+    "description": "Remote jobs from Singapore, Australia & beyond — curated for Vietnam talent.",
+    "madeIn": "Made in",
+    "location": "Đà Nẵng, Vietnam 🇻🇳",
+    "builtBy": "Built by a remote worker, for remote workers."
   },
   "notFound": {
     "title": "Page not found",
     "desc": "The page you're looking for doesn't exist or has moved.",
     "backHome": "Back to home"
-  }
+  },
+  "format": {
+    "upTo": "Up to {{amount}}",
+    "perMonth": "{{amount}}/mo",
+    "hours": "{{n}}h",
+    "days": "{{n}}d",
+    "yearsOne": "{{n}} yr",
+    "yearsOther": "{{n}} yrs",
+    "months": "{{n}} mo",
+    "lessThanMonth": "< 1 mo"
+  },
+  "labels": {
+    "level": {
+      "ENTRY": "Entry",
+      "MID": "Mid",
+      "SENIOR": "Senior",
+      "LEAD": "Lead",
+      "EXECUTIVE": "Executive"
+    },
+    "jobType": {
+      "FULL_TIME": "Full-time",
+      "PART_TIME": "Part-time",
+      "CONTRACT": "Contract",
+      "FREELANCE": "Freelance"
+    }
+  },
+  "a11y": {
+    "dismiss": "Dismiss",
+    "loading": "Loading",
+    "back": "Back"
+  },
+  "upload": {
+    "mustBePdf": "Must be a PDF file.",
+    "mustBeImage": "Must be a JPEG, PNG, or WebP image.",
+    "tooLarge": "File too large — max {{mb}}MB.",
+    "failed": "Upload failed. Try again.",
+    "uploading": "Uploading…",
+    "uploaded": "{{label}} uploaded",
+    "cancel": "Cancel upload"
+  },
+  "skills": {
+    "remove": "Remove skill: {{skill}}",
+    "typePrompt": "Type a skill and press Enter…",
+    "addAnother": "Add another…",
+    "suggested": "Suggested:"
+  },
+  "confirm": {
+    "yes": "Yes",
+    "working": "Working…"
+  },
+  "newsletter": {
+    "soonTitle": "Newsletter is coming soon",
+    "soonDesc": "Signups aren't open yet — check back shortly.",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "your@email.com",
+    "subscribe": "Subscribe"
+  },
+  "errorBoundary": {
+    "updating": "Updating…",
+    "updatingDesc": "A new version of the app is available. Reloading…",
+    "title": "Something went wrong",
+    "desc": "An unexpected error occurred. Try reloading the page.",
+    "reload": "Reload"
+  },
+  "session": {
+    "confirmFailedTitle": "Couldn't confirm your session",
+    "confirmFailedDesc": "Check your connection and try again.",
+    "expiredTitle": "Session expired",
+    "expiredDesc": "Please sign in again to continue."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all read",
+    "markReadFailed": "Couldn't mark as read",
+    "markAllReadFailed": "Couldn't mark all as read",
+    "empty": "No notifications yet",
+    "unread": "Unread: ",
+    "viewAll": "View all"
+  },
+  "party": {
+    "candidate": "Candidate",
+    "employer": "Employer"
+  },
+  "stars": {
+    "n_one": "{{n}} star",
+    "n_other": "{{n}} stars",
+    "outOf5": "{{value}} out of 5 stars"
+  },
+  "badge": {
+    "verified": "Verified",
+    "unverified": "Unverified"
+  },
+  "offline": "You're offline — changes and new results will load once you reconnect."
 }

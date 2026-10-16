@@ -14,6 +14,7 @@ import {
 } from "@/components/shared/input-styles";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import type { Interview } from "@/types/interview";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const ProposeInterviewForm = ({
   applicationId,
@@ -22,6 +23,7 @@ export const ProposeInterviewForm = ({
   applicationId: string;
   existing: Interview | null;
 }) => {
+  const { t } = useTranslation("interviews");
   const proposeMutation = useProposeInterview(applicationId);
   const runWithToast = useToastMutation();
   const [duration, setDuration] = useState(existing?.durationMinutes ?? 30);
@@ -52,10 +54,8 @@ export const ProposeInterviewForm = ({
           meetingUrl: meetingUrl.trim() || undefined,
         }),
       {
-        success: existing
-          ? "Interview times updated"
-          : "Interview times proposed",
-        error: "Couldn't propose interview times",
+        success: existing ? t("propose.updated") : t("propose.proposed"),
+        error: t("propose.failed"),
       }
     );
   };
@@ -63,7 +63,9 @@ export const ProposeInterviewForm = ({
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
       <div>
-        <FieldLabel htmlFor="interview-duration">Duration</FieldLabel>
+        <FieldLabel htmlFor="interview-duration">
+          {t("propose.duration")}
+        </FieldLabel>
         <select
           className={SELECT_INPUT_CLASS}
           id="interview-duration"
@@ -72,7 +74,7 @@ export const ProposeInterviewForm = ({
         >
           {DURATION_OPTIONS.map((m) => (
             <option key={m} value={m}>
-              {m} minutes
+              {t("propose.minutes", { n: m })}
             </option>
           ))}
         </select>
@@ -81,10 +83,10 @@ export const ProposeInterviewForm = ({
       <div className="space-y-2">
         <div>
           <span className="block text-[12.5px] font-medium text-neutral-700">
-            Proposed times (1–2)
+            {t("propose.times")}
           </span>
           <span className="text-[11.5px] text-neutral-400">
-            In your local time — the candidate sees these converted to theirs.
+            {t("propose.hint")}
           </span>
         </div>
         {slots.map((slot, i) => (
@@ -97,7 +99,7 @@ export const ProposeInterviewForm = ({
             />
             {slots.length > 1 && (
               <button
-                aria-label="Remove this time option"
+                aria-label={t("propose.remove")}
                 className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
                 onClick={() => removeSlot(i)}
@@ -113,14 +115,14 @@ export const ProposeInterviewForm = ({
             type="button"
             onClick={() => setSlots((prev) => [...prev, ""])}
           >
-            + Add another option
+            {t("propose.addOption")}
           </button>
         )}
       </div>
 
       <div>
         <FieldLabel htmlFor="interview-meeting-url">
-          Meeting link (optional)
+          {t("propose.meetingLink")}
         </FieldLabel>
         <input
           className={TEXT_INPUT_CLASS}
@@ -139,7 +141,7 @@ export const ProposeInterviewForm = ({
         isLoading={proposeMutation.isPending}
         type="submit"
       >
-        {existing ? "Update times" : "Send invitation"}
+        {existing ? t("propose.update") : t("propose.send")}
       </Button>
     </form>
   );

@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useToast } from "@/components/ui/toast";
 import { reportError } from "@/services/monitoring";
+import { getErrorMessage } from "@/core/errors/localize";
 
 interface ToastMutationMessages {
   success?: string;
@@ -38,7 +39,12 @@ export const useToastMutation = () => {
         toast({
           variant: "error",
           title: messages.error,
-          description: dynamicDescription ?? messages.errorDescription,
+          // The localized reason (from the API error code) unless the caller
+          // supplied its own copy
+          description:
+            dynamicDescription ??
+            messages.errorDescription ??
+            getErrorMessage(err),
         });
         return false;
       }

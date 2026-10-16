@@ -3,6 +3,7 @@ import { ExplorerSection } from "@/components/salary/ExplorerSection";
 import { CountrySection } from "@/components/salary/CountrySection";
 import { SubmitSection } from "@/components/salary/SubmitSection";
 import { useSalaryBenchmarks } from "@/features/salary/salary.queries";
+import { useTranslation } from "@/i18n/useTranslation";
 
 // Sections live in components/salary/* (one file per section with its own
 // data, same convention as components/home/* and employer-marketing/*) —
@@ -10,10 +11,8 @@ import { useSalaryBenchmarks } from "@/features/salary/salary.queries";
 // and their datasets.
 
 export const SalaryPage = () => {
-  useDocumentTitle(
-    "Remote Salary Guide — Vietnam Talent",
-    "Real remote-salary data for Vietnamese professionals working for Singapore, Australia, and US companies — by role, seniority, and country."
-  );
+  const { t, formatNumber } = useTranslation("salary");
+  useDocumentTitle(t("page.title"), t("page.description"));
 
   const { data: benchmarks } = useSalaryBenchmarks();
   const totalCount = benchmarks?.reduce((sum, b) => sum + b.count, 0) ?? 0;
@@ -30,15 +29,15 @@ export const SalaryPage = () => {
   const heroStats = [
     {
       num: benchmarks ? String(totalCount) : "—",
-      label: "Active listings with salary",
+      label: t("page.statListings"),
     },
     {
-      num: weightedMid ? `$${weightedMid.toLocaleString()}` : "—",
-      label: "Average monthly salary",
+      num: weightedMid ? `$${formatNumber(weightedMid)}` : "—",
+      label: t("page.statAverage"),
     },
     {
       num: benchmarks ? String(benchmarks.length) : "—",
-      label: "Roles benchmarked",
+      label: t("page.statRoles"),
     },
   ];
 
@@ -56,16 +55,17 @@ export const SalaryPage = () => {
         <div className="mx-auto max-w-[1240px] px-6">
           <div className="mb-5 inline-flex items-center gap-2 text-[12px] font-semibold text-neutral-400">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-600" />
-            Live from active job listings
+            {t("page.live")}
           </div>
           <h1 className="mb-4 max-w-2xl text-[clamp(32px,4.5vw,52px)] font-semibold leading-[1.1] tracking-tight text-neutral-900">
-            What should you{" "}
-            <em className="font-serif-italic text-brand-700">actually</em> earn
-            working remotely?
+            {t("page.heroTitle")}
+            <em className="font-serif-italic text-brand-700">
+              {t("page.heroTitleEm")}
+            </em>
+            {t("page.heroTitleEnd")}
           </h1>
           <p className="mb-10 max-w-xl text-[16px] leading-relaxed text-neutral-500">
-            Real numbers computed from the salary ranges companies post on live
-            job listings — by role, seniority, and country.
+            {t("page.heroDesc")}
           </p>
 
           <div className="flex flex-wrap gap-x-10 gap-y-5">

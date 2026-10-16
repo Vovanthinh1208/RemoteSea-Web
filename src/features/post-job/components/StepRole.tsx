@@ -8,10 +8,11 @@ import {
 import { SkillTagEditor } from "@/components/shared/SkillTagEditor";
 import { PillToggle } from "@/components/shared/PillToggle";
 import { useCategories, useSkills } from "@/features/taxonomy/taxonomy.queries";
+import { useTranslation } from "@/i18n/useTranslation";
+import { optionLabel } from "@/i18n/labels";
 import {
   BENEFIT_OPTIONS,
   CURRENCY_OPTIONS,
-  JOB_TYPE_LABELS,
   JOB_TYPE_OPTIONS,
   LOCATION_OPTIONS,
   PERIOD_OPTIONS,
@@ -21,6 +22,7 @@ import {
 } from "@/features/post-job/post-job.schemas";
 
 export const StepRole = ({ form, set }: PostJobStepProps) => {
+  const { t } = useTranslation("postjob");
   const { data: categories } = useCategories();
   const { data: allSkills } = useSkills();
   const skillSuggestions = (allSkills ?? []).map((s) => s.name);
@@ -29,23 +31,21 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
     <div className="space-y-6">
       <div>
         <h2 className="text-[22px] font-semibold text-neutral-900">
-          Role details
+          {t("role.title")}
         </h2>
-        <p className="mt-1 text-sm text-neutral-500">
-          Help candidates understand exactly what you need.
-        </p>
+        <p className="mt-1 text-sm text-neutral-500">{t("role.subtitle")}</p>
       </div>
 
-      <Field label="Job title" required>
+      <Field label={t("role.jobTitle")} required>
         <Input
-          placeholder="Senior Frontend Engineer"
+          placeholder={t("role.jobTitlePlaceholder")}
           value={form.jobTitle}
           onChange={(v) => set("jobTitle", v)}
         />
       </Field>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Field label="Category" required>
+        <Field label={t("role.category")} required>
           <Select
             options={(categories ?? []).map((c) => ({
               value: c.id,
@@ -55,21 +55,21 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
             onChange={(v) => set("jobCategoryId", v)}
           />
         </Field>
-        <Field label="Seniority">
+        <Field label={t("role.seniority")}>
           <Select
             options={SENIORITY_OPTIONS.map((o) => ({
               value: o,
-              label: o,
+              label: optionLabel("postjob.opt.seniority", o),
             }))}
             value={form.jobSeniority}
             onChange={(v) => set("jobSeniority", v)}
           />
         </Field>
-        <Field label="Employment type">
+        <Field label={t("role.employmentType")}>
           <Select
             options={JOB_TYPE_OPTIONS.map((o) => ({
               value: o,
-              label: JOB_TYPE_LABELS[o],
+              label: optionLabel("postjob.opt.jobtype", o),
             }))}
             value={form.jobType}
             onChange={(v) => set("jobType", v)}
@@ -78,21 +78,21 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Location">
+        <Field label={t("role.location")}>
           <Select
             options={LOCATION_OPTIONS.map((o) => ({
               value: o,
-              label: o,
+              label: optionLabel("postjob.opt.loc", o),
             }))}
             value={form.jobLoc}
             onChange={(v) => set("jobLoc", v)}
           />
         </Field>
-        <Field label="Timezone overlap">
+        <Field label={t("role.tzOverlap")}>
           <Select
             options={TIMEZONE_OPTIONS.map((o) => ({
               value: o,
-              label: o,
+              label: optionLabel("postjob.opt.tz", o),
             }))}
             value={form.jobTz}
             onChange={(v) => set("jobTz", v)}
@@ -100,27 +100,23 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
         </Field>
       </div>
 
-      <Field
-        hint="What will this person do day-to-day? What does success look like in 6 months? Minimum 100 characters."
-        label="Job description"
-        required
-      >
+      <Field hint={t("role.descHint")} label={t("role.desc")} required>
         <Textarea
-          placeholder={"What you'll do...\n\nWhat we're looking for..."}
+          placeholder={t("role.descPlaceholder")}
           rows={8}
           value={form.jobDesc}
           onChange={(v) => set("jobDesc", v)}
         />
       </Field>
 
-      <Field label="Required skills">
+      <Field label={t("role.requiredSkills")}>
         <SkillTagEditor
           setSkills={(s) => set("jobSkills", s)}
           skills={form.jobSkills}
           suggestions={skillSuggestions}
         />
       </Field>
-      <Field label="Nice-to-have skills">
+      <Field label={t("role.niceSkills")}>
         <SkillTagEditor
           setSkills={(s) => set("jobNice", s)}
           skills={form.jobNice}
@@ -130,10 +126,10 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
 
       <div className="border-t border-neutral-100 pt-5">
         <h3 className="mb-4 text-[14px] font-semibold text-neutral-800">
-          Compensation
+          {t("role.compensation")}
         </h3>
         <div className="grid gap-4 sm:grid-cols-4">
-          <Field label="Min" required>
+          <Field label={t("role.min")} required>
             <Input
               min={0}
               type="number"
@@ -141,7 +137,7 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
               onChange={(v) => set("salMin", Number(v))}
             />
           </Field>
-          <Field label="Max">
+          <Field label={t("role.max")}>
             <Input
               min={0}
               type="number"
@@ -149,7 +145,7 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
               onChange={(v) => set("salMax", Number(v))}
             />
           </Field>
-          <Field label="Currency">
+          <Field label={t("role.currency")}>
             <Select
               options={CURRENCY_OPTIONS.map((o) => ({
                 value: o,
@@ -159,11 +155,11 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
               onChange={(v) => set("salCur", v)}
             />
           </Field>
-          <Field label="Period">
+          <Field label={t("role.period")}>
             <Select
               options={PERIOD_OPTIONS.map((o) => ({
                 value: o,
-                label: o,
+                label: optionLabel("postjob.opt.period", o),
               }))}
               value={form.salPer}
               onChange={(v) => set("salPer", v)}
@@ -173,7 +169,7 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
 
         <div className="mt-4">
           <p className="mb-2 text-[13px] font-medium text-neutral-700">
-            Benefits
+            {t("role.benefits")}
           </p>
           <div className="flex flex-wrap gap-2">
             {BENEFIT_OPTIONS.map((b) => (
@@ -195,7 +191,7 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
                 {form.benefits.includes(b) && (
                   <Check className="mr-1 inline" size={10} />
                 )}
-                {b}
+                {optionLabel("postjob.opt.benefit", b)}
               </PillToggle>
             ))}
           </div>

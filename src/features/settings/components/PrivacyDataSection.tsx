@@ -11,6 +11,7 @@ import {
 } from "@/features/talent/talent.queries";
 import { useExportMyData } from "@/features/users/users.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const downloadJson = (data: unknown, filename: string) => {
   const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -25,6 +26,7 @@ const downloadJson = (data: unknown, filename: string) => {
 };
 
 export const PrivacyDataSection = () => {
+  const { t } = useTranslation("settings");
   const runWithToast = useToastMutation();
 
   const { data: profile } = useMyTalentProfile();
@@ -39,7 +41,7 @@ export const PrivacyDataSection = () => {
         updateProfileMutation.mutateAsync({
           visibility: restricted ? "VERIFIED_EMPLOYERS" : "PUBLIC",
         }),
-      { error: "Couldn't update visibility" }
+      { error: t("priv2.visFailed") }
     );
 
   const requestExport = () =>
@@ -49,8 +51,8 @@ export const PrivacyDataSection = () => {
         downloadJson(result, "remotesea-data-export.json");
       },
       {
-        success: "Export downloaded",
-        error: "Couldn't export your data",
+        success: t("priv2.exportDone"),
+        error: t("priv2.exportFailed"),
       }
     );
 
@@ -60,16 +62,16 @@ export const PrivacyDataSection = () => {
       id="data"
     >
       <SectionHead
-        eyebrow="05 · Your data"
-        help="Control how visible you are and take your data with you whenever you want."
+        eyebrow={t("priv2.eyebrow")}
+        help={t("priv2.help")}
         title={
           <>
-            Privacy &amp;{" "}
+            {t("priv2.title")}
             <em
               className="font-serif italic text-brand-700"
               style={EMPHASIS_STYLE}
             >
-              data.
+              {t("priv2.titleEm")}
             </em>
           </>
         }
@@ -86,12 +88,12 @@ export const PrivacyDataSection = () => {
             </span>
             <div className="min-w-0 flex-1">
               <p className="text-[13.5px] font-medium text-neutral-900">
-                Profile visibility
+                {t("priv2.visibility")}
               </p>
               <p className="text-[12px] text-neutral-500">
-                Currently{" "}
+                {t("priv2.currently")}
                 <strong className="text-neutral-800">
-                  {isRestricted ? "Verified employers only" : "Public"}
+                  {isRestricted ? t("priv2.restricted") : t("priv2.public")}
                 </strong>
               </p>
             </div>
@@ -104,10 +106,10 @@ export const PrivacyDataSection = () => {
           </span>
           <div className="min-w-0 flex-1">
             <p className="text-[13.5px] font-medium text-neutral-900">
-              Download your data
+              {t("priv2.download")}
             </p>
             <p className="text-[12px] text-neutral-400">
-              Your profile, applications, and job alerts as a JSON export.
+              {t("priv2.downloadDesc")}
             </p>
           </div>
           <button
@@ -116,15 +118,17 @@ export const PrivacyDataSection = () => {
             type="button"
             onClick={requestExport}
           >
-            {exportMutation.isPending ? "Preparing…" : "Request"}
+            {exportMutation.isPending
+              ? t("priv2.preparing")
+              : t("priv2.request")}
           </button>
         </div>
       </div>
       <ToggleRow
         disabled
-        desc="Off by default. When on, your public talent page can appear in Google results. Not built yet — this won't do anything until it is."
+        desc={t("priv2.seoDesc")}
         on={false}
-        title="Let search engines index my public profile"
+        title={t("priv2.seo")}
         onChange={() => {}}
       />
     </section>

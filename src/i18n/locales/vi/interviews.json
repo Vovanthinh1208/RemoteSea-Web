@@ -1,0 +1,66 @@
+{
+  "page": {
+    "fallbackTitle": "Phỏng vấn",
+    "cancelled": "Đã hủy buổi phỏng vấn.",
+    "cancelFailed": "Không thể hủy buổi phỏng vấn. Vui lòng thử lại.",
+    "cancel": "Hủy phỏng vấn",
+    "cancelQ": "Hủy buổi phỏng vấn này?",
+    "cancelling": "Đang hủy…",
+    "errorTitle": "Không thể tải chi tiết phỏng vấn",
+    "errorDesc": "Đã xảy ra lỗi khi tải buổi phỏng vấn này.",
+    "noneTitle": "Chưa có buổi phỏng vấn nào",
+    "noneDesc": "Đang chờ nhà tuyển dụng đề xuất thời gian phỏng vấn.",
+    "theCandidate": "ứng viên",
+    "theEmployer": "nhà tuyển dụng",
+    "cancelledNote": "Buổi phỏng vấn này đã bị hủy. Hãy đề xuất thời gian mới bên dưới để đổi lịch.",
+    "cancelledTitle": "Đã hủy phỏng vấn",
+    "cancelledDesc": "Nhà tuyển dụng đã hủy buổi phỏng vấn này.",
+    "waiting": "Đang chờ ứng viên xác nhận một trong các thời gian này. Bạn vẫn có thể chỉnh sửa bên dưới."
+  },
+  "schedule": {
+    "docTitle": "Lịch phỏng vấn — Bảng điều khiển nhà tuyển dụng",
+    "crumb": "Lịch phỏng vấn",
+    "mineTitle": "Các buổi phỏng vấn ",
+    "mineEm": "sắp tới của bạn.",
+    "teamTitle": "Lịch phỏng vấn ",
+    "teamEm": "của nhóm.",
+    "mineDesc": "Mọi buổi phỏng vấn đã xác nhận được giao cho bạn, gần nhất trước.",
+    "teamDesc": "Mọi buổi phỏng vấn đã xác nhận trong toàn công ty, gần nhất trước.",
+    "errorTitle": "Không thể tải các buổi phỏng vấn",
+    "errorDesc": "Đã xảy ra lỗi khi tải lịch phỏng vấn.",
+    "emptyTitle": "Không có buổi phỏng vấn sắp tới",
+    "emptyDesc": "Các buổi phỏng vấn đã xác nhận sẽ hiển thị ở đây, nhóm theo ngày.",
+    "with": " · cùng {{name}}",
+    "min": "{{n}} phút",
+    "hasLink": "Có liên kết cuộc họp"
+  },
+  "card": {
+    "upcoming": "Buổi phỏng vấn sắp tới",
+    "minutes": "{{n}} phút · theo giờ địa phương của bạn",
+    "with": "Cùng {{name}}",
+    "join": "Tham gia phỏng vấn",
+    "calendar": "Thêm vào lịch",
+    "calendarFailed": "Không thể tải tệp lịch. Vui lòng thử lại."
+  },
+  "confirm": {
+    "done": "Đã xác nhận phỏng vấn",
+    "failed": "Không thể xác nhận phỏng vấn",
+    "pick": "Hãy chọn thời gian phù hợp với bạn:",
+    "local": "Hiển thị theo giờ địa phương của bạn · {{n}} phút",
+    "button": "Xác nhận thời gian này"
+  },
+  "propose": {
+    "updated": "Đã cập nhật thời gian phỏng vấn",
+    "proposed": "Đã đề xuất thời gian phỏng vấn",
+    "failed": "Không thể đề xuất thời gian phỏng vấn",
+    "duration": "Thời lượng",
+    "minutes": "{{n}} phút",
+    "times": "Thời gian đề xuất (1–2)",
+    "hint": "Theo giờ địa phương của bạn — ứng viên sẽ thấy đã quy đổi sang giờ của họ.",
+    "remove": "Xóa lựa chọn thời gian này",
+    "addOption": "+ Thêm lựa chọn khác",
+    "meetingLink": "Liên kết cuộc họp (không bắt buộc)",
+    "update": "Cập nhật thời gian",
+    "send": "Gửi lời mời"
+  }
+}

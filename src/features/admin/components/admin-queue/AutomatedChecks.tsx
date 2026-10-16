@@ -1,6 +1,7 @@
 import { AlertTriangle, Check, X, Zap } from "lucide-react";
 import { autoChecks, type AutoState } from "@/features/admin/admin.utils";
 import type { AdminJob } from "@/types/admin";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const AUTO_ICON: Record<AutoState, React.ReactNode> = {
   pass: <Check size={12} />,
@@ -19,6 +20,7 @@ interface AutomatedChecksProps {
 }
 
 export const AutomatedChecks = ({ job }: AutomatedChecksProps) => {
+  const { t } = useTranslation("admin");
   const checks = autoChecks(job);
   const passCount = checks.filter((a) => a.state === "pass").length;
 
@@ -26,10 +28,10 @@ export const AutomatedChecks = ({ job }: AutomatedChecksProps) => {
     <div className="mb-5">
       <div className="mb-2 flex items-center gap-2">
         <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-          <Zap size={12} /> Automated checks
+          <Zap size={12} /> {t("checks.title")}
         </span>
         <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[11px] font-medium text-brand-700">
-          {passCount}/{checks.length} clean
+          {t("checks.clean", { pass: passCount, total: checks.length })}
         </span>
       </div>
       <div className="space-y-1.5">

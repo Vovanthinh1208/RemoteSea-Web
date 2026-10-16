@@ -14,6 +14,8 @@ import {
   type WorkExperienceFormValues,
 } from "@/features/talent/work-experience.schemas";
 import type { WorkExperience } from "@/types/work-experience";
+import { useTranslation } from "@/i18n/useTranslation";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 
 interface WorkExperienceFormProps {
   initial?: WorkExperience;
@@ -22,21 +24,6 @@ interface WorkExperienceFormProps {
 }
 
 const MAX_DESCRIPTION_LENGTH = 1000;
-
-const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
 
 const CURRENT_YEAR = new Date().getUTCFullYear();
 // A career spanning up to 60 years back covers this app's users; a couple of
@@ -65,6 +52,7 @@ const MonthYearSelect = ({
   ariaLabelPrefix,
   autoFocus,
 }: MonthYearSelectProps) => {
+  const { t, formatDate } = useTranslation("talent");
   const [initialYear, initialMonth] = value ? value.split("-") : ["", ""];
   const [month, setMonth] = useState(initialMonth);
   const [year, setYear] = useState(initialYear);
@@ -75,7 +63,7 @@ const MonthYearSelect = ({
   return (
     <div className="grid grid-cols-2 gap-2">
       <select
-        aria-label={`${ariaLabelPrefix} month`}
+        aria-label={t("expForm.monthAria", { prefix: ariaLabelPrefix })}
         autoFocus={autoFocus}
         className={TEXT_INPUT_CLASS}
         disabled={disabled}
@@ -85,15 +73,18 @@ const MonthYearSelect = ({
           emit(e.target.value, year);
         }}
       >
-        <option value="">Month</option>
-        {MONTHS.map((name, i) => (
-          <option key={name} value={String(i + 1).padStart(2, "0")}>
-            {name}
+        <option value="">{t("expForm.month")}</option>
+        {Array.from({ length: 12 }, (_, i) => (
+          <option key={i} value={String(i + 1).padStart(2, "0")}>
+            {formatDate(new Date(Date.UTC(2000, i, 1)), {
+              month: "long",
+              timeZone: "UTC",
+            })}
           </option>
         ))}
       </select>
       <select
-        aria-label={`${ariaLabelPrefix} year`}
+        aria-label={t("expForm.yearAria", { prefix: ariaLabelPrefix })}
         className={TEXT_INPUT_CLASS}
         disabled={disabled}
         value={year}
@@ -102,7 +93,7 @@ const MonthYearSelect = ({
           emit(month, e.target.value);
         }}
       >
-        <option value="">Year</option>
+        <option value="">{t("expForm.year")}</option>
         {YEARS.map((y) => (
           <option key={y} value={y}>
             {y}
@@ -130,16 +121,19 @@ export const WorkExperienceForm = ({
   onSubmit,
   onCancel,
 }: WorkExperienceFormProps) => {
+  const { t } = useTranslation("talent");
+  const form = useForm<WorkExperienceFormValues>({
+    resolver: zodResolver(workExperienceFormSchema),
+    defaultValues: toDefaultValues(initial),
+  });
   const {
     register,
     handleSubmit,
     watch,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<WorkExperienceFormValues>({
-    resolver: zodResolver(workExperienceFormSchema),
-    defaultValues: toDefaultValues(initial),
-  });
+  } = form;
+  useRevalidateOnLocaleChange(form);
 
   const [isCurrent, startMonth, endMonth, description] = watch([
     "isCurrent",
@@ -163,10 +157,10 @@ export const WorkExperienceForm = ({
           </span>
           <div className="min-w-0 flex-1">
             <input
-              aria-label="Company"
+              aria-label={t("expForm.company")}
               autoFocus={!initial}
               className={TEXT_INPUT_CLASS}
-              placeholder="Company"
+              placeholder={t("expForm.company")}
               {...register("company")}
             />
             <FieldError message={errors.company?.message} />
@@ -178,9 +172,9 @@ export const WorkExperienceForm = ({
           </span>
           <div className="min-w-0 flex-1">
             <input
-              aria-label="Job title"
+              aria-label={t("expForm.title")}
               className={TEXT_INPUT_CLASS}
-              placeholder="Job title"
+              placeholder={t("expForm.title")}
               {...register("title")}
             />
             <FieldError message={errors.title?.message} />
@@ -193,9 +187,9 @@ export const WorkExperienceForm = ({
           <MapPin size={15} />
         </span>
         <input
-          aria-label="Location"
+          aria-label={t("expForm.location")}
           className={TEXT_INPUT_CLASS}
-          placeholder="Location (optional) — e.g. Singapore"
+          placeholder={t("expForm.locationPlaceholder")}
           {...register("location")}
         />
       </div>
@@ -203,10 +197,10 @@ export const WorkExperienceForm = ({
       <div className="grid gap-4 rounded-12 border border-neutral-100 bg-white p-3.5 sm:grid-cols-2">
         <div>
           <p className="mb-1.5 pt-1.5 text-[11.5px] font-medium text-neutral-600">
-            Start date
+            {t("expForm.startDate")}
           </p>
           <MonthYearSelect
-            ariaLabelPrefix="Start"
+            ariaLabelPrefix={t("expForm.startPrefix")}
             value={startMonth}
             onChange={(v) =>
               setValue("startMonth", v, { shouldValidate: true })
@@ -217,10 +211,10 @@ export const WorkExperienceForm = ({
         <div>
           <div className="mb-1.5 flex items-center justify-between">
             <p className="text-[11.5px] font-medium text-neutral-600">
-              End date
+              {t("expForm.endDate")}
             </p>
             <label className="flex items-center gap-1.5 text-[11px] text-neutral-500">
-              Current role
+              {t("expForm.currentRole")}
               <Toggle
                 on={isCurrent}
                 onChange={(v) =>
@@ -230,7 +224,7 @@ export const WorkExperienceForm = ({
             </label>
           </div>
           <MonthYearSelect
-            ariaLabelPrefix="End"
+            ariaLabelPrefix={t("expForm.endPrefix")}
             disabled={isCurrent}
             value={isCurrent ? "" : (endMonth ?? "")}
             onChange={(v) => setValue("endMonth", v, { shouldValidate: true })}
@@ -245,8 +239,10 @@ export const WorkExperienceForm = ({
             className="text-[12px] font-medium text-neutral-600"
             htmlFor="we-description"
           >
-            What did you work on?{" "}
-            <span className="font-normal text-neutral-400">(optional)</span>
+            {t("expForm.whatWork")}{" "}
+            <span className="font-normal text-neutral-400">
+              {t("expForm.optional")}
+            </span>
           </label>
           <span className="text-[11px] text-neutral-400">
             {description?.length ?? 0} / {MAX_DESCRIPTION_LENGTH}
@@ -255,7 +251,7 @@ export const WorkExperienceForm = ({
         <textarea
           className={TEXTAREA_INPUT_CLASS}
           id="we-description"
-          placeholder="A sentence or two on your impact — recruiters skim this."
+          placeholder={t("expForm.descPlaceholder")}
           rows={3}
           {...register("description")}
         />
@@ -267,14 +263,18 @@ export const WorkExperienceForm = ({
           disabled={isSubmitting}
           type="submit"
         >
-          {isSubmitting ? "Saving…" : initial ? "Save changes" : "Add role"}
+          {isSubmitting
+            ? t("expForm.saving")
+            : initial
+              ? t("expForm.saveChanges")
+              : t("expForm.addRole")}
         </button>
         <button
           className="rounded-10 border border-neutral-200 bg-white px-4 py-2 text-[13px] font-medium text-neutral-600 transition-colors hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={onCancel}
         >
-          Cancel
+          {t("common.actions.cancel")}
         </button>
       </div>
     </form>

@@ -17,6 +17,8 @@ import {
   useUpdateMyAccount,
 } from "@/features/users/users.queries";
 import { useToast } from "@/components/ui/toast";
+import { useTranslation } from "@/i18n/useTranslation";
+import { optionLabel } from "@/i18n/labels";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { uploadViaPresign, validateFile } from "@/services/uploads.api";
 import { reportError } from "@/services/monitoring";
@@ -52,6 +54,7 @@ export const BasicsSection = ({
   const updateAccountMutation = useUpdateMyAccount();
   const runWithToast = useToastMutation();
   const { toast } = useToast();
+  const { t } = useTranslation("talent");
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -66,8 +69,8 @@ export const BasicsSection = ({
     if (validationError) {
       toast({
         variant: "error",
-        title: "Couldn't upload photo",
-        description: validationError,
+        title: t("basics.photoUploadFailed"),
+        description: t(validationError.key, validationError.params),
       });
       return;
     }
@@ -78,16 +81,16 @@ export const BasicsSection = ({
       await runWithToast(
         () => updateAccountMutation.mutateAsync({ image: url }),
         {
-          success: "Photo updated",
-          error: "Couldn't update your photo",
+          success: t("basics.photoUpdated"),
+          error: t("basics.photoUpdateFailed"),
         }
       );
     } catch (err) {
       reportError(err);
       toast({
         variant: "error",
-        title: "Upload failed",
-        description: "Please try again.",
+        title: t("basics.uploadFailed"),
+        description: t("basics.tryAgain"),
       });
     } finally {
       setUploading(false);
@@ -96,8 +99,8 @@ export const BasicsSection = ({
 
   const handleRemove = () =>
     runWithToast(() => updateAccountMutation.mutateAsync({ image: null }), {
-      success: "Photo removed",
-      error: "Couldn't remove your photo",
+      success: t("basics.photoRemoved"),
+      error: t("basics.photoRemoveFailed"),
     });
 
   return (
@@ -106,16 +109,16 @@ export const BasicsSection = ({
       id="basics"
     >
       <SectionHead
-        eyebrow="01 · Identity"
-        help="Your name, headline, location and timezone. This appears at the top of your profile."
+        eyebrow={t("basics.eyebrow")}
+        help={t("basics.help")}
         title={
           <>
-            The{" "}
+            {t("basics.title")}
             <em
               className="font-serif italic text-brand-700"
               style={EMPHASIS_STYLE}
             >
-              basics.
+              {t("basics.titleEm")}
             </em>
           </>
         }
@@ -137,10 +140,10 @@ export const BasicsSection = ({
         </div>
         <div>
           <p className="text-[14px] font-semibold text-neutral-900">
-            {name || "Your name"}
+            {name || t("basics.yourName")}
           </p>
           <p className="text-[12px] text-neutral-400">
-            JPG or PNG · square crop · max 2 MB
+            {t("basics.photoHint")}
           </p>
           <div className="mt-2 flex gap-2">
             <input
@@ -156,7 +159,7 @@ export const BasicsSection = ({
               type="button"
               onClick={() => fileInputRef.current?.click()}
             >
-              {uploading ? "Uploading…" : "Upload photo"}
+              {uploading ? t("basics.uploading") : t("basics.upload")}
             </button>
             <button
               className="rounded-8 px-2 py-1 text-[12px] text-neutral-400 hover:text-neutral-600 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
@@ -164,7 +167,7 @@ export const BasicsSection = ({
               type="button"
               onClick={handleRemove}
             >
-              Remove
+              {t("basics.remove")}
             </button>
           </div>
         </div>
@@ -175,7 +178,7 @@ export const BasicsSection = ({
             className="block text-[12.5px] font-medium text-neutral-700"
             htmlFor="p-name"
           >
-            Full name
+            {t("basics.fullName")}
           </label>
           <input
             className={TEXT_INPUT_CLASS}
@@ -186,13 +189,17 @@ export const BasicsSection = ({
         </div>
         <div className="space-y-1.5">
           <p className="text-[12.5px] font-medium text-neutral-700">
-            Pronouns{" "}
-            <span className="font-normal text-neutral-400">(optional)</span>
+            {t("basics.pronouns")}{" "}
+            <span className="font-normal text-neutral-400">
+              {t("basics.optional")}
+            </span>
           </p>
           {/* Not a real input — there's no field for this yet. A disabled-but-
             normal-looking input invited users to click in, type, and find
             nothing saves. */}
-          <p className="text-[13.5px] text-neutral-400">Coming soon</p>
+          <p className="text-[13.5px] text-neutral-400">
+            {t("basics.comingSoon")}
+          </p>
         </div>
         <div className="space-y-1.5 sm:col-span-2">
           <div className="flex items-center justify-between">
@@ -200,7 +207,7 @@ export const BasicsSection = ({
               className="block text-[12.5px] font-medium text-neutral-700"
               htmlFor="p-headline"
             >
-              Headline
+              {t("basics.headline")}
             </label>
             <span className="text-[11px] text-neutral-400">
               {headlineLength} / {MAX_HEADLINE_LENGTH}
@@ -209,7 +216,7 @@ export const BasicsSection = ({
           <input
             className={TEXT_INPUT_CLASS}
             id="p-headline"
-            placeholder="Role · timezone · standout signal"
+            placeholder={t("basics.headlinePlaceholder")}
             {...register("headline")}
           />
           <FieldError message={headlineError} />
@@ -219,7 +226,7 @@ export const BasicsSection = ({
             className="block text-[12.5px] font-medium text-neutral-700"
             htmlFor="p-loc"
           >
-            Where are you based?
+            {t("basics.location")}
           </label>
           <input
             className={TEXT_INPUT_CLASS}
@@ -232,7 +239,7 @@ export const BasicsSection = ({
             className="block text-[12.5px] font-medium text-neutral-700"
             htmlFor="p-tz"
           >
-            Working timezone
+            {t("basics.timezone")}
           </label>
           <select
             className={SELECT_INPUT_CLASS}
@@ -240,7 +247,9 @@ export const BasicsSection = ({
             {...register("timezone")}
           >
             {TIMEZONE_OPTIONS.map((o) => (
-              <option key={o}>{o}</option>
+              <option key={o} value={o}>
+                {optionLabel("talent.opt.tz", o)}
+              </option>
             ))}
           </select>
         </div>

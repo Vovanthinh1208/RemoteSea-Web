@@ -1,0 +1,65 @@
+{
+  "explorer": {
+    "eyebrow": "Khám phá",
+    "title": "Mức lương theo ",
+    "titleEm": "vị trí & cấp bậc",
+    "unavailable": "Hiện chưa có dữ liệu lương.",
+    "role": "Vị trí",
+    "seniority": "Cấp bậc",
+    "all": "Tất cả",
+    "legendRange": "Khoảng thấp nhất – cao nhất",
+    "legendAverage": "Trung bình",
+    "noData": "Chưa có dữ liệu cho {{role}} ở cấp bậc {{seniority}}. Hãy thử cấp bậc khác.",
+    "disclaimer": "Số liệu là trung bình từ mức lương công bố trong các tin đang đăng, tính bằng USD trừ khi bạn đổi tiền tệ. Chưa bao gồm thưởng và cổ phần.",
+    "avg": "TB",
+    "midpoint": "Trung điểm trung bình {{value}}",
+    "listings_one": "n = {{count}} tin",
+    "listings_other": "n = {{count}} tin"
+  },
+  "country": {
+    "eyebrow": "Theo quốc gia",
+    "title": "Nơi ",
+    "titleEm": "tiền",
+    "titleEnd": " đang ở",
+    "desc": "Mức thu nhập trung bình cho các vị trí remote đang mở, theo quốc gia đặt trụ sở công ty.",
+    "unavailable": "Hiện chưa có dữ liệu theo quốc gia.",
+    "perMonth": "/tháng",
+    "range": "Khoảng {{min}}–{{max}}",
+    "listings_one": "{{count}} tin đang mở",
+    "listings_other": "{{count}} tin đang mở"
+  },
+  "submit": {
+    "eyebrow": "Đóng góp",
+    "title": "Chia sẻ mức lương của bạn, ",
+    "titleEm": "ẩn danh",
+    "desc": "Chỉ mất 90 giây. Không cần tên, không cần email. Dữ liệu của bạn giúp lần thương lượng của người tiếp theo công bằng hơn một chút.",
+    "point1": "Được mã hóa & ẩn danh",
+    "point2": "Hoàn toàn ẩn danh",
+    "point3": "Đội ngũ của chúng tôi duyệt hằng tuần",
+    "comingSoon": "Sắp ra mắt",
+    "cta": "Gửi một điểm dữ liệu",
+    "liveJobs": "Xem việc làm đang mở",
+    "preview": {
+      "role": "Vị trí",
+      "roleValue": "Kỹ sư Frontend cao cấp",
+      "hq": "Trụ sở công ty",
+      "hqValue": "🇸🇬 Singapore",
+      "years": "Số năm kinh nghiệm",
+      "base": "Lương cơ bản / tháng",
+      "equity": "Cổ phần",
+      "note": "Ẩn danh · Từng trường một"
+    }
+  },
+  "page": {
+    "title": "Cẩm nang lương remote — Nhân sự Việt Nam",
+    "description": "Dữ liệu lương remote thực tế cho chuyên gia Việt Nam làm việc cho công ty Singapore, Úc và Mỹ — theo vị trí, cấp bậc và quốc gia.",
+    "statListings": "Tin đang đăng có mức lương",
+    "statAverage": "Lương trung bình hằng tháng",
+    "statRoles": "Vị trí đã được so sánh",
+    "live": "Cập nhật trực tiếp từ các tin đang đăng",
+    "heroTitle": "Bạn nên ",
+    "heroTitleEm": "thực sự",
+    "heroTitleEnd": " kiếm được bao nhiêu khi làm remote?",
+    "heroDesc": "Số liệu thật được tính từ mức lương các công ty công bố trong tin đang đăng — theo vị trí, cấp bậc và quốc gia."
+  }
+}

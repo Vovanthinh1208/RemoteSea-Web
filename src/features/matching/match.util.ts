@@ -39,9 +39,15 @@ export interface SkillGap {
   isRequired: boolean;
 }
 
+export interface MatchReason {
+  key: string;
+  params?: { matched: number; total: number };
+}
+
 export interface MatchResult {
   score: number;
-  reasons: string[];
+  // i18n descriptors (key + params), translated at render time
+  reasons: MatchReason[];
   // Job skills the talent doesn't have, required ones first — lets a talent
   // see exactly what to close before applying, and an employer see exactly
   // what an applicant lacks instead of only a "2/4 matched" fraction.
@@ -208,50 +214,65 @@ export const computeMatchScore = (
       WEIGHTS.availability * availability
   );
 
-  const reasonCandidates: { weight: number; fraction: number; text: string }[] =
-    [
-      {
-        weight: WEIGHTS.skills,
-        fraction: skills.fraction,
-        text:
-          skills.total > 0
-            ? `${skills.matched}/${skills.total} skills matched`
-            : "Skill requirements open",
+  const reasonCandidates: {
+    weight: number;
+    fraction: number;
+    reason: MatchReason;
+  }[] = [
+    {
+      weight: WEIGHTS.skills,
+      fraction: skills.fraction,
+      reason:
+        skills.total > 0
+          ? {
+              key: "jobs.matching.skillsMatched",
+              params: { matched: skills.matched, total: skills.total },
+            }
+          : { key: "jobs.matching.skillsOpen" },
+    },
+    {
+      weight: WEIGHTS.seniority,
+      fraction: seniority,
+      reason: {
+        key:
+          seniority >= 1
+            ? "jobs.matching.strongExperience"
+            : "jobs.matching.closeExperience",
       },
-      {
-        weight: WEIGHTS.seniority,
-        fraction: seniority,
-        text:
-          seniority >= 1 ? "Strong experience match" : "Close experience match",
+    },
+    {
+      weight: WEIGHTS.salary,
+      fraction: salary,
+      reason: { key: "jobs.matching.salaryInRange" },
+    },
+    {
+      weight: WEIGHTS.location,
+      fraction: location,
+      reason: { key: "jobs.matching.timezoneOverlap" },
+    },
+    {
+      weight: WEIGHTS.employmentType,
+      fraction: employmentType,
+      reason: { key: "jobs.matching.preferredType" },
+    },
+    {
+      weight: WEIGHTS.availability,
+      fraction: availability,
+      reason: {
+        key:
+          availability >= 1
+            ? "jobs.matching.availableNow"
+            : "jobs.matching.availableSoon",
       },
-      {
-        weight: WEIGHTS.salary,
-        fraction: salary,
-        text: "Salary within your range",
-      },
-      {
-        weight: WEIGHTS.location,
-        fraction: location,
-        text: "Timezone overlap",
-      },
-      {
-        weight: WEIGHTS.employmentType,
-        fraction: employmentType,
-        text: "Matches your preferred employment type",
-      },
-      {
-        weight: WEIGHTS.availability,
-        fraction: availability,
-        text: availability >= 1 ? "Available immediately" : "Available soon",
-      },
-    ];
+    },
+  ];
 
   const MAX_REASONS = 3;
   const reasons = reasonCandidates
     .filter((r) => r.fraction >= REASON_THRESHOLD)
     .sort((a, b) => b.weight - a.weight)
     .slice(0, MAX_REASONS)
-    .map((r) => r.text);
+    .map((r) => r.reason);
 
   return { score, reasons, missingSkills: skills.missing };
 };

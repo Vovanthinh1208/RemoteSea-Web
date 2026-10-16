@@ -1,5 +1,6 @@
 import { cn } from "@/utils/cn";
 import { formatSalaryRange } from "@/utils/format";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export interface SalaryBadgeProps {
   min: number | null;
@@ -13,9 +14,10 @@ export interface SalaryBadgeProps {
 export const SalaryBadge = ({
   min,
   max,
-  unit = "/mo",
+  unit,
   className,
 }: SalaryBadgeProps) => {
+  const { t } = useTranslation();
   const range = formatSalaryRange(min, max);
   if (!range) return null;
   return (
@@ -26,7 +28,7 @@ export const SalaryBadge = ({
       )}
     >
       {range}
-      {unit}
+      {unit ?? t("jobs.filters.perMonthSuffix")}
     </span>
   );
 };

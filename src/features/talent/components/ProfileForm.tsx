@@ -11,6 +11,7 @@ import { useUpdateMyTalentProfile } from "@/features/talent/talent.queries";
 import { useUpdateMyName } from "@/features/users/users.queries";
 import { useSkills } from "@/features/taxonomy/taxonomy.queries";
 import { ApiError } from "@/core/errors/api-error";
+import { getErrorMessage } from "@/core/errors/localize";
 import { applyServerErrors } from "@/utils/form-errors";
 import { reportError } from "@/services/monitoring";
 import {
@@ -41,6 +42,8 @@ import {
   type ProfileFormValues,
 } from "@/features/talent/talent.schemas";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 import type {
   EmploymentType,
   TalentProfile,
@@ -82,6 +85,7 @@ const profileToFormValues = (
 
 export const ProfileForm = ({ profile }: ProfileFormProps) => {
   const { toast } = useToast();
+  const { t } = useTranslation("talent");
   // Memoized so its identity only changes when `profile` itself changes (a
   // fresh save, a refetch) — not on every render — which is what lets
   // useSyncedState tell "profile changed" apart from "component re-rendered".
@@ -108,6 +112,10 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
   const updateProfileMutation = useUpdateMyTalentProfile();
   const updateNameMutation = useUpdateMyName();
 
+  const form = useForm<ProfileFormValues>({
+    resolver: zodResolver(profileFormSchema),
+    defaultValues: profileToFormValues(profile),
+  });
   const {
     register,
     handleSubmit,
@@ -116,10 +124,8 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
     watch,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
-    defaultValues: profileToFormValues(profile),
-  });
+  } = form;
+  useRevalidateOnLocaleChange(form);
 
   useEffect(() => {
     if (!profile) return;
@@ -157,10 +163,9 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
       toast({
         variant: "error",
         title: skillsErrored
-          ? "Couldn't load the skills list"
-          : "Still loading the skills list",
-        description:
-          "Your selected skills can't be saved yet — please try again in a moment.",
+          ? t("form.skillsLoadFailed")
+          : t("form.skillsLoading"),
+        description: t("form.skillsRetry"),
       });
       return;
     }
@@ -200,16 +205,16 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
         portfolioUrl: normalizeUrl(values.portfolioUrl ?? ""),
         skills: skillPayload,
       });
-      toast({ variant: "success", title: "Profile saved" });
+      toast({ variant: "success", title: t("form.saved") });
     } catch (err) {
       reportError(err);
       if (err instanceof ApiError) applyServerErrors(err, setError);
       toast({
         variant: "error",
-        title: "Couldn't save profile",
+        title: t("form.saveFailed"),
         description: nameUpdated
-          ? "Your name was updated, but the rest of the profile didn't save. Please try again."
-          : "Please try again.",
+          ? t("form.saveFailedNamePartial")
+          : getErrorMessage(err),
       });
     }
   };
@@ -225,24 +230,21 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
         <div className="mb-8">
           <div className="mb-3 flex items-center gap-1.5 text-[12px] text-neutral-500">
             <Link className="hover:text-neutral-700" to={ROUTES.talent}>
-              ← Dashboard
+              {t("form.dashboard")}
             </Link>
             <span>·</span>
-            <span>Profile setup</span>
+            <span>{t("form.setup")}</span>
           </div>
           <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
-            Make sure recruiters{" "}
+            {t("form.title")}
             <em
               className="font-serif italic text-brand-700"
               style={EMPHASIS_STYLE}
             >
-              see what matters.
+              {t("form.titleEm")}
             </em>
           </h1>
-          <p className="text-[15px] text-neutral-500">
-            Your profile is what gets surfaced to founders and hiring managers.
-            Keep it honest, keep it short — they read dozens a day.
-          </p>
+          <p className="text-[15px] text-neutral-500">{t("form.subtitle")}</p>
           {/* ProfileFormNav (the section-jump sidebar) is hidden below lg —
               correct, a scroll-spy sidebar doesn't make sense once sections
               just stack — but "Preview as recruiter" lives nowhere else in
@@ -260,16 +262,16 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
               }}
             >
               <Eye size={13} />
-              Preview as recruiter
+              {t("nav.preview")}
               <ArrowUpRight size={11} />
             </Link>
           ) : (
             <span
               className="mt-3 inline-flex items-center gap-1.5 text-[12.5px] text-neutral-300 lg:hidden"
-              title="Save your profile first"
+              title={t("nav.saveFirst")}
             >
               <Eye size={13} />
-              Preview as recruiter
+              {t("nav.preview")}
               <ArrowUpRight size={11} />
             </span>
           )}
@@ -304,14 +306,14 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
               id="skills"
             >
               <SectionHead
-                eyebrow="04 · What you use"
-                help="5–12 specific skills. Tools and stacks, not soft skills. We match jobs based on this."
+                eyebrow={t("form.skillsEyebrow")}
+                help={t("form.skillsHelp")}
                 title={
                   <em
                     className="font-serif italic text-brand-700"
                     style={EMPHASIS_STYLE}
                   >
-                    Skills.
+                    {t("form.skillsTitle")}
                   </em>
                 }
               />
@@ -357,18 +359,18 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
                     disabled={saving}
                     type="submit"
                   >
-                    {saving ? "Saving…" : "Save"}
+                    {saving ? t("expForm.saving") : t("common.actions.save")}
                   </button>
                   <Link
                     className="inline-flex items-center gap-1.5 rounded-10 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
                     to={ROUTES.talent}
                   >
-                    Done <ArrowRight size={13} />
+                    {t("form.done")} <ArrowRight size={13} />
                   </Link>
                 </>
               }
               isSaving={saving}
-              statusText={saving ? "Saving…" : "Save your changes"}
+              statusText={saving ? t("expForm.saving") : t("form.saveStatus")}
             />
           </div>
         </form>

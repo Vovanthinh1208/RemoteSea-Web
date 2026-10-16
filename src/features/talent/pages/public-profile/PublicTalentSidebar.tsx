@@ -11,23 +11,9 @@ import {
 } from "lucide-react";
 import { safeExternalUrl } from "@/utils/safe-url";
 import { ROUTES } from "@/constants/routes";
-import type {
-  EmploymentType,
-  TalentProfile,
-  TimezoneOverlap,
-} from "@/types/talent";
-
-const EMPLOYMENT_LABELS: Record<EmploymentType, string> = {
-  FULL_TIME: "Full-time",
-  CONTRACT: "Contract",
-  PART_TIME: "Part-time",
-};
-
-const HOURS_OVERLAP_LABELS: Record<TimezoneOverlap, string> = {
-  SG_HOURS: "SG",
-  AU_HOURS: "AU",
-  ASYNC_ONLY: "async",
-};
+import type { TalentProfile } from "@/types/talent";
+import { optionLabel } from "@/i18n/labels";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface PublicTalentSidebarProps {
   profile: TalentProfile;
@@ -42,6 +28,7 @@ export const PublicTalentSidebar = ({
   isOwnProfile,
   userEmail,
 }: PublicTalentSidebarProps) => {
+  const { t } = useTranslation("talent");
   const languageHighlights = profile.profileHighlights.filter(
     (h) => h.type === "LANGUAGE"
   );
@@ -53,16 +40,20 @@ export const PublicTalentSidebar = ({
     !!profile.rightToWork;
 
   const employmentLabel = profile.employmentTypes.length
-    ? profile.employmentTypes.map((t) => EMPLOYMENT_LABELS[t]).join(", ")
-    : "Not specified";
+    ? profile.employmentTypes
+        .map((type) => t(`public.side.employment.${type}`))
+        .join(", ")
+    : t("public.side.notSpecified");
 
   const hoursOverlapLabel = profile.timezoneOverlap.length
-    ? profile.timezoneOverlap.map((t) => HOURS_OVERLAP_LABELS[t]).join(" / ")
-    : "Not specified";
+    ? profile.timezoneOverlap
+        .map((type) => t(`public.side.overlap.${type}`))
+        .join(" / ")
+    : t("public.side.notSpecified");
 
   const remoteLevel = profile.timezoneOverlap.includes("ASYNC_ONLY")
-    ? "Remote · Async-first"
-    : "Remote";
+    ? t("public.side.remoteAsync")
+    : t("public.side.remote");
 
   // Each href is user-supplied and only backend-validated with Zod .url(),
   // which accepts javascript:/data: — safeExternalUrl drops anything that
@@ -85,7 +76,7 @@ export const PublicTalentSidebar = ({
     },
     {
       icon: FileText,
-      label: "Resume / CV",
+      label: t("public.side.resume"),
       href: safeExternalUrl(profile.resumeUrl),
     },
   ].filter((l): l is { icon: typeof Code2; label: string; href: string } =>
@@ -98,32 +89,40 @@ export const PublicTalentSidebar = ({
         {hasQuickFacts && (
           <div className="rounded-20 border border-neutral-100 bg-white p-5">
             <h4 className="mb-3 text-[13px] font-semibold text-neutral-800">
-              Quick facts
+              {t("public.side.quickFacts")}
             </h4>
             <dl className="space-y-2.5 text-[12.5px]">
               {profile.noticePeriod && (
                 <div className="flex items-center justify-between gap-2">
-                  <dt className="text-neutral-500">Notice period</dt>
+                  <dt className="text-neutral-500">
+                    {t("public.side.notice")}
+                  </dt>
                   <dd className="font-medium text-neutral-800">
-                    {profile.noticePeriod}
+                    {optionLabel("talent.opt.notice", profile.noticePeriod)}
                   </dd>
                 </div>
               )}
               {profile.employmentTypes.length > 0 && (
                 <div className="flex items-center justify-between gap-2">
-                  <dt className="text-neutral-500">Employment</dt>
+                  <dt className="text-neutral-500">
+                    {t("public.side.employmentLabel")}
+                  </dt>
                   <dd className="text-right font-medium text-neutral-800">
                     {employmentLabel}
                   </dd>
                 </div>
               )}
               <div className="flex items-center justify-between gap-2">
-                <dt className="text-neutral-500">Remote level</dt>
+                <dt className="text-neutral-500">
+                  {t("public.side.remoteLevel")}
+                </dt>
                 <dd className="font-medium text-neutral-800">{remoteLevel}</dd>
               </div>
               {profile.timezoneOverlap.length > 0 && (
                 <div className="flex items-center justify-between gap-2">
-                  <dt className="text-neutral-500">Hours overlap</dt>
+                  <dt className="text-neutral-500">
+                    {t("public.side.hoursOverlap")}
+                  </dt>
                   <dd className="font-mono text-[11.5px] font-medium text-neutral-800">
                     {hoursOverlapLabel}
                   </dd>
@@ -138,9 +137,9 @@ export const PublicTalentSidebar = ({
                   states more precisely. */}
               {profile.rightToWork && (
                 <div className="flex items-center justify-between gap-2">
-                  <dt className="text-neutral-500">Right to work</dt>
+                  <dt className="text-neutral-500">{t("public.side.rtw")}</dt>
                   <dd className="text-right font-medium text-neutral-800">
-                    {profile.rightToWork}
+                    {optionLabel("talent.opt.rtw", profile.rightToWork)}
                   </dd>
                 </div>
               )}
@@ -151,7 +150,7 @@ export const PublicTalentSidebar = ({
         {languageHighlights.length > 0 && (
           <div className="rounded-20 border border-neutral-100 bg-white p-5">
             <h4 className="mb-3 text-[13px] font-semibold text-neutral-800">
-              Languages
+              {t("public.side.languages")}
             </h4>
             <div className="space-y-2.5">
               {languageHighlights.map((lang) => (
@@ -180,7 +179,7 @@ export const PublicTalentSidebar = ({
         {links.length > 0 && (
           <div className="rounded-20 border border-neutral-100 bg-white p-5">
             <h4 className="mb-3 text-[13px] font-semibold text-neutral-800">
-              Links
+              {t("public.side.links")}
             </h4>
             <div className="space-y-1.5">
               {links.map((l) => (
@@ -205,7 +204,7 @@ export const PublicTalentSidebar = ({
         {isRecruiterPreview && (
           <div className="rounded-20 border border-neutral-100 bg-white p-5">
             <h4 className="mb-3 text-[13px] font-semibold text-neutral-800">
-              Trust signals
+              {t("public.side.trust")}
             </h4>
             <div className="space-y-2.5 text-[12.5px]">
               <div className="flex items-center gap-2">
@@ -220,8 +219,8 @@ export const PublicTalentSidebar = ({
                 <div className="min-w-0">
                   <p className="font-medium text-neutral-800">
                     {profile.isVerified
-                      ? "Email verified"
-                      : "Email not verified"}
+                      ? t("public.side.emailVerified")
+                      : t("public.side.emailNotVerified")}
                   </p>
                   {isOwnProfile && userEmail && profile.isVerified && (
                     <p className="truncate text-[11px] text-neutral-400">
@@ -236,19 +235,23 @@ export const PublicTalentSidebar = ({
                   size={14}
                 />
                 <p className="font-medium text-neutral-800">
-                  Employment verified{" "}
+                  {t("public.side.employmentVerified")}{" "}
                   <span className="font-normal text-neutral-400">
-                    · {profile.workExperiences.length} of{" "}
-                    {profile.workExperiences.length} roles
+                    {t("public.side.rolesOf", {
+                      n: profile.workExperiences.length,
+                      total: profile.workExperiences.length,
+                    })}
                   </span>
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="flex-shrink-0 text-neutral-300" size={14} />
                 <div>
-                  <p className="font-medium text-neutral-800">ID verified</p>
+                  <p className="font-medium text-neutral-800">
+                    {t("public.side.idVerified")}
+                  </p>
                   <p className="text-[11px] text-neutral-400">
-                    Not yet uploaded
+                    {t("public.side.idNotUploaded")}
                   </p>
                 </div>
               </div>
@@ -261,7 +264,7 @@ export const PublicTalentSidebar = ({
             className="flex items-center justify-center gap-1.5 rounded-12 border border-neutral-200 bg-white py-2.5 text-[12.5px] font-medium text-neutral-500 transition-colors hover:border-neutral-300 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.profile}
           >
-            <Settings size={12} /> This is your profile · Edit
+            <Settings size={12} /> {t("public.side.yourProfile")}
           </Link>
         )}
       </div>

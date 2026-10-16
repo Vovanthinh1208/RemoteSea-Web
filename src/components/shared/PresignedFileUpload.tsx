@@ -4,8 +4,10 @@ import {
   uploadViaPresign,
   validateFile,
   type UploadType,
+  type UploadValidationError,
 } from "@/services/uploads.api";
 import { reportError } from "@/services/monitoring";
+import { useTranslation } from "@/i18n/useTranslation";
 
 type UploadState = "idle" | "uploading" | "done" | "error";
 
@@ -17,13 +19,7 @@ export interface PresignedFileUploadProps {
   onUploaded: (url: string) => void;
 }
 
-const UPLOAD_FAILED_MESSAGE = "Upload failed. Try again.";
-
-const getButtonLabel = (state: UploadState, label: string): string => {
-  if (state === "uploading") return "Uploading…";
-  if (state === "done") return `${label} uploaded`;
-  return label;
-};
+const UPLOAD_FAILED: UploadValidationError = { key: "common.upload.failed" };
 
 export const PresignedFileUpload = ({
   type,
@@ -32,10 +28,11 @@ export const PresignedFileUpload = ({
   value,
   onUploaded,
 }: PresignedFileUploadProps) => {
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
   const [state, setState] = useState<UploadState>(value ? "done" : "idle");
   const [progress, setProgress] = useState(0);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<UploadValidationError | null>(null);
   const cancelledRef = useRef(false);
   const abortRef = useRef<AbortController | null>(null);
   const hadValueRef = useRef(!!value);
@@ -64,7 +61,7 @@ export const PresignedFileUpload = ({
       }
       reportError(err);
       setState("error");
-      setError(UPLOAD_FAILED_MESSAGE);
+      setError(UPLOAD_FAILED);
     }
   };
 
@@ -109,12 +106,16 @@ export const PresignedFileUpload = ({
           ) : (
             <Upload size={14} />
           )}
-          {getButtonLabel(state, label)}
+          {state === "uploading"
+            ? t("common.upload.uploading")
+            : state === "done"
+              ? t("common.upload.uploaded", { label })
+              : label}
           {state === "uploading" && `${progress}%`}
         </button>
         {state === "uploading" && (
           <button
-            aria-label="Cancel upload"
+            aria-label={t("common.upload.cancel")}
             className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
             type="button"
             onClick={handleCancel}
@@ -133,7 +134,7 @@ export const PresignedFileUpload = ({
       )}
       {error && (
         <p className="text-[12px] text-danger-600" role="alert">
-          {error}
+          {t(error.key, error.params)}
         </p>
       )}
     </div>

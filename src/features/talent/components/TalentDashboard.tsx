@@ -29,11 +29,13 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
 import { percent } from "@/utils/percent";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
 
 export const TalentDashboard = () => {
+  const { t } = useTranslation("talent");
   const { user } = useAuth();
   const {
     profile,
@@ -61,11 +63,11 @@ export const TalentDashboard = () => {
         <EmptyState
           action={
             <Button size="sm" variant="outline" onClick={() => void refetch()}>
-              Try again
+              {t("common.actions.retry")}
             </Button>
           }
-          description="Something went wrong loading your dashboard."
-          title="Couldn't load your dashboard"
+          description={t("dashboard.errorDesc")}
+          title={t("dashboard.errorTitle")}
         />
       </div>
     );
@@ -74,10 +76,10 @@ export const TalentDashboard = () => {
   const hour = new Date().getHours();
   const greeting =
     hour < MORNING_END_HOUR
-      ? "Chào buổi sáng"
+      ? t("dashboard.greetMorning")
       : hour < AFTERNOON_END_HOUR
-        ? "Chào buổi chiều"
-        : "Chào buổi tối";
+        ? t("dashboard.greetAfternoon")
+        : t("dashboard.greetEvening");
   const totalApplications = stats?.total ?? 0;
   const interviewing = stats?.byStatus.INTERVIEW ?? 0;
   const offers = stats?.byStatus.OFFERED ?? 0;
@@ -99,22 +101,20 @@ export const TalentDashboard = () => {
         <div>
           <div className="mb-2 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-600" />
-            Dashboard
+            {t("dashboard.eyebrow")}
           </div>
           <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
             {greeting},{" "}
             <em className="font-serif-italic text-brand-700">
-              {user?.name ?? "there"}
+              {user?.name ?? t("dashboard.there")}
             </em>
             .
           </h1>
           <p className="text-[14px] text-neutral-500">
-            You have{" "}
-            <strong className="font-semibold text-neutral-800">
-              {interviewing} {interviewing === 1 ? "interview" : "interviews"}{" "}
-              in progress
-            </strong>{" "}
-            and {offers} {offers === 1 ? "offer" : "offers"} on the table.
+            {t("dashboard.summary", {
+              interviews: t("dashboard.interviews", { count: interviewing }),
+              offers: t("dashboard.offers", { count: offers }),
+            })}
           </p>
         </div>
         <div className="flex gap-2">
@@ -126,7 +126,7 @@ export const TalentDashboard = () => {
             to={ROUTES.alerts}
           >
             <Bell size={14} />
-            Alerts
+            {t("dashboard.alerts")}
             {activeAlertsCount > 0 && (
               <span className="rounded-full bg-brand-600 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-white">
                 {activeAlertsCount}
@@ -134,7 +134,7 @@ export const TalentDashboard = () => {
             )}
           </Link>
           <Link className={buttonVariants()} to={ROUTES.jobs}>
-            <Search size={14} /> Browse jobs
+            <Search size={14} /> {t("dashboard.browseJobs")}
           </Link>
         </div>
       </div>
@@ -145,25 +145,25 @@ export const TalentDashboard = () => {
           <CompletionRing pct={completion} />
           <div className="flex-1">
             <h3 className="mb-0.5 text-[14px] font-semibold text-neutral-900">
-              Your profile is{" "}
+              {t("dashboard.profileIs")}
               <em className="font-serif-italic text-brand-700">
-                {completion}% complete
+                {t("dashboard.complete", { pct: completion })}
               </em>
             </h3>
             <p className="text-[13px] text-neutral-500">
               {missing.length > 0 ? (
                 <>
-                  Add{" "}
+                  {t("dashboard.addPrefix")}
                   {missing.map((m, i) => (
                     <strong className="text-neutral-700" key={m}>
                       {i > 0 ? ", " : ""}
-                      {m}
+                      {t(`missing.${m}`)}
                     </strong>
-                  ))}{" "}
-                  to show up in more searches.
+                  ))}
+                  {t("dashboard.addSuffix")}
                 </>
               ) : (
-                "Nice — your profile is in good shape."
+                t("dashboard.goodShape")
               )}
             </p>
           </div>
@@ -171,7 +171,7 @@ export const TalentDashboard = () => {
             className={cn(buttonVariants(), "flex-shrink-0")}
             to={ROUTES.profile}
           >
-            Complete profile <ArrowRight size={14} />
+            {t("dashboard.completeProfile")} <ArrowRight size={14} />
           </Link>
         </div>
       )}
@@ -180,39 +180,41 @@ export const TalentDashboard = () => {
       <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         <StatCard
           icon={Briefcase}
-          label="Applications sent"
+          label={t("dashboard.kpi.sent")}
           size="md"
-          sub="all time"
+          sub={t("dashboard.kpi.allTime")}
           value={totalApplications}
         />
         <StatCard
           icon={Bookmark}
-          label="Saved jobs"
+          label={t("dashboard.kpi.saved")}
           size="md"
-          sub="current"
+          sub={t("dashboard.kpi.current")}
           value={savedJobIds === null ? "—" : savedJobIds.length}
         />
         <StatCard
           icon={Bell}
-          label="Job alerts"
+          label={t("dashboard.kpi.alerts")}
           size="md"
-          sub="active"
+          sub={t("dashboard.kpi.active")}
           value={activeAlertsCount}
         />
         <StatCard
           icon={TrendingUp}
-          label="Interview rate"
+          label={t("dashboard.kpi.rate")}
           size="md"
-          sub="of submitted"
+          sub={t("dashboard.kpi.ofSubmitted")}
           value={`${interviewRate}%`}
         />
         <StatCard
           icon={Eye}
-          label="Profile views"
+          label={t("dashboard.kpi.views")}
           size="md"
           sub={
             profileViewAnalytics
-              ? `${profileViewAnalytics.uniqueViewers} unique`
+              ? t("dashboard.kpi.unique", {
+                  count: profileViewAnalytics.uniqueViewers,
+                })
               : undefined
           }
           value={profileViewAnalytics ? profileViewAnalytics.totalViews : "—"}

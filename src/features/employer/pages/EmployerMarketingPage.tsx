@@ -8,12 +8,11 @@ import { ProcessSection } from "@/features/employer/pages/employer-marketing/Pro
 import { CaseStudySection } from "@/features/employer/pages/employer-marketing/CaseStudySection";
 import { FinalCtaSection } from "@/features/employer/pages/employer-marketing/FinalCtaSection";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const EmployerMarketingPage = () => {
-  useDocumentTitle(
-    "For Employers — Hire Vietnam Remote Talent",
-    "Hire vetted remote talent in Vietnam — verified listings, salary range required, and results in two weeks or your money back."
-  );
+  const { t } = useTranslation("empmkt");
+  useDocumentTitle(t("page.title"), t("page.description"));
 
   return (
     <>

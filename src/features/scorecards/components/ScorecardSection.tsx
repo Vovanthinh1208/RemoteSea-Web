@@ -9,13 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/utils/cn";
 import type { ScorecardRecommendation } from "@/types/scorecard";
-
-const RECOMMENDATION_LABELS: Record<ScorecardRecommendation, string> = {
-  STRONG_YES: "Strong yes",
-  YES: "Yes",
-  NO: "No",
-  STRONG_NO: "Strong no",
-};
+import { useTranslation } from "@/i18n/useTranslation";
 
 const RECOMMENDATION_VARIANTS: Record<ScorecardRecommendation, BadgeVariant> = {
   STRONG_YES: "success",
@@ -72,6 +66,7 @@ export const ScorecardSection = ({
   interviewOccurred,
   eligibleReviewerCount,
 }: ScorecardSectionProps) => {
+  const { t } = useTranslation("scorecards");
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
   const { data, isLoading, isError, refetch } = useScorecards(applicationId);
@@ -83,13 +78,13 @@ export const ScorecardSection = ({
   if (isError || !data) {
     return (
       <div className="flex items-center justify-between rounded-16 border border-neutral-100 bg-white px-4 py-3.5 text-[12.5px] text-neutral-400">
-        Couldn't load team feedback.
+        {t("section.loadError")}
         <button
           className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={() => refetch()}
         >
-          <RefreshCw size={11} /> Retry
+          <RefreshCw size={11} /> {t("common.actions.retryShort")}
         </button>
       </div>
     );
@@ -111,7 +106,7 @@ export const ScorecardSection = ({
       <div className="flex items-center gap-2">
         <Users className="flex-shrink-0 text-neutral-400" size={15} />
         <h3 className="text-[13.5px] font-medium text-neutral-900">
-          Team feedback
+          {t("section.title")}
         </h3>
       </div>
 
@@ -124,11 +119,14 @@ export const ScorecardSection = ({
                   {data.summary.hireCount}/{data.summary.total}
                 </span>
                 <p className="mt-1 text-[11.5px] text-neutral-500">
-                  Recommend hire
+                  {t("section.recommendHire")}
                 </p>
               </div>
               <span className="flex-shrink-0 text-[11.5px] text-neutral-500">
-                {data.summary.total}/{eligibleReviewerCount} submitted
+                {t("section.submitted", {
+                  done: data.summary.total,
+                  total: eligibleReviewerCount,
+                })}
               </span>
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-1 border-t border-neutral-100 pt-2 text-[11.5px] text-neutral-500">
@@ -144,7 +142,7 @@ export const ScorecardSection = ({
                         RECOMMENDATION_DOT_COLOR[recommendation]
                       )}
                     />
-                    {RECOMMENDATION_LABELS[recommendation]}{" "}
+                    {t(`rec.${recommendation}`)}{" "}
                     <span className="font-medium text-neutral-700">
                       {breakdown[recommendation]}
                     </span>
@@ -155,7 +153,10 @@ export const ScorecardSection = ({
           </div>
         ) : (
           <span className="text-[12px] text-neutral-500">
-            {data.summary.hireCount}/{data.summary.total} recommend hire
+            {t("section.hireLine", {
+              hire: data.summary.hireCount,
+              total: data.summary.total,
+            })}
           </span>
         ))}
 
@@ -163,12 +164,12 @@ export const ScorecardSection = ({
         <div className="rounded-10 border border-brand-100 bg-brand-50/60 p-3">
           <div className="flex items-center justify-between gap-2">
             <span className="text-[11.5px] font-medium uppercase tracking-wider text-brand-700">
-              Your feedback
+              {t("section.yourFeedback")}
             </span>
             <Badge
               variant={RECOMMENDATION_VARIANTS[myScorecard.recommendation]}
             >
-              {RECOMMENDATION_LABELS[myScorecard.recommendation]}
+              {t(`rec.${myScorecard.recommendation}`)}
             </Badge>
           </div>
           {myScorecard.note && (
@@ -188,13 +189,13 @@ export const ScorecardSection = ({
             >
               <div className="flex items-center justify-between gap-2">
                 <span className="min-w-0 truncate text-[12.5px] font-medium text-neutral-800">
-                  {scorecard.author.name ?? "Team member"}
+                  {scorecard.author.name ?? t("section.member")}
                 </span>
                 <Badge
                   className="flex-shrink-0"
                   variant={RECOMMENDATION_VARIANTS[scorecard.recommendation]}
                 >
-                  {RECOMMENDATION_LABELS[scorecard.recommendation]}
+                  {t(`rec.${scorecard.recommendation}`)}
                 </Badge>
               </div>
               {scorecard.note && (
@@ -229,7 +230,7 @@ export const ScorecardSection = ({
               variant="outline"
               onClick={() => setOpen(true)}
             >
-              Add feedback
+              {t("section.add")}
             </Button>
           )}
         </div>

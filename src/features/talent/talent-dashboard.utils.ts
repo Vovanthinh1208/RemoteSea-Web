@@ -1,6 +1,8 @@
 import type { Application, ApplicationStatus } from "@/types/application";
 import type { TalentProfile } from "@/types/talent";
 import type { BadgeVariant } from "@/components/ui/badge";
+import { localizedRecord } from "@/utils/labels";
+import { translate } from "@/i18n/runtime";
 
 export type AppStatusBucket =
   "applied" | "review" | "interview" | "offer" | "closed";
@@ -17,30 +19,44 @@ export const STATUS_TO_BUCKET: Record<ApplicationStatus, AppStatusBucket> = {
   WITHDRAWN: "closed",
 };
 
-export const STAGE_LABEL: Record<ApplicationStatus, string> = {
-  PENDING: "Sent",
-  REVIEWING: "Under review",
-  SHORTLISTED: "Shortlisted",
-  INTERVIEW: "Interviewing",
-  OFFERED: "Offer received",
-  OFFER_ACCEPTED: "Offer accepted",
-  OFFER_DECLINED: "Offer declined",
-  REJECTED: "Not selected",
-  WITHDRAWN: "Withdrawn",
-};
+export const STAGE_LABEL: Record<ApplicationStatus, string> = localizedRecord(
+  [
+    "PENDING",
+    "REVIEWING",
+    "SHORTLISTED",
+    "INTERVIEW",
+    "OFFERED",
+    "OFFER_ACCEPTED",
+    "OFFER_DECLINED",
+    "REJECTED",
+    "WITHDRAWN",
+  ] as const,
+  "talent.stage"
+);
 
 // Same bucket->badge mapping ApplicationsTable's rows use — pulled out here so
 // ApplicationDetailPage (a different entry point onto the same data) shows an
 // identical status pill instead of a second, drift-prone copy of the mapping.
+const bucketBadge = (
+  bucket: AppStatusBucket,
+  variant: BadgeVariant
+): { label: string; variant: BadgeVariant } => ({
+  // Getter: resolved against the active locale on every read
+  get label() {
+    return translate(`talent.bucket.${bucket}`);
+  },
+  variant,
+});
+
 export const STATUS_BADGE: Record<
   AppStatusBucket,
   { label: string; variant: BadgeVariant }
 > = {
-  applied: { label: "Applied", variant: "info" },
-  review: { label: "In review", variant: "warning" },
-  interview: { label: "Interviewing", variant: "positive" },
-  offer: { label: "Offer", variant: "success" },
-  closed: { label: "Closed", variant: "muted" },
+  applied: bucketBadge("applied", "info"),
+  review: bucketBadge("review", "warning"),
+  interview: bucketBadge("interview", "positive"),
+  offer: bucketBadge("offer", "success"),
+  closed: bucketBadge("closed", "muted"),
 };
 
 export type TimelineStep = {
@@ -119,15 +135,19 @@ export const profileCompletion = (
   return Math.round((done / fields.length) * 100);
 };
 
+// Stable codes — the dashboard maps them to localized labels (talent.missing.<code>)
+export type MissingProfileField =
+  "headline" | "bio" | "skills" | "salary" | "cv";
+
 export const missingProfileFields = (
   profile: TalentProfile | null | undefined
-): string[] => {
+): MissingProfileField[] => {
   if (!profile) return ["headline", "bio", "skills"];
-  const missing: string[] = [];
-  if (!profile.headline) missing.push("a headline");
-  if (!profile.bio) missing.push("a bio");
+  const missing: MissingProfileField[] = [];
+  if (!profile.headline) missing.push("headline");
+  if (!profile.bio) missing.push("bio");
   if (profile.skills.length === 0) missing.push("skills");
-  if (!profile.desiredSalaryMin) missing.push("your salary expectation");
-  if (!profile.resumeUrl) missing.push("your CV");
+  if (!profile.desiredSalaryMin) missing.push("salary");
+  if (!profile.resumeUrl) missing.push("cv");
   return missing;
 };

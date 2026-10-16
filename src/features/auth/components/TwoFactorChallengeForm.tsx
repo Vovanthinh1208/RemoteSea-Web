@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/toast";
-import { ApiError } from "@/core/errors/api-error";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
+import { useTranslation } from "@/i18n/useTranslation";
+import { useSubmitError } from "@/hooks/useSubmitError";
 
 interface TwoFactorChallengeFormProps {
   challengeToken: string;
@@ -27,6 +28,7 @@ const TotpInput = ({
   onChange,
   onComplete,
 }: TotpInputProps) => {
+  const { t } = useTranslation("auth");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const digits = Array.from({ length: TOTP_LENGTH }, (_, i) => value[i] ?? "");
 
@@ -78,6 +80,7 @@ const TotpInput = ({
             "h-12 w-10 rounded-10 border border-neutral-200 bg-white text-center text-lg font-semibold text-neutral-900 outline-none transition-all",
             "focus:border-brand-600 focus:shadow-focus disabled:opacity-60"
           )}
+          aria-label={t("twoFactor.digit", { n: i + 1, total: TOTP_LENGTH })}
           disabled={disabled}
           inputMode="numeric"
           maxLength={1}
@@ -101,22 +104,21 @@ export const TwoFactorChallengeForm = ({
 }: TwoFactorChallengeFormProps) => {
   const { completeTwoFactorChallenge } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation("auth");
   const [mode, setMode] = useState<"totp" | "backup">("totp");
   const [code, setCode] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const submitError = useSubmitError();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const verify = async (submittedCode: string) => {
-    setError(null);
+    submitError.clear();
     setIsSubmitting(true);
     try {
       await completeTwoFactorChallenge(challengeToken, submittedCode, remember);
       onSuccess();
     } catch (err) {
-      const message =
-        err instanceof ApiError ? err.message : "Something went wrong.";
-      setError(message);
-      toast({ title: "Couldn't verify code", variant: "error" });
+      submitError.fail(err);
+      toast({ title: t("twoFactor.failedToast"), variant: "error" });
     } finally {
       setIsSubmitting(false);
     }
@@ -125,7 +127,7 @@ export const TwoFactorChallengeForm = ({
   const switchMode = (next: "totp" | "backup") => {
     setMode(next);
     setCode("");
-    setError(null);
+    submitError.clear();
   };
 
   return (
@@ -138,12 +140,12 @@ export const TwoFactorChallengeForm = ({
     >
       <div>
         <p className="mb-1 text-center text-sm font-medium text-neutral-700">
-          Two-factor authentication
+          {t("twoFactor.title")}
         </p>
         <p className="mb-4 text-center text-sm text-neutral-500">
           {mode === "totp"
-            ? "Enter the 6-digit code from your authenticator app."
-            : "Enter one of your unused backup codes."}
+            ? t("twoFactor.totpPrompt")
+            : t("twoFactor.backupPrompt")}
         </p>
 
         {mode === "totp" ? (
@@ -165,9 +167,9 @@ export const TwoFactorChallengeForm = ({
           />
         )}
 
-        {error && (
+        {submitError.message && (
           <p className="mt-2 text-center text-xs text-red-600" role="alert">
-            {error}
+            {submitError.message}
           </p>
         )}
 
@@ -176,9 +178,7 @@ export const TwoFactorChallengeForm = ({
           type="button"
           onClick={() => switchMode(mode === "totp" ? "backup" : "totp")}
         >
-          {mode === "totp"
-            ? "Use a backup code instead"
-            : "Use your authenticator app instead"}
+          {mode === "totp" ? t("twoFactor.useBackup") : t("twoFactor.useApp")}
         </button>
       </div>
 
@@ -189,14 +189,14 @@ export const TwoFactorChallengeForm = ({
         size="lg"
         type="submit"
       >
-        Verify
+        {t("twoFactor.verify")}
       </Button>
       <button
         className="w-full rounded-8 py-1 text-center text-sm text-neutral-500 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
         type="button"
         onClick={onBack}
       >
-        ← Back to sign in
+        {t("twoFactor.backToSignIn")}
       </button>
     </form>
   );

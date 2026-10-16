@@ -85,10 +85,358 @@
     "title": "Hồ sơ Doanh nghiệp",
     "subtitle": "Giới thiệu văn hóa công ty, phúc lợi và các văn phòng đến ứng viên.",
     "name": "Tên công ty",
-    "website": "Địa chỉ website",
+    "website": "Website",
     "industry": "Lĩnh vực hoạt động",
     "size": "Quy mô công ty",
     "about": "Giới thiệu công ty",
-    "save": "Lưu thay đổi hồ sơ"
+    "save": "Lưu thay đổi hồ sơ",
+    "docTitle": "{{name}} — Hồ sơ công ty",
+    "docTitleFallback": "Hồ sơ công ty",
+    "meta": "{{name}}{{industry}}{{jobs}}. Đang tuyển nhân sự remote trên RemoteSEA.",
+    "metaJobs_one": " · {{count}} vị trí đang mở",
+    "metaJobs_other": " · {{count}} vị trí đang mở",
+    "review": {
+      "communication": "Giao tiếp",
+      "interviewProcess": "Quy trình phỏng vấn",
+      "professionalism": "Tính chuyên nghiệp"
+    },
+    "notFound": "Không tìm thấy công ty",
+    "notFoundDesc": "Hồ sơ công ty này không tồn tại hoặc đã bị xóa.",
+    "browseJobs": "Tìm việc",
+    "employees": "{{size}} nhân viên",
+    "founded": "Thành lập năm {{year}}",
+    "openPositions": "Vị trí đang mở ",
+    "noRoles": "Hiện chưa có vị trí nào đang mở",
+    "checkBack": "Hãy quay lại sau để xem các vị trí mới.",
+    "quickFacts": "Thông tin nhanh",
+    "openRoles": "Vị trí đang mở",
+    "vnHires": "🇻🇳 Người Việt đã tuyển",
+    "typicalResponse": "Thời gian phản hồi thường gặp",
+    "verifiedSince": "Đã xác minh từ",
+    "yourCompany": "Đây là công ty của bạn · Chỉnh sửa"
+  },
+  "verifyCompany": {
+    "checkInbox": "Hãy kiểm tra hộp thư",
+    "sentTo": "Chúng tôi đã gửi liên kết xác nhận tới {{email}}. Hãy nhấp vào đó để xác minh công ty của bạn.",
+    "title": "Xác minh công ty của bạn",
+    "expired": "Liên kết đã hết hạn. Hãy nhập email công ty để thử lại.",
+    "prompt": "Xác nhận bạn kiểm soát một email thuộc tên miền công ty để nhận huy hiệu Đã xác minh và bỏ qua bước duyệt tin thủ công.",
+    "emailLabel": "Email công ty",
+    "emailPlaceholder": "ban@congty.com",
+    "send": "Gửi email xác minh"
+  },
+  "jobStatus": {
+    "DRAFT": "Bản nháp",
+    "PENDING_REVIEW": "Đang duyệt",
+    "ACTIVE": "Đang đăng",
+    "CLOSED": "Đã đóng",
+    "REJECTED": "Bị từ chối",
+    "EXPIRED": "Hết hạn"
+  },
+  "next": {
+    "PENDING": "Xem xét",
+    "REVIEWING": "Chọn vào danh sách",
+    "SHORTLISTED": "Phỏng vấn",
+    "INTERVIEW": "Gửi offer"
+  },
+  "tab": {
+    "all": "Tất cả",
+    "new": "Mới",
+    "shortlisted": "Đã chọn"
+  },
+  "applicants": {
+    "emptyAll": "Chưa có ứng viên nào.",
+    "emptyFiltered": "Không có ứng viên {{filter}}."
+  },
+  "sort": {
+    "recent": "Mới nhất",
+    "match": "Phù hợp nhất"
+  },
+  "dash": {
+    "errorTitle": "Không thể tải bảng điều khiển",
+    "errorDesc": "Đã xảy ra lỗi khi tải bảng điều khiển của bạn.",
+    "greetMorning": "Chào buổi sáng",
+    "greetAfternoon": "Chào buổi chiều",
+    "greetEvening": "Chào buổi tối",
+    "there": "bạn",
+    "setupTitle": "Thiết lập hồ sơ công ty",
+    "setupDesc": "Tạo hồ sơ nhà tuyển dụng để đăng tin và nhận hồ sơ ứng tuyển.",
+    "getStarted": "Bắt đầu",
+    "eyebrow": "Bảng điều khiển nhà tuyển dụng",
+    "summary": "Bạn có {{applicants}} trên {{count}} {{roles}} đang đăng.",
+    "applicants": "{{count}} ứng viên",
+    "role_one": "vị trí",
+    "role_other": "vị trí",
+    "findTalent": "Tìm ứng viên",
+    "postJob": "Đăng tin tuyển dụng",
+    "kpi": {
+      "active": "Tin đang đăng",
+      "inReview": "{{count}} đang duyệt",
+      "total": "Tổng số hồ sơ",
+      "allListings": "tất cả tin đăng",
+      "shortlisted": "Đã chọn",
+      "acrossRoles": "trên các vị trí",
+      "timeToHire": "Thời gian tuyển trung bình",
+      "applyToOffer": "từ ứng tuyển đến offer",
+      "firstResponse": "Phản hồi đầu tiên trung bình",
+      "sla": "Cam kết phản hồi của nhà tuyển dụng"
+    },
+    "schedule": "Lịch phỏng vấn",
+    "team": "Thành viên nhóm",
+    "docTitle": "Bảng điều khiển nhà tuyển dụng"
+  },
+  "listings": {
+    "title": "Tin tuyển dụng của bạn ",
+    "active": "· {{count}} đang đăng",
+    "postJob": "Đăng tin",
+    "empty": "Chưa có tin tuyển dụng nào. Hãy đăng tin đầu tiên để bắt đầu tuyển dụng.",
+    "col": {
+      "role": "Vị trí",
+      "status": "Trạng thái",
+      "applications": "Hồ sơ",
+      "views": "Lượt xem"
+    },
+    "featured": "Nổi bật",
+    "new": "+{{count}} mới",
+    "awaiting": "Đang chờ",
+    "views": "lượt xem",
+    "notLive": "Tin này chưa được đăng nên chưa có trang công khai để xem.",
+    "exportDone": "Đã tải danh sách ứng viên",
+    "exportFailed": "Không thể xuất danh sách ứng viên. Vui lòng thử lại.",
+    "exportAria": "Xuất ứng viên của {{title}} ra tệp CSV",
+    "exportTitle": "Tải toàn bộ ứng viên của tin này dưới dạng tệp CSV",
+    "exporting": "Đang xuất…",
+    "export": "Xuất danh sách"
+  },
+  "applicantsPanel": {
+    "title": "Ứng viên gần đây",
+    "sortAria": "Sắp xếp ứng viên",
+    "advanced": "Đã chuyển ứng viên sang bước tiếp theo",
+    "rejected": "Đã từ chối ứng viên",
+    "updateFailed": "Không thể cập nhật ứng viên",
+    "viewAll": "Xem tất cả ứng viên",
+    "showAll": "Hiện tất cả {{count}} ứng viên",
+    "showSome": "Hiện {{shown}} trên {{count}} ứng viên",
+    "bulkAdvanced_one": "Đã chuyển {{count}} ứng viên",
+    "bulkAdvanced_other": "Đã chuyển {{count}} ứng viên",
+    "bulkRejected_one": "Đã từ chối {{count}} ứng viên",
+    "bulkRejected_other": "Đã từ chối {{count}} ứng viên",
+    "bulkPartialAdvanced": "Đã chuyển {{updated}}, {{failed}} không cập nhật được",
+    "bulkPartialRejected": "Đã từ chối {{updated}}, {{failed}} không cập nhật được",
+    "bulkFailReject": "Không thể từ chối các ứng viên",
+    "bulkFailAdvance": "Không thể chuyển các ứng viên"
+  },
+  "bulk": {
+    "selectAll": "Chọn tất cả ứng viên hợp lệ",
+    "selectAllTitle": "Chọn mọi ứng viên chưa bị từ chối hoặc chưa rút đơn",
+    "selected": "Đã chọn {{count}}",
+    "advanceQ_one": "{{action}} {{count}} ứng viên đã chọn?",
+    "advanceQ_other": "{{action}} {{count}} ứng viên đã chọn?",
+    "note": "Thêm ghi chú chung (không bắt buộc)",
+    "updating": "Đang cập nhật…",
+    "actionSelected": "{{action}} các mục đã chọn",
+    "reject": "Từ chối",
+    "rejectQ_one": "Từ chối {{count}} ứng viên đã chọn?",
+    "rejectQ_other": "Từ chối {{count}} ứng viên đã chọn?",
+    "rejecting": "Đang từ chối…",
+    "rejectSelected": "Từ chối các mục đã chọn",
+    "selectHint": "Chọn để cập nhật hàng loạt"
+  },
+  "row": {
+    "candidate": "Ứng viên",
+    "group": {
+      "new": "Mới",
+      "reviewing": "Đang xem xét",
+      "shortlisted": "Đã chọn",
+      "archived": "Đã lưu trữ"
+    },
+    "rejected": "Đã từ chối",
+    "withdrawn": "Đã rút đơn",
+    "recommendHire": "{{hire}}/{{total}} đề xuất tuyển",
+    "rejectQ": "Từ chối ứng viên này?",
+    "rejectAria": "Từ chối ứng viên",
+    "advanceQ": "{{action}} ứng viên này?",
+    "selectAria": "Chọn {{name}}",
+    "already": "Đã {{status}}",
+    "viewResume": "Xem CV",
+    "forJob": " · cho vị trí {{title}}",
+    "stuck": "{{days}} ngày, đang chờ xem xét",
+    "stuckTitle": "Cam kết phản hồi — đây là tín hiệu giống với email nhắc nhở",
+    "hideCover": "Ẩn thư xin việc",
+    "viewCover": "Xem thư xin việc"
+  },
+  "funnel": {
+    "title": "Phễu tuyển dụng ",
+    "allListings": "· tất cả tin đăng",
+    "empty": "Chưa có hồ sơ nào.",
+    "stage": {
+      "PENDING": "Đã ứng tuyển",
+      "REVIEWING": "Đang xem xét",
+      "SHORTLISTED": "Đã chọn",
+      "INTERVIEW": "Phỏng vấn",
+      "OFFERED": "Đã gửi offer",
+      "OFFER_ACCEPTED": "Đã tuyển"
+    },
+    "ariaBar_one": "{{label}}: {{count}} ứng viên, {{pct}}% tổng số hồ sơ",
+    "ariaBar_other": "{{label}}: {{count}} ứng viên, {{pct}}% tổng số hồ sơ",
+    "note": "% hiển thị là tỉ lệ chuyển đổi từ giai đoạn trước đó.",
+    "rejectedNote": "{{rejected}} bị từ chối ({{pct}}% ứng viên)"
+  },
+  "step": {
+    "applied": "Ứng tuyển",
+    "reviewing": "Xem xét",
+    "interview": "Phỏng vấn",
+    "feedback": "Phản hồi",
+    "decision": "Quyết định",
+    "hired": "Đã tuyển"
+  },
+  "stage": {
+    "PENDING": "Đã ứng tuyển",
+    "REVIEWING": "Đang xem xét",
+    "SHORTLISTED": "Đã chọn",
+    "INTERVIEW": "Phỏng vấn",
+    "INTERVIEW_DONE": "Chờ quyết định",
+    "OFFERED": "Đã gửi offer",
+    "OFFER_ACCEPTED": "Đã tuyển",
+    "OFFER_DECLINED": "Đã từ chối offer",
+    "REJECTED": "Đã từ chối",
+    "WITHDRAWN": "Đã rút đơn"
+  },
+  "action": {
+    "review": "Xem xét hồ sơ",
+    "shortlist": "Chọn vào danh sách",
+    "toInterview": "Chuyển sang phỏng vấn",
+    "schedule": "Lên lịch phỏng vấn",
+    "viewInterview": "Xem buổi phỏng vấn",
+    "addFeedback": "Thêm phản hồi của bạn",
+    "feedbackStatus": "Xem tình trạng phản hồi",
+    "decide": "Đưa ra quyết định tuyển dụng"
+  },
+  "stepper": {
+    "rejected": "Đơn ứng tuyển này đã bị từ chối.",
+    "withdrawn": "Ứng viên đã rút đơn ứng tuyển này."
+  },
+  "activity": {
+    "applied": "Ứng viên đã nộp hồ sơ",
+    "viewed": "Nhóm của bạn đã xem",
+    "proposed": "Đã đề xuất thời gian phỏng vấn",
+    "confirmed": "Đã xác nhận phỏng vấn",
+    "feedback": "{{name}} đã gửi phản hồi ({{rec}})",
+    "teamMember": "Một thành viên nhóm"
+  },
+  "rec": {
+    "STRONG_YES": "rất nên tuyển",
+    "YES": "nên tuyển",
+    "NO": "không nên tuyển",
+    "STRONG_NO": "tuyệt đối không"
+  },
+  "ws": {
+    "docTitle": "{{name}} — Tuyển dụng",
+    "docTitleFallback": "Tuyển dụng",
+    "loadError": "Không thể tải đơn ứng tuyển này",
+    "loadErrorDesc": "Đã xảy ra lỗi khi tải thông tin ứng viên này.",
+    "notFound": "Không tìm thấy đơn ứng tuyển",
+    "notFoundDesc": "Đơn ứng tuyển có thể đã được rút, hoặc bạn không có quyền truy cập.",
+    "backDashboard": "Về bảng điều khiển",
+    "updated": "Đã cập nhật đơn ứng tuyển.",
+    "updateFailed": "Không thể cập nhật đơn ứng tuyển. Vui lòng thử lại.",
+    "message": "Nhắn tin",
+    "confirm": "Xác nhận",
+    "confirmQ": "{{action}}?",
+    "dashboardCrumb": "← Bảng điều khiển"
+  },
+  "decision": {
+    "title": "Quyết định của nhóm",
+    "summary": "{{hire}}/{{total}} đề xuất tuyển. Đã nhận đủ phản hồi bắt buộc.",
+    "offered": "Đã gửi offer cho {{name}}.",
+    "rejected": "Đơn ứng tuyển của {{name}} đã bị từ chối.",
+    "failed": "Không thể cập nhật đơn ứng tuyển. Vui lòng thử lại.",
+    "extend": "Gửi offer",
+    "extendQ": "Gửi offer cho {{name}}?",
+    "extending": "Đang gửi…",
+    "reject": "Từ chối",
+    "rejectQ": "Từ chối đơn ứng tuyển của {{name}}?",
+    "rejecting": "Đang từ chối…"
+  },
+  "notes": {
+    "saved": "Đã lưu ghi chú.",
+    "failed": "Không thể lưu ghi chú. Vui lòng thử lại.",
+    "title": "Ghi chú riêng",
+    "hint": "Chỉ nhóm của bạn thấy — không bao giờ hiển thị cho ứng viên.",
+    "placeholder": "Thêm ghi chú về ứng viên này…",
+    "save": "Lưu ghi chú"
+  },
+  "summary": {
+    "experience": "Kinh nghiệm",
+    "yrs": "{{years}} năm · {{level}}",
+    "salary": "Mức lương mong muốn",
+    "location": "Địa điểm",
+    "timezone": "Múi giờ",
+    "resume": "Xem CV"
+  },
+  "timeline": {
+    "title": "Hoạt động"
+  },
+  "search": {
+    "docTitle": "Tìm ứng viên",
+    "docDesc": "Tìm kiếm trong kho ứng viên RemoteSEA theo kỹ năng, cấp bậc và múi giờ — chỉ hiển thị ứng viên đã bật \"Sẵn sàng nhận việc\".",
+    "heading": "Tìm ứng viên",
+    "ariaLabel": "Tìm kiếm ứng viên",
+    "placeholder": "Tìm theo tiêu đề hoặc tên — ví dụ \"backend engineer\"",
+    "clear": "Xóa tìm kiếm",
+    "loading": "Đang tải ứng viên… ",
+    "candidates_one": "ứng viên",
+    "candidates_other": "ứng viên",
+    "rankAgainst": "Xếp hạng theo",
+    "sorted": "✓ Đã sắp xếp theo mức phù hợp",
+    "sortByMatch": "Sắp xếp trang này theo mức phù hợp",
+    "errorTitle": "Không thể tải ứng viên",
+    "errorDesc": "Đã xảy ra lỗi khi tải danh sách ứng viên.",
+    "emptyTitle": "Không có ứng viên nào khớp với bộ lọc",
+    "emptyDesc": "Hãy thử bỏ bớt bộ lọc — chỉ hiển thị ứng viên đã bật \"Sẵn sàng nhận việc\".",
+    "inviteSent": "Đã gửi lời mời",
+    "inviteFailed": "Không thể gửi lời mời",
+    "allCandidates": "Tất cả ứng viên",
+    "rankAria": "Xếp hạng theo một việc làm"
+  },
+  "filter": {
+    "skills": "Kỹ năng",
+    "skillsSearch": "Tìm kỹ năng…",
+    "availability": "Khả năng bắt đầu",
+    "seniority": "Cấp bậc",
+    "employment": "Loại hình làm việc",
+    "tzOverlap": "Múi giờ làm việc chung",
+    "country": "Quốc gia",
+    "SG_HOURS": "Giờ Singapore",
+    "AU_HOURS": "Giờ Úc",
+    "ASYNC_ONLY": "Linh hoạt async",
+    "type": {
+      "FULL_TIME": "Toàn thời gian",
+      "CONTRACT": "Hợp đồng",
+      "PART_TIME": "Bán thời gian"
+    }
+  },
+  "country": {
+    "Vietnam": "Việt Nam",
+    "Singapore": "Singapore",
+    "Indonesia": "Indonesia",
+    "Philippines": "Philippines",
+    "Malaysia": "Malaysia",
+    "Thailand": "Thái Lan"
+  },
+  "card": {
+    "remote": "Remote",
+    "invited": "Đã mời",
+    "sending": "Đang gửi…",
+    "invite": "Mời ứng tuyển",
+    "inviteHint": "Hãy chọn một việc làm ở mục “Xếp hạng theo” phía trên để mời"
+  },
+  "verify": {
+    "docTitle": "Xác minh công ty của bạn",
+    "successTitle": "Đã xác minh công ty",
+    "successDesc": "Huy hiệu Đã xác minh đã hiển thị và các tin đủ điều kiện sẽ được đăng ngay.",
+    "errorTitle": "Liên kết đã hết hạn hoặc không hợp lệ",
+    "errorDesc": "Hãy yêu cầu email xác minh mới từ bảng điều khiển nhà tuyển dụng.",
+    "goDashboard": "Đến bảng điều khiển"
   }
 }

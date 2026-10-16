@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { m, v } from "@/i18n/zod";
 import type { ExperienceLevel, JobType, PlanType } from "@/types/job";
 import { PLAN_PRICES_USD } from "@/constants/plans";
 
@@ -54,16 +55,6 @@ export const JOB_TYPE_OPTIONS = [
   "freelance",
 ] as const;
 
-export const JOB_TYPE_LABELS: Record<
-  (typeof JOB_TYPE_OPTIONS)[number],
-  string
-> = {
-  full: "Full-time",
-  part: "Part-time",
-  contract: "Contract",
-  freelance: "Freelance",
-};
-
 export const JOB_TYPE_TO_ENUM: Record<
   (typeof JOB_TYPE_OPTIONS)[number],
   JobType
@@ -112,56 +103,40 @@ export const SKILL_SUGGESTIONS = [
   "Kubernetes",
 ];
 
+// Display copy (name, description, features, ribbon) lives in the "postjob"
+// locale namespace under tier.<id>.*; this holds only stable plan data.
 export type Tier = {
-  id: string;
-  name: string;
+  id: "standard" | "featured" | "handson";
   planType: PlanType;
   price: number;
-  desc: string;
-  features: string[];
-  ribbon: string | null;
+  featureCount: number;
+  hasRibbon: boolean;
   highlight: boolean;
 };
 
 export const TIERS: Tier[] = [
   {
     id: "standard",
-    name: "Standard",
     planType: "STANDARD",
     price: PLAN_PRICES_USD.STANDARD,
-    desc: "Listed for 30 days, basic search placement.",
-    features: ["30-day listing", "Search results", "Email apply"],
-    ribbon: null,
+    featureCount: 3,
+    hasRibbon: false,
     highlight: false,
   },
   {
     id: "featured",
-    name: "Featured",
     planType: "FEATURED",
     price: PLAN_PRICES_USD.FEATURED,
-    desc: "Top of search, highlighted card, pushed to newsletter.",
-    features: [
-      "60-day listing",
-      "Top placement",
-      "Newsletter blast",
-      "Social share",
-    ],
-    ribbon: "Popular",
+    featureCount: 4,
+    hasRibbon: true,
     highlight: true,
   },
   {
     id: "handson",
-    name: "Hands-on",
     planType: "HANDS_ON",
     price: PLAN_PRICES_USD.HANDS_ON,
-    desc: "We source & screen candidates for you.",
-    features: [
-      "Unlimited listing",
-      "Priority placement",
-      "Sourcing by team",
-      "Slack channel",
-    ],
-    ribbon: null,
+    featureCount: 4,
+    hasRibbon: false,
     highlight: false,
   },
 ];
@@ -232,34 +207,31 @@ export const MIN_JOB_DESCRIPTION_LENGTH = 100;
 // could click through every step with blank required fields and get no error
 // until the server call at the very end.
 const stepCompanySchema = z.object({
-  coName: z.string().trim().min(1, "Company name is required."),
-  recName: z
-    .string()
-    .trim()
-    .min(1, "Recruiter/hiring manager name is required."),
+  coName: z.string().trim().min(1, m("validation.coNameRequired")),
+  recName: z.string().trim().min(1, m("validation.recNameRequired")),
   recEmail: z
     .string()
     .trim()
-    .min(1, "Work email is required.")
-    .email("Enter a valid work email."),
+    .min(1, m("validation.workEmailRequired"))
+    .email(m("validation.workEmailInvalid")),
 });
 
 const stepRoleSchema = z
   .object({
-    jobTitle: z.string().trim().min(1, "Job title is required."),
-    jobCategoryId: z.string().trim().min(1, "Select a category."),
+    jobTitle: z.string().trim().min(1, m("validation.jobTitleRequired")),
+    jobCategoryId: z.string().trim().min(1, m("validation.categoryRequired")),
     jobDesc: z
       .string()
       .trim()
       .min(
         MIN_JOB_DESCRIPTION_LENGTH,
-        `Job description must be at least ${MIN_JOB_DESCRIPTION_LENGTH} characters.`
+        m("validation.jobDescMin", { min: MIN_JOB_DESCRIPTION_LENGTH })
       ),
-    salMin: z.number().min(1, "Enter a minimum salary."),
+    salMin: z.number().min(1, m("validation.salMinRequired")),
     salMax: z.number(),
   })
   .refine((v) => v.salMax >= v.salMin, {
-    message: "Max salary must be at least the minimum.",
+    error: v("validation.salMaxOrder"),
     path: ["salMax"],
   });
 

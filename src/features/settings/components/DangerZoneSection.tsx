@@ -9,8 +9,10 @@ import {
   useReactivateMyAccount,
 } from "@/features/users/users.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const DangerZoneSection = () => {
+  const { t } = useTranslation("settings");
   const runWithToast = useToastMutation();
   const { data: pauseState } = useMyPauseState();
   const pauseMutation = usePauseMyAccount();
@@ -26,10 +28,8 @@ export const DangerZoneSection = () => {
           ? reactivateMutation.mutateAsync()
           : pauseMutation.mutateAsync(),
       {
-        success: isPaused ? "Account reactivated" : "Account paused",
-        error: isPaused
-          ? "Couldn't reactivate account"
-          : "Couldn't pause account",
+        success: isPaused ? t("dz.reactivated") : t("dz.paused"),
+        error: isPaused ? t("dz.reactivateFailed") : t("dz.pauseFailed"),
       }
     );
 
@@ -39,17 +39,17 @@ export const DangerZoneSection = () => {
       id="danger"
     >
       <SectionHead
-        eyebrow="06 · Careful now"
-        help="Reversible and irreversible actions. Pausing is safe — deleting is not."
+        eyebrow={t("dz.eyebrow")}
+        help={t("dz.help")}
         title={
           <>
             <em
               className="font-serif italic text-red-600"
               style={EMPHASIS_STYLE}
             >
-              Danger
-            </em>{" "}
-            zone.
+              {t("dz.title1")}
+            </em>
+            {t("dz.title2")}
           </>
         }
       />
@@ -57,12 +57,10 @@ export const DangerZoneSection = () => {
         <div className="flex items-center justify-between rounded-16 border border-neutral-200 px-5 py-4">
           <div>
             <p className="text-[13.5px] font-semibold text-neutral-900">
-              {isPaused ? "Account paused" : "Pause my account"}
+              {isPaused ? t("dz.pausedTitle") : t("dz.pauseTitle")}
             </p>
             <p className="text-[12.5px] text-neutral-500">
-              {isPaused
-                ? "You can still sign in. Reactivate anytime — nothing was deleted."
-                : "Marks your account as paused. You can reactivate anytime — nothing is deleted."}
+              {isPaused ? t("dz.pausedDesc") : t("dz.pauseDesc")}
             </p>
           </div>
           <button
@@ -71,17 +69,16 @@ export const DangerZoneSection = () => {
             type="button"
             onClick={togglePause}
           >
-            {isPaused ? "Reactivate" : "Pause"}
+            {isPaused ? t("dz.reactivate") : t("dz.pause")}
           </button>
         </div>
         <div className="flex items-center justify-between rounded-16 border border-red-200 bg-red-50/40 px-5 py-4">
           <div>
             <p className="text-[13.5px] font-semibold text-neutral-900">
-              Delete account
+              {t("dz.deleteTitle")}
             </p>
             <p className="text-[12.5px] text-neutral-500">
-              Permanently remove your profile, applications, and message
-              history. This cannot be undone.
+              {t("dz.deleteDesc")}
             </p>
           </div>
           <div className="ml-6 flex-shrink-0">

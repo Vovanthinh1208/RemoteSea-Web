@@ -6,6 +6,7 @@ import { ReviewForm } from "@/features/reviews/components/ReviewForm";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { reviewKeys } from "@/core/query/query-keys";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface ReviewCTAProps {
   applicationId: string;
@@ -13,6 +14,7 @@ interface ReviewCTAProps {
 }
 
 export const ReviewCTA = ({ applicationId, revieweeName }: ReviewCTAProps) => {
+  const { t } = useTranslation("reviews");
   const [open, setOpen] = useState(false);
   const [justSubmitted, setJustSubmitted] = useState(false);
   const { data, isLoading, isError } = useReviewEligibility(applicationId);
@@ -29,7 +31,7 @@ export const ReviewCTA = ({ applicationId, revieweeName }: ReviewCTAProps) => {
     return (
       <div className="flex items-center gap-2 rounded-16 border border-neutral-100 bg-neutral-50 px-4 py-3 text-[13px] text-neutral-600">
         <Check className="flex-shrink-0 text-brand-600" size={15} />
-        You reviewed this interaction.
+        {t("cta.reviewed")}
       </div>
     );
   }
@@ -64,9 +66,9 @@ export const ReviewCTA = ({ applicationId, revieweeName }: ReviewCTAProps) => {
         <MessageSquareText className="flex-shrink-0 text-brand-600" size={16} />
         <div className="min-w-0">
           <p className="text-[13.5px] font-medium text-neutral-900">
-            Your interview with {revieweeName} is complete.
+            {t("cta.complete", { name: revieweeName })}
           </p>
-          <p className="text-[12px] text-neutral-500">Share your experience.</p>
+          <p className="text-[12px] text-neutral-500">{t("cta.share")}</p>
         </div>
       </div>
       <Button
@@ -75,7 +77,7 @@ export const ReviewCTA = ({ applicationId, revieweeName }: ReviewCTAProps) => {
         type="button"
         onClick={() => setOpen(true)}
       >
-        Write a review
+        {t("cta.write")}
       </Button>
     </div>
   );

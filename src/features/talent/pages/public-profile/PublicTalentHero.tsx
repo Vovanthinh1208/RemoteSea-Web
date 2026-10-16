@@ -1,10 +1,12 @@
 import { Briefcase, Clock, MapPin, ShieldCheck, Zap } from "lucide-react";
 import { GradientInitial } from "@/components/ui/gradient-initial";
 import { AvailabilityBadge } from "@/features/availability/AvailabilityBadge";
-import { LEVEL_TO_LABEL } from "@/features/talent/talent.constants";
+import { levelDisplayLabel } from "@/features/talent/talent.constants";
+import { optionLabel } from "@/i18n/labels";
 import { formatSalaryRange } from "@/utils/format";
 import { personInitial } from "@/utils/name";
 import type { TalentProfile } from "@/types/talent";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface PublicTalentHeroProps {
   profile: TalentProfile;
@@ -17,6 +19,7 @@ export const PublicTalentHero = ({
   name,
   isRecruiterPreview,
 }: PublicTalentHeroProps) => {
+  const { t } = useTranslation("talent");
   return (
     <div className="mb-6 grid gap-6 rounded-24 border border-neutral-100 bg-white p-8 lg:grid-cols-[auto_1fr_auto]">
       <div className="flex flex-col items-center gap-2">
@@ -34,7 +37,8 @@ export const PublicTalentHero = ({
         <div className="mb-2 flex flex-wrap items-center gap-2">
           {profile.isVerified && (
             <span className="inline-flex items-center gap-1 rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-0.5 text-[11.5px] font-medium text-neutral-600">
-              <ShieldCheck className="text-brand-600" size={11} /> Verified
+              <ShieldCheck className="text-brand-600" size={11} />{" "}
+              {t("public.verified")}
             </span>
           )}
           <AvailabilityBadge
@@ -60,13 +64,13 @@ export const PublicTalentHero = ({
           {profile.timezone && (
             <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
               <Clock className="flex-shrink-0 text-neutral-400" size={12} />
-              {profile.timezone}
+              {optionLabel("talent.opt.tz", profile.timezone)}
             </span>
           )}
           {profile.yearsExperience !== null && (
             <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
               <Briefcase className="flex-shrink-0 text-neutral-400" size={12} />
-              {profile.yearsExperience}+ yrs experience
+              {t("public.yearsExp", { years: profile.yearsExperience })}
             </span>
           )}
           {/* No icon here — ShieldCheck is already the page's
@@ -75,15 +79,17 @@ export const PublicTalentHero = ({
               and no other icon in this row's set means "level" without
               being just as arbitrary. */}
           <span className="text-[13px] text-neutral-500">
-            {LEVEL_TO_LABEL[profile.level] ?? profile.level}
+            {levelDisplayLabel(profile.level)}
           </span>
           {isRecruiterPreview && (
             <>
               <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
                 <Zap className="flex-shrink-0 text-neutral-400" size={12} />
-                Replies in ~6h
+                {t("public.replies")}
               </span>
-              <span className="text-[13px] text-neutral-500">Active today</span>
+              <span className="text-[13px] text-neutral-500">
+                {t("public.activeToday")}
+              </span>
             </>
           )}
         </div>
@@ -92,7 +98,7 @@ export const PublicTalentHero = ({
       {profile.desiredSalaryMin && profile.desiredSalaryMax && (
         <div className="min-w-[200px] rounded-16 border border-neutral-100 bg-neutral-50 p-5">
           <p className="mb-1 text-[10.5px] font-semibold uppercase tracking-wider text-neutral-400">
-            Expecting
+            {t("public.expecting")}
           </p>
           <p className="text-[26px] font-semibold leading-tight tracking-tight text-neutral-900">
             {formatSalaryRange(
@@ -100,8 +106,7 @@ export const PublicTalentHero = ({
               profile.desiredSalaryMax
             )}
             <span className="ml-1 text-[14px] font-normal text-neutral-400">
-              {" "}
-              / mo
+              {t("public.perMonth")}
             </span>
           </p>
           <p className="text-[12px] text-neutral-500">{profile.currency}</p>
@@ -111,8 +116,8 @@ export const PublicTalentHero = ({
                 <div className="h-full w-2/3 rounded-full bg-brand-500" />
               </div>
               <div className="mt-1 flex justify-between text-[10px] text-neutral-400">
-                <span>VN median</span>
-                <span>SG market</span>
+                <span>{t("public.vnMedian")}</span>
+                <span>{t("public.sgMarket")}</span>
               </div>
             </div>
           )}

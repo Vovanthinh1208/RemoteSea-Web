@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { m } from "@/i18n/zod";
 import {
   NOTICE_PERIOD_OPTIONS,
   PRIMARY_ROLE_OPTIONS,
@@ -8,11 +9,11 @@ import {
 } from "@/features/talent/talent.constants";
 
 export const profileFormSchema = z.object({
-  name: z.string().min(1, "Name is required").max(120),
-  headline: z.string().max(80, "Keep it under 80 characters").optional(),
+  name: z.string().min(1, m("validation.nameRequired")).max(120),
+  headline: z.string().max(80, m("validation.max80")).optional(),
   location: z.string().optional(),
   timezone: z.string().optional(),
-  bio: z.string().max(320, "Keep it under 320 characters").optional(),
+  bio: z.string().max(320, m("validation.max320")).optional(),
   seniority: z.enum(SENIORITY_OPTIONS),
   yearsBucket: z.enum(YEARS_BUCKETS),
   primaryRole: z.enum(PRIMARY_ROLE_OPTIONS),
@@ -30,7 +31,10 @@ export const profileFormSchema = z.object({
 export type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 export const submitVerificationSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Enter a valid email"),
+  email: z
+    .string()
+    .min(1, m("validation.emailRequired"))
+    .email(m("validation.emailInvalid")),
 });
 export type SubmitVerificationFormValues = z.infer<
   typeof submitVerificationSchema

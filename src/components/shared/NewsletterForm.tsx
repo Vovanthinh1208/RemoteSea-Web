@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
+import { useTranslation } from "@/i18n/useTranslation";
 
 type NewsletterFormVariant = "inline" | "compact" | "wide";
 
@@ -23,7 +24,7 @@ const FORM_CLASS: Record<NewsletterFormVariant, string> = {
 
 const INPUT_CLASS: Record<NewsletterFormVariant, string> = {
   inline:
-    "h-11 flex-1 rounded-12 border border-neutral-200 bg-white px-4 text-sm outline-none transition-all focus:border-brand-600 focus:shadow-focus",
+    "h-11 min-w-0 flex-1 rounded-12 border border-neutral-200 bg-white px-4 text-sm outline-none transition-all focus:border-brand-600 focus:shadow-focus",
   compact:
     "h-10 w-full rounded-10 border border-neutral-200 bg-white px-3 text-sm outline-none placeholder:text-neutral-400 focus:border-brand-600",
   wide: "h-11 flex-1 rounded-12 border border-neutral-200 bg-white px-4 text-sm outline-none placeholder:text-neutral-400 focus:border-brand-600 sm:max-w-xs",
@@ -31,39 +32,40 @@ const INPUT_CLASS: Record<NewsletterFormVariant, string> = {
 
 export const NewsletterForm = ({
   variant = "inline",
-  placeholder = "your@email.com",
+  placeholder,
 }: NewsletterFormProps) => {
+  const { t } = useTranslation();
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
-      title: "Newsletter is coming soon",
-      description: "Signups aren't open yet — check back shortly.",
+      title: t("common.newsletter.soonTitle"),
+      description: t("common.newsletter.soonDesc"),
     });
   };
 
   return (
     <form className={FORM_CLASS[variant]} onSubmit={handleSubmit}>
       <input
-        aria-label="Email address"
+        aria-label={t("common.newsletter.emailLabel")}
         className={INPUT_CLASS[variant]}
-        placeholder={placeholder}
+        placeholder={placeholder ?? t("common.newsletter.emailPlaceholder")}
         type="email"
       />
       {variant === "compact" && (
         <Button className="w-full rounded-10" size="md">
-          Subscribe
+          {t("common.newsletter.subscribe")}
         </Button>
       )}
       {variant === "wide" && (
         <Button className="rounded-12 px-6" size="lg">
-          Subscribe <ArrowRight size={14} />
+          {t("common.newsletter.subscribe")} <ArrowRight size={14} />
         </Button>
       )}
       {variant === "inline" && (
-        <Button className="rounded-12 px-5" size="lg">
-          Subscribe
+        <Button className="shrink-0 rounded-12 px-5" size="lg">
+          {t("common.newsletter.subscribe")}
         </Button>
       )}
     </form>

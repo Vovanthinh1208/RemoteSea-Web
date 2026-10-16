@@ -1,0 +1,26 @@
+{
+  "rec": {
+    "ADVANCE": "Gợi ý: Tiếp tục",
+    "HOLD": "Gợi ý: Giữ lại",
+    "REJECT": "Gợi ý: Từ chối"
+  },
+  "copyQuestion": "Sao chép câu hỏi",
+  "tier": {
+    "strong": "Rất phù hợp",
+    "moderate": "Khá phù hợp",
+    "weak": "Ít phù hợp"
+  },
+  "prompt": "Xem CV của {{name}} phù hợp với vị trí này đến đâu.",
+  "analyze": "Phân tích bằng AI",
+  "noResume": "{{name}} chưa tải CV lên.",
+  "failed": "Không thể phân tích CV này.",
+  "title": "Phân tích CV bằng AI",
+  "regenerate": "Phân tích lại",
+  "regenerateTitle": "Phân tích lại — chạy lại phân tích và thay thế kết quả này",
+  "regenerateFailed": "Không thể phân tích lại — đang hiển thị kết quả trước.",
+  "fitAria": "Điểm phù hợp: {{score}} trên 100 — {{label}}",
+  "strengths": "Điểm mạnh",
+  "gaps": "Điểm còn thiếu",
+  "questions": "Câu hỏi nên đặt",
+  "footer": "Do AI tạo từ CV và mô tả công việc ({{time}}) — luôn chỉ là điểm khởi đầu, không phải lời kết luận cuối cùng."
+}

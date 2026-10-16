@@ -1,0 +1,46 @@
+{
+  "freq": {
+    "IMMEDIATE": "ngay lập tức",
+    "DAILY": "hằng ngày",
+    "WEEKLY": "hằng tuần"
+  },
+  "page": {
+    "docTitle": "Thông báo việc làm",
+    "title": "Thông báo việc làm",
+    "desc": "Nhận thông báo khi có việc làm mới khớp với tiêu chí của bạn. Chúng tôi gửi email theo lịch bạn chọn.",
+    "created": "Đã tạo thông báo",
+    "createdDesc": "Chúng tôi sẽ gửi email các việc làm phù hợp cho bạn.",
+    "createFailed": "Không thể tạo thông báo",
+    "updateFailed": "Không thể cập nhật thông báo",
+    "deleted": "Đã xóa thông báo",
+    "deleteFailed": "Không thể xóa thông báo",
+    "errorTitle": "Không thể tải thông báo",
+    "errorDesc": "Đã xảy ra lỗi khi tải các thông báo của bạn.",
+    "empty": "Chưa có thông báo nào. Hãy tạo một thông báo ở trên để bắt đầu nhận việc làm phù hợp."
+  },
+  "item": {
+    "allJobs": "Tất cả việc làm",
+    "active": "Đang bật",
+    "paused": "Tạm dừng",
+    "deleteQ": "Xóa thông báo này?",
+    "deleteAria": "Xóa thông báo"
+  },
+  "form": {
+    "title": "Tạo thông báo mới",
+    "name": "Tên thông báo",
+    "namePlaceholder": "ví dụ: Kỹ sư remote cao cấp",
+    "keywords": "Từ khóa",
+    "optional": "(không bắt buộc)",
+    "keywordsPlaceholder": "ví dụ: React, remote",
+    "jobType": "Loại hình",
+    "anyJobType": "Mọi loại hình",
+    "level": "Cấp bậc",
+    "anyLevel": "Mọi cấp bậc",
+    "salary": "Lương tối thiểu",
+    "salaryUnit": "(USD/tháng, không bắt buộc)",
+    "salaryPlaceholder": "ví dụ: 2000",
+    "frequency": "Tần suất thông báo",
+    "creating": "Đang tạo…",
+    "create": "Tạo thông báo"
+  }
+}

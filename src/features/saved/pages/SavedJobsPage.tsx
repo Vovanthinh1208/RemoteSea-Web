@@ -6,22 +6,22 @@ import { Button } from "@/components/ui/button";
 import { useSavedJobs } from "@/features/saved/saved.queries";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const SAVED_JOBS_SKELETON_COUNT = 4;
 
 export const SavedJobsPage = () => {
-  useDocumentTitle("Saved Jobs");
+  const { t } = useTranslation("talent");
+  useDocumentTitle(t("saved.docTitle"));
   const { data, isLoading, isError, refetch } = useSavedJobs();
   const savedJobs = data?.savedJobs ?? [];
 
   return (
     <div className="mx-auto max-w-[900px] px-6 py-10">
       <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
-        Saved jobs
+        {t("saved.title")}
       </h1>
-      <p className="mb-8 text-[15px] text-neutral-500">
-        Jobs you've bookmarked to come back to later.
-      </p>
+      <p className="mb-8 text-[15px] text-neutral-500">{t("saved.subtitle")}</p>
 
       {isLoading ? (
         <div className="space-y-2">
@@ -33,23 +33,23 @@ export const SavedJobsPage = () => {
         <EmptyState
           action={
             <Button size="sm" variant="outline" onClick={() => refetch()}>
-              Try again
+              {t("common.actions.retry")}
             </Button>
           }
-          description="Something went wrong loading your saved jobs."
-          title="Couldn't load saved jobs"
+          description={t("saved.errorDesc")}
+          title={t("saved.errorTitle")}
         />
       ) : savedJobs.length === 0 ? (
         <EmptyState
           action={
             <Link to={ROUTES.jobs}>
               <Button size="sm" variant="outline">
-                Browse jobs
+                {t("saved.browse")}
               </Button>
             </Link>
           }
-          description="Bookmark a job from its listing to save it here."
-          title="No saved jobs yet"
+          description={t("saved.emptyDesc")}
+          title={t("saved.emptyTitle")}
         />
       ) : (
         <div className="space-y-2">

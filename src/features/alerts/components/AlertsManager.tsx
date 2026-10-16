@@ -12,10 +12,12 @@ import {
   useSetAlertActive,
 } from "@/features/alerts/alerts.queries";
 import type { CreateAlertPayload, JobAlert } from "@/types/alert";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const ALERTS_SKELETON_COUNT = 3;
 
 export const AlertsManager = () => {
+  const { t } = useTranslation("alerts");
   const runWithToast = useToastMutation();
   const { data: alerts, isLoading, isError, refetch } = useAlerts();
   const createAlertMutation = useCreateAlert();
@@ -28,9 +30,9 @@ export const AlertsManager = () => {
   // even on failure.
   const handleCreate = (payload: CreateAlertPayload): Promise<boolean> =>
     runWithToast(() => createAlertMutation.mutateAsync(payload), {
-      success: "Alert created",
-      successDescription: "We'll email you matching jobs.",
-      error: "Couldn't create alert",
+      success: t("page.created"),
+      successDescription: t("page.createdDesc"),
+      error: t("page.createFailed"),
     });
 
   const handleToggleActive = (alert: JobAlert) =>
@@ -41,14 +43,14 @@ export const AlertsManager = () => {
           isActive: !alert.isActive,
         }),
       {
-        error: "Couldn't update alert",
+        error: t("page.updateFailed"),
       }
     );
 
   const handleDelete = async (alert: JobAlert): Promise<void> => {
     await runWithToast(() => deleteAlertMutation.mutateAsync(alert.id), {
-      success: "Alert deleted",
-      error: "Couldn't delete alert",
+      success: t("page.deleted"),
+      error: t("page.deleteFailed"),
     });
   };
 
@@ -56,12 +58,9 @@ export const AlertsManager = () => {
     <div className="mx-auto max-w-[820px] px-6 py-10">
       <div className="mb-8">
         <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
-          Job alerts
+          {t("page.title")}
         </h1>
-        <p className="text-[15px] text-neutral-500">
-          Get notified when new jobs match your criteria. We email you on your
-          chosen schedule.
-        </p>
+        <p className="text-[15px] text-neutral-500">{t("page.desc")}</p>
       </div>
 
       <CreateAlertForm onCreate={handleCreate} />
@@ -85,16 +84,14 @@ export const AlertsManager = () => {
                 variant="outline"
                 onClick={() => void refetch()}
               >
-                Try again
+                {t("common.actions.retry")}
               </Button>
             }
-            description="Something went wrong loading your alerts."
-            title="Couldn't load alerts"
+            description={t("page.errorDesc")}
+            title={t("page.errorTitle")}
           />
         ) : !alerts || alerts.length === 0 ? (
-          <EmptyRow>
-            No alerts yet. Create one above to start getting matched jobs.
-          </EmptyRow>
+          <EmptyRow>{t("page.empty")}</EmptyRow>
         ) : (
           alerts.map((alert) => (
             <AlertListItem

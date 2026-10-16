@@ -1,9 +1,14 @@
 import { z } from "zod";
+import { m, v } from "@/i18n/zod";
 
 // Mirrors the backend's createReviewSchema exactly (remotesea-api's
 // modules/reviews/dto/create-review.dto.ts) — client-side validation is a
 // UX nicety here, not the real boundary; the API re-validates everything.
-const ratingSchema = z.number({ message: "Pick a rating" }).int().min(1).max(5);
+const ratingSchema = z
+  .number({ error: v("validation.pickRating") })
+  .int()
+  .min(1)
+  .max(5);
 
 export const reviewFormSchema = z.object({
   overallRating: ratingSchema,
@@ -17,11 +22,7 @@ export const reviewFormSchema = z.object({
   // breaks handleSubmit's typing. The textarea always submits a string
   // (never absent), so "" is converted to undefined at submit time instead
   // — see ReviewForm's onSubmit.
-  comment: z
-    .string()
-    .trim()
-    .max(2000, "Keep it under 2000 characters")
-    .optional(),
+  comment: z.string().trim().max(2000, m("validation.max2000")).optional(),
 });
 
 export type ReviewFormValues = z.infer<typeof reviewFormSchema>;

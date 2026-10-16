@@ -20,6 +20,8 @@ import { LEVEL_LABELS, JOB_TYPE_LABELS } from "@/utils/labels";
 import { ROUTES } from "@/constants/routes";
 import { formatSalaryRange } from "@/utils/format";
 import { useMyMatch } from "@/features/matching/useMyMatch";
+import { translate } from "@/i18n/runtime";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const jobMetaDescription = (
   job: NonNullable<ReturnType<typeof useJobQuery>["data"]>
@@ -27,12 +29,23 @@ const jobMetaDescription = (
   const range = formatSalaryRange(job.salaryMin, job.salaryMax, {
     prefix: `${job.currency} `,
   });
-  const salary = range ? ` · ${range}/mo` : "";
-  const location = job.isRemote ? "Remote" : (job.country ?? "Remote");
-  return `${LEVEL_LABELS[job.level]} ${JOB_TYPE_LABELS[job.jobType]} role at ${job.employer.companyName} · ${location}${salary}. Apply on RemoteSEA.`;
+  const salary = range
+    ? ` · ${range}${translate("jobs.filters.perMonthSuffix")}`
+    : "";
+  const location = job.isRemote
+    ? translate("jobs.card.remote")
+    : (job.country ?? translate("jobs.card.remote"));
+  return translate("jobs.detail.meta", {
+    level: LEVEL_LABELS[job.level],
+    type: JOB_TYPE_LABELS[job.jobType],
+    company: job.employer.companyName,
+    location,
+    salary,
+  });
 };
 
 export const JobDetailPage = () => {
+  const { t } = useTranslation("jobs");
   const { id } = useParams<{ id: string }>();
   const { data: job, isLoading, isError } = useJobQuery(id);
   // Only fetched/rendered when the job actually has a salary — the benchmark
@@ -41,7 +54,12 @@ export const JobDetailPage = () => {
   const { data: benchmarks } = useSalaryBenchmarks(hasSalary);
   const match = useMyMatch(job);
   useDocumentTitle(
-    job ? `${job.title} at ${job.employer.companyName}` : "Job",
+    job
+      ? t("detail.docTitle", {
+          title: job.title,
+          company: job.employer.companyName,
+        })
+      : t("detail.fallbackTitle"),
     job ? jobMetaDescription(job) : undefined
   );
   useJobPostingSchema(job);
@@ -70,13 +88,13 @@ export const JobDetailPage = () => {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-md flex-col items-center justify-center px-6 text-center">
         <h1 className="text-2xl font-semibold text-neutral-900">
-          Job not found
+          {t("detail.notFoundTitle")}
         </h1>
         <p className="mt-2 text-sm text-neutral-500">
-          This listing may have closed or the link is incorrect.
+          {t("detail.notFoundDesc")}
         </p>
         <Link className="mt-6" to={ROUTES.jobs}>
-          <Button variant="primary">Back to jobs</Button>
+          <Button variant="primary">{t("detail.backToJobs")}</Button>
         </Link>
       </div>
     );
@@ -88,7 +106,7 @@ export const JobDetailPage = () => {
         className="mb-8 inline-flex items-center gap-1.5 rounded-8 text-sm text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
         to={ROUTES.jobs}
       >
-        <ArrowLeft size={14} /> Back to jobs
+        <ArrowLeft size={14} /> {t("detail.back")}
       </Link>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">

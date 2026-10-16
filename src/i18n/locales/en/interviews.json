@@ -1,0 +1,66 @@
+{
+  "page": {
+    "fallbackTitle": "Interview",
+    "cancelled": "Interview cancelled.",
+    "cancelFailed": "Couldn't cancel the interview. Please try again.",
+    "cancel": "Cancel interview",
+    "cancelQ": "Cancel this interview?",
+    "cancelling": "Cancelling…",
+    "errorTitle": "Couldn't load interview details",
+    "errorDesc": "Something went wrong loading this interview.",
+    "noneTitle": "No interview scheduled yet",
+    "noneDesc": "Waiting for the employer to propose interview times.",
+    "theCandidate": "the candidate",
+    "theEmployer": "the employer",
+    "cancelledNote": "This interview was cancelled. Propose new times below to reschedule.",
+    "cancelledTitle": "Interview cancelled",
+    "cancelledDesc": "The employer cancelled this interview.",
+    "waiting": "Waiting on the candidate to confirm one of these times. You can still revise them below."
+  },
+  "schedule": {
+    "docTitle": "Interview schedule — Employer Dashboard",
+    "crumb": "Interview Schedule",
+    "mineTitle": "Your upcoming ",
+    "mineEm": "interviews.",
+    "teamTitle": "Team interview ",
+    "teamEm": "schedule.",
+    "mineDesc": "Every confirmed interview assigned to you, soonest first.",
+    "teamDesc": "Every confirmed interview across the company, soonest first.",
+    "errorTitle": "Couldn't load interviews",
+    "errorDesc": "Something went wrong loading the schedule.",
+    "emptyTitle": "No upcoming interviews",
+    "emptyDesc": "Confirmed interviews will show up here, grouped by day.",
+    "with": " · with {{name}}",
+    "min": "{{n}} min",
+    "hasLink": "Meeting link available"
+  },
+  "card": {
+    "upcoming": "Upcoming interview",
+    "minutes": "{{n}} minutes · your local time",
+    "with": "With {{name}}",
+    "join": "Join interview",
+    "calendar": "Add to calendar",
+    "calendarFailed": "Couldn't download the calendar file. Please try again."
+  },
+  "confirm": {
+    "done": "Interview confirmed",
+    "failed": "Couldn't confirm the interview",
+    "pick": "Pick the time that works for you:",
+    "local": "Shown in your local time · {{n}} minutes",
+    "button": "Confirm this time"
+  },
+  "propose": {
+    "updated": "Interview times updated",
+    "proposed": "Interview times proposed",
+    "failed": "Couldn't propose interview times",
+    "duration": "Duration",
+    "minutes": "{{n}} minutes",
+    "times": "Proposed times (1–2)",
+    "hint": "In your local time — the candidate sees these converted to theirs.",
+    "remove": "Remove this time option",
+    "addOption": "+ Add another option",
+    "meetingLink": "Meeting link (optional)",
+    "update": "Update times",
+    "send": "Send invitation"
+  }
+}

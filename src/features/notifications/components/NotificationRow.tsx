@@ -5,12 +5,14 @@ import type { Notification } from "@/types/notification";
 import { timeAgoLong } from "@/utils/time";
 import { cn } from "@/utils/cn";
 import { useToastMutation } from "@/hooks/useToastMutation";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const NotificationRow = ({
   notification,
 }: {
   notification: Notification;
 }) => {
+  const { t } = useTranslation("notifications");
   const markRead = useMarkNotificationRead();
   const runWithToast = useToastMutation();
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ export const NotificationRow = ({
   const handleClick = () => {
     if (isUnread) {
       void runWithToast(() => markRead.mutateAsync(notification.id), {
-        error: "Couldn't mark as read",
+        error: t("row.markFailed"),
       });
     }
     if (notification.link) navigate(notification.link);
@@ -54,7 +56,7 @@ export const NotificationRow = ({
             isUnread ? "font-semibold" : "font-medium"
           )}
         >
-          {isUnread && <span className="sr-only">Unread: </span>}
+          {isUnread && <span className="sr-only">{t("row.unread")}</span>}
           {notification.title}
         </p>
         {notification.body && (

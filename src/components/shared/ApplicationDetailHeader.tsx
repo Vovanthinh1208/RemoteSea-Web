@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { useTranslation } from "@/i18n/useTranslation";
 import { cn } from "@/utils/cn";
 
 interface ApplicationDetailHeaderProps {
@@ -21,23 +22,26 @@ export const ApplicationDetailHeader = ({
   subtitle,
   className,
   icon,
-}: ApplicationDetailHeaderProps) => (
-  <div className={cn("flex items-center gap-3", className)}>
-    <Link
-      aria-label="Back"
-      className="grid h-9 w-9 shrink-0 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
-      to={backHref}
-    >
-      <ArrowLeft size={17} />
-    </Link>
-    {icon}
-    <div className="min-w-0">
-      <h1 className="truncate text-[17px] font-semibold text-neutral-900">
-        {title}
-      </h1>
-      {subtitle && (
-        <p className="truncate text-[12.5px] text-neutral-400">{subtitle}</p>
-      )}
+}: ApplicationDetailHeaderProps) => {
+  const { t } = useTranslation();
+  return (
+    <div className={cn("flex items-center gap-3", className)}>
+      <Link
+        aria-label={t("common.a11y.back")}
+        className="grid h-9 w-9 shrink-0 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+        to={backHref}
+      >
+        <ArrowLeft size={17} />
+      </Link>
+      {icon}
+      <div className="min-w-0">
+        <h1 className="truncate text-[17px] font-semibold text-neutral-900">
+          {title}
+        </h1>
+        {subtitle && (
+          <p className="truncate text-[12.5px] text-neutral-400">{subtitle}</p>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};

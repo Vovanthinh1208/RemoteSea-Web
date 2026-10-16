@@ -8,6 +8,9 @@ import { useAdminRevenue } from "@/features/admin/admin.queries";
 import { formatCents, formatCentsCompact } from "@/features/admin/admin.utils";
 import type { RevenueMonthBucket } from "@/types/admin";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { useTranslation } from "@/i18n/useTranslation";
+import { PLAN_LABELS } from "@/features/admin/admin.utils";
+import { formatLocalDate } from "@/utils/format";
 
 const PLAN_BAR_COLOR: Record<string, string> = {
   STANDARD: "#4ade80",
@@ -25,6 +28,9 @@ const monthTotal = (month: RevenueMonthBucket): number =>
   month.standard + month.featured + month.handsOn;
 
 export const AdminRevenue = () => {
+  const { t } = useTranslation("admin");
+  const monthLabel = (key: string) =>
+    formatLocalDate(`${key}-01T00:00:00Z`, { month: "short", timeZone: "UTC" });
   const { data, isLoading, isError, refetch } = useAdminRevenue();
 
   if (isLoading) return <AdminRevenueSkeleton />;
@@ -35,11 +41,11 @@ export const AdminRevenue = () => {
       <EmptyState
         action={
           <Button size="sm" variant="outline" onClick={() => void refetch()}>
-            Try again
+            {t("common.actions.retry")}
           </Button>
         }
-        description="Something went wrong loading revenue data."
-        title="Couldn't load revenue"
+        description={t("rev.errorDesc")}
+        title={t("rev.errorTitle")}
       />
     );
   }
@@ -55,14 +61,12 @@ export const AdminRevenue = () => {
     <div className="flex-1 overflow-hidden">
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <Eyebrow className="mb-0.5">Finance</Eyebrow>
+          <Eyebrow className="mb-0.5">{t("rev.eyebrow")}</Eyebrow>
           {/* 26px — matches the ops console's denser page-title size (see AdminEmployers.tsx). */}
           <h1 className="text-[26px] font-semibold text-neutral-900">
-            Revenue
+            {t("rev.title")}
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">
-            Per-post billing · all amounts in USD
-          </p>
+          <p className="mt-1 text-sm text-neutral-500">{t("rev.subtitle")}</p>
         </div>
       </div>
 
@@ -70,22 +74,22 @@ export const AdminRevenue = () => {
       <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
         <StatCard
           icon={Wallet}
-          label="Revenue all time"
-          sub="across every paid listing"
+          label={t("rev.allTime")}
+          sub={t("rev.allTimeSub")}
           value={formatCentsCompact(totals.allTime)}
         />
         <StatCard
           icon={TrendingUp}
-          label="This month"
-          sub="in progress"
+          label={t("rev.thisMonth")}
+          sub={t("rev.inProgress")}
           value={formatCents(totals.thisMonth)}
         />
         {mix.map((m) => (
           <StatCard
             icon={RefreshCw}
             key={m.planType}
-            label={m.label}
-            sub={`posts · ${formatCents(m.amount)}`}
+            label={PLAN_LABELS[m.planType] ?? m.label}
+            sub={t("rev.postsAmount", { amount: formatCents(m.amount) })}
             value={m.count}
           />
         ))}
@@ -100,7 +104,7 @@ export const AdminRevenue = () => {
                 {formatCentsCompact(totals.allTime)}
               </div>
               <div className="text-[12px] text-neutral-400">
-                Monthly revenue · last {months.length} months
+                {t("rev.monthly", { count: months.length })}
               </div>
             </div>
             <div className="flex items-center gap-4 text-[12px] text-neutral-500">
@@ -109,21 +113,21 @@ export const AdminRevenue = () => {
                   className="inline-block h-2.5 w-2.5 rounded-full"
                   style={{ background: PLAN_BAR_COLOR.STANDARD }}
                 />{" "}
-                Standard
+                {PLAN_LABELS.STANDARD}
               </span>
               <span className="flex items-center gap-1">
                 <span
                   className="inline-block h-2.5 w-2.5 rounded-full"
                   style={{ background: PLAN_BAR_COLOR.FEATURED }}
                 />{" "}
-                Featured
+                {PLAN_LABELS.FEATURED}
               </span>
               <span className="flex items-center gap-1">
                 <span
                   className="inline-block h-2.5 w-2.5 rounded-full"
                   style={{ background: PLAN_BAR_COLOR.HANDS_ON }}
                 />{" "}
-                Hands-on
+                {PLAN_LABELS.HANDS_ON}
               </span>
             </div>
           </div>
@@ -138,7 +142,7 @@ export const AdminRevenue = () => {
                   <div
                     className="flex w-full flex-col-reverse overflow-hidden rounded-t-4"
                     style={{ height: `${(sum / peak) * 140}px` }}
-                    title={`${month.label}: ${formatCents(sum)}`}
+                    title={`${monthLabel(month.key)}: ${formatCents(sum)}`}
                   >
                     {sum > 0 && (
                       <>
@@ -164,7 +168,7 @@ export const AdminRevenue = () => {
                     )}
                   </div>
                   <span className="text-[10px] text-neutral-400">
-                    {month.label}
+                    {monthLabel(month.key)}
                   </span>
                 </div>
               );
@@ -174,9 +178,9 @@ export const AdminRevenue = () => {
 
         <div className="rounded-12 border border-neutral-100 bg-white p-5">
           <h3 className="mb-4 text-[14px] font-semibold text-neutral-900">
-            Revenue by plan{" "}
+            {t("rev.byPlan")}
             <span className="text-[12px] font-normal text-neutral-400">
-              · all time
+              {t("rev.byPlanSuffix")}
             </span>
           </h3>
           <div className="mb-4 flex h-6 overflow-hidden rounded-8">
@@ -203,13 +207,13 @@ export const AdminRevenue = () => {
                   style={{ background: PLAN_BAR_COLOR[m.planType] }}
                 />
                 <span className="flex-1 text-[13px] text-neutral-700">
-                  {m.label}{" "}
+                  {PLAN_LABELS[m.planType] ?? m.label}{" "}
                   <span className="font-mono text-[11px] text-neutral-400">
                     {formatCents(m.price)}
                   </span>
                 </span>
                 <span className="text-[12px] text-neutral-400">
-                  {m.count} posts
+                  {t("rev.posts", { count: m.count })}
                 </span>
                 <span className="font-mono text-[13px] font-semibold text-neutral-900">
                   {formatCentsCompact(m.amount)}
@@ -224,7 +228,7 @@ export const AdminRevenue = () => {
       <div className="overflow-x-auto rounded-12 border border-neutral-100 bg-white">
         <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-3">
           <h3 className="text-[14px] font-semibold text-neutral-900">
-            Recent transactions
+            {t("rev.recent")}
           </h3>
         </div>
         <div
@@ -233,46 +237,39 @@ export const AdminRevenue = () => {
             gridTemplateColumns: TRANSACTION_GRID_COLUMNS,
           }}
         >
-          <span>Employer</span>
-          <span>Plan</span>
-          <span>Amount</span>
-          <span>Date</span>
+          <span>{t("rev.col.employer")}</span>
+          <span>{t("rev.col.plan")}</span>
+          <span>{t("rev.col.amount")}</span>
+          <span>{t("rev.col.date")}</span>
         </div>
         {transactions.length === 0 ? (
-          <EmptyRow>No paid listings yet.</EmptyRow>
+          <EmptyRow>{t("rev.empty")}</EmptyRow>
         ) : (
-          transactions.map((t) => (
+          transactions.map((tx) => (
             <div
               className="grid items-center border-b border-neutral-50 px-5 py-3.5 last:border-0"
-              key={t.jobId}
+              key={tx.jobId}
               style={{
                 gridTemplateColumns: TRANSACTION_GRID_COLUMNS,
               }}
             >
               <div className="min-w-0">
                 <div className="truncate text-[14px] font-medium text-neutral-900">
-                  {t.companyName}
+                  {tx.companyName}
                 </div>
                 <div className="truncate text-[12px] text-neutral-400">
-                  {t.jobTitle}
+                  {tx.jobTitle}
                 </div>
               </div>
               <span className="flex items-center gap-1 text-[13px] text-neutral-600">
                 <CreditCard size={13} />{" "}
-                {t.planType === "HANDS_ON"
-                  ? "Hands-on"
-                  : t.planType === "FEATURED"
-                    ? "Featured"
-                    : "Standard"}
+                {PLAN_LABELS[tx.planType] ?? tx.planType}
               </span>
               <span className="font-mono text-[13px] font-semibold text-neutral-900">
-                {formatCents(t.amount)}
+                {formatCents(tx.amount)}
               </span>
               <span className="text-[13px] text-neutral-400">
-                {new Date(t.paidAt).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "2-digit",
-                })}
+                {formatLocalDate(tx.paidAt, { month: "short", day: "2-digit" })}
               </span>
             </div>
           ))

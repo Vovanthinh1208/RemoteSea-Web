@@ -1,0 +1,114 @@
+{
+  "meetups": {
+    "eyebrow": "Gặp trực tiếp",
+    "title": "Cà phê, bia, & ",
+    "titleEm": "băng thông",
+    "titleEnd": " ngoài đời.",
+    "desc": "Thành viên tự tổ chức gặp mặt khi có từ 5 người trở lên ở cùng một thành phố. Miễn phí, nhẹ nhàng và wifi luôn đủ dùng.",
+    "going": "{{count}} người tham dự",
+    "rsvp": "Đăng ký →",
+    "online": "Trực tuyến",
+    "1": {
+      "title": "Gặp mặt Remoteo · Đà Nẵng",
+      "desc": "Cùng làm việc + ăn tối hằng tháng. Quán cà phê hướng biển. Mang laptop hoặc chỉ cần mang theo chính bạn.",
+      "month": "Th4",
+      "weekday": "T7"
+    },
+    "2": {
+      "title": "Mổ xẻ bộ công cụ làm việc bất đồng bộ",
+      "desc": "Ba thành viên chia sẻ toàn bộ bộ công cụ async — Notion, Linear, Loom và hơn thế. Các bài nói ngắn.",
+      "month": "Th4",
+      "weekday": "T5"
+    },
+    "3": {
+      "title": "Cổ phần & quyền chọn cơ bản",
+      "desc": "Workshop cùng một luật sư thuế đến từ Singapore. RSU, ISO, double-trigger acceleration — đầy đủ mọi thứ.",
+      "month": "Th4",
+      "weekday": "T5"
+    },
+    "4": {
+      "title": "Brunch cho founder & freelancer",
+      "desc": "Tổ chức tại Cộng Cà Phê, Ngô Đức Kế. Dành cho thành viên đang xây dựng dự án riêng, làm thêm hoặc toàn thời gian.",
+      "month": "Th4",
+      "weekday": "T7"
+    }
+  },
+  "join": {
+    "eyebrow": "Đăng ký",
+    "title": "Sẵn sàng gia nhập ",
+    "titleEm": "đại gia đình",
+    "titleEnd": "?",
+    "desc": "Một biểu mẫu, 4 câu hỏi, khoảng 5 phút. Chúng tôi xét duyệt mỗi thứ Sáu và trả lời trước thứ Ba tuần sau — kể cả khi câu trả lời là “chưa phải lúc”.",
+    "step1Title": "Đăng ký",
+    "step1Desc": "4 câu hỏi về vị trí, múi giờ và những gì bạn có thể đóng góp.",
+    "step2Title": "Xét duyệt vào thứ Sáu",
+    "step2Desc": "Hai thành viên hiện tại đọc từng đơn. Tỉ lệ từ chối khoảng 5%.",
+    "step3Title": "Chủ đề chào mừng",
+    "step3Desc": "Giới thiệu bản thân trong #introductions. Chỉ xem hay tham gia đều được.",
+    "request": "Xin lời mời",
+    "conduct": "Đọc quy tắc ứng xử"
+  },
+  "hero": {
+    "badge": "Chỉ theo lời mời · Hơn 500 thành viên từ 14 thành phố",
+    "title": "Hơn 500 người Việt làm remote, ",
+    "titleEm": "một Slack",
+    "desc": "Kỹ sư, nhà thiết kế, marketer, nhân sự vận hành — tất cả làm remote cho các công ty nước ngoài. Chúng tôi trao đổi offer, gỡ rối văn hóa làm việc bất đồng bộ và gặp mặt khi ở cùng thành phố.",
+    "request": "Xin lời mời",
+    "tour": "Xem giới thiệu (2 phút)",
+    "vetted": "Được thành viên hiện tại xét duyệt. Chúng tôi tìm tay nghề vững và sự tham gia thiện chí — không phải cảm tính."
+  },
+  "members": {
+    "eyebrow": "Thành viên",
+    "title": "Những người ",
+    "titleEm": "thực sự",
+    "titleEnd": " ở đây.",
+    "desc": "Một phần nhỏ những người bạn sẽ gặp. Ai cũng được xét duyệt, làm remote và làm việc cho công ty ngoài Việt Nam.",
+    "yearsRemote": "{{count}} năm làm remote",
+    "1": {
+      "role": "Kỹ sư Frontend cao cấp",
+      "quote": "Sau hai năm, cuối cùng tôi cũng biết cách làm việc sâu trong bộ đồ ngủ mà không phát điên."
+    },
+    "2": {
+      "role": "Nhà thiết kế sản phẩm",
+      "quote": "Văn hóa async ở đây khiến công việc hiệu quả nhất của tôi diễn ra từ 5–11 giờ tối. Đội ngũ ở SF chẳng hề bận tâm."
+    },
+    "3": {
+      "role": "Kỹ sư Staff",
+      "quote": "Sáu múi giờ, không họp standup. PR và tài liệu nói thay tất cả."
+    },
+    "4": {
+      "role": "Chuyên viên Growth Marketing",
+      "quote": "Sống ở một thị trấn đồi chè. Làm tăng trưởng cho 5 thị trường Đông Nam Á. Thật sự rất tuyệt."
+    }
+  },
+  "channels": {
+    "eyebrow": "Bên trong",
+    "title": "Mọi người ",
+    "titleEm": "thực sự",
+    "titleEnd": " trò chuyện về điều gì.",
+    "desc": "Xem nhanh các kênh và vài chủ đề trong tuần này. Tên đã được ẩn để tôn trọng — khi tham gia, toàn bộ kho lưu trữ sẽ thuộc về bạn.",
+    "list": "Kênh",
+    "more": "+ {{count}} kênh khác",
+    "replies_one": "{{count}} phản hồi",
+    "replies_other": "{{count}} phản hồi",
+    "topic": {
+      "introductions": "Thành viên mới chào hỏi",
+      "offerNegotiations": "Hỗ trợ thương lượng offer",
+      "asyncRituals": "Các nhóm thực sự làm việc thế nào",
+      "equityExplained": "Quyền chọn cổ phiếu, RSU, vesting",
+      "parentsWhoRemote": "Làm việc tại nhà khi có con nhỏ",
+      "colivingDaNang": "Trụ sở không chính thức"
+    }
+  },
+  "page": {
+    "title": "Cộng đồng — RemoteSEA",
+    "description": "Hơn 500 chuyên gia Việt Nam làm remote trong một cộng đồng — trao đổi offer, gỡ rối văn hóa async và gặp mặt trực tiếp."
+  },
+  "stats": {
+    "members": "Thành viên",
+    "cities": "Thành phố",
+    "senior": "Cấp cao trở lên",
+    "medianOffer": "Offer trung vị",
+    "meetups": "Buổi gặp mặt trong 2025"
+  }
+}

@@ -22,11 +22,306 @@
     "emptyQueue": "No listings awaiting moderation."
   },
   "users": {
-    "title": "User Directory",
-    "searchPlaceholder": "Search by name, email, or role...",
+    "title": "Users",
+    "searchPlaceholder": "Search name or email…",
     "role": "Role",
     "status": "Account Status",
-    "ban": "Suspend Account",
-    "unban": "Restore Account"
+    "ban": "Ban",
+    "unban": "Unban",
+    "eyebrow": "Operations",
+    "summary": "{{total}} accounts · {{banned}} banned",
+    "roles": {
+      "all": "All",
+      "TALENT": "Talent",
+      "EMPLOYER": "Employer",
+      "ADMIN": "Admin"
+    },
+    "you": "(you)",
+    "roleFor": "Role for {{email}}",
+    "banned": "Banned",
+    "active": "Active",
+    "banQ": "Ban {{email}}? They'll be signed out everywhere and can't log back in.",
+    "bannedToast": "User banned",
+    "unbannedToast": "User unbanned",
+    "updateFailed": "Couldn't update user",
+    "roleUpdated": "Role updated",
+    "roleFailed": "Couldn't update role",
+    "errorTitle": "Couldn't load users",
+    "errorDesc": "Something went wrong loading users.",
+    "stat": {
+      "total": "Total users",
+      "totalSub": "all roles",
+      "admins": "Admins",
+      "adminsSub": "platform-wide access",
+      "banned": "Banned",
+      "bannedSub": "blocked from sign-in"
+    },
+    "searchAria": "Search users",
+    "col": {
+      "user": "User",
+      "role": "Role",
+      "status": "Status",
+      "joined": "Joined"
+    },
+    "empty": "No users match this filter."
+  },
+  "plan": {
+    "STANDARD": "Standard",
+    "FEATURED": "Featured",
+    "HANDS_ON": "Hands-on"
+  },
+  "wait": {
+    "hours": "{{h}}h",
+    "days": "{{d}}d",
+    "daysHours": "{{d}}d {{h}}h"
+  },
+  "check": {
+    "descLength": "Description length",
+    "descChars": "{{n}} characters",
+    "salary": "Salary disclosed",
+    "salaryYes": "Range provided",
+    "salaryNo": "No salary range",
+    "category": "Categorised",
+    "categoryYes": "Has category",
+    "categoryNo": "Missing category",
+    "verified": "Employer verified",
+    "verifiedYes": "Verified company",
+    "verifiedNo": "Not yet verified"
+  },
+  "checklist": {
+    "1": {
+      "label": "Role is genuinely remote",
+      "hint": "Not hybrid mislabeled as remote."
+    },
+    "2": {
+      "label": "Salary within market band",
+      "hint": "Compare against benchmark."
+    },
+    "3": {
+      "label": "No discriminatory language",
+      "hint": "Requirements read clean."
+    },
+    "4": {
+      "label": "Company looks legitimate",
+      "hint": "Website + contact check out."
+    },
+    "title": "Reviewer checklist",
+    "allDone": "All checks complete",
+    "left": "{{count}} left before approval"
+  },
+  "salaryNotSpecified": "Not specified",
+  "audit": {
+    "EMPLOYER_VERIFIED": "Verified employer",
+    "EMPLOYER_SUSPENDED": "Suspended employer",
+    "JOB_APPROVED": "Approved job",
+    "JOB_REJECTED": "Rejected job",
+    "JOB_REPORT_RESOLVED": "Resolved report",
+    "JOB_REPORT_DISMISSED": "Dismissed report",
+    "USER_BANNED": "Banned user",
+    "USER_UNBANNED": "Unbanned user",
+    "USER_ROLE_CHANGED": "Changed role",
+    "errorTitle": "Couldn't load audit log",
+    "errorDesc": "Something went wrong loading the audit log.",
+    "eyebrow": "Accountability",
+    "title": "Audit log",
+    "summary_one": "{{count}} action recorded — every employer verify/suspend, job approve/reject, and report resolve/dismiss.",
+    "summary_other": "{{count}} actions recorded — every employer verify/suspend, job approve/reject, and report resolve/dismiss.",
+    "loadingSummary": "Loading actions…",
+    "all": "All",
+    "sentence": "{{admin}} {{action}} {{target}}",
+    "emptyAll": "No moderation actions yet.",
+    "emptyType": "No moderation actions of this type yet."
+  },
+  "auditTab": {
+    "EMPLOYER": "Employers",
+    "JOB": "Jobs",
+    "JOB_REPORT": "Reports",
+    "USER": "Users"
+  },
+  "console": {
+    "tab": {
+      "queue": "Review queue",
+      "employers": "Employers",
+      "users": "Users",
+      "reports": "Reports",
+      "revenue": "Revenue",
+      "audit-log": "Audit log"
+    },
+    "title": "Ops console",
+    "sections": "Ops console sections",
+    "docTitle": "Ops Console"
+  },
+  "emp": {
+    "filter": {
+      "all": "All",
+      "unverified": "Unverified"
+    },
+    "suspendQ": "Suspend {{name}}? Their listings will come down immediately.",
+    "suspend": "Suspend",
+    "verify": "Verify",
+    "verifiedToast": "Employer verified",
+    "suspendedToast": "Employer suspended",
+    "updateFailed": "Couldn't update employer",
+    "errorTitle": "Couldn't load employers",
+    "errorDesc": "Something went wrong loading employers.",
+    "title": "Employers",
+    "summary": "{{companies}} companies · {{listings}} total listings · {{billed}} billed",
+    "stat": {
+      "total": "Total employers",
+      "totalSub": "all time",
+      "unverified": "Unverified",
+      "unverifiedSub": "need review",
+      "billed": "Total billed",
+      "billedSub": "lifetime"
+    },
+    "searchAria": "Search employers",
+    "searchPlaceholder": "Search employers…",
+    "col": {
+      "employer": "Employer",
+      "listings": "Listings",
+      "spend": "Total spend",
+      "joined": "Joined"
+    },
+    "empty": "No employers match this filter."
+  },
+  "rep": {
+    "filter": {
+      "OPEN": "Open",
+      "RESOLVED": "Resolved",
+      "DISMISSED": "Dismissed"
+    },
+    "resolve": "Resolve",
+    "dismiss": "Dismiss",
+    "dismissQ": "Dismiss this report?",
+    "resolvedTag": "Resolved",
+    "dismissedTag": "Dismissed",
+    "resolvedToast": "Report resolved",
+    "dismissedToast": "Report dismissed",
+    "updateFailed": "Couldn't update report",
+    "errorTitle": "Couldn't load reports",
+    "errorDesc": "Something went wrong loading reports.",
+    "eyebrow": "Trust & safety",
+    "title": "Reports",
+    "subtitle": "Listings flagged by talent or employers as suspicious.",
+    "stat": {
+      "open": "Open reports",
+      "openSub": "need review",
+      "resolved": "Resolved",
+      "dismissed": "Dismissed",
+      "thisView": "this view"
+    },
+    "col": {
+      "job": "Job",
+      "reporter": "Reporter",
+      "reason": "Reason",
+      "details": "Details",
+      "reported": "Reported"
+    },
+    "empty": {
+      "OPEN": "No open reports.",
+      "RESOLVED": "No resolved reports.",
+      "DISMISSED": "No dismissed reports."
+    }
+  },
+  "rev": {
+    "errorTitle": "Couldn't load revenue",
+    "errorDesc": "Something went wrong loading revenue data.",
+    "eyebrow": "Finance",
+    "title": "Revenue",
+    "subtitle": "Per-post billing · all amounts in USD",
+    "allTime": "Revenue all time",
+    "allTimeSub": "across every paid listing",
+    "thisMonth": "This month",
+    "inProgress": "in progress",
+    "postsAmount": "posts · {{amount}}",
+    "monthly": "Monthly revenue · last {{count}} months",
+    "byPlan": "Revenue by plan ",
+    "byPlanSuffix": "· all time",
+    "posts": "{{count}} posts",
+    "recent": "Recent transactions",
+    "col": {
+      "employer": "Employer",
+      "plan": "Plan",
+      "amount": "Amount",
+      "date": "Date"
+    },
+    "empty": "No paid listings yet."
+  },
+  "queue": {
+    "approvedToast": "Job approved & published",
+    "rejectedToast": "Job sent back to employer",
+    "reviewFailed": "Couldn't submit review",
+    "errorTitle": "Couldn't load the review queue",
+    "errorDesc": "Something went wrong loading the review queue.",
+    "clearTitle": "Queue is clear",
+    "clearDesc": "Nothing awaiting review. All caught up.",
+    "title": "Review queue",
+    "subtitle": "Every job is human-reviewed before it goes live · {{count}} awaiting"
+  },
+  "kpi": {
+    "inQueue": "In queue",
+    "overSla": "{{count}} over SLA",
+    "avgWait": "Avg. wait",
+    "sla": "SLA 24h",
+    "approved": "Approved this session",
+    "approvedSub": "+ live now",
+    "rejected": "Rejected this session",
+    "rejectedSub": "incl. changes requested"
+  },
+  "list": {
+    "pending": "Pending ",
+    "oldest": "Oldest first",
+    "featured": "Featured",
+    "unverified": "Unverified employer"
+  },
+  "decision": {
+    "noteAria": "Note for the employer",
+    "notePlaceholder": "Add a note for the employer (required for change requests & rejections)…",
+    "approve": "Approve & publish",
+    "changes": "Request changes",
+    "changesHint": "Add a note explaining what needs to change",
+    "reject": "Reject",
+    "rejectHint": "Add a note explaining the rejection",
+    "resolved": {
+      "approved": "Approved & published",
+      "changes": "Changes requested",
+      "rejected": "Rejected"
+    }
+  },
+  "banner": {
+    "approved": "Approved — job is now live and the employer has been notified.",
+    "changes": "Sent back to the employer with your notes.",
+    "rejected": "Rejected — the employer has been notified with a reason."
+  },
+  "header": {
+    "submittedBy": "Submitted by",
+    "justNow": "Just now",
+    "waited": "waited {{wait}}",
+    "other": "Other",
+    "remote": "Remote"
+  },
+  "summary": {
+    "title": "Submission summary",
+    "salary": "Salary",
+    "type": "Type",
+    "region": "Region",
+    "plan": "Plan"
+  },
+  "checks": {
+    "title": "Automated checks",
+    "clean": "{{pass}}/{{total}} clean"
+  },
+  "risk": {
+    "title": "AI risk check",
+    "advisory": "Advisory only — you still decide",
+    "prompt": "Ask AI to scan this posting for scam or quality red flags.",
+    "run": "Run AI risk check",
+    "failed": "Couldn't run the risk check.",
+    "LOW": "Low risk",
+    "MEDIUM": "Medium risk",
+    "HIGH": "High risk",
+    "recheck": "Re-check — runs the analysis again and replaces this one",
+    "checked": "Checked {{time}}",
+    "recheckFailed": "Couldn't re-check — showing the previous result."
   }
 }

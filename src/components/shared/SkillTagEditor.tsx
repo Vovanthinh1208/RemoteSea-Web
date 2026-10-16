@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Plus, X } from "lucide-react";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface SkillTagEditorProps {
   skills: string[];
@@ -16,6 +17,7 @@ export const SkillTagEditor = ({
   suggestions = [],
   id,
 }: SkillTagEditorProps) => {
+  const { t } = useTranslation();
   const [inputValue, setInputValue] = useState("");
 
   const addSkill = (skill: string) => {
@@ -49,7 +51,7 @@ export const SkillTagEditor = ({
           >
             {skill}
             <button
-              aria-label={`Remove skill: ${skill}`}
+              aria-label={t("common.skills.remove", { skill })}
               className="text-neutral-400 hover:text-neutral-700"
               type="button"
               onClick={() =>
@@ -65,8 +67,8 @@ export const SkillTagEditor = ({
           id={id}
           placeholder={
             skills.length === 0
-              ? "Type a skill and press Enter…"
-              : "Add another…"
+              ? t("common.skills.typePrompt")
+              : t("common.skills.addAnother")
           }
           value={inputValue}
           onBlur={() => {
@@ -78,7 +80,9 @@ export const SkillTagEditor = ({
       </div>
       {suggestedSkills.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[11.5px] text-neutral-400">Suggested:</span>
+          <span className="text-[11.5px] text-neutral-400">
+            {t("common.skills.suggested")}
+          </span>
           {suggestedSkills.slice(0, MAX_SUGGESTIONS).map((skill) => (
             <button
               className="rounded-full border border-neutral-200 px-2.5 py-0.5 text-[11.5px] text-neutral-600 hover:border-brand-300 hover:text-brand-700"

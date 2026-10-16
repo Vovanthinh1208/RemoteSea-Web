@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { m, v } from "@/i18n/zod";
 
 // startMonth/endMonth are <input type="month"> values ("YYYY-MM") — converted
 // to ISO date strings (first of month) at the call site, not here, since the
@@ -6,23 +7,23 @@ import { z } from "zod";
 // endMonth means (omitted vs. explicit null).
 export const workExperienceFormSchema = z
   .object({
-    company: z.string().trim().min(1, "Company is required").max(120),
-    title: z.string().trim().min(1, "Title is required").max(120),
+    company: z.string().trim().min(1, m("validation.companyRequired")).max(120),
+    title: z.string().trim().min(1, m("validation.titleRequired")).max(120),
     location: z.string().trim().max(120).optional(),
-    startMonth: z.string().min(1, "Start date is required"),
+    startMonth: z.string().min(1, m("validation.startDateRequired")),
     isCurrent: z.boolean(),
     endMonth: z.string().optional(),
     description: z.string().trim().max(1000).optional(),
   })
   .refine((data) => data.isCurrent || !!data.endMonth, {
-    message: "End date is required unless this is your current role",
+    error: v("validation.endDateRequired"),
     path: ["endMonth"],
   })
   .refine(
     (data) =>
       data.isCurrent || !data.endMonth || data.endMonth >= data.startMonth,
     {
-      message: "End date must be on or after start date",
+      error: v("validation.endDateOrder"),
       path: ["endMonth"],
     }
   );

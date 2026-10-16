@@ -1,27 +1,29 @@
 import { oauthUrl } from "@/features/auth/auth.service";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const OAUTH_PROVIDERS = [
   {
     id: "google",
-    label: "Continue with Google",
+    labelKey: "auth.oauth.google",
     bg: "#4285F4",
     icon: "G",
   },
   {
     id: "github",
-    label: "Continue with GitHub",
+    labelKey: "auth.oauth.github",
     bg: "#24292F",
     icon: "GH",
   },
   {
     id: "linkedin",
-    label: "Continue with LinkedIn",
+    labelKey: "auth.oauth.linkedin",
     bg: "#0A66C2",
     icon: "in",
   },
 ] as const;
 
 export const OAuthButtons = () => {
+  const { t } = useTranslation();
   return (
     <div className="mb-6 space-y-3">
       {OAUTH_PROVIDERS.map((provider) => (
@@ -36,7 +38,7 @@ export const OAuthButtons = () => {
           >
             {provider.icon}
           </span>
-          {provider.label}
+          {t(provider.labelKey)}
         </a>
       ))}
     </div>

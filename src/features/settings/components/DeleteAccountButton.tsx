@@ -2,25 +2,28 @@ import { useToastMutation } from "@/hooks/useToastMutation";
 import { useDeleteMyAccount } from "@/features/users/users.queries";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { ApiError } from "@/core/errors/api-error";
+import { getErrorMessage } from "@/core/errors/localize";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const DeleteAccountButton = () => {
+  const { t } = useTranslation("settings");
   const runWithToast = useToastMutation();
   const deleteAccountMutation = useDeleteMyAccount();
 
   const handleDelete = async () => {
     await runWithToast(() => deleteAccountMutation.mutateAsync(), {
-      error: "Couldn't delete account",
-      errorDescription: "Please try again.",
-      onError: (err) => (err instanceof ApiError ? err.message : undefined),
+      error: t("del.failed"),
+      onError: (err) =>
+        err instanceof ApiError ? getErrorMessage(err) : undefined,
     });
   };
 
   return (
     <ConfirmAction
-      confirmLabel="Yes, delete"
+      confirmLabel={t("del.confirm")}
       isPending={deleteAccountMutation.isPending}
-      message="Are you sure? This cannot be undone."
-      pendingLabel="Deleting…"
+      message={t("del.message")}
+      pendingLabel={t("del.deleting")}
       onConfirm={handleDelete}
     >
       {({ onClick }) => (
@@ -29,7 +32,7 @@ export const DeleteAccountButton = () => {
           type="button"
           onClick={onClick}
         >
-          Delete account
+          {t("del.button")}
         </button>
       )}
     </ConfirmAction>

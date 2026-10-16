@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface ConfirmActionProps {
   message: string;
@@ -27,11 +28,12 @@ export const ConfirmAction = ({
   message,
   onConfirm,
   isPending,
-  confirmLabel = "Yes",
-  pendingLabel = "Working…",
+  confirmLabel,
+  pendingLabel,
   notePlaceholder,
   children,
 }: ConfirmActionProps) => {
+  const { t } = useTranslation();
   const [isConfirming, setIsConfirming] = useState(false);
   const [note, setNote] = useState("");
 
@@ -55,7 +57,9 @@ export const ConfirmAction = ({
             setNote("");
           }}
         >
-          {isPending ? pendingLabel : confirmLabel}
+          {isPending
+            ? (pendingLabel ?? t("common.confirm.working"))
+            : (confirmLabel ?? t("common.confirm.yes"))}
         </Button>
         <Button
           className="border-neutral-200 hover:bg-neutral-50"
@@ -67,7 +71,7 @@ export const ConfirmAction = ({
             setNote("");
           }}
         >
-          Cancel
+          {t("common.actions.cancel")}
         </Button>
       </div>
       {notePlaceholder !== undefined && (

@@ -1,4 +1,5 @@
 import { Flag, Shield } from "lucide-react";
+import { useTranslation } from "@/i18n/useTranslation";
 
 // One of three "verified" renderings in the app, alongside Badge
 // variant="verified" (components/ui/badge.tsx, job cards) and VerifiedInline
@@ -44,6 +45,7 @@ export const VerifiedBadge = ({
   label,
   size = "sm",
 }: VerifiedBadgeProps) => {
+  const { t } = useTranslation();
   const { gap, padding, text, verifiedIcon, unverifiedIcon } =
     SIZE_CLASSES[size];
 
@@ -52,7 +54,7 @@ export const VerifiedBadge = ({
       <span
         className={`inline-flex items-center ${gap} rounded-full bg-brand-100 ${padding} py-0.5 ${text} font-medium text-brand-700`}
       >
-        <Shield size={verifiedIcon} /> {label ?? "Verified"}
+        <Shield size={verifiedIcon} /> {label ?? t("common.badge.verified")}
       </span>
     );
   }
@@ -61,7 +63,7 @@ export const VerifiedBadge = ({
     <span
       className={`inline-flex items-center ${gap} rounded-full bg-danger-50 ${padding} py-0.5 ${text} text-danger-600`}
     >
-      <Flag size={unverifiedIcon} /> {label ?? "Unverified"}
+      <Flag size={unverifiedIcon} /> {label ?? t("common.badge.unverified")}
     </span>
   );
 };

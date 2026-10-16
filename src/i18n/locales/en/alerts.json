@@ -1,0 +1,46 @@
+{
+  "freq": {
+    "IMMEDIATE": "immediately",
+    "DAILY": "daily",
+    "WEEKLY": "weekly"
+  },
+  "page": {
+    "docTitle": "Job Alerts",
+    "title": "Job alerts",
+    "desc": "Get notified when new jobs match your criteria. We email you on your chosen schedule.",
+    "created": "Alert created",
+    "createdDesc": "We'll email you matching jobs.",
+    "createFailed": "Couldn't create alert",
+    "updateFailed": "Couldn't update alert",
+    "deleted": "Alert deleted",
+    "deleteFailed": "Couldn't delete alert",
+    "errorTitle": "Couldn't load alerts",
+    "errorDesc": "Something went wrong loading your alerts.",
+    "empty": "No alerts yet. Create one above to start getting matched jobs."
+  },
+  "item": {
+    "allJobs": "All jobs",
+    "active": "Active",
+    "paused": "Paused",
+    "deleteQ": "Delete this alert?",
+    "deleteAria": "Delete alert"
+  },
+  "form": {
+    "title": "Create a new alert",
+    "name": "Alert name",
+    "namePlaceholder": "e.g. Senior remote engineering",
+    "keywords": "Keywords",
+    "optional": "(optional)",
+    "keywordsPlaceholder": "e.g. React, remote",
+    "jobType": "Job type",
+    "anyJobType": "Any job type",
+    "level": "Seniority level",
+    "anyLevel": "Any level",
+    "salary": "Minimum salary",
+    "salaryUnit": "(USD/mo, optional)",
+    "salaryPlaceholder": "e.g. 2000",
+    "frequency": "Notification frequency",
+    "creating": "Creating…",
+    "create": "Create alert"
+  }
+}

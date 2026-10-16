@@ -25,14 +25,29 @@ export const MAX_FILE_SIZE_BYTES: Record<UploadType, number> = {
   resume: 10 * BYTES_PER_MB,
 };
 
-export const validateFile = (file: File, type: UploadType): string | null => {
+/** A validation failure expressed as an i18n key so it is translated at render time. */
+export type UploadValidationError = {
+  key: string;
+  params?: Record<string, string | number>;
+};
+
+export const validateFile = (
+  file: File,
+  type: UploadType
+): UploadValidationError | null => {
   if (!CONTENT_TYPES[type].includes(file.type)) {
-    return type === "resume"
-      ? "Must be a PDF file."
-      : "Must be a JPEG, PNG, or WebP image.";
+    return {
+      key:
+        type === "resume"
+          ? "common.upload.mustBePdf"
+          : "common.upload.mustBeImage",
+    };
   }
   if (file.size > MAX_FILE_SIZE_BYTES[type]) {
-    return `File too large — max ${MAX_FILE_SIZE_BYTES[type] / BYTES_PER_MB}MB.`;
+    return {
+      key: "common.upload.tooLarge",
+      params: { mb: MAX_FILE_SIZE_BYTES[type] / BYTES_PER_MB },
+    };
   }
   return null;
 };

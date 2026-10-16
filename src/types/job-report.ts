@@ -1,3 +1,5 @@
+import { translate } from "@/i18n/runtime";
+
 export type JobReportReason =
   | "SCAM"
   | "MISLEADING"
@@ -8,11 +10,16 @@ export type JobReportReason =
 
 export type JobReportStatus = "OPEN" | "RESOLVED" | "DISMISSED";
 
-export const JOB_REPORT_REASON_LABELS: Record<JobReportReason, string> = {
-  SCAM: "This looks like a scam",
-  MISLEADING: "Misleading description",
-  ALREADY_FILLED: "Position already filled",
-  DISCRIMINATORY: "Discriminatory requirements",
-  DUPLICATE: "Duplicate listing",
-  OTHER: "Other",
-};
+export const JOB_REPORT_REASONS: JobReportReason[] = [
+  "SCAM",
+  "MISLEADING",
+  "ALREADY_FILLED",
+  "DISCRIMINATORY",
+  "DUPLICATE",
+  "OTHER",
+];
+
+// Display labels live in the "jobs" locale namespace (jobs.report.reason.<CODE>);
+// resolve with jobReportReasonLabel() so they follow the active language.
+export const jobReportReasonLabel = (reason: JobReportReason): string =>
+  translate(`jobs.report.reason.${reason}`);

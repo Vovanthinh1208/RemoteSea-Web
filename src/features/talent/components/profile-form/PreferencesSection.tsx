@@ -10,6 +10,7 @@ import {
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { formatSalaryRange } from "@/utils/format";
 import type { EmploymentType, TimezoneOverlap } from "@/types/talent";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const SALARY_MIN = 1000;
 const SALARY_MAX = 10000;
@@ -37,6 +38,7 @@ export const PreferencesSection = ({
   timezoneOverlap,
   onTimezoneOverlapChange,
 }: PreferencesSectionProps) => {
+  const { t, formatNumber } = useTranslation("talent");
   const toggleEmploymentType = (key: EmploymentType) =>
     onEmploymentTypesChange(
       employmentTypes.includes(key)
@@ -65,7 +67,7 @@ export const PreferencesSection = ({
           [field]: value,
         }),
       {
-        error: "Couldn't update notification preference",
+        error: t("prefs.notifFailed"),
       }
     );
 
@@ -75,16 +77,16 @@ export const PreferencesSection = ({
       id="prefs"
     >
       <SectionHead
-        eyebrow="05 · What you want"
-        help="Used to filter and surface roles. You can update these anytime."
+        eyebrow={t("prefs.eyebrow")}
+        help={t("prefs.help")}
         title={
           <>
-            Job{" "}
+            {t("prefs.title")}
             <em
               className="font-serif italic text-brand-700"
               style={EMPHASIS_STYLE}
             >
-              preferences.
+              {t("prefs.titleEm")}
             </em>
           </>
         }
@@ -93,29 +95,31 @@ export const PreferencesSection = ({
       <div className="mb-6 rounded-16 border border-neutral-100 bg-neutral-50 p-5">
         <div className="mb-1 flex items-center justify-between">
           <label className="text-[13px] font-medium text-neutral-700">
-            Salary expectation
+            {t("prefs.salary")}
           </label>
           <span className="text-[11.5px] text-neutral-400">
-            Visible only to verified employers
+            {t("prefs.salaryVisible")}
           </span>
         </div>
         <p className="mb-3 text-[24px] font-semibold tracking-tight text-neutral-900">
           {formatSalaryRange(salMin, salMax)}
           <span className="ml-1 text-[14px] font-normal text-neutral-400">
-            USD / month
+            {t("prefs.usdMonth")}
           </span>
         </p>
         <p className="mb-4 text-[12.5px] text-neutral-500">
-          Median for Senior Frontend in VN:{" "}
-          <strong className="text-brand-700">$2,800 / mo</strong> · You&apos;re
-          asking <strong className="text-brand-700">+30%</strong> above median,
-          in line with SG market.
+          {t("prefs.median", {
+            median: `$${formatNumber(2800)} / ${t("prefs.perMonthShort")}`,
+            pct: "+30%",
+          })}
         </p>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <p className="mb-1 text-[11px] text-neutral-400">Minimum</p>
+            <p className="mb-1 text-[11px] text-neutral-400">
+              {t("prefs.minimum")}
+            </p>
             <input
-              aria-label="Minimum salary"
+              aria-label={t("prefs.minSalaryAria")}
               className="w-full accent-brand-600"
               max={SALARY_MAX}
               min={SALARY_MIN}
@@ -130,9 +134,11 @@ export const PreferencesSection = ({
             />
           </div>
           <div>
-            <p className="mb-1 text-[11px] text-neutral-400">Maximum</p>
+            <p className="mb-1 text-[11px] text-neutral-400">
+              {t("prefs.maximum")}
+            </p>
             <input
-              aria-label="Maximum salary"
+              aria-label={t("prefs.maxSalaryAria")}
               className="w-full accent-brand-600"
               max={SALARY_MAX}
               min={SALARY_MIN}
@@ -150,7 +156,7 @@ export const PreferencesSection = ({
       </div>
 
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-        Employment type
+        {t("prefs.employmentType")}
       </p>
       {/* No border/bg wrapper here — the uppercase label above each group
           already separates it from its neighbors; a bordered/backgrounded
@@ -158,27 +164,27 @@ export const PreferencesSection = ({
           card, was doubled framing with no extra information. */}
       <div className="mb-6 divide-y divide-neutral-50">
         <ToggleRow
-          desc="Standard, salaried, employment contract via EOR or direct."
+          desc={t("prefs.ftDesc")}
           on={employmentTypes.includes("FULL_TIME")}
-          title="Full-time"
+          title={t("prefs.ft")}
           onChange={() => toggleEmploymentType("FULL_TIME")}
         />
         <ToggleRow
-          desc="3–12 month engagements. Day-rate or monthly retainer."
+          desc={t("prefs.contractDesc")}
           on={employmentTypes.includes("CONTRACT")}
-          title="Contract / freelance"
+          title={t("prefs.contract")}
           onChange={() => toggleEmploymentType("CONTRACT")}
         />
         <ToggleRow
-          desc="20–30 hours / week. Useful if you're consulting on the side."
+          desc={t("prefs.ptDesc")}
           on={employmentTypes.includes("PART_TIME")}
-          title="Part-time"
+          title={t("prefs.pt")}
           onChange={() => toggleEmploymentType("PART_TIME")}
         />
       </div>
 
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-        Timezone overlap
+        {t("prefs.tzOverlap")}
       </p>
       {/* No border/bg wrapper here — the uppercase label above each group
           already separates it from its neighbors; a bordered/backgrounded
@@ -186,11 +192,11 @@ export const PreferencesSection = ({
           card, was doubled framing with no extra information. */}
       <div className="mb-6 divide-y divide-neutral-50">
         <ToggleRow
-          desc="1 hour ahead of Vietnam. Most SEA startups operate here."
+          desc={t("prefs.sgDesc")}
           on={timezoneOverlap.includes("SG_HOURS")}
           title={
             <>
-              Singapore hours{" "}
+              {t("prefs.sg")}{" "}
               <span className="font-mono text-[12px] text-neutral-400">
                 · UTC+8
               </span>
@@ -199,11 +205,11 @@ export const PreferencesSection = ({
           onChange={() => toggleTimezoneOverlap("SG_HOURS")}
         />
         <ToggleRow
-          desc="Early mornings from VN. Canva, Atlassian, Airwallex operate here."
+          desc={t("prefs.auDesc")}
           on={timezoneOverlap.includes("AU_HOURS")}
           title={
             <>
-              Sydney / Melbourne hours{" "}
+              {t("prefs.au")}{" "}
               <span className="font-mono text-[12px] text-neutral-400">
                 · UTC+10
               </span>
@@ -212,34 +218,34 @@ export const PreferencesSection = ({
           onChange={() => toggleTimezoneOverlap("AU_HOURS")}
         />
         <ToggleRow
-          desc="No required overlap. US / EU teams that work entirely async."
+          desc={t("prefs.asyncDesc")}
           on={timezoneOverlap.includes("ASYNC_ONLY")}
-          title="Async-only"
+          title={t("prefs.async")}
           onChange={() => toggleTimezoneOverlap("ASYNC_ONLY")}
         />
       </div>
 
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-        Notifications
+        {t("prefs.notifications")}
       </p>
       <div className="divide-y divide-neutral-50">
         <ToggleRow
-          desc="Top 5 matches for your saved filters, every Monday."
+          desc={t("prefs.digestDesc")}
           on={notificationPrefs?.weeklyDigest ?? true}
           title={
             <>
-              Weekly digest{" "}
+              {t("prefs.digest")}{" "}
               <span className="font-mono text-[12px] text-neutral-400">
-                · Monday 9am
+                {t("prefs.digestWhen")}
               </span>
             </>
           }
           onChange={(v) => toggleNotification("weeklyDigest", v)}
         />
         <ToggleRow
-          desc="Email when a role scores 90%+ against your profile. Usually 1–2 a month."
+          desc={t("prefs.instantDesc")}
           on={notificationPrefs?.instantMatchAlerts ?? true}
-          title="Instant high-match alerts"
+          title={t("prefs.instant")}
           onChange={(v) => toggleNotification("instantMatchAlerts", v)}
         />
       </div>

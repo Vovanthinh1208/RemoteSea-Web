@@ -3,6 +3,7 @@ import { cn } from "@/utils/cn";
 import { timeAgoLong } from "@/utils/time";
 import { buildTimelineSteps } from "@/features/talent/talent-dashboard.utils";
 import type { Application } from "@/types/application";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface TimelineItem {
   label: string;
@@ -23,43 +24,48 @@ const TimelineStep = ({
   negative,
   first,
   connectorFilled,
-}: TimelineStepProps) => (
-  <>
-    {!first && (
-      <span
-        className={cn(
-          "mt-[9px] h-px w-8 flex-shrink-0 sm:w-12",
-          connectorFilled ? "bg-brand-300" : "bg-neutral-200"
-        )}
-      />
-    )}
-    <div className="flex w-[96px] flex-shrink-0 flex-col items-center text-center sm:w-[112px]">
-      <span
-        className={cn(
-          "grid h-5 w-5 flex-shrink-0 place-items-center rounded-full border",
-          reached
-            ? negative
-              ? "border-red-500 bg-red-500"
-              : "border-brand-600 bg-brand-600"
-            : "border-neutral-300 bg-white"
-        )}
-      >
-        {reached && <Check className="text-white" size={10} strokeWidth={3} />}
-      </span>
-      <p
-        className={cn(
-          "mt-2 text-[11.5px] font-medium leading-tight",
-          reached ? "text-neutral-900" : "text-neutral-400"
-        )}
-      >
-        {label}
-      </p>
-      <p className="mt-0.5 text-[10.5px] text-neutral-400">
-        {timestamp ? timeAgoLong(timestamp) : "Not yet"}
-      </p>
-    </div>
-  </>
-);
+}: TimelineStepProps) => {
+  const { t } = useTranslation("talent");
+  return (
+    <>
+      {!first && (
+        <span
+          className={cn(
+            "mt-[9px] h-px w-8 flex-shrink-0 sm:w-12",
+            connectorFilled ? "bg-brand-300" : "bg-neutral-200"
+          )}
+        />
+      )}
+      <div className="flex w-[96px] flex-shrink-0 flex-col items-center text-center sm:w-[112px]">
+        <span
+          className={cn(
+            "grid h-5 w-5 flex-shrink-0 place-items-center rounded-full border",
+            reached
+              ? negative
+                ? "border-red-500 bg-red-500"
+                : "border-brand-600 bg-brand-600"
+              : "border-neutral-300 bg-white"
+          )}
+        >
+          {reached && (
+            <Check className="text-white" size={10} strokeWidth={3} />
+          )}
+        </span>
+        <p
+          className={cn(
+            "mt-2 text-[11.5px] font-medium leading-tight",
+            reached ? "text-neutral-900" : "text-neutral-400"
+          )}
+        >
+          {label}
+        </p>
+        <p className="mt-0.5 text-[10.5px] text-neutral-400">
+          {timestamp ? timeAgoLong(timestamp) : t("common.time.notYet")}
+        </p>
+      </div>
+    </>
+  );
+};
 
 interface ApplicationTimelineProps {
   application: Application;
@@ -68,14 +74,19 @@ interface ApplicationTimelineProps {
 export const ApplicationTimeline = ({
   application,
 }: ApplicationTimelineProps) => {
+  const { t } = useTranslation("talent");
   const steps = buildTimelineSteps(application);
   const isNegative = (status: string) =>
     status === "REJECTED" || status === "WITHDRAWN";
 
   const items: TimelineItem[] = [
-    { label: "Applied", timestamp: application.appliedAt, reached: true },
     {
-      label: "Viewed by employer",
+      label: t("timeline.applied"),
+      timestamp: application.appliedAt,
+      reached: true,
+    },
+    {
+      label: t("timeline.viewed"),
       timestamp: application.viewedAt,
       reached: !!application.viewedAt,
     },

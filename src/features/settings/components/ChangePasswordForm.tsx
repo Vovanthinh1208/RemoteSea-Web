@@ -9,32 +9,36 @@ import {
   type ChangePasswordFormValues,
 } from "@/features/settings/settings.schemas";
 import { Button } from "@/components/ui/button";
-
-const UPDATE_FAILED_MESSAGE = "Could not update password. Please try again.";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const ChangePasswordForm = () => {
+  const { t } = useTranslation("settings");
   const runWithToast = useToastMutation();
   const changePasswordMutation = useChangeMyPassword();
 
+  const form = useForm<ChangePasswordFormValues>({
+    resolver: zodResolver(changePasswordFormSchema),
+    defaultValues: { currentPassword: "", newPassword: "" },
+  });
   const {
     register,
     handleSubmit,
     setError,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<ChangePasswordFormValues>({
-    resolver: zodResolver(changePasswordFormSchema),
-    defaultValues: { currentPassword: "", newPassword: "" },
-  });
+  } = form;
+  useRevalidateOnLocaleChange(form);
 
   const onSubmit = async (values: ChangePasswordFormValues) => {
     const ok = await runWithToast(
       () => changePasswordMutation.mutateAsync(values),
       {
-        success: "Password updated",
-        error: "Couldn't update password",
-        onError: (err) =>
-          applyFormSubmitError(err, setError, UPDATE_FAILED_MESSAGE),
+        success: t("changePassword.success"),
+        error: t("changePassword.error"),
+        onError: (err) => {
+          applyFormSubmitError(err, setError);
+        },
       }
     );
     if (ok) reset();
@@ -48,8 +52,8 @@ export const ChangePasswordForm = () => {
       <TextField
         error={errors.currentPassword?.message}
         id="currentPassword"
-        label="Change password"
-        placeholder="Current password"
+        label={t("changePassword.label")}
+        placeholder={t("changePassword.currentPlaceholder")}
         autoComplete="current-password"
         registration={register("currentPassword")}
         type="password"
@@ -57,14 +61,16 @@ export const ChangePasswordForm = () => {
       <TextField
         error={errors.newPassword?.message}
         id="newPassword"
-        label="New password"
-        placeholder="New password (min 8 characters)"
+        label={t("changePassword.newLabel")}
+        placeholder={t("changePassword.newPlaceholder")}
         autoComplete="new-password"
         registration={register("newPassword")}
         type="password"
       />
       <Button disabled={isSubmitting} size="sm" type="submit">
-        {isSubmitting ? "Updating…" : "Update password"}
+        {isSubmitting
+          ? t("changePassword.updating")
+          : t("changePassword.update")}
       </Button>
     </form>
   );

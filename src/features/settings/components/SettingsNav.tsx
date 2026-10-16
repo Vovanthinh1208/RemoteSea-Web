@@ -4,10 +4,12 @@ import { cn } from "@/utils/cn";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { SET_SECTIONS } from "@/features/settings/settings.constants";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const SECTION_IDS = SET_SECTIONS.map((s) => s.id);
 
 export const SettingsNav = () => {
+  const { t } = useTranslation("settings");
   const [activeSection, setActiveSection] = useActiveSection(SECTION_IDS);
 
   const scrollTo = (id: string) => {
@@ -38,7 +40,7 @@ export const SettingsNav = () => {
               onClick={() => scrollTo(s.id)}
             >
               <Icon size={13} />
-              {s.label}
+              {t(s.labelKey)}
             </button>
           );
         })}
@@ -47,7 +49,7 @@ export const SettingsNav = () => {
           className="flex w-full items-center gap-2 rounded-10 px-3 py-2 text-[13px] text-neutral-500 hover:bg-white/60 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
           to={ROUTES.profile}
         >
-          <Asterisk size={13} /> Profile setup
+          <Asterisk size={13} /> {t("nav.profileSetup")}
         </Link>
       </div>
     </aside>

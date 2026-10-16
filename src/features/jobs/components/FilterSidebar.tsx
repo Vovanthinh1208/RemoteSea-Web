@@ -14,6 +14,8 @@ import {
   type Filters,
 } from "@/features/jobs/job-filters";
 import type { JobFacets } from "@/types/job";
+import { useTranslation } from "@/i18n/useTranslation";
+import { filterValueLabel } from "@/features/jobs/jobs.utils";
 
 interface FilterSidebarProps {
   filters: Filters;
@@ -21,19 +23,8 @@ interface FilterSidebarProps {
   facets: JobFacets;
 }
 
-const TIMEZONE_OPTIONS = [
-  { key: "sea", label: "SEA / APAC (UTC+7 to +10)" },
-  { key: "async", label: "Async-friendly" },
-  { key: "SG", label: "SG-based company" },
-  { key: "AU", label: "AU-based company" },
-  { key: "US", label: "US-based company" },
-] as const;
-
-const SENIORITY_OPTIONS = [
-  { key: "Entry", label: "Entry (0–2 yrs)" },
-  { key: "Mid", label: "Mid (2–5 yrs)" },
-  { key: "Senior", label: "Senior (5+ yrs)" },
-] as const;
+const TIMEZONE_KEYS = ["sea", "async", "SG", "AU", "US"] as const;
+const SENIORITY_KEYS = ["Entry", "Mid", "Senior"] as const;
 
 const SALARY_STEP = 100;
 const SALARY_GAP = 500;
@@ -43,6 +34,7 @@ export const FilterSidebar = ({
   onChange,
   facets,
 }: FilterSidebarProps) => {
+  const { t, formatNumber } = useTranslation("jobs");
   const { data: categories } = useCategories();
   const activeCount = countActiveFilters(filters);
   // Mobile only — on sm+ the groups below are always visible (this state is
@@ -86,7 +78,7 @@ export const FilterSidebar = ({
           onClick={() => setMobileOpen((v) => !v)}
         >
           <h3 className="text-[15px] font-semibold text-neutral-900">
-            Filters
+            {t("filters.title")}
           </h3>
           {activeCount > 0 && (
             <span className="grid h-4 w-4 place-items-center rounded-full bg-brand-600 text-[11px] font-semibold text-white">
@@ -108,48 +100,49 @@ export const FilterSidebar = ({
           )}
           onClick={() => onChange(DEFAULT_FILTERS)}
         >
-          Clear all
+          {t("filters.clearAll")}
         </button>
       </div>
       <div
         className={cn(mobileOpen ? "block" : "hidden", "sm:!block")}
         id="job-filter-groups"
       >
-        <FilterGroup label="Job type">
+        <FilterGroup label={t("filters.jobType")}>
           {FILTER_OPTIONS.jobType.map((v) => (
             <CheckRow
               checked={filters.jobType.includes(v)}
               count={facets.jobType[v] ?? 0}
               key={v}
-              label={v === "Contract" ? "Contract / Freelance" : v}
+              label={filterValueLabel(v)}
               onToggle={() => toggle("jobType", v)}
             />
           ))}
         </FilterGroup>
 
-        <FilterGroup label="Timezone / Location">
-          {TIMEZONE_OPTIONS.map(({ key, label }) => (
+        <FilterGroup label={t("filters.timezone")}>
+          {TIMEZONE_KEYS.map((key) => (
             <CheckRow
               checked={filters.timezone.includes(key)}
               count={facets.timezone[key] ?? 0}
               key={key}
-              label={label}
+              label={t(`tzOption.${key}`)}
               onToggle={() => toggle("timezone", key)}
             />
           ))}
         </FilterGroup>
 
-        <FilterGroup label="Salary range">
+        <FilterGroup label={t("filters.salary")}>
           <div className="space-y-2 pt-1">
             <div className="flex justify-between text-[12px] text-neutral-500">
-              <span>${salaryMin.toLocaleString()}</span>
+              <span>${formatNumber(salaryMin)}</span>
               <span>
-                ${salaryMax.toLocaleString()}
-                {salaryMax >= SALARY_CEIL ? "+" : ""}/mo
+                ${formatNumber(salaryMax)}
+                {salaryMax >= SALARY_CEIL ? "+" : ""}
+                {t("filters.perMonthSuffix")}
               </span>
             </div>
             <input
-              aria-label="Minimum salary"
+              aria-label={t("filters.minSalary")}
               className="w-full accent-brand-600"
               max={SALARY_CEIL}
               min={SALARY_FLOOR}
@@ -164,7 +157,7 @@ export const FilterSidebar = ({
               onTouchEnd={commitSalary}
             />
             <input
-              aria-label="Maximum salary"
+              aria-label={t("filters.maxSalary")}
               className="w-full accent-brand-600"
               max={SALARY_CEIL}
               min={SALARY_FLOOR}
@@ -181,19 +174,19 @@ export const FilterSidebar = ({
           </div>
         </FilterGroup>
 
-        <FilterGroup label="Seniority">
-          {SENIORITY_OPTIONS.map(({ key, label }) => (
+        <FilterGroup label={t("filters.seniority")}>
+          {SENIORITY_KEYS.map((key) => (
             <CheckRow
               checked={filters.seniority.includes(key)}
               count={facets.seniority[key] ?? 0}
               key={key}
-              label={label}
+              label={t(`seniorityOption.${key}`)}
               onToggle={() => toggle("seniority", key)}
             />
           ))}
         </FilterGroup>
 
-        <FilterGroup label="Category">
+        <FilterGroup label={t("filters.category")}>
           {FILTER_OPTIONS.category.map((name) => {
             const slug = slugForCategoryName(name);
             return (
@@ -201,7 +194,7 @@ export const FilterSidebar = ({
                 checked={!!slug && filters.category.includes(slug)}
                 count={facets.category[name] ?? 0}
                 key={name}
-                label={name}
+                label={filterValueLabel(name)}
                 onToggle={() => slug && toggle("category", slug)}
               />
             );

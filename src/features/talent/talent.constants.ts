@@ -1,4 +1,5 @@
 import type { ExperienceLevel } from "@/types/job";
+import { optionLabel } from "@/i18n/labels";
 
 export const YEARS_BUCKETS = ["0–2", "2–5", "5–10", "10+"] as const;
 export type YearsBucket = (typeof YEARS_BUCKETS)[number];
@@ -49,6 +50,12 @@ export const LEVEL_TO_LABEL: Record<
   SENIOR: "Senior",
   LEAD: "Staff",
   EXECUTIVE: "Principal / Lead",
+};
+
+// Localized seniority label for an API level code (ENTRY → "Junior" / "Junior")
+export const levelDisplayLabel = (level: string): string => {
+  const label = LEVEL_TO_LABEL[level];
+  return label ? optionLabel("talent.opt.seniority", label) : level;
 };
 
 export const PRIMARY_ROLE_OPTIONS = [

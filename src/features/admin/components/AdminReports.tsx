@@ -15,16 +15,18 @@ import {
   useAdminReports,
   useResolveAdminReport,
 } from "@/features/admin/admin.queries";
-import { JOB_REPORT_REASON_LABELS } from "@/types/job-report";
+import { jobReportReasonLabel } from "@/types/job-report";
 import { ROUTES } from "@/constants/routes";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import type { AdminJobReport } from "@/types/admin";
 import type { JobReportStatus } from "@/types/job-report";
+import { useTranslation } from "@/i18n/useTranslation";
+import { formatLocalDate } from "@/utils/format";
 
 const FILTERS = [
-  { id: "OPEN", label: "Open" },
-  { id: "RESOLVED", label: "Resolved" },
-  { id: "DISMISSED", label: "Dismissed" },
+  { id: "OPEN" },
+  { id: "RESOLVED" },
+  { id: "DISMISSED" },
 ] as const;
 
 const REPORT_GRID_COLUMNS =
@@ -41,6 +43,7 @@ const ReportRow = memo(function ReportRow({
   isPending,
   onResolve,
 }: ReportRowProps) {
+  const { t } = useTranslation("admin");
   return (
     <div
       className="grid items-center border-b border-neutral-50 px-5 py-4 transition-colors last:border-0 hover:bg-neutral-50"
@@ -63,7 +66,7 @@ const ReportRow = memo(function ReportRow({
       </div>
 
       <div>
-        <Tag>{JOB_REPORT_REASON_LABELS[r.reason]}</Tag>
+        <Tag>{jobReportReasonLabel(r.reason)}</Tag>
       </div>
 
       <div className="truncate text-[12.5px] text-neutral-500">
@@ -71,10 +74,7 @@ const ReportRow = memo(function ReportRow({
       </div>
 
       <span className="text-[13px] text-neutral-400">
-        {new Date(r.createdAt).toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-        })}
+        {formatLocalDate(r.createdAt, { month: "short", day: "numeric" })}
       </span>
 
       <div className="flex justify-end gap-2">
@@ -86,11 +86,11 @@ const ReportRow = memo(function ReportRow({
               onClick={() => onResolve(r.id, "resolve")}
               className="inline-flex h-8 items-center justify-center gap-1 rounded-8 border border-brand-200 bg-brand-50 px-2.5 text-xs font-medium text-brand-700 transition-all hover:bg-brand-100 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <CheckCircle2 size={12} /> Resolve
+              <CheckCircle2 size={12} /> {t("rep.resolve")}
             </button>
             <ConfirmAction
               isPending={isPending}
-              message="Dismiss this report?"
+              message={t("rep.dismissQ")}
               onConfirm={() => onResolve(r.id, "dismiss")}
             >
               {({ onClick }) => (
@@ -100,7 +100,7 @@ const ReportRow = memo(function ReportRow({
                   onClick={onClick}
                   className="inline-flex h-8 items-center justify-center gap-1 rounded-8 border border-neutral-200 bg-white px-2.5 text-xs font-medium text-neutral-600 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  <XCircle size={12} /> Dismiss
+                  <XCircle size={12} /> {t("rep.dismiss")}
                 </button>
               )}
             </ConfirmAction>
@@ -111,7 +111,9 @@ const ReportRow = memo(function ReportRow({
               r.status === "RESOLVED" ? "bg-brand-50 text-brand-700" : ""
             }
           >
-            {r.status === "RESOLVED" ? "Resolved" : "Dismissed"}
+            {r.status === "RESOLVED"
+              ? t("rep.resolvedTag")
+              : t("rep.dismissedTag")}
           </Tag>
         )}
       </div>
@@ -120,6 +122,7 @@ const ReportRow = memo(function ReportRow({
 });
 
 export const AdminReports = () => {
+  const { t } = useTranslation("admin");
   const runWithToast = useToastMutation();
   const isStatusId = (v: string): v is (typeof FILTERS)[number]["id"] =>
     FILTERS.some((f) => f.id === v);
@@ -138,10 +141,13 @@ export const AdminReports = () => {
   const handleResolve = useCallback(
     (id: string, action: "resolve" | "dismiss") =>
       runWithToast(() => resolve({ id, action }), {
-        success: action === "resolve" ? "Report resolved" : "Report dismissed",
-        error: "Couldn't update report",
+        success:
+          action === "resolve"
+            ? t("rep.resolvedToast")
+            : t("rep.dismissedToast"),
+        error: t("rep.updateFailed"),
       }),
-    [resolve, runWithToast]
+    [resolve, runWithToast, t]
   );
 
   if (isLoading) return <AdminReportsSkeleton />;
@@ -150,11 +156,11 @@ export const AdminReports = () => {
       <EmptyState
         action={
           <Button size="sm" variant="outline" onClick={() => void refetch()}>
-            Try again
+            {t("common.actions.retry")}
           </Button>
         }
-        description="Something went wrong loading reports."
-        title="Couldn't load reports"
+        description={t("rep.errorDesc")}
+        title={t("rep.errorTitle")}
       />
     );
   }
@@ -162,32 +168,32 @@ export const AdminReports = () => {
   return (
     <div className="flex-1 overflow-hidden">
       <div className="mb-6">
-        <Eyebrow className="mb-0.5">Trust &amp; safety</Eyebrow>
-        <h1 className="text-[26px] font-semibold text-neutral-900">Reports</h1>
-        <p className="mt-1 text-sm text-neutral-500">
-          Listings flagged by talent or employers as suspicious.
-        </p>
+        <Eyebrow className="mb-0.5">{t("rep.eyebrow")}</Eyebrow>
+        <h1 className="text-[26px] font-semibold text-neutral-900">
+          {t("rep.title")}
+        </h1>
+        <p className="mt-1 text-sm text-neutral-500">{t("rep.subtitle")}</p>
       </div>
 
       {/* KPIs */}
       <div className="mb-6 grid grid-cols-3 gap-3">
         <StatCard
           icon={Flag}
-          label="Open reports"
-          sub="need review"
+          label={t("rep.stat.open")}
+          sub={t("rep.stat.openSub")}
           value={status === "OPEN" ? reports.length : "—"}
           warn={status === "OPEN" && openCount > 0}
         />
         <StatCard
           icon={CheckCircle2}
-          label="Resolved"
-          sub="this view"
+          label={t("rep.stat.resolved")}
+          sub={t("rep.stat.thisView")}
           value={status === "RESOLVED" ? reports.length : "—"}
         />
         <StatCard
           icon={AlertTriangle}
-          label="Dismissed"
-          sub="this view"
+          label={t("rep.stat.dismissed")}
+          sub={t("rep.stat.thisView")}
           value={status === "DISMISSED" ? reports.length : "—"}
         />
       </div>
@@ -203,7 +209,7 @@ export const AdminReports = () => {
             key={f.id}
             onClick={() => setStatus(f.id)}
           >
-            {f.label}
+            {t(`rep.filter.${f.id}`)}
           </PillToggle>
         ))}
       </div>
@@ -214,18 +220,15 @@ export const AdminReports = () => {
           className="grid border-b border-neutral-100 px-5 py-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400"
           style={{ gridTemplateColumns: REPORT_GRID_COLUMNS }}
         >
-          <span>Job</span>
-          <span>Reporter</span>
-          <span>Reason</span>
-          <span>Details</span>
-          <span>Reported</span>
+          <span>{t("rep.col.job")}</span>
+          <span>{t("rep.col.reporter")}</span>
+          <span>{t("rep.col.reason")}</span>
+          <span>{t("rep.col.details")}</span>
+          <span>{t("rep.col.reported")}</span>
           <span />
         </div>
         {reports.length === 0 ? (
-          <EmptyRow>
-            No {FILTERS.find((f) => f.id === status)?.label.toLowerCase()}{" "}
-            reports.
-          </EmptyRow>
+          <EmptyRow>{t(`rep.empty.${status}`)}</EmptyRow>
         ) : (
           reports.map((r) => (
             <ReportRow

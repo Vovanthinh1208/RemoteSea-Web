@@ -12,6 +12,7 @@ import {
 import { countryFlag } from "@/utils/color";
 import { ROUTES } from "@/constants/routes";
 import type { ApplicationWithJob } from "@/types/application";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const RECOMMENDED_JOBS_DISPLAY_COUNT = 3;
 const WHY_SKILLS_DISPLAY_COUNT = 2;
@@ -36,6 +37,7 @@ const RecommendedJobRowSkeleton = () => (
 );
 
 export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
+  const { t } = useTranslation("talent");
   const { data, isLoading } = useJobsQuery(
     DEFAULT_JOB_FILTERS,
     DEFAULT_FILTERS_FETCH_LIMIT
@@ -69,16 +71,16 @@ export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
     <div className="overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">
       <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
         <h3 className="text-[14px] font-semibold text-neutral-900">
-          Picked for you{" "}
+          {t("recommended.title")}
           <span className="font-normal text-neutral-400">
-            · newest &amp; featured
+            {t("recommended.sub")}
           </span>
         </h3>
         <Link
           className="inline-flex items-center gap-1 rounded-8 text-[12px] font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
           to={ROUTES.jobs}
         >
-          Browse all jobs <ArrowRight size={12} />
+          {t("recommended.browseAll")} <ArrowRight size={12} />
         </Link>
       </div>
       <div>
@@ -87,8 +89,8 @@ export const RecommendedJobs = ({ applications }: RecommendedJobsProps) => {
             job.skills
               .slice(0, WHY_SKILLS_DISPLAY_COUNT)
               .map((s) => s.skill.name)
-              .join(" + ") || "Matches your profile";
-          const country = job.country ?? "Remote";
+              .join(" + ") || t("recommended.matchesProfile");
+          const country = job.country ?? t("snapshot.remote");
           return (
             <Link
               className="flex items-center gap-4 border-b border-neutral-50 px-5 py-4 transition-colors last:border-none hover:bg-neutral-50/60 focus-visible:relative focus-visible:z-10 focus-visible:shadow-focus focus-visible:outline-none"

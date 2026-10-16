@@ -24,6 +24,7 @@ import {
 import { cn } from "@/utils/cn";
 import { Spinner } from "@/components/ui/spinner";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface JobsBoardProps {
   filters: JobFilters;
@@ -32,17 +33,22 @@ interface JobsBoardProps {
 
 const JOB_LIST_SKELETON_COUNT = 6;
 
-const SORT_OPTIONS = [
-  { value: "relevance", label: "Best match" },
-  { value: "recent", label: "Most recent" },
-  { value: "salary", label: "Highest salary" },
-  { value: "featured", label: "Featured first" },
-] as const satisfies readonly { value: SortKey; label: string }[];
+const SORT_KEYS = [
+  "relevance",
+  "recent",
+  "salary",
+  "featured",
+] as const satisfies readonly SortKey[];
 
 export const JobsBoard = ({
   filters: query,
   onFiltersChange,
 }: JobsBoardProps) => {
+  const { t, formatNumber } = useTranslation("jobs");
+  const sortOptions = SORT_KEYS.map((value) => ({
+    value,
+    label: t(`board.sort.${value}`),
+  }));
   const [search, setSearch] = useSyncedState(query.q);
   const queryClient = useQueryClient();
   const { data, isLoading, isFetching, isError, isPlaceholderData, refetch } =
@@ -95,7 +101,7 @@ export const JobsBoard = ({
 
   return (
     <div className="mx-auto max-w-[1240px] px-6 py-8">
-      <h1 className="sr-only">Jobs</h1>
+      <h1 className="sr-only">{t("board.heading")}</h1>
       <SearchBar value={search} onChange={setSearch} />
 
       <div className="flex flex-col gap-8 sm:flex-row">
@@ -115,16 +121,17 @@ export const JobsBoard = ({
             <div className="flex items-center gap-2 text-sm text-neutral-600">
               {isLoading ? (
                 <>
-                  <span className="text-neutral-900">Loading jobs… </span>
+                  <span className="text-neutral-900">{t("board.loading")}</span>
                   <Spinner className="h-3 w-3" />
                 </>
               ) : (
                 <>
-                  <strong className="text-neutral-900">{total}</strong>{" "}
-                  {total === 1 ? "job" : "jobs"}
+                  <strong className="text-neutral-900">
+                    {formatNumber(total)}
+                  </strong>{" "}
+                  {t("board.jobs", { count: total })}
                   <span className="text-neutral-400">
-                    {" "}
-                    matching your filters
+                    {t("board.matching")}
                   </span>
                   {/* Background refetch (filter/sort/page change) over data
                       that's already on screen — isLoading only ever covers the
@@ -139,13 +146,13 @@ export const JobsBoard = ({
               )}
             </div>
             <div className="flex items-center gap-2 text-sm text-neutral-500">
-              Sort by
+              {t("board.sortBy")}
               <Dropdown
-                aria-label="Sort jobs"
+                aria-label={t("board.sortAria")}
                 options={
                   query.q
-                    ? SORT_OPTIONS
-                    : SORT_OPTIONS.filter((o) => o.value !== "relevance")
+                    ? sortOptions
+                    : sortOptions.filter((o) => o.value !== "relevance")
                 }
                 value={query.sort}
                 onChange={(v) => setSort(v as SortKey)}
@@ -163,7 +170,7 @@ export const JobsBoard = ({
                 >
                   {p.label}
                   <button
-                    aria-label={`Remove filter: ${p.label}`}
+                    aria-label={t("board.removeFilter", { label: p.label })}
                     className="rounded-4 text-neutral-400 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                     onClick={p.clear}
                   >
@@ -190,11 +197,11 @@ export const JobsBoard = ({
             <EmptyState
               action={
                 <Button size="sm" variant="outline" onClick={() => refetch()}>
-                  Try again
+                  {t("common.actions.retry")}
                 </Button>
               }
-              description="Something went wrong fetching listings."
-              title="Couldn't load jobs"
+              description={t("board.errorDesc")}
+              title={t("board.errorTitle")}
             />
           ) : jobs.length === 0 ? (
             <EmptyState
@@ -205,7 +212,7 @@ export const JobsBoard = ({
                     variant="outline"
                     onClick={() => setFilters(DEFAULT_FILTERS)}
                   >
-                    Clear filters
+                    {t("common.actions.clearFilters")}
                   </Button>
                   <Link
                     className={buttonVariants({
@@ -214,12 +221,12 @@ export const JobsBoard = ({
                     })}
                     to={ROUTES.alerts}
                   >
-                    Create a job alert instead
+                    {t("board.createAlert")}
                   </Link>
                 </div>
               }
-              description="Try removing a filter, or get notified the moment a matching job goes live."
-              title="No jobs match these filters"
+              description={t("board.emptyDesc")}
+              title={t("board.emptyTitle")}
             />
           ) : (
             <div

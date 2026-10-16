@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import type { SalaryBenchmark as SalaryBenchmarkData } from "@/features/salary/salary.queries";
 import { BenchBar } from "@/components/home/BenchBar";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const MIN_GLOBAL_MAX = 1;
 
@@ -11,6 +12,7 @@ interface SalaryBenchmarkProps {
 }
 
 export const SalaryBenchmark = ({ benches }: SalaryBenchmarkProps) => {
+  const { t, formatNumber } = useTranslation("home");
   if (!benches || benches.length === 0) return null;
 
   const totalPoints = benches.reduce((a, b) => a + b.count, 0);
@@ -22,15 +24,17 @@ export const SalaryBenchmark = ({ benches }: SalaryBenchmarkProps) => {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_360px]">
           <div>
             <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-500">
-              Salary data
+              {t("benchmark.eyebrow")}
             </p>
             <h2 className="mb-4 font-serif text-[36px] leading-tight tracking-tight text-white">
-              Know your worth <em className="italic text-brand-400">before</em>{" "}
-              you negotiate.
+              {t("benchmark.title")}
+              <em className="italic text-brand-400">
+                {t("benchmark.titleEm")}
+              </em>
+              {t("benchmark.titleEnd")}
             </h2>
             <p className="mb-10 max-w-lg text-[15px] leading-relaxed text-neutral-400">
-              Live salary data aggregated from active listings on RemoteSEA.
-              Updated as new roles go live.
+              {t("benchmark.desc")}
             </p>
 
             <div className="space-y-5">
@@ -41,8 +45,10 @@ export const SalaryBenchmark = ({ benches }: SalaryBenchmarkProps) => {
                       {b.role}
                     </span>
                     <span className="font-mono text-[13px] text-neutral-400">
-                      ${b.min.toLocaleString()}–$
-                      {b.max.toLocaleString()}/mo
+                      {t("benchmark.perMonth", {
+                        min: `$${formatNumber(b.min)}`,
+                        max: `$${formatNumber(b.max)}`,
+                      })}
                     </span>
                   </div>
                   <BenchBar
@@ -59,19 +65,19 @@ export const SalaryBenchmark = ({ benches }: SalaryBenchmarkProps) => {
           <div className="flex flex-col justify-center">
             <div className="rounded-24 border border-white/10 bg-white/5 p-7">
               <h4 className="mb-3 text-[17px] font-semibold text-white">
-                Based on {totalPoints.toLocaleString()} active{" "}
-                {totalPoints === 1 ? "listing" : "listings"} across{" "}
-                {benches.length} {benches.length === 1 ? "field" : "fields"}.
+                {t("benchmark.basedOn", {
+                  count: totalPoints,
+                  fields: benches.length,
+                })}
               </h4>
               <p className="mb-6 text-[14px] leading-relaxed text-neutral-400">
-                Aggregated from live, verified job listings on RemoteSEA — real
-                salary ranges employers are offering right now.
+                {t("benchmark.note")}
               </p>
               <Link
                 className="inline-flex items-center gap-2 rounded-12 border border-brand-600 px-5 py-2.5 text-sm font-medium text-brand-400 transition-colors hover:bg-brand-600 hover:text-white focus-visible:shadow-focus focus-visible:outline-none"
                 to={ROUTES.salary}
               >
-                See full salary guide <ArrowRight size={14} />
+                {t("benchmark.guide")} <ArrowRight size={14} />
               </Link>
             </div>
           </div>

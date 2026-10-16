@@ -22,13 +22,10 @@ import {
 } from "@/features/admin/admin.utils";
 import type { AdminEmployer } from "@/types/admin";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { useTranslation } from "@/i18n/useTranslation";
+import { formatLocalDate } from "@/utils/format";
 
-const FILTERS = [
-  { id: "all", label: "All" },
-  { id: "unverified", label: "Unverified" },
-] as const;
-
-const CENTS_PER_DOLLAR = 100;
+const FILTERS = [{ id: "all" }, { id: "unverified" }] as const;
 
 interface EmployerRowProps {
   employer: AdminEmployer;
@@ -44,6 +41,7 @@ const EmployerRow = memo(function EmployerRow({
   isPending,
   onStatusChange,
 }: EmployerRowProps) {
+  const { t } = useTranslation("admin");
   return (
     <div
       className="grid items-center border-b border-neutral-50 px-5 py-4 transition-colors last:border-0 hover:bg-neutral-50"
@@ -89,17 +87,14 @@ const EmployerRow = memo(function EmployerRow({
       </div>
 
       <span className="text-[13px] text-neutral-400">
-        {new Date(e.createdAt).toLocaleDateString("en-US", {
-          month: "short",
-          year: "numeric",
-        })}
+        {formatLocalDate(e.createdAt, { month: "short", year: "numeric" })}
       </span>
 
       <div className="flex justify-end">
         {e.isVerified ? (
           <ConfirmAction
             isPending={isPending}
-            message={`Suspend ${e.companyName}? Their listings will come down immediately.`}
+            message={t("emp.suspendQ", { name: e.companyName })}
             onConfirm={() => onStatusChange(e.id, "suspend")}
           >
             {({ onClick }) => (
@@ -109,7 +104,7 @@ const EmployerRow = memo(function EmployerRow({
                 onClick={onClick}
                 className="inline-flex h-8 min-w-[76px] items-center justify-center rounded-8 border border-neutral-200 bg-white px-3 text-xs font-medium text-neutral-600 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Suspend
+                {t("emp.suspend")}
               </button>
             )}
           </ConfirmAction>
@@ -120,7 +115,7 @@ const EmployerRow = memo(function EmployerRow({
             onClick={() => onStatusChange(e.id, "verify")}
             className="inline-flex h-8 min-w-[76px] items-center justify-center rounded-8 border border-brand-200 bg-brand-50 px-3 text-xs font-medium text-brand-700 transition-all hover:bg-brand-100 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Verify
+            {t("emp.verify")}
           </button>
         )}
       </div>
@@ -129,6 +124,7 @@ const EmployerRow = memo(function EmployerRow({
 });
 
 export const AdminEmployers = () => {
+  const { t } = useTranslation("admin");
   const runWithToast = useToastMutation();
   const { data, isLoading, isError, refetch } = useAdminEmployers();
   const updateEmployerMutation = useUpdateAdminEmployer();
@@ -149,11 +145,13 @@ export const AdminEmployers = () => {
     (id: string, action: "verify" | "suspend") =>
       runWithToast(() => updateEmployer({ id, action }), {
         success:
-          action === "verify" ? "Employer verified" : "Employer suspended",
+          action === "verify"
+            ? t("emp.verifiedToast")
+            : t("emp.suspendedToast"),
         successVariant: action === "verify" ? "success" : "info",
-        error: "Couldn't update employer",
+        error: t("emp.updateFailed"),
       }),
-    [updateEmployer, runWithToast]
+    [updateEmployer, runWithToast, t]
   );
 
   const rows = employers.filter((e) => {
@@ -180,11 +178,11 @@ export const AdminEmployers = () => {
       <EmptyState
         action={
           <Button size="sm" variant="outline" onClick={() => void refetch()}>
-            Try again
+            {t("common.actions.retry")}
           </Button>
         }
-        description="Something went wrong loading employers."
-        title="Couldn't load employers"
+        description={t("emp.errorDesc")}
+        title={t("emp.errorTitle")}
       />
     );
   }
@@ -192,15 +190,18 @@ export const AdminEmployers = () => {
   return (
     <div className="flex-1 overflow-hidden">
       <div className="mb-6">
-        <Eyebrow className="mb-0.5">Operations</Eyebrow>
+        <Eyebrow className="mb-0.5">{t("users.eyebrow")}</Eyebrow>
         {/* 26px, smaller than the app-wide 32px page title — intentional for
             the denser, list-heavy ops console, shared by AdminQueue/AdminRevenue. */}
         <h1 className="text-[26px] font-semibold text-neutral-900">
-          Employers
+          {t("emp.title")}
         </h1>
         <p className="mt-1 text-sm text-neutral-500">
-          {employers.length} companies · {totalListings} total listings · $
-          {(totalSpendCents / CENTS_PER_DOLLAR).toLocaleString()} billed
+          {t("emp.summary", {
+            companies: employers.length,
+            listings: totalListings,
+            billed: formatCents(totalSpendCents),
+          })}
         </p>
       </div>
 
@@ -208,21 +209,21 @@ export const AdminEmployers = () => {
       <div className="mb-6 grid grid-cols-3 gap-3">
         <StatCard
           icon={Building}
-          label="Total employers"
-          sub="all time"
+          label={t("emp.stat.total")}
+          sub={t("emp.stat.totalSub")}
           value={employers.length}
         />
         <StatCard
           icon={Shield}
-          label="Unverified"
-          sub="need review"
+          label={t("emp.stat.unverified")}
+          sub={t("emp.stat.unverifiedSub")}
           value={counts.unverified}
           warn={counts.unverified > 0}
         />
         <StatCard
           icon={Wallet}
-          label="Total billed"
-          sub="lifetime"
+          label={t("emp.stat.billed")}
+          sub={t("emp.stat.billedSub")}
           value={formatCentsCompact(totalSpendCents)}
         />
       </div>
@@ -238,7 +239,7 @@ export const AdminEmployers = () => {
               key={f.id}
               onClick={() => setFilter(f.id)}
             >
-              {f.label}{" "}
+              {t(`emp.filter.${f.id}`)}{" "}
               <span
                 className={`ml-1 text-[11px] ${filter === f.id ? "text-white/70" : "text-neutral-400"}`}
               >
@@ -250,9 +251,9 @@ export const AdminEmployers = () => {
         <div className="flex h-9 w-full items-center gap-2 rounded-10 border border-neutral-200 bg-white px-3 focus-within:border-brand-600 focus-within:shadow-focus sm:ml-auto sm:w-auto">
           <Search className="text-neutral-400" size={14} />
           <input
-            aria-label="Search employers"
+            aria-label={t("emp.searchAria")}
             className="w-full bg-transparent text-sm outline-none placeholder:text-neutral-400 sm:w-48"
-            placeholder="Search employers…"
+            placeholder={t("emp.searchPlaceholder")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -265,14 +266,14 @@ export const AdminEmployers = () => {
           className="grid border-b border-neutral-100 px-5 py-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400"
           style={{ gridTemplateColumns: EMPLOYER_GRID_COLUMNS }}
         >
-          <span>Employer</span>
-          <span>Listings</span>
-          <span>Total spend</span>
-          <span>Joined</span>
+          <span>{t("emp.col.employer")}</span>
+          <span>{t("emp.col.listings")}</span>
+          <span>{t("emp.col.spend")}</span>
+          <span>{t("emp.col.joined")}</span>
           <span />
         </div>
         {rows.length === 0 ? (
-          <EmptyRow>No employers match this filter.</EmptyRow>
+          <EmptyRow>{t("emp.empty")}</EmptyRow>
         ) : (
           rows.map((e) => (
             <EmployerRow

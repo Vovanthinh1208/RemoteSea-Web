@@ -1,3 +1,9 @@
+import { getIntlLocale, getRuntimeLocale, translate } from "@/i18n/runtime";
+
+// Accepts "vi" / "vi-VN" / "en" / "en-US" / undefined (= active app locale).
+const intl = (locale?: string): string =>
+  locale ? (locale.startsWith("vi") ? "vi-VN" : "en-US") : getIntlLocale();
+
 /**
  * The one salary-range formatter. This was re-implemented inline ~9 times with
  * diverging null handling — two pages rendered "$0–0" for jobs/profiles with no
@@ -11,11 +17,14 @@ export const formatSalaryRange = (
   opts: { prefix?: string; locale?: string } = {}
 ): string | null => {
   const prefix = opts.prefix ?? "$";
-  const loc = opts.locale ?? "en-US";
+  const loc = intl(opts.locale);
   if (min != null && max != null)
     return `${prefix}${min.toLocaleString(loc)}–${max.toLocaleString(loc)}`;
   if (min != null) return `${prefix}${min.toLocaleString(loc)}+`;
-  if (max != null) return `Up to ${prefix}${max.toLocaleString(loc)}`;
+  if (max != null)
+    return translate("common.format.upTo", {
+      amount: `${prefix}${max.toLocaleString(loc)}`,
+    });
   return null;
 };
 
@@ -25,17 +34,17 @@ export const formatSalaryRange = (
  * toLocaleString'd on the pricing page ("$1,200"); the same number showed two
  * ways. This is the one formatter for those.
  */
-export const formatUsd = (amount: number, locale: string = "en-US"): string =>
-  `$${amount.toLocaleString(locale)}`;
+export const formatUsd = (amount: number, locale?: string): string =>
+  `$${amount.toLocaleString(intl(locale))}`;
 
 export const formatSalaryWithCurrency = (
   min: number | null,
   max: number | null,
   currency: string,
-  locale: string = "en-US"
+  locale?: string
 ): string | null => {
   if (!min && !max) return null;
-  const fmt = (n: number) => `${currency} ${n.toLocaleString(locale)}`;
+  const fmt = (n: number) => `${currency} ${n.toLocaleString(intl(locale))}`;
   if (min && max) return `${fmt(min)}–${fmt(max)}`;
   return fmt((min ?? max)!);
 };
@@ -50,17 +59,13 @@ const HOURS_PER_DAY = 24;
  * collapses "no data" to 0 in the private aggregate, so 0 is ambiguous with
  * "responds instantly" and must not be shown as a real number.
  */
-export const formatResponseTime = (
-  hours: number,
-  locale: string = "en"
-): string => {
+export const formatResponseTime = (hours: number): string => {
   if (hours === 0) return "—";
-  const isVi = locale.startsWith("vi");
   if (hours < HOURS_PER_DAY) {
-    return isVi ? `${Math.round(hours)} giờ` : `${Math.round(hours)}h`;
+    return translate("common.format.hours", { n: Math.round(hours) });
   }
   const days = Math.round((hours / HOURS_PER_DAY) * 10) / 10;
-  return isVi ? `${days} ngày` : `${days}d`;
+  return translate("common.format.days", { n: days });
 };
 
 /**
@@ -71,11 +76,8 @@ export const formatResponseTime = (
  * meaning, so a local-time read near a month boundary shouldn't be able to
  * shift which month renders.
  */
-export const formatMonthYear = (
-  iso: string,
-  locale: string = "en-US"
-): string =>
-  new Date(iso).toLocaleDateString(locale, {
+export const formatMonthYear = (iso: string, locale?: string): string =>
+  new Date(iso).toLocaleDateString(intl(locale), {
     month: "short",
     year: "numeric",
     timeZone: "UTC",
@@ -89,8 +91,7 @@ export const formatMonthYear = (
  */
 export const formatDuration = (
   startIso: string,
-  endIso: string | null,
-  locale: string = "en"
+  endIso: string | null
 ): string => {
   const start = new Date(startIso);
   const end = endIso ? new Date(endIso) : new Date();
@@ -101,22 +102,40 @@ export const formatDuration = (
   );
   const years = Math.floor(totalMonths / 12);
   const months = totalMonths % 12;
-  const isVi = locale.startsWith("vi");
-
-  if (isVi) {
-    return (
-      [years ? `${years} năm` : null, months ? `${months} tháng` : null]
-        .filter(Boolean)
-        .join(" ") || "< 1 tháng"
-    );
-  }
+  const yearKey =
+    years > 1 && getRuntimeLocale() === "en"
+      ? "common.format.yearsOther"
+      : "common.format.yearsOne";
 
   return (
     [
-      years ? `${years} yr${years > 1 ? "s" : ""}` : null,
-      months ? `${months} mo` : null,
+      years ? translate(yearKey, { n: years }) : null,
+      months ? translate("common.format.months", { n: months }) : null,
     ]
       .filter(Boolean)
-      .join(" ") || "< 1 mo"
+      .join(" ") || translate("common.format.lessThanMonth")
   );
 };
+
+// Locale-aware wrappers over the Intl APIs that follow the active app locale.
+// Prefer these over `toLocale*String("en-US", …)` so dates/numbers switch with
+// the language switcher.
+export const formatLocalDate = (
+  value: string | number | Date,
+  options?: Intl.DateTimeFormatOptions
+): string => new Date(value).toLocaleDateString(getIntlLocale(), options);
+
+export const formatLocalTime = (
+  value: string | number | Date,
+  options?: Intl.DateTimeFormatOptions
+): string => new Date(value).toLocaleTimeString(getIntlLocale(), options);
+
+export const formatLocalDateTime = (
+  value: string | number | Date,
+  options?: Intl.DateTimeFormatOptions
+): string => new Date(value).toLocaleString(getIntlLocale(), options);
+
+export const formatLocalNumber = (
+  value: number,
+  options?: Intl.NumberFormatOptions
+): string => value.toLocaleString(getIntlLocale(), options);

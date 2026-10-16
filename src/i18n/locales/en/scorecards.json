@@ -1,0 +1,31 @@
+{
+  "rec": {
+    "STRONG_YES": "Strong yes",
+    "YES": "Yes",
+    "NO": "No",
+    "STRONG_NO": "Strong no"
+  },
+  "section": {
+    "loadError": "Couldn't load team feedback.",
+    "title": "Team feedback",
+    "recommendHire": "Recommend hire",
+    "submitted": "{{done}}/{{total}} submitted",
+    "hireLine": "{{hire}}/{{total}} recommend hire",
+    "yourFeedback": "Your feedback",
+    "member": "Team member",
+    "add": "Add feedback"
+  },
+  "form": {
+    "success": "Feedback submitted.",
+    "failed": "Something went wrong. Please try again.",
+    "already": "You already submitted feedback for this interview.",
+    "notEligible": "Not eligible to submit feedback for this interview yet.",
+    "title": "Your read on {{name}}",
+    "hint": "Only visible to your team, never to the candidate.",
+    "recommendation": "Recommendation",
+    "note": "Note",
+    "optional": "(optional)",
+    "notePlaceholder": "Sharp on system design, weak on the behavioral round…",
+    "submit": "Submit feedback"
+  }
+}

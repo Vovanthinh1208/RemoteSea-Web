@@ -2,12 +2,14 @@ import { Bookmark } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useSavedJobToggle } from "@/features/jobs/useSavedJobToggle";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface SaveJobButtonProps {
   jobId: string;
 }
 
 export const SaveJobButton = ({ jobId }: SaveJobButtonProps) => {
+  const { t } = useTranslation("jobs");
   const { saved, statusUnknown, toggle } = useSavedJobToggle(
     jobId,
     ROUTES.jobDetail(jobId)
@@ -32,7 +34,7 @@ export const SaveJobButton = ({ jobId }: SaveJobButtonProps) => {
         fill={saved ? "currentColor" : "none"}
         size={15}
       />
-      {saved ? "Saved" : "Save for later"}
+      {saved ? t("save.saved") : t("save.saveForLater")}
     </button>
   );
 };

@@ -1,4 +1,5 @@
 import type { SupportedLocale } from "@/i18n/types";
+import { resolveTranslation } from "@/i18n/translate";
 
 const getIntlLocale = (locale: SupportedLocale): string =>
   locale === "vi" ? "vi-VN" : "en-US";
@@ -52,23 +53,16 @@ export const formatRelativeTime = (
   const diffMonth = Math.floor(diffDay / 30);
   const diffYear = Math.floor(diffDay / 365);
 
-  if (locale === "vi") {
-    if (diffSec < 60) return "Vừa xong";
-    if (diffMin < 60) return `${diffMin} phút trước`;
-    if (diffHour < 24) return `${diffHour} giờ trước`;
-    if (diffDay === 1) return "Hôm qua";
-    if (diffDay < 30) return `${diffDay} ngày trước`;
-    if (diffMonth < 12) return `${diffMonth} tháng trước`;
-    return `${diffYear} năm trước`;
-  }
+  const tr = (key: string, n?: number) =>
+    resolveTranslation(locale, `common.time.${key}`, { n });
 
-  if (diffSec < 60) return "Just now";
-  if (diffMin < 60) return `${diffMin}m ago`;
-  if (diffHour < 24) return `${diffHour}h ago`;
-  if (diffDay === 1) return "Yesterday";
-  if (diffDay < 30) return `${diffDay}d ago`;
-  if (diffMonth < 12) return `${diffMonth}mo ago`;
-  return `${diffYear}y ago`;
+  if (diffSec < 60) return tr("justNow");
+  if (diffMin < 60) return tr("minuteAgo", diffMin);
+  if (diffHour < 24) return tr("hourAgo", diffHour);
+  if (diffDay === 1) return tr("yesterday");
+  if (diffDay < 30) return tr("dayAgo", diffDay);
+  if (diffMonth < 12) return tr("monthAgo", diffMonth);
+  return tr("yearAgo", diffYear);
 };
 
 export const formatDurationLocale = (
@@ -88,15 +82,13 @@ export const formatDurationLocale = (
   const years = Math.floor(totalMonths / 12);
   const months = totalMonths % 12;
 
-  if (locale === "vi") {
-    const parts: string[] = [];
-    if (years) parts.push(`${years} năm`);
-    if (months) parts.push(`${months} tháng`);
-    return parts.join(" ") || "< 1 tháng";
-  }
-
+  const tr = (key: string, n?: number) =>
+    resolveTranslation(locale, `common.format.${key}`, { n });
   const parts: string[] = [];
-  if (years) parts.push(`${years} yr${years > 1 ? "s" : ""}`);
-  if (months) parts.push(`${months} mo`);
-  return parts.join(" ") || "< 1 mo";
+  if (years)
+    parts.push(
+      tr(years > 1 && locale === "en" ? "yearsOther" : "yearsOne", years)
+    );
+  if (months) parts.push(tr("months", months));
+  return parts.join(" ") || tr("lessThanMonth");
 };

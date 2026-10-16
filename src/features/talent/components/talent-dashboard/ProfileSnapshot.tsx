@@ -5,6 +5,7 @@ import { ROUTES } from "@/constants/routes";
 import { formatSalaryRange } from "@/utils/format";
 import { GradientInitial } from "@/components/ui/gradient-initial";
 import type { TalentProfile } from "@/types/talent";
+import { useTranslation } from "@/i18n/useTranslation";
 
 type ProfileSnapshotProps = {
   profile: TalentProfile | null;
@@ -14,6 +15,7 @@ type ProfileSnapshotProps = {
 // useTalentDashboard's single aggregate request instead of this component
 // firing its own useMyTalentProfile() call.
 export const ProfileSnapshot = ({ profile }: ProfileSnapshotProps) => {
+  const { t } = useTranslation("talent");
   const { user } = useAuth();
 
   return (
@@ -26,13 +28,13 @@ export const ProfileSnapshot = ({ profile }: ProfileSnapshotProps) => {
           {user?.name}
         </h3>
         <p className="mt-0.5 text-[12.5px] text-neutral-400">
-          {profile?.headline || "No headline yet"}
+          {profile?.headline || t("snapshot.noHeadline")}
         </p>
         <Link
           className="mt-3 inline-flex h-8 w-full items-center justify-center gap-1.5 rounded-8 border border-neutral-200 text-[12.5px] font-medium text-neutral-700 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none"
           to={ROUTES.profile}
         >
-          Edit profile <ArrowRight size={12} />
+          {t("snapshot.edit")} <ArrowRight size={12} />
         </Link>
       </div>
       {/* Plain label/value rows, no icons — matches the same class of
@@ -43,18 +45,18 @@ export const ProfileSnapshot = ({ profile }: ProfileSnapshotProps) => {
       <div className="border-t border-neutral-100">
         {[
           {
-            label: "Based in",
+            label: t("snapshot.basedIn"),
             value: profile?.location || "—",
           },
           {
-            label: "Timezone",
+            label: t("snapshot.timezone"),
             value: profile?.timezone || "—",
           },
           {
-            label: "Expecting",
+            label: t("snapshot.expecting"),
             value:
               profile?.desiredSalaryMin && profile.desiredSalaryMax
-                ? `${formatSalaryRange(profile.desiredSalaryMin, profile.desiredSalaryMax)}/mo`
+                ? `${formatSalaryRange(profile.desiredSalaryMin, profile.desiredSalaryMax)}${t("jobs.filters.perMonthSuffix")}`
                 : "—",
           },
         ].map(({ label, value }) => (

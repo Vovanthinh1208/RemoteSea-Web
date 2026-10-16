@@ -15,7 +15,22 @@
     "sources": "Nguồn tài liệu tham chiếu",
     "helpful": "Hữu ích",
     "unhelpful": "Chưa hữu ích",
-    "error": "Không thể nhận phản hồi từ AI. Vui lòng thử lại."
+    "error": "Không thể nhận phản hồi từ AI. Vui lòng thử lại.",
+    "tagline": "Hỏi về chính sách tuyển dụng hoặc hồ sơ ứng viên.",
+    "openAria": "Mở trợ lý AI",
+    "closeAria": "Đóng trợ lý AI",
+    "newChatAria": "Cuộc trò chuyện mới",
+    "newChat": "Đoạn chat mới",
+    "close": "Đóng",
+    "loadErrorTitle": "Không thể tải cuộc trò chuyện",
+    "loadErrorDesc": "Đã xảy ra lỗi khi tải cuộc trò chuyện này.",
+    "newMessage": "Tin nhắn mới",
+    "history": "Lịch sử trò chuyện",
+    "noHistory": "Chưa có cuộc trò chuyện nào trước đó.",
+    "untitled": "Cuộc trò chuyện chưa đặt tên",
+    "sourcesLine": "Nguồn: {{sources}}",
+    "copied": "Đã sao chép",
+    "copy": "Sao chép"
   },
   "cvAnalysis": {
     "title": "Phân Tích CV Thông Minh",

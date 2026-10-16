@@ -9,6 +9,7 @@ import {
 } from "@/features/users/users.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import type { NotificationPreferencesDto } from "@/features/users/users.dto";
+import { useTranslation } from "@/i18n/useTranslation";
 
 type ToggleField = keyof Omit<
   NotificationPreferencesDto,
@@ -16,13 +17,14 @@ type ToggleField = keyof Omit<
 >;
 
 export const NotificationsSection = () => {
+  const { t } = useTranslation("settings");
   const runWithToast = useToastMutation();
   const { data: prefs } = useMyNotificationPreferences();
   const updatePrefsMutation = useUpdateMyNotificationPreferences();
 
   const toggle = (field: ToggleField, value: boolean) =>
     runWithToast(() => updatePrefsMutation.mutateAsync({ [field]: value }), {
-      error: "Couldn't update notification preference",
+      error: t("notif2.failed"),
     });
 
   return (
@@ -31,19 +33,19 @@ export const NotificationsSection = () => {
       id="notifications"
     >
       <SectionHead
-        eyebrow="04 · What reaches you"
-        help="Choose what lands in your inbox. Critical security emails are always sent."
+        eyebrow={t("notif2.eyebrow")}
+        help={t("notif2.help")}
         title={
           <em
             className="font-serif italic text-brand-700"
             style={EMPHASIS_STYLE}
           >
-            Notifications.
+            {t("notif2.title")}
           </em>
         }
       />
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-        Your activity
+        {t("notif2.activity")}
       </p>
       {/* No border/bg on this or the next two toggle-row groups below —
           each already has its own uppercase label; a bordered/backgrounded
@@ -51,65 +53,65 @@ export const NotificationsSection = () => {
           card, was doubled framing (same fix as PreferencesSection.tsx). */}
       <div className="mb-6 divide-y divide-neutral-50">
         <ToggleRow
-          desc="When an employer moves one of your applications forward — shortlisted, interviewing, offered, or rejected."
+          desc={t("notif2.appUpdatesDesc")}
           on={prefs?.applicationUpdates ?? true}
-          title="Application updates"
+          title={t("notif2.appUpdates")}
           onChange={(v) => toggle("applicationUpdates", v)}
         />
         <ToggleRow
-          desc="Direct messages and interview requests from verified hiring teams."
+          desc={t("notif2.messagesDesc")}
           on={prefs?.employerMessages ?? true}
-          title="Messages from employers"
+          title={t("notif2.messages")}
           onChange={(v) => toggle("employerMessages", v)}
         />
       </div>
 
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-        Matches & digests
+        {t("notif2.matches")}
       </p>
       <div className="mb-6 divide-y divide-neutral-50">
         <ToggleRow
-          desc="Top 5 matches for your saved filters, once a week."
+          desc={t("notif2.digestDesc")}
           on={prefs?.weeklyDigest ?? true}
           title={
             <>
-              Weekly digest{" "}
+              {t("notif2.digest")}{" "}
               <span className="font-mono text-[12px] text-neutral-400">
-                · Monday 9am
+                {t("notif2.digestWhen")}
               </span>
             </>
           }
           onChange={(v) => toggle("weeklyDigest", v)}
         />
         <ToggleRow
-          desc="Email the moment a role scores 90%+ against your profile."
+          desc={t("notif2.instantDesc")}
           on={prefs?.instantMatchAlerts ?? true}
-          title="Instant high-match alerts"
+          title={t("notif2.instant")}
           onChange={(v) => toggle("instantMatchAlerts", v)}
         />
       </div>
 
       <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-        From RemoteSEA
+        {t("notif2.fromUs")}
       </p>
       <div className="divide-y divide-neutral-50">
         <ToggleRow
-          desc="Occasional updates when we ship something worth knowing about."
+          desc={t("notif2.newsDesc")}
           on={prefs?.productNews ?? false}
-          title="Product news"
+          title={t("notif2.news")}
           onChange={(v) => toggle("productNews", v)}
         />
         <ToggleRow
-          desc="Negotiation guides, async culture notes, salary data. Twice a month, max."
+          desc={t("notif2.tipsDesc")}
           on={prefs?.tipsAndResources ?? true}
-          title="Tips & resources"
+          title={t("notif2.tips")}
           onChange={(v) => toggle("tipsAndResources", v)}
         />
         <ToggleRow
           disabled
-          desc="Real-time alerts on this device, even when RemoteSEA isn't open. Not built yet — this won't do anything until it is."
+          desc={t("notif2.pushDesc")}
           on={false}
-          title="Browser push notifications"
+          title={t("notif2.push")}
           onChange={(v) => toggle("browserPush", v)}
         />
       </div>

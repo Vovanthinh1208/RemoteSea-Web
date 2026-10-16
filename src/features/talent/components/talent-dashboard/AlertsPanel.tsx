@@ -5,6 +5,8 @@ import { EmptyRow } from "@/components/shared/EmptyRow";
 import { ROUTES } from "@/constants/routes";
 import { cn } from "@/utils/cn";
 import type { JobAlert } from "@/types/alert";
+import { translate } from "@/i18n/runtime";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const DASHBOARD_ALERTS_LIMIT = 4;
 const ALERTS_SKELETON_COUNT = 2;
@@ -17,7 +19,7 @@ const summarizeAlert = (alert: JobAlert): string =>
     alert.salaryMin ? `$${alert.salaryMin}+/mo` : null,
   ]
     .filter(Boolean)
-    .join(" · ") || "All jobs";
+    .join(" · ") || translate("talent.savedSearches.allJobs");
 
 type AlertsPanelProps = {
   alerts: JobAlert[] | null;
@@ -35,19 +37,20 @@ export const AlertsPanel = ({
   isError,
   refetch,
 }: AlertsPanelProps) => {
+  const { t } = useTranslation("talent");
   const visible = alerts?.slice(0, DASHBOARD_ALERTS_LIMIT) ?? [];
 
   return (
     <div className="mb-5 overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">
       <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
         <h3 className="text-[14px] font-semibold text-neutral-900">
-          Saved searches
+          {t("savedSearches.title")}
         </h3>
         <Link
           className="inline-flex items-center gap-1 rounded-8 text-[12px] font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
           to={ROUTES.alerts}
         >
-          <Plus size={12} /> New
+          <Plus size={12} /> {t("savedSearches.new")}
         </Link>
       </div>
       <div>
@@ -66,17 +69,17 @@ export const AlertsPanel = ({
           ))
         ) : isError ? (
           <div className="flex items-center justify-between px-5 py-4 text-[12.5px] text-neutral-400">
-            Couldn't load your saved searches.
+            {t("savedSearches.error")}
             <button
               className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
               type="button"
               onClick={() => refetch()}
             >
-              <RefreshCw size={11} /> Retry
+              <RefreshCw size={11} /> {t("common.actions.retryShort")}
             </button>
           </div>
         ) : visible.length === 0 ? (
-          <EmptyRow className="px-5">No saved searches yet.</EmptyRow>
+          <EmptyRow className="px-5">{t("savedSearches.empty")}</EmptyRow>
         ) : (
           visible.map((alert) => (
             <div
@@ -99,7 +102,9 @@ export const AlertsPanel = ({
                     : "bg-neutral-100 text-neutral-500"
                 )}
               >
-                {alert.isActive ? "Active" : "Paused"}
+                {alert.isActive
+                  ? t("savedSearches.active")
+                  : t("savedSearches.paused")}
               </span>
             </div>
           ))

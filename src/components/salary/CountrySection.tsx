@@ -3,6 +3,7 @@ import { Eyebrow } from "@/components/ui/eyebrow";
 import { Spinner } from "@/components/ui/spinner";
 import { countryFlag } from "@/utils/color";
 import { useSalaryBenchmarksByCountry } from "@/features/salary/salary.queries";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const ACCENT_COLORS = [
   "text-brand-700",
@@ -14,20 +15,23 @@ const ACCENT_COLORS = [
 const fmtK = (n: number) => `${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k`;
 
 export const CountrySection = () => {
+  const { t, formatNumber } = useTranslation("salary");
   const { data, isLoading, isError } = useSalaryBenchmarksByCountry();
 
   return (
     <section className="border-y border-neutral-100 bg-white py-16 [contain-intrinsic-size:auto_44rem] [content-visibility:auto]">
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="mb-10 text-center">
-          <Eyebrow className="mb-2">By country</Eyebrow>
+          <Eyebrow className="mb-2">{t("country.eyebrow")}</Eyebrow>
           <h2 className="text-[28px] font-semibold tracking-tight text-neutral-900">
-            Where the{" "}
-            <em className="font-serif-italic text-brand-700">money</em> lives
+            {t("country.title")}
+            <em className="font-serif-italic text-brand-700">
+              {t("country.titleEm")}
+            </em>
+            {t("country.titleEnd")}
           </h2>
           <p className="mx-auto mt-2 max-w-lg text-sm text-neutral-500">
-            Average compensation for open remote roles, by where the company is
-            headquartered.
+            {t("country.desc")}
           </p>
         </div>
 
@@ -37,7 +41,7 @@ export const CountrySection = () => {
           </div>
         ) : isError || !data || data.length === 0 ? (
           <div className="py-10 text-center text-sm text-neutral-400">
-            Country data isn&apos;t available right now.
+            {t("country.unavailable")}
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -58,16 +62,19 @@ export const CountrySection = () => {
                     ACCENT_COLORS[i % ACCENT_COLORS.length]
                   )}
                 >
-                  ${c.mid.toLocaleString()}
+                  ${formatNumber(c.mid)}
                   <span className="ml-0.5 text-[14px] font-normal text-neutral-400">
-                    /mo
+                    {t("country.perMonth")}
                   </span>
                 </p>
                 <p className="mb-3 text-[12px] text-neutral-400">
-                  Range ${fmtK(c.min)}–${fmtK(c.max)}
+                  {t("country.range", {
+                    min: `$${fmtK(c.min)}`,
+                    max: `$${fmtK(c.max)}`,
+                  })}
                 </p>
                 <span className="rounded-full bg-neutral-100 px-2.5 py-1 text-[11.5px] font-medium text-neutral-500">
-                  {c.count} open listing{c.count === 1 ? "" : "s"}
+                  {t("country.listings", { count: c.count })}
                 </span>
               </div>
             ))}

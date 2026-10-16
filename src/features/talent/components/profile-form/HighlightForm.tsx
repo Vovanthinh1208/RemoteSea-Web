@@ -16,6 +16,8 @@ import type {
   ProfileHighlight,
   ProfileHighlightType,
 } from "@/types/profile-highlight";
+import { useTranslation } from "@/i18n/useTranslation";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 
 interface HighlightFormProps {
   type: ProfileHighlightType;
@@ -24,16 +26,13 @@ interface HighlightFormProps {
   onCancel: () => void;
 }
 
-const FIELD_LABELS: Record<
+const FIELD_SLUGS: Record<
   ProfileHighlightType,
-  { title: string; subtitle: string }
+  "portfolio" | "education" | "language"
 > = {
-  PORTFOLIO: { title: "Project title", subtitle: "Role · duration" },
-  EDUCATION: { title: "School", subtitle: "Degree · field of study" },
-  LANGUAGE: {
-    title: "Language",
-    subtitle: "Proficiency (e.g. Native, Fluent, Conversational)",
-  },
+  PORTFOLIO: "portfolio",
+  EDUCATION: "education",
+  LANGUAGE: "language",
 };
 
 const toDefaultValues = (initial?: ProfileHighlight): HighlightFormValues => ({
@@ -53,19 +52,25 @@ export const HighlightForm = ({
   onSubmit,
   onCancel,
 }: HighlightFormProps) => {
+  const { t } = useTranslation("talent");
+  const form = useForm<HighlightFormValues>({
+    resolver: zodResolver(highlightFormSchema),
+    defaultValues: toDefaultValues(initial),
+  });
   const {
     register,
     handleSubmit,
     watch,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<HighlightFormValues>({
-    resolver: zodResolver(highlightFormSchema),
-    defaultValues: toDefaultValues(initial),
-  });
+  } = form;
+  useRevalidateOnLocaleChange(form);
 
   const isOngoing = watch("isOngoing");
-  const labels = FIELD_LABELS[type];
+  const labels = {
+    title: t(`hlForm.${FIELD_SLUGS[type]}.title`),
+    subtitle: t(`hlForm.${FIELD_SLUGS[type]}.subtitle`),
+  };
 
   return (
     <form
@@ -97,24 +102,24 @@ export const HighlightForm = ({
       {type === "PORTFOLIO" && (
         <>
           <textarea
-            aria-label="Description"
+            aria-label={t("hlForm.description")}
             className={TEXTAREA_INPUT_CLASS}
-            placeholder="What was this project? (optional)"
+            placeholder={t("hlForm.descPlaceholder")}
             rows={2}
             {...register("description")}
           />
           <div className="grid gap-3 sm:grid-cols-2">
             <input
-              aria-label="Category tag"
+              aria-label={t("hlForm.tag")}
               className={TEXT_INPUT_CLASS}
-              placeholder="Category (optional) — e.g. Product · Production"
+              placeholder={t("hlForm.tagPlaceholder")}
               {...register("tag")}
             />
             <div>
               <input
-                aria-label="Project link"
+                aria-label={t("hlForm.link")}
                 className={TEXT_INPUT_CLASS}
-                placeholder="Link (optional) — https://…"
+                placeholder={t("hlForm.linkPlaceholder")}
                 {...register("url")}
               />
               <FieldError message={errors.url?.message} />
@@ -127,14 +132,14 @@ export const HighlightForm = ({
         <div className="grid gap-3 rounded-12 border border-neutral-100 bg-white p-3.5 sm:grid-cols-2">
           <div>
             <p className="mb-1.5 text-[11.5px] font-medium text-neutral-600">
-              Start year
+              {t("hlForm.startYear")}
             </p>
             <select
-              aria-label="Start year"
+              aria-label={t("hlForm.startYear")}
               className={SELECT_INPUT_CLASS}
               {...register("startYear")}
             >
-              <option value="">Year</option>
+              <option value="">{t("hlForm.year")}</option>
               {HIGHLIGHT_YEARS.map((y) => (
                 <option key={y} value={y}>
                   {y}
@@ -146,10 +151,10 @@ export const HighlightForm = ({
           <div>
             <div className="mb-1.5 flex items-center justify-between">
               <p className="text-[11.5px] font-medium text-neutral-600">
-                End year
+                {t("hlForm.endYear")}
               </p>
               <label className="flex items-center gap-1.5 text-[11px] text-neutral-500">
-                Ongoing
+                {t("hlForm.ongoing")}
                 <Toggle
                   on={isOngoing}
                   onChange={(v) => setValue("isOngoing", v)}
@@ -157,12 +162,12 @@ export const HighlightForm = ({
               </label>
             </div>
             <select
-              aria-label="End year"
+              aria-label={t("hlForm.endYear")}
               className={SELECT_INPUT_CLASS}
               disabled={isOngoing}
               {...register("endYear")}
             >
-              <option value="">Year</option>
+              <option value="">{t("hlForm.year")}</option>
               {HIGHLIGHT_YEARS.map((y) => (
                 <option key={y} value={y}>
                   {y}
@@ -180,14 +185,18 @@ export const HighlightForm = ({
           disabled={isSubmitting}
           type="submit"
         >
-          {isSubmitting ? "Saving…" : initial ? "Save changes" : "Add"}
+          {isSubmitting
+            ? t("hlForm.saving")
+            : initial
+              ? t("hlForm.saveChanges")
+              : t("hlForm.add")}
         </button>
         <button
           className="rounded-10 border border-neutral-200 bg-white px-4 py-2 text-[13px] font-medium text-neutral-600 transition-colors hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={onCancel}
         >
-          Cancel
+          {t("common.actions.cancel")}
         </button>
       </div>
     </form>

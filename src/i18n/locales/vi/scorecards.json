@@ -1,0 +1,31 @@
+{
+  "rec": {
+    "STRONG_YES": "Rất nên tuyển",
+    "YES": "Nên tuyển",
+    "NO": "Không nên",
+    "STRONG_NO": "Tuyệt đối không"
+  },
+  "section": {
+    "loadError": "Không thể tải phản hồi của nhóm.",
+    "title": "Phản hồi của nhóm",
+    "recommendHire": "Đề xuất tuyển",
+    "submitted": "Đã gửi {{done}}/{{total}}",
+    "hireLine": "{{hire}}/{{total}} đề xuất tuyển",
+    "yourFeedback": "Phản hồi của bạn",
+    "member": "Thành viên nhóm",
+    "add": "Thêm phản hồi"
+  },
+  "form": {
+    "success": "Đã gửi phản hồi.",
+    "failed": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "already": "Bạn đã gửi phản hồi cho buổi phỏng vấn này rồi.",
+    "notEligible": "Chưa đủ điều kiện gửi phản hồi cho buổi phỏng vấn này.",
+    "title": "Nhận định của bạn về {{name}}",
+    "hint": "Chỉ nhóm của bạn thấy, không bao giờ hiển thị cho ứng viên.",
+    "recommendation": "Đề xuất",
+    "note": "Ghi chú",
+    "optional": "(không bắt buộc)",
+    "notePlaceholder": "Giỏi thiết kế hệ thống, yếu ở vòng hành vi…",
+    "submit": "Gửi phản hồi"
+  }
+}

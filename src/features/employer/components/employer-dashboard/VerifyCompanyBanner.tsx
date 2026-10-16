@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ShieldCheck } from "lucide-react";
@@ -10,7 +9,10 @@ import { useSubmitEmployerVerification } from "@/features/employer/employer.quer
 import { TextField } from "@/components/shared/TextField";
 import { Button } from "@/components/ui/button";
 import { applyFormSubmitError } from "@/utils/form-errors";
+import { useSubmitError } from "@/hooks/useSubmitError";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 import type { EmployerVerificationStatus } from "@/types/employer";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface VerifyCompanyBannerProps {
   verificationStatus: EmployerVerificationStatus;
@@ -25,30 +27,28 @@ export const VerifyCompanyBanner = ({
   verificationStatus,
   verificationEmail,
 }: VerifyCompanyBannerProps) => {
-  const [formError, setFormError] = useState<string | null>(null);
+  const { t } = useTranslation("employer");
+  const submitError = useSubmitError();
   const submitVerification = useSubmitEmployerVerification();
+  const form = useForm<SubmitVerificationFormValues>({
+    resolver: zodResolver(submitVerificationSchema),
+    defaultValues: { email: verificationEmail ?? "" },
+  });
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<SubmitVerificationFormValues>({
-    resolver: zodResolver(submitVerificationSchema),
-    defaultValues: { email: verificationEmail ?? "" },
-  });
+  } = form;
+  useRevalidateOnLocaleChange(form);
 
   const onSubmit = async (values: SubmitVerificationFormValues) => {
-    setFormError(null);
+    submitError.clear();
     try {
       await submitVerification.mutateAsync(values.email);
     } catch (err) {
-      setFormError(
-        applyFormSubmitError(
-          err,
-          setError,
-          "Something went wrong. Please try again."
-        )
-      );
+      applyFormSubmitError(err, setError);
+      submitError.fail(err);
     }
   };
 
@@ -58,11 +58,10 @@ export const VerifyCompanyBanner = ({
         <ShieldCheck className="mt-0.5 shrink-0 text-amber-600" size={20} />
         <div className="min-w-0 flex-1">
           <h3 className="mb-1 text-[14.5px] font-semibold text-neutral-900">
-            Check your inbox
+            {t("verifyCompany.checkInbox")}
           </h3>
           <p className="text-[13px] text-neutral-600">
-            We sent a confirmation link to <strong>{verificationEmail}</strong>.
-            Click it to verify your company.
+            {t("verifyCompany.sentTo", { email: verificationEmail })}
           </p>
         </div>
       </div>
@@ -74,12 +73,12 @@ export const VerifyCompanyBanner = ({
       <ShieldCheck className="mt-0.5 shrink-0 text-amber-600" size={20} />
       <div className="min-w-0 flex-1">
         <h3 className="mb-1 text-[14.5px] font-semibold text-neutral-900">
-          Verify your company
+          {t("verifyCompany.title")}
         </h3>
         <p className="mb-3 text-[13px] text-neutral-600">
           {verificationStatus === "FAILED"
-            ? "That link expired. Enter your company email to try again."
-            : "Confirm you control an email at your company domain to earn a Verified badge and skip manual job review."}
+            ? t("verifyCompany.expired")
+            : t("verifyCompany.prompt")}
         </p>
         <form
           className="flex flex-col gap-2 sm:flex-row sm:items-start"
@@ -89,8 +88,8 @@ export const VerifyCompanyBanner = ({
             <TextField
               error={errors.email?.message}
               id="verification-email"
-              label="Company email"
-              placeholder="jane@yourcompany.com"
+              label={t("verifyCompany.emailLabel")}
+              placeholder={t("verifyCompany.emailPlaceholder")}
               autoComplete="email"
               registration={register("email")}
               type="email"
@@ -103,11 +102,13 @@ export const VerifyCompanyBanner = ({
             size="sm"
             type="submit"
           >
-            Send verification email
+            {t("verifyCompany.send")}
           </Button>
         </form>
-        {formError && (
-          <p className="mt-2 text-[13px] text-red-600">{formError}</p>
+        {submitError.message && (
+          <p className="mt-2 text-[13px] text-red-600" role="alert">
+            {submitError.message}
+          </p>
         )}
       </div>
     </div>

@@ -4,9 +4,11 @@ import { FullPageLoader } from "@/components/ui/spinner";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button } from "@/components/ui/button";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const ProfilePage = () => {
-  useDocumentTitle("Profile Setup");
+  const { t } = useTranslation("talent");
+  useDocumentTitle(t("page.profileSetup"));
   const { data: profile, isLoading, isError, refetch } = useMyTalentProfile();
 
   if (isLoading) return <FullPageLoader />;
@@ -19,11 +21,11 @@ export const ProfilePage = () => {
       <EmptyState
         action={
           <Button size="sm" variant="outline" onClick={() => refetch()}>
-            Try again
+            {t("common.actions.retry")}
           </Button>
         }
-        description="Something went wrong loading your profile."
-        title="Couldn't load profile"
+        description={t("page.loadErrorDesc")}
+        title={t("page.loadError")}
       />
     );
   }

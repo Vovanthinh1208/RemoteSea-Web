@@ -1,10 +1,11 @@
 import { cn } from "@/utils/cn";
 import { Dropdown } from "@/components/ui/dropdown";
 import {
-  SORT_OPTIONS,
+  sortOptions,
   type ApplicantSortId,
   type ApplicantTabId,
 } from "@/features/employer/employer-dashboard.utils";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export interface ApplicantTabItem {
   id: ApplicantTabId;
@@ -27,42 +28,43 @@ export const ApplicantFilters = ({
   onTabChange,
   tabs,
 }: ApplicantFiltersProps) => {
+  const { t } = useTranslation("employer");
   return (
     <div className="mb-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
       <h3 className="text-[14px] font-semibold text-neutral-900">
-        Recent applicants
+        {t("applicantsPanel.title")}
       </h3>
       <div className="flex items-center gap-2">
         <Dropdown
-          aria-label="Sort applicants"
-          options={SORT_OPTIONS}
+          aria-label={t("applicantsPanel.sortAria")}
+          options={sortOptions()}
           value={sort}
           onChange={(v) => onSortChange(v as ApplicantSortId)}
         />
         <div className="flex gap-0.5 rounded-8 border border-neutral-200 bg-neutral-50 p-0.5">
-          {tabs.map((t) => (
+          {tabs.map((tabItem) => (
             <button
-              aria-pressed={tab === t.id}
+              aria-pressed={tab === tabItem.id}
               className={cn(
                 "rounded-8 px-2.5 py-1 text-[11.5px] font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none",
-                tab === t.id
+                tab === tabItem.id
                   ? "bg-white text-neutral-900 shadow-chip"
                   : "text-neutral-500 hover:text-neutral-700"
               )}
-              key={t.id}
+              key={tabItem.id}
               type="button"
-              onClick={() => onTabChange(t.id)}
+              onClick={() => onTabChange(tabItem.id)}
             >
-              {t.label}
+              {tabItem.label}
               <span
                 className={cn(
                   "ml-1 rounded-full px-1 py-0.5 text-[10px]",
-                  tab === t.id
+                  tab === tabItem.id
                     ? "bg-brand-100 text-brand-700"
                     : "bg-neutral-100 text-neutral-400"
                 )}
               >
-                {t.count}
+                {tabItem.count}
               </span>
             </button>
           ))}

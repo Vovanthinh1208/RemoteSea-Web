@@ -1,0 +1,12 @@
+{
+  "page": {
+    "fallbackTitle": "Messages",
+    "sendFailed": "Couldn't send message",
+    "errorTitle": "Couldn't load messages",
+    "errorDesc": "Something went wrong loading this conversation.",
+    "emptyTitle": "No messages yet",
+    "emptyDesc": "Say hello — messages here are only visible to the two of you.",
+    "placeholder": "Write a message…",
+    "send": "Send message"
+  }
+}

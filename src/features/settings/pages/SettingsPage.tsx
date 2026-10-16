@@ -11,6 +11,7 @@ import { PrivacyDataSection } from "@/features/settings/components/PrivacyDataSe
 import { DangerZoneSection } from "@/features/settings/components/DangerZoneSection";
 import { SettingsSaveBar } from "@/features/settings/components/SettingsSaveBar";
 import type { UserRole } from "@/types/user";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const dashboardRouteForRole = (role?: UserRole): string => {
   if (role === "EMPLOYER") return ROUTES.employerDashboard;
@@ -19,7 +20,8 @@ const dashboardRouteForRole = (role?: UserRole): string => {
 };
 
 export const SettingsPage = () => {
-  useDocumentTitle("Settings");
+  const { t } = useTranslation("settings");
+  useDocumentTitle(t("page.docTitle"));
   const { user } = useAuth();
   const dashboardRoute = dashboardRouteForRole(user?.role);
 
@@ -33,25 +35,26 @@ export const SettingsPage = () => {
               className="rounded-8 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={dashboardRoute}
             >
-              ← Dashboard
+              {t("page.dashboard")}
             </Link>
             <span>·</span>
-            <span>Settings</span>
+            <span>{t("page.crumb")}</span>
           </div>
           <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
-            Your account,{" "}
-            <em className="font-serif-italic text-brand-700">your rules.</em>
+            {t("page.title")}
+            <em className="font-serif-italic text-brand-700">
+              {t("page.titleEm")}
+            </em>
           </h1>
           <p className="text-[15px] text-neutral-500">
-            Sign-in, security, and how RemoteSEA talks to you. Profile content
-            lives under{" "}
+            {t("page.desc1")}
             <Link
               className="rounded-8 text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.profile}
             >
-              Profile setup
+              {t("page.profileSetup")}
             </Link>
-            .
+            {t("page.desc2")}
           </p>
         </div>
 

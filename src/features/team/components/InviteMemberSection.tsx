@@ -21,6 +21,10 @@ import {
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { ApiError } from "@/core/errors/api-error";
 import type { CompanyMemberRole } from "@/types/team";
+import { getErrorMessage } from "@/core/errors/localize";
+import { translate } from "@/i18n/runtime";
+import { useTranslation } from "@/i18n/useTranslation";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
@@ -30,11 +34,11 @@ const MS_PER_DAY = 24 * 60 * 60 * 1000;
 // own small "expires in..." formatter instead of reusing that helper.
 const expiresInLabel = (expiresAt: string): string => {
   const diffMs = new Date(expiresAt).getTime() - Date.now();
-  if (diffMs <= 0) return "expired";
+  if (diffMs <= 0) return translate("team.invite.expired");
   const days = Math.floor(diffMs / MS_PER_DAY);
-  if (days >= 1) return `expires in ${days}d`;
+  if (days >= 1) return translate("team.invite.expiresDays", { n: days });
   const hours = Math.max(1, Math.floor(diffMs / (60 * 60 * 1000)));
-  return `expires in ${hours}h`;
+  return translate("team.invite.expiresHours", { n: hours });
 };
 
 const INVITABLE_ROLES: Exclude<CompanyMemberRole, "OWNER">[] = [
@@ -44,24 +48,28 @@ const INVITABLE_ROLES: Exclude<CompanyMemberRole, "OWNER">[] = [
 ];
 
 export const InviteMemberSection = () => {
+  const { t } = useTranslation("team");
   const runWithToast = useToastMutation();
   const inviteMutation = useInviteTeamMember();
+  const form = useForm<InviteMemberFormValues>({
+    resolver: zodResolver(inviteMemberFormSchema),
+    defaultValues: { role: "RECRUITER" },
+  });
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<InviteMemberFormValues>({
-    resolver: zodResolver(inviteMemberFormSchema),
-    defaultValues: { role: "RECRUITER" },
-  });
+  } = form;
+  useRevalidateOnLocaleChange(form);
 
   const onSubmit = (values: InviteMemberFormValues) =>
     runWithToast(() => inviteMutation.mutateAsync(values), {
-      success: "Invitation sent",
-      successDescription: `${values.email} has 7 days to accept.`,
-      error: "Couldn't send invitation",
-      onError: (err) => (err instanceof ApiError ? err.message : undefined),
+      success: t("invite.sent"),
+      successDescription: t("invite.sentDesc", { email: values.email }),
+      error: t("invite.sendFailed"),
+      onError: (err) =>
+        err instanceof ApiError ? getErrorMessage(err) : undefined,
     }).then((ok) => {
       if (ok) reset({ email: "", role: "RECRUITER" });
     });
@@ -69,12 +77,9 @@ export const InviteMemberSection = () => {
   return (
     <section className="rounded-20 border border-neutral-100 bg-white p-5">
       <h2 className="mb-1 text-[15px] font-semibold text-neutral-900">
-        Invite a team member
+        {t("invite.title")}
       </h2>
-      <p className="mb-4 text-[12.5px] text-neutral-500">
-        They'll get an email with a link to join, and sign in with their own
-        account — never shared credentials.
-      </p>
+      <p className="mb-4 text-[12.5px] text-neutral-500">{t("invite.desc")}</p>
 
       <form
         className="flex flex-col gap-3 sm:flex-row sm:items-start"
@@ -85,12 +90,12 @@ export const InviteMemberSection = () => {
             className="block text-[12.5px] font-medium text-neutral-700"
             htmlFor="invite-email"
           >
-            Email
+            {t("invite.email")}
           </label>
           <input
             className={TEXT_INPUT_CLASS}
             id="invite-email"
-            placeholder="teammate@company.com"
+            placeholder={t("invite.emailPlaceholder")}
             type="email"
             {...register("email")}
           />
@@ -101,7 +106,7 @@ export const InviteMemberSection = () => {
             className="block text-[12.5px] font-medium text-neutral-700"
             htmlFor="invite-role"
           >
-            Role
+            {t("invite.role")}
           </label>
           <select
             className={SELECT_INPUT_CLASS}
@@ -130,7 +135,7 @@ export const InviteMemberSection = () => {
             isLoading={inviteMutation.isPending}
             type="submit"
           >
-            Send invite
+            {t("invite.send")}
           </Button>
         </div>
       </form>
@@ -141,14 +146,16 @@ export const InviteMemberSection = () => {
 };
 
 const PendingInvitationsList = () => {
+  const { t } = useTranslation("team");
   const { data, isLoading, isError, refetch } = usePendingInvitations();
   const runWithToast = useToastMutation();
   const revokeMutation = useRevokeTeamInvitation();
 
   const handleRevoke = (id: string) =>
     runWithToast(() => revokeMutation.mutateAsync(id), {
-      error: "Couldn't revoke invitation",
-      onError: (err) => (err instanceof ApiError ? err.message : undefined),
+      error: t("invite.revokeFailed"),
+      onError: (err) =>
+        err instanceof ApiError ? getErrorMessage(err) : undefined,
     });
 
   if (isLoading) {
@@ -168,13 +175,13 @@ const PendingInvitationsList = () => {
   if (isError) {
     return (
       <div className="mt-5 flex items-center justify-between border-t border-neutral-100 pt-4 text-[12.5px] text-neutral-400">
-        Couldn't load pending invitations.
+        {t("invite.pendingError")}
         <button
           className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={() => refetch()}
         >
-          <RefreshCw size={11} /> Retry
+          <RefreshCw size={11} /> {t("common.actions.retryShort")}
         </button>
       </div>
     );
@@ -193,7 +200,7 @@ const PendingInvitationsList = () => {
   return (
     <div className="mt-5 border-t border-neutral-100 pt-4">
       <p className="mb-2 text-[12px] font-medium uppercase tracking-wider text-neutral-400">
-        Pending invitations
+        {t("invite.pending")}
       </p>
       <div className="space-y-1.5">
         {data.map((invitation) => (
@@ -211,7 +218,7 @@ const PendingInvitationsList = () => {
               </p>
             </div>
             <button
-              aria-label={`Revoke invitation to ${invitation.email}`}
+              aria-label={t("invite.revokeAria", { email: invitation.email })}
               className="flex-shrink-0 rounded-8 p-1.5 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
               disabled={revokeMutation.isPending}
               type="button"

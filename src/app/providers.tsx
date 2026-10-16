@@ -37,14 +37,14 @@ interface AppProvidersProps {
 export const AppProviders = ({ children }: AppProvidersProps) => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
-      <ToastProvider>
-        <AuthProvider>
-          <I18nProvider>
+      <I18nProvider>
+        <ToastProvider>
+          <AuthProvider>
             <I18nAccountSync />
             {children}
-          </I18nProvider>
-        </AuthProvider>
-      </ToastProvider>
+          </AuthProvider>
+        </ToastProvider>
+      </I18nProvider>
     </BrowserRouter>
   </QueryClientProvider>
 );

@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/toast";
 import { FullPageLoader } from "@/components/ui/spinner";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 /**
  * Landing target for the backend's OAuth redirect:
@@ -17,6 +18,7 @@ export const AuthCallbackPage = () => {
   const [searchParams] = useSearchParams();
   const { completeOAuthExchange } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation("auth");
   const ranOnce = useRef(false);
 
   useEffect(() => {
@@ -26,8 +28,8 @@ export const AuthCallbackPage = () => {
     const code = searchParams.get("code");
     if (!code) {
       toast({
-        title: "Sign in failed",
-        description: "Missing authentication code.",
+        title: t("callback.failedTitle"),
+        description: t("callback.missingCode"),
         variant: "error",
       });
       navigate(ROUTES.login, { replace: true });
@@ -45,13 +47,13 @@ export const AuthCallbackPage = () => {
       })
       .catch(() => {
         toast({
-          title: "Sign in failed",
-          description: "Please try again.",
+          title: t("callback.failedTitle"),
+          description: t("callback.tryAgain"),
           variant: "error",
         });
         navigate(ROUTES.login, { replace: true });
       });
-  }, [searchParams, completeOAuthExchange, navigate, toast]);
+  }, [searchParams, completeOAuthExchange, navigate, toast, t]);
 
   return <FullPageLoader />;
 };

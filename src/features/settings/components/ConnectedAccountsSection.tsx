@@ -16,18 +16,14 @@ import { useToastMutation } from "@/hooks/useToastMutation";
 import { useToast } from "@/components/ui/toast";
 import { ApiError } from "@/core/errors/api-error";
 import { usersKeys } from "@/core/query/query-keys";
+import { getErrorMessage } from "@/core/errors/localize";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const PROVIDERS = [
   { id: "google", name: "Google", bg: "#4285F4", initial: "G" },
   { id: "github", name: "GitHub", bg: "#24292F", initial: "GH" },
   { id: "linkedin", name: "LinkedIn", bg: "#0A66C2", initial: "in" },
 ] as const;
-
-const CONNECTION_ERROR_REASONS: Record<string, string> = {
-  already_linked:
-    "That account is already connected to a different RemoteSEA account.",
-  unknown: "Something went wrong. Please try again.",
-};
 
 // Pulled out of the component: the React Compiler's immutability check
 // otherwise flags `window.location.href = url` as "modifying a variable
@@ -39,6 +35,7 @@ const navigateTo = (url: string) => {
 };
 
 export const ConnectedAccountsSection = () => {
+  const { t } = useTranslation("settings");
   const runWithToast = useToastMutation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -57,7 +54,10 @@ export const ConnectedAccountsSection = () => {
     if (!connected && !connectionError) return;
 
     if (connected) {
-      toast({ variant: "success", title: `${connected} connected` });
+      toast({
+        variant: "success",
+        title: t("conn2.connectedToast", { provider: connected }),
+      });
       void queryClient.invalidateQueries({
         queryKey: usersKeys.connections(),
       });
@@ -65,9 +65,11 @@ export const ConnectedAccountsSection = () => {
       const reason = searchParams.get("reason") ?? "unknown";
       toast({
         variant: "error",
-        title: `Couldn't connect ${connectionError}`,
+        title: t("conn2.connectFailedTitle", { provider: connectionError }),
         description:
-          CONNECTION_ERROR_REASONS[reason] ?? CONNECTION_ERROR_REASONS.unknown,
+          reason === "already_linked"
+            ? t("conn2.reason.already_linked")
+            : t("conn2.reason.unknown"),
       });
     }
 
@@ -83,8 +85,9 @@ export const ConnectedAccountsSection = () => {
 
   const disconnect = (provider: string) =>
     runWithToast(() => disconnectMutation.mutateAsync(provider), {
-      error: "Couldn't disconnect",
-      onError: (err) => (err instanceof ApiError ? err.message : undefined),
+      error: t("conn2.disconnectFailed"),
+      onError: (err) =>
+        err instanceof ApiError ? getErrorMessage(err) : undefined,
     });
 
   const connect = async (provider: (typeof PROVIDERS)[number]["id"]) => {
@@ -94,8 +97,8 @@ export const ConnectedAccountsSection = () => {
     } catch (err) {
       toast({
         variant: "error",
-        title: `Couldn't start connecting ${provider}`,
-        description: err instanceof ApiError ? err.message : undefined,
+        title: t("conn2.startFailed", { provider }),
+        description: err instanceof ApiError ? getErrorMessage(err) : undefined,
       });
     }
   };
@@ -106,17 +109,17 @@ export const ConnectedAccountsSection = () => {
       id="connected"
     >
       <SectionHead
-        eyebrow="03 · Sign-in methods"
-        help="Providers linked for one-tap sign-in. You can sign in with any connected account."
+        eyebrow={t("conn2.eyebrow")}
+        help={t("conn2.help")}
         title={
           <>
             <em
               className="font-serif italic text-brand-700"
               style={EMPHASIS_STYLE}
             >
-              Connected
-            </em>{" "}
-            accounts.
+              {t("conn2.title1")}
+            </em>
+            {t("conn2.title2")}
           </>
         }
       />
@@ -147,7 +150,9 @@ export const ConnectedAccountsSection = () => {
                       : "text-neutral-400"
                   )}
                 >
-                  {connection ? connection.providerAccountId : "Not connected"}
+                  {connection
+                    ? connection.providerAccountId
+                    : t("conn2.notConnected")}
                 </p>
               </div>
               {connection ? (
@@ -161,7 +166,7 @@ export const ConnectedAccountsSection = () => {
                     disconnectMutation.variables === id && (
                       <Loader2 className="animate-spin" size={12} />
                     )}
-                  Disconnect
+                  {t("conn2.disconnect")}
                 </button>
               ) : (
                 <button
@@ -169,7 +174,7 @@ export const ConnectedAccountsSection = () => {
                   type="button"
                   onClick={() => void connect(id)}
                 >
-                  Connect
+                  {t("conn2.connect")}
                 </button>
               )}
             </div>

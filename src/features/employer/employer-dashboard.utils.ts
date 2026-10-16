@@ -1,5 +1,7 @@
 import { pickColorFromString } from "@/utils/color";
 import { timeAgoLong } from "@/utils/time";
+import { localizedRecord } from "@/utils/labels";
+import { translate } from "@/i18n/runtime";
 import type { ApplicationStatus } from "@/types/application";
 import type { JobStatus } from "@/types/job";
 
@@ -16,16 +18,19 @@ export const STATUS_GROUP: Record<JobStatus, ListingStatusGroup> = {
   EXPIRED: "closed",
 };
 
-export const STATUS_LABEL: Record<JobStatus, string> = {
-  DRAFT: "Draft",
-  PENDING_REVIEW: "In review",
-  ACTIVE: "Live",
-  // "Filled" presumed a specific reason — a job can also close because it
-  // expired or the employer pulled it, not just because it was filled.
-  CLOSED: "Closed",
-  REJECTED: "Rejected",
-  EXPIRED: "Expired",
-};
+// "Filled" presumed a specific reason — a job can also close because it
+// expired or the employer pulled it, not just because it was filled.
+export const STATUS_LABEL: Record<JobStatus, string> = localizedRecord(
+  [
+    "DRAFT",
+    "PENDING_REVIEW",
+    "ACTIVE",
+    "CLOSED",
+    "REJECTED",
+    "EXPIRED",
+  ] as const,
+  "employer.jobStatus"
+);
 
 export const APPLICANT_STATUS: Record<ApplicationStatus, ApplicantStatusGroup> =
   {
@@ -48,12 +53,11 @@ export const NEXT_STAGE: Partial<Record<ApplicationStatus, ApplicationStatus>> =
     INTERVIEW: "OFFERED",
   };
 
-export const NEXT_LABEL: Partial<Record<ApplicationStatus, string>> = {
-  PENDING: "Review",
-  REVIEWING: "Shortlist",
-  SHORTLISTED: "Interview",
-  INTERVIEW: "Offer",
-};
+export const NEXT_LABEL: Partial<Record<ApplicationStatus, string>> =
+  localizedRecord(
+    ["PENDING", "REVIEWING", "SHORTLISTED", "INTERVIEW"] as const,
+    "employer.next"
+  );
 
 // Employer Response SLA — mirrors the API's BACKLOG_THRESHOLD_MS
 // (applications/constants.ts) exactly, so this row indicator shows the same
@@ -111,8 +115,10 @@ export const applicantsEmptyMessage = (
   activeFilterLabel: string | null
 ): string =>
   activeFilterLabel
-    ? `No ${activeFilterLabel.toLowerCase()} applicants.`
-    : "No applicants yet.";
+    ? translate("employer.applicants.emptyFiltered", {
+        filter: activeFilterLabel.toLowerCase(),
+      })
+    : translate("employer.applicants.emptyAll");
 
 // ApplicantsPanel used to hard-cap display at 8 rows with no way to see the
 // rest, even though the underlying data (up to RECENT_APPLICATIONS_LIST_CAP
@@ -133,9 +139,9 @@ export const isApplicantTabId = (v: string): v is ApplicantTabId =>
 export const isApplicantSortId = (v: string): v is ApplicantSortId =>
   (["recent", "match"] as const).includes(v as ApplicantSortId);
 
-export const SORT_OPTIONS: { value: ApplicantSortId; label: string }[] = [
-  { value: "recent", label: "Most recent" },
-  { value: "match", label: "Best match" },
+export const sortOptions = (): { value: ApplicantSortId; label: string }[] => [
+  { value: "recent", label: translate("employer.sort.recent") },
+  { value: "match", label: translate("employer.sort.match") },
 ];
 
 export const isRejectable = (status: ApplicationStatus): boolean =>

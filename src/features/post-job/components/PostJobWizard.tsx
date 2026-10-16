@@ -29,12 +29,16 @@ import {
   usePostJobDraftPersistence,
 } from "@/features/post-job/use-post-job-draft";
 import { formatUsd } from "@/utils/format";
+import { useTranslation } from "@/i18n/useTranslation";
+import { getErrorMessage } from "@/core/errors/localize";
+import { useSubmitError } from "@/hooks/useSubmitError";
+import { translate } from "@/i18n/runtime";
 
 const STEPS = [
-  { id: 1, label: "Company" },
-  { id: 2, label: "Role" },
-  { id: 3, label: "Plan" },
-  { id: 4, label: "Review & pay" },
+  { id: 1, key: "step.company" },
+  { id: 2, key: "step.role" },
+  { id: 3, key: "step.plan" },
+  { id: 4, key: "step.review" },
 ];
 
 const MAX_SKILL_IDS = 15;
@@ -42,6 +46,7 @@ const MAX_BENEFITS = 10;
 const PROFILE_ALREADY_EXISTS_STATUS = 409;
 
 export const PostJobWizard = () => {
+  const { t } = useTranslation("postjob");
   const { toast } = useToast();
   // Restore any saved draft synchronously so the first render already shows it.
   const [draft] = useState(loadPostJobDraft);
@@ -51,11 +56,14 @@ export const PostJobWizard = () => {
   );
   const [publishedJobId, setPublishedJobId] = useState<string | null>(null);
   const [publishing, setPublishing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  // Separate from `error` (a single final-publish failure) — a step can have
-  // several invalid fields at once, and showing only the first meant fixing one
-  // just revealed the next in a whack-a-mole loop.
-  const [stepErrors, setStepErrors] = useState<string[]>([]);
+  // Holds the failure reason (error or i18n key), not translated text, so the
+  // message re-translates if the language changes while it is on screen.
+  const submitError = useSubmitError();
+  // Separate from the final-publish failure — a step can have several invalid
+  // fields at once, and showing only the first meant fixing one just revealed
+  // the next in a whack-a-mole loop. Only a flag is stored; the messages are
+  // derived from the live form + active locale at render time.
+  const [showStepErrors, setShowStepErrors] = useState(false);
 
   usePostJobDraftPersistence(form, step, !!publishedJobId, !!draft);
 
@@ -79,13 +87,22 @@ export const PostJobWizard = () => {
   const set = (k: keyof PostJobFormState, v: unknown) =>
     setForm((prev) => ({ ...prev, [k]: v }));
 
-  const fail = (msg: string) => {
-    setError(msg);
+  const failWith = (key: string, params?: Record<string, string | number>) => {
+    submitError.failWithKey(key, params);
     setPublishing(false);
     toast({
       variant: "error",
-      title: "Couldn't publish job",
-      description: msg,
+      title: t("wizard.failedTitle"),
+      description: translate(key, params),
+    });
+  };
+  const failWithError = (err: unknown, fallbackKey: string) => {
+    submitError.fail(err, fallbackKey);
+    setPublishing(false);
+    toast({
+      variant: "error",
+      title: t("wizard.failedTitle"),
+      description: getErrorMessage(err, translate(fallbackKey)),
     });
   };
 
@@ -93,37 +110,34 @@ export const PostJobWizard = () => {
     // Only gate moving *forward* — going back to fix an earlier step should
     // always be allowed even if the current step is currently invalid.
     if (nextStep > step) {
-      const errors = validateStep(step, form);
-      if (errors.length > 0) {
-        setStepErrors(errors);
+      if (validateStep(step, form).length > 0) {
+        setShowStepErrors(true);
         return;
       }
     }
-    setStepErrors([]);
-    setError(null);
+    setShowStepErrors(false);
+    submitError.clear();
     setStep(nextStep);
   };
 
   const handlePublish = async () => {
     setPublishing(true);
-    setError(null);
-    setStepErrors([]);
+    submitError.clear();
+    setShowStepErrors(false);
 
     if (form.jobDesc.trim().length < MIN_JOB_DESCRIPTION_LENGTH) {
-      fail(
-        `Job description must be at least ${MIN_JOB_DESCRIPTION_LENGTH} characters.`
-      );
+      failWith("postjob.wizard.descMin", { min: MIN_JOB_DESCRIPTION_LENGTH });
       return;
     }
     if (!form.jobCategoryId) {
-      fail("Could not load job categories. Please try again.");
+      failWith("postjob.wizard.noCategories");
       return;
     }
     if (form.jobSkills.length > 0 && !allSkills) {
-      fail(
+      failWith(
         skillsErrored
-          ? "Could not load the skills list, so your selected skills can't be attached. Please try again."
-          : "Still loading the skills list — please wait a moment and try again."
+          ? "postjob.wizard.skillsFailed"
+          : "postjob.wizard.skillsLoading"
       );
       return;
     }
@@ -141,7 +155,7 @@ export const PostJobWizard = () => {
         err instanceof ApiError && err.status === PROFILE_ALREADY_EXISTS_STATUS
       )) {
         reportError(err);
-        fail("Could not save your company profile. Please try again.");
+        failWith("postjob.wizard.profileFailed");
         return;
       }
     }
@@ -166,7 +180,8 @@ export const PostJobWizard = () => {
         timezone: form.jobTz || undefined,
         country: hqToCountry(form.coHq),
         benefits: form.benefits.slice(0, MAX_BENEFITS),
-        planType: TIERS.find((t) => t.id === form.tier)?.planType ?? "STANDARD",
+        planType:
+          TIERS.find((tier) => tier.id === form.tier)?.planType ?? "STANDARD",
         categoryIds: [form.jobCategoryId],
         skillIds,
       });
@@ -176,11 +191,7 @@ export const PostJobWizard = () => {
       // A blocked action (e.g. a suspended company) has an actionable,
       // specific reason from the backend — showing it beats a generic
       // "check the required fields" message that doesn't apply here at all.
-      fail(
-        err instanceof ApiError
-          ? err.message
-          : "Could not create the job. Check the required fields and try again."
-      );
+      failWithError(err, "postjob.wizard.createFailed");
       return;
     }
 
@@ -195,11 +206,7 @@ export const PostJobWizard = () => {
       // The job itself was already created above — only checkout failed, so
       // this must not fall through to the "published" step below as if
       // nothing went wrong.
-      fail(
-        err instanceof ApiError
-          ? err.message
-          : "Your job was saved, but we couldn't start checkout. Please try again."
-      );
+      failWithError(err, "postjob.wizard.checkoutFailed");
       return;
     }
 
@@ -210,7 +217,8 @@ export const PostJobWizard = () => {
   if (publishedJobId)
     return <PostJobDraftSaved form={form} jobId={publishedJobId} />;
 
-  const selectedTier = TIERS.find((t) => t.id === form.tier) ?? TIERS[0];
+  const selectedTier = TIERS.find((tier) => tier.id === form.tier) ?? TIERS[0];
+  const stepErrors = showStepErrors ? validateStep(step, form) : [];
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -219,7 +227,7 @@ export const PostJobWizard = () => {
           repeating it in this second bar was pure duplication, not a
           second piece of information. */}
       <div className="border-b border-neutral-200 bg-white px-6 py-4">
-        <h1 className="sr-only">Post a job</h1>
+        <h1 className="sr-only">{t("wizard.heading")}</h1>
         <div className="mx-auto flex max-w-[1200px] items-center justify-between">
           <div className="flex items-center gap-1">
             {STEPS.map((s, i) => (
@@ -245,7 +253,7 @@ export const PostJobWizard = () => {
                     step === s.id ? "text-neutral-900" : "text-neutral-400"
                   )}
                 >
-                  {s.label}
+                  {t(s.key)}
                 </span>
                 {i < STEPS.length - 1 && (
                   <ChevronRight className="text-neutral-300" size={14} />
@@ -254,7 +262,7 @@ export const PostJobWizard = () => {
             ))}
           </div>
           <div className="text-[12px] text-neutral-400">
-            Step {step} / {STEPS.length}
+            {t("wizard.stepOf", { step, total: STEPS.length })}
           </div>
         </div>
       </div>
@@ -267,12 +275,12 @@ export const PostJobWizard = () => {
           {step === 3 && <StepPlan form={form} set={set} />}
           {step === 4 && <StepReview form={form} />}
 
-          {error && (
+          {submitError.message && (
             <p
               className="mt-4 rounded-10 bg-red-50 px-3 py-2 text-[13px] text-red-600"
               role="alert"
             >
-              {error}
+              {submitError.message}
             </p>
           )}
           {stepErrors.length > 0 && (
@@ -299,7 +307,7 @@ export const PostJobWizard = () => {
                 type="button"
                 onClick={() => goToStep(step - 1)}
               >
-                Back
+                {t("wizard.back")}
               </button>
             ) : (
               <div />
@@ -310,7 +318,7 @@ export const PostJobWizard = () => {
                 type="button"
                 onClick={() => goToStep(step + 1)}
               >
-                Continue <ChevronRight size={14} />
+                {t("wizard.continue")} <ChevronRight size={14} />
               </button>
             ) : (
               <button
@@ -319,7 +327,8 @@ export const PostJobWizard = () => {
                 type="button"
                 onClick={handlePublish}
               >
-                <Zap size={14} /> {publishing ? "Processing…" : "Pay & publish"}
+                <Zap size={14} />{" "}
+                {publishing ? t("wizard.processing") : t("wizard.pay")}
               </button>
             )}
           </div>
@@ -331,22 +340,22 @@ export const PostJobWizard = () => {
             <div>
               <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
                 <Tag className="mr-1 inline" size={10} />
-                Live preview
+                {t("wizard.preview")}
               </p>
               <PreviewCard form={form} />
             </div>
 
             <div className="rounded-16 border border-neutral-100 bg-white p-4">
               <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-                Order summary
+                {t("wizard.orderSummary")}
               </p>
               <div className="space-y-2 text-[13px]">
                 <div className="flex justify-between text-neutral-600">
-                  <span>{selectedTier.name}</span>
+                  <span>{t(`tier.${selectedTier.id}.name`)}</span>
                   <span>{formatUsd(selectedTier.price)}</span>
                 </div>
                 <div className="flex justify-between border-t border-neutral-100 pt-2 font-semibold text-neutral-900">
-                  <span>Total</span>
+                  <span>{t("wizard.total")}</span>
                   <span>{formatUsd(selectedTier.price)}</span>
                 </div>
               </div>
@@ -354,7 +363,7 @@ export const PostJobWizard = () => {
 
             <div className="flex items-center gap-2 rounded-16 border border-neutral-100 bg-white p-3 text-[12px] text-neutral-400">
               <Shield className="flex-shrink-0 text-brand-500" size={13} />
-              Secured by Stripe · SSL encrypted
+              {t("wizard.secured")}
             </div>
           </div>
         </div>

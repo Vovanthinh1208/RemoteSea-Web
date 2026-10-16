@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Star } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const STAR_VALUES = [1, 2, 3, 4, 5] as const;
 
@@ -17,6 +18,7 @@ export const StarRatingInput = ({
   label,
   size = 22,
 }: StarRatingInputProps) => {
+  const { t } = useTranslation();
   const [hovered, setHovered] = useState<number | null>(null);
   const display = hovered ?? value ?? 0;
 
@@ -29,7 +31,7 @@ export const StarRatingInput = ({
       >
         {STAR_VALUES.map((n) => (
           <button
-            aria-label={`${n} star${n === 1 ? "" : "s"}`}
+            aria-label={t("common.stars.n", { n })}
             aria-pressed={value === n}
             className="rounded-4 p-0.5 transition-colors focus-visible:shadow-focus focus-visible:outline-none"
             key={n}

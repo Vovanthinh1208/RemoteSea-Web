@@ -22,11 +22,306 @@
     "emptyQueue": "Không có tin tuyển dụng nào đang chờ kiểm duyệt."
   },
   "users": {
-    "title": "Danh Mục Người Dùng",
-    "searchPlaceholder": "Tìm theo tên, email, hoặc vai trò...",
+    "title": "Người dùng",
+    "searchPlaceholder": "Tìm theo tên hoặc email…",
     "role": "Vai trò",
     "status": "Trạng thái tài khoản",
-    "ban": "Khóa tài khoản",
-    "unban": "Khôi phục tài khoản"
+    "ban": "Cấm",
+    "unban": "Bỏ cấm",
+    "eyebrow": "Vận hành",
+    "summary": "{{total}} tài khoản · {{banned}} bị cấm",
+    "roles": {
+      "all": "Tất cả",
+      "TALENT": "Ứng viên",
+      "EMPLOYER": "Nhà tuyển dụng",
+      "ADMIN": "Quản trị"
+    },
+    "you": "(bạn)",
+    "roleFor": "Vai trò của {{email}}",
+    "banned": "Bị cấm",
+    "active": "Hoạt động",
+    "banQ": "Cấm {{email}}? Họ sẽ bị đăng xuất khỏi mọi nơi và không thể đăng nhập lại.",
+    "bannedToast": "Đã cấm người dùng",
+    "unbannedToast": "Đã bỏ cấm người dùng",
+    "updateFailed": "Không thể cập nhật người dùng",
+    "roleUpdated": "Đã cập nhật vai trò",
+    "roleFailed": "Không thể cập nhật vai trò",
+    "errorTitle": "Không thể tải người dùng",
+    "errorDesc": "Đã xảy ra lỗi khi tải danh sách người dùng.",
+    "stat": {
+      "total": "Tổng người dùng",
+      "totalSub": "mọi vai trò",
+      "admins": "Quản trị viên",
+      "adminsSub": "quyền toàn nền tảng",
+      "banned": "Bị cấm",
+      "bannedSub": "bị chặn đăng nhập"
+    },
+    "searchAria": "Tìm người dùng",
+    "col": {
+      "user": "Người dùng",
+      "role": "Vai trò",
+      "status": "Trạng thái",
+      "joined": "Tham gia"
+    },
+    "empty": "Không có người dùng nào khớp bộ lọc."
+  },
+  "plan": {
+    "STANDARD": "Tiêu chuẩn",
+    "FEATURED": "Nổi bật",
+    "HANDS_ON": "Hỗ trợ trực tiếp"
+  },
+  "wait": {
+    "hours": "{{h}} giờ",
+    "days": "{{d}} ngày",
+    "daysHours": "{{d}} ngày {{h}} giờ"
+  },
+  "check": {
+    "descLength": "Độ dài mô tả",
+    "descChars": "{{n}} ký tự",
+    "salary": "Có công bố lương",
+    "salaryYes": "Đã có khoảng lương",
+    "salaryNo": "Chưa có khoảng lương",
+    "category": "Đã phân loại",
+    "categoryYes": "Có danh mục",
+    "categoryNo": "Thiếu danh mục",
+    "verified": "Nhà tuyển dụng đã xác minh",
+    "verifiedYes": "Công ty đã xác minh",
+    "verifiedNo": "Chưa xác minh"
+  },
+  "checklist": {
+    "1": {
+      "label": "Vị trí thực sự là remote",
+      "hint": "Không phải hybrid bị gắn nhầm là remote."
+    },
+    "2": {
+      "label": "Mức lương nằm trong khung thị trường",
+      "hint": "So sánh với dữ liệu tham chiếu."
+    },
+    "3": {
+      "label": "Không có ngôn từ phân biệt đối xử",
+      "hint": "Yêu cầu được diễn đạt trung lập."
+    },
+    "4": {
+      "label": "Công ty có vẻ hợp pháp",
+      "hint": "Website và thông tin liên hệ hợp lệ."
+    },
+    "title": "Danh sách kiểm tra",
+    "allDone": "Đã hoàn tất mọi mục kiểm tra",
+    "left": "Còn {{count}} mục trước khi duyệt"
+  },
+  "salaryNotSpecified": "Chưa công bố",
+  "audit": {
+    "EMPLOYER_VERIFIED": "Đã xác minh nhà tuyển dụng",
+    "EMPLOYER_SUSPENDED": "Đã đình chỉ nhà tuyển dụng",
+    "JOB_APPROVED": "Đã duyệt tin",
+    "JOB_REJECTED": "Đã từ chối tin",
+    "JOB_REPORT_RESOLVED": "Đã xử lý báo cáo",
+    "JOB_REPORT_DISMISSED": "Đã bỏ qua báo cáo",
+    "USER_BANNED": "Đã cấm người dùng",
+    "USER_UNBANNED": "Đã bỏ cấm người dùng",
+    "USER_ROLE_CHANGED": "Đã đổi vai trò",
+    "errorTitle": "Không thể tải nhật ký kiểm toán",
+    "errorDesc": "Đã xảy ra lỗi khi tải nhật ký kiểm toán.",
+    "eyebrow": "Trách nhiệm giải trình",
+    "title": "Nhật ký kiểm toán",
+    "summary_one": "Đã ghi nhận {{count}} thao tác — mọi lần xác minh/đình chỉ nhà tuyển dụng, duyệt/từ chối tin và xử lý/bỏ qua báo cáo.",
+    "summary_other": "Đã ghi nhận {{count}} thao tác — mọi lần xác minh/đình chỉ nhà tuyển dụng, duyệt/từ chối tin và xử lý/bỏ qua báo cáo.",
+    "loadingSummary": "Đang tải thao tác…",
+    "all": "Tất cả",
+    "sentence": "{{admin}} {{action}} {{target}}",
+    "emptyAll": "Chưa có thao tác kiểm duyệt nào.",
+    "emptyType": "Chưa có thao tác kiểm duyệt nào thuộc loại này."
+  },
+  "auditTab": {
+    "EMPLOYER": "Nhà tuyển dụng",
+    "JOB": "Việc làm",
+    "JOB_REPORT": "Báo cáo",
+    "USER": "Người dùng"
+  },
+  "console": {
+    "tab": {
+      "queue": "Hàng chờ duyệt",
+      "employers": "Nhà tuyển dụng",
+      "users": "Người dùng",
+      "reports": "Báo cáo",
+      "revenue": "Doanh thu",
+      "audit-log": "Nhật ký kiểm toán"
+    },
+    "title": "Bảng điều hành",
+    "sections": "Các mục của bảng điều hành",
+    "docTitle": "Bảng điều hành"
+  },
+  "emp": {
+    "filter": {
+      "all": "Tất cả",
+      "unverified": "Chưa xác minh"
+    },
+    "suspendQ": "Đình chỉ {{name}}? Các tin đăng của họ sẽ bị gỡ ngay lập tức.",
+    "suspend": "Đình chỉ",
+    "verify": "Xác minh",
+    "verifiedToast": "Đã xác minh nhà tuyển dụng",
+    "suspendedToast": "Đã đình chỉ nhà tuyển dụng",
+    "updateFailed": "Không thể cập nhật nhà tuyển dụng",
+    "errorTitle": "Không thể tải nhà tuyển dụng",
+    "errorDesc": "Đã xảy ra lỗi khi tải danh sách nhà tuyển dụng.",
+    "title": "Nhà tuyển dụng",
+    "summary": "{{companies}} công ty · {{listings}} tin đăng · đã thanh toán {{billed}}",
+    "stat": {
+      "total": "Tổng nhà tuyển dụng",
+      "totalSub": "từ trước đến nay",
+      "unverified": "Chưa xác minh",
+      "unverifiedSub": "cần xem xét",
+      "billed": "Tổng đã thanh toán",
+      "billedSub": "trọn đời"
+    },
+    "searchAria": "Tìm nhà tuyển dụng",
+    "searchPlaceholder": "Tìm nhà tuyển dụng…",
+    "col": {
+      "employer": "Nhà tuyển dụng",
+      "listings": "Tin đăng",
+      "spend": "Tổng chi tiêu",
+      "joined": "Tham gia"
+    },
+    "empty": "Không có nhà tuyển dụng nào khớp bộ lọc."
+  },
+  "rep": {
+    "filter": {
+      "OPEN": "Đang mở",
+      "RESOLVED": "Đã xử lý",
+      "DISMISSED": "Đã bỏ qua"
+    },
+    "resolve": "Xử lý",
+    "dismiss": "Bỏ qua",
+    "dismissQ": "Bỏ qua báo cáo này?",
+    "resolvedTag": "Đã xử lý",
+    "dismissedTag": "Đã bỏ qua",
+    "resolvedToast": "Đã xử lý báo cáo",
+    "dismissedToast": "Đã bỏ qua báo cáo",
+    "updateFailed": "Không thể cập nhật báo cáo",
+    "errorTitle": "Không thể tải báo cáo",
+    "errorDesc": "Đã xảy ra lỗi khi tải báo cáo.",
+    "eyebrow": "Tin cậy & an toàn",
+    "title": "Báo cáo",
+    "subtitle": "Các tin đăng bị ứng viên hoặc nhà tuyển dụng đánh dấu là đáng ngờ.",
+    "stat": {
+      "open": "Báo cáo đang mở",
+      "openSub": "cần xem xét",
+      "resolved": "Đã xử lý",
+      "dismissed": "Đã bỏ qua",
+      "thisView": "trong chế độ xem này"
+    },
+    "col": {
+      "job": "Việc làm",
+      "reporter": "Người báo cáo",
+      "reason": "Lý do",
+      "details": "Chi tiết",
+      "reported": "Ngày báo cáo"
+    },
+    "empty": {
+      "OPEN": "Không có báo cáo đang mở.",
+      "RESOLVED": "Không có báo cáo đã xử lý.",
+      "DISMISSED": "Không có báo cáo đã bỏ qua."
+    }
+  },
+  "rev": {
+    "errorTitle": "Không thể tải doanh thu",
+    "errorDesc": "Đã xảy ra lỗi khi tải dữ liệu doanh thu.",
+    "eyebrow": "Tài chính",
+    "title": "Doanh thu",
+    "subtitle": "Thanh toán theo tin đăng · mọi số tiền tính bằng USD",
+    "allTime": "Doanh thu từ trước đến nay",
+    "allTimeSub": "trên mọi tin đăng đã thanh toán",
+    "thisMonth": "Tháng này",
+    "inProgress": "đang diễn ra",
+    "postsAmount": "tin · {{amount}}",
+    "monthly": "Doanh thu hằng tháng · {{count}} tháng gần nhất",
+    "byPlan": "Doanh thu theo gói ",
+    "byPlanSuffix": "· từ trước đến nay",
+    "posts": "{{count}} tin",
+    "recent": "Giao dịch gần đây",
+    "col": {
+      "employer": "Nhà tuyển dụng",
+      "plan": "Gói",
+      "amount": "Số tiền",
+      "date": "Ngày"
+    },
+    "empty": "Chưa có tin đăng nào được thanh toán."
+  },
+  "queue": {
+    "approvedToast": "Đã duyệt & đăng tin",
+    "rejectedToast": "Đã trả tin về cho nhà tuyển dụng",
+    "reviewFailed": "Không thể gửi kết quả duyệt",
+    "errorTitle": "Không thể tải hàng chờ duyệt",
+    "errorDesc": "Đã xảy ra lỗi khi tải hàng chờ duyệt.",
+    "clearTitle": "Hàng chờ đã trống",
+    "clearDesc": "Không có gì đang chờ duyệt. Bạn đã xử lý xong.",
+    "title": "Hàng chờ duyệt",
+    "subtitle": "Mọi tin đều được người thật duyệt trước khi đăng · {{count}} đang chờ"
+  },
+  "kpi": {
+    "inQueue": "Trong hàng chờ",
+    "overSla": "{{count}} quá hạn SLA",
+    "avgWait": "Thời gian chờ TB",
+    "sla": "SLA 24 giờ",
+    "approved": "Đã duyệt trong phiên này",
+    "approvedSub": "+ đang đăng",
+    "rejected": "Đã từ chối trong phiên này",
+    "rejectedSub": "gồm cả yêu cầu chỉnh sửa"
+  },
+  "list": {
+    "pending": "Đang chờ ",
+    "oldest": "Cũ nhất trước",
+    "featured": "Nổi bật",
+    "unverified": "Nhà tuyển dụng chưa xác minh"
+  },
+  "decision": {
+    "noteAria": "Ghi chú cho nhà tuyển dụng",
+    "notePlaceholder": "Thêm ghi chú cho nhà tuyển dụng (bắt buộc khi yêu cầu chỉnh sửa hoặc từ chối)…",
+    "approve": "Duyệt & đăng",
+    "changes": "Yêu cầu chỉnh sửa",
+    "changesHint": "Hãy thêm ghi chú giải thích cần chỉnh sửa gì",
+    "reject": "Từ chối",
+    "rejectHint": "Hãy thêm ghi chú giải thích lý do từ chối",
+    "resolved": {
+      "approved": "Đã duyệt & đăng",
+      "changes": "Đã yêu cầu chỉnh sửa",
+      "rejected": "Đã từ chối"
+    }
+  },
+  "banner": {
+    "approved": "Đã duyệt — tin đã được đăng và nhà tuyển dụng đã được thông báo.",
+    "changes": "Đã trả về cho nhà tuyển dụng kèm ghi chú của bạn.",
+    "rejected": "Đã từ chối — nhà tuyển dụng đã được thông báo kèm lý do."
+  },
+  "header": {
+    "submittedBy": "Gửi bởi",
+    "justNow": "Vừa xong",
+    "waited": "đã chờ {{wait}}",
+    "other": "Khác",
+    "remote": "Remote"
+  },
+  "summary": {
+    "title": "Tóm tắt tin gửi",
+    "salary": "Mức lương",
+    "type": "Loại hình",
+    "region": "Khu vực",
+    "plan": "Gói"
+  },
+  "checks": {
+    "title": "Kiểm tra tự động",
+    "clean": "{{pass}}/{{total}} đạt"
+  },
+  "risk": {
+    "title": "Kiểm tra rủi ro bằng AI",
+    "advisory": "Chỉ mang tính tham khảo — bạn vẫn là người quyết định",
+    "prompt": "Nhờ AI quét tin này để tìm dấu hiệu lừa đảo hoặc chất lượng kém.",
+    "run": "Chạy kiểm tra rủi ro AI",
+    "failed": "Không thể chạy kiểm tra rủi ro.",
+    "LOW": "Rủi ro thấp",
+    "MEDIUM": "Rủi ro trung bình",
+    "HIGH": "Rủi ro cao",
+    "recheck": "Kiểm tra lại — chạy lại phân tích và thay thế kết quả này",
+    "checked": "Đã kiểm tra {{time}}",
+    "recheckFailed": "Không thể kiểm tra lại — đang hiển thị kết quả trước."
   }
 }

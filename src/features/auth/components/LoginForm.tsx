@@ -13,6 +13,7 @@ import { TextField } from "@/components/shared/TextField";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/toast";
 import { applyFormSubmitError } from "@/utils/form-errors";
+import { useSubmitError } from "@/hooks/useSubmitError";
 import { isSafeInternalPath } from "@/utils/safe-redirect";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
@@ -29,7 +30,7 @@ export const LoginForm = () => {
       : ROUTES.jobs;
   const { login } = useAuth();
   const { toast } = useToast();
-  const [formError, setFormError] = useState<string | null>(null);
+  const submitError = useSubmitError();
   const [challenge, setChallenge] = useState<{
     challengeToken: string;
     remember: boolean;
@@ -46,7 +47,7 @@ export const LoginForm = () => {
   });
 
   const onSubmit = async (values: LoginFormValues) => {
-    setFormError(null);
+    submitError.clear();
     try {
       const result = await login(
         values.email,
@@ -62,14 +63,9 @@ export const LoginForm = () => {
       }
       navigate(callbackUrl, { replace: true });
     } catch (err) {
-      setFormError(
-        applyFormSubmitError(
-          err,
-          setError,
-          "Something went wrong. Please try again."
-        )
-      );
-      toast({ title: "Sign in failed", variant: "error" });
+      applyFormSubmitError(err, setError);
+      submitError.fail(err);
+      toast({ title: t("login.failedToast"), variant: "error" });
     }
   };
 
@@ -127,7 +123,11 @@ export const LoginForm = () => {
           {t("login.rememberMe")}
         </label>
 
-        {formError && <p className="text-sm text-red-600">{formError}</p>}
+        {submitError.message && (
+          <p className="text-sm text-red-600" role="alert">
+            {submitError.message}
+          </p>
+        )}
 
         <Button
           className="w-full rounded-12"

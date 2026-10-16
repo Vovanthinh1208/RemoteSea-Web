@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { m, v } from "@/i18n/zod";
 
 const CURRENT_YEAR = new Date().getUTCFullYear();
 export const HIGHLIGHT_YEARS = Array.from({ length: 62 }, (_, i) =>
@@ -11,7 +12,7 @@ export const HIGHLIGHT_YEARS = Array.from({ length: 62 }, (_, i) =>
 // design (see ProfileHighlight in schema.prisma).
 export const highlightFormSchema = z
   .object({
-    title: z.string().trim().min(1, "Required").max(120),
+    title: z.string().trim().min(1, m("validation.required")).max(120),
     subtitle: z.string().trim().max(120).optional(),
     description: z.string().trim().max(500).optional(),
     tag: z.string().trim().max(60).optional(),
@@ -21,7 +22,7 @@ export const highlightFormSchema = z
     endYear: z.string().optional(),
   })
   .refine((data) => data.isOngoing || !!data.endYear, {
-    message: "End year is required unless this is ongoing",
+    error: v("validation.endYearRequired"),
     path: ["endYear"],
   })
   .refine(
@@ -31,7 +32,7 @@ export const highlightFormSchema = z
       !data.startYear ||
       data.endYear >= data.startYear,
     {
-      message: "End year must be on or after start year",
+      error: v("validation.endYearOrder"),
       path: ["endYear"],
     }
   );

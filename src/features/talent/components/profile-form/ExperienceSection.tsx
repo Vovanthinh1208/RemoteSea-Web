@@ -17,6 +17,7 @@ import {
   type WorkExperienceFormValues,
 } from "@/features/talent/work-experience.schemas";
 import { formatMonthYear } from "@/utils/format";
+import { useTranslation } from "@/i18n/useTranslation";
 import type { WorkExperience } from "@/types/work-experience";
 
 const MAX_EXPERIENCES = 5;
@@ -44,28 +45,32 @@ const RowSkeleton = () => (
   </div>
 );
 
-const EmptyState = ({ onAdd }: { onAdd: () => void }) => (
-  <div className="flex flex-col items-center gap-2 rounded-16 border border-dashed border-neutral-200 py-8 text-center">
-    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-50 text-brand-600">
-      <Briefcase size={16} />
-    </span>
-    <p className="text-[13px] font-medium text-neutral-700">
-      No roles added yet
-    </p>
-    <p className="max-w-[280px] text-[12px] leading-relaxed text-neutral-400">
-      Add your most recent role first — it's the one recruiters read first.
-    </p>
-    <button
-      className="mt-1 flex items-center gap-1.5 rounded-10 bg-brand-600 px-3.5 py-2 text-[12.5px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
-      type="button"
-      onClick={onAdd}
-    >
-      <Plus size={13} /> Add your first role
-    </button>
-  </div>
-);
+const EmptyState = ({ onAdd }: { onAdd: () => void }) => {
+  const { t } = useTranslation("talent");
+  return (
+    <div className="flex flex-col items-center gap-2 rounded-16 border border-dashed border-neutral-200 py-8 text-center">
+      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-50 text-brand-600">
+        <Briefcase size={16} />
+      </span>
+      <p className="text-[13px] font-medium text-neutral-700">
+        {t("exp.emptyTitle")}
+      </p>
+      <p className="max-w-[280px] text-[12px] leading-relaxed text-neutral-400">
+        {t("exp.emptyDesc")}
+      </p>
+      <button
+        className="mt-1 flex items-center gap-1.5 rounded-10 bg-brand-600 px-3.5 py-2 text-[12.5px] font-medium text-white transition-colors hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
+        type="button"
+        onClick={onAdd}
+      >
+        <Plus size={13} /> {t("exp.addFirst")}
+      </button>
+    </div>
+  );
+};
 
 export const ExperienceSection = () => {
+  const { t } = useTranslation("talent");
   const { data: experiences, isLoading } = useWorkExperience();
   const createMutation = useCreateWorkExperience();
   const updateMutation = useUpdateWorkExperience();
@@ -91,14 +96,14 @@ export const ExperienceSection = () => {
             : monthToIsoDate(values.endMonth),
         description: values.description || undefined,
       });
-      toast({ variant: "success", title: "Experience added" });
+      toast({ variant: "success", title: t("exp.added") });
       return true;
     } catch (err) {
       reportError(err);
       toast({
         variant: "error",
-        title: "Couldn't add experience",
-        description: "Please try again.",
+        title: t("exp.addFailed"),
+        description: t("basics.tryAgain"),
       });
       return false;
     }
@@ -123,14 +128,14 @@ export const ExperienceSection = () => {
           description: values.description || null,
         },
       });
-      toast({ variant: "success", title: "Experience updated" });
+      toast({ variant: "success", title: t("exp.updated") });
       return true;
     } catch (err) {
       reportError(err);
       toast({
         variant: "error",
-        title: "Couldn't update experience",
-        description: "Please try again.",
+        title: t("exp.updateFailed"),
+        description: t("basics.tryAgain"),
       });
       return false;
     }
@@ -139,13 +144,13 @@ export const ExperienceSection = () => {
   const handleDelete = async (experience: WorkExperience) => {
     try {
       await deleteMutation.mutateAsync(experience.id);
-      toast({ variant: "success", title: "Experience removed" });
+      toast({ variant: "success", title: t("exp.removed") });
     } catch (err) {
       reportError(err);
       toast({
         variant: "error",
-        title: "Couldn't remove experience",
-        description: "Please try again.",
+        title: t("exp.removeFailed"),
+        description: t("basics.tryAgain"),
       });
     }
   };
@@ -159,7 +164,7 @@ export const ExperienceSection = () => {
         <div>
           <div className="mb-1 flex items-center gap-2">
             <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-              03 · Track record
+              {t("exp.eyebrow")}
             </p>
             {!isLoading && list.length > 0 && (
               <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10.5px] font-medium text-neutral-500">
@@ -172,13 +177,12 @@ export const ExperienceSection = () => {
               className="font-serif italic text-brand-700"
               style={EMPHASIS_STYLE}
             >
-              Experience.
+              {t("exp.title")}
             </em>
           </h2>
         </div>
         <p className="text-[13px] leading-relaxed text-neutral-500">
-          List up to 5 roles. Recruiters skim — the most recent two get 80% of
-          attention.
+          {t("exp.help")}
         </p>
       </div>
 
@@ -215,11 +219,11 @@ export const ExperienceSection = () => {
                   <p className="flex flex-wrap items-center gap-1.5 text-[13.5px] font-semibold text-neutral-900">
                     {experience.title}{" "}
                     <span className="font-normal text-neutral-500">
-                      at {experience.company}
+                      {t("exp.at", { company: experience.company })}
                     </span>
                     {!experience.endDate && (
                       <span className="rounded-full bg-brand-50 px-1.5 py-0.5 text-[10px] font-medium text-brand-700">
-                        Current
+                        {t("exp.current")}
                       </span>
                     )}
                   </p>
@@ -234,7 +238,7 @@ export const ExperienceSection = () => {
                       {formatMonthYear(experience.startDate)} →{" "}
                       {experience.endDate
                         ? formatMonthYear(experience.endDate)
-                        : "Present"}
+                        : t("exp.present")}
                     </span>
                   </p>
                   {experience.description && (
@@ -245,7 +249,7 @@ export const ExperienceSection = () => {
                 </div>
                 <div className="flex flex-shrink-0 gap-1">
                   <button
-                    aria-label="Edit role"
+                    aria-label={t("exp.editRole")}
                     className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                     type="button"
                     onClick={() => setMode({ type: "edit", id: experience.id })}
@@ -254,12 +258,12 @@ export const ExperienceSection = () => {
                   </button>
                   <ConfirmAction
                     isPending={deleteMutation.isPending}
-                    message="Delete?"
+                    message={t("exp.deleteQ")}
                     onConfirm={() => handleDelete(experience)}
                   >
                     {({ onClick }) => (
                       <button
-                        aria-label="Delete role"
+                        aria-label={t("exp.deleteRole")}
                         className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none"
                         type="button"
                         onClick={onClick}
@@ -294,13 +298,13 @@ export const ExperienceSection = () => {
           type="button"
           onClick={() => setMode({ type: "create" })}
         >
-          <Plus size={13} /> Add another role
+          <Plus size={13} /> {t("exp.addAnother")}
         </button>
       )}
 
       {!isLoading && atCap && mode.type !== "create" && (
         <p className="mt-2 text-center text-[12px] text-neutral-400">
-          You've reached the 5-role limit — remove one to add another.
+          {t("exp.limit")}
         </p>
       )}
     </section>

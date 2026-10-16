@@ -19,7 +19,40 @@
     "exploreJobs": "Khám phá việc làm",
     "recommendedJobs": "Việc làm gợi ý cho bạn",
     "openToWorkTitle": "Sẵn sàng nhận cơ hội mới",
-    "openToWorkSubtitle": "Báo hiệu cho nhà tuyển dụng biết bạn đang tìm kiếm việc làm từ xa."
+    "openToWorkSubtitle": "Báo hiệu cho nhà tuyển dụng biết bạn đang tìm kiếm việc làm từ xa.",
+    "docTitle": "Bảng điều khiển",
+    "errorTitle": "Không thể tải bảng điều khiển",
+    "errorDesc": "Đã xảy ra lỗi khi tải bảng điều khiển của bạn.",
+    "greetMorning": "Chào buổi sáng",
+    "greetAfternoon": "Chào buổi chiều",
+    "greetEvening": "Chào buổi tối",
+    "there": "bạn",
+    "eyebrow": "Bảng điều khiển",
+    "summary": "Bạn có {{interviews}} đang diễn ra và {{offers}} đang chờ.",
+    "interviews_one": "{{count}} buổi phỏng vấn",
+    "interviews_other": "{{count}} buổi phỏng vấn",
+    "offers_one": "{{count}} offer",
+    "offers_other": "{{count}} offer",
+    "alerts": "Thông báo",
+    "browseJobs": "Tìm việc",
+    "profileIs": "Hồ sơ của bạn đã ",
+    "complete": "hoàn thiện {{pct}}%",
+    "addPrefix": "Hãy bổ sung ",
+    "addSuffix": " để xuất hiện trong nhiều lượt tìm kiếm hơn.",
+    "goodShape": "Tuyệt — hồ sơ của bạn đã khá hoàn chỉnh.",
+    "completeProfile": "Hoàn thiện hồ sơ",
+    "kpi": {
+      "sent": "Đơn đã gửi",
+      "allTime": "từ trước đến nay",
+      "saved": "Việc đã lưu",
+      "current": "hiện tại",
+      "alerts": "Thông báo việc làm",
+      "active": "đang bật",
+      "rate": "Tỉ lệ phỏng vấn",
+      "ofSubmitted": "trên số đã gửi",
+      "views": "Lượt xem hồ sơ",
+      "unique": "{{count}} người xem"
+    }
   },
   "profile": {
     "title": "Hồ sơ cá nhân",
@@ -62,9 +95,548 @@
   },
   "saved": {
     "title": "Việc làm đã lưu",
-    "subtitle": "Lưu lại các cơ hội việc làm để ứng tuyển sau.",
+    "subtitle": "Các việc làm bạn đã đánh dấu để xem lại sau.",
     "emptyTitle": "Chưa có việc làm nào được lưu",
-    "emptyDesc": "Các công việc bạn đánh dấu lưu khi xem sẽ hiển thị tại đây.",
-    "browseJobs": "Khám phá việc làm"
+    "emptyDesc": "Hãy đánh dấu một việc làm để lưu vào đây.",
+    "browseJobs": "Khám phá việc làm",
+    "docTitle": "Việc làm đã lưu",
+    "errorTitle": "Không thể tải việc làm đã lưu",
+    "errorDesc": "Đã xảy ra lỗi khi tải việc làm đã lưu.",
+    "browse": "Tìm việc"
+  },
+  "verifyEmail": {
+    "checkInbox": "Hãy kiểm tra hộp thư",
+    "sentTo": "Chúng tôi đã gửi liên kết xác nhận tới {{email}}. Hãy nhấp vào đó để xác minh email của bạn.",
+    "title": "Xác minh email của bạn",
+    "expired": "Liên kết đã hết hạn. Hãy nhập email để thử lại.",
+    "prompt": "Xác nhận một địa chỉ email để nhận huy hiệu Đã xác minh trên hồ sơ — nhà tuyển dụng tin tưởng hồ sơ đã xác minh hơn.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "ban@example.com",
+    "send": "Gửi email xác minh"
+  },
+  "stage": {
+    "PENDING": "Đã gửi",
+    "REVIEWING": "Đang xem xét",
+    "SHORTLISTED": "Vào danh sách rút gọn",
+    "INTERVIEW": "Đang phỏng vấn",
+    "OFFERED": "Đã nhận offer",
+    "OFFER_ACCEPTED": "Đã nhận offer này",
+    "OFFER_DECLINED": "Đã từ chối offer",
+    "REJECTED": "Không được chọn",
+    "WITHDRAWN": "Đã rút đơn"
+  },
+  "bucket": {
+    "applied": "Đã ứng tuyển",
+    "review": "Đang xem xét",
+    "interview": "Phỏng vấn",
+    "offer": "Offer",
+    "closed": "Đã đóng",
+    "offers": "Offer"
+  },
+  "missing": {
+    "headline": "tiêu đề hồ sơ",
+    "bio": "phần giới thiệu",
+    "skills": "kỹ năng",
+    "salary": "mức lương mong muốn",
+    "cv": "CV của bạn"
+  },
+  "snapshot": {
+    "noHeadline": "Chưa có tiêu đề",
+    "edit": "Chỉnh sửa hồ sơ",
+    "basedIn": "Nơi ở",
+    "timezone": "Múi giờ",
+    "expecting": "Mong muốn",
+    "remote": "Remote"
+  },
+  "apps": {
+    "messageAria": "Nhắn tin về đơn ứng tuyển này",
+    "interviewAria": "Xem buổi phỏng vấn",
+    "collapse": "Thu gọn tiến trình đơn ứng tuyển",
+    "expand": "Mở rộng tiến trình đơn ứng tuyển",
+    "empty": {
+      "all": {
+        "title": "Chưa có đơn ứng tuyển nào",
+        "desc": "Các việc làm bạn ứng tuyển sẽ hiển thị ở đây."
+      },
+      "active": {
+        "title": "Không có đơn đang xử lý",
+        "desc": "Các đơn bạn đang chờ phản hồi sẽ hiển thị ở đây."
+      },
+      "offers": {
+        "title": "Chưa có offer nào",
+        "desc": "Các offer bạn nhận được sẽ hiển thị ở đây."
+      },
+      "closed": {
+        "title": "Không có đơn đã đóng",
+        "desc": "Các đơn đã rút hoặc không được tiếp tục sẽ hiển thị ở đây."
+      }
+    },
+    "tab": {
+      "all": "Tất cả",
+      "active": "Đang xử lý",
+      "offers": "Offer",
+      "closed": "Đã đóng"
+    },
+    "title": "Đơn ứng tuyển của bạn ",
+    "activeCount": "· {{count}} đang xử lý",
+    "browseJobs": "Tìm việc",
+    "col": {
+      "role": "Vị trí & công ty",
+      "status": "Trạng thái",
+      "stage": "Giai đoạn",
+      "applied": "Đã nộp"
+    }
+  },
+  "timeline": {
+    "applied": "Đã ứng tuyển",
+    "viewed": "Nhà tuyển dụng đã xem"
+  },
+  "activity": {
+    "title": "Hoạt động",
+    "error": "Không thể tải hoạt động của bạn.",
+    "empty": "Chưa có hoạt động nào."
+  },
+  "savedSearches": {
+    "title": "Tìm kiếm đã lưu",
+    "new": "Tạo mới",
+    "error": "Không thể tải các tìm kiếm đã lưu.",
+    "empty": "Chưa có tìm kiếm nào được lưu.",
+    "active": "Đang bật",
+    "paused": "Tạm dừng",
+    "allJobs": "Tất cả việc làm"
+  },
+  "invitations": {
+    "title": "Lời mời",
+    "error": "Không thể tải các lời mời.",
+    "invited": "đã mời bạn ứng tuyển — {{title}}",
+    "accept": "Chấp nhận & ứng tuyển",
+    "decline": "Từ chối",
+    "acceptedToast": "Đã gửi đơn ứng tuyển",
+    "declinedToast": "Đã từ chối lời mời",
+    "failedToast": "Không thể phản hồi lời mời"
+  },
+  "recommended": {
+    "title": "Gợi ý cho bạn ",
+    "sub": "· mới nhất & nổi bật",
+    "browseAll": "Xem tất cả việc làm",
+    "matchesProfile": "Phù hợp với hồ sơ của bạn"
+  },
+  "verifyPage": {
+    "docTitle": "Xác minh email của bạn",
+    "successTitle": "Đã xác minh email",
+    "successDesc": "Huy hiệu Đã xác minh đã hiển thị trên hồ sơ của bạn.",
+    "errorTitle": "Liên kết đã hết hạn hoặc không hợp lệ",
+    "errorDesc": "Hãy yêu cầu email xác minh mới từ bảng điều khiển.",
+    "goDashboard": "Đến bảng điều khiển"
+  },
+  "appDetail": {
+    "fallbackTitle": "Đơn ứng tuyển",
+    "withdrawn": "Đã rút đơn ứng tuyển.",
+    "withdrawFailed": "Không thể rút đơn ứng tuyển. Vui lòng thử lại.",
+    "offerAccepted": "Đã chấp nhận offer!",
+    "offerDeclined": "Đã từ chối offer.",
+    "offerFailed": "Không thể gửi phản hồi của bạn. Vui lòng thử lại.",
+    "loadError": "Không thể tải đơn ứng tuyển này",
+    "loadErrorDesc": "Đơn ứng tuyển này không tồn tại hoặc không phải của bạn.",
+    "message": "Nhắn tin",
+    "interview": "Phỏng vấn",
+    "withdrawLabel": "Rút đơn",
+    "withdrawQ": "Rút đơn ứng tuyển này?",
+    "withdrawing": "Đang rút đơn…",
+    "withdrawTitle": "Rút đơn ứng tuyển",
+    "interviewProposed": "Nhà tuyển dụng đã đề xuất các khung giờ phỏng vấn — hãy chọn một khung giờ để xác nhận.",
+    "interviewWaiting": "Nhà tuyển dụng sẽ liên hệ để sắp xếp phỏng vấn.",
+    "accept": "Chấp nhận",
+    "acceptQ": "Chấp nhận offer này?",
+    "accepting": "Đang chấp nhận…",
+    "acceptOffer": "Chấp nhận offer",
+    "decline": "Từ chối",
+    "declineQ": "Từ chối offer này?",
+    "declining": "Đang từ chối…",
+    "declineOffer": "Từ chối offer"
+  },
+  "guidance": {
+    "PENDING": "Đơn của bạn đang trong hàng chờ. Hầu hết nhà tuyển dụng phản hồi trong vài ngày.",
+    "REVIEWING": "Nhà tuyển dụng đang xem xét đơn ứng tuyển của bạn.",
+    "SHORTLISTED": "Bạn đã vào danh sách rút gọn — nhà tuyển dụng có thể sớm liên hệ để sắp xếp phỏng vấn.",
+    "OFFERED": "Nhà tuyển dụng đã gửi offer cho bạn. Chúc mừng! Hãy chấp nhận hoặc từ chối bên dưới.",
+    "OFFER_ACCEPTED": "Bạn đã chấp nhận offer này. Chúc mừng!",
+    "OFFER_DECLINED": "Bạn đã từ chối offer này.",
+    "REJECTED": "Lần này nhà tuyển dụng đã chọn tiếp tục với các ứng viên khác.",
+    "WITHDRAWN": "Bạn đã rút đơn ứng tuyển này."
+  },
+  "opt": {
+    "seniority": {
+      "junior": "Junior",
+      "mid": "Trung cấp",
+      "senior": "Cao cấp",
+      "staff": "Staff",
+      "principal_lead": "Principal / Trưởng nhóm"
+    },
+    "years": {
+      "0_2": "0–2 năm",
+      "2_5": "2–5 năm",
+      "5_10": "5–10 năm",
+      "10": "Trên 10 năm"
+    },
+    "role": {
+      "software_engineer_frontend": "Kỹ sư phần mềm · Frontend",
+      "software_engineer_backend": "Kỹ sư phần mềm · Backend",
+      "software_engineer_full_stack": "Kỹ sư phần mềm · Full-stack",
+      "product_designer": "Nhà thiết kế sản phẩm",
+      "product_manager": "Quản lý sản phẩm",
+      "data_analyst": "Chuyên viên phân tích dữ liệu"
+    },
+    "rtw": {
+      "vietnam_only": "Chỉ tại Việt Nam",
+      "vietnam_singapore": "Việt Nam + Singapore",
+      "vietnam_australia": "Việt Nam + Úc",
+      "open_to_relocation_sponsorship": "Sẵn sàng chuyển nơi ở / bảo lãnh visa"
+    },
+    "notice": {
+      "immediate": "Có thể bắt đầu ngay",
+      "2_weeks": "2 tuần",
+      "1_month": "1 tháng",
+      "2_months": "Trên 2 tháng"
+    },
+    "tz": {
+      "utc_7_hanoi_bangkok_jakarta": "UTC+7 (Hà Nội · Bangkok · Jakarta)",
+      "utc_8_singapore_manila_kl": "UTC+8 (Singapore · Manila · Kuala Lumpur)",
+      "utc_9_tokyo_seoul": "UTC+9 (Tokyo · Seoul)",
+      "utc_10_sydney_melbourne": "UTC+10 (Sydney · Melbourne)"
+    }
+  },
+  "nav": {
+    "basics": "Cơ bản",
+    "about": "Về bạn",
+    "experience": "Kinh nghiệm",
+    "skills": "Kỹ năng",
+    "prefs": "Mong muốn",
+    "links": "Liên kết & CV",
+    "highlights": "Điểm nổi bật",
+    "visibility": "Hiển thị",
+    "preview": "Xem như nhà tuyển dụng",
+    "saveFirst": "Hãy lưu hồ sơ trước"
+  },
+  "form": {
+    "dashboard": "← Bảng điều khiển",
+    "setup": "Thiết lập hồ sơ",
+    "title": "Hãy để nhà tuyển dụng ",
+    "titleEm": "thấy điều quan trọng.",
+    "subtitle": "Hồ sơ của bạn là thứ được gửi tới các nhà sáng lập và quản lý tuyển dụng. Hãy trung thực và ngắn gọn — họ đọc hàng chục hồ sơ mỗi ngày.",
+    "skillsEyebrow": "04 · Bạn dùng gì",
+    "skillsHelp": "5–12 kỹ năng cụ thể. Công cụ và công nghệ, không phải kỹ năng mềm. Chúng tôi dùng chúng để gợi ý việc làm.",
+    "skillsTitle": "Kỹ năng.",
+    "skillsLoadFailed": "Không thể tải danh sách kỹ năng",
+    "skillsLoading": "Danh sách kỹ năng đang được tải",
+    "skillsRetry": "Chưa thể lưu các kỹ năng bạn đã chọn — vui lòng thử lại sau giây lát.",
+    "saved": "Đã lưu hồ sơ",
+    "saveFailed": "Không thể lưu hồ sơ",
+    "saveFailedNamePartial": "Tên của bạn đã được cập nhật nhưng phần còn lại của hồ sơ chưa lưu được. Vui lòng thử lại.",
+    "saveStatus": "Lưu các thay đổi của bạn",
+    "done": "Xong"
+  },
+  "basics": {
+    "eyebrow": "01 · Danh tính",
+    "help": "Tên, tiêu đề, nơi ở và múi giờ của bạn. Phần này hiển thị ở đầu hồ sơ.",
+    "title": "Những điều ",
+    "titleEm": "cơ bản.",
+    "photoUploadFailed": "Không thể tải ảnh lên",
+    "photoUpdated": "Đã cập nhật ảnh",
+    "photoUpdateFailed": "Không thể cập nhật ảnh của bạn",
+    "uploadFailed": "Tải lên thất bại",
+    "tryAgain": "Vui lòng thử lại.",
+    "photoRemoved": "Đã xóa ảnh",
+    "photoRemoveFailed": "Không thể xóa ảnh của bạn",
+    "yourName": "Tên của bạn",
+    "photoHint": "JPG hoặc PNG · cắt vuông · tối đa 2 MB",
+    "uploading": "Đang tải lên…",
+    "upload": "Tải ảnh lên",
+    "remove": "Xóa",
+    "fullName": "Họ và tên",
+    "pronouns": "Đại từ xưng hô",
+    "optional": "(không bắt buộc)",
+    "comingSoon": "Sắp ra mắt",
+    "headline": "Tiêu đề hồ sơ",
+    "headlinePlaceholder": "Vị trí · múi giờ · điểm nổi bật",
+    "location": "Bạn sống ở đâu?",
+    "timezone": "Múi giờ làm việc"
+  },
+  "about": {
+    "eyebrow": "02 · Câu chuyện",
+    "help": "Một đoạn tóm tắt ngắn, dễ hiểu. Không dùng từ sáo rỗng — hãy viết như khi bạn tự giới thiệu qua email.",
+    "title": "Về ",
+    "titleEm": "bạn.",
+    "bio": "Giới thiệu",
+    "bioHint": "2–4 câu",
+    "seniority": "Cấp bậc",
+    "years": "Số năm kinh nghiệm",
+    "role": "Vị trí chính",
+    "rtw": "Quyền làm việc",
+    "notice": "Thời gian báo trước"
+  },
+  "links": {
+    "eyebrow": "06 · Nơi để xem",
+    "help": "Đính kèm CV và vài liên kết. Quản lý tuyển dụng muốn đọc bài viết hoặc mã nguồn của bạn.",
+    "title": "Liên kết & ",
+    "titleEm": "CV.",
+    "cv": "CV / Sơ yếu lý lịch (PDF)",
+    "uploadCv": "Tải CV lên",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "portfolio": "Portfolio / trang cá nhân"
+  },
+  "prefs": {
+    "eyebrow": "05 · Bạn mong muốn gì",
+    "help": "Dùng để lọc và gợi ý việc làm. Bạn có thể cập nhật bất cứ lúc nào.",
+    "title": "Mong muốn ",
+    "titleEm": "công việc.",
+    "salary": "Mức lương mong muốn",
+    "salaryVisible": "Chỉ nhà tuyển dụng đã xác minh mới thấy",
+    "usdMonth": "USD / tháng",
+    "median": "Mức trung vị cho Frontend cao cấp tại VN: {{median}} · Bạn đang đề xuất cao hơn trung vị {{pct}}, tương đương thị trường SG.",
+    "minimum": "Tối thiểu",
+    "maximum": "Tối đa",
+    "minSalaryAria": "Lương tối thiểu",
+    "maxSalaryAria": "Lương tối đa",
+    "employmentType": "Loại hình làm việc",
+    "ft": "Toàn thời gian",
+    "ftDesc": "Hợp đồng lao động có lương cố định, qua EOR hoặc trực tiếp.",
+    "contract": "Hợp đồng / freelance",
+    "contractDesc": "Hợp đồng 3–12 tháng. Tính theo ngày hoặc trả cố định hằng tháng.",
+    "pt": "Bán thời gian",
+    "ptDesc": "20–30 giờ/tuần. Phù hợp nếu bạn làm tư vấn bên ngoài.",
+    "tzOverlap": "Múi giờ làm việc chung",
+    "sg": "Giờ Singapore",
+    "sgDesc": "Sớm hơn Việt Nam 1 giờ. Hầu hết startup Đông Nam Á hoạt động theo múi giờ này.",
+    "au": "Giờ Sydney / Melbourne",
+    "auDesc": "Sáng sớm theo giờ VN. Canva, Atlassian, Airwallex hoạt động theo múi giờ này.",
+    "async": "Chỉ làm việc async",
+    "asyncDesc": "Không bắt buộc trùng giờ. Các đội Mỹ / Châu Âu làm việc hoàn toàn bất đồng bộ.",
+    "notifications": "Thông báo",
+    "digest": "Bản tin hằng tuần",
+    "digestWhen": "· Thứ Hai 9 giờ sáng",
+    "digestDesc": "5 việc phù hợp nhất với bộ lọc đã lưu, vào mỗi thứ Hai.",
+    "instant": "Cảnh báo ngay khi có việc rất phù hợp",
+    "instantDesc": "Gửi email khi một vị trí đạt từ 90% mức phù hợp với hồ sơ. Thường 1–2 lần mỗi tháng.",
+    "notifFailed": "Không thể cập nhật tùy chọn thông báo",
+    "perMonthShort": "tháng"
+  },
+  "vis": {
+    "eyebrow": "07 · Ai thấy bạn",
+    "help": "Kiểm soát ai có thể tìm thấy hồ sơ và liên hệ với bạn. Thay đổi bất cứ lúc nào.",
+    "title": "Hiển thị.",
+    "open": {
+      "title": "Mở cho mọi người",
+      "desc": "Mọi nhà tuyển dụng đã đăng nhập trên RemoteSEA đều có thể tìm thấy bạn. Nhanh nhất, nhiều cơ hội nhất."
+    },
+    "verified": {
+      "title": "Chỉ nhà tuyển dụng đã xác minh",
+      "desc": "Khuyến nghị. Chỉ các nhà tuyển dụng chúng tôi đã xác minh thủ công. Không bị làm phiền."
+    },
+    "invited": {
+      "title": "Chỉ khi được mời",
+      "desc": "Chỉ nhà tuyển dụng mà bạn ứng tuyển mới thấy bạn. Chậm hơn nhưng riêng tư."
+    },
+    "off": {
+      "title": "Tạm ẩn",
+      "desc": "Hồ sơ bị ẩn. Bạn vẫn có thể xem và lưu việc làm. Bật lại bất cứ lúc nào."
+    },
+    "showSalary": "Hiện mức lương mong muốn của tôi",
+    "showSalaryDesc": "Nhà tuyển dụng đã xác minh thấy khoảng lương của bạn. Giúp lọc bớt các lời mời trả thấp.",
+    "hideEmployer": "Ẩn hồ sơ khỏi nhà tuyển dụng hiện tại",
+    "hideEmployerDesc": "Chúng tôi sẽ chặn tên miền này xem hồ sơ hoặc hoạt động của bạn. Họ sẽ không biết."
+  },
+  "exp": {
+    "eyebrow": "03 · Quá trình làm việc",
+    "title": "Kinh nghiệm.",
+    "help": "Liệt kê tối đa 5 vị trí. Nhà tuyển dụng đọc lướt — hai vị trí gần nhất nhận 80% sự chú ý.",
+    "emptyTitle": "Chưa có vị trí nào",
+    "emptyDesc": "Hãy thêm vị trí gần nhất trước — đó là phần nhà tuyển dụng đọc đầu tiên.",
+    "addFirst": "Thêm vị trí đầu tiên",
+    "addAnother": "Thêm vị trí khác",
+    "limit": "Bạn đã đạt giới hạn 5 vị trí — hãy xóa một vị trí để thêm vị trí mới.",
+    "added": "Đã thêm kinh nghiệm",
+    "addFailed": "Không thể thêm kinh nghiệm",
+    "updated": "Đã cập nhật kinh nghiệm",
+    "updateFailed": "Không thể cập nhật kinh nghiệm",
+    "removed": "Đã xóa kinh nghiệm",
+    "removeFailed": "Không thể xóa kinh nghiệm",
+    "at": "tại {{company}}",
+    "current": "Hiện tại",
+    "present": "Hiện nay",
+    "editRole": "Sửa vị trí",
+    "deleteRole": "Xóa vị trí",
+    "deleteQ": "Xóa?"
+  },
+  "expForm": {
+    "company": "Công ty",
+    "title": "Chức danh",
+    "location": "Địa điểm",
+    "locationPlaceholder": "Địa điểm (không bắt buộc) — ví dụ Singapore",
+    "startDate": "Ngày bắt đầu",
+    "endDate": "Ngày kết thúc",
+    "currentRole": "Vai trò hiện tại",
+    "month": "Tháng",
+    "year": "Năm",
+    "monthAria": "{{prefix}} tháng",
+    "yearAria": "{{prefix}} năm",
+    "startPrefix": "Bắt đầu",
+    "endPrefix": "Kết thúc",
+    "whatWork": "Bạn đã làm những gì?",
+    "optional": "(không bắt buộc)",
+    "descPlaceholder": "Một hai câu về tác động của bạn — nhà tuyển dụng sẽ đọc lướt phần này.",
+    "saving": "Đang lưu…",
+    "saveChanges": "Lưu thay đổi",
+    "addRole": "Thêm vị trí"
+  },
+  "hl": {
+    "portfolio": {
+      "title": "Dự án tiêu biểu",
+      "help": "Vài dự án bạn tự hào — nhà tuyển dụng sẽ nhấp vào xem.",
+      "add": "Thêm dự án",
+      "empty": "Chưa có dự án nào",
+      "added": "Đã thêm dự án"
+    },
+    "education": {
+      "title": "Học vấn",
+      "help": "Bằng cấp hoặc chương trình học. Không bắt buộc sắp xếp mới nhất trước — thêm theo thứ tự bất kỳ.",
+      "add": "Thêm học vấn",
+      "empty": "Chưa có học vấn nào",
+      "added": "Đã thêm học vấn"
+    },
+    "language": {
+      "title": "Ngôn ngữ",
+      "help": "Các ngôn ngữ bạn có thể làm việc và mức độ thành thạo.",
+      "add": "Thêm ngôn ngữ",
+      "empty": "Chưa có ngôn ngữ nào",
+      "added": "Đã thêm ngôn ngữ"
+    },
+    "addFailed": "Không thể thêm mục",
+    "updated": "Đã cập nhật mục",
+    "updateFailed": "Không thể cập nhật mục",
+    "removed": "Đã xóa mục",
+    "removeFailed": "Không thể xóa mục",
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "eyebrow": "08 · Hãy cho thấy, đừng chỉ nói",
+    "help": "Không bắt buộc, nhưng nhà tuyển dụng thường đọc lướt phần này trước phần giới thiệu. Hiển thị trên hồ sơ công khai.",
+    "sectionTitle": "Điểm nổi bật."
+  },
+  "hlForm": {
+    "portfolio": {
+      "title": "Tên dự án",
+      "subtitle": "Vai trò · thời gian"
+    },
+    "education": {
+      "title": "Trường học",
+      "subtitle": "Bằng cấp · ngành học"
+    },
+    "language": {
+      "title": "Ngôn ngữ",
+      "subtitle": "Trình độ (ví dụ Bản ngữ, Thành thạo, Giao tiếp)"
+    },
+    "description": "Mô tả",
+    "descPlaceholder": "Dự án này là gì? (không bắt buộc)",
+    "tag": "Nhãn danh mục",
+    "tagPlaceholder": "Danh mục (không bắt buộc) — ví dụ Product · Production",
+    "link": "Liên kết dự án",
+    "linkPlaceholder": "Liên kết (không bắt buộc) — https://…",
+    "startYear": "Năm bắt đầu",
+    "endYear": "Năm kết thúc",
+    "year": "Năm",
+    "ongoing": "Đang diễn ra",
+    "saving": "Đang lưu…",
+    "saveChanges": "Lưu thay đổi",
+    "add": "Thêm"
+  },
+  "public": {
+    "docTitle": "{{name}} — Hồ sơ ứng viên",
+    "docTitleFallback": "Hồ sơ ứng viên",
+    "member": "Thành viên RemoteSEA",
+    "review": {
+      "communication": "Giao tiếp",
+      "professionalism": "Tính chuyên nghiệp",
+      "reliability": "Độ tin cậy"
+    },
+    "preview": {
+      "role": "Kỹ sư Full-stack cao cấp"
+    },
+    "notFoundTitle": "Không tìm thấy hồ sơ",
+    "notFoundDesc": "Hồ sơ ứng viên này không tồn tại hoặc đã bị xóa.",
+    "browseJobs": "Tìm việc",
+    "verified": "Đã xác minh",
+    "yearsExp": "Hơn {{years}} năm kinh nghiệm",
+    "replies": "Phản hồi trong ~6 giờ",
+    "activeToday": "Hoạt động hôm nay",
+    "expecting": "Mong muốn",
+    "perMonth": " / tháng",
+    "vnMedian": "Trung vị VN",
+    "sgMarket": "Thị trường SG",
+    "about": "Giới thiệu",
+    "lookingFor": "Điều tôi tìm kiếm",
+    "lf1": "Chức danh Senior hoặc Staff — hướng chuyên gia (IC)",
+    "lf2": "Ưu tiên async hoặc giờ {{tz}}",
+    "flexible": "linh hoạt",
+    "lf3": "Nhóm nhỏ",
+    "lf4": "{{range}} {{currency}} / tháng",
+    "experience": "Kinh nghiệm",
+    "skills": "Kỹ năng",
+    "selectedWork": "Dự án tiêu biểu",
+    "education": "Học vấn",
+    "emptyProfile": "Thành viên này chưa hoàn thiện hồ sơ.",
+    "yearsShort": "{{n}} năm",
+    "banner": {
+      "viewing": "Đang xem với tư cách nhà tuyển dụng · {{company}}",
+      "hiring": "Đang tuyển {{role}}",
+      "match": "Mức phù hợp hồ sơ",
+      "shortlist": "Thêm vào danh sách rút gọn",
+      "save": "Lưu",
+      "message": "Gửi tin nhắn"
+    },
+    "side": {
+      "quickFacts": "Thông tin nhanh",
+      "notice": "Thời gian báo trước",
+      "employmentLabel": "Loại hình",
+      "notSpecified": "Chưa cung cấp",
+      "remoteLevel": "Mức độ remote",
+      "remote": "Remote",
+      "remoteAsync": "Remote · Ưu tiên async",
+      "hoursOverlap": "Giờ làm việc chung",
+      "rtw": "Quyền làm việc",
+      "employment": {
+        "FULL_TIME": "Toàn thời gian",
+        "CONTRACT": "Hợp đồng",
+        "PART_TIME": "Bán thời gian"
+      },
+      "overlap": {
+        "SG_HOURS": "SG",
+        "AU_HOURS": "Úc",
+        "ASYNC_ONLY": "async"
+      },
+      "languages": "Ngôn ngữ",
+      "links": "Liên kết",
+      "resume": "CV / Sơ yếu lý lịch",
+      "trust": "Tín hiệu tin cậy",
+      "emailVerified": "Email đã xác minh",
+      "emailNotVerified": "Email chưa xác minh",
+      "employmentVerified": "Kinh nghiệm đã xác minh",
+      "rolesOf": "· {{n}} trên {{total}} vị trí",
+      "idVerified": "Đã xác minh danh tính",
+      "idNotUploaded": "Chưa tải lên",
+      "yourProfile": "Đây là hồ sơ của bạn · Chỉnh sửa"
+    }
+  },
+  "availability": {
+    "now": "Có thể bắt đầu ngay",
+    "2weeks": "Có thể bắt đầu sau 2 tuần",
+    "1month": "Có thể bắt đầu sau 1 tháng",
+    "2months": "Có thể bắt đầu sau hơn 2 tháng",
+    "open": "Sẵn sàng nhận việc"
+  },
+  "page": {
+    "profileSetup": "Thiết lập hồ sơ",
+    "loadError": "Không thể tải hồ sơ",
+    "loadErrorDesc": "Đã xảy ra lỗi khi tải hồ sơ của bạn."
   }
 }

@@ -1,5 +1,7 @@
 import { timeAgoShort } from "@/utils/time";
 import { formatSalaryRange } from "@/utils/format";
+import { localizedRecord } from "@/utils/labels";
+import { translate } from "@/i18n/runtime";
 import {
   SALARY_CEIL,
   SALARY_FLOOR,
@@ -41,12 +43,30 @@ export const MS_PER_DAY = 86_400_000;
 
 export const timeAgo = timeAgoShort;
 
-export const TIMEZONE_LABELS: Record<string, string> = {
-  sea: "SEA / APAC",
-  async: "Async-friendly",
-  SG: "SG-based",
-  AU: "AU-based",
-  US: "US-based",
+export const TIMEZONE_LABELS: Record<string, string> = localizedRecord(
+  ["sea", "async", "SG", "AU", "US"],
+  "jobs.tz"
+);
+
+// Filter values are stable URL/API vocabulary ("Full-time", "Entry", …); this
+// maps them to their localized display label without changing the value.
+const FILTER_VALUE_KEYS: Record<string, string> = {
+  "Full-time": "fullTime",
+  Contract: "contract",
+  "Part-time": "partTime",
+  Entry: "entry",
+  Mid: "mid",
+  Senior: "senior",
+  Engineering: "engineering",
+  Design: "design",
+  Data: "data",
+  Product: "product",
+  Marketing: "marketing",
+};
+
+export const filterValueLabel = (value: string): string => {
+  const key = FILTER_VALUE_KEYS[value];
+  return key ? translate(`jobs.filterValue.${key}`) : value;
 };
 
 export type ActiveFilterPill = { label: string; clear: () => void };
@@ -63,7 +83,7 @@ export const buildActivePills = (
 
   filters.jobType.forEach((v) =>
     pills.push({
-      label: v,
+      label: filterValueLabel(v),
       clear: () =>
         onChange({
           ...filters,
@@ -73,7 +93,7 @@ export const buildActivePills = (
   );
   filters.seniority.forEach((v) =>
     pills.push({
-      label: v,
+      label: filterValueLabel(v),
       clear: () =>
         onChange({
           ...filters,
@@ -93,7 +113,10 @@ export const buildActivePills = (
   );
   filters.category.forEach((slug) =>
     pills.push({
-      label: categories?.find((c) => c.slug === slug)?.name ?? slug,
+      label: (() => {
+        const name = categories?.find((c) => c.slug === slug)?.name;
+        return name ? filterValueLabel(name) : slug;
+      })(),
       clear: () =>
         onChange({
           ...filters,

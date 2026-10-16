@@ -11,6 +11,7 @@ import { useSyncedState } from "@/hooks/useSyncedState";
 import { useDebouncedSearchSync } from "@/hooks/useDebouncedSearchSync";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { ApiError } from "@/core/errors/api-error";
+import { getErrorMessage } from "@/core/errors/localize";
 import { useTalentSearchQuery } from "@/features/employer/talent-search/talent-search.queries";
 import { useEmployerJobs } from "@/features/employer/employer.queries";
 import { useSendInvitation } from "@/features/invitations/invitations.queries";
@@ -21,6 +22,7 @@ import {
 } from "@/features/employer/talent-search/talent-search.filters";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/utils/cn";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface TalentSearchBoardProps {
   filters: TalentSearchFilters;
@@ -33,6 +35,7 @@ export const TalentSearchBoard = ({
   filters: query,
   onFiltersChange,
 }: TalentSearchBoardProps) => {
+  const { t, formatNumber } = useTranslation("employer");
   const [search, setSearch] = useSyncedState(query.q);
   const [sortByMatch, setSortByMatch] = useState(false);
   // Session-local "already invited" tracking — see talent-search plan notes:
@@ -74,9 +77,10 @@ export const TalentSearchBoard = ({
             setInvitedTalentIds((prev) => new Set(prev).add(talentId))
           ),
       {
-        success: "Invitation sent",
-        error: "Couldn't send invitation",
-        onError: (err) => (err instanceof ApiError ? err.message : undefined),
+        success: t("search.inviteSent"),
+        error: t("search.inviteFailed"),
+        onError: (err) =>
+          err instanceof ApiError ? getErrorMessage(err) : undefined,
       }
     );
   };
@@ -87,7 +91,7 @@ export const TalentSearchBoard = ({
   const matchByTalentId = useMemo(() => {
     if (!selectedJob) return undefined;
     return new Map(
-      talents.map((t) => [t.id, computeMatchScore(selectedJob, t)])
+      talents.map((tal) => [tal.id, computeMatchScore(selectedJob, tal)])
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [talents, selectedJob?.id]);
@@ -105,21 +109,21 @@ export const TalentSearchBoard = ({
 
   return (
     <div className="mx-auto max-w-[1240px] px-6 py-8">
-      <h1 className="sr-only">Find talent</h1>
+      <h1 className="sr-only">{t("search.heading")}</h1>
 
       <div className="relative mb-6 flex h-12 items-center rounded-12 border border-neutral-200 bg-white px-4 shadow-[0_1px_2px_rgba(26,25,23,0.06)] focus-within:border-brand-600 focus-within:shadow-focus">
         <Search className="flex-shrink-0 text-neutral-400" size={17} />
         <input
-          aria-label="Search candidates"
+          aria-label={t("search.ariaLabel")}
           className="flex-1 bg-transparent px-3 text-sm text-neutral-900 outline-none placeholder:text-neutral-400"
-          placeholder='Search by headline or name — e.g. "backend engineer"'
+          placeholder={t("search.placeholder")}
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
         {search && (
           <button
-            aria-label="Clear search"
+            aria-label={t("search.clear")}
             className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
             onClick={() => setSearch("")}
           >
@@ -136,19 +140,23 @@ export const TalentSearchBoard = ({
             <div className="flex items-center gap-2 text-sm text-neutral-600">
               {isLoading ? (
                 <>
-                  <span className="text-neutral-900">Loading candidates… </span>
+                  <span className="text-neutral-900">
+                    {t("search.loading")}
+                  </span>
                   <Spinner className="h-3 w-3" />
                 </>
               ) : (
                 <>
-                  <strong className="text-neutral-900">{total}</strong>{" "}
-                  {total === 1 ? "candidate" : "candidates"}
+                  <strong className="text-neutral-900">
+                    {formatNumber(total)}
+                  </strong>{" "}
+                  {t("search.candidates", { count: total })}
                   {isFetching && <Spinner className="h-3 w-3" />}
                 </>
               )}
             </div>
             <div className="flex items-center gap-2 text-sm text-neutral-500">
-              Rank against
+              {t("search.rankAgainst")}
               <JobContextSelect
                 jobs={activeJobs}
                 value={selectedJob?.id}
@@ -160,9 +168,7 @@ export const TalentSearchBoard = ({
                   type="button"
                   onClick={() => setSortByMatch((v) => !v)}
                 >
-                  {sortByMatch
-                    ? "✓ Sorted by match"
-                    : "Sort this page by match"}
+                  {sortByMatch ? t("search.sorted") : t("search.sortByMatch")}
                 </button>
               )}
             </div>
@@ -178,11 +184,11 @@ export const TalentSearchBoard = ({
             <EmptyState
               action={
                 <Button size="sm" variant="outline" onClick={() => refetch()}>
-                  Try again
+                  {t("common.actions.retry")}
                 </Button>
               }
-              description="Something went wrong fetching candidates."
-              title="Couldn't load candidates"
+              description={t("search.errorDesc")}
+              title={t("search.errorTitle")}
             />
           ) : displayedTalents.length === 0 ? (
             <EmptyState
@@ -194,11 +200,11 @@ export const TalentSearchBoard = ({
                     onFiltersChange({ ...DEFAULT_TALENT_SEARCH_FILTERS })
                   }
                 >
-                  Clear filters
+                  {t("common.actions.clearFilters")}
                 </Button>
               }
-              description="Try removing a filter — only candidates who've opted into 'Open to work' are shown."
-              title="No candidates match these filters"
+              description={t("search.emptyDesc")}
+              title={t("search.emptyTitle")}
             />
           ) : (
             <div

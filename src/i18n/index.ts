@@ -17,3 +17,7 @@ export type {
   TranslationParams,
   I18nContextValue,
 } from "@/i18n/types";
+export { translate, getRuntimeLocale, getIntlLocale } from "@/i18n/runtime";
+export { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
+export { m as zodMessage, v as zodMessageFn } from "@/i18n/zod";
+export { optionLabel, valueSlug } from "@/i18n/labels";

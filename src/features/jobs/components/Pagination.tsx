@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface PaginationProps {
   page: number;
@@ -50,6 +51,7 @@ const buildPageWindow = (
 };
 
 export const Pagination = ({ page, pages, onPageChange }: PaginationProps) => {
+  const { t } = useTranslation("jobs");
   if (pages <= 1) return null;
 
   const pageWindow = buildPageWindow(page, pages);
@@ -57,7 +59,7 @@ export const Pagination = ({ page, pages, onPageChange }: PaginationProps) => {
   return (
     <div className="mt-8 flex items-center justify-center gap-1.5">
       <button
-        aria-label="Previous page"
+        aria-label={t("pagination.previous")}
         className="grid h-9 w-9 place-items-center rounded-8 border border-neutral-200 bg-white text-neutral-600 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-40"
         disabled={page <= 1}
         onClick={() => onPageChange(page - 1)}
@@ -90,7 +92,7 @@ export const Pagination = ({ page, pages, onPageChange }: PaginationProps) => {
         )
       )}
       <button
-        aria-label="Next page"
+        aria-label={t("pagination.next")}
         className="grid h-9 w-9 place-items-center rounded-8 border border-neutral-200 bg-white text-neutral-600 transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-40"
         disabled={page >= pages}
         onClick={() => onPageChange(page + 1)}

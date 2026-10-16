@@ -18,13 +18,14 @@ import { Pagination } from "@/features/jobs/components/Pagination";
 import { cn } from "@/utils/cn";
 import { timeAgoLong } from "@/utils/time";
 import type { AdminAuditLogEntry, AdminAuditTargetType } from "@/types/admin";
+import { useTranslation } from "@/i18n/useTranslation";
 
-const TARGET_FILTERS: { id: AdminAuditTargetType | "ALL"; label: string }[] = [
-  { id: "ALL", label: "All" },
-  { id: "EMPLOYER", label: AUDIT_TARGET_TAB_LABEL.EMPLOYER },
-  { id: "JOB", label: AUDIT_TARGET_TAB_LABEL.JOB },
-  { id: "JOB_REPORT", label: AUDIT_TARGET_TAB_LABEL.JOB_REPORT },
-  { id: "USER", label: AUDIT_TARGET_TAB_LABEL.USER },
+const TARGET_FILTER_IDS: (AdminAuditTargetType | "ALL")[] = [
+  "ALL",
+  "EMPLOYER",
+  "JOB",
+  "JOB_REPORT",
+  "USER",
 ];
 
 const TARGET_ICON: Record<AdminAuditTargetType, typeof Building> = {
@@ -35,9 +36,10 @@ const TARGET_ICON: Record<AdminAuditTargetType, typeof Building> = {
 };
 
 const isTargetFilterId = (v: string): v is AdminAuditTargetType | "ALL" =>
-  TARGET_FILTERS.some((f) => f.id === v);
+  TARGET_FILTER_IDS.some((id) => id === v);
 
 const EntryRow = ({ entry }: { entry: AdminAuditLogEntry }) => {
+  const { t } = useTranslation("admin");
   const [expanded, setExpanded] = useState(false);
   const TargetIcon = TARGET_ICON[entry.targetType];
   const negative = AUDIT_ACTION_IS_NEGATIVE[entry.action];
@@ -69,13 +71,11 @@ const EntryRow = ({ entry }: { entry: AdminAuditLogEntry }) => {
         </span>
         <div className="min-w-0 flex-1">
           <p className="truncate text-[13.5px] text-neutral-800">
-            <span className="font-medium text-neutral-900">
-              {entry.adminEmail}
-            </span>{" "}
-            {AUDIT_ACTION_LABEL[entry.action].toLowerCase()}{" "}
-            <span className="font-medium text-neutral-900">
-              {entry.targetLabel}
-            </span>
+            {t("audit.sentence", {
+              admin: entry.adminEmail,
+              action: AUDIT_ACTION_LABEL[entry.action].toLowerCase(),
+              target: entry.targetLabel,
+            })}
           </p>
           <p className="mt-0.5 text-[12px] text-neutral-400">
             {timeAgoLong(entry.createdAt)}
@@ -115,6 +115,7 @@ const EntryRow = ({ entry }: { entry: AdminAuditLogEntry }) => {
 };
 
 export const AdminAuditLog = () => {
+  const { t } = useTranslation("admin");
   const [page, setPage] = useState(1);
   const [targetType, setTargetType] = useSearchParamState<
     AdminAuditTargetType | "ALL"
@@ -130,11 +131,11 @@ export const AdminAuditLog = () => {
       <EmptyState
         action={
           <Button size="sm" variant="outline" onClick={() => void refetch()}>
-            Try again
+            {t("common.actions.retry")}
           </Button>
         }
-        description="Something went wrong loading the audit log."
-        title="Couldn't load audit log"
+        description={t("audit.errorDesc")}
+        title={t("audit.errorTitle")}
       />
     );
   }
@@ -144,15 +145,14 @@ export const AdminAuditLog = () => {
   return (
     <div className="flex-1 overflow-hidden">
       <div className="mb-6">
-        <Eyebrow className="mb-0.5">Accountability</Eyebrow>
+        <Eyebrow className="mb-0.5">{t("audit.eyebrow")}</Eyebrow>
         <h1 className="text-[26px] font-semibold text-neutral-900">
-          Audit log
+          {t("audit.title")}
         </h1>
         <p className="mt-1 text-sm text-neutral-500">
-          {data ? `${data.pagination.total} action` : "Loading actions"}
-          {data && data.pagination.total === 1 ? "" : "s"} recorded — every
-          employer verify/suspend, job approve/reject, and report
-          resolve/dismiss.
+          {data
+            ? t("audit.summary", { count: data.pagination.total })
+            : t("audit.loadingSummary")}
         </p>
       </div>
 
@@ -164,19 +164,19 @@ export const AdminAuditLog = () => {
           returns that's actually accurate regardless of page. */}
 
       <div className="mb-4 flex gap-1">
-        {TARGET_FILTERS.map((f) => (
+        {TARGET_FILTER_IDS.map((id) => (
           <PillToggle
-            active={targetType === f.id}
+            active={targetType === id}
             activeClassName="bg-brand-600 text-white"
             className="px-3.5 py-1.5 text-[13px] font-medium transition-colors"
             inactiveClassName="border border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50"
-            key={f.id}
+            key={id}
             onClick={() => {
-              setTargetType(f.id);
+              setTargetType(id);
               setPage(1);
             }}
           >
-            {f.label}
+            {id === "ALL" ? t("audit.all") : AUDIT_TARGET_TAB_LABEL[id]}
           </PillToggle>
         ))}
       </div>
@@ -184,8 +184,7 @@ export const AdminAuditLog = () => {
       <div className="overflow-hidden rounded-12 border border-neutral-100 bg-white">
         {entries.length === 0 ? (
           <EmptyRow>
-            No moderation actions{targetType === "ALL" ? "" : " of this type"}{" "}
-            yet.
+            {targetType === "ALL" ? t("audit.emptyAll") : t("audit.emptyType")}
           </EmptyRow>
         ) : (
           entries.map((entry) => <EntryRow entry={entry} key={entry.id} />)

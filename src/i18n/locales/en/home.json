@@ -1,0 +1,126 @@
+{
+  "stats": {
+    "jobsLive": "Jobs live",
+    "verifiedEmployers": "Verified employers",
+    "talentProfiles": "Talent profiles",
+    "avgMonthly": "Avg monthly",
+    "hiringFrom": "Hiring from"
+  },
+  "how": {
+    "eyebrow": "How it works",
+    "title": "Simple. Curated. ",
+    "titleEm": "Built for you.",
+    "subtitle": "Every job is reviewed before it goes live. Salary range required. Employer verified. No ghost listings.",
+    "step1Title": "Browse verified jobs",
+    "step1Desc": "Each job shows the salary range, timezone fit, and which Vietnamese talent already work at the company. No more guessing.",
+    "step2Title": "Track applications in one place",
+    "step2Desc": "A simple tracker that replaces your Google Sheet. Move from saved → applied → interviewing → offer.",
+    "step3Title": "Land your first remote offer",
+    "step3Desc": "Your profile is visible to employers actively looking for VN talent. Inbound matters as much as outbound."
+  },
+  "employerCta": {
+    "eyebrow": "For employers",
+    "title": "Looking for remote talent in Vietnam?",
+    "desc": "Post your job and reach 500+ qualified VN professionals. Verified listings, salary range required, results in two weeks or money back.",
+    "postJob": "Post a job — from $150",
+    "talkToFounder": "Talk to founder",
+    "point1": "Every job is human-reviewed before going live",
+    "point2": "Salary range required — attracts serious applicants",
+    "point3": "30-day listing · Renewable · Featured slot available",
+    "point4": "Direct line to founder. Real human, not a ticket system."
+  },
+  "featured": {
+    "eyebrow": "Live now",
+    "title": "Jobs open ",
+    "titleEm": "right now",
+    "browseAll": "Browse all 47 jobs"
+  },
+  "founder": {
+    "eyebrow": "The story",
+    "title": "Built by someone who's ",
+    "titleEm": "actually done it.",
+    "stat": {
+      "yearsRemote": "Years remote",
+      "upworkHours": "Upwork hours",
+      "upworkRank": "Upwork rank",
+      "basedIn": "Based in",
+      "workedWith": "Worked with",
+      "topPlus": "Top Plus",
+      "location": "Đà Nẵng, VN"
+    },
+    "quoteStart": "I've worked remotely for companies in Singapore, Australia, and the US for seven years. ",
+    "quoteStrong": "Top Plus on Upwork. Over 10,000 hours billed.",
+    "quoteEnd": " Every year, dozens of people ask me the same question: how did you find it?",
+    "p1": "I couldn't answer that question for each person individually. So I built the answer instead.",
+    "p2": "Every job here gets reviewed by me before going live. Salary ranges are required. I check the company is real, the team is hiring, and the comp is fair for VN talent. If it's not, it doesn't go up.",
+    "role": "Founder · Đà Nẵng, Vietnam · Building since Mar 2025"
+  },
+  "testimonials": {
+    "eyebrow": "Talent stories",
+    "from": "From ",
+    "apply": "apply",
+    "to": " to ",
+    "offer": "offer",
+    "1": {
+      "quote": "I tried Upwork for two years but the competition was brutal. Through this platform I applied to a Singapore startup that fit my timezone and got an offer at $2,800/month within three weeks.",
+      "title": "Frontend Developer · Hired by Finch Labs (SG)",
+      "meta": "$2,800/mo · 3 weeks"
+    },
+    "2": {
+      "quote": "The salary benchmark was a game-changer. I'd been undercharging by 40%. Renegotiated my current contract using the data here and got bumped up before even applying anywhere.",
+      "title": "Product Designer · Brackish (SG)",
+      "meta": "$3,400/mo · current"
+    },
+    "3": {
+      "quote": "First place I've seen that actually tells you which companies have VN people already. That signal alone saved me weeks of 'do they hire remote? do they hire Vietnamese?' guesswork.",
+      "title": "Backend Engineer · Sea Group (SG)",
+      "meta": "$3,200/mo · 5 weeks"
+    }
+  },
+  "hero": {
+    "badge": "47 jobs live · updated today",
+    "title": "Remote jobs from Singapore, Australia & beyond — ",
+    "titleEm": "curated",
+    "titleEnd": " for Vietnam talent.",
+    "subtitle": "Việt Nam has talent. The world has jobs. We connect both — with clear salary ranges, sensible timezones, and employers we've actually vetted.",
+    "browse": "Browse 47 open jobs",
+    "alerts": "Get weekly alerts",
+    "free": "Free for talent · 500+ VN professionals already on board",
+    "remote": "Remote"
+  },
+  "newsletter": {
+    "title": "Don't miss the ",
+    "titleEm": "next",
+    "titleEnd": " opportunity.",
+    "desc": "Every Friday: top 8 remote jobs curated for VN/SEA talent, salary tips, and remote work insights you won't find on LinkedIn.",
+    "fine": "Join 1,200+ subscribers · No spam · Unsubscribe anytime"
+  },
+  "benchmark": {
+    "eyebrow": "Salary data",
+    "title": "Know your worth ",
+    "titleEm": "before",
+    "titleEnd": " you negotiate.",
+    "desc": "Live salary data aggregated from active listings on RemoteSEA. Updated as new roles go live.",
+    "perMonth": "{{min}}–{{max}}/mo",
+    "note": "Aggregated from live, verified job listings on RemoteSEA — real salary ranges employers are offering right now.",
+    "guide": "See full salary guide",
+    "basedOn_one": "Based on {{count}} active listing across {{fields}} field.",
+    "basedOn_other": "Based on {{count}} active listings across {{fields}} fields."
+  },
+  "categories": {
+    "eyebrow": "Categories",
+    "title": "Find roles in ",
+    "titleEm": "your",
+    "titleEnd": " field",
+    "engineering": "Engineering",
+    "design": "Design",
+    "product": "Product",
+    "data": "Data",
+    "marketing": "Marketing",
+    "operations": "Operations"
+  },
+  "page": {
+    "title": "Remote Jobs from SG, AU & beyond",
+    "description": "Curated remote jobs from Singapore, Australia and beyond for Vietnamese talent — clear salary ranges, verified employers, and sensible timezones."
+  }
+}

@@ -9,14 +9,11 @@ import {
   TEXTAREA_INPUT_CLASS,
 } from "@/components/shared/input-styles";
 import {
-  JOB_REPORT_REASON_LABELS,
+  JOB_REPORT_REASONS,
+  jobReportReasonLabel,
   type JobReportReason,
 } from "@/types/job-report";
-
-const REASON_OPTIONS = Object.entries(JOB_REPORT_REASON_LABELS) as [
-  JobReportReason,
-  string,
-][];
+import { useTranslation } from "@/i18n/useTranslation";
 
 const ALREADY_REPORTED_STATUS = 409;
 
@@ -29,6 +26,7 @@ interface ReportJobFormProps {
 // one. Self-contained (owns its own open/submitted state) so JobCompanyCard
 // only needs to render this one component.
 export const ReportJobForm = ({ jobId }: ReportJobFormProps) => {
+  const { t } = useTranslation("jobs");
   const [open, setOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [reason, setReason] = useState<JobReportReason>("SCAM");
@@ -38,9 +36,7 @@ export const ReportJobForm = ({ jobId }: ReportJobFormProps) => {
 
   if (submitted) {
     return (
-      <p className="mt-3 text-[12px] text-neutral-400">
-        Thanks — our team will take a look.
-      </p>
+      <p className="mt-3 text-[12px] text-neutral-400">{t("report.thanks")}</p>
     );
   }
 
@@ -51,7 +47,7 @@ export const ReportJobForm = ({ jobId }: ReportJobFormProps) => {
         type="button"
         onClick={() => setOpen(true)}
       >
-        <Flag size={11} /> Report this job
+        <Flag size={11} /> {t("report.open")}
       </button>
     );
   }
@@ -66,10 +62,10 @@ export const ReportJobForm = ({ jobId }: ReportJobFormProps) => {
           details: details || undefined,
         }),
       {
-        error: "Couldn't submit report",
+        error: t("report.failedToast"),
         onError: (err) =>
           err instanceof ApiError && err.status === ALREADY_REPORTED_STATUS
-            ? "You've already reported this job."
+            ? t("report.alreadyReported")
             : undefined,
       }
     );
@@ -85,7 +81,7 @@ export const ReportJobForm = ({ jobId }: ReportJobFormProps) => {
         className="block text-[12px] font-medium text-neutral-600"
         htmlFor="report-reason"
       >
-        What's wrong with this listing?
+        {t("report.question")}
       </label>
       <select
         className={SELECT_INPUT_CLASS}
@@ -93,15 +89,15 @@ export const ReportJobForm = ({ jobId }: ReportJobFormProps) => {
         value={reason}
         onChange={(e) => setReason(e.target.value as JobReportReason)}
       >
-        {REASON_OPTIONS.map(([value, label]) => (
+        {JOB_REPORT_REASONS.map((value) => (
           <option key={value} value={value}>
-            {label}
+            {jobReportReasonLabel(value)}
           </option>
         ))}
       </select>
       <textarea
         className={TEXTAREA_INPUT_CLASS}
-        placeholder="Any details that would help us review this (optional)"
+        placeholder={t("report.detailsPlaceholder")}
         rows={2}
         value={details}
         onChange={(e) => setDetails(e.target.value)}
@@ -113,7 +109,7 @@ export const ReportJobForm = ({ jobId }: ReportJobFormProps) => {
           size="sm"
           type="submit"
         >
-          Submit report
+          {t("report.submit")}
         </Button>
         <Button
           size="sm"
@@ -121,7 +117,7 @@ export const ReportJobForm = ({ jobId }: ReportJobFormProps) => {
           variant="ghost"
           onClick={() => setOpen(false)}
         >
-          Cancel
+          {t("common.actions.cancel")}
         </Button>
       </div>
     </form>

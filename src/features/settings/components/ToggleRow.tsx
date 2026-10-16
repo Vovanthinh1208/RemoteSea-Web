@@ -1,5 +1,6 @@
 import { Toggle } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface ToggleRowProps {
   title: React.ReactNode;
@@ -17,19 +18,22 @@ export const ToggleRow = ({
   on,
   onChange,
   disabled,
-}: ToggleRowProps) => (
-  <div className="flex items-start justify-between gap-4 border-b border-neutral-50 py-4 last:border-none">
-    <div className="min-w-0 flex-1">
-      <p className="flex items-center gap-2 text-[13.5px] font-medium text-neutral-800">
-        {title}
-        {disabled && (
-          <Badge className="px-1.5 py-0" variant="muted">
-            Coming soon
-          </Badge>
-        )}
-      </p>
-      <p className="mt-0.5 text-[12.5px] text-neutral-500">{desc}</p>
+}: ToggleRowProps) => {
+  const { t } = useTranslation("settings");
+  return (
+    <div className="flex items-start justify-between gap-4 border-b border-neutral-50 py-4 last:border-none">
+      <div className="min-w-0 flex-1">
+        <p className="flex items-center gap-2 text-[13.5px] font-medium text-neutral-800">
+          {title}
+          {disabled && (
+            <Badge className="px-1.5 py-0" variant="muted">
+              {t("toggle.comingSoon")}
+            </Badge>
+          )}
+        </p>
+        <p className="mt-0.5 text-[12.5px] text-neutral-500">{desc}</p>
+      </div>
+      <Toggle disabled={disabled} on={on} onChange={onChange} />
     </div>
-    <Toggle disabled={disabled} on={on} onChange={onChange} />
-  </div>
-);
+  );
+};

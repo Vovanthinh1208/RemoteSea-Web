@@ -29,7 +29,7 @@ const NEAR_BOTTOM_THRESHOLD_PX = 80;
 
 export const AiChatWidget = () => {
   const { user } = useAuth();
-  const { t, locale } = useTranslation("ai");
+  const { t } = useTranslation("ai");
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -173,7 +173,7 @@ export const AiChatWidget = () => {
     <div ref={rootRef}>
       <button
         aria-expanded={open}
-        aria-label={open ? "Close AI Assistant" : "Open AI Assistant"}
+        aria-label={open ? t("chat.closeAria") : t("chat.openAria")}
         // max(1.25rem, safe-area) instead of a plain bottom-5 — on a
         // notched phone in standalone/PWA mode, the fixed 20px offset sat
         // partly under the home-indicator gesture bar; this keeps the same
@@ -239,9 +239,7 @@ export const AiChatWidget = () => {
                   </span>
                 </div>
                 <p className="truncate text-[12.5px] text-neutral-400">
-                  {locale === "vi"
-                    ? "Hỏi về chính sách tuyển dụng hoặc hồ sơ ứng viên."
-                    : "Ask about hiring policies, or a specific application."}
+                  {t("chat.tagline")}
                 </p>
               </div>
             </div>
@@ -257,18 +255,16 @@ export const AiChatWidget = () => {
                 onSelectConversation={(id) => setSelectedConversationId(id)}
               />
               <button
-                aria-label={
-                  locale === "vi" ? "Cuộc trò chuyện mới" : "New chat"
-                }
+                aria-label={t("chat.newChatAria")}
                 className="flex items-center gap-1 rounded-full bg-brand-50 px-2.5 py-1.5 text-[12px] font-medium text-brand-700 transition-colors hover:bg-brand-100 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
                 onClick={startNewChat}
               >
                 <Plus size={14} />
-                {locale === "vi" ? "Đoạn chat mới" : "New chat"}
+                {t("chat.newChat")}
               </button>
               <button
-                aria-label="Close"
+                aria-label={t("chat.close")}
                 className="group grid h-8 w-8 flex-shrink-0 place-items-center rounded-full text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
                 type="button"
                 onClick={requestClose}
@@ -308,27 +304,27 @@ export const AiChatWidget = () => {
                     <MessageCircleQuestion size={20} />
                   </div>
                   <p className="font-medium text-neutral-900">
-                    Couldn&apos;t load conversation
+                    {t("chat.loadErrorTitle")}
                   </p>
                   <p className="text-sm text-neutral-500">
-                    Something went wrong loading this conversation.
+                    {t("chat.loadErrorDesc")}
                   </p>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => conversation.refetch()}
                   >
-                    Try again
+                    {t("common.actions.retry")}
                   </Button>
                 </div>
               ) : (
                 <div aria-live="polite" role="log">
-                  {conversation.data?.turns.map((t) => (
+                  {conversation.data?.turns.map((turn) => (
                     <AiChatMessageBubble
-                      answer={t.answer}
-                      key={t.id}
-                      question={t.question}
-                      sources={t.sources}
+                      answer={turn.answer}
+                      key={turn.id}
+                      question={turn.question}
+                      sources={turn.sources}
                     />
                   ))}
                   {pendingQuestion && (
@@ -345,7 +341,7 @@ export const AiChatWidget = () => {
                 onClick={scrollToBottom}
               >
                 <ArrowDown size={12} />
-                New message
+                {t("chat.newMessage")}
               </button>
             )}
           </div>

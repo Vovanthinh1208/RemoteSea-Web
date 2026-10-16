@@ -5,12 +5,14 @@ import {
   type AppStatusBucket,
 } from "@/features/talent/talent-dashboard.utils";
 import type { ApplicationWithJob } from "@/types/application";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface PipelineProps {
   applications: ApplicationWithJob[];
 }
 
 export const Pipeline = ({ applications }: PipelineProps) => {
+  const { t } = useTranslation("talent");
   const counts = useMemo(() => {
     const c: Record<AppStatusBucket, number> = {
       applied: 0,
@@ -23,12 +25,17 @@ export const Pipeline = ({ applications }: PipelineProps) => {
     return c;
   }, [applications]);
 
-  const stages: { label: string; n: number; active?: boolean }[] = [
-    { label: "Applied", n: counts.applied },
-    { label: "In review", n: counts.review },
-    { label: "Interviewing", n: counts.interview, active: true },
-    { label: "Offers", n: counts.offer },
-    { label: "Closed", n: counts.closed },
+  const stages: { id: string; label: string; n: number; active?: boolean }[] = [
+    { id: "applied", label: t("bucket.applied"), n: counts.applied },
+    { id: "review", label: t("bucket.review"), n: counts.review },
+    {
+      id: "interview",
+      label: t("bucket.interview"),
+      n: counts.interview,
+      active: true,
+    },
+    { id: "offer", label: t("bucket.offers"), n: counts.offer },
+    { id: "closed", label: t("bucket.closed"), n: counts.closed },
   ];
   return (
     <div className="flex border-b border-neutral-100 bg-neutral-50/50">
@@ -39,7 +46,7 @@ export const Pipeline = ({ applications }: PipelineProps) => {
             i < stages.length - 1 && "border-r border-neutral-100",
             s.active && "border-b-2 border-brand-600 bg-white"
           )}
-          key={s.label}
+          key={s.id}
         >
           <span
             className={cn(

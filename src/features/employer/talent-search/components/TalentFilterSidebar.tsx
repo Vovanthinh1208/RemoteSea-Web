@@ -15,6 +15,8 @@ import {
 } from "@/features/employer/talent-search/talent-search.filters";
 import { NOTICE_PERIOD_OPTIONS } from "@/features/talent/talent.constants";
 import { LEVEL_LABELS } from "@/utils/labels";
+import { useTranslation } from "@/i18n/useTranslation";
+import { optionLabel } from "@/i18n/labels";
 
 interface TalentFilterSidebarProps {
   filters: TalentSearchFilters;
@@ -23,19 +25,11 @@ interface TalentFilterSidebarProps {
 
 const SKILL_SUGGESTION_LIMIT = 8;
 
-const TIMEZONE_OVERLAP_LABELS: Record<
-  (typeof TIMEZONE_OVERLAP_OPTIONS)[number],
-  string
-> = {
-  SG_HOURS: "SG hours",
-  AU_HOURS: "AU hours",
-  ASYNC_ONLY: "Async-friendly",
-};
-
 export const TalentFilterSidebar = ({
   filters,
   onChange,
 }: TalentFilterSidebarProps) => {
+  const { t } = useTranslation("employer");
   const [skillQuery, setSkillQuery] = useState("");
   // The input stays fully responsive to every keystroke; only the query
   // itself (GET /skills?q=...) waits for typing to pause — without this,
@@ -89,7 +83,7 @@ export const TalentFilterSidebar = ({
           onClick={() => setMobileOpen((v) => !v)}
         >
           <h3 className="text-[15px] font-semibold text-neutral-900">
-            Filters
+            {t("common.actions.filters")}
           </h3>
           {activeCount > 0 && (
             <span className="grid h-4 w-4 place-items-center rounded-full bg-brand-600 text-[11px] font-semibold text-white">
@@ -121,7 +115,7 @@ export const TalentFilterSidebar = ({
             })
           }
         >
-          Clear all
+          {t("jobs.filters.clearAll")}
         </button>
       </div>
 
@@ -129,10 +123,10 @@ export const TalentFilterSidebar = ({
         className={cn(mobileOpen ? "block" : "hidden", "sm:!block")}
         id="talent-filter-groups"
       >
-        <FilterGroup label="Skills">
+        <FilterGroup label={t("filter.skills")}>
           <input
             className="mb-2 w-full rounded-8 border border-neutral-200 px-2.5 py-1.5 text-[13px] outline-none focus:border-brand-600"
-            placeholder="Search skills…"
+            placeholder={t("filter.skillsSearch")}
             type="text"
             value={skillQuery}
             onChange={(e) => setSkillQuery(e.target.value)}
@@ -147,18 +141,22 @@ export const TalentFilterSidebar = ({
           ))}
         </FilterGroup>
 
-        <FilterGroup label="Availability">
+        <FilterGroup label={t("filter.availability")}>
           {NOTICE_PERIOD_OPTIONS.map((notice) => (
             <CheckRow
               checked={filters.noticePeriod.includes(notice)}
               key={notice}
-              label={notice === "Immediate" ? "Available now" : notice}
+              label={
+                notice === "Immediate"
+                  ? t("talent.availability.now")
+                  : optionLabel("talent.opt.notice", notice)
+              }
               onToggle={() => toggle("noticePeriod", notice)}
             />
           ))}
         </FilterGroup>
 
-        <FilterGroup label="Seniority">
+        <FilterGroup label={t("filter.seniority")}>
           {LEVEL_OPTIONS.map((level) => (
             <CheckRow
               checked={filters.level.includes(level)}
@@ -169,34 +167,34 @@ export const TalentFilterSidebar = ({
           ))}
         </FilterGroup>
 
-        <FilterGroup label="Employment type">
+        <FilterGroup label={t("filter.employment")}>
           {EMPLOYMENT_TYPE_OPTIONS.map((type) => (
             <CheckRow
               checked={filters.employmentTypes.includes(type)}
               key={type}
-              label={type.replace("_", "-")}
+              label={t(`filter.type.${type}`)}
               onToggle={() => toggle("employmentTypes", type)}
             />
           ))}
         </FilterGroup>
 
-        <FilterGroup label="Timezone overlap">
+        <FilterGroup label={t("filter.tzOverlap")}>
           {TIMEZONE_OVERLAP_OPTIONS.map((tz) => (
             <CheckRow
               checked={filters.timezoneOverlap.includes(tz)}
               key={tz}
-              label={TIMEZONE_OVERLAP_LABELS[tz]}
+              label={t(`filter.${tz}`)}
               onToggle={() => toggle("timezoneOverlap", tz)}
             />
           ))}
         </FilterGroup>
 
-        <FilterGroup label="Country">
+        <FilterGroup label={t("filter.country")}>
           {COUNTRY_OPTIONS.map((country) => (
             <CheckRow
               checked={filters.country.includes(country)}
               key={country}
-              label={country}
+              label={optionLabel("employer.country", country)}
               onToggle={() => toggle("country", country)}
             />
           ))}

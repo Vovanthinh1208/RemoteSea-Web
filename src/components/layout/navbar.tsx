@@ -69,7 +69,7 @@ export const Navbar = () => {
         </Link>
 
         {/* Nav links — desktop only */}
-        <nav className="hidden gap-1 lg:flex">
+        <nav className="hidden gap-1 xl:flex">
           {navLinks.map(({ href, label }) => (
             <Link
               className={cn(
@@ -91,7 +91,7 @@ export const Navbar = () => {
         <div className="flex-1" />
 
         {/* Actions — desktop only */}
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-2 xl:flex">
           <Link className={ACTION_LINK_CLASS} to={ROUTES.employer}>
             {t("nav.forEmployers")}
           </Link>
@@ -147,7 +147,7 @@ export const Navbar = () => {
         </div>
 
         {/* Mobile controls */}
-        <div className="flex items-center gap-1 lg:hidden">
+        <div className="flex items-center gap-1 xl:hidden">
           {user && <NotificationBell />}
           <button
             aria-expanded={mobileOpen}
@@ -162,7 +162,7 @@ export const Navbar = () => {
       </div>
 
       {mobileOpen && (
-        <nav className="border-t border-neutral-100 bg-neutral-50 px-4 py-3 lg:hidden">
+        <nav className="border-t border-neutral-100 bg-neutral-50 px-4 py-3 xl:hidden">
           <div className="flex flex-col">
             {navLinks.map(({ href, label }) => (
               <Link

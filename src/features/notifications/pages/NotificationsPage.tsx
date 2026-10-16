@@ -10,12 +10,14 @@ import { Pagination } from "@/features/jobs/components/Pagination";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button } from "@/components/ui/button";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const NOTIFICATIONS_LIMIT = 20;
 const SKELETON_COUNT = 6;
 
 export const NotificationsPage = () => {
-  useDocumentTitle("Notifications");
+  const { t } = useTranslation("notifications");
+  useDocumentTitle(t("page.docTitle"));
   const [page, setPage] = useState(1);
   const { data, isLoading, isError, refetch } = useNotifications(
     page,
@@ -30,12 +32,9 @@ export const NotificationsPage = () => {
       <div className="mb-8 flex items-center justify-between gap-4">
         <div>
           <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
-            Notifications
+            {t("page.title")}
           </h1>
-          <p className="text-[15px] text-neutral-500">
-            Updates on invitations, application status, and reports you've
-            filed.
-          </p>
+          <p className="text-[15px] text-neutral-500">{t("page.desc")}</p>
         </div>
         {hasUnread && (
           <Button
@@ -45,7 +44,7 @@ export const NotificationsPage = () => {
             variant="outline"
             onClick={() => markAllRead.mutate()}
           >
-            Mark all as read
+            {t("page.markAll")}
           </Button>
         )}
       </div>
@@ -60,16 +59,16 @@ export const NotificationsPage = () => {
         <EmptyState
           action={
             <Button size="sm" variant="outline" onClick={() => refetch()}>
-              Try again
+              {t("common.actions.retry")}
             </Button>
           }
-          description="Something went wrong loading your notifications."
-          title="Couldn't load notifications"
+          description={t("page.errorDesc")}
+          title={t("page.errorTitle")}
         />
       ) : notifications.length === 0 ? (
         <EmptyState
-          description="You'll see updates on invitations, application status, and reports here."
-          title="No notifications yet"
+          description={t("page.emptyDesc")}
+          title={t("page.emptyTitle")}
         />
       ) : (
         <>

@@ -3,9 +3,11 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { RegisterForm } from "@/features/auth/components/RegisterForm";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const RegisterPage = () => {
-  useDocumentTitle("Create Account");
+  const { t } = useTranslation("auth");
+  useDocumentTitle(t("pages.register.docTitle"));
 
   return (
     <div className="grid min-h-[calc(100vh-56px)] lg:grid-cols-2">
@@ -28,22 +30,20 @@ export const RegisterPage = () => {
                 fontStyle: "italic",
               }}
             >
-              500+ talent
-            </span>{" "}
-            already on board.
+              {t("pages.register.talentLead")}
+            </span>
+            {t("pages.register.headline1")}
             <br />
-            Quietly, sustainably
+            {t("pages.register.headline2")}
             <br />
-            finding remote work.
+            {t("pages.register.headline3")}
           </p>
           <p className="mb-8 max-w-sm text-sm leading-relaxed text-white/60">
-            No spam. No recruiters in your inbox. Just curated jobs you can
-            actually trust.
+            {t("pages.register.noSpam")}
           </p>
           <div className="rounded-16 border border-white/10 bg-white/5 p-5">
             <p className="mb-4 text-sm italic leading-relaxed text-white/80">
-              &ldquo;Mình apply được vào đúng công ty Singapore phù hợp timezone
-              và được offer $2,800/month sau 3 tuần.&rdquo;
+              &ldquo;{t("pages.register.quote")}&rdquo;
             </p>
             <div className="flex items-center gap-3">
               <div className="grid h-8 w-8 place-items-center rounded-full bg-brand-600 text-xs font-semibold">
@@ -52,15 +52,13 @@ export const RegisterPage = () => {
               <div>
                 <div className="text-sm font-medium">Phạm Tuấn</div>
                 <div className="text-[12px] text-white/40">
-                  Frontend Developer · Hired 3 weeks
+                  {t("pages.register.quoteRole")}
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <p className="text-xs text-white/30">
-          © 2026 RemoteSEA · Free for talent. Forever.
-        </p>
+        <p className="text-xs text-white/30">{t("pages.register.footer")}</p>
       </div>
 
       {/* Right panel */}
@@ -70,15 +68,15 @@ export const RegisterPage = () => {
             className="inline-flex items-center gap-1.5 rounded-8 text-sm text-neutral-500 transition-colors hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.home}
           >
-            <ArrowLeft size={14} /> Back
+            <ArrowLeft size={14} /> {t("pages.login.back")}
           </Link>
           <p className="text-sm text-neutral-500">
-            Already a member?{" "}
+            {t("pages.register.alreadyMember")}{" "}
             <Link
               className="inline-flex items-center gap-0.5 rounded-8 font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.login}
             >
-              Sign in <ArrowRight size={13} />
+              {t("pages.register.signIn")} <ArrowRight size={13} />
             </Link>
           </p>
         </div>
@@ -87,20 +85,24 @@ export const RegisterPage = () => {
           <span className="grid h-6 w-6 place-items-center rounded-full bg-brand-600 text-[11px] font-semibold text-white">
             1
           </span>
-          <span className="text-sm text-neutral-400">of 2</span>
+          <span className="text-sm text-neutral-400">
+            {t("pages.register.stepOf")}
+          </span>
           <div className="mx-2 h-1.5 flex-1 rounded-full bg-neutral-100">
             <div className="h-full w-1/2 rounded-full bg-brand-600" />
           </div>
-          <span className="text-[12px] text-neutral-400">Your account</span>
+          <span className="text-[12px] text-neutral-400">
+            {t("pages.register.stepLabel")}
+          </span>
         </div>
 
         {/* 36px — larger than the app-wide 32px page title; intentional for
             this standalone, hero-like auth screen (matches LoginPage.tsx). */}
         <h1 className="mb-1 text-[36px] font-semibold tracking-tight text-neutral-900">
-          Join RemoteSEA.
+          {t("pages.register.title")}
         </h1>
         <p className="mb-8 text-sm text-neutral-500">
-          Free for talent. Forever. No card needed.
+          {t("pages.register.subtitle")}
         </p>
 
         <RegisterForm />

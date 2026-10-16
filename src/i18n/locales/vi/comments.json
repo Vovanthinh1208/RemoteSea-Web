@@ -1,0 +1,12 @@
+{
+  "thread": {
+    "loadError": "Không thể tải cuộc thảo luận.",
+    "postFailed": "Không thể đăng bình luận. Vui lòng thử lại.",
+    "title": "Thảo luận nội bộ",
+    "hint": "Chỉ nhóm của bạn thấy, không bao giờ hiển thị cho ứng viên.",
+    "you": "Bạn",
+    "member": "Thành viên nhóm",
+    "placeholder": "Để lại ghi chú cho nhóm… (⌘/Ctrl+Enter để đăng)",
+    "post": "Đăng"
+  }
+}

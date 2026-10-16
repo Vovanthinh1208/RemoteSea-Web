@@ -1,0 +1,77 @@
+{
+  "docTitle": "Ghi chép thực tế — Blog RemoteSEA",
+  "badge": "Ghi chép thực tế · đăng thứ Ba + thứ Sáu",
+  "heroTitle": "Ghi chép thực tế về ",
+  "heroTitleEm": "làm việc từ xa",
+  "heroTitleEnd": ", viết bởi chính những người đang làm.",
+  "heroDesc": "Không nội dung nhồi SEO, không “10 mẹo năng suất”. Chỉ là những bài viết chân thực về thương lượng, văn hóa async, tính múi giờ và luật thuế — do các chuyên gia Việt Nam làm việc cho công ty nước ngoài viết.",
+  "readTime": "Đọc {{n}} phút",
+  "readTimeShort": "{{n}} phút",
+  "authorTagline": "Frontend cao cấp · 7 năm làm remote",
+  "readEssay": "Đọc bài viết",
+  "recent": "Gần đây",
+  "archiveTitle": "Kho ",
+  "archiveTitleEm": "lưu trữ",
+  "mostRead": "Được đọc nhiều nhất tháng này",
+  "inboxTitle": "Ghi chép thực tế, gửi tới hộp thư của bạn.",
+  "inboxDesc": "Một bài viết mỗi thứ Ba. Chân thực, không trau chuốt, không nhà tài trợ.",
+  "inboxPlaceholder": "ban@congty.com",
+  "inboxFine": "Tham gia cùng hơn 2.400 độc giả · hủy bất cứ lúc nào",
+  "writeTitle": "Viết cho chúng tôi",
+  "writeDesc": "Nếu bạn từng thương lượng một offer khó, xoay xở với múi giờ lệch hoặc xây dựng được thói quen async hiệu quả — chúng tôi rất muốn nghe câu chuyện của bạn.",
+  "pitch": "Đề xuất bài viết",
+  "nlTitle": "Nhận ",
+  "nlTitleEm": "bài viết",
+  "nlTitleEnd": " tiếp theo, trước khi lên trang.",
+  "nlDesc": "Một bài viết chỉn chu mỗi sáng thứ Ba, do các chuyên gia đang làm remote viết. Không chiêu trò tiếp thị, không bài tổng hợp “công cụ chúng tôi yêu thích” kiếm hoa hồng.",
+  "nlFine": "2.400 độc giả · hủy bằng một cú nhấp · chúng tôi không bán email, bao giờ.",
+  "cat": {
+    "all": "Tất cả",
+    "negotiation": "Thương lượng",
+    "salary": "Lương",
+    "async": "Làm việc async",
+    "interview": "Phỏng vấn",
+    "career": "Sự nghiệp",
+    "tools": "Công cụ"
+  },
+  "popular": {
+    "1": "Hướng dẫn cư trú thuế Singapore cho người Việt làm remote",
+    "2": "Cách viết CV vượt qua hệ thống ATS của Atlassian năm 2026",
+    "3": "Loom đang gặp vấn đề — các nhóm thiết kế dùng gì thay thế",
+    "4": "Standup bất đồng bộ: mẫu chính xác mà nhóm 8 người của chúng tôi dùng"
+  },
+  "posts": {
+    "p1": {
+      "title": "Vì sao offer của bạn có thể thấp hơn 22% — và đúng 4 câu để sửa điều đó.",
+      "excerpt": "Chúng tôi phân tích 142 offer từ các công ty Singapore và Úc tuyển nhân sự Việt Nam. Khoảng cách giữa mức được đề nghị và mức có thể đạt lớn hơn bạn nghĩ."
+    },
+    "p2": {
+      "title": "Thói quen tắt máy lúc 5 giờ chiều đã cứu hôn nhân của tôi (và cả lượng Loom tôi dùng).",
+      "excerpt": "Làm việc với đội ở Sydney nghĩa là Slack của tôi sáng đèn đến 11 giờ đêm. Đây là hệ thống ranh giới thực sự hiệu quả."
+    },
+    "p3": {
+      "title": "612 offer remote cho chúng tôi biết gì về mức lương frontend cao cấp.",
+      "excerpt": "Trung vị: $4.800. Nhóm 10% cao nhất: $7.200+. Phân tích đầy đủ theo quy mô công ty, quốc gia và cấp bậc."
+    },
+    "p4": {
+      "title": "Tôi trượt 7 vòng phỏng vấn kiểu Stripe. Rồi tôi tìm ra quy luật.",
+      "excerpt": "Các vòng thiết kế hệ thống ở những công ty hàng đầu đều theo một khuôn mẫu. Nắm vững khuôn mẫu là vượt qua vòng thi."
+    },
+    "p5": {
+      "title": "Vì sao tôi từ chối offer 6 con số của FAANG để vào startup 22 người ở Singapore.",
+      "excerpt": "Trên giấy tờ nghe thật điên rồ. Nhưng thực tế, phần cổ phần, đường cong học hỏi và múi giờ phù hợp khiến đó là lựa chọn hiển nhiên."
+    },
+    "p6": {
+      "title": "Standup đã chết, hãy chào đón bản tổng kết thứ Sáu.",
+      "excerpt": "Cách ba thành viên của chúng tôi cập nhật bằng văn bản hằng tuần thay cho 5 buổi standup. Tiết kiệm 4 giờ/tuần cho mỗi kỹ sư."
+    },
+    "p7": {
+      "title": "Cổ phần, RSU, quyền chọn — hướng dẫn thuế cho nhân viên Việt Nam.",
+      "excerpt": "Được viết cùng một luật sư thuế tại Singapore. Bạn thực sự nợ bao nhiêu, thực sự giữ lại bao nhiêu và 3 sai lầm ai cũng mắc."
+    },
+    "p8": {
+      "title": "Bộ công cụ async của tôi: Notion + Linear + Loom và những gì kết nối chúng.",
+      "excerpt": "Cách tôi vận hành thiết kế sản phẩm cho đội remote-first trải trên 6 múi giờ chỉ với ba công cụ và một nghi thức thứ Sáu."
+    }
+  }
+}

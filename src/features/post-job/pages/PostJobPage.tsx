@@ -1,7 +1,9 @@
 import { PostJobWizard } from "@/features/post-job/components/PostJobWizard";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const PostJobPage = () => {
-  useDocumentTitle("Post a Remote Job");
+  const { t } = useTranslation("postjob");
+  useDocumentTitle(t("page.docTitle"));
   return <PostJobWizard />;
 };

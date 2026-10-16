@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Check, Copy, Sparkles } from "lucide-react";
 import { AiMarkdown } from "@/features/ai-chat/components/AiMarkdown";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export interface AiChatMessageBubbleProps {
   question: string;
@@ -15,6 +16,7 @@ export const AiChatMessageBubble = ({
   sources,
   pending,
 }: AiChatMessageBubbleProps) => {
+  const { t } = useTranslation("ai");
   const [copied, setCopied] = useState(false);
 
   return (
@@ -41,7 +43,7 @@ export const AiChatMessageBubble = ({
                 <AiMarkdown text={answer ?? ""} />
                 {!!sources?.length && (
                   <p className="mt-2.5 border-t border-neutral-200 pt-2.5 text-[11.5px] text-neutral-500">
-                    Sources: {sources.join(" · ")}
+                    {t("chat.sourcesLine", { sources: sources.join(" · ") })}
                   </p>
                 )}
               </>
@@ -59,11 +61,11 @@ export const AiChatMessageBubble = ({
             >
               {copied ? (
                 <>
-                  <Check size={12} /> Copied
+                  <Check size={12} /> {t("chat.copied")}
                 </>
               ) : (
                 <>
-                  <Copy size={12} /> Copy
+                  <Copy size={12} /> {t("chat.copy")}
                 </>
               )}
             </button>

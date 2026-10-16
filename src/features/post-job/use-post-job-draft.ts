@@ -4,6 +4,7 @@ import {
   INITIAL_FORM_STATE,
   type PostJobFormState,
 } from "@/features/post-job/post-job.schemas";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const DRAFT_STORAGE_KEY = "remotesea:post-job-draft";
 const AUTOSAVE_DEBOUNCE_MS = 400;
@@ -52,13 +53,13 @@ export const usePostJobDraftPersistence = (
   restoredFromDraft: boolean
 ): void => {
   const { toast } = useToast();
+  const { t } = useTranslation("postjob");
 
   useEffect(() => {
     if (restoredFromDraft) {
       toast({
-        title: "Draft restored",
-        description:
-          "Picked up where you left off. Publishing clears the draft.",
+        title: t("draft.restoredTitle"),
+        description: t("draft.restoredDesc"),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

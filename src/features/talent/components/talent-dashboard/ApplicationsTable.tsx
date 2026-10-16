@@ -21,6 +21,7 @@ import {
 } from "@/features/talent/talent-dashboard.utils";
 import type { ApplicationWithJob } from "@/types/application";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 type TabId = "all" | "active" | "offers" | "closed";
 
@@ -31,11 +32,12 @@ interface ApplicationRowProps {
 const ApplicationRow = memo(function ApplicationRow({
   application: a,
 }: ApplicationRowProps) {
+  const { t } = useTranslation("talent");
   const [expanded, setExpanded] = useState(false);
   const bucket = STATUS_TO_BUCKET[a.status];
   const s = STATUS_BADGE[bucket];
   const company = a.job.employer.companyName;
-  const country = a.job.country ?? "Remote";
+  const country = a.job.country ?? t("snapshot.remote");
   const mainSteps = buildTimelineSteps(a).slice(0, 4);
   const dotFillClass = bucket === "closed" ? "bg-neutral-300" : "bg-brand-500";
   return (
@@ -83,7 +85,7 @@ const ApplicationRow = memo(function ApplicationRow({
 
         <div className="flex shrink-0 items-center gap-1">
           <Link
-            aria-label="Message about this application"
+            aria-label={t("apps.messageAria")}
             className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
             to={ROUTES.applicationMessages(a.id)}
           >
@@ -91,7 +93,7 @@ const ApplicationRow = memo(function ApplicationRow({
           </Link>
           {a.status === "INTERVIEW" && (
             <Link
-              aria-label="View interview"
+              aria-label={t("apps.interviewAria")}
               className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.applicationInterview(a.id)}
             >
@@ -102,11 +104,7 @@ const ApplicationRow = memo(function ApplicationRow({
         <button
           type="button"
           aria-expanded={expanded}
-          aria-label={
-            expanded
-              ? "Collapse application timeline"
-              : "Expand application timeline"
-          }
+          aria-label={expanded ? t("apps.collapse") : t("apps.expand")}
           className="grid h-8 w-8 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
           onClick={() => setExpanded((v) => !v)}
         >
@@ -130,28 +128,8 @@ interface ApplicationsTableProps {
 const isTabId = (v: string): v is TabId =>
   (["all", "active", "offers", "closed"] as const).includes(v as TabId);
 
-const TAB_EMPTY_COPY: Record<TabId, { title: string; description: string }> = {
-  all: {
-    title: "No applications yet",
-    description: "Jobs you apply to will show up here.",
-  },
-  active: {
-    title: "No active applications",
-    description:
-      "Applications you're still waiting to hear back on will show up here.",
-  },
-  offers: {
-    title: "No offers yet",
-    description: "Offers you receive will show up here.",
-  },
-  closed: {
-    title: "No closed applications",
-    description:
-      "Applications that were withdrawn or didn't move forward will show up here.",
-  },
-};
-
 export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
+  const { t } = useTranslation("talent");
   const [tab, setTab] = useSearchParamState<TabId>("appTab", "active", isTabId);
 
   const grouped = useMemo(() => {
@@ -180,20 +158,20 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
   const filtered = grouped.byTab[tab];
 
   const tabs: { id: TabId; label: string; count: number }[] = [
-    { id: "all", label: "All", count: applications.length },
+    { id: "all", label: t("apps.tab.all"), count: applications.length },
     {
       id: "active",
-      label: "Active",
+      label: t("apps.tab.active"),
       count: grouped.byTab.active.length,
     },
     {
       id: "offers",
-      label: "Offers",
+      label: t("apps.tab.offers"),
       count: grouped.byTab.offers.length,
     },
     {
       id: "closed",
-      label: "Closed",
+      label: t("apps.tab.closed"),
       count: grouped.byTab.closed.length,
     },
   ];
@@ -202,16 +180,16 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
     <div className="mb-5 overflow-hidden rounded-16 border border-neutral-100 bg-white shadow-card">
       <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
         <h3 className="text-[14px] font-semibold text-neutral-900">
-          Your applications{" "}
+          {t("apps.title")}
           <span className="font-normal text-neutral-400">
-            · {grouped.notClosedCount} active
+            {t("apps.activeCount", { count: grouped.notClosedCount })}
           </span>
         </h3>
         <Tabs value={tab} onValueChange={(v) => setTab(v as TabId)}>
           <TabList variant="segmented">
-            {tabs.map((t) => (
-              <Tab count={t.count} key={t.id} value={t.id}>
-                {t.label}
+            {tabs.map((tabItem) => (
+              <Tab count={tabItem.count} key={tabItem.id} value={tabItem.id}>
+                {tabItem.label}
               </Tab>
             ))}
           </TabList>
@@ -225,27 +203,33 @@ export const ApplicationsTable = ({ applications }: ApplicationsTableProps) => {
           action={
             <Link to={ROUTES.jobs}>
               <Button size="sm" variant="outline">
-                Browse jobs
+                {t("apps.browseJobs")}
               </Button>
             </Link>
           }
           className="px-5 py-10"
-          description={TAB_EMPTY_COPY.all.description}
-          title={TAB_EMPTY_COPY.all.title}
+          description={t("apps.empty.all.desc")}
+          title={t("apps.empty.all.title")}
         />
       ) : filtered.length === 0 ? (
         <EmptyState
           className="px-5 py-10"
-          description={TAB_EMPTY_COPY[tab].description}
-          title={TAB_EMPTY_COPY[tab].title}
+          description={t(`apps.empty.${tab}.desc`)}
+          title={t(`apps.empty.${tab}.title`)}
         />
       ) : (
         <div>
           <div className="grid grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-4 border-b border-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-            <span>Role &amp; company</span>
-            <span className="w-[100px] text-center">Status</span>
-            <span className="hidden w-[140px] md:block">Stage</span>
-            <span className="hidden w-[72px] text-right md:block">Applied</span>
+            <span>{t("apps.col.role")}</span>
+            <span className="w-[100px] text-center">
+              {t("apps.col.status")}
+            </span>
+            <span className="hidden w-[140px] md:block">
+              {t("apps.col.stage")}
+            </span>
+            <span className="hidden w-[72px] text-right md:block">
+              {t("apps.col.applied")}
+            </span>
             <span className="w-8" />
             <span className="w-5" />
           </div>

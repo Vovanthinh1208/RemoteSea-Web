@@ -1,6 +1,7 @@
 import { cn } from "@/utils/cn";
 import { TIER_BADGE_CLASS } from "@/utils/color";
 import type { NoticePeriod } from "@/types/talent";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface AvailabilityBadgeProps {
   isOpenToWork: boolean;
@@ -8,11 +9,11 @@ interface AvailabilityBadgeProps {
   className?: string;
 }
 
-const NOTICE_PERIOD_LABEL: Record<NoticePeriod, string> = {
-  Immediate: "Available now",
-  "2 weeks": "Available in 2 weeks",
-  "1 month": "Available in 1 month",
-  "2+ months": "Available in 2+ months",
+const NOTICE_PERIOD_LABEL_KEY: Record<NoticePeriod, string> = {
+  Immediate: "talent.availability.now",
+  "2 weeks": "talent.availability.2weeks",
+  "1 month": "talent.availability.1month",
+  "2+ months": "talent.availability.2months",
 };
 
 const NOTICE_PERIOD_TIER: Record<NoticePeriod, keyof typeof TIER_BADGE_CLASS> =
@@ -28,11 +29,12 @@ export const AvailabilityBadge = ({
   noticePeriod,
   className,
 }: AvailabilityBadgeProps) => {
+  const { t } = useTranslation();
   if (!isOpenToWork) return null;
 
   const label = noticePeriod
-    ? NOTICE_PERIOD_LABEL[noticePeriod]
-    : "Open to work";
+    ? t(NOTICE_PERIOD_LABEL_KEY[noticePeriod])
+    : t("talent.availability.open");
   const tier = noticePeriod
     ? TIER_BADGE_CLASS[NOTICE_PERIOD_TIER[noticePeriod]]
     : TIER_BADGE_CLASS.mid;

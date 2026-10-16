@@ -1,0 +1,12 @@
+{
+  "thread": {
+    "loadError": "Couldn't load the discussion thread.",
+    "postFailed": "Couldn't post your comment. Please try again.",
+    "title": "Internal discussion",
+    "hint": "Only visible to your team, never to the candidate.",
+    "you": "You",
+    "member": "Team member",
+    "placeholder": "Leave a note for your team… (⌘/Ctrl+Enter to post)",
+    "post": "Post"
+  }
+}

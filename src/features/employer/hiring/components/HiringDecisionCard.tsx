@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useUpdateApplicationStatus } from "@/features/employer/employer.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import type { ScorecardSummary } from "@/types/scorecard";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface HiringDecisionCardProps {
   applicationId: string;
@@ -17,6 +18,7 @@ export const HiringDecisionCard = ({
   talentName,
   summary,
 }: HiringDecisionCardProps) => {
+  const { t } = useTranslation("employer");
   const updateStatus = useUpdateApplicationStatus();
   const runWithToast = useToastMutation();
 
@@ -26,9 +28,9 @@ export const HiringDecisionCard = ({
       {
         success:
           status === "OFFERED"
-            ? `Offer extended to ${talentName}.`
-            : `${talentName}'s application was rejected.`,
-        error: "Couldn't update the application. Please try again.",
+            ? t("decision.offered", { name: talentName })
+            : t("decision.rejected", { name: talentName }),
+        error: t("decision.failed"),
       }
     );
   };
@@ -39,29 +41,31 @@ export const HiringDecisionCard = ({
       id="hiring-decision"
     >
       <h3 className="text-[13.5px] font-medium text-neutral-900">
-        Team decision
+        {t("decision.title")}
       </h3>
       <p className="text-[12.5px] text-neutral-600">
-        {summary.hireCount}/{summary.total} recommend hire. All required
-        feedback has been submitted.
+        {t("decision.summary", {
+          hire: summary.hireCount,
+          total: summary.total,
+        })}
       </p>
       <div className="flex gap-2 pt-1">
         <ConfirmAction
-          confirmLabel="Extend offer"
-          message={`Extend an offer to ${talentName}?`}
-          pendingLabel="Extending…"
+          confirmLabel={t("decision.extend")}
+          message={t("decision.extendQ", { name: talentName })}
+          pendingLabel={t("decision.extending")}
           onConfirm={() => decide("OFFERED")}
         >
           {({ onClick }) => (
             <Button className="flex-1" type="button" onClick={onClick}>
-              Extend offer
+              {t("decision.extend")}
             </Button>
           )}
         </ConfirmAction>
         <ConfirmAction
-          confirmLabel="Reject"
-          message={`Reject ${talentName}'s application?`}
-          pendingLabel="Rejecting…"
+          confirmLabel={t("decision.reject")}
+          message={t("decision.rejectQ", { name: talentName })}
+          pendingLabel={t("decision.rejecting")}
           onConfirm={() => decide("REJECTED")}
         >
           {({ onClick }) => (
@@ -71,7 +75,7 @@ export const HiringDecisionCard = ({
               variant="danger"
               onClick={onClick}
             >
-              Reject
+              {t("decision.reject")}
             </Button>
           )}
         </ConfirmAction>

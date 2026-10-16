@@ -14,6 +14,7 @@ import { timeAgoShort } from "@/utils/time";
 import { cn } from "@/utils/cn";
 import { EVENT_ICON } from "@/utils/notification-icons";
 import { useToastMutation } from "@/hooks/useToastMutation";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const PANEL_ITEM_LIMIT = 8;
 const PANEL_SKELETON_COUNT = 3;
@@ -23,6 +24,7 @@ export const NotificationBell = () => {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // Bundled unreadCount from the same response — no separate
   // GET /notifications/unread-count round trip (see notifications.service.ts).
@@ -58,7 +60,7 @@ export const NotificationBell = () => {
   const handleRowClick = (notification: Notification) => {
     if (!notification.readAt) {
       void runWithToast(() => markRead.mutateAsync(notification.id), {
-        error: "Couldn't mark as read",
+        error: t("common.notifications.markReadFailed"),
       });
     }
     setOpen(false);
@@ -69,7 +71,7 @@ export const NotificationBell = () => {
     <div className="relative inline-block" ref={rootRef}>
       <button
         aria-expanded={open}
-        aria-label="Notifications"
+        aria-label={t("common.notifications.title")}
         className={cn(
           "relative grid h-9 w-9 place-items-center rounded-8 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none",
           open && "bg-neutral-100 text-neutral-900"
@@ -89,7 +91,7 @@ export const NotificationBell = () => {
         <div className="absolute right-0 top-[calc(100%+6px)] z-30 w-[340px] animate-fade-up overflow-hidden rounded-12 border border-neutral-200 bg-white shadow-card-lg">
           <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
             <span className="text-[13.5px] font-semibold text-neutral-900">
-              Notifications
+              {t("common.notifications.title")}
             </span>
             {unreadCount > 0 && (
               <button
@@ -98,11 +100,11 @@ export const NotificationBell = () => {
                 type="button"
                 onClick={() =>
                   void runWithToast(() => markAllRead.mutateAsync(), {
-                    error: "Couldn't mark all as read",
+                    error: t("common.notifications.markAllReadFailed"),
                   })
                 }
               >
-                Mark all read
+                {t("common.notifications.markAllRead")}
               </button>
             )}
           </div>
@@ -126,7 +128,9 @@ export const NotificationBell = () => {
                 </div>
               ))
             ) : notifications.length === 0 ? (
-              <EmptyRow className="px-4">No notifications yet</EmptyRow>
+              <EmptyRow className="px-4">
+                {t("common.notifications.empty")}
+              </EmptyRow>
             ) : (
               notifications.map((n) => {
                 const TypeIcon = EVENT_ICON[n.type];
@@ -157,7 +161,11 @@ export const NotificationBell = () => {
                           className="shrink-0 text-neutral-400"
                           size={11}
                         />
-                        {!n.readAt && <span className="sr-only">Unread: </span>}
+                        {!n.readAt && (
+                          <span className="sr-only">
+                            {t("common.notifications.unread")}
+                          </span>
+                        )}
                         <span className="truncate">{n.title}</span>
                       </p>
                       <p className="mt-0.5 text-[11.5px] text-neutral-400">
@@ -175,7 +183,7 @@ export const NotificationBell = () => {
             to={ROUTES.notifications}
             onClick={() => setOpen(false)}
           >
-            View all
+            {t("common.notifications.viewAll")}
           </Link>
         </div>
       )}

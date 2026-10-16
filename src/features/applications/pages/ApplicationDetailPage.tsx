@@ -26,6 +26,7 @@ import { cn } from "@/utils/cn";
 import { formatSalaryWithCurrency } from "@/utils/format";
 import { ROUTES } from "@/constants/routes";
 import type { ApplicationStatus } from "@/types/application";
+import { useTranslation } from "@/i18n/useTranslation";
 
 // Mirrors the backend's WITHDRAWABLE_STATUSES (applications/constants.ts) —
 // OFFERED is deliberately excluded, since the talent's response to an
@@ -60,22 +61,19 @@ const TimelineRowSkeleton = ({ last }: { last?: boolean }) => (
 // shows what's happened; this is the one thing this page adds on top: what
 // to expect next. INTERVIEW is handled separately (an inline interview
 // card/prompt carries more signal than a single sentence could).
-const STATUS_GUIDANCE: Partial<Record<ApplicationStatus, string>> = {
-  PENDING:
-    "Your application is in the queue. Most employers respond within a few days.",
-  REVIEWING: "The employer is currently reviewing your application.",
-  SHORTLISTED:
-    "You've been shortlisted — the employer may reach out to schedule an interview soon.",
-  OFFERED:
-    "This employer has extended you an offer. Congratulations! Accept or decline below.",
-  OFFER_ACCEPTED: "You accepted this offer. Congratulations!",
-  OFFER_DECLINED: "You declined this offer.",
-  REJECTED:
-    "This employer decided to move forward with other candidates this time.",
-  WITHDRAWN: "You withdrew this application.",
-};
+const GUIDED_STATUSES: ApplicationStatus[] = [
+  "PENDING",
+  "REVIEWING",
+  "SHORTLISTED",
+  "OFFERED",
+  "OFFER_ACCEPTED",
+  "OFFER_DECLINED",
+  "REJECTED",
+  "WITHDRAWN",
+];
 
 export const ApplicationDetailPage = () => {
+  const { t } = useTranslation("talent");
   const { id } = useParams<{ id: string }>();
   const applicationId = id ?? "";
   const {
@@ -94,8 +92,8 @@ export const ApplicationDetailPage = () => {
 
   const handleWithdraw = async (): Promise<void> => {
     await runWithToast(() => withdrawMutation.mutateAsync(applicationId), {
-      success: "Application withdrawn.",
-      error: "Couldn't withdraw the application. Please try again.",
+      success: t("appDetail.withdrawn"),
+      error: t("appDetail.withdrawFailed"),
     });
   };
 
@@ -106,14 +104,18 @@ export const ApplicationDetailPage = () => {
       () => offerResponseMutation.mutateAsync({ id: applicationId, response }),
       {
         success:
-          response === "ACCEPTED" ? "Offer accepted!" : "Offer declined.",
-        error: "Couldn't submit your response. Please try again.",
+          response === "ACCEPTED"
+            ? t("appDetail.offerAccepted")
+            : t("appDetail.offerDeclined"),
+        error: t("appDetail.offerFailed"),
       }
     );
   };
 
   useDocumentTitle(
-    application ? application.job.employer.companyName : "Application"
+    application
+      ? application.job.employer.companyName
+      : t("appDetail.fallbackTitle")
   );
 
   const salary = application
@@ -139,7 +141,9 @@ export const ApplicationDetailPage = () => {
         }
         subtitle={application?.job.title}
         title={
-          application ? application.job.employer.companyName : "Application"
+          application
+            ? application.job.employer.companyName
+            : t("appDetail.fallbackTitle")
         }
       />
 
@@ -162,11 +166,11 @@ export const ApplicationDetailPage = () => {
             <EmptyState
               action={
                 <Button size="sm" variant="outline" onClick={() => refetch()}>
-                  Try again
+                  {t("common.actions.retry")}
                 </Button>
               }
-              description="This application doesn't exist, or isn't yours."
-              title="Couldn't load this application"
+              description={t("appDetail.loadErrorDesc")}
+              title={t("appDetail.loadError")}
             />
           </div>
         ) : (
@@ -184,7 +188,7 @@ export const ApplicationDetailPage = () => {
                   <span className="truncate text-[12px] text-neutral-400">
                     {salary} ·{" "}
                     {application.job.isRemote
-                      ? "Remote"
+                      ? t("snapshot.remote")
                       : application.job.country}
                   </span>
                 )}
@@ -197,7 +201,7 @@ export const ApplicationDetailPage = () => {
                   )}
                   to={ROUTES.applicationMessages(application.id)}
                 >
-                  <MessageCircle size={14} /> Message
+                  <MessageCircle size={14} /> {t("appDetail.message")}
                 </Link>
                 {application.status === "INTERVIEW" && (
                   <Link
@@ -207,21 +211,21 @@ export const ApplicationDetailPage = () => {
                     )}
                     to={ROUTES.applicationInterview(application.id)}
                   >
-                    <CalendarClock size={14} /> Interview
+                    <CalendarClock size={14} /> {t("appDetail.interview")}
                   </Link>
                 )}
                 {WITHDRAWABLE_STATUSES.includes(application.status) && (
                   <ConfirmAction
-                    confirmLabel="Withdraw"
+                    confirmLabel={t("appDetail.withdrawLabel")}
                     isPending={withdrawMutation.isPending}
-                    message="Withdraw this application?"
-                    pendingLabel="Withdrawing…"
+                    message={t("appDetail.withdrawQ")}
+                    pendingLabel={t("appDetail.withdrawing")}
                     onConfirm={handleWithdraw}
                   >
                     {({ onClick }) => (
                       <button
                         className="grid h-8 w-8 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none"
-                        title="Withdraw application"
+                        title={t("appDetail.withdrawTitle")}
                         type="button"
                         onClick={onClick}
                       >
@@ -246,37 +250,37 @@ export const ApplicationDetailPage = () => {
                 ) : (
                   <p className="text-[13px] text-neutral-600">
                     {interview
-                      ? "The employer proposed interview times — pick one to lock it in."
-                      : "The employer will reach out to schedule an interview."}
+                      ? t("appDetail.interviewProposed")
+                      : t("appDetail.interviewWaiting")}
                   </p>
                 )
               ) : (
-                STATUS_GUIDANCE[application.status] && (
+                GUIDED_STATUSES.includes(application.status) && (
                   <p className="text-[13px] text-neutral-600">
-                    {STATUS_GUIDANCE[application.status]}
+                    {t(`guidance.${application.status}`)}
                   </p>
                 )
               )}
               {application.status === "OFFERED" && (
                 <div className="flex gap-2">
                   <ConfirmAction
-                    confirmLabel="Accept"
+                    confirmLabel={t("appDetail.accept")}
                     isPending={offerResponseMutation.isPending}
-                    message="Accept this offer?"
-                    pendingLabel="Accepting…"
+                    message={t("appDetail.acceptQ")}
+                    pendingLabel={t("appDetail.accepting")}
                     onConfirm={() => handleOfferResponse("ACCEPTED")}
                   >
                     {({ onClick }) => (
                       <Button size="sm" type="button" onClick={onClick}>
-                        Accept offer
+                        {t("appDetail.acceptOffer")}
                       </Button>
                     )}
                   </ConfirmAction>
                   <ConfirmAction
-                    confirmLabel="Decline"
+                    confirmLabel={t("appDetail.decline")}
                     isPending={offerResponseMutation.isPending}
-                    message="Decline this offer?"
-                    pendingLabel="Declining…"
+                    message={t("appDetail.declineQ")}
+                    pendingLabel={t("appDetail.declining")}
                     onConfirm={() => handleOfferResponse("DECLINED")}
                   >
                     {({ onClick }) => (
@@ -286,7 +290,7 @@ export const ApplicationDetailPage = () => {
                         variant="outline"
                         onClick={onClick}
                       >
-                        Decline offer
+                        {t("appDetail.declineOffer")}
                       </Button>
                     )}
                   </ConfirmAction>

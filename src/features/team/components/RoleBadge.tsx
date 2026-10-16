@@ -1,12 +1,12 @@
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import type { CompanyMemberRole } from "@/types/team";
+import { localizedRecord } from "@/utils/labels";
+import { useTranslation } from "@/i18n/useTranslation";
 
-const ROLE_LABELS: Record<CompanyMemberRole, string> = {
-  OWNER: "Owner",
-  RECRUITER: "Recruiter",
-  HIRING_MANAGER: "Hiring manager",
-  INTERVIEWER: "Interviewer",
-};
+const ROLE_LABELS: Record<CompanyMemberRole, string> = localizedRecord(
+  ["OWNER", "RECRUITER", "HIRING_MANAGER", "INTERVIEWER"] as const,
+  "team.role"
+);
 
 // OWNER reads as the "elevated" role (same brand-tinted treatment as
 // Badge's other positive/verified states); every other role is a plain
@@ -21,6 +21,7 @@ const ROLE_BADGE_VARIANT: Record<CompanyMemberRole, BadgeVariant> = {
 
 export const roleLabel = (role: CompanyMemberRole): string => ROLE_LABELS[role];
 
-export const RoleBadge = ({ role }: { role: CompanyMemberRole }) => (
-  <Badge variant={ROLE_BADGE_VARIANT[role]}>{ROLE_LABELS[role]}</Badge>
-);
+export const RoleBadge = ({ role }: { role: CompanyMemberRole }) => {
+  useTranslation(); // subscribe so the label follows the active language
+  return <Badge variant={ROLE_BADGE_VARIANT[role]}>{ROLE_LABELS[role]}</Badge>;
+};

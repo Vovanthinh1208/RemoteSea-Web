@@ -10,6 +10,7 @@ import {
   waitFmt,
 } from "@/features/admin/admin.utils";
 import type { AdminJob } from "@/types/admin";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface QueueListPaneProps {
   jobs: AdminJob[];
@@ -28,6 +29,7 @@ const QueueListRow = memo(function QueueListRow({
   selected,
   onSelect,
 }: QueueListRowProps) {
+  const { t } = useTranslation("admin");
   return (
     <button
       className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none ${selected ? "bg-brand-50" : ""}`}
@@ -54,11 +56,11 @@ const QueueListRow = memo(function QueueListRow({
           </span>
           {j.planType === "FEATURED" && (
             <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-700">
-              Featured
+              {t("list.featured")}
             </span>
           )}
           {!j.employer.isVerified && (
-            <VerifiedBadge isVerified={false} label="Unverified employer" />
+            <VerifiedBadge isVerified={false} label={t("list.unverified")} />
           )}
         </div>
       </div>
@@ -70,28 +72,31 @@ export const QueueListPane = ({
   jobs,
   selectedId,
   onSelect,
-}: QueueListPaneProps) => (
-  <div className="rounded-12 border border-neutral-100 bg-white">
-    <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
-      <span className="text-[13px] font-semibold text-neutral-900">
-        Pending{" "}
-        <span className="ml-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[11px]">
-          {jobs.length}
+}: QueueListPaneProps) => {
+  const { t } = useTranslation("admin");
+  return (
+    <div className="rounded-12 border border-neutral-100 bg-white">
+      <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
+        <span className="text-[13px] font-semibold text-neutral-900">
+          {t("list.pending")}
+          <span className="ml-1 rounded-full bg-neutral-100 px-2 py-0.5 text-[11px]">
+            {jobs.length}
+          </span>
         </span>
-      </span>
-      <span className="flex items-center gap-1 text-[11px] text-neutral-400">
-        <Clock size={12} /> Oldest first
-      </span>
+        <span className="flex items-center gap-1 text-[11px] text-neutral-400">
+          <Clock size={12} /> {t("list.oldest")}
+        </span>
+      </div>
+      <div className="divide-y divide-neutral-50">
+        {jobs.map((j) => (
+          <QueueListRow
+            job={j}
+            key={j.id}
+            onSelect={onSelect}
+            selected={j.id === selectedId}
+          />
+        ))}
+      </div>
     </div>
-    <div className="divide-y divide-neutral-50">
-      {jobs.map((j) => (
-        <QueueListRow
-          job={j}
-          key={j.id}
-          onSelect={onSelect}
-          selected={j.id === selectedId}
-        />
-      ))}
-    </div>
-  </div>
-);
+  );
+};

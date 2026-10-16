@@ -1,0 +1,12 @@
+{
+  "page": {
+    "fallbackTitle": "Tin nhắn",
+    "sendFailed": "Không thể gửi tin nhắn",
+    "errorTitle": "Không thể tải tin nhắn",
+    "errorDesc": "Đã xảy ra lỗi khi tải cuộc trò chuyện này.",
+    "emptyTitle": "Chưa có tin nhắn nào",
+    "emptyDesc": "Hãy chào hỏi — tin nhắn ở đây chỉ hai bạn nhìn thấy.",
+    "placeholder": "Viết tin nhắn…",
+    "send": "Gửi tin nhắn"
+  }
+}

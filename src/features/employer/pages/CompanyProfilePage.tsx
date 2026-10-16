@@ -22,16 +22,19 @@ import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { safeExternalUrl } from "@/utils/safe-url";
 import { formatResponseTime } from "@/utils/format";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
+import { translate } from "@/i18n/runtime";
+import { formatLocalDate } from "@/utils/format";
 
 const JOB_LIST_SKELETON_COUNT = 3;
 
 // A company's incoming reviews are always TALENT_TO_EMPLOYER (see
 // ReviewForm's identical direction split) — communication/interviewProcess/
 // professionalism, never reliability.
-const EMPLOYER_REVIEW_CATEGORIES = [
-  { key: "communication", label: "Communication" },
-  { key: "interviewProcess", label: "Interview process" },
-  { key: "professionalism", label: "Professionalism" },
+const EMPLOYER_REVIEW_KEYS = [
+  "communication",
+  "interviewProcess",
+  "professionalism",
 ] as const;
 
 const companyMetaDescription = (
@@ -39,17 +42,26 @@ const companyMetaDescription = (
 ): string => {
   const jobsLine =
     profile.activeJobCount > 0
-      ? ` · ${profile.activeJobCount} open role${profile.activeJobCount === 1 ? "" : "s"}`
+      ? translate("employer.company.metaJobs", {
+          count: profile.activeJobCount,
+        })
       : "";
-  return `${profile.companyName}${profile.industry ? ` — ${profile.industry}` : ""}${jobsLine}. Hiring remote talent on RemoteSEA.`;
+  return translate("employer.company.meta", {
+    name: profile.companyName,
+    industry: profile.industry ? ` — ${profile.industry}` : "",
+    jobs: jobsLine,
+  });
 };
 
 export const CompanyProfilePage = () => {
+  const { t } = useTranslation("employer");
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
   const { data: profile, isLoading, isError } = usePublicCompanyProfile(slug);
   useDocumentTitle(
-    profile ? `${profile.companyName} — Company Profile` : "Company Profile",
+    profile
+      ? t("company.docTitle", { name: profile.companyName })
+      : t("company.docTitleFallback"),
     profile ? companyMetaDescription(profile) : undefined
   );
 
@@ -86,13 +98,13 @@ export const CompanyProfilePage = () => {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-md flex-col items-center justify-center px-6 text-center">
         <h1 className="text-2xl font-semibold text-neutral-900">
-          Company not found
+          {t("company.notFound")}
         </h1>
         <p className="mt-2 text-sm text-neutral-500">
-          This company profile doesn&apos;t exist or was removed.
+          {t("company.notFoundDesc")}
         </p>
         <Link className="mt-6" to={ROUTES.jobs}>
-          <Button variant="primary">Browse jobs</Button>
+          <Button variant="primary">{t("company.browseJobs")}</Button>
         </Link>
       </div>
     );
@@ -144,7 +156,7 @@ export const CompanyProfilePage = () => {
               {profile.size && (
                 <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
                   <Users className="flex-shrink-0 text-neutral-400" size={12} />
-                  {profile.size} employees
+                  {t("company.employees", { size: profile.size })}
                 </span>
               )}
               {profile.founded && (
@@ -153,7 +165,7 @@ export const CompanyProfilePage = () => {
                     className="flex-shrink-0 text-neutral-400"
                     size={12}
                   />
-                  Founded {profile.founded}
+                  {t("company.founded", { year: profile.founded })}
                 </span>
               )}
               {websiteHref && (
@@ -164,7 +176,7 @@ export const CompanyProfilePage = () => {
                   target="_blank"
                 >
                   <Globe className="flex-shrink-0" size={12} />
-                  Website
+                  {t("company.website")}
                 </a>
               )}
             </div>
@@ -174,7 +186,7 @@ export const CompanyProfilePage = () => {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
           <div className="space-y-4">
             <h2 className="text-[17px] font-semibold text-neutral-900">
-              Open positions{" "}
+              {t("company.openPositions")}
               <span className="font-normal text-neutral-400">
                 ({profile.activeJobCount})
               </span>
@@ -182,8 +194,8 @@ export const CompanyProfilePage = () => {
             {profile.jobs.length === 0 ? (
               <EmptyState
                 className="rounded-20 border border-neutral-100 bg-white py-14"
-                description="Check back later for new openings."
-                title="No open roles right now"
+                description={t("company.checkBack")}
+                title={t("company.noRoles")}
               />
             ) : (
               <div className="space-y-3">
@@ -194,7 +206,10 @@ export const CompanyProfilePage = () => {
             )}
 
             <ReviewsSection
-              categories={EMPLOYER_REVIEW_CATEGORIES}
+              categories={EMPLOYER_REVIEW_KEYS.map((key) => ({
+                key,
+                label: t(`company.review.${key}`),
+              }))}
               userId={profile.userId}
             />
           </div>
@@ -203,18 +218,22 @@ export const CompanyProfilePage = () => {
             <div className="space-y-4 lg:sticky lg:top-6">
               <div className="rounded-20 border border-neutral-100 bg-white p-5">
                 <h4 className="mb-3 text-[13px] font-semibold text-neutral-800">
-                  Quick facts
+                  {t("company.quickFacts")}
                 </h4>
                 <dl className="space-y-2.5 text-[12.5px]">
                   <div className="flex items-center justify-between gap-2">
-                    <dt className="text-neutral-500">Open roles</dt>
+                    <dt className="text-neutral-500">
+                      {t("company.openRoles")}
+                    </dt>
                     <dd className="font-medium text-neutral-800">
                       {profile.activeJobCount}
                     </dd>
                   </div>
                   {profile.vnHireTotal > 0 && (
                     <div className="flex items-center justify-between gap-2">
-                      <dt className="text-neutral-500">🇻🇳 VN hires</dt>
+                      <dt className="text-neutral-500">
+                        {t("company.vnHires")}
+                      </dt>
                       <dd className="font-medium text-neutral-800">
                         {profile.vnHireTotal}
                       </dd>
@@ -223,7 +242,7 @@ export const CompanyProfilePage = () => {
                   {profile.avgFirstResponseHours != null && (
                     <div className="flex items-center justify-between gap-2">
                       <dt className="flex items-center gap-1.5 text-neutral-500">
-                        <Timer size={11} /> Typical response
+                        <Timer size={11} /> {t("company.typicalResponse")}
                       </dt>
                       <dd className="font-medium text-neutral-800">
                         {formatResponseTime(profile.avgFirstResponseHours)}
@@ -232,12 +251,14 @@ export const CompanyProfilePage = () => {
                   )}
                   {profile.isVerified && profile.verifiedAt && (
                     <div className="flex items-center justify-between gap-2">
-                      <dt className="text-neutral-500">Verified since</dt>
+                      <dt className="text-neutral-500">
+                        {t("company.verifiedSince")}
+                      </dt>
                       <dd className="font-medium text-neutral-800">
-                        {new Date(profile.verifiedAt).toLocaleDateString(
-                          "en-US",
-                          { month: "short", year: "numeric" }
-                        )}
+                        {formatLocalDate(profile.verifiedAt, {
+                          month: "short",
+                          year: "numeric",
+                        })}
                       </dd>
                     </div>
                   )}
@@ -249,7 +270,7 @@ export const CompanyProfilePage = () => {
                   className="flex items-center justify-center gap-1.5 rounded-12 border border-neutral-200 bg-white py-2.5 text-[12.5px] font-medium text-neutral-500 transition-colors hover:border-neutral-300 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                   to={ROUTES.employerDashboard}
                 >
-                  <Settings size={12} /> This is your company · Edit
+                  <Settings size={12} /> {t("company.yourCompany")}
                 </Link>
               )}
             </div>

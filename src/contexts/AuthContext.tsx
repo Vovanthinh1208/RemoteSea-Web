@@ -20,6 +20,7 @@ import {
 import { sessionKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 import { useToast } from "@/components/ui/toast";
+import { translate } from "@/i18n/runtime";
 import type { AuthUser, UserRole } from "@/types/user";
 
 const UNAUTHORIZED_STATUS = 401;
@@ -135,8 +136,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (hadSession) {
           toast({
             variant: "error",
-            title: "Session expired",
-            description: "Please sign in again to continue.",
+            title: translate("common.session.expiredTitle"),
+            description: translate("common.session.expiredDesc"),
           });
         }
       }),

@@ -26,40 +26,17 @@ import type {
   ProfileHighlight,
   ProfileHighlightType,
 } from "@/types/profile-highlight";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const MAX_PER_TYPE = 5;
 
 const TYPE_META: Record<
   ProfileHighlightType,
-  {
-    title: string;
-    help: string;
-    icon: typeof Briefcase;
-    addLabel: string;
-    emptyLabel: string;
-  }
+  { slug: "portfolio" | "education" | "language"; icon: typeof Briefcase }
 > = {
-  PORTFOLIO: {
-    title: "Selected work",
-    help: "A couple of projects you're proud of — recruiters click through these.",
-    icon: Briefcase,
-    addLabel: "Add project",
-    emptyLabel: "No projects added yet",
-  },
-  EDUCATION: {
-    title: "Education",
-    help: "Degrees or programs. Most recent first isn't enforced — add in any order.",
-    icon: GraduationCap,
-    addLabel: "Add education",
-    emptyLabel: "No education added yet",
-  },
-  LANGUAGE: {
-    title: "Languages",
-    help: "Languages you can work in, and how comfortably.",
-    icon: Globe2,
-    addLabel: "Add language",
-    emptyLabel: "No languages added yet",
-  },
+  PORTFOLIO: { slug: "portfolio", icon: Briefcase },
+  EDUCATION: { slug: "education", icon: GraduationCap },
+  LANGUAGE: { slug: "language", icon: Globe2 },
 };
 
 type EditorMode =
@@ -124,6 +101,7 @@ const toUpdatePayload = (
 };
 
 const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
+  const { t } = useTranslation("talent");
   const { data: highlights } = useProfileHighlights();
   const createMutation = useCreateProfileHighlight();
   const updateMutation = useUpdateProfileHighlight();
@@ -142,15 +120,15 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
       await createMutation.mutateAsync(toCreatePayload(type, values));
       toast({
         variant: "success",
-        title: `${meta.title.replace(/s$/, "")} added`,
+        title: t(`hl.${meta.slug}.added`),
       });
       return true;
     } catch (err) {
       reportError(err);
       toast({
         variant: "error",
-        title: `Couldn't add entry`,
-        description: "Please try again.",
+        title: t("hl.addFailed"),
+        description: t("basics.tryAgain"),
       });
       return false;
     }
@@ -165,14 +143,14 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
         id,
         payload: toUpdatePayload(type, values),
       });
-      toast({ variant: "success", title: "Entry updated" });
+      toast({ variant: "success", title: t("hl.updated") });
       return true;
     } catch (err) {
       reportError(err);
       toast({
         variant: "error",
-        title: "Couldn't update entry",
-        description: "Please try again.",
+        title: t("hl.updateFailed"),
+        description: t("basics.tryAgain"),
       });
       return false;
     }
@@ -181,13 +159,13 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
   const handleDelete = async (highlight: ProfileHighlight) => {
     try {
       await deleteMutation.mutateAsync(highlight.id);
-      toast({ variant: "success", title: "Entry removed" });
+      toast({ variant: "success", title: t("hl.removed") });
     } catch (err) {
       reportError(err);
       toast({
         variant: "error",
-        title: "Couldn't remove entry",
-        description: "Please try again.",
+        title: t("hl.removeFailed"),
+        description: t("basics.tryAgain"),
       });
     }
   };
@@ -197,7 +175,7 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
       <div className="mb-3 flex items-center gap-2">
         <meta.icon className="text-neutral-400" size={14} />
         <h3 className="text-[13.5px] font-semibold text-neutral-900">
-          {meta.title}
+          {t(`hl.${meta.slug}.title`)}
         </h3>
         {list.length > 0 && (
           <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10.5px] font-medium text-neutral-500">
@@ -205,7 +183,9 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
           </span>
         )}
       </div>
-      <p className="mb-3 text-[12px] text-neutral-400">{meta.help}</p>
+      <p className="mb-3 text-[12px] text-neutral-400">
+        {t(`hl.${meta.slug}.help`)}
+      </p>
 
       {list.length > 0 && (
         <div className="mb-2 divide-y divide-neutral-50">
@@ -230,7 +210,7 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
                     {type === "EDUCATION" && (
                       <span className="ml-1.5 font-normal text-neutral-400">
                         · {highlight.startYear} –{" "}
-                        {highlight.endYear ?? "Present"}
+                        {highlight.endYear ?? t("exp.present")}
                       </span>
                     )}
                   </p>
@@ -247,7 +227,7 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
                 </div>
                 <div className="flex flex-shrink-0 gap-1">
                   <button
-                    aria-label="Edit"
+                    aria-label={t("hl.edit")}
                     className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
                     type="button"
                     onClick={() => setMode({ type: "edit", id: highlight.id })}
@@ -256,12 +236,12 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
                   </button>
                   <ConfirmAction
                     isPending={deleteMutation.isPending}
-                    message="Delete?"
+                    message={t("exp.deleteQ")}
                     onConfirm={() => handleDelete(highlight)}
                   >
                     {({ onClick }) => (
                       <button
-                        aria-label="Delete"
+                        aria-label={t("hl.delete")}
                         className="flex h-7 w-7 items-center justify-center rounded-8 text-neutral-400 hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none"
                         type="button"
                         onClick={onClick}
@@ -287,7 +267,7 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
         <>
           {list.length === 0 && (
             <p className="mb-2 text-[12px] text-neutral-400">
-              {meta.emptyLabel}
+              {t(`hl.${meta.slug}.empty`)}
             </p>
           )}
           {!atCap && (
@@ -296,7 +276,7 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
               type="button"
               onClick={() => setMode({ type: "create" })}
             >
-              <Plus size={12} /> {meta.addLabel}
+              <Plus size={12} /> {t(`hl.${meta.slug}.add`)}
             </button>
           )}
         </>
@@ -305,24 +285,30 @@ const HighlightTypeList = ({ type }: { type: ProfileHighlightType }) => {
   );
 };
 
-export const HighlightsSection = () => (
-  <section
-    className="scroll-mt-6 rounded-20 border border-neutral-100 bg-white p-7"
-    id="highlights"
-  >
-    <SectionHead
-      eyebrow="08 · Show, don't tell"
-      help="Optional, but recruiters skim these before reading your bio. Shown on your public profile."
-      title={
-        <em className="font-serif italic text-brand-700" style={EMPHASIS_STYLE}>
-          Highlights.
-        </em>
-      }
-    />
-    <div className="space-y-5">
-      <HighlightTypeList type="PORTFOLIO" />
-      <HighlightTypeList type="EDUCATION" />
-      <HighlightTypeList type="LANGUAGE" />
-    </div>
-  </section>
-);
+export const HighlightsSection = () => {
+  const { t } = useTranslation("talent");
+  return (
+    <section
+      className="scroll-mt-6 rounded-20 border border-neutral-100 bg-white p-7"
+      id="highlights"
+    >
+      <SectionHead
+        eyebrow={t("hl.eyebrow")}
+        help={t("hl.help")}
+        title={
+          <em
+            className="font-serif italic text-brand-700"
+            style={EMPHASIS_STYLE}
+          >
+            {t("hl.sectionTitle")}
+          </em>
+        }
+      />
+      <div className="space-y-5">
+        <HighlightTypeList type="PORTFOLIO" />
+        <HighlightTypeList type="EDUCATION" />
+        <HighlightTypeList type="LANGUAGE" />
+      </div>
+    </section>
+  );
+};

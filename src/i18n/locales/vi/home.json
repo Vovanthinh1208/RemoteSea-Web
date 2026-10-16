@@ -1,0 +1,126 @@
+{
+  "stats": {
+    "jobsLive": "Việc làm đang mở",
+    "verifiedEmployers": "Nhà tuyển dụng đã xác minh",
+    "talentProfiles": "Hồ sơ ứng viên",
+    "avgMonthly": "Lương trung bình/tháng",
+    "hiringFrom": "Tuyển dụng từ"
+  },
+  "how": {
+    "eyebrow": "Cách hoạt động",
+    "title": "Đơn giản. Chọn lọc. ",
+    "titleEm": "Dành riêng cho bạn.",
+    "subtitle": "Mọi việc làm đều được duyệt trước khi đăng. Bắt buộc có mức lương. Nhà tuyển dụng được xác minh. Không có tin đăng ảo.",
+    "step1Title": "Duyệt việc làm đã xác minh",
+    "step1Desc": "Mỗi việc làm hiển thị mức lương, múi giờ phù hợp và những ứng viên Việt Nam đang làm tại công ty. Không còn phải đoán mò.",
+    "step2Title": "Theo dõi đơn ứng tuyển tại một nơi",
+    "step2Desc": "Bộ theo dõi đơn giản thay thế Google Sheet của bạn. Chuyển từ đã lưu → đã ứng tuyển → phỏng vấn → nhận offer.",
+    "step3Title": "Nhận offer remote đầu tiên",
+    "step3Desc": "Hồ sơ của bạn hiển thị với các nhà tuyển dụng đang tìm nhân sự Việt Nam. Được tìm đến cũng quan trọng như chủ động ứng tuyển."
+  },
+  "employerCta": {
+    "eyebrow": "Dành cho nhà tuyển dụng",
+    "title": "Bạn đang tìm nhân sự remote tại Việt Nam?",
+    "desc": "Đăng tin tuyển dụng và tiếp cận hơn 500 chuyên gia Việt Nam chất lượng. Tin đăng được xác minh, bắt buộc có mức lương, có kết quả trong hai tuần hoặc hoàn tiền.",
+    "postJob": "Đăng tin tuyển dụng — từ $150",
+    "talkToFounder": "Trò chuyện với nhà sáng lập",
+    "point1": "Mọi tin tuyển dụng đều được người thật duyệt trước khi đăng",
+    "point2": "Bắt buộc có mức lương — thu hút ứng viên nghiêm túc",
+    "point3": "Tin đăng 30 ngày · Có thể gia hạn · Có vị trí nổi bật",
+    "point4": "Liên hệ trực tiếp nhà sáng lập. Người thật, không phải hệ thống ticket."
+  },
+  "featured": {
+    "eyebrow": "Đang mở",
+    "title": "Việc làm đang mở ",
+    "titleEm": "ngay lúc này",
+    "browseAll": "Xem tất cả 47 việc làm"
+  },
+  "founder": {
+    "eyebrow": "Câu chuyện",
+    "title": "Được xây dựng bởi người ",
+    "titleEm": "đã thực sự làm được.",
+    "stat": {
+      "yearsRemote": "Số năm làm remote",
+      "upworkHours": "Giờ làm trên Upwork",
+      "upworkRank": "Hạng trên Upwork",
+      "basedIn": "Sinh sống tại",
+      "workedWith": "Từng làm việc với",
+      "topPlus": "Top Plus",
+      "location": "Đà Nẵng, VN"
+    },
+    "quoteStart": "Tôi đã làm việc remote cho các công ty tại Singapore, Úc và Mỹ suốt bảy năm. ",
+    "quoteStrong": "Top Plus trên Upwork. Hơn 10.000 giờ làm việc.",
+    "quoteEnd": " Mỗi năm, hàng chục người hỏi tôi cùng một câu: làm sao bạn tìm được việc?",
+    "p1": "Tôi không thể trả lời câu hỏi đó cho từng người. Vì vậy tôi đã xây dựng câu trả lời.",
+    "p2": "Mọi việc làm ở đây đều do chính tôi duyệt trước khi đăng. Bắt buộc có mức lương. Tôi kiểm tra công ty có thật, đội ngũ đang tuyển và mức lương công bằng với nhân sự Việt Nam. Nếu không, tin sẽ không được đăng.",
+    "role": "Nhà sáng lập · Đà Nẵng, Việt Nam · Xây dựng từ 03/2025"
+  },
+  "testimonials": {
+    "eyebrow": "Câu chuyện ứng viên",
+    "from": "Từ ",
+    "apply": "ứng tuyển",
+    "to": " đến ",
+    "offer": "nhận offer",
+    "1": {
+      "quote": "Tôi thử Upwork hai năm nhưng cạnh tranh rất khốc liệt. Qua nền tảng này tôi ứng tuyển vào một startup Singapore hợp múi giờ và nhận offer $2.800/tháng chỉ trong ba tuần.",
+      "title": "Lập trình viên Frontend · Được Finch Labs (SG) tuyển",
+      "meta": "$2.800/tháng · 3 tuần"
+    },
+    "2": {
+      "quote": "Bảng so sánh lương đã thay đổi hoàn toàn. Tôi từng nhận thấp hơn 40%. Tôi dùng dữ liệu ở đây để thương lượng lại hợp đồng hiện tại và được tăng lương trước cả khi ứng tuyển ở đâu.",
+      "title": "Nhà thiết kế sản phẩm · Brackish (SG)",
+      "meta": "$3.400/tháng · hiện tại"
+    },
+    "3": {
+      "quote": "Đây là nơi đầu tiên tôi thấy cho biết công ty nào đã có người Việt. Chỉ riêng tín hiệu đó đã giúp tôi tiết kiệm nhiều tuần đoán mò kiểu 'họ có tuyển remote không? có tuyển người Việt không?'.",
+      "title": "Kỹ sư Backend · Sea Group (SG)",
+      "meta": "$3.200/tháng · 5 tuần"
+    }
+  },
+  "hero": {
+    "badge": "47 việc làm đang mở · cập nhật hôm nay",
+    "title": "Việc làm remote từ Singapore, Úc và hơn thế nữa — ",
+    "titleEm": "được chọn lọc",
+    "titleEnd": " dành cho nhân sự Việt Nam.",
+    "subtitle": "Việt Nam có nhân tài. Thế giới có việc làm. Chúng tôi kết nối cả hai — với mức lương rõ ràng, múi giờ hợp lý và nhà tuyển dụng đã được kiểm chứng.",
+    "browse": "Xem 47 việc làm đang mở",
+    "alerts": "Nhận thông báo hằng tuần",
+    "free": "Miễn phí cho ứng viên · Hơn 500 chuyên gia Việt Nam đã tham gia",
+    "remote": "Remote"
+  },
+  "newsletter": {
+    "title": "Đừng bỏ lỡ ",
+    "titleEm": "cơ hội",
+    "titleEnd": " tiếp theo.",
+    "desc": "Mỗi thứ Sáu: 8 việc làm remote hàng đầu được chọn lọc cho nhân sự VN/ĐNÁ, mẹo về lương và góc nhìn về làm việc từ xa mà bạn sẽ không thấy trên LinkedIn.",
+    "fine": "Tham gia cùng hơn 1.200 người đăng ký · Không spam · Hủy bất cứ lúc nào"
+  },
+  "benchmark": {
+    "eyebrow": "Dữ liệu lương",
+    "title": "Biết giá trị của bạn ",
+    "titleEm": "trước khi",
+    "titleEnd": " thương lượng.",
+    "desc": "Dữ liệu lương trực tiếp tổng hợp từ các tin đang đăng trên RemoteSEA. Cập nhật khi có vị trí mới.",
+    "perMonth": "{{min}}–{{max}}/tháng",
+    "note": "Tổng hợp từ các tin tuyển dụng đã xác minh trên RemoteSEA — mức lương thật mà nhà tuyển dụng đang đưa ra.",
+    "guide": "Xem toàn bộ bảng lương",
+    "basedOn_one": "Dựa trên {{count}} tin đang đăng thuộc {{fields}} lĩnh vực.",
+    "basedOn_other": "Dựa trên {{count}} tin đang đăng thuộc {{fields}} lĩnh vực."
+  },
+  "categories": {
+    "eyebrow": "Danh mục",
+    "title": "Tìm vị trí ",
+    "titleEm": "phù hợp",
+    "titleEnd": " với bạn",
+    "engineering": "Kỹ thuật",
+    "design": "Thiết kế",
+    "product": "Sản phẩm",
+    "data": "Dữ liệu",
+    "marketing": "Marketing",
+    "operations": "Vận hành"
+  },
+  "page": {
+    "title": "Việc làm remote từ SG, Úc & toàn cầu",
+    "description": "Việc làm remote chọn lọc từ Singapore, Úc và toàn cầu dành cho nhân sự Việt Nam — mức lương rõ ràng, nhà tuyển dụng đã xác minh và múi giờ hợp lý."
+  }
+}

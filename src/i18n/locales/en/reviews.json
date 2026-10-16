@@ -1,0 +1,34 @@
+{
+  "form": {
+    "cat": {
+      "communication": "Communication",
+      "interviewProcess": "Interview process",
+      "professionalism": "Professionalism",
+      "reliability": "Reliability"
+    },
+    "success": "Review submitted successfully.",
+    "failed": "Something went wrong. Please try again.",
+    "already": "You have already reviewed this interaction.",
+    "notEligible": "You are not eligible to review this interaction.",
+    "title": "Review {{name}}",
+    "subtitle": "Your feedback helps other members of RemoteSEA.",
+    "overall": "Overall rating",
+    "comment": "Comment",
+    "optional": "(optional)",
+    "commentPlaceholder": "Tell us about your experience…",
+    "submit": "Submit review"
+  },
+  "cta": {
+    "reviewed": "You reviewed this interaction.",
+    "complete": "Your interview with {{name}} is complete.",
+    "share": "Share your experience.",
+    "write": "Write a review"
+  },
+  "section": {
+    "member": "RemoteSEA member",
+    "title": "Reviews",
+    "error": "Couldn't load reviews.",
+    "basedOn_one": "Based on {{count}} review",
+    "basedOn_other": "Based on {{count}} reviews"
+  }
+}

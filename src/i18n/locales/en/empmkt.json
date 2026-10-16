@@ -1,0 +1,191 @@
+{
+  "page": {
+    "title": "For Employers — Hire Vietnam Remote Talent",
+    "description": "Hire vetted remote talent in Vietnam — verified listings, salary range required, and results in two weeks or your money back."
+  },
+  "hero": {
+    "badge": "For hiring teams",
+    "title1": "Hire from Vietnam.",
+    "title2": "The right way.",
+    "desc": "500+ qualified VN/SEA professionals. Verified employers only. Salary range required. The signal-to-noise ratio of LinkedIn at a fraction of the cost.",
+    "cta": "Post a job — from $150",
+    "talk": "Talk to founder",
+    "guarantee": "30-day money-back guarantee · No card on file required",
+    "mockTitle": "Senior Frontend · Editor team",
+    "mockLive": "Live · 4 days left",
+    "views": "Views",
+    "applications": "Applications",
+    "shortlisted": "Shortlisted",
+    "recent": "Recent applications",
+    "match": "{{n}}% match",
+    "a1": {
+      "role": "Sr. Frontend · 6 yrs"
+    },
+    "a2": {
+      "role": "Frontend / Design Eng · 5 yrs"
+    },
+    "a3": {
+      "role": "Sr. Frontend · 7 yrs"
+    }
+  },
+  "logos": {
+    "title": "Trusted by hiring teams at"
+  },
+  "why": {
+    "eyebrow": "Why post here",
+    "title": "Smaller pool. ",
+    "titleEm": "Higher signal.",
+    "desc": "We're not trying to be the biggest. We're trying to be the place where the right VN candidates actually apply — and you get to interview five people, not five hundred.",
+    "1": {
+      "title": "Better response rate",
+      "desc": "VN talent we surveyed report applying to 3.5× more relevant roles here than on LinkedIn. The 'remote-from-VN-friendly' signal saves them hours of guesswork."
+    },
+    "2": {
+      "title": "Median time to hire",
+      "num": "14 days",
+      "desc": "From listing live to signed offer, our median is 14 days. Because the applicants self-select — verified employer, salary stated, timezone clear."
+    },
+    "3": {
+      "title": "Listings filled",
+      "desc": "Of all jobs posted in 2025, 87% were filled within the 30-day window. The 13% that weren't either paused or relisted with adjusted comp."
+    }
+  },
+  "compare": {
+    "eyebrow": "Side by side",
+    "title": "Versus the ",
+    "titleEm": "alternatives.",
+    "partial": "partial",
+    "f1": "VN-specific talent pool",
+    "f2": "Salary range required",
+    "f3": "Verified employer signal",
+    "f4": "Direct line to founder",
+    "f5": "Pay per post (vs subscription)",
+    "f6": "Hands-on screening option",
+    "f7": "Money-back guarantee"
+  },
+  "process": {
+    "eyebrow": "The process",
+    "title": "List → review → ",
+    "titleEm": "match.",
+    "1": {
+      "title": "Submit your role",
+      "desc": "A 15-minute form: role, level, salary range, timezone needs, must-haves. You can paste from an existing JD; we'll structure it.",
+      "i1": "Salary range required (we mean it)",
+      "i2": "Timezone clarity required",
+      "i3": "Optional: equity, benefits, equipment"
+    },
+    "2": {
+      "title": "We review & verify",
+      "desc": "Within 4–8 working hours, a real person at RemoteSEA checks the company, validates the comp range against our data, and flags issues.",
+      "i1": "Manual review by founder",
+      "i2": "Comp benchmarked against 847 data points",
+      "i3": "Edit-then-publish flow"
+    },
+    "3": {
+      "title": "Receive matched candidates",
+      "desc": "Listing goes live, alerts go out to subscribers in your category, and applications flow into a single dashboard. Median to first hire: 14 days.",
+      "i1": "Centralized application inbox",
+      "i2": "Match-score on every application",
+      "i3": "Optional white-glove screening"
+    }
+  },
+  "case": {
+    "eyebrow": "Case study",
+    "quote1": "\"We hired our founding engineer in ",
+    "quoteEm": "11 days",
+    "quote2": " through RemoteSEA.\"",
+    "desc": "Finch Labs (SG) needed a full-stack engineer for cross-border payments rails — Series A, 22 people, looking for someone with Postgres scars.",
+    "s1": "List to offer",
+    "s1num": "11 days",
+    "s2": "Total applies",
+    "s3": "Interviewed",
+    "s4": "Final offer/mo",
+    "company": "Finch Labs",
+    "companyMeta": "SG · Series A · 22 people",
+    "quote": "\"LinkedIn was sending us 200 applies, mostly noise. RemoteSEA sent 42 — and 12 of those were genuinely strong. We hired #4.\"",
+    "author": "Co-founder & CTO · Finch Labs"
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "One-time, not ",
+    "titleEm": "subscription.",
+    "desc": "No \"talent network access fees.\" No seats. Pay per role, only when you're hiring.",
+    "perRole": "Per role",
+    "annual": "Annual",
+    "save": "save 20%",
+    "perYear": "/yr",
+    "perPost": "/post",
+    "quote": "Quote",
+    "popular": "Most popular",
+    "talk": "Talk to us",
+    "start": "Get started",
+    "guarantee": "30-day money-back guarantee. Qualified applications or full refund.",
+    "STANDARD": {
+      "name": "Standard",
+      "tag": "For one-off roles",
+      "desc": "A clean 30-day listing on the board.",
+      "f1": "30-day active listing",
+      "f2": "Verified employer badge",
+      "f3": "Application inbox",
+      "f4": "Email when new applies",
+      "f5": "Renewable at 50% off"
+    },
+    "FEATURED": {
+      "name": "Featured",
+      "tag": "Most popular",
+      "desc": "Front of the queue, amber highlight, alerts to subscribers.",
+      "f1": "Everything in Standard",
+      "f2": "Top-of-feed placement",
+      "f3": "Amber-border highlight",
+      "f4": "Weekly newsletter inclusion",
+      "f5": "2× more applies on average"
+    },
+    "HANDS_ON": {
+      "name": "Hands-on",
+      "tag": "We do the work",
+      "desc": "We screen the applicants. You see the top 5.",
+      "f1": "Everything in Featured",
+      "f2": "Founder-led screening",
+      "f3": "1:1 candidate interviews",
+      "f4": "Reference checks done for you",
+      "f5": "Shortlist delivered in 10 days"
+    }
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Honest ",
+    "titleEm": "answers.",
+    "1": {
+      "q": "What does 'verified employer' actually mean?",
+      "a": "A real human at RemoteSEA (currently: the founder) checks your company website, LinkedIn, hiring page, and at least one team member. We confirm the role is open, the team exists, and the comp range is honest. Takes 4–8 working hours."
+    },
+    "2": {
+      "q": "Why do you require a salary range?",
+      "a": "Because hiding the range wastes everyone's time. Candidates who would never accept your max apply anyway; candidates who'd love your role skip you because they assumed the worst. We've published 200+ jobs with ranges — the data shows applications go up, not down."
+    },
+    "3": {
+      "q": "Can I post a role that pays in VND?",
+      "a": "Yes, but the listing must convert to USD/month for comparison (we'll help). VN talent comparing your role against SG roles needs a like-for-like number. We do this automatically."
+    },
+    "4": {
+      "q": "What if I want to hire as a contractor, not FTE?",
+      "a": "Totally fine. ~30% of our roles are contract. We don't take a cut of payments or require you to use a specific EOR — you handle that side. Wise, Deel, and direct wire are all common."
+    },
+    "5": {
+      "q": "Do you charge candidates anything?",
+      "a": "No. Free for talent. Forever. Revenue comes from employer postings only."
+    },
+    "6": {
+      "q": "What if my listing doesn't work out?",
+      "a": "30-day money-back guarantee. If you don't receive a single qualified application (we'll judge fairly — qualified means meets your stated must-haves), you get a full refund. No questions."
+    }
+  },
+  "final": {
+    "eyebrow": "Ready when you are",
+    "title1": "Post your role today.",
+    "title2": "Get applies by Friday.",
+    "desc": "Fifteen minutes to list. Eight hours to publish. Two weeks to hire.",
+    "cta": "Post a job — from $150",
+    "talk": "Talk to founder first"
+  }
+}

@@ -10,12 +10,8 @@ import { ApiError } from "@/core/errors/api-error";
 import { timeAgoLong } from "@/utils/time";
 import { cn } from "@/utils/cn";
 import type { CvRecommendation } from "@/types/cv-analysis";
-
-const RECOMMENDATION_LABEL: Record<CvRecommendation, string> = {
-  ADVANCE: "Suggested: Advance",
-  HOLD: "Suggested: Hold",
-  REJECT: "Suggested: Reject",
-};
+import { useTranslation } from "@/i18n/useTranslation";
+import { translate } from "@/i18n/runtime";
 
 // Same "shade, not a new hue, carries the tier" rule as scoreTier below —
 // ADVANCE/HOLD stay in this card's existing brand/neutral palette, REJECT is
@@ -30,13 +26,14 @@ const RECOMMENDATION_CLASS: Record<CvRecommendation, string> = {
 const COPIED_FEEDBACK_MS = 1500;
 
 const SuggestedQuestion = ({ question }: { question: string }) => {
+  const { t } = useTranslation("cv");
   const [copied, setCopied] = useState(false);
 
   return (
     <li className="flex items-start justify-between gap-2 text-[12px] text-neutral-600">
       <span>&ldquo;{question}&rdquo;</span>
       <button
-        aria-label="Copy question"
+        aria-label={t("copyQuestion")}
         className="flex-shrink-0 rounded-4 text-neutral-300 transition-colors hover:text-neutral-600 focus-visible:shadow-focus focus-visible:outline-none"
         type="button"
         onClick={() => {
@@ -73,17 +70,21 @@ const scoreTier = (
     return {
       text: "text-brand-900",
       bar: "bg-brand-900",
-      label: "Strong fit",
+      label: translate("cv.tier.strong"),
     };
   }
   if (score >= 50) {
     return {
       text: "text-brand-600",
       bar: "bg-brand-500",
-      label: "Moderate fit",
+      label: translate("cv.tier.moderate"),
     };
   }
-  return { text: "text-neutral-500", bar: "bg-neutral-400", label: "Weak fit" };
+  return {
+    text: "text-neutral-500",
+    bar: "bg-neutral-400",
+    label: translate("cv.tier.weak"),
+  };
 };
 
 const CvAnalysisSkeleton = () => (
@@ -103,6 +104,7 @@ export const CvAnalysisCard = ({
   applicationId,
   talentName,
 }: CvAnalysisCardProps) => {
+  const { t } = useTranslation("cv");
   const { data, isFetching, isError, error, fetchStatus, refetch } =
     useCvAnalysis(applicationId);
   const regenerateMutation = useRegenerateCvAnalysis(applicationId);
@@ -117,9 +119,7 @@ export const CvAnalysisCard = ({
             or the row to overflow on a narrow card. */}
         <div className="flex min-w-0 items-center gap-2 text-[12.5px] text-neutral-500">
           <Sparkles className="flex-shrink-0 text-brand-600" size={15} />
-          <span>
-            See how {talentName}&rsquo;s CV stacks up against this role.
-          </span>
+          <span>{t("prompt", { name: talentName })}</span>
         </div>
         <Button
           className="flex-shrink-0"
@@ -127,7 +127,7 @@ export const CvAnalysisCard = ({
           variant="outline"
           onClick={() => refetch()}
         >
-          Analyze with AI
+          {t("analyze")}
         </Button>
       </div>
     );
@@ -143,9 +143,7 @@ export const CvAnalysisCard = ({
     return (
       <div className="flex items-center justify-between gap-3 rounded-16 border border-neutral-100 bg-white px-4 py-3.5 text-[12.5px] text-neutral-400">
         <span className="min-w-0">
-          {noResume
-            ? `${talentName} hasn't uploaded a CV.`
-            : "Couldn't analyze this CV."}
+          {noResume ? t("noResume", { name: talentName }) : t("failed")}
         </span>
         {!noResume && (
           <button
@@ -153,7 +151,7 @@ export const CvAnalysisCard = ({
             type="button"
             onClick={() => refetch()}
           >
-            <RefreshCw size={11} /> Retry
+            <RefreshCw size={11} /> {t("common.actions.retryShort")}
           </button>
         )}
       </div>
@@ -169,7 +167,7 @@ export const CvAnalysisCard = ({
       <div className="flex items-center justify-between gap-2">
         <h3 className="flex items-center gap-1.5 text-[13.5px] font-medium text-neutral-900">
           <Sparkles className="flex-shrink-0 text-brand-600" size={15} />
-          AI CV Analysis
+          {t("title")}
         </h3>
         {/* Null for analyses generated before this field existed — no badge
             rather than a misleading default, since there's no real signal
@@ -182,14 +180,14 @@ export const CvAnalysisCard = ({
                 RECOMMENDATION_CLASS[data.recommendation]
               )}
             >
-              {RECOMMENDATION_LABEL[data.recommendation]}
+              {t(`rec.${data.recommendation}`)}
             </span>
           )}
           <button
-            aria-label="Regenerate analysis"
+            aria-label={t("regenerate")}
             className="grid h-6 w-6 flex-shrink-0 place-items-center rounded-6 text-neutral-300 transition-colors hover:bg-neutral-100 hover:text-neutral-600 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
             disabled={regenerateMutation.isPending}
-            title="Regenerate — runs the analysis again and replaces this one"
+            title={t("regenerateTitle")}
             type="button"
             onClick={() => regenerateMutation.mutate()}
           >
@@ -203,7 +201,7 @@ export const CvAnalysisCard = ({
 
       {regenerateMutation.isError && (
         <p aria-live="polite" className="text-[11.5px] text-red-500">
-          Couldn&rsquo;t regenerate — showing the previous analysis.
+          {t("regenerateFailed")}
         </p>
       )}
 
@@ -230,7 +228,10 @@ export const CvAnalysisCard = ({
             {tier.label}
           </p>
           <div
-            aria-label={`Fit score: ${data.fitScore} out of 100 — ${tier.label}`}
+            aria-label={t("fitAria", {
+              score: data.fitScore,
+              label: tier.label,
+            })}
             aria-valuemax={100}
             aria-valuemin={0}
             aria-valuenow={data.fitScore}
@@ -261,7 +262,7 @@ export const CvAnalysisCard = ({
           {data.strengths.length > 0 && (
             <div className="rounded-10 bg-brand-50/60 p-2.5">
               <p className="mb-1.5 text-[10.5px] font-semibold uppercase tracking-wider text-brand-700">
-                Strengths
+                {t("strengths")}
               </p>
               <ul className="space-y-1">
                 {data.strengths.map((s, i) => (
@@ -282,7 +283,7 @@ export const CvAnalysisCard = ({
           {data.gaps.length > 0 && (
             <div className="rounded-10 bg-amber-50/60 p-2.5">
               <p className="mb-1.5 text-[10.5px] font-semibold uppercase tracking-wider text-amber-700">
-                Gaps
+                {t("gaps")}
               </p>
               <ul className="space-y-1">
                 {data.gaps.map((g, i) => (
@@ -306,7 +307,7 @@ export const CvAnalysisCard = ({
       {data.suggestedQuestions.length > 0 && (
         <div className="border-t border-neutral-100 pt-3">
           <p className="mb-1.5 text-[10.5px] font-semibold uppercase tracking-wider text-neutral-400">
-            Questions worth asking
+            {t("questions")}
           </p>
           <ul className="space-y-1.5">
             {data.suggestedQuestions.map((q, i) => (
@@ -317,9 +318,7 @@ export const CvAnalysisCard = ({
       )}
 
       <p className="text-[10.5px] text-neutral-400">
-        AI-generated from the CV and job description (
-        {timeAgoLong(data.createdAt)}) — always a starting point, never the
-        final word.
+        {t("footer", { time: timeAgoLong(data.createdAt) })}
       </p>
     </div>
   );

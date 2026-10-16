@@ -24,11 +24,13 @@ import { GradientInitial } from "@/components/ui/gradient-initial";
 import { ROUTES } from "@/constants/routes";
 import { VerifiedInline } from "@/components/shared/VerifiedInline";
 import { formatResponseTime } from "@/utils/format";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const MORNING_END_HOUR = 12;
 const AFTERNOON_END_HOUR = 18;
 
 export const EmployerDashboard = () => {
+  const { t, formatNumber } = useTranslation("employer");
   const { user } = useAuth();
   const {
     profile,
@@ -56,11 +58,11 @@ export const EmployerDashboard = () => {
                 variant="outline"
                 onClick={() => void refetch()}
               >
-                Try again
+                {t("common.actions.retry")}
               </Button>
             }
-            description="Something went wrong loading your dashboard."
-            title="Couldn't load your dashboard"
+            description={t("dash.errorDesc")}
+            title={t("dash.errorTitle")}
           />
         </div>
       </div>
@@ -80,12 +82,14 @@ export const EmployerDashboard = () => {
   const hour = new Date().getHours();
   const greeting =
     hour < MORNING_END_HOUR
-      ? "Good morning"
+      ? t("dash.greetMorning")
       : hour < AFTERNOON_END_HOUR
-        ? "Good afternoon"
-        : "Good evening";
+        ? t("dash.greetAfternoon")
+        : t("dash.greetEvening");
   const firstName =
-    (user?.name ?? "there").split(" ").slice(-1)[0] ?? user?.name ?? "there";
+    (user?.name ?? t("dash.there")).split(" ").slice(-1)[0] ??
+    user?.name ??
+    t("dash.there");
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -94,18 +98,17 @@ export const EmployerDashboard = () => {
           <div className="mb-6 flex items-start gap-4 rounded-20 border border-amber-200 bg-amber-50 p-5">
             <div className="min-w-0 flex-1">
               <h3 className="mb-1 text-[14.5px] font-semibold text-neutral-900">
-                Set up your company profile
+                {t("dash.setupTitle")}
               </h3>
               <p className="text-[13px] text-neutral-600">
-                Create your employer profile to post jobs and receive
-                applications.
+                {t("dash.setupDesc")}
               </p>
             </div>
             <Link
               className={buttonVariants({ size: "sm" })}
               to={ROUTES.postJob}
             >
-              Get started
+              {t("dash.getStarted")}
             </Link>
           </div>
         )}
@@ -122,21 +125,18 @@ export const EmployerDashboard = () => {
           <div>
             <div className="mb-2 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-600" />
-              Employer dashboard
+              {t("dash.eyebrow")}
             </div>
             <h1 className="mb-1 text-[32px] font-semibold tracking-tight text-neutral-900">
               {greeting},{" "}
               <em className="font-serif-italic text-brand-700">{firstName}.</em>
             </h1>
             <p className="text-[15px] text-neutral-500">
-              You have{" "}
-              <strong className="text-neutral-900">
-                {stats.totalApps} applicants
-              </strong>{" "}
-              across{" "}
-              <strong className="text-neutral-900">{activeListings}</strong>{" "}
-              live
-              {activeListings === 1 ? " role" : " roles"}.
+              {t("dash.summary", {
+                applicants: t("dash.applicants", { count: stats.totalApps }),
+                count: formatNumber(activeListings),
+                roles: t("dash.role", { count: activeListings }),
+              })}
             </p>
           </div>
           {profile && (
@@ -152,10 +152,10 @@ export const EmployerDashboard = () => {
                 className={buttonVariants({ variant: "outline" })}
                 to={ROUTES.talentSearch}
               >
-                <Search size={13} /> Find talent
+                <Search size={13} /> {t("dash.findTalent")}
               </Link>
               <Link className={buttonVariants()} to={ROUTES.postJob}>
-                <Plus size={13} /> Post a job
+                <Plus size={13} /> {t("dash.postJob")}
               </Link>
             </div>
           )}
@@ -165,39 +165,41 @@ export const EmployerDashboard = () => {
         <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           <StatCard
             icon={Briefcase}
-            label="Active listings"
+            label={t("dash.kpi.active")}
             size="lg"
-            sub={`${inReview} in review`}
+            sub={t("dash.kpi.inReview", { count: inReview })}
             value={activeListings}
           />
           <StatCard
             icon={Users}
-            label="Total applications"
+            label={t("dash.kpi.total")}
             size="lg"
-            sub="all listings"
+            sub={t("dash.kpi.allListings")}
             value={stats.totalApps}
           />
           <StatCard
             icon={Star}
-            label="Shortlisted"
+            label={t("dash.kpi.shortlisted")}
             size="lg"
-            sub="across roles"
+            sub={t("dash.kpi.acrossRoles")}
             value={stats.shortlisted}
           />
           <StatCard
             icon={Clock}
-            label="Avg. time to hire"
+            label={t("dash.kpi.timeToHire")}
             size="lg"
-            sub="from apply to offer"
+            sub={t("dash.kpi.applyToOffer")}
             value={
-              stats.avgTimeToHireInDays ? `${stats.avgTimeToHireInDays}d` : "—"
+              stats.avgTimeToHireInDays
+                ? t("common.format.days", { n: stats.avgTimeToHireInDays })
+                : "—"
             }
           />
           <StatCard
             icon={Timer}
-            label="Avg. first response"
+            label={t("dash.kpi.firstResponse")}
             size="lg"
-            sub="Employer Response SLA"
+            sub={t("dash.kpi.sla")}
             value={formatResponseTime(stats.avgFirstResponseHours)}
           />
         </div>
@@ -215,13 +217,13 @@ export const EmployerDashboard = () => {
               className="flex items-center justify-center gap-1.5 rounded-12 border border-neutral-200 bg-white py-2.5 text-[12.5px] font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.interviewSchedule}
             >
-              <CalendarClock size={13} /> Interview schedule
+              <CalendarClock size={13} /> {t("dash.schedule")}
             </Link>
             <Link
               className="flex items-center justify-center gap-1.5 rounded-12 border border-neutral-200 bg-white py-2.5 text-[12.5px] font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.team}
             >
-              <Users size={13} /> Team members
+              <Users size={13} /> {t("dash.team")}
             </Link>
             <FunnelPanel data={funnel} isLoading={isLoading} />
           </div>

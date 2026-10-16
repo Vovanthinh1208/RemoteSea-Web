@@ -5,7 +5,9 @@
     "connected": "Connected",
     "notifications": "Notifications",
     "privacy": "Privacy & data",
-    "danger": "Danger zone"
+    "danger": "Danger zone",
+    "profileSetup": "Profile setup",
+    "data": "Privacy & data"
   },
   "account": {
     "eyebrow": "01 · Identity",
@@ -47,5 +49,159 @@
     "deleteTitle": "Delete account",
     "deleteDesc": "Permanently deletes your account, personal data, and active listings.",
     "deleteBtn": "Delete my account"
+  },
+  "changePassword": {
+    "success": "Password updated",
+    "error": "Couldn't update password",
+    "label": "Change password",
+    "currentPlaceholder": "Current password",
+    "newLabel": "New password",
+    "newPlaceholder": "New password (min 8 characters)",
+    "updating": "Updating…",
+    "update": "Update password"
+  },
+  "page": {
+    "docTitle": "Settings",
+    "dashboard": "← Dashboard",
+    "crumb": "Settings",
+    "title": "Your account, ",
+    "titleEm": "your rules.",
+    "desc1": "Sign-in, security, and how RemoteSEA talks to you. Profile content lives under ",
+    "profileSetup": "Profile setup",
+    "desc2": "."
+  },
+  "bar": {
+    "close": "Close",
+    "done": "Done",
+    "saved": "All changes saved",
+    "justNow": "· just now"
+  },
+  "toggle": {
+    "comingSoon": "Coming soon"
+  },
+  "acct": {
+    "regionVietnam": "Vietnam",
+    "regionSingapore": "Singapore",
+    "regionAustralia": "Australia",
+    "phonePlaceholder": "+84 90 123 4567"
+  },
+  "sec2": {
+    "eyebrow": "02 · Access",
+    "help": "Keep your account locked down. We'll email you whenever a new device signs in.",
+    "title": "Security.",
+    "revokeFailed": "Couldn't revoke session",
+    "revokedAll": "Signed out of all other sessions",
+    "revokeAllFailed": "Couldn't sign out other sessions",
+    "sessions": "Active sessions",
+    "thisDevice": "This device",
+    "unknownLocation": "Unknown location",
+    "revoke": "Revoke",
+    "signOutOthers": "Sign out of all other sessions"
+  },
+  "conn2": {
+    "eyebrow": "03 · Sign-in methods",
+    "help": "Providers linked for one-tap sign-in. You can sign in with any connected account.",
+    "title1": "Connected",
+    "title2": " accounts.",
+    "connectedToast": "{{provider}} connected",
+    "connectFailedTitle": "Couldn't connect {{provider}}",
+    "reason": {
+      "already_linked": "That account is already connected to a different RemoteSEA account.",
+      "unknown": "Something went wrong. Please try again."
+    },
+    "disconnectFailed": "Couldn't disconnect",
+    "startFailed": "Couldn't start connecting {{provider}}",
+    "notConnected": "Not connected",
+    "disconnect": "Disconnect",
+    "connect": "Connect"
+  },
+  "notif2": {
+    "eyebrow": "04 · What reaches you",
+    "help": "Choose what lands in your inbox. Critical security emails are always sent.",
+    "title": "Notifications.",
+    "failed": "Couldn't update notification preference",
+    "activity": "Your activity",
+    "appUpdates": "Application updates",
+    "appUpdatesDesc": "When an employer moves one of your applications forward — shortlisted, interviewing, offered, or rejected.",
+    "messages": "Messages from employers",
+    "messagesDesc": "Direct messages and interview requests from verified hiring teams.",
+    "matches": "Matches & digests",
+    "digest": "Weekly digest",
+    "digestWhen": "· Monday 9am",
+    "digestDesc": "Top 5 matches for your saved filters, once a week.",
+    "instant": "Instant high-match alerts",
+    "instantDesc": "Email the moment a role scores 90%+ against your profile.",
+    "fromUs": "From RemoteSEA",
+    "news": "Product news",
+    "newsDesc": "Occasional updates when we ship something worth knowing about.",
+    "tips": "Tips & resources",
+    "tipsDesc": "Negotiation guides, async culture notes, salary data. Twice a month, max.",
+    "push": "Browser push notifications",
+    "pushDesc": "Real-time alerts on this device, even when RemoteSEA isn't open. Not built yet — this won't do anything until it is."
+  },
+  "priv2": {
+    "eyebrow": "05 · Your data",
+    "help": "Control how visible you are and take your data with you whenever you want.",
+    "title": "Privacy & ",
+    "titleEm": "data.",
+    "visFailed": "Couldn't update visibility",
+    "exportDone": "Export downloaded",
+    "exportFailed": "Couldn't export your data",
+    "visibility": "Profile visibility",
+    "currently": "Currently ",
+    "restricted": "Verified employers only",
+    "public": "Public",
+    "download": "Download your data",
+    "downloadDesc": "Your profile, applications, and job alerts as a JSON export.",
+    "preparing": "Preparing…",
+    "request": "Request",
+    "seo": "Let search engines index my public profile",
+    "seoDesc": "Off by default. When on, your public talent page can appear in Google results. Not built yet — this won't do anything until it is."
+  },
+  "dz": {
+    "eyebrow": "06 · Careful now",
+    "help": "Reversible and irreversible actions. Pausing is safe — deleting is not.",
+    "title1": "Danger",
+    "title2": " zone.",
+    "reactivated": "Account reactivated",
+    "paused": "Account paused",
+    "reactivateFailed": "Couldn't reactivate account",
+    "pauseFailed": "Couldn't pause account",
+    "pausedTitle": "Account paused",
+    "pauseTitle": "Pause my account",
+    "pausedDesc": "You can still sign in. Reactivate anytime — nothing was deleted.",
+    "pauseDesc": "Marks your account as paused. You can reactivate anytime — nothing is deleted.",
+    "reactivate": "Reactivate",
+    "pause": "Pause",
+    "deleteTitle": "Delete account",
+    "deleteDesc": "Permanently remove your profile, applications, and message history. This cannot be undone."
+  },
+  "del": {
+    "failed": "Couldn't delete account",
+    "confirm": "Yes, delete",
+    "message": "Are you sure? This cannot be undone.",
+    "deleting": "Deleting…",
+    "button": "Delete account"
+  },
+  "tfa": {
+    "startFailed": "Couldn't start two-factor setup",
+    "disabled": "Two-factor authentication disabled",
+    "disableFailed": "Couldn't disable two-factor authentication",
+    "title": "Two-factor authentication",
+    "recommended": "Recommended",
+    "desc": "Require a code from your authenticator app at sign-in. Strongest protection against takeovers.",
+    "scan": "Scan this QR code with your authenticator app (Google Authenticator, 1Password, Authy…), then enter the 6-digit code it shows.",
+    "qrAlt": "Two-factor authentication QR code",
+    "setupKey": "Setup key",
+    "code": "6-digit code",
+    "confirm": "Confirm",
+    "enabled": "Two-factor authentication enabled",
+    "saveCodes": "Save these backup codes somewhere safe — each works once if you lose access to your authenticator app. They won't be shown again.",
+    "copied": "Copied",
+    "copy": "Copy codes",
+    "saved": "I've saved these",
+    "disablePrompt": "Enter your password to disable two-factor authentication.",
+    "password": "Password",
+    "disable": "Disable"
   }
 }

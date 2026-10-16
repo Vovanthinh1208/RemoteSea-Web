@@ -1,0 +1,16 @@
+{
+  "page": {
+    "docTitle": "Thông báo",
+    "title": "Thông báo",
+    "desc": "Cập nhật về lời mời, trạng thái đơn ứng tuyển và các báo cáo bạn đã gửi.",
+    "markAll": "Đánh dấu tất cả đã đọc",
+    "errorTitle": "Không thể tải thông báo",
+    "errorDesc": "Đã xảy ra lỗi khi tải thông báo của bạn.",
+    "emptyTitle": "Chưa có thông báo nào",
+    "emptyDesc": "Bạn sẽ thấy cập nhật về lời mời, trạng thái đơn ứng tuyển và báo cáo tại đây."
+  },
+  "row": {
+    "markFailed": "Không thể đánh dấu đã đọc",
+    "unread": "Chưa đọc: "
+  }
+}

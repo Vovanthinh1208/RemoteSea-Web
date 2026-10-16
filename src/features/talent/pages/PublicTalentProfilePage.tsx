@@ -11,20 +11,13 @@ import { PublicTalentExperience } from "./public-profile/PublicTalentExperience"
 import { PublicTalentHighlights } from "./public-profile/PublicTalentHighlights";
 import { PublicTalentSidebar } from "./public-profile/PublicTalentSidebar";
 import { PublicTalentNotFound } from "./public-profile/PublicTalentNotFound";
+import { useTranslation } from "@/i18n/useTranslation";
 
-const MOCK_RECRUITER = {
-  company: "Finch Labs",
-  roleTitle: "Senior Full-stack Engineer",
-};
+const MOCK_RECRUITER = { company: "Finch Labs" };
 const MOCK_MATCH_SCORE = 94;
 
-const TALENT_REVIEW_CATEGORIES = [
-  { key: "communication", label: "Communication" },
-  { key: "professionalism", label: "Professionalism" },
-  { key: "reliability", label: "Reliability" },
-] as const;
-
 export const PublicTalentProfilePage = () => {
+  const { t } = useTranslation("talent");
   const { slug } = useParams<{ slug: string }>();
   const [searchParams] = useSearchParams();
   const isRecruiterPreview = searchParams.get("preview") === "recruiter";
@@ -33,8 +26,8 @@ export const PublicTalentProfilePage = () => {
 
   useDocumentTitle(
     profile?.user?.name
-      ? `${profile.user.name} — Talent Profile`
-      : "Talent Profile"
+      ? t("public.docTitle", { name: profile.user.name })
+      : t("public.docTitleFallback")
   );
 
   if (isLoading) {
@@ -45,7 +38,7 @@ export const PublicTalentProfilePage = () => {
     return <PublicTalentNotFound />;
   }
 
-  const name = profile.user?.name ?? "RemoteSEA member";
+  const name = profile.user?.name ?? t("public.member");
   const isOwnProfile = !!user && profile.userId === user.id;
 
   const topSkillsLine = profile.skills
@@ -60,7 +53,7 @@ export const PublicTalentProfilePage = () => {
           <RecruiterPreviewBanner
             company={MOCK_RECRUITER.company}
             matchScore={MOCK_MATCH_SCORE}
-            roleTitle={MOCK_RECRUITER.roleTitle}
+            roleTitle={t("public.preview.role")}
             topSkillsLine={topSkillsLine}
           />
         )}
@@ -74,7 +67,17 @@ export const PublicTalentProfilePage = () => {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
           <div className="space-y-5">
             <ReviewsSection
-              categories={TALENT_REVIEW_CATEGORIES}
+              categories={[
+                {
+                  key: "communication",
+                  label: t("public.review.communication"),
+                },
+                {
+                  key: "professionalism",
+                  label: t("public.review.professionalism"),
+                },
+                { key: "reliability", label: t("public.review.reliability") },
+              ]}
               userId={profile.userId}
             />
 

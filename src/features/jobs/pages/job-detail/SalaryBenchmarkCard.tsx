@@ -1,5 +1,7 @@
 import type { SalaryBenchmark } from "@/features/salary/salary.queries";
 import type { Job } from "@/types/job";
+import { useTranslation } from "@/i18n/useTranslation";
+import { filterValueLabel } from "@/features/jobs/jobs.utils";
 
 const MIN_PERCENTILE = 5;
 const MAX_PERCENTILE = 95;
@@ -14,6 +16,7 @@ export const SalaryBenchmarkCard = ({
   job,
   benchmarks,
 }: SalaryBenchmarkCardProps) => {
+  const { t, formatNumber } = useTranslation("jobs");
   const category = job.categories[0]?.category.name ?? "Other";
   const salaryMin = job.salaryMin ?? 0;
   const salaryMax = job.salaryMax ?? 0;
@@ -38,14 +41,15 @@ export const SalaryBenchmarkCard = ({
   return (
     <div className="rounded-16 border border-neutral-100 bg-white p-5">
       <h4 className="mb-4 text-[13px] font-semibold text-neutral-900">
-        Salary check · {bench.role}
+        {t("detail.salaryCheck", { role: filterValueLabel(bench.role) })}
       </h4>
       <div className="space-y-3">
         <div>
           <div className="mb-1.5 flex items-center justify-between text-[12px]">
-            <span className="text-neutral-500">This role</span>
+            <span className="text-neutral-500">{t("detail.thisRole")}</span>
             <span className="font-mono font-semibold text-neutral-900">
-              ${jobMid.toLocaleString()}/mo
+              ${formatNumber(jobMid)}
+              {t("filters.perMonthSuffix")}
             </span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-neutral-100">
@@ -59,10 +63,9 @@ export const SalaryBenchmarkCard = ({
         </div>
         <div>
           <div className="mb-1.5 flex items-center justify-between text-[12px]">
-            <span className="text-neutral-500">Market range</span>
+            <span className="text-neutral-500">{t("detail.marketRange")}</span>
             <span className="font-mono text-neutral-500">
-              ${bench.min.toLocaleString()}–$
-              {bench.max.toLocaleString()}
+              ${formatNumber(bench.min)}–${formatNumber(bench.max)}
             </span>
           </div>
           <div className="relative h-2 overflow-hidden rounded-full bg-neutral-100">
@@ -77,9 +80,11 @@ export const SalaryBenchmarkCard = ({
         </div>
       </div>
       <p className="mt-3 text-[12px] leading-relaxed text-neutral-400">
-        This offer sits at the{" "}
-        <strong className="text-neutral-700">{percentile}th percentile</strong>{" "}
-        for {bench.role.toLowerCase()}s based on {bench.count} VN data points.
+        {t("detail.percentile", {
+          percentile,
+          role: filterValueLabel(bench.role).toLowerCase(),
+          count: bench.count,
+        })}
       </p>
     </div>
   );

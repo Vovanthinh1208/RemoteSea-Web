@@ -3,12 +3,7 @@ import { Button } from "@/components/ui/button";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 import { cn } from "@/utils/cn";
 import type { ResolutionKind } from "@/features/admin/components/admin-queue/ResolutionBanner";
-
-const RESOLVED_LABEL: Record<ResolutionKind, string> = {
-  approved: "Approved & published",
-  changes: "Changes requested",
-  rejected: "Rejected",
-};
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface DecisionBarProps {
   note: string;
@@ -31,6 +26,7 @@ export const DecisionBar = ({
   onRequestChanges,
   onReject,
 }: DecisionBarProps) => {
+  const { t } = useTranslation("admin");
   // The placeholder already implies notes are sent with these two decisions —
   // but the note was never actually required, so an employer could receive a
   // rejection with no reason attached. Enforce what the copy already promises.
@@ -39,10 +35,10 @@ export const DecisionBar = ({
   return (
     <div className="space-y-3 border-t border-neutral-100 pt-4">
       <textarea
-        aria-label="Note for the employer"
+        aria-label={t("decision.noteAria")}
         className={cn(TEXTAREA_INPUT_CLASS, "h-20")}
         disabled={!!resolution}
-        placeholder="Add a note for the employer (required for change requests & rejections)…"
+        placeholder={t("decision.notePlaceholder")}
         value={note}
         onChange={(e) => onNoteChange(e.target.value)}
       />
@@ -51,7 +47,7 @@ export const DecisionBar = ({
         // onClick, which put a dead, focusable element in the tab order.
         <div className="inline-flex h-[38px] items-center gap-1.5 rounded-8 border border-neutral-200 bg-neutral-50 px-4 text-sm text-neutral-500">
           <Check size={14} />
-          {RESOLVED_LABEL[resolution]}
+          {t(`decision.resolved.${resolution}`)}
         </div>
       ) : (
         // Approve and Reject are the two unambiguous decisions here, so both
@@ -66,27 +62,25 @@ export const DecisionBar = ({
             variant="primary"
             onClick={() => canApprove && onApprove()}
           >
-            <Check size={14} /> Approve &amp; publish
+            <Check size={14} /> {t("decision.approve")}
           </Button>
           <button
             className="inline-flex h-[38px] items-center gap-1.5 rounded-8 border border-amber-200 bg-amber-50 px-4 text-sm font-medium text-amber-700 transition-colors hover:bg-amber-100 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
             disabled={isPending || !hasNote}
-            title={
-              hasNote ? undefined : "Add a note explaining what needs to change"
-            }
+            title={hasNote ? undefined : t("decision.changesHint")}
             type="button"
             onClick={onRequestChanges}
           >
-            <RefreshCw size={14} /> Request changes
+            <RefreshCw size={14} /> {t("decision.changes")}
           </button>
           <Button
             disabled={isPending || !hasNote}
-            title={hasNote ? undefined : "Add a note explaining the rejection"}
+            title={hasNote ? undefined : t("decision.rejectHint")}
             type="button"
             variant="danger"
             onClick={onReject}
           >
-            <Ban size={14} /> Reject
+            <Ban size={14} /> {t("decision.reject")}
           </Button>
         </div>
       )}

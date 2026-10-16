@@ -15,6 +15,7 @@ import {
   DEFAULT_JOB_FILTERS,
 } from "@/features/jobs/job-filters";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { useTranslation } from "@/i18n/useTranslation";
 
 // Sections live in components/home/* (one file per section with its own data,
 // same convention as components/salary/* and employer-marketing/*). Queries
@@ -23,10 +24,8 @@ import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 const FEATURED_JOBS_DISPLAY_COUNT = 4;
 
 export const HomePage = () => {
-  useDocumentTitle(
-    "Remote Jobs from SG, AU & beyond",
-    "Curated remote jobs from Singapore, Australia and beyond for Vietnamese talent — clear salary ranges, verified employers, and sensible timezones."
-  );
+  const { t } = useTranslation("home");
+  useDocumentTitle(t("page.title"), t("page.description"));
   const { data } = useJobsQuery(
     DEFAULT_JOB_FILTERS,
     DEFAULT_FILTERS_FETCH_LIMIT

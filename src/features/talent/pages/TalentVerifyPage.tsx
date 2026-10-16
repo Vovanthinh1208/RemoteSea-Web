@@ -6,9 +6,11 @@ import { FullPageLoader } from "@/components/ui/spinner";
 import { buttonVariants } from "@/components/ui/button";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ROUTES } from "@/constants/routes";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const TalentVerifyPage = () => {
-  useDocumentTitle("Verify Your Email");
+  const { t } = useTranslation("talent");
+  useDocumentTitle(t("verifyPage.docTitle"));
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const confirmVerification = useConfirmTalentVerification();
@@ -35,26 +37,26 @@ export const TalentVerifyPage = () => {
         <>
           <CheckCircle2 className="mb-4 text-brand-600" size={40} />
           <h1 className="mb-1 text-[24px] font-semibold tracking-tight text-neutral-900">
-            Email verified
+            {t("verifyPage.successTitle")}
           </h1>
           <p className="mb-8 text-sm text-neutral-500">
-            Your Verified badge is now live on your profile.
+            {t("verifyPage.successDesc")}
           </p>
           <Link className={buttonVariants()} to={ROUTES.talent}>
-            Go to dashboard
+            {t("verifyPage.goDashboard")}
           </Link>
         </>
       ) : (
         <>
           <XCircle className="mb-4 text-red-500" size={40} />
           <h1 className="mb-1 text-[24px] font-semibold tracking-tight text-neutral-900">
-            Link expired or invalid
+            {t("verifyPage.errorTitle")}
           </h1>
           <p className="mb-8 text-sm text-neutral-500">
-            Request a new verification email from your dashboard.
+            {t("verifyPage.errorDesc")}
           </p>
           <Link className={buttonVariants()} to={ROUTES.talent}>
-            Go to dashboard
+            {t("verifyPage.goDashboard")}
           </Link>
         </>
       )}

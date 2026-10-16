@@ -7,6 +7,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useSalaryBenchmarksBySeniority } from "@/features/salary/salary.queries";
 import { LEVEL_LABELS } from "@/utils/labels";
 import type { ExperienceLevel } from "@/types/job";
+import { useTranslation } from "@/i18n/useTranslation";
 
 // Canonical ordering — the API returns levels in count-desc order, which
 // isn't a sensible reading order for a seniority ladder.
@@ -57,6 +58,7 @@ interface SalaryBarProps {
 // min/mid/max per (role, level) — no p25/p75, so there's no IQR band to
 // draw, just a single min–max span with a mid marker.
 const SalaryBar = ({ row, globalMax, fmt }: SalaryBarProps) => {
+  const { t } = useTranslation("salary");
   const pct = (v: number) => `${(v / globalMax) * 100}%`;
   return (
     <div className="flex flex-col gap-3 border-b border-neutral-50 py-5 last:border-none sm:flex-row sm:items-center">
@@ -65,7 +67,7 @@ const SalaryBar = ({ row, globalMax, fmt }: SalaryBarProps) => {
           {LEVEL_LABELS[row.level as ExperienceLevel] ?? row.level} {row.role}
         </p>
         <p className="text-[11.5px] text-neutral-400">
-          n = {row.count} listing{row.count === 1 ? "" : "s"}
+          {t("explorer.listings", { count: row.count })}
         </p>
       </div>
       <div className="flex-1">
@@ -82,13 +84,13 @@ const SalaryBar = ({ row, globalMax, fmt }: SalaryBarProps) => {
           <span
             className="absolute -top-1 h-4 w-0.5 rounded-full bg-brand-600"
             style={{ left: pct(row.mid) }}
-            title={`Average midpoint ${fmt(row.mid)}`}
+            title={t("explorer.midpoint", { value: fmt(row.mid) })}
           />
         </div>
         <div className="flex items-center justify-between text-[11px]">
           <span className="text-neutral-400">{fmt(row.min)}</span>
           <span className="font-medium text-neutral-700">
-            avg{" "}
+            {t("explorer.avg")}{" "}
             <strong className="font-semibold text-neutral-900">
               {fmt(row.mid)}
             </strong>
@@ -101,9 +103,11 @@ const SalaryBar = ({ row, globalMax, fmt }: SalaryBarProps) => {
 };
 
 export const ExplorerSection = () => {
+  const { t } = useTranslation("salary");
   const { data, isLoading, isError } = useSalaryBenchmarksBySeniority();
   const [role, setRole] = useState<string | null>(null);
-  const [seniority, setSeniority] = useState("All");
+  // Stores the stable level code (or "ALL"), never the translated label
+  const [seniority, setSeniority] = useState<"ALL" | ExperienceLevel>("ALL");
   const [currency, setCurrency] = useState<"USD" | "VND">("USD");
 
   const roles = useMemo(() => {
@@ -130,11 +134,9 @@ export const ExplorerSection = () => {
 
   const rows = useMemo(
     () =>
-      seniority === "All"
+      seniority === "ALL"
         ? rowsForRole
-        : rowsForRole.filter(
-            (r) => LEVEL_LABELS[r.level as ExperienceLevel] === seniority
-          ),
+        : rowsForRole.filter((r) => r.level === seniority),
     [rowsForRole, seniority]
   );
 
@@ -149,11 +151,11 @@ export const ExplorerSection = () => {
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <Eyebrow className="mb-2">Explorer</Eyebrow>
+            <Eyebrow className="mb-2">{t("explorer.eyebrow")}</Eyebrow>
             <h2 className="text-[28px] font-semibold tracking-tight text-neutral-900">
-              Salary by{" "}
+              {t("explorer.title")}
               <em className="font-serif-italic text-brand-700">
-                role &amp; seniority
+                {t("explorer.titleEm")}
               </em>
             </h2>
           </div>
@@ -182,14 +184,14 @@ export const ExplorerSection = () => {
           </div>
         ) : isError || roles.length === 0 ? (
           <div className="rounded-20 border border-neutral-100 bg-white py-16 text-center text-sm text-neutral-400">
-            Salary data isn&apos;t available right now.
+            {t("explorer.unavailable")}
           </div>
         ) : (
           <>
             {/* Role chips */}
             <div className="mb-4">
               <p className="mb-2 text-[11.5px] font-semibold uppercase tracking-wider text-neutral-400">
-                Role
+                {t("explorer.role")}
               </p>
               <div className="flex flex-wrap gap-2">
                 {roles.map((r) => (
@@ -198,7 +200,7 @@ export const ExplorerSection = () => {
                     key={r}
                     onClick={() => {
                       setRole(r);
-                      setSeniority("All");
+                      setSeniority("ALL");
                     }}
                   >
                     {r}
@@ -210,20 +212,20 @@ export const ExplorerSection = () => {
             {/* Seniority chips */}
             <div className="mb-8">
               <p className="mb-2 text-[11.5px] font-semibold uppercase tracking-wider text-neutral-400">
-                Seniority
+                {t("explorer.seniority")}
               </p>
               <div className="flex flex-wrap gap-2">
                 <Chip
-                  active={seniority === "All"}
-                  onClick={() => setSeniority("All")}
+                  active={seniority === "ALL"}
+                  onClick={() => setSeniority("ALL")}
                 >
-                  All
+                  {t("explorer.all")}
                 </Chip>
                 {levels.map((level) => (
                   <Chip
-                    active={seniority === LEVEL_LABELS[level]}
+                    active={seniority === level}
                     key={level}
-                    onClick={() => setSeniority(LEVEL_LABELS[level])}
+                    onClick={() => setSeniority(level)}
                   >
                     {LEVEL_LABELS[level]}
                   </Chip>
@@ -237,18 +239,23 @@ export const ExplorerSection = () => {
               <div className="mb-5 flex flex-wrap items-center gap-5 border-b border-neutral-50 pb-4">
                 <div className="flex items-center gap-2 text-[11.5px] text-neutral-400">
                   <span className="h-2 w-8 rounded-full bg-brand-200" />
-                  Min – max range
+                  {t("explorer.legendRange")}
                 </div>
                 <div className="flex items-center gap-2 text-[11.5px] text-neutral-400">
                   <span className="h-3.5 w-0.5 rounded-full bg-brand-600" />
-                  Average
+                  {t("explorer.legendAverage")}
                 </div>
               </div>
 
               {rows.length === 0 ? (
                 <div className="py-10 text-center text-sm text-neutral-400">
-                  No data yet for <strong>{activeRole}</strong> at{" "}
-                  <strong>{seniority}</strong>. Try another seniority.
+                  {t("explorer.noData", {
+                    role: activeRole,
+                    seniority:
+                      seniority === "ALL"
+                        ? t("explorer.all")
+                        : LEVEL_LABELS[seniority],
+                  })}
                 </div>
               ) : (
                 <div>
@@ -269,8 +276,7 @@ export const ExplorerSection = () => {
         {/* Disclaimer */}
         <div className="mt-5 flex items-start gap-2 rounded-12 bg-neutral-50 px-4 py-3 text-[12.5px] text-neutral-500">
           <Zap className="mt-0.5 flex-shrink-0 text-amber-500" size={14} />
-          Figures are averaged from active job listings' posted salary ranges,
-          in USD unless toggled. Bonuses &amp; equity excluded.
+          {t("explorer.disclaimer")}
         </div>
       </div>
     </section>

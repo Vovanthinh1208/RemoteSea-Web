@@ -1,0 +1,26 @@
+{
+  "rec": {
+    "ADVANCE": "Suggested: Advance",
+    "HOLD": "Suggested: Hold",
+    "REJECT": "Suggested: Reject"
+  },
+  "copyQuestion": "Copy question",
+  "tier": {
+    "strong": "Strong fit",
+    "moderate": "Moderate fit",
+    "weak": "Weak fit"
+  },
+  "prompt": "See how {{name}}'s CV stacks up against this role.",
+  "analyze": "Analyze with AI",
+  "noResume": "{{name}} hasn't uploaded a CV.",
+  "failed": "Couldn't analyze this CV.",
+  "title": "AI CV Analysis",
+  "regenerate": "Regenerate analysis",
+  "regenerateTitle": "Regenerate — runs the analysis again and replaces this one",
+  "regenerateFailed": "Couldn't regenerate — showing the previous analysis.",
+  "fitAria": "Fit score: {{score}} out of 100 — {{label}}",
+  "strengths": "Strengths",
+  "gaps": "Gaps",
+  "questions": "Questions worth asking",
+  "footer": "AI-generated from the CV and job description ({{time}}) — always a starting point, never the final word."
+}

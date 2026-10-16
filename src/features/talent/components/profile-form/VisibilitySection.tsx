@@ -8,6 +8,7 @@ import {
 import { ToggleRow } from "@/features/talent/components/profile-form/ToggleRow";
 import { useSyncedState } from "@/hooks/useSyncedState";
 import type { TalentVisibility } from "@/types/talent";
+import { useTranslation } from "@/i18n/useTranslation";
 
 type VisibilityCard = "open" | "verified" | "invited" | "off";
 
@@ -26,36 +27,11 @@ const toCard = (
   return visibility === "VERIFIED_EMPLOYERS" ? "verified" : "open";
 };
 
-const VIS_CARDS: Array<{
-  id: VisibilityCard;
-  icon: typeof Globe;
-  title: string;
-  desc: string;
-}> = [
-  {
-    id: "open",
-    icon: Globe,
-    title: "Open to everyone",
-    desc: "Any signed-in employer on RemoteSEA can find you. Fastest, most matches.",
-  },
-  {
-    id: "verified",
-    icon: ShieldCheck,
-    title: "Verified employers only",
-    desc: "Recommended. Only employers we've manually verified. No recruiter spam.",
-  },
-  {
-    id: "invited",
-    icon: Mail,
-    title: "Invited only",
-    desc: "Only employers you apply to can see you. Slower, but private.",
-  },
-  {
-    id: "off",
-    icon: Eye,
-    title: "Paused",
-    desc: "Profile hidden. You can still browse jobs and save. Resume anytime.",
-  },
+const VIS_CARDS: Array<{ id: VisibilityCard; icon: typeof Globe }> = [
+  { id: "open", icon: Globe },
+  { id: "verified", icon: ShieldCheck },
+  { id: "invited", icon: Mail },
+  { id: "off", icon: Eye },
 ];
 
 export const VisibilitySection = ({
@@ -64,6 +40,7 @@ export const VisibilitySection = ({
   onOpenToWorkChange,
   onVisibilityChange,
 }: VisibilitySectionProps) => {
+  const { t } = useTranslation("talent");
   const [selected, setSelected] = useSyncedState<VisibilityCard>(
     toCard(isOpenToWork, visibility)
   );
@@ -88,19 +65,19 @@ export const VisibilitySection = ({
       id="visibility"
     >
       <SectionHead
-        eyebrow="07 · Who sees you"
-        help="Control who can find your profile and reach out. Change anytime."
+        eyebrow={t("vis.eyebrow")}
+        help={t("vis.help")}
         title={
           <em
             className="font-serif italic text-brand-700"
             style={EMPHASIS_STYLE}
           >
-            Visibility.
+            {t("vis.title")}
           </em>
         }
       />
       <div className="mb-6 grid gap-3 sm:grid-cols-2">
-        {VIS_CARDS.map(({ id, icon: Icon, title, desc }) => (
+        {VIS_CARDS.map(({ id, icon: Icon }) => (
           <button
             className={cn(
               "rounded-16 border p-4 text-left transition-all focus-visible:shadow-focus focus-visible:outline-none",
@@ -119,30 +96,30 @@ export const VisibilitySection = ({
                 }
                 size={14}
               />
-              {title}
+              {t(`vis.${id}.title`)}
               {selected === id && (
                 <Check className="ml-auto text-brand-600" size={11} />
               )}
             </p>
             <p className="text-[12px] leading-relaxed text-neutral-500">
-              {desc}
+              {t(`vis.${id}.desc`)}
             </p>
           </button>
         ))}
       </div>
       <div className="divide-y divide-neutral-50 rounded-16 border border-neutral-100 bg-white px-4">
         <ToggleRow
-          desc="Verified employers see your range. Helps filter out lowball outreach."
+          desc={t("vis.showSalaryDesc")}
           on={showSalary}
-          title="Show my salary expectation"
+          title={t("vis.showSalary")}
           onChange={() => setShowSalary((v) => !v)}
         />
         <ToggleRow
-          desc="We'll block this domain from seeing your profile or activity. They'll never know."
+          desc={t("vis.hideEmployerDesc")}
           on={true}
           title={
             <>
-              Hide profile from my current employer{" "}
+              {t("vis.hideEmployer")}{" "}
               <span className="font-mono text-[12px] text-neutral-400">
                 · Finch Labs
               </span>

@@ -5,7 +5,9 @@
     "connected": "Tài khoản liên kết",
     "notifications": "Thông báo",
     "privacy": "Quyền riêng tư & dữ liệu",
-    "danger": "Vùng nguy hiểm"
+    "danger": "Vùng nguy hiểm",
+    "profileSetup": "Thiết lập hồ sơ",
+    "data": "Quyền riêng tư & dữ liệu"
   },
   "account": {
     "eyebrow": "01 · Định danh",
@@ -47,5 +49,159 @@
     "deleteTitle": "Xóa tài khoản",
     "deleteDesc": "Xóa vĩnh viễn tài khoản, dữ liệu cá nhân và các tin tuyển dụng đang mở của bạn.",
     "deleteBtn": "Xóa tài khoản của tôi"
+  },
+  "changePassword": {
+    "success": "Đã cập nhật mật khẩu",
+    "error": "Không thể cập nhật mật khẩu",
+    "label": "Đổi mật khẩu",
+    "currentPlaceholder": "Mật khẩu hiện tại",
+    "newLabel": "Mật khẩu mới",
+    "newPlaceholder": "Mật khẩu mới (tối thiểu 8 ký tự)",
+    "updating": "Đang cập nhật…",
+    "update": "Cập nhật mật khẩu"
+  },
+  "page": {
+    "docTitle": "Cài đặt",
+    "dashboard": "← Bảng điều khiển",
+    "crumb": "Cài đặt",
+    "title": "Tài khoản của bạn, ",
+    "titleEm": "theo cách của bạn.",
+    "desc1": "Đăng nhập, bảo mật và cách RemoteSEA liên lạc với bạn. Nội dung hồ sơ nằm ở mục ",
+    "profileSetup": "Thiết lập hồ sơ",
+    "desc2": "."
+  },
+  "bar": {
+    "close": "Đóng",
+    "done": "Xong",
+    "saved": "Mọi thay đổi đã được lưu",
+    "justNow": "· vừa xong"
+  },
+  "toggle": {
+    "comingSoon": "Sắp ra mắt"
+  },
+  "acct": {
+    "regionVietnam": "Việt Nam",
+    "regionSingapore": "Singapore",
+    "regionAustralia": "Úc",
+    "phonePlaceholder": "+84 90 123 4567"
+  },
+  "sec2": {
+    "eyebrow": "02 · Truy cập",
+    "help": "Giữ tài khoản của bạn an toàn. Chúng tôi sẽ gửi email mỗi khi có thiết bị mới đăng nhập.",
+    "title": "Bảo mật.",
+    "revokeFailed": "Không thể thu hồi phiên",
+    "revokedAll": "Đã đăng xuất khỏi mọi phiên khác",
+    "revokeAllFailed": "Không thể đăng xuất các phiên khác",
+    "sessions": "Phiên đang hoạt động",
+    "thisDevice": "Thiết bị này",
+    "unknownLocation": "Không rõ vị trí",
+    "revoke": "Thu hồi",
+    "signOutOthers": "Đăng xuất khỏi mọi phiên khác"
+  },
+  "conn2": {
+    "eyebrow": "03 · Phương thức đăng nhập",
+    "help": "Các nhà cung cấp được liên kết để đăng nhập nhanh. Bạn có thể đăng nhập bằng bất kỳ tài khoản đã liên kết nào.",
+    "title1": "Tài khoản",
+    "title2": " đã liên kết.",
+    "connectedToast": "Đã liên kết {{provider}}",
+    "connectFailedTitle": "Không thể liên kết {{provider}}",
+    "reason": {
+      "already_linked": "Tài khoản đó đã được liên kết với một tài khoản RemoteSEA khác.",
+      "unknown": "Đã xảy ra lỗi. Vui lòng thử lại."
+    },
+    "disconnectFailed": "Không thể ngắt liên kết",
+    "startFailed": "Không thể bắt đầu liên kết {{provider}}",
+    "notConnected": "Chưa liên kết",
+    "disconnect": "Ngắt liên kết",
+    "connect": "Liên kết"
+  },
+  "notif2": {
+    "eyebrow": "04 · Điều gì đến với bạn",
+    "help": "Chọn những gì được gửi vào hộp thư. Email bảo mật quan trọng luôn được gửi.",
+    "title": "Thông báo.",
+    "failed": "Không thể cập nhật tùy chọn thông báo",
+    "activity": "Hoạt động của bạn",
+    "appUpdates": "Cập nhật đơn ứng tuyển",
+    "appUpdatesDesc": "Khi nhà tuyển dụng chuyển đơn của bạn sang bước tiếp theo — được chọn, phỏng vấn, nhận offer hoặc bị từ chối.",
+    "messages": "Tin nhắn từ nhà tuyển dụng",
+    "messagesDesc": "Tin nhắn trực tiếp và lời mời phỏng vấn từ các đội tuyển dụng đã xác minh.",
+    "matches": "Gợi ý & bản tin",
+    "digest": "Bản tin hằng tuần",
+    "digestWhen": "· Thứ Hai 9 giờ sáng",
+    "digestDesc": "5 việc phù hợp nhất với bộ lọc đã lưu, mỗi tuần một lần.",
+    "instant": "Cảnh báo ngay khi có việc rất phù hợp",
+    "instantDesc": "Gửi email ngay khi một vị trí đạt từ 90% mức phù hợp với hồ sơ.",
+    "fromUs": "Từ RemoteSEA",
+    "news": "Tin tức sản phẩm",
+    "newsDesc": "Thỉnh thoảng cập nhật khi chúng tôi ra mắt điều đáng chú ý.",
+    "tips": "Mẹo & tài nguyên",
+    "tipsDesc": "Hướng dẫn thương lượng, ghi chú văn hóa async, dữ liệu lương. Tối đa hai lần mỗi tháng.",
+    "push": "Thông báo đẩy trên trình duyệt",
+    "pushDesc": "Thông báo thời gian thực trên thiết bị này, kể cả khi RemoteSEA không mở. Chưa được xây dựng — tùy chọn này sẽ chưa có tác dụng."
+  },
+  "priv2": {
+    "eyebrow": "05 · Dữ liệu của bạn",
+    "help": "Kiểm soát mức độ hiển thị của bạn và mang dữ liệu đi bất cứ khi nào bạn muốn.",
+    "title": "Quyền riêng tư & ",
+    "titleEm": "dữ liệu.",
+    "visFailed": "Không thể cập nhật chế độ hiển thị",
+    "exportDone": "Đã tải xuống bản xuất",
+    "exportFailed": "Không thể xuất dữ liệu của bạn",
+    "visibility": "Hiển thị hồ sơ",
+    "currently": "Hiện tại: ",
+    "restricted": "Chỉ nhà tuyển dụng đã xác minh",
+    "public": "Công khai",
+    "download": "Tải xuống dữ liệu của bạn",
+    "downloadDesc": "Hồ sơ, đơn ứng tuyển và thông báo việc làm của bạn dưới dạng tệp JSON.",
+    "preparing": "Đang chuẩn bị…",
+    "request": "Yêu cầu",
+    "seo": "Cho phép công cụ tìm kiếm lập chỉ mục hồ sơ công khai của tôi",
+    "seoDesc": "Mặc định tắt. Khi bật, trang ứng viên công khai của bạn có thể xuất hiện trên Google. Chưa được xây dựng — tùy chọn này sẽ chưa có tác dụng."
+  },
+  "dz": {
+    "eyebrow": "06 · Hãy cẩn thận",
+    "help": "Các thao tác có thể và không thể hoàn tác. Tạm dừng là an toàn — xóa thì không.",
+    "title1": "Vùng",
+    "title2": " nguy hiểm.",
+    "reactivated": "Đã kích hoạt lại tài khoản",
+    "paused": "Đã tạm dừng tài khoản",
+    "reactivateFailed": "Không thể kích hoạt lại tài khoản",
+    "pauseFailed": "Không thể tạm dừng tài khoản",
+    "pausedTitle": "Tài khoản đã tạm dừng",
+    "pauseTitle": "Tạm dừng tài khoản của tôi",
+    "pausedDesc": "Bạn vẫn có thể đăng nhập. Kích hoạt lại bất cứ lúc nào — không có gì bị xóa.",
+    "pauseDesc": "Đánh dấu tài khoản của bạn là tạm dừng. Bạn có thể kích hoạt lại bất cứ lúc nào — không có gì bị xóa.",
+    "reactivate": "Kích hoạt lại",
+    "pause": "Tạm dừng",
+    "deleteTitle": "Xóa tài khoản",
+    "deleteDesc": "Xóa vĩnh viễn hồ sơ, đơn ứng tuyển và lịch sử tin nhắn của bạn. Không thể hoàn tác."
+  },
+  "del": {
+    "failed": "Không thể xóa tài khoản",
+    "confirm": "Có, xóa",
+    "message": "Bạn có chắc không? Không thể hoàn tác.",
+    "deleting": "Đang xóa…",
+    "button": "Xóa tài khoản"
+  },
+  "tfa": {
+    "startFailed": "Không thể bắt đầu thiết lập xác thực hai lớp",
+    "disabled": "Đã tắt xác thực hai lớp",
+    "disableFailed": "Không thể tắt xác thực hai lớp",
+    "title": "Xác thực hai lớp",
+    "recommended": "Khuyến nghị",
+    "desc": "Yêu cầu mã từ ứng dụng xác thực khi đăng nhập. Bảo vệ mạnh nhất chống chiếm đoạt tài khoản.",
+    "scan": "Quét mã QR này bằng ứng dụng xác thực (Google Authenticator, 1Password, Authy…), rồi nhập mã 6 chữ số hiển thị.",
+    "qrAlt": "Mã QR xác thực hai lớp",
+    "setupKey": "Khóa thiết lập",
+    "code": "Mã 6 chữ số",
+    "confirm": "Xác nhận",
+    "enabled": "Đã bật xác thực hai lớp",
+    "saveCodes": "Hãy lưu các mã dự phòng này ở nơi an toàn — mỗi mã dùng được một lần nếu bạn mất quyền truy cập ứng dụng xác thực. Chúng sẽ không hiển thị lại.",
+    "copied": "Đã sao chép",
+    "copy": "Sao chép mã",
+    "saved": "Tôi đã lưu các mã này",
+    "disablePrompt": "Nhập mật khẩu của bạn để tắt xác thực hai lớp.",
+    "password": "Mật khẩu",
+    "disable": "Tắt"
   }
 }

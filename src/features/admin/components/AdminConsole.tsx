@@ -15,22 +15,24 @@ import { AdminRevenue } from "@/features/admin/components/AdminRevenue";
 import { AdminAuditLog } from "@/features/admin/components/AdminAuditLog";
 import { AdminUsers } from "@/features/admin/components/AdminUsers";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const TABS = [
-  { id: "queue", label: "Review queue", icon: Briefcase },
-  { id: "employers", label: "Employers", icon: Building },
-  { id: "users", label: "Users", icon: Users },
-  { id: "reports", label: "Reports", icon: Flag },
-  { id: "revenue", label: "Revenue", icon: Wallet },
-  { id: "audit-log", label: "Audit log", icon: History },
+  { id: "queue", icon: Briefcase },
+  { id: "employers", icon: Building },
+  { id: "users", icon: Users },
+  { id: "reports", icon: Flag },
+  { id: "revenue", icon: Wallet },
+  { id: "audit-log", icon: History },
 ] as const;
 
 type AdminTabId = (typeof TABS)[number]["id"];
 
 const isAdminTabId = (v: string): v is AdminTabId =>
-  TABS.some((t) => t.id === v);
+  TABS.some((item) => item.id === v);
 
 export const AdminConsole = () => {
+  const { t } = useTranslation("admin");
   // URL-synced like its sibling components (AdminEmployers' filter/search,
   // ApplicationsTable/ApplicantsPanel's tabs) — previously this was the one
   // piece of admin nav that reset to "Review queue" on every refresh or
@@ -53,27 +55,27 @@ export const AdminConsole = () => {
         <div className="mb-6 lg:hidden">
           <Eyebrow>RemoteSEA</Eyebrow>
           <p className="mb-3 text-[15px] font-semibold text-neutral-900">
-            Ops console
+            {t("console.title")}
           </p>
           <nav
-            aria-label="Ops console sections"
+            aria-label={t("console.sections")}
             className="scrollbar-thin flex gap-2 overflow-x-auto pb-1"
           >
-            {TABS.map((t) => (
+            {TABS.map((item) => (
               <button
-                aria-current={tab === t.id ? "page" : undefined}
+                aria-current={tab === item.id ? "page" : undefined}
                 className={cn(
                   "flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-[13px] font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none",
-                  tab === t.id
+                  tab === item.id
                     ? "bg-brand-600 text-white"
                     : "border border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50"
                 )}
-                key={t.id}
+                key={item.id}
                 type="button"
-                onClick={() => setTab(t.id)}
+                onClick={() => setTab(item.id)}
               >
-                <t.icon size={14} />
-                {t.label}
+                <item.icon size={14} />
+                {t(`console.tab.${item.id}`)}
               </button>
             ))}
           </nav>
@@ -84,25 +86,25 @@ export const AdminConsole = () => {
             <div className="mb-6">
               <Eyebrow>RemoteSEA</Eyebrow>
               <p className="text-[15px] font-semibold text-neutral-900">
-                Ops console
+                {t("console.title")}
               </p>
             </div>
-            <nav aria-label="Ops console sections" className="space-y-0.5">
-              {TABS.map((t) => (
+            <nav aria-label={t("console.sections")} className="space-y-0.5">
+              {TABS.map((item) => (
                 <button
-                  aria-current={tab === t.id ? "page" : undefined}
+                  aria-current={tab === item.id ? "page" : undefined}
                   className={cn(
                     "flex w-full items-center gap-2 rounded-10 px-3 py-2 text-[13px] transition-all focus-visible:shadow-focus focus-visible:outline-none",
-                    tab === t.id
+                    tab === item.id
                       ? "bg-white font-medium text-neutral-900 shadow-chip"
                       : "text-neutral-500 hover:bg-white/60 hover:text-neutral-700"
                   )}
-                  key={t.id}
+                  key={item.id}
                   type="button"
-                  onClick={() => setTab(t.id)}
+                  onClick={() => setTab(item.id)}
                 >
-                  <t.icon size={14} />
-                  {t.label}
+                  <item.icon size={14} />
+                  {t(`console.tab.${item.id}`)}
                 </button>
               ))}
             </nav>

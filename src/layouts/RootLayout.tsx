@@ -6,6 +6,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { FullPageLoader } from "@/components/ui/spinner";
 import { OfflineBanner } from "@/components/shared/OfflineBanner";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from "@/i18n/useTranslation";
 
 // Lazy, not a static import: AiChatWidget pulls in react-markdown +
 // remark-breaks (AiMarkdown.tsx) — that chain alone put the boot-critical
@@ -19,6 +20,7 @@ const AiChatWidget = lazy(() =>
 );
 
 export const RootLayout = () => {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   const navigationType = useNavigationType();
   const mainRef = useRef<HTMLElement>(null);
@@ -52,7 +54,7 @@ export const RootLayout = () => {
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-8 focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
         href="#main-content"
       >
-        Skip to main content
+        {t("nav.skipToContent")}
       </a>
       <OfflineBanner />
       <Navbar />

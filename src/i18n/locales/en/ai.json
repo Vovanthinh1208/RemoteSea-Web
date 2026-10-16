@@ -15,7 +15,22 @@
     "sources": "Sources referenced",
     "helpful": "Helpful",
     "unhelpful": "Not helpful",
-    "error": "Failed to get AI response. Please try again."
+    "error": "Failed to get AI response. Please try again.",
+    "tagline": "Ask about hiring policies, or a specific application.",
+    "openAria": "Open AI Assistant",
+    "closeAria": "Close AI Assistant",
+    "newChatAria": "New chat",
+    "newChat": "New chat",
+    "close": "Close",
+    "loadErrorTitle": "Couldn't load conversation",
+    "loadErrorDesc": "Something went wrong loading this conversation.",
+    "newMessage": "New message",
+    "history": "Conversation history",
+    "noHistory": "No previous conversations yet.",
+    "untitled": "Untitled conversation",
+    "sourcesLine": "Sources: {{sources}}",
+    "copied": "Copied",
+    "copy": "Copy"
   },
   "cvAnalysis": {
     "title": "Smart CV Analysis",

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -11,20 +10,13 @@ import { OrDivider } from "@/features/auth/components/OrDivider";
 import { TextField } from "@/components/shared/TextField";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/toast";
-import { ApiError } from "@/core/errors/api-error";
 import { applyFormSubmitError } from "@/utils/form-errors";
+import { useSubmitError } from "@/hooks/useSubmitError";
 import { isSafeInternalPath } from "@/utils/safe-redirect";
 import { ROUTES } from "@/constants/routes";
 import { cn } from "@/utils/cn";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/i18n";
-
-const DUPLICATE_EMAIL_STATUS = 409;
-
-const resolveRegisterErrorMessage = (error: ApiError): string =>
-  error.status === DUPLICATE_EMAIL_STATUS
-    ? "That email is already registered."
-    : error.message;
 
 export const RegisterForm = () => {
   const { t } = useTranslation("auth");
@@ -37,7 +29,7 @@ export const RegisterForm = () => {
       : null;
   const { registerAccount } = useAuth();
   const { toast } = useToast();
-  const [formError, setFormError] = useState<string | null>(null);
+  const submitError = useSubmitError();
 
   const {
     register,
@@ -59,7 +51,7 @@ export const RegisterForm = () => {
   const role = watch("role");
 
   const onSubmit = async (values: RegisterFormValues) => {
-    setFormError(null);
+    submitError.clear();
     try {
       const user = await registerAccount(values);
       navigate(
@@ -68,15 +60,9 @@ export const RegisterForm = () => {
         { replace: true }
       );
     } catch (err) {
-      setFormError(
-        applyFormSubmitError(
-          err,
-          setError,
-          "Please check your details and try again.",
-          resolveRegisterErrorMessage
-        )
-      );
-      toast({ title: "Registration failed", variant: "error" });
+      applyFormSubmitError(err, setError);
+      submitError.fail(err);
+      toast({ title: t("register.failedToast"), variant: "error" });
     }
   };
 
@@ -138,7 +124,11 @@ export const RegisterForm = () => {
           type="password"
         />
 
-        {formError && <p className="text-sm text-red-600">{formError}</p>}
+        {submitError.message && (
+          <p className="text-sm text-red-600" role="alert">
+            {submitError.message}
+          </p>
+        )}
 
         <Button
           className="w-full rounded-12"
@@ -150,21 +140,21 @@ export const RegisterForm = () => {
           {isSubmitting ? t("register.submitting") : t("register.submit")}
         </Button>
         <p className="text-center text-[12px] text-neutral-400">
-          By signing up you agree to our{" "}
+          {t("register.termsPrefix")}
           <Link
             className="rounded-4 text-neutral-600 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
             to="/terms"
           >
-            Terms
-          </Link>{" "}
-          and{" "}
+            {t("register.terms")}
+          </Link>
+          {t("register.and")}
           <Link
             className="rounded-4 text-neutral-600 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
             to="/privacy"
           >
-            Privacy Policy
+            {t("register.privacy")}
           </Link>
-          .
+          {t("register.termsSuffix")}
         </p>
       </form>
     </>

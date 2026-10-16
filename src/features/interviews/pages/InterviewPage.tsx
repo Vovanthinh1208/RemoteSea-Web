@@ -16,36 +16,38 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { ApplicationDetailHeader } from "@/components/shared/ApplicationDetailHeader";
 import { useApplicationHeaderContext } from "@/hooks/useApplicationHeaderContext";
 import { useToastMutation } from "@/hooks/useToastMutation";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export const InterviewPage = () => {
+  const { t } = useTranslation("interviews");
   const { id } = useParams<{ id: string }>();
   const applicationId = id ?? "";
   const { data, isLoading, isError, refetch } = useInterview(applicationId);
   const { isEmployerViewer, backHref, title } = useApplicationHeaderContext(
     data,
-    "Interview"
+    t("page.fallbackTitle")
   );
   const cancelMutation = useCancelInterview(applicationId);
   const runWithToast = useToastMutation();
 
   const handleCancel = async (): Promise<void> => {
     await runWithToast(() => cancelMutation.mutateAsync(), {
-      success: "Interview cancelled.",
-      error: "Couldn't cancel the interview. Please try again.",
+      success: t("page.cancelled"),
+      error: t("page.cancelFailed"),
     });
   };
 
   const cancelInterviewAction = (
     <ConfirmAction
-      confirmLabel="Cancel interview"
+      confirmLabel={t("page.cancel")}
       isPending={cancelMutation.isPending}
-      message="Cancel this interview?"
-      pendingLabel="Cancelling…"
+      message={t("page.cancelQ")}
+      pendingLabel={t("page.cancelling")}
       onConfirm={handleCancel}
     >
       {({ onClick }) => (
         <Button size="sm" type="button" variant="outline" onClick={onClick}>
-          Cancel interview
+          {t("page.cancel")}
         </Button>
       )}
     </ConfirmAction>
@@ -82,11 +84,11 @@ export const InterviewPage = () => {
           <EmptyState
             action={
               <Button size="sm" variant="outline" onClick={() => refetch()}>
-                Try again
+                {t("common.actions.retry")}
               </Button>
             }
-            description="Something went wrong loading this interview."
-            title="Couldn't load interview details"
+            description={t("page.errorDesc")}
+            title={t("page.errorTitle")}
           />
         </div>
       ) : !data?.interview ? (
@@ -98,8 +100,8 @@ export const InterviewPage = () => {
             />
           ) : (
             <EmptyState
-              description="Waiting for the employer to propose interview times."
-              title="No interview scheduled yet"
+              description={t("page.noneDesc")}
+              title={t("page.noneTitle")}
             />
           )}
         </div>
@@ -116,14 +118,16 @@ export const InterviewPage = () => {
             <ScorecardSection
               applicationId={applicationId}
               interviewOccurred={hasOccurred(data.interview.confirmedSlot)}
-              talentName={data.talentName ?? "the candidate"}
+              talentName={data.talentName ?? t("page.theCandidate")}
             />
           )}
           <ReviewCTA
             applicationId={applicationId}
             revieweeName={
               (isEmployerViewer ? data.talentName : data.employerName) ??
-              (isEmployerViewer ? "the candidate" : "the employer")
+              (isEmployerViewer
+                ? t("page.theCandidate")
+                : t("page.theEmployer"))
             }
           />
         </div>
@@ -132,8 +136,7 @@ export const InterviewPage = () => {
           {isEmployerViewer ? (
             <div className="space-y-5">
               <div className="rounded-10 border border-neutral-200 bg-neutral-50 p-3.5 text-[12.5px] text-neutral-600">
-                This interview was cancelled. Propose new times below to
-                reschedule.
+                {t("page.cancelledNote")}
               </div>
               <ProposeInterviewForm
                 applicationId={applicationId}
@@ -142,8 +145,8 @@ export const InterviewPage = () => {
             </div>
           ) : (
             <EmptyState
-              description="The employer cancelled this interview."
-              title="Interview cancelled"
+              description={t("page.cancelledDesc")}
+              title={t("page.cancelledTitle")}
             />
           )}
         </div>
@@ -151,8 +154,7 @@ export const InterviewPage = () => {
         <div className="rounded-16 border border-neutral-100 bg-white p-5">
           <div className="space-y-5">
             <div className="rounded-10 border border-amber-200 bg-amber-50 p-3.5 text-[12.5px] text-amber-700">
-              Waiting on the candidate to confirm one of these times. You can
-              still revise them below.
+              {t("page.waiting")}
             </div>
             <ProposeInterviewForm
               applicationId={applicationId}

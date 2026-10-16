@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 import { timeAgoLong } from "@/utils/time";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const COMMENT_SKELETON_COUNT = 2;
 const COMMENT_BODY_MAX_LENGTH = 4000;
@@ -42,6 +43,7 @@ export const DiscussionThreadCard = ({
 }: {
   applicationId: string;
 }) => {
+  const { t } = useTranslation("comments");
   const { user } = useAuth();
   const { data, isLoading, isError, refetch } = useComments(applicationId);
   const createCommentMutation = useCreateComment(applicationId);
@@ -55,13 +57,13 @@ export const DiscussionThreadCard = ({
   if (isError || !data) {
     return (
       <div className="flex items-center justify-between rounded-16 border border-neutral-100 bg-white px-4 py-3.5 text-[12.5px] text-neutral-400">
-        Couldn't load the discussion thread.
+        {t("thread.loadError")}
         <button
           className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 transition-colors hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={() => refetch()}
         >
-          <RefreshCw size={11} /> Retry
+          <RefreshCw size={11} /> {t("common.actions.retryShort")}
         </button>
       </div>
     );
@@ -72,7 +74,7 @@ export const DiscussionThreadCard = ({
     if (!trimmed) return;
     const posted = await runWithToast(
       () => createCommentMutation.mutateAsync({ body: trimmed }),
-      { error: "Couldn't post your comment. Please try again." }
+      { error: t("thread.postFailed") }
     );
     if (posted) setBody("");
   };
@@ -92,12 +94,10 @@ export const DiscussionThreadCard = ({
       <div className="flex items-center gap-2">
         <MessagesSquare className="flex-shrink-0 text-neutral-400" size={15} />
         <h3 className="text-[13.5px] font-medium text-neutral-900">
-          Internal discussion
+          {t("thread.title")}
         </h3>
       </div>
-      <p className="-mt-2 text-[12px] text-neutral-400">
-        Only visible to your team, never to the candidate.
-      </p>
+      <p className="-mt-2 text-[12px] text-neutral-400">{t("thread.hint")}</p>
 
       {data.comments.length > 0 && (
         <ul className="space-y-2">
@@ -109,8 +109,8 @@ export const DiscussionThreadCard = ({
               <div className="flex items-center justify-between gap-2">
                 <span className="min-w-0 truncate text-[12.5px] font-medium text-neutral-800">
                   {comment.authorId === user?.id
-                    ? "You"
-                    : (comment.author.name ?? "Team member")}
+                    ? t("thread.you")
+                    : (comment.author.name ?? t("thread.member"))}
                 </span>
                 <span className="flex-shrink-0 text-[11px] text-neutral-400">
                   {timeAgoLong(comment.createdAt)}
@@ -134,7 +134,7 @@ export const DiscussionThreadCard = ({
         <textarea
           className={TEXTAREA_INPUT_CLASS}
           maxLength={COMMENT_BODY_MAX_LENGTH}
-          placeholder="Leave a note for your team… (⌘/Ctrl+Enter to post)"
+          placeholder={t("thread.placeholder")}
           rows={2}
           value={body}
           onChange={(e) => setBody(e.target.value)}
@@ -159,7 +159,7 @@ export const DiscussionThreadCard = ({
             type="button"
             onClick={handlePost}
           >
-            Post
+            {t("thread.post")}
           </Button>
         </div>
       </div>

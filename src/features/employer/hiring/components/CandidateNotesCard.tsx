@@ -4,6 +4,7 @@ import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useUpdateApplicationStatus } from "@/features/employer/employer.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import type { ApplicantWithJob } from "@/features/employer/employer.queries";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface CandidateNotesCardProps {
   applicant: ApplicantWithJob;
@@ -17,6 +18,7 @@ interface CandidateNotesCardProps {
 // notes-only guard: status === expectedStatus skips both the audit event and
 // the talent-facing notification).
 export const CandidateNotesCard = ({ applicant }: CandidateNotesCardProps) => {
+  const { t } = useTranslation("employer");
   const [notes, setNotes] = useState(applicant.notes ?? "");
   const [dirty, setDirty] = useState(false);
   const updateStatus = useUpdateApplicationStatus();
@@ -32,8 +34,8 @@ export const CandidateNotesCard = ({ applicant }: CandidateNotesCardProps) => {
           notes,
         }),
       {
-        success: "Note saved.",
-        error: "Couldn't save the note. Please try again.",
+        success: t("notes.saved"),
+        error: t("notes.failed"),
       }
     );
     if (ok) setDirty(false);
@@ -42,14 +44,12 @@ export const CandidateNotesCard = ({ applicant }: CandidateNotesCardProps) => {
   return (
     <div className="space-y-2 rounded-16 border border-neutral-100 bg-white p-4">
       <h3 className="text-[13.5px] font-medium text-neutral-900">
-        Private notes
+        {t("notes.title")}
       </h3>
-      <p className="text-[12px] text-neutral-400">
-        Visible only to your team — never shown to the candidate.
-      </p>
+      <p className="text-[12px] text-neutral-400">{t("notes.hint")}</p>
       <textarea
         className={TEXTAREA_INPUT_CLASS}
-        placeholder="Add a note about this candidate…"
+        placeholder={t("notes.placeholder")}
         rows={4}
         value={notes}
         onChange={(e) => {
@@ -66,7 +66,7 @@ export const CandidateNotesCard = ({ applicant }: CandidateNotesCardProps) => {
             type="button"
             onClick={handleSave}
           >
-            Save note
+            {t("notes.save")}
           </Button>
         </div>
       )}

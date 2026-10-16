@@ -2,9 +2,11 @@ import { Link } from "react-router-dom";
 import { Check, Loader2, Mail, RefreshCw, X } from "lucide-react";
 import { useRespondToInvitation } from "@/features/invitations/invitations.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
+import { getErrorMessage } from "@/core/errors/localize";
 import { ApiError } from "@/core/errors/api-error";
 import { ROUTES } from "@/constants/routes";
 import type { Invitation } from "@/types/invitation";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const DASHBOARD_INVITATIONS_LIMIT = 4;
 
@@ -24,6 +26,7 @@ export const InvitationsPanel = ({
   isError,
   refetch,
 }: InvitationsPanelProps) => {
+  const { t } = useTranslation("talent");
   const respond = useRespondToInvitation();
   const runWithToast = useToastMutation();
   const pending = (invitations ?? []).filter((i) => i.status === "PENDING");
@@ -40,13 +43,13 @@ export const InvitationsPanel = ({
   if (isError) {
     return (
       <div className="mb-5 flex items-center justify-between gap-3 overflow-hidden rounded-16 border border-neutral-100 bg-white px-5 py-4 text-[12.5px] text-neutral-400 shadow-card">
-        Couldn't load your invitations.
+        {t("invitations.error")}
         <button
           className="inline-flex flex-shrink-0 items-center gap-1 rounded-8 font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
           type="button"
           onClick={() => refetch()}
         >
-          <RefreshCw size={11} /> Retry
+          <RefreshCw size={11} /> {t("common.actions.retryShort")}
         </button>
       </div>
     );
@@ -63,9 +66,12 @@ export const InvitationsPanel = ({
   const respondTo = (invitation: Invitation, action: "ACCEPT" | "DECLINE") =>
     runWithToast(() => respond.mutateAsync({ id: invitation.id, action }), {
       success:
-        action === "ACCEPT" ? "Application submitted" : "Invitation declined",
-      error: "Couldn't respond to invitation",
-      onError: (err) => (err instanceof ApiError ? err.message : undefined),
+        action === "ACCEPT"
+          ? t("invitations.acceptedToast")
+          : t("invitations.declinedToast"),
+      error: t("invitations.failedToast"),
+      onError: (err) =>
+        err instanceof ApiError ? getErrorMessage(err) : undefined,
     });
 
   return (
@@ -73,7 +79,7 @@ export const InvitationsPanel = ({
       <div className="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
         <h3 className="flex items-center gap-1.5 text-[14px] font-semibold text-neutral-900">
           <Mail className="text-brand-600" size={14} />
-          Invitations
+          {t("invitations.title")}
         </h3>
         <span className="rounded-full bg-brand-50 px-2 py-0.5 text-[11px] font-semibold text-brand-700">
           {pending.length}
@@ -96,7 +102,7 @@ export const InvitationsPanel = ({
               className="block truncate text-[11.5px] text-neutral-500 hover:text-brand-700 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.jobDetail(invitation.job.id)}
             >
-              invited you to apply — {invitation.job.title}
+              {t("invitations.invited", { title: invitation.job.title })}
             </Link>
             {invitation.message && (
               <p className="mt-1.5 line-clamp-2 text-[12px] italic text-neutral-500">
@@ -116,7 +122,7 @@ export const InvitationsPanel = ({
                 ) : (
                   <Check size={11} />
                 )}
-                Accept &amp; apply
+                {t("invitations.accept")}
               </button>
               <button
                 className="inline-flex items-center gap-1 rounded-8 px-2.5 py-1 text-[11px] font-medium text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
@@ -130,7 +136,7 @@ export const InvitationsPanel = ({
                 ) : (
                   <X size={11} />
                 )}
-                Decline
+                {t("invitations.decline")}
               </button>
             </div>
           </div>

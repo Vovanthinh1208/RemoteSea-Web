@@ -13,20 +13,21 @@ import {
   type ScorecardFormValues,
 } from "@/features/scorecards/scorecard.schemas";
 import type { ScorecardRecommendation } from "@/types/scorecard";
+import { useTranslation } from "@/i18n/useTranslation";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 
 const ALREADY_SUBMITTED_STATUS = 409;
 const NOT_ELIGIBLE_STATUS = 403;
 
 const RECOMMENDATION_OPTIONS: {
   value: ScorecardRecommendation;
-  label: string;
   icon: typeof ThumbsUp;
   filled: boolean;
 }[] = [
-  { value: "STRONG_YES", label: "Strong yes", icon: ThumbsUp, filled: true },
-  { value: "YES", label: "Yes", icon: ThumbsUp, filled: false },
-  { value: "NO", label: "No", icon: ThumbsDown, filled: false },
-  { value: "STRONG_NO", label: "Strong no", icon: ThumbsDown, filled: true },
+  { value: "STRONG_YES", icon: ThumbsUp, filled: true },
+  { value: "YES", icon: ThumbsUp, filled: false },
+  { value: "NO", icon: ThumbsDown, filled: false },
+  { value: "STRONG_NO", icon: ThumbsDown, filled: true },
 ];
 
 interface ScorecardFormProps {
@@ -42,14 +43,17 @@ export const ScorecardForm = ({
   onCancel,
   onSuccess,
 }: ScorecardFormProps) => {
+  const { t } = useTranslation("scorecards");
+  const form = useForm<ScorecardFormValues>({
+    resolver: zodResolver(scorecardFormSchema),
+  });
   const {
     control,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ScorecardFormValues>({
-    resolver: zodResolver(scorecardFormSchema),
-  });
+  } = form;
+  useRevalidateOnLocaleChange(form);
   const createScorecardMutation = useCreateScorecard(applicationId);
   const runWithToast = useToastMutation();
 
@@ -63,15 +67,15 @@ export const ScorecardForm = ({
           })
           .then(onSuccess),
       {
-        success: "Feedback submitted.",
-        error: "Something went wrong. Please try again.",
+        success: t("form.success"),
+        error: t("form.failed"),
         onError: (err) => {
           if (!(err instanceof ApiError)) return undefined;
           if (err.status === ALREADY_SUBMITTED_STATUS) {
-            return "You already submitted feedback for this interview.";
+            return t("form.already");
           }
           if (err.status === NOT_ELIGIBLE_STATUS) {
-            return "Not eligible to submit feedback for this interview yet.";
+            return t("form.notEligible");
           }
           return undefined;
         },
@@ -86,10 +90,10 @@ export const ScorecardForm = ({
     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <div>
         <h3 className="text-[15px] font-semibold text-neutral-900">
-          Your read on {talentName}
+          {t("form.title", { name: talentName })}
         </h3>
         <p className="mt-0.5 text-[12.5px] text-neutral-500">
-          Only visible to your team, never to the candidate.
+          {t("form.hint")}
         </p>
       </div>
 
@@ -99,32 +103,30 @@ export const ScorecardForm = ({
         render={({ field }) => (
           <div>
             <p className="mb-1.5 text-[13px] font-medium text-neutral-700">
-              Recommendation
+              {t("form.recommendation")}
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {RECOMMENDATION_OPTIONS.map(
-                ({ value, label, icon: Icon, filled }) => (
-                  <button
-                    aria-pressed={field.value === value}
-                    className={cn(
-                      "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none",
-                      field.value === value
-                        ? "border-brand-600 bg-brand-50 text-brand-700"
-                        : "border-neutral-200 text-neutral-600 hover:border-neutral-300"
-                    )}
-                    key={value}
-                    type="button"
-                    onClick={() => field.onChange(value)}
-                  >
-                    <Icon
-                      fill={filled ? "currentColor" : "none"}
-                      size={13}
-                      strokeWidth={filled ? 1.5 : 2}
-                    />
-                    {label}
-                  </button>
-                )
-              )}
+              {RECOMMENDATION_OPTIONS.map(({ value, icon: Icon, filled }) => (
+                <button
+                  aria-pressed={field.value === value}
+                  className={cn(
+                    "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none",
+                    field.value === value
+                      ? "border-brand-600 bg-brand-50 text-brand-700"
+                      : "border-neutral-200 text-neutral-600 hover:border-neutral-300"
+                  )}
+                  key={value}
+                  type="button"
+                  onClick={() => field.onChange(value)}
+                >
+                  <Icon
+                    fill={filled ? "currentColor" : "none"}
+                    size={13}
+                    strokeWidth={filled ? 1.5 : 2}
+                  />
+                  {t(`rec.${value}`)}
+                </button>
+              ))}
             </div>
           </div>
         )}
@@ -136,13 +138,14 @@ export const ScorecardForm = ({
           className="mb-1.5 block text-[13px] font-medium text-neutral-700"
           htmlFor="scorecard-note"
         >
-          Note <span className="text-neutral-400">(optional)</span>
+          {t("form.note")}{" "}
+          <span className="text-neutral-400">{t("form.optional")}</span>
         </label>
         <textarea
           className={TEXTAREA_INPUT_CLASS}
           id="scorecard-note"
           maxLength={2000}
-          placeholder="Sharp on system design, weak on the behavioral round…"
+          placeholder={t("form.notePlaceholder")}
           rows={4}
           {...register("note")}
         />
@@ -156,10 +159,10 @@ export const ScorecardForm = ({
           isLoading={createScorecardMutation.isPending}
           type="submit"
         >
-          Submit feedback
+          {t("form.submit")}
         </Button>
         <Button type="button" variant="ghost" onClick={onCancel}>
-          Cancel
+          {t("common.actions.cancel")}
         </Button>
       </div>
     </form>

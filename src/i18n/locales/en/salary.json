@@ -1,0 +1,65 @@
+{
+  "explorer": {
+    "eyebrow": "Explorer",
+    "title": "Salary by ",
+    "titleEm": "role & seniority",
+    "unavailable": "Salary data isn't available right now.",
+    "role": "Role",
+    "seniority": "Seniority",
+    "all": "All",
+    "legendRange": "Min – max range",
+    "legendAverage": "Average",
+    "noData": "No data yet for {{role}} at {{seniority}}. Try another seniority.",
+    "disclaimer": "Figures are averaged from active job listings' posted salary ranges, in USD unless toggled. Bonuses & equity excluded.",
+    "avg": "avg",
+    "midpoint": "Average midpoint {{value}}",
+    "listings_one": "n = {{count}} listing",
+    "listings_other": "n = {{count}} listings"
+  },
+  "country": {
+    "eyebrow": "By country",
+    "title": "Where the ",
+    "titleEm": "money",
+    "titleEnd": " lives",
+    "desc": "Average compensation for open remote roles, by where the company is headquartered.",
+    "unavailable": "Country data isn't available right now.",
+    "perMonth": "/mo",
+    "range": "Range {{min}}–{{max}}",
+    "listings_one": "{{count}} open listing",
+    "listings_other": "{{count}} open listings"
+  },
+  "submit": {
+    "eyebrow": "Contribute",
+    "title": "Submit your salary, ",
+    "titleEm": "anonymously",
+    "desc": "It takes 90 seconds. No name, no email required. Your data point makes the next person's negotiation a little bit fairer.",
+    "point1": "Encrypted & anonymized",
+    "point2": "Fully anonymous",
+    "point3": "Reviewed weekly by our team",
+    "comingSoon": "Coming soon",
+    "cta": "Submit a data point",
+    "liveJobs": "See live jobs",
+    "preview": {
+      "role": "Role",
+      "roleValue": "Senior Frontend Engineer",
+      "hq": "Company HQ",
+      "hqValue": "🇸🇬 Singapore",
+      "years": "Years exp.",
+      "base": "Base / month",
+      "equity": "Equity",
+      "note": "Anonymous · One field at a time"
+    }
+  },
+  "page": {
+    "title": "Remote Salary Guide — Vietnam Talent",
+    "description": "Real remote-salary data for Vietnamese professionals working for Singapore, Australia, and US companies — by role, seniority, and country.",
+    "statListings": "Active listings with salary",
+    "statAverage": "Average monthly salary",
+    "statRoles": "Roles benchmarked",
+    "live": "Live from active job listings",
+    "heroTitle": "What should you ",
+    "heroTitleEm": "actually",
+    "heroTitleEnd": " earn working remotely?",
+    "heroDesc": "Real numbers computed from the salary ranges companies post on live job listings — by role, seniority, and country."
+  }
+}

@@ -1,5 +1,6 @@
 import { Dropdown } from "@/components/ui/dropdown";
 import type { EmployerJobListItem } from "@/types/employer";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const NO_JOB_VALUE = "";
 
@@ -20,14 +21,15 @@ export const JobContextSelect = ({
   value,
   onChange,
 }: JobContextSelectProps) => {
+  const { t } = useTranslation("employer");
   const options = [
-    { value: NO_JOB_VALUE, label: "All candidates" },
+    { value: NO_JOB_VALUE, label: t("search.allCandidates") },
     ...jobs.map((job) => ({ value: job.id, label: job.title })),
   ];
 
   return (
     <Dropdown
-      aria-label="Rank against a job"
+      aria-label={t("search.rankAria")}
       options={options}
       value={value ?? NO_JOB_VALUE}
       onChange={(v) => onChange(v === NO_JOB_VALUE ? undefined : v)}

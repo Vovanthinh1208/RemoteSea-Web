@@ -26,10 +26,12 @@ import { DecisionBar } from "@/features/admin/components/admin-queue/DecisionBar
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const RESOLUTION_BANNER_DISPLAY_MS = 1200;
 
 export const AdminQueue = () => {
+  const { t } = useTranslation("admin");
   const runWithToast = useToastMutation();
   const { data, isLoading, isError, refetch } = useAdminJobs("PENDING_REVIEW");
   const reviewJobMutation = useReviewAdminJob();
@@ -103,10 +105,10 @@ export const AdminQueue = () => {
       {
         success:
           kind === "approved"
-            ? "Job approved & published"
-            : "Job sent back to employer",
+            ? t("queue.approvedToast")
+            : t("queue.rejectedToast"),
         successVariant: kind === "approved" ? "success" : "info",
-        error: "Couldn't submit review",
+        error: t("queue.reviewFailed"),
       }
     );
   };
@@ -121,11 +123,11 @@ export const AdminQueue = () => {
         <EmptyState
           action={
             <Button size="sm" variant="outline" onClick={() => void refetch()}>
-              Try again
+              {t("common.actions.retry")}
             </Button>
           }
-          description="Something went wrong loading the review queue."
-          title="Couldn't load the review queue"
+          description={t("queue.errorDesc")}
+          title={t("queue.errorTitle")}
         />
       </div>
     );
@@ -134,13 +136,13 @@ export const AdminQueue = () => {
   if (queue.length === 0) {
     return (
       <div className="flex-1">
-        <Eyebrow className="mb-0.5">Operations</Eyebrow>
+        <Eyebrow className="mb-0.5">{t("users.eyebrow")}</Eyebrow>
         <h1 className="text-[26px] font-semibold text-neutral-900">
-          Review queue
+          {t("queue.title")}
         </h1>
         <EmptyState
-          description="Nothing awaiting review. All caught up."
-          title="Queue is clear"
+          description={t("queue.clearDesc")}
+          title={t("queue.clearTitle")}
         />
       </div>
     );
@@ -170,14 +172,13 @@ export const AdminQueue = () => {
     <div className="flex-1 overflow-hidden">
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <Eyebrow className="mb-0.5">Operations</Eyebrow>
+          <Eyebrow className="mb-0.5">{t("users.eyebrow")}</Eyebrow>
           {/* 26px — matches the ops console's denser page-title size (see AdminEmployers.tsx). */}
           <h1 className="text-[26px] font-semibold text-neutral-900">
-            Review queue
+            {t("queue.title")}
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
-            Every job is human-reviewed before it goes live · {active.length}{" "}
-            awaiting
+            {t("queue.subtitle", { count: active.length })}
           </p>
         </div>
       </div>
@@ -190,7 +191,8 @@ export const AdminQueue = () => {
         rejectedCount={rejectedCount}
       />
 
-      <div className="grid gap-4" style={{ gridTemplateColumns: "280px 1fr" }}>
+      {/* Stacks below lg so the 280px list pane never squeezes the detail pane */}
+      <div className="grid gap-4 lg:grid-cols-[280px_minmax(0,1fr)]">
         <QueueListPane
           jobs={active}
           onSelect={setSelId}

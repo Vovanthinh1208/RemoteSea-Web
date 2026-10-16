@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import { cn } from "@/utils/cn";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const STAR_VALUES = [1, 2, 3, 4, 5] as const;
 
@@ -14,10 +15,11 @@ export const StarRating = ({
   size = 14,
   className,
 }: StarRatingProps) => {
+  const { t } = useTranslation();
   const rounded = Math.round(value);
   return (
     <div
-      aria-label={`${value.toFixed(1)} out of 5 stars`}
+      aria-label={t("common.stars.outOf5", { value: value.toFixed(1) })}
       className={cn("flex items-center gap-0.5", className)}
       role="img"
     >

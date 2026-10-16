@@ -11,6 +11,8 @@ import {
   type ReviewFormValues,
 } from "@/features/reviews/reviews.schemas";
 import type { ReviewDirection } from "@/types/review";
+import { useTranslation } from "@/i18n/useTranslation";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 
 type CategoryKey =
   | "communicationRating"
@@ -24,17 +26,17 @@ type CategoryKey =
 // showing up, not the employer). Mirrors the backend's own direction check.
 const CATEGORY_FIELDS: Record<
   ReviewDirection,
-  { key: CategoryKey; label: string }[]
+  { key: CategoryKey; labelKey: string }[]
 > = {
   TALENT_TO_EMPLOYER: [
-    { key: "communicationRating", label: "Communication" },
-    { key: "interviewProcessRating", label: "Interview process" },
-    { key: "professionalismRating", label: "Professionalism" },
+    { key: "communicationRating", labelKey: "form.cat.communication" },
+    { key: "interviewProcessRating", labelKey: "form.cat.interviewProcess" },
+    { key: "professionalismRating", labelKey: "form.cat.professionalism" },
   ],
   EMPLOYER_TO_TALENT: [
-    { key: "communicationRating", label: "Communication" },
-    { key: "professionalismRating", label: "Professionalism" },
-    { key: "reliabilityRating", label: "Reliability" },
+    { key: "communicationRating", labelKey: "form.cat.communication" },
+    { key: "professionalismRating", labelKey: "form.cat.professionalism" },
+    { key: "reliabilityRating", labelKey: "form.cat.reliability" },
   ],
 };
 
@@ -56,14 +58,17 @@ export const ReviewForm = ({
   onCancel,
   onSuccess,
 }: ReviewFormProps) => {
+  const { t } = useTranslation("reviews");
+  const form = useForm<ReviewFormValues>({
+    resolver: zodResolver(reviewFormSchema),
+  });
   const {
     control,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ReviewFormValues>({
-    resolver: zodResolver(reviewFormSchema),
-  });
+  } = form;
+  useRevalidateOnLocaleChange(form);
   const createReviewMutation = useCreateReview();
   const runWithToast = useToastMutation();
 
@@ -78,15 +83,15 @@ export const ReviewForm = ({
           })
           .then(onSuccess),
       {
-        success: "Review submitted successfully.",
-        error: "Something went wrong. Please try again.",
+        success: t("form.success"),
+        error: t("form.failed"),
         onError: (err) => {
           if (!(err instanceof ApiError)) return undefined;
           if (err.status === ALREADY_REVIEWED_STATUS) {
-            return "You have already reviewed this interaction.";
+            return t("form.already");
           }
           if (err.status === NOT_ELIGIBLE_STATUS) {
-            return "You are not eligible to review this interaction.";
+            return t("form.notEligible");
           }
           return undefined;
         },
@@ -100,10 +105,10 @@ export const ReviewForm = ({
     >
       <div>
         <h3 className="text-[15px] font-semibold text-neutral-900">
-          Review {revieweeName}
+          {t("form.title", { name: revieweeName })}
         </h3>
         <p className="mt-0.5 text-[12.5px] text-neutral-500">
-          Your feedback helps other members of RemoteSEA.
+          {t("form.subtitle")}
         </p>
       </div>
 
@@ -112,7 +117,7 @@ export const ReviewForm = ({
         name="overallRating"
         render={({ field }) => (
           <StarRatingInput
-            label="Overall rating"
+            label={t("form.overall")}
             value={field.value}
             onChange={field.onChange}
           />
@@ -124,14 +129,14 @@ export const ReviewForm = ({
         </p>
       )}
 
-      {CATEGORY_FIELDS[direction].map(({ key, label }) => (
+      {CATEGORY_FIELDS[direction].map(({ key, labelKey }) => (
         <Controller
           control={control}
           key={key}
           name={key}
           render={({ field }) => (
             <StarRatingInput
-              label={label}
+              label={t(labelKey)}
               value={field.value}
               onChange={field.onChange}
             />
@@ -144,13 +149,14 @@ export const ReviewForm = ({
           className="mb-1.5 block text-[13px] font-medium text-neutral-700"
           htmlFor="review-comment"
         >
-          Comment <span className="text-neutral-400">(optional)</span>
+          {t("form.comment")}{" "}
+          <span className="text-neutral-400">{t("form.optional")}</span>
         </label>
         <textarea
           className={TEXTAREA_INPUT_CLASS}
           id="review-comment"
           maxLength={2000}
-          placeholder="Tell us about your experience…"
+          placeholder={t("form.commentPlaceholder")}
           rows={4}
           {...register("comment")}
         />
@@ -168,10 +174,10 @@ export const ReviewForm = ({
           isLoading={createReviewMutation.isPending}
           type="submit"
         >
-          Submit review
+          {t("form.submit")}
         </Button>
         <Button type="button" variant="ghost" onClick={onCancel}>
-          Cancel
+          {t("common.actions.cancel")}
         </Button>
       </div>
     </form>

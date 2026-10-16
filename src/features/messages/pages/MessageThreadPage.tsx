@@ -18,6 +18,7 @@ import { useToastMutation } from "@/hooks/useToastMutation";
 import { timeAgoLong } from "@/utils/time";
 import { companyColor } from "@/utils/color";
 import { cn } from "@/utils/cn";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const COMPOSE_MAX_HEIGHT_PX = 160;
 const AVATAR_SIZE_PX = 24;
@@ -93,11 +94,15 @@ const MessageBubble = ({
 );
 
 export const MessageThreadPage = () => {
+  const { t } = useTranslation("messages");
   const { id } = useParams<{ id: string }>();
   const applicationId = id ?? "";
   const { user } = useAuth();
   const { data, isLoading, isError, refetch } = useMessages(applicationId);
-  const { backHref, title } = useApplicationHeaderContext(data, "Messages");
+  const { backHref, title } = useApplicationHeaderContext(
+    data,
+    t("page.fallbackTitle")
+  );
 
   const sendMessage = useSendMessage(applicationId);
   const runWithToast = useToastMutation();
@@ -133,7 +138,7 @@ export const MessageThreadPage = () => {
     if (!body) return;
     setDraft("");
     void runWithToast(() => sendMessage.mutateAsync(body), {
-      error: "Couldn't send message",
+      error: t("page.sendFailed"),
     });
   };
 
@@ -157,16 +162,16 @@ export const MessageThreadPage = () => {
           <EmptyState
             action={
               <Button size="sm" variant="outline" onClick={() => refetch()}>
-                Try again
+                {t("common.actions.retry")}
               </Button>
             }
-            description="Something went wrong loading this conversation."
-            title="Couldn't load messages"
+            description={t("page.errorDesc")}
+            title={t("page.errorTitle")}
           />
         ) : !data || data.messages.length === 0 ? (
           <EmptyState
-            description="Say hello — messages here are only visible to the two of you."
-            title="No messages yet"
+            description={t("page.emptyDesc")}
+            title={t("page.emptyTitle")}
           />
         ) : (
           groupMessagesByDay(data.messages).map((group) => (
@@ -211,7 +216,7 @@ export const MessageThreadPage = () => {
             "min-h-[24px] resize-none border-none bg-transparent p-0 py-1.5 shadow-none focus:border-none focus:shadow-none"
           )}
           maxLength={4000}
-          placeholder="Write a message…"
+          placeholder={t("page.placeholder")}
           ref={textareaRef}
           rows={1}
           value={draft}
@@ -224,7 +229,7 @@ export const MessageThreadPage = () => {
           }}
         />
         <Button
-          aria-label="Send message"
+          aria-label={t("page.send")}
           className="h-9 w-9 flex-shrink-0 rounded-full p-0"
           disabled={!draft.trim() || sendMessage.isPending}
           isLoading={sendMessage.isPending}

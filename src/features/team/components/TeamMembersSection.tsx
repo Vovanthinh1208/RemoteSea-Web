@@ -15,6 +15,8 @@ import { timeAgoLong } from "@/utils/time";
 import { personInitial } from "@/utils/name";
 import { cn } from "@/utils/cn";
 import type { CompanyMemberRole, TeamMember } from "@/types/team";
+import { getErrorMessage } from "@/core/errors/localize";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const ASSIGNABLE_ROLES: CompanyMemberRole[] = [
   "OWNER",
@@ -43,6 +45,7 @@ interface MemberRowProps {
 }
 
 const MemberRow = ({ member, isOwner, isSelf }: MemberRowProps) => {
+  const { t } = useTranslation("team");
   const runWithToast = useToastMutation();
   const updateRole = useUpdateTeamMemberRole();
   const removeMember = useRemoveTeamMember();
@@ -50,15 +53,17 @@ const MemberRow = ({ member, isOwner, isSelf }: MemberRowProps) => {
 
   const handleRoleChange = (role: string) =>
     runWithToast(() => updateRole.mutateAsync({ id: member.id, role }), {
-      error: "Couldn't change role",
-      onError: (err) => (err instanceof ApiError ? err.message : undefined),
+      error: t("members.changeRoleFailed"),
+      onError: (err) =>
+        err instanceof ApiError ? getErrorMessage(err) : undefined,
     });
 
   const handleRemove = () =>
     runWithToast(() => removeMember.mutateAsync(member.id), {
-      success: `Removed ${displayName}`,
-      error: "Couldn't remove member",
-      onError: (err) => (err instanceof ApiError ? err.message : undefined),
+      success: t("members.removed", { name: displayName }),
+      error: t("members.removeFailed"),
+      onError: (err) =>
+        err instanceof ApiError ? getErrorMessage(err) : undefined,
     });
 
   return (
@@ -69,10 +74,15 @@ const MemberRow = ({ member, isOwner, isSelf }: MemberRowProps) => {
       <div className="min-w-0 flex-1">
         <p className="truncate text-[13.5px] font-medium text-neutral-900">
           {displayName}
-          {isSelf && <span className="ml-1.5 text-neutral-400">(you)</span>}
+          {isSelf && (
+            <span className="ml-1.5 text-neutral-400">{t("members.you")}</span>
+          )}
         </p>
         <p className="truncate text-[12px] text-neutral-500">
-          {member.user.email} · Joined {timeAgoLong(member.createdAt)}
+          {t("members.joined", {
+            email: member.user.email,
+            time: timeAgoLong(member.createdAt),
+          })}
         </p>
       </div>
       {isOwner && !isSelf ? (
@@ -96,7 +106,7 @@ const MemberRow = ({ member, isOwner, isSelf }: MemberRowProps) => {
       )}
       {isOwner && !isSelf && (
         <button
-          aria-label={`Remove ${displayName}`}
+          aria-label={t("members.removeAria", { name: displayName })}
           className="flex-shrink-0 rounded-8 p-1.5 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
           disabled={removeMember.isPending}
           type="button"
@@ -116,6 +126,7 @@ interface TeamMembersSectionProps {
 export const TeamMembersSection = ({
   currentUserId,
 }: TeamMembersSectionProps) => {
+  const { t } = useTranslation("team");
   const { data, isLoading, isError, refetch } = useTeamMembers();
 
   const isOwner =
@@ -125,12 +136,12 @@ export const TeamMembersSection = ({
     <section className="overflow-hidden rounded-20 border border-neutral-100 bg-white">
       <div className="border-b border-neutral-100 px-5 py-4">
         <h2 className="text-[15px] font-semibold text-neutral-900">
-          Team members
+          {t("members.title")}
         </h2>
         <p className="text-[12.5px] text-neutral-500">
           {data
-            ? `${data.length} ${data.length === 1 ? "member" : "members"}`
-            : "Who has access to this company"}
+            ? t("members.count", { count: data.length })
+            : t("members.whoHasAccess")}
         </p>
       </div>
 
@@ -140,17 +151,17 @@ export const TeamMembersSection = ({
         ))
       ) : isError ? (
         <div className="flex items-center justify-between px-5 py-8 text-[13px] text-neutral-400">
-          Couldn't load your team.
+          {t("members.loadError")}
           <button
             className="inline-flex items-center gap-1 rounded-8 font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
             type="button"
             onClick={() => refetch()}
           >
-            <RefreshCw size={11} /> Retry
+            <RefreshCw size={11} /> {t("common.actions.retryShort")}
           </button>
         </div>
       ) : !data || data.length === 0 ? (
-        <EmptyRow className="px-5">No team members yet.</EmptyRow>
+        <EmptyRow className="px-5">{t("members.empty")}</EmptyRow>
       ) : (
         data.map((member) => (
           <MemberRow

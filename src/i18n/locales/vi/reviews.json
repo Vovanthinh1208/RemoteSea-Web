@@ -1,0 +1,34 @@
+{
+  "form": {
+    "cat": {
+      "communication": "Giao tiếp",
+      "interviewProcess": "Quy trình phỏng vấn",
+      "professionalism": "Tính chuyên nghiệp",
+      "reliability": "Độ tin cậy"
+    },
+    "success": "Đã gửi đánh giá thành công.",
+    "failed": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "already": "Bạn đã đánh giá lần tương tác này rồi.",
+    "notEligible": "Bạn không đủ điều kiện đánh giá lần tương tác này.",
+    "title": "Đánh giá {{name}}",
+    "subtitle": "Phản hồi của bạn giúp ích cho các thành viên khác của RemoteSEA.",
+    "overall": "Đánh giá chung",
+    "comment": "Nhận xét",
+    "optional": "(không bắt buộc)",
+    "commentPlaceholder": "Hãy chia sẻ trải nghiệm của bạn…",
+    "submit": "Gửi đánh giá"
+  },
+  "cta": {
+    "reviewed": "Bạn đã đánh giá lần tương tác này.",
+    "complete": "Buổi phỏng vấn của bạn với {{name}} đã hoàn tất.",
+    "share": "Hãy chia sẻ trải nghiệm của bạn.",
+    "write": "Viết đánh giá"
+  },
+  "section": {
+    "member": "Thành viên RemoteSEA",
+    "title": "Đánh giá",
+    "error": "Không thể tải đánh giá.",
+    "basedOn_one": "Dựa trên {{count}} đánh giá",
+    "basedOn_other": "Dựa trên {{count}} đánh giá"
+  }
+}

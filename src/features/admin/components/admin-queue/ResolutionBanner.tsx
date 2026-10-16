@@ -1,4 +1,5 @@
 import { Ban, Check, RefreshCw } from "lucide-react";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export type ResolutionKind = "approved" | "changes" | "rejected";
 
@@ -19,13 +20,8 @@ const BANNER_ICON: Record<ResolutionKind, React.ReactNode> = {
   rejected: <Ban size={16} />,
 };
 
-const BANNER_MESSAGE: Record<ResolutionKind, string> = {
-  approved: "Approved — job is now live and the employer has been notified.",
-  changes: "Sent back to the employer with your notes.",
-  rejected: "Rejected — the employer has been notified with a reason.",
-};
-
 export const ResolutionBanner = ({ banner, jobId }: ResolutionBannerProps) => {
+  const { t } = useTranslation("admin");
   if (!banner || banner.id !== jobId) return null;
 
   return (
@@ -33,7 +29,7 @@ export const ResolutionBanner = ({ banner, jobId }: ResolutionBannerProps) => {
       className={`flex items-center gap-2 px-5 py-3 text-sm font-medium ${BANNER_CLASS[banner.kind]}`}
     >
       {BANNER_ICON[banner.kind]}
-      {BANNER_MESSAGE[banner.kind]}
+      {t(`banner.${banner.kind}`)}
     </div>
   );
 };

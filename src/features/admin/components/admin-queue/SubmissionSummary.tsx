@@ -5,30 +5,32 @@ import {
   PLAN_LABELS,
 } from "@/features/admin/admin.utils";
 import type { AdminJob } from "@/types/admin";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface SubmissionSummaryProps {
   job: AdminJob;
 }
 
 export const SubmissionSummary = ({ job }: SubmissionSummaryProps) => {
+  const { t } = useTranslation("admin");
   const facts = [
     {
-      k: "Salary",
-      v: `${formatSalary(job.salaryMin, job.salaryMax, job.currency)}/mo`,
+      k: t("summary.salary"),
+      v: `${formatSalary(job.salaryMin, job.salaryMax, job.currency)}${t("jobs.filters.perMonthSuffix")}`,
       mono: true,
     },
-    { k: "Type", v: JOB_TYPE_LABELS[job.jobType] },
+    { k: t("summary.type"), v: JOB_TYPE_LABELS[job.jobType] },
     {
-      k: "Region",
-      v: job.country ?? (job.isRemote ? "Remote" : "—"),
+      k: t("summary.region"),
+      v: job.country ?? (job.isRemote ? t("header.remote") : "—"),
     },
-    { k: "Plan", v: PLAN_LABELS[job.planType] },
+    { k: t("summary.plan"), v: PLAN_LABELS[job.planType] },
   ];
 
   return (
     <div className="mb-5">
       <div className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-neutral-400">
-        <Layers size={12} /> Submission summary
+        <Layers size={12} /> {t("summary.title")}
       </div>
       <div className="grid grid-cols-2 gap-2">
         {facts.map((f) => (

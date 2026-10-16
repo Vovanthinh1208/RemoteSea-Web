@@ -18,19 +18,17 @@ import {
 import { Eyebrow } from "@/components/ui/eyebrow";
 import type { AdminUser } from "@/types/admin";
 import type { UserRole } from "@/types/user";
+import { useTranslation } from "@/i18n/useTranslation";
+import { formatLocalDate } from "@/utils/format";
 
 const ROLE_FILTERS = [
-  { id: "all", label: "All" },
-  { id: "TALENT", label: "Talent" },
-  { id: "EMPLOYER", label: "Employer" },
-  { id: "ADMIN", label: "Admin" },
+  { id: "all" },
+  { id: "TALENT" },
+  { id: "EMPLOYER" },
+  { id: "ADMIN" },
 ] as const;
 
-const ROLE_OPTIONS: { value: UserRole; label: string }[] = [
-  { value: "TALENT", label: "Talent" },
-  { value: "EMPLOYER", label: "Employer" },
-  { value: "ADMIN", label: "Admin" },
-];
+const ROLE_VALUES: UserRole[] = ["TALENT", "EMPLOYER", "ADMIN"];
 
 const USER_GRID_COLUMNS = "minmax(220px,1fr) 100px 120px 100px 160px";
 
@@ -49,6 +47,11 @@ const UserRow = memo(function UserRow({
   onBanChange,
   onRoleChange,
 }: UserRowProps) {
+  const { t } = useTranslation("admin");
+  const roleOptions = ROLE_VALUES.map((value) => ({
+    value,
+    label: t(`users.roles.${value}`),
+  }));
   return (
     <div
       className="grid items-center border-b border-neutral-50 px-5 py-4 transition-colors last:border-0 hover:bg-neutral-50"
@@ -59,7 +62,7 @@ const UserRow = memo(function UserRow({
           {u.name ?? "—"}
           {isSelf && (
             <span className="ml-1.5 text-[11px] font-normal text-neutral-400">
-              (you)
+              {t("users.you")}
             </span>
           )}
         </div>
@@ -67,28 +70,25 @@ const UserRow = memo(function UserRow({
       </div>
 
       <Dropdown
-        aria-label={`Role for ${u.email}`}
+        aria-label={t("users.roleFor", { email: u.email })}
         className={isSelf || isPending ? "pointer-events-none opacity-60" : ""}
-        options={ROLE_OPTIONS}
+        options={roleOptions}
         value={u.role}
         onChange={(v) => onRoleChange(u.id, v as UserRole)}
       />
 
       {u.bannedAt ? (
         <span className="inline-flex w-fit items-center gap-1 rounded-full bg-red-50 px-2 py-0.5 text-[11px] font-medium text-red-600">
-          <Ban size={11} /> Banned
+          <Ban size={11} /> {t("users.banned")}
         </span>
       ) : (
         <span className="inline-flex w-fit items-center rounded-full bg-green-50 px-2 py-0.5 text-[11px] font-medium text-green-700">
-          Active
+          {t("users.active")}
         </span>
       )}
 
       <span className="text-[13px] text-neutral-400">
-        {new Date(u.createdAt).toLocaleDateString("en-US", {
-          month: "short",
-          year: "numeric",
-        })}
+        {formatLocalDate(u.createdAt, { month: "short", year: "numeric" })}
       </span>
 
       <div className="flex justify-end">
@@ -101,12 +101,12 @@ const UserRow = memo(function UserRow({
             onClick={() => onBanChange(u.id, "unban")}
             className="inline-flex h-8 min-w-[76px] items-center justify-center rounded-8 border border-brand-200 bg-brand-50 px-3 text-xs font-medium text-brand-700 transition-all hover:bg-brand-100 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Unban
+            {t("users.unban")}
           </button>
         ) : (
           <ConfirmAction
             isPending={isPending}
-            message={`Ban ${u.email}? They'll be signed out everywhere and can't log back in.`}
+            message={t("users.banQ", { email: u.email })}
             onConfirm={() => onBanChange(u.id, "ban")}
           >
             {({ onClick }) => (
@@ -116,7 +116,7 @@ const UserRow = memo(function UserRow({
                 onClick={onClick}
                 className="inline-flex h-8 min-w-[76px] items-center justify-center rounded-8 border border-neutral-200 bg-white px-3 text-xs font-medium text-neutral-600 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Ban
+                {t("users.ban")}
               </button>
             )}
           </ConfirmAction>
@@ -127,6 +127,7 @@ const UserRow = memo(function UserRow({
 });
 
 export const AdminUsers = () => {
+  const { t } = useTranslation("admin");
   const { user: currentUser } = useAuth();
   const runWithToast = useToastMutation();
   const { data, isLoading, isError, refetch } = useAdminUsers();
@@ -147,19 +148,20 @@ export const AdminUsers = () => {
   const changeBanStatus = useCallback(
     (id: string, action: "ban" | "unban") =>
       runWithToast(() => updateUser({ id, action }), {
-        success: action === "ban" ? "User banned" : "User unbanned",
+        success:
+          action === "ban" ? t("users.bannedToast") : t("users.unbannedToast"),
         successVariant: action === "ban" ? "info" : "success",
-        error: "Couldn't update user",
+        error: t("users.updateFailed"),
       }),
-    [updateUser, runWithToast]
+    [updateUser, runWithToast, t]
   );
   const changeRole = useCallback(
     (id: string, role: UserRole) =>
       runWithToast(() => updateUser({ id, action: "change-role", role }), {
-        success: "Role updated",
-        error: "Couldn't update role",
+        success: t("users.roleUpdated"),
+        error: t("users.roleFailed"),
       }),
-    [updateUser, runWithToast]
+    [updateUser, runWithToast, t]
   );
 
   const rows = users.filter((u) => {
@@ -187,11 +189,11 @@ export const AdminUsers = () => {
       <EmptyState
         action={
           <Button size="sm" variant="outline" onClick={() => void refetch()}>
-            Try again
+            {t("common.actions.retry")}
           </Button>
         }
-        description="Something went wrong loading users."
-        title="Couldn't load users"
+        description={t("users.errorDesc")}
+        title={t("users.errorTitle")}
       />
     );
   }
@@ -199,30 +201,32 @@ export const AdminUsers = () => {
   return (
     <div className="flex-1 overflow-hidden">
       <div className="mb-6">
-        <Eyebrow className="mb-0.5">Operations</Eyebrow>
-        <h1 className="text-[26px] font-semibold text-neutral-900">Users</h1>
+        <Eyebrow className="mb-0.5">{t("users.eyebrow")}</Eyebrow>
+        <h1 className="text-[26px] font-semibold text-neutral-900">
+          {t("users.title")}
+        </h1>
         <p className="mt-1 text-sm text-neutral-500">
-          {users.length} accounts · {bannedCount} banned
+          {t("users.summary", { total: users.length, banned: bannedCount })}
         </p>
       </div>
 
       <div className="mb-6 grid grid-cols-3 gap-3">
         <StatCard
           icon={UsersIcon}
-          label="Total users"
-          sub="all roles"
+          label={t("users.stat.total")}
+          sub={t("users.stat.totalSub")}
           value={users.length}
         />
         <StatCard
           icon={ShieldAlert}
-          label="Admins"
-          sub="platform-wide access"
+          label={t("users.stat.admins")}
+          sub={t("users.stat.adminsSub")}
           value={counts.ADMIN}
         />
         <StatCard
           icon={Ban}
-          label="Banned"
-          sub="blocked from sign-in"
+          label={t("users.stat.banned")}
+          sub={t("users.stat.bannedSub")}
           value={bannedCount}
           warn={bannedCount > 0}
         />
@@ -239,7 +243,7 @@ export const AdminUsers = () => {
               key={f.id}
               onClick={() => setRoleFilter(f.id)}
             >
-              {f.label}{" "}
+              {t(`users.roles.${f.id}`)}{" "}
               <span
                 className={`ml-1 text-[11px] ${roleFilter === f.id ? "text-white/70" : "text-neutral-400"}`}
               >
@@ -251,9 +255,9 @@ export const AdminUsers = () => {
         <div className="flex h-9 w-full items-center gap-2 rounded-10 border border-neutral-200 bg-white px-3 focus-within:border-brand-600 focus-within:shadow-focus sm:ml-auto sm:w-auto">
           <Search className="text-neutral-400" size={14} />
           <input
-            aria-label="Search users"
+            aria-label={t("users.searchAria")}
             className="w-full bg-transparent text-sm outline-none placeholder:text-neutral-400 sm:w-48"
-            placeholder="Search name or email…"
+            placeholder={t("users.searchPlaceholder")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -265,14 +269,14 @@ export const AdminUsers = () => {
           className="grid border-b border-neutral-100 px-5 py-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-400"
           style={{ gridTemplateColumns: USER_GRID_COLUMNS }}
         >
-          <span>User</span>
-          <span>Role</span>
-          <span>Status</span>
-          <span>Joined</span>
+          <span>{t("users.col.user")}</span>
+          <span>{t("users.col.role")}</span>
+          <span>{t("users.col.status")}</span>
+          <span>{t("users.col.joined")}</span>
           <span />
         </div>
         {rows.length === 0 ? (
-          <EmptyRow>No users match this filter.</EmptyRow>
+          <EmptyRow>{t("users.empty")}</EmptyRow>
         ) : (
           rows.map((u) => (
             <UserRow

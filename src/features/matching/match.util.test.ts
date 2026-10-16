@@ -47,10 +47,10 @@ describe("computeMatchScore", () => {
     // Salary (weight 10) and availability (weight 10) both qualify too but
     // lose the 3rd slot to location (weight 20) — the cap keeps only the 3
     // highest-weighted qualifiers.
-    expect(reasons).toEqual([
-      "3/3 skills matched",
-      "Strong experience match",
-      "Timezone overlap",
+    expect(reasons.map((r) => r.key)).toEqual([
+      "jobs.matching.skillsMatched",
+      "jobs.matching.strongExperience",
+      "jobs.matching.timezoneOverlap",
     ]);
   });
 
@@ -80,7 +80,7 @@ describe("computeMatchScore", () => {
 
     const { score, reasons } = computeMatchScore(job, talent);
     expect(score).toBeLessThan(25);
-    expect(reasons).toEqual([]);
+    expect(reasons.map((r) => r.key)).toEqual([]);
   });
 
   it("lists missing skills required-first, omitting ones the talent already has", () => {
@@ -125,9 +125,9 @@ describe("computeMatchScore", () => {
     // salary/location/employment-type/availability all sit at their neutral
     // fallback (0.6): round(30 + 20 + 10*0.6 + 20*0.6 + 10*0.6 + 10*0.6) = 80.
     expect(score).toBe(80);
-    expect(reasons).toEqual([
-      "Skill requirements open",
-      "Strong experience match",
+    expect(reasons.map((r) => r.key)).toEqual([
+      "jobs.matching.skillsOpen",
+      "jobs.matching.strongExperience",
     ]);
   });
 
@@ -146,7 +146,9 @@ describe("computeMatchScore", () => {
     };
 
     const { reasons } = computeMatchScore(job, talent);
-    expect(reasons).not.toContain("Salary within your range");
+    expect(reasons.map((r) => r.key)).not.toContain(
+      "jobs.matching.salaryInRange"
+    );
   });
 
   it("surfaces an 'available immediately' reason for Immediate notice", () => {
@@ -175,10 +177,10 @@ describe("computeMatchScore", () => {
     };
 
     const { reasons } = computeMatchScore(job, talent);
-    expect(reasons).toEqual([
-      "Skill requirements open",
-      "Strong experience match",
-      "Available immediately",
+    expect(reasons.map((r) => r.key)).toEqual([
+      "jobs.matching.skillsOpen",
+      "jobs.matching.strongExperience",
+      "jobs.matching.availableNow",
     ]);
   });
 
@@ -187,8 +189,12 @@ describe("computeMatchScore", () => {
       ...baseTalent,
       noticePeriod: "2+ months",
     });
-    expect(reasons).not.toContain("Available immediately");
-    expect(reasons).not.toContain("Available soon");
+    expect(reasons.map((r) => r.key)).not.toContain(
+      "jobs.matching.availableNow"
+    );
+    expect(reasons.map((r) => r.key)).not.toContain(
+      "jobs.matching.availableSoon"
+    );
     // Every other component still saturates at 1 (baseJob/baseTalent are
     // otherwise a perfect match); availability alone drops to 0.25:
     // round(30 + 20 + 10 + 20 + 10 + 10*0.25) = round(92.5) = 93.

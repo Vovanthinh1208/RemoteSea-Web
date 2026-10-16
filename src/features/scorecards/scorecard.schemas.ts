@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { m, v } from "@/i18n/zod";
 
 // Mirrors the backend's createScorecardSchema (remotesea-api's
 // modules/scorecards/dto/create-scorecard.dto.ts) — client-side validation
@@ -6,9 +7,9 @@ import { z } from "zod";
 // everything.
 export const scorecardFormSchema = z.object({
   recommendation: z.enum(["STRONG_YES", "YES", "NO", "STRONG_NO"], {
-    message: "Pick a recommendation",
+    error: v("validation.pickRecommendation"),
   }),
-  note: z.string().trim().max(2000, "Keep it under 2000 characters").optional(),
+  note: z.string().trim().max(2000, m("validation.max2000")).optional(),
 });
 
 export type ScorecardFormValues = z.infer<typeof scorecardFormSchema>;

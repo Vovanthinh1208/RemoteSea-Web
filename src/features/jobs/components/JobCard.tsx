@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "@/i18n/useTranslation";
 import {
   BadgeCheck,
   Bookmark,
@@ -21,6 +22,7 @@ import {
   JOB_TYPE_LABELS,
   LEVEL_LABELS,
   countryFlag,
+  filterValueLabel,
   isAsyncTimezone,
   isVerifiedJob,
   timeAgo,
@@ -39,6 +41,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
     job.id,
     ROUTES.jobs
   );
+  const { t } = useTranslation("jobs");
   const queryClient = useQueryClient();
   const match = useMyMatch(job);
 
@@ -50,10 +53,13 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
     prefetchJobDetailChunk();
   };
 
-  const country = job.country ?? "Remote";
-  const timezone = job.timezone ?? (job.isRemote ? "Remote" : country);
+  const country = job.country ?? t("card.remote");
+  const timezone = job.timezone ?? (job.isRemote ? t("card.remote") : country);
   const isAsync = isAsyncTimezone(timezone);
-  const category = job.categories[0]?.category.name ?? "Other";
+  const categoryName = job.categories[0]?.category.name;
+  const category = categoryName
+    ? filterValueLabel(categoryName)
+    : t("card.other");
 
   return (
     // A <button> nested inside this card's own <Link> is invalid HTML (interactive
@@ -76,13 +82,13 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
     >
       <CompanyLogo name={job.employer.companyName} size={44} />
 
-      <div className="min-w-[240px] flex-1">
+      <div className="min-w-[min(240px,100%)] flex-1">
         {/* Row 1 — company + badges */}
         <div className="mb-1 flex flex-wrap items-center gap-1.5">
           {job.employer.isVerified && (
             <Badge variant="verified">
               <ShieldCheck size={10} />
-              Verified
+              {t("card.verified")}
             </Badge>
           )}
           {/* variant="positive" (brand green, same bordered weight as
@@ -93,7 +99,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
           {isVerifiedJob(job) && (
             <Badge variant="positive">
               <BadgeCheck size={10} />
-              Verified job
+              {t("card.verifiedJob")}
             </Badge>
           )}
           <Link
@@ -108,7 +114,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
           {job.isFeatured && (
             <Badge variant="featured">
               <Star size={10} />
-              Featured
+              {t("card.featured")}
             </Badge>
           )}
         </div>
@@ -134,7 +140,9 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
             {timezone}
           </Tag>
           {job.vnHireCount > 0 && (
-            <Badge variant="vn">🇻🇳 {job.vnHireCount} VN here</Badge>
+            <Badge variant="vn">
+              {t("card.vnHere", { count: job.vnHireCount })}
+            </Badge>
           )}
         </div>
       </div>
@@ -147,10 +155,12 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
         {match && <MatchBadge match={match} />}
         <SalaryBadge max={job.salaryMax} min={job.salaryMin} />
         <span className="text-[12px] text-neutral-400">
-          {timeAgo(job.publishedAt ?? job.createdAt)} ago
+          {t("common.time.ago", {
+            time: timeAgo(job.publishedAt ?? job.createdAt),
+          })}
         </span>
         <button
-          aria-label={saved ? "Unsave job" : "Save job"}
+          aria-label={saved ? t("card.unsave") : t("card.save")}
           className={cn(
             "relative z-10 grid h-8 w-8 place-items-center rounded-8 transition-colors focus-visible:shadow-focus focus-visible:outline-none",
             statusUnknown

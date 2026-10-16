@@ -14,6 +14,8 @@ import {
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { ApiError } from "@/core/errors/api-error";
 import { timeAgoLong } from "@/utils/time";
+import { getErrorMessage } from "@/core/errors/localize";
+import { useTranslation } from "@/i18n/useTranslation";
 
 // A mobile-ish device label (see remotesea-api's user-agent.util.ts, which
 // produces "<Browser> on <OS>") gets the Globe icon; everything else Laptop —
@@ -21,6 +23,7 @@ import { timeAgoLong } from "@/utils/time";
 const isMobileDevice = (device: string) => /iOS|Android/.test(device);
 
 export const SecuritySection = () => {
+  const { t } = useTranslation("settings");
   const runWithToast = useToastMutation();
   const { data: sessions } = useMySessions();
   const revokeMutation = useRevokeMySession();
@@ -28,14 +31,15 @@ export const SecuritySection = () => {
 
   const revoke = (id: string) =>
     runWithToast(() => revokeMutation.mutateAsync(id), {
-      error: "Couldn't revoke session",
-      onError: (err) => (err instanceof ApiError ? err.message : undefined),
+      error: t("sec2.revokeFailed"),
+      onError: (err) =>
+        err instanceof ApiError ? getErrorMessage(err) : undefined,
     });
 
   const revokeAllOthers = () =>
     runWithToast(() => revokeOthersMutation.mutateAsync(), {
-      success: "Signed out of all other sessions",
-      error: "Couldn't sign out other sessions",
+      success: t("sec2.revokedAll"),
+      error: t("sec2.revokeAllFailed"),
     });
 
   const hasOtherSessions = (sessions?.length ?? 0) > 1;
@@ -46,14 +50,14 @@ export const SecuritySection = () => {
       id="security"
     >
       <SectionHead
-        eyebrow="02 · Access"
-        help="Keep your account locked down. We'll email you whenever a new device signs in."
+        eyebrow={t("sec2.eyebrow")}
+        help={t("sec2.help")}
         title={
           <em
             className="font-serif italic text-brand-700"
             style={EMPHASIS_STYLE}
           >
-            Security.
+            {t("sec2.title")}
           </em>
         }
       />
@@ -62,7 +66,7 @@ export const SecuritySection = () => {
       <TwoFactorSection />
 
       <p className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-        Active sessions
+        {t("sec2.sessions")}
       </p>
       {/* No border here — same reasoning as TwoFactorSection.tsx just
           above: this already sits inside SecuritySection's own bordered
@@ -88,16 +92,18 @@ export const SecuritySection = () => {
                   {s.device}
                   {s.current && (
                     <span className="rounded-full border border-brand-200 bg-brand-50 px-1.5 py-0.5 text-[10px] font-medium text-brand-700">
-                      This device
+                      {t("sec2.thisDevice")}
                     </span>
                   )}
                 </p>
                 <p className="text-[12px] text-neutral-400">
-                  {s.location ?? s.ip ?? "Unknown location"}
+                  {s.location ?? s.ip ?? t("sec2.unknownLocation")}
                 </p>
               </div>
               <span className="flex-shrink-0 text-[12px] text-neutral-400">
-                {s.current ? "Active now" : timeAgoLong(s.lastSeenAt)}
+                {s.current
+                  ? t("common.time.activeNow")
+                  : timeAgoLong(s.lastSeenAt)}
               </span>
               {!s.current && (
                 <button
@@ -113,7 +119,7 @@ export const SecuritySection = () => {
                     revokeMutation.variables === s.id && (
                       <Loader2 className="animate-spin" size={12} />
                     )}
-                  Revoke
+                  {t("sec2.revoke")}
                 </button>
               )}
             </div>
@@ -127,7 +133,7 @@ export const SecuritySection = () => {
         onClick={revokeAllOthers}
       >
         <Ban size={15} />
-        Sign out of all other sessions
+        {t("sec2.signOutOthers")}
       </button>
     </section>
   );

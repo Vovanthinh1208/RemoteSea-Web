@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -10,6 +9,7 @@ import { resetPassword } from "@/features/auth/auth.service";
 import { TextField } from "@/components/shared/TextField";
 import { useToast } from "@/components/ui/toast";
 import { applyFormSubmitError } from "@/utils/form-errors";
+import { useSubmitError } from "@/hooks/useSubmitError";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/i18n";
@@ -20,7 +20,7 @@ export const ResetPasswordForm = () => {
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
-  const [formError, setFormError] = useState<string | null>(null);
+  const submitError = useSubmitError();
   const {
     register,
     handleSubmit,
@@ -33,10 +33,10 @@ export const ResetPasswordForm = () => {
 
   const onSubmit = async (values: ResetPasswordFormValues) => {
     if (!token) {
-      setFormError(t("resetPassword.invalidToken"));
+      submitError.failWithKey("auth.resetPassword.invalidToken");
       return;
     }
-    setFormError(null);
+    submitError.clear();
     try {
       await resetPassword({ token, password: values.password });
       toast({
@@ -46,13 +46,8 @@ export const ResetPasswordForm = () => {
       });
       navigate(ROUTES.login, { replace: true });
     } catch (err) {
-      setFormError(
-        applyFormSubmitError(
-          err,
-          setError,
-          "Something went wrong. Please try again."
-        )
-      );
+      applyFormSubmitError(err, setError);
+      submitError.fail(err);
     }
   };
 
@@ -86,7 +81,11 @@ export const ResetPasswordForm = () => {
         type="password"
       />
 
-      {formError && <p className="text-sm text-red-600">{formError}</p>}
+      {submitError.message && (
+        <p className="text-sm text-red-600" role="alert">
+          {submitError.message}
+        </p>
+      )}
 
       <Button
         className="w-full rounded-12"

@@ -1,0 +1,16 @@
+{
+  "page": {
+    "docTitle": "Notifications",
+    "title": "Notifications",
+    "desc": "Updates on invitations, application status, and reports you've filed.",
+    "markAll": "Mark all as read",
+    "errorTitle": "Couldn't load notifications",
+    "errorDesc": "Something went wrong loading your notifications.",
+    "emptyTitle": "No notifications yet",
+    "emptyDesc": "You'll see updates on invitations, application status, and reports here."
+  },
+  "row": {
+    "markFailed": "Couldn't mark as read",
+    "unread": "Unread: "
+  }
+}

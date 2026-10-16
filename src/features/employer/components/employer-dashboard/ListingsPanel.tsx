@@ -14,6 +14,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { percent } from "@/utils/percent";
 import { useExportJobApplicantsCsv } from "@/features/employer/employer.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const STATUS_VARIANT: Record<string, BadgeVariant> = {
   review: "warning",
@@ -32,6 +33,7 @@ const ListingRow = memo(function ListingRow({
   job: j,
   applications: apps,
 }: ListingRowProps) {
+  const { t } = useTranslation("employer");
   const total = j._count.applications;
   const reviewed = apps.filter((a) => a.status !== "PENDING").length;
   const shortlisted = apps.filter((a) => a.status === "SHORTLISTED").length;
@@ -56,8 +58,8 @@ const ListingRow = memo(function ListingRow({
     await runWithToast(
       () => exportCsvMutation.mutateAsync({ jobId: j.id, jobTitle: j.title }),
       {
-        success: "Applicant export downloaded",
-        error: "We couldn't export the applicants. Please try again.",
+        success: t("listings.exportDone"),
+        error: t("listings.exportFailed"),
       }
     );
   };
@@ -71,7 +73,7 @@ const ListingRow = memo(function ListingRow({
           </span>
           {j.planType === "FEATURED" && (
             <span className="flex-shrink-0 rounded-full bg-brand-600 px-1.5 py-0.5 text-[9.5px] font-bold text-white">
-              Featured
+              {t("listings.featured")}
             </span>
           )}
         </div>
@@ -95,7 +97,7 @@ const ListingRow = memo(function ListingRow({
             </span>
             {newApps > 0 && (
               <span className="rounded-full bg-brand-50 px-1.5 py-0.5 text-[10px] font-medium text-brand-700">
-                +{newApps} new
+                {t("listings.new", { count: newApps })}
               </span>
             )}
           </div>
@@ -111,7 +113,9 @@ const ListingRow = memo(function ListingRow({
           </div>
         </div>
       ) : (
-        <span className="text-[12px] italic text-neutral-400">Awaiting</span>
+        <span className="text-[12px] italic text-neutral-400">
+          {t("listings.awaiting")}
+        </span>
       )}
 
       {/* Dropped below sm — the mobile grid template only has 4 columns
@@ -123,7 +127,9 @@ const ListingRow = memo(function ListingRow({
         <div className="text-[13px] font-semibold text-neutral-700">
           {j.viewCount}
         </div>
-        <div className="text-[10px] text-neutral-400">views</div>
+        <div className="text-[10px] text-neutral-400">
+          {t("listings.views")}
+        </div>
       </div>
 
       {isPubliclyViewable ? (
@@ -150,15 +156,17 @@ const ListingRow = memo(function ListingRow({
   const exportButton = total > 0 && (
     <button
       aria-busy={exportCsvMutation.isPending}
-      aria-label={`Export ${j.title} applicants as a CSV file`}
+      aria-label={t("listings.exportAria", { title: j.title })}
       className="inline-flex h-8 flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-8 border border-neutral-200 px-2.5 text-[11px] font-medium text-neutral-500 transition-colors hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       disabled={exportCsvMutation.isPending}
-      title="Download every applicant for this listing as a CSV file"
+      title={t("listings.exportTitle")}
       type="button"
       onClick={handleExport}
     >
       <Download size={12} />
-      {exportCsvMutation.isPending ? "Exporting…" : "Export applicants"}
+      {exportCsvMutation.isPending
+        ? t("listings.exporting")
+        : t("listings.export")}
     </button>
   );
 
@@ -185,7 +193,7 @@ const ListingRow = memo(function ListingRow({
     <div className="flex flex-wrap items-center gap-1 rounded-12">
       <div
         className="grid flex-1 grid-cols-[1fr_64px_88px_20px] items-center gap-2 px-2 py-3 sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
-        title="This listing isn't live yet, so it doesn't have a public page to view."
+        title={t("listings.notLive")}
       >
         {rowContent}
       </div>
@@ -203,6 +211,7 @@ export const ListingsPanel = ({
   jobs,
   applicationsByJob,
 }: ListingsPanelProps) => {
+  const { t } = useTranslation("employer");
   const active = jobs.filter((j) => STATUS_GROUP[j.status] !== "closed").length;
 
   // rounded-16, not rounded-20 — matches EmployerDashboardSkeleton's
@@ -212,27 +221,25 @@ export const ListingsPanel = ({
     <div className="rounded-16 border border-neutral-100 bg-white p-5">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-[14px] font-semibold text-neutral-900">
-          Your listings{" "}
+          {t("listings.title")}
           <span className="font-normal text-neutral-400">
-            · {active} active
+            {t("listings.active", { count: active })}
           </span>
         </h3>
         <Link className={buttonVariants({ size: "sm" })} to={ROUTES.postJob}>
-          <Plus size={11} /> Post a job
+          <Plus size={11} /> {t("listings.postJob")}
         </Link>
       </div>
 
       {jobs.length === 0 ? (
-        <EmptyRow>
-          No listings yet. Post your first job to start hiring.
-        </EmptyRow>
+        <EmptyRow>{t("listings.empty")}</EmptyRow>
       ) : (
         <>
           <div className="mb-1 grid grid-cols-[1fr_64px_88px_20px] gap-2 px-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400 sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3">
-            <span>Role</span>
-            <span>Status</span>
-            <span>Applications</span>
-            <span className="hidden sm:block">Views</span>
+            <span>{t("listings.col.role")}</span>
+            <span>{t("listings.col.status")}</span>
+            <span>{t("listings.col.applications")}</span>
+            <span className="hidden sm:block">{t("listings.col.views")}</span>
             <span />
           </div>
 

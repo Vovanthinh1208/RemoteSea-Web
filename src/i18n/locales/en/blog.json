@@ -1,0 +1,77 @@
+{
+  "docTitle": "Field Notes — RemoteSEA Blog",
+  "badge": "Field notes · published Tue + Fri",
+  "heroTitle": "Field notes from ",
+  "heroTitleEm": "remote work",
+  "heroTitleEnd": ", written by the people doing it.",
+  "heroDesc": "No SEO sludge, no “10 tips for productivity.” Just honest essays on negotiation, async culture, timezone math, and tax law — written by Vietnamese professionals working for companies abroad.",
+  "readTime": "{{n}} min read",
+  "readTimeShort": "{{n}} min",
+  "authorTagline": "Senior FE · 7yrs remote",
+  "readEssay": "Read essay",
+  "recent": "Recent",
+  "archiveTitle": "The ",
+  "archiveTitleEm": "archive",
+  "mostRead": "Most read this month",
+  "inboxTitle": "Field notes, in your inbox.",
+  "inboxDesc": "One essay every Tuesday. Honest, unpolished, no sponsors.",
+  "inboxPlaceholder": "you@work.com",
+  "inboxFine": "Joining 2,400+ readers · unsubscribe anytime",
+  "writeTitle": "Write for us",
+  "writeDesc": "If you've negotiated a tough offer, navigated a hard timezone, or built an async ritual that works — we'd love your story.",
+  "pitch": "Pitch a piece",
+  "nlTitle": "Get the next ",
+  "nlTitleEm": "essay",
+  "nlTitleEnd": ", before it hits the site.",
+  "nlDesc": "One thoughtful piece every Tuesday morning, written by working remote professionals. No marketing tricks, no “tools we love” affiliate roundups.",
+  "nlFine": "2,400 readers · unsubscribe with one click · we don't sell emails, ever.",
+  "cat": {
+    "all": "All",
+    "negotiation": "Negotiation",
+    "salary": "Salary",
+    "async": "Async Work",
+    "interview": "Interview",
+    "career": "Career",
+    "tools": "Tools"
+  },
+  "popular": {
+    "1": "The Vietnamese remote worker's guide to Singapore tax residency",
+    "2": "How to write a CV that gets past Atlassian's ATS in 2026",
+    "3": "Loom is broken — what design teams use instead",
+    "4": "Async standups: the exact template our 8-person team uses"
+  },
+  "posts": {
+    "p1": {
+      "title": "Why your offer is probably 22% too low — and the exact 4 sentences that fix it.",
+      "excerpt": "We analyzed 142 offers from Singaporean and Australian companies hiring Vietnamese talent. The gap between what's offered and what's possible is bigger than you think."
+    },
+    "p2": {
+      "title": "The 5pm shutdown ritual that saved my marriage (and my Loom usage).",
+      "excerpt": "Working with a Sydney team meant my Slack stayed warm until 11pm. Here's the boundary system that actually held."
+    },
+    "p3": {
+      "title": "What 612 remote offers told us about senior frontend pay.",
+      "excerpt": "Median: $4,800. Top decile: $7,200+. The full breakdown by company size, country, and seniority."
+    },
+    "p4": {
+      "title": "I bombed 7 Stripe-loop interviews. Then I figured out the system.",
+      "excerpt": "The system design rounds at top-tier companies follow a pattern. Memorize the pattern, ace the round."
+    },
+    "p5": {
+      "title": "Why I left a 6-figure FAANG offer to join a 22-person SG startup.",
+      "excerpt": "On paper it looked nuts. In practice, the equity math, the learning curve, and the timezone alignment made it the obvious move."
+    },
+    "p6": {
+      "title": "Standups are dead, long live the Friday roll-up.",
+      "excerpt": "How three of our members run weekly written async updates instead of 5 standups. Saves 4hr/week per engineer."
+    },
+    "p7": {
+      "title": "Equity, RSUs, options — a Vietnamese employee's tax guide.",
+      "excerpt": "Written with a Singapore-based tax lawyer. What you actually owe, what you actually keep, and the 3 mistakes everyone makes."
+    },
+    "p8": {
+      "title": "My async stack: Notion + Linear + Loom, and the glue between them.",
+      "excerpt": "How I run product design for a remote-first team across 6 timezones with three tools and a Friday ritual."
+    }
+  }
+}

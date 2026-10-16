@@ -1,6 +1,7 @@
 import { cn } from "@/utils/cn";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { HiringFunnelResponse } from "@/types/employer";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const MIN_FUNNEL_BAR_PCT = 6;
 const SKELETON_BAR_COUNT = 6;
@@ -18,6 +19,7 @@ type FunnelPanelProps = {
 // firing its own useHiringFunnel() call, same reasoning as ListingsPanel/
 // ApplicantsPanel taking their data as props.
 export const FunnelPanel = ({ data, isLoading }: FunnelPanelProps) => {
+  const { t } = useTranslation("employer");
   if (isLoading) {
     return (
       <div className="rounded-20 border border-neutral-100 bg-white p-5">
@@ -36,6 +38,13 @@ export const FunnelPanel = ({ data, isLoading }: FunnelPanelProps) => {
   if (!data) return null;
 
   const { stages, dropOff } = data;
+  // The API supplies an English label per stage; the status code is the
+  // stable key, so localize from that and keep the API label as a fallback.
+  const stageLabel = (s: { status: string; label: string }) => {
+    const key = `employer.funnel.stage.${s.status}`;
+    const text = t(key);
+    return text === key ? s.label : text;
+  };
   const total = stages[0]?.count ?? 0;
   const rejected = dropOff.find((d) => d.status === "REJECTED")?.count ?? 0;
   const rejectionPct = total > 0 ? Math.round((rejected / total) * 100) : 0;
@@ -43,21 +52,27 @@ export const FunnelPanel = ({ data, isLoading }: FunnelPanelProps) => {
   return (
     <div className="rounded-20 border border-neutral-100 bg-white p-5">
       <h3 className="mb-4 text-[14px] font-semibold text-neutral-900">
-        Hiring funnel{" "}
-        <span className="font-normal text-neutral-400">· all listings</span>
+        {t("funnel.title")}
+        <span className="font-normal text-neutral-400">
+          {t("funnel.allListings")}
+        </span>
       </h3>
       {total === 0 ? (
-        <p className="text-[12.5px] text-neutral-400">No applications yet.</p>
+        <p className="text-[12.5px] text-neutral-400">{t("funnel.empty")}</p>
       ) : (
         <>
           <div className="space-y-2.5">
             {stages.map((s, i) => (
               <div className="flex items-center gap-3" key={s.status}>
                 <span className="w-20 flex-shrink-0 truncate text-[12px] text-neutral-500">
-                  {s.label}
+                  {stageLabel(s)}
                 </span>
                 <div
-                  aria-label={`${s.label}: ${s.count} applicant${s.count === 1 ? "" : "s"}, ${s.conversionFromFirst}% of total applied`}
+                  aria-label={t("funnel.ariaBar", {
+                    label: stageLabel(s),
+                    count: s.count,
+                    pct: s.conversionFromFirst,
+                  })}
                   aria-valuemax={100}
                   aria-valuemin={0}
                   aria-valuenow={s.conversionFromFirst}
@@ -94,11 +109,11 @@ export const FunnelPanel = ({ data, isLoading }: FunnelPanelProps) => {
             ))}
           </div>
           <p className="mt-2 text-[10.5px] text-neutral-300">
-            % shown is conversion from the stage above it.
+            {t("funnel.note")}
           </p>
           {rejectionPct >= NOTABLE_REJECTION_PCT && (
             <p className="mt-3 text-[11.5px] text-neutral-400">
-              {rejected} rejected ({rejectionPct}% of applicants)
+              {t("funnel.rejectedNote", { rejected, pct: rejectionPct })}
             </p>
           )}
         </>
