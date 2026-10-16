@@ -8,6 +8,7 @@ import {
   submitTalentVerification,
   updateMyTalentProfile,
 } from "@/features/talent/talent.service";
+import type { TalentProfile } from "@/types/talent";
 import { useAuth } from "@/contexts/AuthContext";
 import { ApiError } from "@/core/errors/api-error";
 import {
@@ -46,7 +47,17 @@ export const useUpdateMyTalentProfile = () => {
   return useMutation({
     mutationFn: updateMyTalentProfile,
     onSuccess: (profile) => {
-      queryClient.setQueryData(talentKeys.mine(), profile);
+      // PUT /talent/me returns the profile without its `user` relation (GET
+      // includes it). Overwriting the cache with that bare response blanked
+      // `profile.user.name`, which reset the form's name field to "" and made
+      // the next save fail with "Name is required".
+      queryClient.setQueryData<TalentProfile>(
+        talentKeys.mine(),
+        (previous) => ({
+          ...profile,
+          user: profile.user ?? previous?.user,
+        })
+      );
       // The public profile page supports viewing your own profile — without
       // this, editing and then clicking through to your own public URL shows
       // stale data for up to staleTime.

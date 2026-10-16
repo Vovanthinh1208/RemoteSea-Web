@@ -99,6 +99,55 @@ describe("with Sprint 1 focus", () => {
   });
 });
 
+describe("with Sprint 1+2 focus", () => {
+  const sprint12 = parseSprintFocus("1,2");
+
+  it("shows Sprint 1 and Sprint 2 screens", () => {
+    for (const p of [
+      "/login",
+      "/settings",
+      "/profile",
+      "/talent/verify",
+      "/jobs",
+      "/jobs/abc123",
+      "/talent",
+      "/talent/jane-doe",
+      "/companies/acme",
+      "/employer/verify",
+      "/team/invitations/tok",
+      "/post-job",
+      "/post-job/success",
+      "/employer-dashboard",
+      "/employer-dashboard/talent",
+      "/employer-dashboard/team",
+    ])
+      expect(isPathVisible(p, sprint12)).toBe(true);
+  });
+
+  it("still hides Sprint 3, Sprint 4 and unassigned screens", () => {
+    for (const p of [
+      "/saved",
+      "/applications/a1",
+      "/employer-dashboard/applications/a1",
+      "/employer-dashboard/interviews",
+      "/notifications",
+      "/alerts",
+      "/salary",
+      "/admin",
+      "/employer",
+      "/blog",
+    ])
+      expect(isPathVisible(p, sprint12)).toBe(false);
+  });
+
+  it("keeps Sprint 2 post-login destinations instead of falling back", () => {
+    expect(resolveVisiblePath("/jobs", "/settings", sprint12)).toBe("/jobs");
+    expect(
+      resolveVisiblePath("/employer-dashboard", "/settings", sprint12)
+    ).toBe("/employer-dashboard");
+  });
+});
+
 describe("route table coverage", () => {
   const files = import.meta.glob("/src/router/AppRouter.tsx", {
     query: "?raw",

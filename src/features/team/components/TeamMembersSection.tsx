@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { RefreshCw, X } from "lucide-react";
 import {
   useRemoveTeamMember,
@@ -14,6 +15,8 @@ import { ApiError } from "@/core/errors/api-error";
 import { timeAgoLong } from "@/utils/time";
 import { personInitial } from "@/utils/name";
 import { cn } from "@/utils/cn";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { TEXT_INPUT_CLASS } from "@/components/shared/input-styles";
 import type { CompanyMemberRole, TeamMember } from "@/types/team";
 import { getErrorMessage } from "@/core/errors/localize";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -50,21 +53,48 @@ const MemberRow = ({ member, isOwner, isSelf }: MemberRowProps) => {
   const updateRole = useUpdateTeamMemberRole();
   const removeMember = useRemoveTeamMember();
   const displayName = member.user.name ?? member.user.email;
+  const [confirm, setConfirm] = useState<"remove" | "transfer" | null>(null);
+  const [password, setPassword] = useState("");
 
-  const handleRoleChange = (role: string) =>
-    runWithToast(() => updateRole.mutateAsync({ id: member.id, role }), {
-      error: t("members.changeRoleFailed"),
-      onError: (err) =>
-        err instanceof ApiError ? getErrorMessage(err) : undefined,
-    });
+  const closeConfirm = () => {
+    setConfirm(null);
+    setPassword("");
+  };
 
-  const handleRemove = () =>
-    runWithToast(() => removeMember.mutateAsync(member.id), {
+  const applyRole = (role: string, pw?: string) =>
+    runWithToast(
+      () => updateRole.mutateAsync({ id: member.id, role, password: pw }),
+      {
+        error: t("members.changeRoleFailed"),
+        onError: (err) =>
+          err instanceof ApiError ? getErrorMessage(err) : undefined,
+      }
+    );
+
+  // PB39 AC3: handing the company over is never a one-click dropdown change —
+  // it opens the warning + password step first. Other roles apply directly.
+  const handleRoleChange = (role: string) => {
+    if (role === "OWNER" && member.role !== "OWNER") {
+      setConfirm("transfer");
+      return;
+    }
+    return applyRole(role);
+  };
+
+  const handleTransfer = async () => {
+    await applyRole("OWNER", password);
+    closeConfirm();
+  };
+
+  const handleRemove = async () => {
+    closeConfirm();
+    await runWithToast(() => removeMember.mutateAsync(member.id), {
       success: t("members.removed", { name: displayName }),
       error: t("members.removeFailed"),
       onError: (err) =>
         err instanceof ApiError ? getErrorMessage(err) : undefined,
     });
+  };
 
   return (
     <div className="flex items-center gap-3 border-b border-neutral-50 px-5 py-4 last:border-none">
@@ -110,10 +140,46 @@ const MemberRow = ({ member, isOwner, isSelf }: MemberRowProps) => {
           className="flex-shrink-0 rounded-8 p-1.5 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
           disabled={removeMember.isPending}
           type="button"
-          onClick={() => void handleRemove()}
+          onClick={() => setConfirm("remove")}
         >
           <X size={14} />
         </button>
+      )}
+      {isOwner && !isSelf && (
+        <>
+          <ConfirmDialog
+            destructive
+            cancelLabel={t("common.actions.cancel")}
+            confirmLabel={t("members.removeConfirm")}
+            description={t("members.removeDesc")}
+            open={confirm === "remove"}
+            title={t("members.removeTitle", { name: displayName })}
+            onCancel={closeConfirm}
+            onConfirm={() => void handleRemove()}
+          />
+          <ConfirmDialog
+            destructive
+            cancelLabel={t("common.actions.cancel")}
+            confirmDisabled={!password || updateRole.isPending}
+            confirmLabel={t("members.transferConfirm")}
+            description={t("members.transferWarning", { name: displayName })}
+            open={confirm === "transfer"}
+            title={t("members.transferTitle", { name: displayName })}
+            onCancel={closeConfirm}
+            onConfirm={() => void handleTransfer()}
+          >
+            <label className="mt-4 flex flex-col gap-1 text-[12px] font-medium text-neutral-700">
+              {t("members.transferPassword")}
+              <input
+                autoComplete="current-password"
+                className={TEXT_INPUT_CLASS}
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
+          </ConfirmDialog>
+        </>
       )}
     </div>
   );

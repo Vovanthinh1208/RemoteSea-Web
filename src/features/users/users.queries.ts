@@ -18,14 +18,23 @@ import {
   updateMyNotificationPreferences,
 } from "@/features/users/users.service";
 import { useAuth } from "@/contexts/AuthContext";
-import { usersKeys } from "@/core/query/query-keys";
+import { talentKeys, usersKeys } from "@/core/query/query-keys";
+import type { TalentProfile } from "@/types/talent";
 
 export const useUpdateMyName = () => {
   const { patchUser } = useAuth();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: updateMyName,
     onSuccess: (result) => {
       patchUser({ name: result.name });
+      // Keep the cached own-profile in step, so the profile form (which seeds
+      // its name field from `profile.user.name`) doesn't snap back to the old name.
+      queryClient.setQueryData<TalentProfile>(talentKeys.mine(), (previous) =>
+        previous
+          ? { ...previous, user: { ...previous.user, name: result.name } }
+          : previous
+      );
     },
   });
 };

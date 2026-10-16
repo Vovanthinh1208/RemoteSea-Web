@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TeamMembersSection } from "./TeamMembersSection";
 import {
@@ -144,5 +144,106 @@ describe("TeamMembersSection — role-gated controls", () => {
     // Both members still render, just as read-only role badges.
     expect(screen.getByText("Owner")).toBeInTheDocument();
     expect(screen.getByText("Recruiter")).toBeInTheDocument();
+  });
+});
+
+describe("TeamMembersSection — guarded owner actions (PB39 / PB40)", () => {
+  const ownerView = () => {
+    mockedUseTeamMembers.mockReturnValue({
+      data: members,
+      isLoading: false,
+      isError: false,
+      refetch: vi.fn(),
+    } as never);
+    renderWithClient(<TeamMembersSection currentUserId="owner-1" />);
+  };
+
+  it("choosing OWNER in the dropdown opens the warning + password step instead of changing the role", () => {
+    const mutateAsync = vi.fn();
+    mockedUseUpdateTeamMemberRole.mockReturnValue({
+      mutateAsync,
+      isPending: false,
+    } as never);
+    ownerView();
+
+    fireEvent.change(screen.getByRole("combobox"), {
+      target: { value: "OWNER" },
+    });
+
+    expect(mutateAsync).not.toHaveBeenCalled();
+    expect(document.body.textContent).toMatch(
+      /lose the highest level of ownership/i
+    );
+  });
+
+  it("the transfer needs a password, then sends role + password together", async () => {
+    const mutateAsync = vi.fn().mockResolvedValue({});
+    mockedUseUpdateTeamMemberRole.mockReturnValue({
+      mutateAsync,
+      isPending: false,
+    } as never);
+    ownerView();
+    fireEvent.change(screen.getByRole("combobox"), {
+      target: { value: "OWNER" },
+    });
+
+    const confirm = screen.getByText("Transfer ownership", {
+      selector: "button",
+    }) as HTMLButtonElement;
+    expect(confirm.disabled).toBe(true);
+
+    fireEvent.change(screen.getByLabelText(/your password/i), {
+      target: { value: "secret-pw-1" },
+    });
+    expect(confirm.disabled).toBe(false);
+    fireEvent.click(confirm);
+
+    await vi.waitFor(() =>
+      expect(mutateAsync).toHaveBeenCalledWith({
+        id: "member-recruiter",
+        role: "OWNER",
+        password: "secret-pw-1",
+      })
+    );
+  });
+
+  it("a non-owner role change applies immediately, without a dialog", () => {
+    const mutateAsync = vi.fn().mockResolvedValue({});
+    mockedUseUpdateTeamMemberRole.mockReturnValue({
+      mutateAsync,
+      isPending: false,
+    } as never);
+    ownerView();
+
+    fireEvent.change(screen.getByRole("combobox"), {
+      target: { value: "INTERVIEWER" },
+    });
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      id: "member-recruiter",
+      role: "INTERVIEWER",
+      password: undefined,
+    });
+  });
+
+  it("the remove (X) button asks for confirmation first and removes only after confirming", async () => {
+    const removeAsync = vi.fn().mockResolvedValue(undefined);
+    mockedUseRemoveTeamMember.mockReturnValue({
+      mutateAsync: removeAsync,
+      isPending: false,
+    } as never);
+    ownerView();
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /remove recruiter person/i })
+    );
+    expect(removeAsync).not.toHaveBeenCalled();
+
+    fireEvent.click(
+      screen.getByText("Remove from company", { selector: "button" })
+    );
+    await vi.waitFor(() =>
+      expect(removeAsync).toHaveBeenCalledWith("member-recruiter")
+    );
   });
 });

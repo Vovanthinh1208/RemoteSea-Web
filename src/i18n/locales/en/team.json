@@ -17,7 +17,14 @@
     "count_other": "{{count}} members",
     "whoHasAccess": "Who has access to this company",
     "loadError": "Couldn't load your team.",
-    "empty": "No team members yet."
+    "empty": "No team members yet.",
+    "removeTitle": "Remove {{name}}?",
+    "removeDesc": "They lose access to this company's jobs and candidate data immediately. This can't be undone.",
+    "removeConfirm": "Remove from company",
+    "transferTitle": "Transfer ownership to {{name}}?",
+    "transferWarning": "You will lose the highest level of ownership of this company. {{name}} becomes the OWNER and you become a Recruiter.",
+    "transferPassword": "Your password",
+    "transferConfirm": "Transfer ownership"
   },
   "invite": {
     "expired": "expired",
@@ -35,7 +42,10 @@
     "revokeFailed": "Couldn't revoke invitation",
     "pendingError": "Couldn't load pending invitations.",
     "pending": "Pending invitations",
-    "revokeAria": "Revoke invitation to {{email}}"
+    "revokeAria": "Revoke invitation to {{email}}",
+    "revokeTitle": "Revoke invitation?",
+    "revokeDesc": "The link sent to {{email}} stops working and the invitation is removed.",
+    "revokeConfirm": "Revoke"
   },
   "page": {
     "docTitle": "Team — Company Settings",

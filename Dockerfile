@@ -25,6 +25,17 @@ COPY . .
 # from the build context anyway, so there's no ambiguity either way.
 ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
+# Sprint testing flags (see src/features/sprints/sprint-visibility.ts). Same
+# build-time inlining as above, and .env is excluded from the context, so
+# these are the only way a Fly build sees them — pass via fly.toml
+# [build.args] or `fly deploy --build-arg`. Unset/empty = the code defaults
+# (no screen limiting, board off), i.e. exactly what builds did before.
+ARG VITE_SPRINT_FOCUS
+ARG VITE_VISIBLE_SPRINTS
+ARG VITE_ENABLE_SPRINT_BOARD
+ENV VITE_SPRINT_FOCUS=${VITE_SPRINT_FOCUS} \
+    VITE_VISIBLE_SPRINTS=${VITE_VISIBLE_SPRINTS} \
+    VITE_ENABLE_SPRINT_BOARD=${VITE_ENABLE_SPRINT_BOARD}
 RUN npm run build
 
 # ---- runtime ----------------------------------------------------------------

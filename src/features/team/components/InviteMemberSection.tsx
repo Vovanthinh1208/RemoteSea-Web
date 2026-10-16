@@ -1,3 +1,5 @@
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, RefreshCw, X } from "lucide-react";
@@ -150,6 +152,11 @@ const PendingInvitationsList = () => {
   const { data, isLoading, isError, refetch } = usePendingInvitations();
   const runWithToast = useToastMutation();
   const revokeMutation = useRevokeTeamInvitation();
+  // PB38 AC3: revoking asks first — a stray click on the X must not cancel an invite.
+  const [pendingRevoke, setPendingRevoke] = useState<{
+    id: string;
+    email: string;
+  } | null>(null);
 
   const handleRevoke = (id: string) =>
     runWithToast(() => revokeMutation.mutateAsync(id), {
@@ -222,7 +229,9 @@ const PendingInvitationsList = () => {
               className="flex-shrink-0 rounded-8 p-1.5 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-50"
               disabled={revokeMutation.isPending}
               type="button"
-              onClick={() => void handleRevoke(invitation.id)}
+              onClick={() =>
+                setPendingRevoke({ id: invitation.id, email: invitation.email })
+              }
             >
               {revokingId === invitation.id ? (
                 <Loader2 className="animate-spin" size={13} />
@@ -233,6 +242,22 @@ const PendingInvitationsList = () => {
           </div>
         ))}
       </div>
+      <ConfirmDialog
+        destructive
+        cancelLabel={t("common.actions.cancel")}
+        confirmLabel={t("invite.revokeConfirm")}
+        description={t("invite.revokeDesc", {
+          email: pendingRevoke?.email ?? "",
+        })}
+        open={pendingRevoke !== null}
+        title={t("invite.revokeTitle")}
+        onCancel={() => setPendingRevoke(null)}
+        onConfirm={() => {
+          const target = pendingRevoke;
+          setPendingRevoke(null);
+          if (target) void handleRevoke(target.id);
+        }}
+      />
     </div>
   );
 };

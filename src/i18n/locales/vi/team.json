@@ -17,7 +17,14 @@
     "count_other": "{{count}} thành viên",
     "whoHasAccess": "Những ai có quyền truy cập công ty này",
     "loadError": "Không thể tải nhóm của bạn.",
-    "empty": "Chưa có thành viên nhóm nào."
+    "empty": "Chưa có thành viên nhóm nào.",
+    "removeTitle": "Xóa {{name}} khỏi công ty?",
+    "removeDesc": "Họ sẽ mất quyền truy cập vào tin tuyển dụng và dữ liệu ứng viên của công ty ngay lập tức. Thao tác này không thể hoàn tác.",
+    "removeConfirm": "Xóa khỏi công ty",
+    "transferTitle": "Chuyển giao quyền OWNER cho {{name}}?",
+    "transferWarning": "Bạn sẽ mất toàn quyền sở hữu cao nhất của công ty. {{name}} trở thành OWNER và bạn trở thành Recruiter.",
+    "transferPassword": "Mật khẩu của bạn",
+    "transferConfirm": "Chuyển giao quyền sở hữu"
   },
   "invite": {
     "expired": "đã hết hạn",
@@ -35,7 +42,10 @@
     "revokeFailed": "Không thể thu hồi lời mời",
     "pendingError": "Không thể tải các lời mời đang chờ.",
     "pending": "Lời mời đang chờ",
-    "revokeAria": "Thu hồi lời mời gửi tới {{email}}"
+    "revokeAria": "Thu hồi lời mời gửi tới {{email}}",
+    "revokeTitle": "Thu hồi lời mời?",
+    "revokeDesc": "Liên kết đã gửi tới {{email}} sẽ hết hiệu lực và lời mời bị xóa.",
+    "revokeConfirm": "Thu hồi"
   },
   "page": {
     "docTitle": "Nhóm — Cài đặt công ty",

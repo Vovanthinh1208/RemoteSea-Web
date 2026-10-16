@@ -20,7 +20,10 @@ export const previewTeamInvitation = (token: string, opts?: RequestOptions) =>
 export const acceptTeamInvitation = (token: string) =>
   teamRepository.acceptInvitation(token);
 
-export const updateTeamMemberRole = (id: string, role: string) =>
-  teamRepository.updateMemberRole(id, role);
+export const updateTeamMemberRole = (
+  id: string,
+  role: string,
+  password?: string
+) => teamRepository.updateMemberRole(id, role, password);
 
 export const removeTeamMember = (id: string) => teamRepository.removeMember(id);

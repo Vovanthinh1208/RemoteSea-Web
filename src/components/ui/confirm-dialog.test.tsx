@@ -35,12 +35,67 @@ describe("ConfirmDialog", () => {
     expect(onCancel).toHaveBeenCalledTimes(1);
   });
 
-  it("labels the dialog by its title and description", () => {
+  it("labels the dialog by its own (unique) title and description ids", () => {
     setup();
     const dialog = document.querySelector("dialog") as HTMLDialogElement;
-    expect(dialog.getAttribute("aria-labelledby")).toBe("confirm-dialog-title");
-    expect(document.getElementById("confirm-dialog-title")?.textContent).toBe(
-      "Sign out?"
+    const labelledBy = dialog.getAttribute("aria-labelledby") as string;
+    expect(labelledBy).toBeTruthy();
+    expect(document.getElementById(labelledBy)?.textContent).toBe("Sign out?");
+    expect(
+      document.getElementById(dialog.getAttribute("aria-describedby") as string)
+        ?.textContent
+    ).toBe("Are you sure?");
+  });
+
+  it("renders extra content and keeps the confirm button inert while confirmDisabled", () => {
+    const onConfirm = vi.fn();
+    render(
+      <ConfirmDialog
+        confirmDisabled
+        cancelLabel="Stay"
+        confirmLabel="Leave"
+        description="Type your password"
+        open={false}
+        title="Confirm"
+        onCancel={vi.fn()}
+        onConfirm={onConfirm}
+      >
+        <input aria-label="Password" type="password" />
+      </ConfirmDialog>
+    );
+    expect(screen.getByLabelText("Password")).toBeTruthy();
+    const confirm = screen.getByText("Leave", { selector: "button" });
+    expect((confirm as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.click(confirm);
+    expect(onConfirm).not.toHaveBeenCalled();
+  });
+
+  it("gives two dialogs on one page different ids", () => {
+    render(
+      <>
+        <ConfirmDialog
+          cancelLabel="a"
+          confirmLabel="b"
+          description="d1"
+          open={false}
+          title="t1"
+          onCancel={vi.fn()}
+          onConfirm={vi.fn()}
+        />
+        <ConfirmDialog
+          cancelLabel="a"
+          confirmLabel="b"
+          description="d2"
+          open={false}
+          title="t2"
+          onCancel={vi.fn()}
+          onConfirm={vi.fn()}
+        />
+      </>
+    );
+    const [a, b] = Array.from(document.querySelectorAll("dialog"));
+    expect(a.getAttribute("aria-labelledby")).not.toBe(
+      b.getAttribute("aria-labelledby")
     );
   });
 });

@@ -53,8 +53,15 @@ export const useRevokeTeamInvitation = () => {
 export const useUpdateTeamMemberRole = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, role }: { id: string; role: string }) =>
-      updateTeamMemberRole(id, role),
+    mutationFn: ({
+      id,
+      role,
+      password,
+    }: {
+      id: string;
+      role: string;
+      password?: string;
+    }) => updateTeamMemberRole(id, role, password),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: teamKeys.members() });
     },

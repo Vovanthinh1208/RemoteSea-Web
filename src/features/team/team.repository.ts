@@ -53,9 +53,14 @@ export const teamRepository = {
     return data;
   },
 
-  updateMemberRole: async (id: string, role: string): Promise<TeamMember> => {
+  updateMemberRole: async (
+    id: string,
+    role: string,
+    password?: string
+  ): Promise<TeamMember> => {
     const { data } = await apiClient.patch<TeamMember>(`/team/members/${id}`, {
       role,
+      ...(password ? { password } : {}),
     });
     return data;
   },
