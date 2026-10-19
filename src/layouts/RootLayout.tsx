@@ -25,6 +25,9 @@ const AiChatWidget = lazy(() =>
   }))
 );
 
+// Hidden unless explicitly enabled — set VITE_ENABLE_AI_CHAT=true to show it.
+const AI_CHAT_ENABLED = import.meta.env.VITE_ENABLE_AI_CHAT === "true";
+
 export const RootLayout = () => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
@@ -84,7 +87,7 @@ export const RootLayout = () => {
         </ErrorBoundary>
       </main>
       <Footer />
-      {user && isSprintShown(4, sprintFocus) && (
+      {AI_CHAT_ENABLED && user && isSprintShown(4, sprintFocus) && (
         <Suspense fallback={null}>
           <AiChatWidget />
         </Suspense>
