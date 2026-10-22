@@ -38,7 +38,7 @@ jobs:
       # survives npm ci — unlike node_modules) so re-linting a PR only re-checks
       # changed files. Keyed on the eslint config; restore-keys falls back to any
       # prior cache so even a config bump starts warm.
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: .cache
           key: eslint-${{ runner.os }}-${{ hashFiles('eslint.config.js') }}
