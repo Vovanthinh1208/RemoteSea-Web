@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   disableTwoFactor,
+  getOAuthProviders,
   getTwoFactorStatus,
   setupTwoFactor,
   verifyTwoFactorSetup,
@@ -16,6 +17,14 @@ export const useTwoFactorStatus = () => {
     enabled: !!user,
   });
 };
+
+export const useOAuthProviders = () =>
+  useQuery({
+    queryKey: authKeys.oauthProviders(),
+    queryFn: getOAuthProviders,
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+  });
 
 export const useSetupTwoFactor = () =>
   useMutation({ mutationFn: setupTwoFactor });

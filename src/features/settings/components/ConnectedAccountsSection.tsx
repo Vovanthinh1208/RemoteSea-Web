@@ -12,6 +12,7 @@ import {
   useDisconnectMyConnection,
 } from "@/features/users/users.queries";
 import { getOAuthLinkUrl } from "@/features/auth/auth.service";
+import { useOAuthProviders } from "@/features/auth/auth.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useToast } from "@/components/ui/toast";
 import { ApiError } from "@/core/errors/api-error";
@@ -42,6 +43,8 @@ export const ConnectedAccountsSection = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: connections } = useMyConnections();
   const disconnectMutation = useDisconnectMyConnection();
+  const providersQuery = useOAuthProviders();
+  const enabledProviders = new Set(providersQuery.data ?? []);
 
   // Settings > Connected accounts "Connect" round-trips through the
   // provider's consent screen and back to GET /auth/:provider/callback,
@@ -171,10 +174,21 @@ export const ConnectedAccountsSection = () => {
               ) : (
                 <button
                   className="flex-shrink-0 rounded-8 border border-neutral-200 px-2.5 py-1.5 text-[12px] font-medium text-neutral-600 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none"
+                  disabled={
+                    providersQuery.isPending ||
+                    providersQuery.isError ||
+                    !enabledProviders.has(id)
+                  }
                   type="button"
                   onClick={() => void connect(id)}
                 >
-                  {t("conn2.connect")}
+                  {providersQuery.isPending
+                    ? t("conn2.checking")
+                    : providersQuery.isError
+                      ? t("conn2.unavailable")
+                      : enabledProviders.has(id)
+                        ? t("conn2.connect")
+                        : t("conn2.unavailable")}
                 </button>
               )}
             </div>

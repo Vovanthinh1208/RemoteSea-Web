@@ -114,7 +114,9 @@
     "startFailed": "Không thể bắt đầu liên kết {{provider}}",
     "notConnected": "Chưa liên kết",
     "disconnect": "Ngắt liên kết",
-    "connect": "Liên kết"
+    "connect": "Liên kết",
+    "checking": "Đang kiểm tra…",
+    "unavailable": "Chưa khả dụng"
   },
   "notif2": {
     "eyebrow": "04 · Điều gì đến với bạn",

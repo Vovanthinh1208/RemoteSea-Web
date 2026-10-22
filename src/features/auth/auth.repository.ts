@@ -6,6 +6,7 @@ import type {
   OAuthExchangeResponseDto,
   OAuthLinkUrlDto,
   OAuthProvider,
+  OAuthProvidersResponseDto,
   RegisterPayload,
   RegisterResponseDto,
   ResetPasswordPayload,
@@ -106,6 +107,12 @@ export const authRepository = {
 
   oauthUrl: (provider: OAuthProvider): string =>
     `${API_BASE_URL}/auth/${provider}`,
+
+  getOAuthProviders: async (): Promise<OAuthProvidersResponseDto> => {
+    const { data } =
+      await apiClient.get<OAuthProvidersResponseDto>("/auth/providers");
+    return data;
+  },
 
   completeOAuthExchange: async (
     code: string

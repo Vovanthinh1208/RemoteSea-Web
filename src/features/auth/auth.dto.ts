@@ -41,6 +41,7 @@ export type ResetPasswordPayload = {
   password: string;
 };
 export type OAuthProvider = "google" | "github" | "linkedin";
+export type OAuthProvidersResponseDto = { providers: OAuthProvider[] };
 
 // The `?code=` on the OAuth redirect target (<FRONTEND_URL>/auth/callback) —
 // short-lived and single-purpose, not the real access token itself. See

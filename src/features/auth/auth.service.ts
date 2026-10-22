@@ -75,6 +75,11 @@ export const resetPassword = async (
 export const oauthUrl = (provider: OAuthProvider): string =>
   authRepository.oauthUrl(provider);
 
+export const getOAuthProviders = async (): Promise<OAuthProvider[]> => {
+  const { providers } = await authRepository.getOAuthProviders();
+  return providers;
+};
+
 export const getOAuthLinkUrl = async (
   provider: OAuthProvider
 ): Promise<OAuthLinkUrlDto> => authRepository.getOAuthLinkUrl(provider);

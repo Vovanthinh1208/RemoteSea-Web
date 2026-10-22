@@ -8,12 +8,14 @@ const repository = vi.hoisted(() => ({
     forgotPassword: vi.fn(),
     resetPassword: vi.fn(),
     oauthUrl: vi.fn(),
+    getOAuthProviders: vi.fn(),
   },
 }));
 
 vi.mock("@/features/auth/auth.repository", () => repository);
 
-const { getSession } = await import("@/features/auth/auth.service");
+const { getSession, getOAuthProviders } =
+  await import("@/features/auth/auth.service");
 const { UnauthorizedError, ValidationError } =
   await import("@/core/errors/error-types");
 
@@ -55,5 +57,14 @@ describe("getSession", () => {
       name: "Ada",
     });
     await expect(getSession()).rejects.toBeInstanceOf(ValidationError);
+  });
+});
+
+describe("getOAuthProviders", () => {
+  it("returns the provider list from the API", async () => {
+    repository.authRepository.getOAuthProviders.mockResolvedValueOnce({
+      providers: ["google", "github"],
+    });
+    await expect(getOAuthProviders()).resolves.toEqual(["google", "github"]);
   });
 });

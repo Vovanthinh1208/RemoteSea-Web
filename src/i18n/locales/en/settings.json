@@ -114,7 +114,9 @@
     "startFailed": "Couldn't start connecting {{provider}}",
     "notConnected": "Not connected",
     "disconnect": "Disconnect",
-    "connect": "Connect"
+    "connect": "Connect",
+    "checking": "Checking…",
+    "unavailable": "Unavailable"
   },
   "notif2": {
     "eyebrow": "04 · What reaches you",

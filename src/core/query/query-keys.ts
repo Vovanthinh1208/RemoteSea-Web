@@ -139,6 +139,7 @@ export const sessionKeys = {
 
 export const authKeys = {
   twoFactorStatus: () => ["auth", "2fa", "status"] as const,
+  oauthProviders: () => ["auth", "oauth-providers"] as const,
 };
 
 export const usersKeys = {
