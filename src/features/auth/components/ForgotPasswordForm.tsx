@@ -10,8 +10,9 @@ import { forgotPassword } from "@/features/auth/auth.service";
 import { TextField } from "@/components/shared/TextField";
 import { applyFormSubmitError } from "@/utils/form-errors";
 import { useSubmitError } from "@/hooks/useSubmitError";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { useTranslation } from "@/i18n";
+import { MailOpen } from "lucide-react";
 
 export const ForgotPasswordForm = () => {
   const { t } = useTranslation("auth");
@@ -45,8 +46,17 @@ export const ForgotPasswordForm = () => {
 
   if (isSent) {
     return (
-      <div className="rounded-12 border border-brand-200 bg-brand-50 p-4 text-sm text-brand-700">
-        {t("forgotPassword.successDesc", { email: sentEmail })}
+      <div className="flex flex-col items-start gap-4 rounded-12 border border-brand-200 bg-brand-50 p-4 text-sm text-brand-700">
+        <p>{t("forgotPassword.successDesc", { email: sentEmail })}</p>
+        <a
+          className={buttonVariants({ size: "md" })}
+          href="https://mail.google.com/mail/u/0/#inbox"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <MailOpen aria-hidden="true" size={16} />
+          {t("forgotPassword.openGmail")}
+        </a>
       </div>
     );
   }
