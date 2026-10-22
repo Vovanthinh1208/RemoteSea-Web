@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   SectionHead,
   EMPHASIS_STYLE,
@@ -8,6 +9,7 @@ import {
   useUpdateMyNotificationPreferences,
 } from "@/features/users/users.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
+import { Button } from "@/components/ui/button";
 import type { NotificationPreferencesDto } from "@/features/users/users.dto";
 import { useTranslation } from "@/i18n/useTranslation";
 
@@ -21,11 +23,23 @@ export const NotificationsSection = () => {
   const runWithToast = useToastMutation();
   const { data: prefs } = useMyNotificationPreferences();
   const updatePrefsMutation = useUpdateMyNotificationPreferences();
+  const [draftState, setDraftState] =
+    useState<NotificationPreferencesDto | null>(null);
+  const draft = draftState ?? prefs ?? null;
 
   const toggle = (field: ToggleField, value: boolean) =>
-    runWithToast(() => updatePrefsMutation.mutateAsync({ [field]: value }), {
+    setDraftState((current) => {
+      const base = current ?? prefs;
+      return base ? { ...base, [field]: value } : current;
+    });
+
+  const save = () => {
+    if (!draft) return;
+    void runWithToast(() => updatePrefsMutation.mutateAsync(draft), {
+      success: t("notif2.saved"),
       error: t("notif2.failed"),
     });
+  };
 
   return (
     <section
@@ -54,13 +68,13 @@ export const NotificationsSection = () => {
       <div className="mb-6 divide-y divide-neutral-50">
         <ToggleRow
           desc={t("notif2.appUpdatesDesc")}
-          on={prefs?.applicationUpdates ?? true}
+          on={draft?.applicationUpdates ?? true}
           title={t("notif2.appUpdates")}
           onChange={(v) => toggle("applicationUpdates", v)}
         />
         <ToggleRow
           desc={t("notif2.messagesDesc")}
-          on={prefs?.employerMessages ?? true}
+          on={draft?.employerMessages ?? true}
           title={t("notif2.messages")}
           onChange={(v) => toggle("employerMessages", v)}
         />
@@ -72,7 +86,7 @@ export const NotificationsSection = () => {
       <div className="mb-6 divide-y divide-neutral-50">
         <ToggleRow
           desc={t("notif2.digestDesc")}
-          on={prefs?.weeklyDigest ?? true}
+          on={draft?.weeklyDigest ?? true}
           title={
             <>
               {t("notif2.digest")}{" "}
@@ -85,7 +99,7 @@ export const NotificationsSection = () => {
         />
         <ToggleRow
           desc={t("notif2.instantDesc")}
-          on={prefs?.instantMatchAlerts ?? true}
+          on={draft?.instantMatchAlerts ?? true}
           title={t("notif2.instant")}
           onChange={(v) => toggle("instantMatchAlerts", v)}
         />
@@ -97,13 +111,13 @@ export const NotificationsSection = () => {
       <div className="divide-y divide-neutral-50">
         <ToggleRow
           desc={t("notif2.newsDesc")}
-          on={prefs?.productNews ?? false}
+          on={draft?.productNews ?? false}
           title={t("notif2.news")}
           onChange={(v) => toggle("productNews", v)}
         />
         <ToggleRow
           desc={t("notif2.tipsDesc")}
-          on={prefs?.tipsAndResources ?? true}
+          on={draft?.tipsAndResources ?? true}
           title={t("notif2.tips")}
           onChange={(v) => toggle("tipsAndResources", v)}
         />
@@ -114,6 +128,16 @@ export const NotificationsSection = () => {
           title={t("notif2.push")}
           onChange={(v) => toggle("browserPush", v)}
         />
+      </div>
+      <div className="mt-6 flex justify-end">
+        <Button
+          disabled={!draft || updatePrefsMutation.isPending}
+          isLoading={updatePrefsMutation.isPending}
+          type="button"
+          onClick={save}
+        >
+          {t("notif2.save")}
+        </Button>
       </div>
     </section>
   );

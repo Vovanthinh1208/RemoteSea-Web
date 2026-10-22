@@ -10,6 +10,8 @@ import {
 } from "@/features/users/users.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useTranslation } from "@/i18n/useTranslation";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { useState } from "react";
 
 export const DangerZoneSection = () => {
   const { t } = useTranslation("settings");
@@ -17,6 +19,7 @@ export const DangerZoneSection = () => {
   const { data: pauseState } = useMyPauseState();
   const pauseMutation = usePauseMyAccount();
   const reactivateMutation = useReactivateMyAccount();
+  const [pauseDialogOpen, setPauseDialogOpen] = useState(false);
 
   const isPaused = pauseState?.isPaused ?? false;
   const isPending = pauseMutation.isPending || reactivateMutation.isPending;
@@ -67,7 +70,9 @@ export const DangerZoneSection = () => {
             className="ml-6 flex-shrink-0 rounded-10 border border-amber-300 bg-amber-50 px-4 py-2 text-[13px] font-medium text-amber-800 hover:bg-amber-100 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
             disabled={isPending}
             type="button"
-            onClick={togglePause}
+            onClick={() =>
+              isPaused ? void togglePause() : setPauseDialogOpen(true)
+            }
           >
             {isPaused ? t("dz.reactivate") : t("dz.pause")}
           </button>
@@ -86,6 +91,20 @@ export const DangerZoneSection = () => {
           </div>
         </div>
       </div>
+      <ConfirmDialog
+        cancelLabel={t("actions.cancel")}
+        confirmLabel={pauseMutation.isPending ? t("dz.pausing") : t("dz.pause")}
+        confirmDisabled={pauseMutation.isPending}
+        description={t("dz.pauseConfirm")}
+        onCancel={() => setPauseDialogOpen(false)}
+        onConfirm={() => {
+          setPauseDialogOpen(false);
+          void togglePause();
+        }}
+        open={pauseDialogOpen}
+        title={t("dz.pauseTitle")}
+        destructive
+      />
     </section>
   );
 };

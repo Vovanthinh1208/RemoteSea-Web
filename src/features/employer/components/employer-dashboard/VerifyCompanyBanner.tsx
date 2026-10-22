@@ -14,7 +14,7 @@ import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange"
 import type { EmployerVerificationStatus } from "@/types/employer";
 import { useTranslation } from "@/i18n/useTranslation";
 
-interface VerifyCompanyBannerProps {
+export interface VerifyCompanyBannerProps {
   verificationStatus: EmployerVerificationStatus;
   verificationEmail: string | null;
 }
@@ -54,13 +54,19 @@ export const VerifyCompanyBanner = ({
 
   if (verificationStatus === "PENDING") {
     return (
-      <div className="mb-6 flex items-start gap-4 rounded-20 border border-amber-200 bg-amber-50 p-5">
-        <ShieldCheck className="mt-0.5 shrink-0 text-amber-600" size={20} />
+      <div
+        aria-live="polite"
+        className="mb-6 flex min-w-0 items-start gap-3 rounded-20 border border-amber-200 bg-amber-50 p-4 sm:gap-4 sm:p-5"
+        role="status"
+      >
+        <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-amber-100 text-amber-700">
+          <ShieldCheck aria-hidden="true" size={18} />
+        </span>
         <div className="min-w-0 flex-1">
           <h3 className="mb-1 text-[14.5px] font-semibold text-neutral-900">
             {t("verifyCompany.checkInbox")}
           </h3>
-          <p className="text-[13px] text-neutral-600">
+          <p className="text-[13px] leading-5 text-neutral-600 [overflow-wrap:anywhere]">
             {t("verifyCompany.sentTo", { email: verificationEmail })}
           </p>
         </div>
@@ -69,22 +75,24 @@ export const VerifyCompanyBanner = ({
   }
 
   return (
-    <div className="mb-6 flex items-start gap-4 rounded-20 border border-amber-200 bg-amber-50 p-5">
-      <ShieldCheck className="mt-0.5 shrink-0 text-amber-600" size={20} />
+    <div className="mb-6 flex min-w-0 items-start gap-3 rounded-20 border border-amber-200 bg-amber-50 p-4 sm:gap-4 sm:p-5">
+      <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-amber-100 text-amber-700">
+        <ShieldCheck aria-hidden="true" size={18} />
+      </span>
       <div className="min-w-0 flex-1">
         <h3 className="mb-1 text-[14.5px] font-semibold text-neutral-900">
           {t("verifyCompany.title")}
         </h3>
-        <p className="mb-3 text-[13px] text-neutral-600">
+        <p className="mb-3 text-[13px] leading-5 text-neutral-600">
           {verificationStatus === "FAILED"
             ? t("verifyCompany.expired")
             : t("verifyCompany.prompt")}
         </p>
         <form
-          className="flex flex-col gap-2 sm:flex-row sm:items-start"
+          className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-end"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="w-full sm:max-w-xs">
+          <div className="min-w-0 flex-1 sm:max-w-sm">
             <TextField
               error={errors.email?.message}
               id="verification-email"
@@ -96,7 +104,7 @@ export const VerifyCompanyBanner = ({
             />
           </div>
           <Button
-            className="shrink-0"
+            className="w-full sm:w-auto sm:shrink-0"
             disabled={submitVerification.isPending}
             isLoading={submitVerification.isPending}
             size="sm"
@@ -106,7 +114,7 @@ export const VerifyCompanyBanner = ({
           </Button>
         </form>
         {submitError.message && (
-          <p className="mt-2 text-[13px] text-red-600" role="alert">
+          <p className="mt-2 break-words text-[13px] text-red-600" role="alert">
             {submitError.message}
           </p>
         )}

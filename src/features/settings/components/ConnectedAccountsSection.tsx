@@ -157,6 +157,17 @@ export const ConnectedAccountsSection = () => {
                     ? connection.providerAccountId
                     : t("conn2.notConnected")}
                 </p>
+                {connection && (
+                  <p className="text-[11px] text-neutral-400">
+                    {connection.createdAt
+                      ? t("conn2.linkedOn", {
+                          date: new Date(
+                            connection.createdAt
+                          ).toLocaleDateString(),
+                        })
+                      : t("conn2.linkedDateUnknown")}
+                  </p>
+                )}
               </div>
               {connection ? (
                 <button

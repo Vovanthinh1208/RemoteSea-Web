@@ -54,6 +54,7 @@ export type PauseStateDto = {
 export type ConnectionDto = {
   provider: string;
   providerAccountId: string;
+  createdAt: string | null;
 };
 
 export type ExportDataDto = {
