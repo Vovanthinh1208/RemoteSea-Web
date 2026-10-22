@@ -1,0 +1,116 @@
+{
+  "PB15": {
+    "section": "Settings → mục 04 'Notifications' (#notifications)",
+    "component": "features/settings/components/NotificationsSection.tsx, ToggleRow.tsx, ui/switch.tsx",
+    "actorNote": "[Runtime] chụp với Ứng viên và Nhà tuyển dụng dùng một lần — cùng một danh sách công tắc.",
+    "purpose": "Người dùng chọn những loại thông báo/email muốn nhận.",
+    "layout": "[Runtime] Thẻ mục đánh số '04 · WHAT REACHES YOU', tiêu đề serif-italic 'Notifications.', mô tả bên phải ('Choose what lands in your inbox. Critical security emails are always sent.'). Ba nhóm có nhãn chữ hoa: YOUR ACTIVITY (Application updates, Messages from employers), MATCHES & DIGESTS (Weekly digest · Monday 9am, Instant high-match alerts), FROM REMOTESEA (Product news, Tips & resources, Browser push notifications — badge 'Coming soon'). Mỗi hàng: tiêu đề + mô tả + công tắc bên phải. Thanh dính cuối trang 'All changes saved · just now' + Close / Done.",
+    "interactive": "[Runtime] 7 công tắc (role=switch, aria-checked). Menu mục bên trái (≥ lg) với mục 'Notifications'. Close/Done là link về dashboard theo vai trò [Source].",
+    "flow": "[Runtime] Navbar → biểu tượng Settings → /settings → bấm 'Notifications' trong menu trái (cuộn tới mục) → gạt công tắc → giá trị lưu ngay (PATCH /users/me/notification-preferences) → tải lại trang vẫn giữ giá trị.",
+    "data": "[Runtime] Trạng thái bật/tắt hiện tại của từng loại thông báo (mặc định của tài khoản mới: Product news và Browser push tắt, còn lại bật).",
+    "states": "[Runtime] Mặc định; sau khi gạt (lưu ngay); sau khi tải lại (đã lưu ở server); lỗi lưu (mô phỏng mất kết nối) → toast 'Couldn't update notification preference — Network error. Please check your connection.' và công tắc trở về giá trị cũ. Không có trạng thái loading riêng cho từng công tắc trên ảnh. Thanh 'All changes saved · just now' là **văn bản trang trí** (SettingsSaveBar.tsx), vẫn hiển thị cả khi lưu thất bại.",
+    "responsive": "[Runtime] Mobile 390px: không còn menu mục bên trái (SettingsNav `hidden lg:block`), mô tả mục xuống dưới tiêu đề, mô tả từng hàng xuống nhiều dòng, thanh Close/Done thu gọn.",
+    "acCompare": "AC 2 ✔ có công tắc cho cập nhật đơn ứng tuyển, tin nhắn, việc làm phù hợp… ; AC 3 ✘ không có nút [Lưu cài đặt] — mỗi công tắc lưu ngay; AC 4 ◐ lưu vào server (đã chứng minh bằng ảnh sau khi tải lại) nhưng **không có thông báo thành công** — chỉ có toast khi lỗi. 'Browser push notifications' chưa được xây dựng (Coming soon).",
+    "status": "CAPTURED_AND_VERIFIED",
+    "statusNote": "Đã thao tác và xác minh lưu thật (tải lại trang). Trạng thái lỗi là mô phỏng mạng.",
+    "coverageNote": "Lưu ngay, không có nút Lưu; thanh 'All changes saved' là trang trí."
+  },
+  "PB16": {
+    "section": "Settings → mục 06 'Danger zone' (#danger), thẻ 'Pause my account'",
+    "component": "features/settings/components/DangerZoneSection.tsx; features/users/users.queries.ts (usePauseMyAccount → logout)",
+    "actorNote": "[Runtime] chụp với Ứng viên dùng một lần.",
+    "purpose": "Tạm ẩn tài khoản mà không xoá dữ liệu, và kích hoạt lại khi muốn.",
+    "layout": "[Runtime] Thẻ '06 · CAREFUL NOW', tiêu đề 'Danger zone.' (chữ 'Danger' đỏ, serif-italic), mô tả 'Reversible and irreversible actions. Pausing is safe — deleting is not.'. Hai thẻ con: 'Pause my account' (mô tả + nút amber 'Pause') và 'Delete account' (nền đỏ nhạt, PB20). Khi đã tạm dừng: tiêu đề 'Account paused', mô tả 'You can still sign in. Reactivate anytime — nothing was deleted.', nút 'Reactivate'.",
+    "interactive": "[Runtime] Nút Pause / Reactivate. Không có hộp thoại xác nhận.",
+    "flow": "[Runtime] /settings → Danger zone → Pause → tạm dừng ngay (POST /users/me/pause) và **tự đăng xuất** về /login → đăng nhập lại (vẫn được phép) → Settings hiển thị 'Account paused' + Reactivate → Reactivate → toast 'Account reactivated', nút trở lại 'Pause'.",
+    "data": "[Runtime] Trạng thái tạm dừng của tài khoản (GET /users/me/pause).",
+    "states": "[Runtime] Mặc định; đã tạm dừng + đăng xuất; đăng nhập lại khi đang tạm dừng; trạng thái 'Account paused'; kích hoạt lại thành công (toast). Lỗi pause/reactivate có thông điệp trong i18n ('Couldn't pause account') [Source] — chưa tái hiện.",
+    "responsive": "[Runtime] Mobile: thẻ Pause/Delete xếp dọc, nút xuống dưới mô tả.",
+    "acCompare": "AC 1 ✔ (Pause trong Settings); AC 2 ✘ không có hộp thoại cảnh báo; AC 3 ✘ không có bước xác nhận; AC 4 ✔ tự đăng xuất (usePauseMyAccount gọi logout()) — nhưng theo comment trong remotesea-api auth.service.ts, trạng thái tạm dừng **chưa ẩn hồ sơ khỏi tìm kiếm và chưa dừng email** [Source]; AC 5 ✔ đăng nhập lại có tuỳ chọn Reactivate (trong Settings, không phải màn hình riêng khi đăng nhập).",
+    "status": "CAPTURED_AND_VERIFIED",
+    "coverageNote": "Không có hộp xác nhận; tự đăng xuất; chưa ẩn hồ sơ (theo source API).",
+    "missing": [
+      {
+        "what": "Thông báo lỗi khi tạm dừng/kích hoạt thất bại",
+        "why": "Không mô phỏng cho PB16 (đã có ví dụ trạng thái lỗi ở PB15/PB17)",
+        "next": "Thêm entry failApi POST /users/me/pause nếu cần"
+      }
+    ]
+  },
+  "PB17": {
+    "section": "Settings → mục 05 'Privacy & data' (#data), hàng 'Download your data'",
+    "component": "features/settings/components/PrivacyDataSection.tsx; GET /users/me/export",
+    "actorNote": "[Runtime] chụp với Ứng viên dùng một lần.",
+    "purpose": "Tải bản sao dữ liệu cá nhân dưới dạng file JSON.",
+    "layout": "[Runtime] Thẻ '05 · YOUR DATA', tiêu đề 'Privacy & data.'; hàng 'Profile visibility — Currently Public' + công tắc (thuộc PB23); hàng 'Download your data — Your profile, applications, and job alerts as a JSON export.' + nút 'Request'; hàng 'Let search engines index my public profile' (badge 'Coming soon', chưa xây dựng).",
+    "interactive": "[Runtime] Nút Request (khi đang xử lý đổi thành 'Preparing…').",
+    "flow": "[Runtime] /settings → Privacy & data → Request → 'Preparing…' → trình duyệt tải file .json → toast 'Export downloaded'. (File bị huỷ ngay trong môi trường chụp — không lưu dữ liệu cá nhân.)",
+    "data": "[Runtime] Tên file tải về ghi trong capture-results.json (evidence.download). Nội dung file không được mở.",
+    "states": "[Runtime] Mặc định; đang xử lý 'Preparing…' (mô phỏng phản hồi chậm); thành công (toast); lỗi (mô phỏng mất kết nối) → toast 'Couldn't export your data'.",
+    "responsive": "[Runtime] Mobile: nút Request xuống dưới mô tả.",
+    "acCompare": "AC 1 ◐ nút tên 'Request' (AC: [Yêu cầu xuất dữ liệu]); AC 2 [Source] gói dữ liệu gồm hồ sơ, đơn ứng tuyển, cảnh báo việc làm (theo mô tả UI) — chưa kiểm tra nội dung; AC 3 ✔ tải trực tiếp file JSON.",
+    "status": "CAPTURED_AND_VERIFIED",
+    "coverageNote": "Tải JSON trực tiếp; trạng thái loading/lỗi là mô phỏng mạng."
+  },
+  "PB18": {
+    "section": "Settings → mục 03 'Connected accounts' (#connected)",
+    "component": "features/settings/components/ConnectedAccountsSection.tsx",
+    "actorNote": "[Runtime] chụp với Ứng viên dùng một lần (đăng ký bằng email, chưa liên kết nhà cung cấp nào).",
+    "purpose": "Xem và quản lý các tài khoản Google / GitHub / LinkedIn đã liên kết (ngắt kết nối).",
+    "layout": "[Runtime] Thẻ '03 · SIGN-IN METHODS', tiêu đề 'Connected accounts.', mô tả 'Providers linked for one-tap sign-in…'. Ba hàng: huy hiệu màu (G / GH / in), tên nhà cung cấp, trạng thái 'Not connected', nút 'Connect'.",
+    "interactive": "[Runtime] Nút Connect. [Source] Khi đã liên kết, hàng hiển thị nút ngắt kết nối (disconnect) và thông báo lỗi 'Couldn't disconnect' nếu thất bại.",
+    "flow": "[Runtime] Bấm Connect (GitHub) → trình duyệt được chuyển tới https://github.com/login/oauth/authorize với **client_id rỗng** (API local chưa cấu hình OAuth) — điều hướng bị chặn trong môi trường chụp, chỉ ghi URL đã làm sạch. Khi nhà cung cấp chuyển về, Settings đọc ?connected= / ?connectionError=&reason= để hiện toast: đã chụp trường hợp lỗi 'already_linked'.",
+    "data": "[Runtime] Danh sách nhà cung cấp và trạng thái liên kết.",
+    "states": "[Runtime] Chưa liên kết (mặc định); toast lỗi trả về từ OAuth 'Couldn't connect GitHub — That account is already connected to a different RemoteSEA account.' (mở bằng tham số callback). Trạng thái đã liên kết / ngắt kết nối: **chưa chụp**.",
+    "responsive": "[Runtime] Mobile: hàng giữ bố cục ngang, nút Connect vẫn bên phải.",
+    "acCompare": "AC 1 ✔ mục Connected accounts; AC 2 ◐ có danh sách nhà cung cấp nhưng không có tài khoản đã liên kết để thấy ngày liên kết; AC 3–4 ✘ chưa kiểm tra được ngắt kết nối và ràng buộc 'còn phương thức đăng nhập khác'.",
+    "status": "PARTIALLY_CAPTURED",
+    "statusNote": "Thiếu trạng thái đã liên kết (cần OAuth thật).",
+    "coverageNote": "OAuth chưa cấu hình ở API local (client_id rỗng).",
+    "missing": [
+      {
+        "what": "Danh sách tài khoản đã liên kết + nút ngắt kết nối + lỗi 'không thể ngắt phương thức đăng nhập cuối cùng'",
+        "why": "Cần liên kết OAuth thật; API local thiếu cấu hình GOOGLE_/GITHUB_/LINKEDIN_*",
+        "next": "Cấu hình OAuth test cho remotesea-api, liên kết một tài khoản test rồi chụp lại"
+      }
+    ]
+  },
+  "PB19": {
+    "section": "Settings → mục 02 'Security', khối 'Active sessions'",
+    "component": "features/settings/components/SecuritySection.tsx; GET /users/me/sessions, DELETE /users/me/sessions/:id",
+    "actorNote": "[Runtime] chụp với Ứng viên và Nhà tuyển dụng dùng một lần.",
+    "purpose": "Xem các phiên đăng nhập đang hoạt động và đăng xuất các thiết bị khác.",
+    "layout": "[Runtime] Nhãn 'ACTIVE SESSIONS'; mỗi phiên một hàng: icon thiết bị, tên trình duyệt/hệ điều hành ('Chrome on macOS', 'Browser on an unknown OS'), badge 'This device' cho phiên hiện tại, dòng IP/vị trí (bị che trong ảnh), thời gian ('Active now' / 'Just now'), nút 'Revoke' (trừ phiên hiện tại). Cuối khối: nút viền đỏ nét đứt 'Sign out of all other sessions'.",
+    "interactive": "[Runtime] Revoke từng phiên; Sign out of all other sessions.",
+    "flow": "[Runtime] Đăng nhập thêm ở 2 trình duyệt khác → danh sách nhiều phiên → Revoke một phiên → phiên biến mất → 'Sign out of all other sessions' → toast 'Signed out of all other sessions', chỉ còn 'This device' → trình duyệt đã bị thu hồi mở /settings → bị đưa về /login.",
+    "data": "[Runtime] Thiết bị/trình duyệt, IP + vị trí ('Unknown location' khi không xác định), thời điểm hoạt động.",
+    "states": "[Runtime] Một phiên; nhiều phiên; sau Revoke; sau 'Sign out of all other sessions' (toast); phiên đã bị thu hồi bị đăng xuất. Phát hiện: **Sign out (PB09) chỉ xoá token ở trình duyệt** (AuthContext.logout), không gọi API — phiên đã đăng xuất vẫn được liệt kê là đang hoạt động cho đến khi bị Revoke (ảnh signed-out-session-still-listed).",
+    "responsive": "[Runtime] Mobile: thời gian và nút Revoke xuống dòng dưới tên thiết bị.",
+    "acCompare": "AC 1 ✔; AC 2 ◐ có thiết bị/trình duyệt, IP, thời gian; hệ điều hành gộp trong tên ('Chrome on macOS'), headless hiện 'unknown OS'; AC 3 ✔ Revoke từng phiên; AC 4 ✔ đăng xuất tất cả thiết bị khác; AC 5 ✔ phiên bị thu hồi mất quyền truy cập (đã thấy trình duyệt bị thu hồi bị đưa về /login).",
+    "status": "CAPTURED_AND_VERIFIED",
+    "coverageNote": "Đăng xuất không thu hồi phiên phía server (phát hiện).",
+    "evidence": "IP trong ảnh được che bằng mask của script"
+  },
+  "PB20": {
+    "section": "Settings → mục 06 'Danger zone' (#danger), thẻ 'Delete account'",
+    "component": "features/settings/components/DeleteAccountButton.tsx; features/users/users.queries.ts (useDeleteMyAccount → logout); DELETE /users/me",
+    "actorNote": "[Runtime] chụp với Ứng viên và Nhà tuyển dụng (chưa có công ty) dùng một lần — cả hai đều bị xoá thật ở cuối lượt chụp.",
+    "purpose": "Xoá vĩnh viễn tài khoản và dữ liệu.",
+    "layout": "[Runtime] Thẻ 'Delete account' nền danger-50 với mô tả 'Permanently remove your profile, applications, and message history. This cannot be undone.' và nút viền đỏ 'Delete account'. Khi mở: bảng xác nhận inline bên phải — 'Are you sure? This cannot be undone. This permanently erases your account and data.', ô 'Current password' (gợi ý 'Leave blank if you sign in only with Google, GitHub or LinkedIn.'), ô 'Type DELETE to confirm', nút đỏ 'Yes, delete' + 'Cancel'.",
+    "interactive": "[Runtime] Delete account → bảng xác nhận; nút 'Yes, delete' bị khoá cho tới khi gõ đúng DELETE; Cancel đóng bảng.",
+    "flow": "[Runtime] /settings → Danger zone → Delete account → nhập mật khẩu + gõ DELETE → Yes, delete → 'Deleting…' → tài khoản bị xoá, tự đăng xuất, về trang chủ → đăng nhập lại bằng tài khoản đó bị từ chối.",
+    "data": "[Runtime] Không hiển thị dữ liệu riêng ngoài các nhãn xác nhận.",
+    "states": "[Runtime] Mặc định; bảng xác nhận; nút khoá khi chưa gõ đúng; mật khẩu sai → API 400 + thông báo lỗi, tài khoản còn nguyên; huỷ; đang xoá 'Deleting…' (mô phỏng phản hồi chậm để giữ trạng thái trên ảnh); xoá thành công → về trang chủ ở trạng thái khách; đăng nhập lại bị từ chối.",
+    "responsive": "[Runtime] Mobile: bảng xác nhận chiếm toàn chiều rộng, xếp dưới mô tả.",
+    "acCompare": "AC 1 ✔; AC 2 ✔ cảnh báo đỏ + mật khẩu hiện tại + chuỗi DELETE; AC 3 ✔; AC 4 ◐ xoá thành công đã xác minh cho Ứng viên và Nhà tuyển dụng **chưa có công ty**; ràng buộc AC 4.1 (OWNER duy nhất của công ty còn thành viên) **chưa kiểm tra**.",
+    "status": "CAPTURED_AND_VERIFIED",
+    "coverageNote": "Xoá thật trên 2 tài khoản dùng một lần; chưa thử ràng buộc OWNER.",
+    "missing": [
+      {
+        "what": "Từ chối xoá khi là OWNER duy nhất của công ty còn thành viên (AC 4.1)",
+        "why": "Cần dựng công ty + thành viên trên tài khoản dùng một lần (mời & chấp nhận lời mời qua email)",
+        "next": "Tạo dữ liệu test công ty có 2 thành viên rồi chụp"
+      }
+    ]
+  }
+}

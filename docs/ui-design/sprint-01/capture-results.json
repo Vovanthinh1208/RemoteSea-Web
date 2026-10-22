@@ -1,0 +1,2185 @@
+{
+  "generatedAt": "2026-10-21T14:50:52.264Z",
+  "baseUrl": "http://localhost:3001",
+  "apiConcurrencyCap": 2,
+  "runId": "mvi7wu73",
+  "disposableAccounts": {
+    "talent": "e2e-ui-s1-mvi7wu73-talent@example.com",
+    "employer": "e2e-ui-s1-mvi7wu73-employer@example.com",
+    "cleanup": {
+      "dt": "deleted via UI (PB20)",
+      "de": "deleted via UI (PB20)"
+    }
+  },
+  "results": [
+    {
+      "id": "PB01-register-default",
+      "pb": "PB01",
+      "pbs": ["PB01"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "default",
+      "title": "Đăng ký — mặc định (vai trò Ứng viên)",
+      "route": "/register",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [
+        "PB01/PB01-guest-register-default.png",
+        "PB01/PB01-guest-register-default-fullpage.png"
+      ],
+      "bytes": [324939, 403432],
+      "finalUrl": "/register",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Join RemoteSEA",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB01-register-mobile",
+      "pb": "PB01",
+      "pbs": ["PB01"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "mobile",
+      "title": "Đăng ký — mobile",
+      "route": "/register",
+      "viewport": "mobile",
+      "writes": false,
+      "files": [
+        "PB01/PB01-guest-register-mobile.png",
+        "PB01/PB01-guest-register-mobile-fullpage.png"
+      ],
+      "bytes": [107129, 228566],
+      "finalUrl": "/register",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB01-register-role-employer",
+      "pb": "PB01",
+      "pbs": ["PB01"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "role-employer",
+      "title": "Đăng ký — chọn vai trò Nhà tuyển dụng",
+      "route": "/register",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB01/PB01-guest-register-role-employer.png"],
+      "bytes": [324961],
+      "finalUrl": "/register",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB01-register-validation-empty",
+      "pb": "PB01",
+      "pbs": ["PB01"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "validation-empty",
+      "title": "Đăng ký — gửi form rỗng",
+      "route": "/register",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB01/PB01-guest-register-validation-empty.png"],
+      "bytes": [329212],
+      "finalUrl": "/register",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Name is required",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB01-register-validation-invalid",
+      "pb": "PB01",
+      "pbs": ["PB01"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "validation-invalid",
+      "title": "Đăng ký — dữ liệu sai định dạng (tên 1 ký tự, email sai, mật khẩu ngắn)",
+      "route": "/register",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB01/PB01-guest-register-validation-invalid.png"],
+      "bytes": [326669],
+      "finalUrl": "/register",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB01-register-submitting",
+      "pb": "PB01",
+      "pbs": ["PB01"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "submitting-loading",
+      "title": "Đăng ký — đang gửi (nút 'Creating account…' + spinner, form bị khoá)",
+      "route": "/register",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB01/PB01-guest-register-submitting-loading.png"],
+      "bytes": [327407],
+      "finalUrl": "/register",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Creating account",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB01-register-duplicate-email",
+      "pb": "PB01",
+      "pbs": ["PB01"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "duplicate-email",
+      "title": "Đăng ký — email đã tồn tại (API từ chối, không tạo tài khoản) — kết quả sau khi API trả lời",
+      "route": "/register",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB01/PB01-guest-register-duplicate-email.png"],
+      "bytes": [328865],
+      "finalUrl": "/register",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /register",
+          "pass": true
+        }
+      ],
+      "apiErrors": ["POST /auth/register -> 409"],
+      "evidence": {}
+    },
+    {
+      "id": "PB02-login-default",
+      "pb": "PB02",
+      "pbs": ["PB02"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "login",
+      "state": "default",
+      "title": "Đăng nhập — mặc định",
+      "route": "/login",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [
+        "PB02/PB02-guest-login-default.png",
+        "PB02/PB02-guest-login-default-fullpage.png"
+      ],
+      "bytes": [314289, 359788],
+      "finalUrl": "/login",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Sign in to RemoteSEA",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB02-login-mobile",
+      "pb": "PB02",
+      "pbs": ["PB02"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "login",
+      "state": "mobile",
+      "title": "Đăng nhập — mobile",
+      "route": "/login",
+      "viewport": "mobile",
+      "writes": false,
+      "files": [
+        "PB02/PB02-guest-login-mobile.png",
+        "PB02/PB02-guest-login-mobile-fullpage.png"
+      ],
+      "bytes": [102527, 206787],
+      "finalUrl": "/login",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB02-login-validation-empty",
+      "pb": "PB02",
+      "pbs": ["PB02"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "login",
+      "state": "validation-empty",
+      "title": "Đăng nhập — gửi form rỗng",
+      "route": "/login",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB02/PB02-guest-login-validation-empty.png"],
+      "bytes": [317861],
+      "finalUrl": "/login",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Email is required",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB04-login-oauth-buttons",
+      "pb": "PB04",
+      "pbs": ["PB04"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "oauth",
+      "state": "provider-buttons",
+      "title": "OAuth — 3 nút nhà cung cấp trên trang Đăng nhập",
+      "route": "/login",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB04/PB04-guest-oauth-provider-buttons.png"],
+      "bytes": [41878],
+      "finalUrl": "/login",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Continue with Google",
+          "pass": true
+        },
+        {
+          "check": "text: Continue with GitHub",
+          "pass": true
+        },
+        {
+          "check": "text: Continue with LinkedIn",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB04-oauth-google-redirect",
+      "pb": "PB04",
+      "pbs": ["PB04"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "oauth",
+      "state": "google-click-local-500",
+      "title": "Bấm 'Continue with Google' → trình duyệt mở GET /auth/google của API; trên môi trường local API trả 500 (chưa cấu hình OAuth) → trang JSON lỗi thô",
+      "route": "/login",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB04/PB04-guest-oauth-google-click-local-500.png"],
+      "bytes": [15864],
+      "finalUrl": "http://localhost:4000/auth/google",
+      "ok": true,
+      "verified": false,
+      "checks": [
+        {
+          "check": "url: /auth/google",
+          "pass": true
+        },
+        {
+          "check": "blocked: accounts\\.google\\.com",
+          "pass": false
+        }
+      ],
+      "apiErrors": ["GET /auth/google -> 500"],
+      "evidence": {}
+    },
+    {
+      "id": "PB04-oauth-callback-no-code",
+      "pb": "PB04",
+      "pbs": ["PB04"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "oauth",
+      "state": "callback-missing-code",
+      "title": "OAuth callback thiếu mã → quay về /login kèm toast lỗi",
+      "route": "/auth/callback",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB04/PB04-guest-oauth-callback-missing-code.png"],
+      "bytes": [321564],
+      "finalUrl": "/login",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /login",
+          "pass": true
+        },
+        {
+          "check": "text: Missing authentication code",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB06-forgot-default",
+      "pb": "PB06",
+      "pbs": ["PB06"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "forgot-password",
+      "state": "default",
+      "title": "Quên mật khẩu — mặc định",
+      "route": "/forgot-password",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [
+        "PB06/PB06-guest-forgot-password-default.png",
+        "PB06/PB06-guest-forgot-password-default-fullpage.png"
+      ],
+      "bytes": [44340, 87721],
+      "finalUrl": "/forgot-password",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /forgot-password",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB06-forgot-mobile",
+      "pb": "PB06",
+      "pbs": ["PB06"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "forgot-password",
+      "state": "mobile",
+      "title": "Quên mật khẩu — mobile",
+      "route": "/forgot-password",
+      "viewport": "mobile",
+      "writes": false,
+      "files": ["PB06/PB06-guest-forgot-password-mobile.png"],
+      "bytes": [63075],
+      "finalUrl": "/forgot-password",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB06-forgot-validation",
+      "pb": "PB06",
+      "pbs": ["PB06"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "forgot-password",
+      "state": "validation-invalid-email",
+      "title": "Quên mật khẩu — email sai định dạng",
+      "route": "/forgot-password",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB06/PB06-guest-forgot-password-validation-invalid-email.png"],
+      "bytes": [47151],
+      "finalUrl": "/forgot-password",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB06-forgot-submitted",
+      "pb": "PB06",
+      "pbs": ["PB06"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "forgot-password",
+      "state": "submitted",
+      "title": "Quên mật khẩu — đã gửi yêu cầu (email không tồn tại → không có thư nào được gửi, thông báo chung)",
+      "route": "/forgot-password",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB06/PB06-guest-forgot-password-submitted.png"],
+      "bytes": [48074],
+      "finalUrl": "/forgot-password",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB07-reset-no-token",
+      "pb": "PB07",
+      "pbs": ["PB07"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "reset-password",
+      "state": "missing-token",
+      "title": "Đặt lại mật khẩu — thiếu token",
+      "route": "/reset-password",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB07/PB07-guest-reset-password-missing-token.png"],
+      "bytes": [40890],
+      "finalUrl": "/reset-password",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: invalid or missing its token",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB07-reset-form",
+      "pb": "PB07",
+      "pbs": ["PB07"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "reset-password",
+      "state": "form",
+      "title": "Đặt lại mật khẩu — có token (giả) → form",
+      "route": "/reset-password?token=…",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB07/PB07-guest-reset-password-form.png"],
+      "bytes": [49252],
+      "finalUrl": "/reset-password?token=ui-capture-fake-mvi7wu73",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB07-reset-validation",
+      "pb": "PB07",
+      "pbs": ["PB07"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "reset-password",
+      "state": "validation-mismatch",
+      "title": "Đặt lại mật khẩu — mật khẩu xác nhận không khớp",
+      "route": "/reset-password?token=…",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB07/PB07-guest-reset-password-validation-mismatch.png"],
+      "bytes": [47163],
+      "finalUrl": "/reset-password?token=ui-capture-fake-mvi7wu73",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB07-reset-invalid-token",
+      "pb": "PB07",
+      "pbs": ["PB07"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "reset-password",
+      "state": "invalid-token-error",
+      "title": "Đặt lại mật khẩu — token sai/hết hạn (API từ chối, AC 2.1)",
+      "route": "/reset-password?token=…",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB07/PB07-guest-reset-password-invalid-token-error.png"],
+      "bytes": [47844],
+      "finalUrl": "/reset-password?token=ui-capture-fake-mvi7wu73",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": ["POST /auth/reset-password -> 400"],
+      "evidence": {}
+    },
+    {
+      "id": "PB08-navbar-guest",
+      "pb": "PB08",
+      "pbs": ["PB08"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "session",
+      "state": "navbar-signed-out",
+      "title": "Trạng thái phiên — navbar khi chưa đăng nhập",
+      "route": "(navbar)",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB08/PB08-guest-session-navbar-signed-out.png"],
+      "bytes": [13415],
+      "finalUrl": "/jobs",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Sign in",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB08-protected-redirect",
+      "pb": "PB08",
+      "pbs": ["PB08"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "session",
+      "state": "protected-redirect",
+      "title": "Khách mở /settings → chuyển về /login?callbackUrl=/settings",
+      "route": "/settings",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB08/PB08-guest-session-protected-redirect.png"],
+      "bytes": [314289],
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: callbackUrl=%2Fsettings",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB08-invalid-token",
+      "pb": "PB08",
+      "pbs": ["PB08"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "session",
+      "state": "invalid-token-cleared",
+      "title": "Token không hợp lệ trong localStorage → về /login (kiểm tra: token có bị xoá khỏi localStorage không — AC 2.2)",
+      "route": "/settings",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB08/PB08-guest-session-invalid-token-cleared.png"],
+      "bytes": [314289],
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "ok": true,
+      "verified": false,
+      "checks": [
+        {
+          "check": "url: /login",
+          "pass": true
+        },
+        {
+          "check": "storageCleared: remotesea_access_token",
+          "pass": false
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB22-verify-no-token",
+      "pb": "PB22",
+      "pbs": ["PB22"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "verify-email",
+      "state": "link-invalid",
+      "title": "Xác minh email — liên kết không có/không hợp lệ token",
+      "route": "/talent/verify",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB22/PB22-guest-verify-email-link-invalid.png"],
+      "bytes": [34007],
+      "finalUrl": "/talent/verify",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Link expired or invalid",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB21-profile-filled",
+      "pb": "PB21",
+      "pbs": ["PB21"],
+      "actor": "talent",
+      "session": "seed-talent",
+      "feature": "profile",
+      "state": "filled-desktop",
+      "title": "Hồ sơ ứng viên đã điền đầy đủ (tài khoản seed, chỉ xem)",
+      "route": "/profile",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "",
+      "ok": false,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {},
+      "error": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded."
+    },
+    {
+      "id": "PB21-profile-filled-mobile",
+      "pb": "PB21",
+      "pbs": ["PB21"],
+      "actor": "talent",
+      "session": "seed-talent",
+      "feature": "profile",
+      "state": "filled-mobile",
+      "title": "Hồ sơ ứng viên — mobile",
+      "route": "/profile",
+      "viewport": "mobile",
+      "writes": false,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "",
+      "ok": false,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {},
+      "error": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded."
+    },
+    {
+      "id": "PB12-settings-overview",
+      "pb": "PB12",
+      "pbs": [
+        "PB05",
+        "PB10",
+        "PB11",
+        "PB12",
+        "PB14",
+        "PB15",
+        "PB16",
+        "PB17",
+        "PB18",
+        "PB19",
+        "PB20"
+      ],
+      "actor": "talent",
+      "session": "seed-talent",
+      "feature": "settings",
+      "state": "overview",
+      "title": "Cài đặt tài khoản — toàn trang (ứng viên seed, chỉ xem)",
+      "route": "/settings",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "",
+      "ok": false,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {},
+      "error": "TimeoutError: page.waitForURL: Timeout 20000ms exceeded."
+    },
+    {
+      "id": "PB12-settings-mobile",
+      "pb": "PB12",
+      "pbs": [
+        "PB05",
+        "PB10",
+        "PB11",
+        "PB12",
+        "PB14",
+        "PB15",
+        "PB16",
+        "PB17",
+        "PB18",
+        "PB19",
+        "PB20"
+      ],
+      "actor": "talent",
+      "session": "seed-talent",
+      "feature": "settings",
+      "state": "mobile",
+      "title": "Cài đặt tài khoản — mobile",
+      "route": "/settings",
+      "viewport": "mobile",
+      "writes": false,
+      "files": [
+        "PB12/PB12-talent-settings-mobile.png",
+        "PB12/PB12-talent-settings-mobile-fullpage.png"
+      ],
+      "bytes": [138525, 838845],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB09-signout-dialog-seed",
+      "pb": "PB09",
+      "pbs": ["PB09"],
+      "actor": "talent",
+      "session": "seed-talent",
+      "feature": "sign-out",
+      "state": "confirm-dialog-seed-account",
+      "title": "Đăng xuất — hộp xác nhận (seed, KHÔNG xác nhận)",
+      "route": "(navbar)",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB09/PB09-talent-sign-out-confirm-dialog-seed-account.png"],
+      "bytes": [137588],
+      "finalUrl": "/jobs",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Sign out\\?",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB01-register-talent-filled",
+      "pb": "PB01",
+      "pbs": ["PB01"],
+      "actor": "guest",
+      "session": "dt",
+      "feature": "register",
+      "state": "talent-filled",
+      "title": "Đăng ký Ứng viên — form đã điền hợp lệ (tài khoản dùng một lần)",
+      "route": "/register",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB01/PB01-guest-register-talent-filled.png"],
+      "bytes": [325960],
+      "finalUrl": "/register",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB01-register-talent-success",
+      "pb": "PB01",
+      "pbs": ["PB01", "PB21"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "register",
+      "state": "talent-success-redirect-profile",
+      "title": "Đăng ký Ứng viên thành công → chuyển tới /profile (bước 2)",
+      "route": "/register → /profile",
+      "viewport": "desktop",
+      "writes": true,
+      "files": [
+        "PB01/PB01-talent-register-talent-success-redirect-profile.png",
+        "PB01/PB01-talent-register-talent-success-redirect-profile-fullpage.png"
+      ],
+      "bytes": [55271, 61345],
+      "finalUrl": "/profile",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /profile",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB21-profile-new-empty",
+      "pb": "PB21",
+      "pbs": ["PB21"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "profile",
+      "state": "new-empty",
+      "title": "Hồ sơ ứng viên mới — trạng thái ban đầu",
+      "route": "/profile",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [
+        "PB21/PB21-talent-profile-new-empty.png",
+        "PB21/PB21-talent-profile-new-empty-fullpage.png"
+      ],
+      "bytes": [120592, 501317],
+      "finalUrl": "/profile",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB21-profile-skill-suggest",
+      "pb": "PB21",
+      "pbs": ["PB21", "PB52"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "profile",
+      "state": "skill-suggestions",
+      "title": "Hồ sơ — gõ kỹ năng → danh sách gợi ý kỹ năng chuẩn",
+      "route": "/profile",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB21/PB21-talent-profile-skill-suggestions.png"],
+      "bytes": [111748],
+      "finalUrl": "/profile",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB13-name-validation",
+      "pb": "PB13",
+      "pbs": ["PB13"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "display-name",
+      "state": "validation-empty",
+      "title": "Tên hiển thị — xoá tên rồi Lưu → lỗi validation",
+      "route": "/profile",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB13/PB13-talent-display-name-validation-empty.png"],
+      "bytes": [106389],
+      "finalUrl": "/profile",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB21-profile-filled-before-save",
+      "pb": "PB21",
+      "pbs": ["PB21", "PB13"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "profile",
+      "state": "edited-unsaved",
+      "title": "Hồ sơ — đã nhập tên mới, headline, địa điểm (chưa lưu)",
+      "route": "/profile",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB21/PB21-talent-profile-edited-unsaved.png"],
+      "bytes": [114557],
+      "finalUrl": "/profile",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB21-profile-saved",
+      "pb": "PB21",
+      "pbs": ["PB21", "PB13"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "profile",
+      "state": "saved-success",
+      "title": "Hồ sơ — Lưu thành công (toast) và tên mới hiện trên navbar (PB13)",
+      "route": "/profile",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB21/PB21-talent-profile-saved-success.png"],
+      "bytes": [118171],
+      "finalUrl": "/profile",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Profile saved",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB13-name-updated-navbar",
+      "pb": "PB13",
+      "pbs": ["PB13"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "display-name",
+      "state": "updated-everywhere",
+      "title": "Tên hiển thị mới sau khi tải lại trang",
+      "route": "/profile",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB13/PB13-talent-display-name-updated-everywhere.png"],
+      "bytes": [113887],
+      "finalUrl": "/profile",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: UI Capture Talent Renamed",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB22-verify-banner",
+      "pb": "PB22",
+      "pbs": ["PB22"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "verify-email",
+      "state": "dashboard-error-no-banner",
+      "title": "Ứng viên mới (chưa xác minh) mở /talent → dashboard lỗi 500, banner 'Verify your email' không hiển thị",
+      "route": "/talent",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB22/PB22-talent-verify-email-dashboard-error-no-banner.png"],
+      "bytes": [69419],
+      "finalUrl": "/talent",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Couldn't load your dashboard",
+          "pass": true
+        },
+        {
+          "check": "notText: Verify your email",
+          "pass": true
+        }
+      ],
+      "apiErrors": [
+        "GET /talent/me/dashboard -> 500",
+        "GET /talent/me/dashboard -> 500",
+        "GET /talent/me/dashboard -> 500"
+      ],
+      "evidence": {}
+    },
+    {
+      "id": "PB14-account-default",
+      "pb": "PB14",
+      "pbs": ["PB14"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "account-info",
+      "state": "default",
+      "title": "Cài đặt → Account: email (chỉ đọc), điện thoại, ngôn ngữ, khu vực, tiền tệ",
+      "route": "/settings#account",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB14/PB14-talent-account-info-default.png"],
+      "bytes": [110571],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB14-phone-invalid",
+      "pb": "PB14",
+      "pbs": ["PB14"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "account-info",
+      "state": "phone-invalid",
+      "title": "Số điện thoại sai định dạng → toast lỗi (không gọi API)",
+      "route": "/settings#account",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB14/PB14-talent-account-info-phone-invalid.png"],
+      "bytes": [119888],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB14-phone-saved",
+      "pb": "PB14",
+      "pbs": ["PB14"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "account-info",
+      "state": "phone-saved",
+      "title": "Nhập số điện thoại E.164 hợp lệ → lưu khi rời ô",
+      "route": "/settings#account",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB14/PB14-talent-account-info-phone-saved.png"],
+      "bytes": [110839],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB14-language-vi",
+      "pb": "PB14",
+      "pbs": ["PB14"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "account-info",
+      "state": "language-vietnamese",
+      "title": "Đổi Ngôn ngữ giao diện sang Tiếng Việt → giao diện chuyển ngay sang tiếng Việt",
+      "route": "/settings#account",
+      "viewport": "desktop",
+      "writes": true,
+      "files": [
+        "PB14/PB14-talent-account-info-language-vietnamese.png",
+        "PB14/PB14-talent-account-info-language-vietnamese-fullpage.png"
+      ],
+      "bytes": [122018, 417966],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB14-language-restore-en",
+      "pb": "PB14",
+      "pbs": ["PB14"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "account-info",
+      "state": "language-restored-english",
+      "title": "Đổi lại English",
+      "route": "/settings#account",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB14/PB14-talent-account-info-language-restored-english.png"],
+      "bytes": [110839],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Account",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB15-notifications-default",
+      "pb": "PB15",
+      "pbs": ["PB15"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "default",
+      "title": "Tuỳ chọn thông báo — các công tắc bật/tắt",
+      "route": "/settings#notifications",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB15/PB15-talent-notification-preferences-default.png"],
+      "bytes": [122604],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB15-notifications-toggled",
+      "pb": "PB15",
+      "pbs": ["PB15"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "toggled-saved",
+      "title": "Bật/tắt 'Weekly digest' → lưu ngay (toast)",
+      "route": "/settings#notifications",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB15/PB15-talent-notification-preferences-toggled-saved.png"],
+      "bytes": [122660],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB05-connected-accounts",
+      "pb": "PB05",
+      "pbs": ["PB05", "PB18"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "connected-accounts",
+      "state": "default-none-linked",
+      "title": "Tài khoản liên kết — Google / GitHub / LinkedIn, chưa liên kết, nút Connect",
+      "route": "/settings#connected",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB05/PB05-talent-connected-accounts-default-none-linked.png"],
+      "bytes": [113639],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Connect",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB05-connect-redirect",
+      "pb": "PB05",
+      "pbs": ["PB05"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "connected-accounts",
+      "state": "connect-click",
+      "title": "Bấm Connect (GitHub) → chuyển hướng OAuth (bị chặn; chỉ ghi URL đã làm sạch — trang lỗi chứa token state nên KHÔNG chụp)",
+      "route": "/settings#connected",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "chrome-error://chromewebdata/",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "blocked: github\\.com|accounts\\.google\\.com|linkedin\\.com",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB17-export-section",
+      "pb": "PB17",
+      "pbs": ["PB17", "PB23"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "export-data",
+      "state": "privacy-section",
+      "title": "Quyền riêng tư & dữ liệu — hiển thị hồ sơ, yêu cầu xuất dữ liệu",
+      "route": "/settings#data",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB17/PB17-talent-export-data-privacy-section.png"],
+      "bytes": [113715],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB17-export-downloaded",
+      "pb": "PB17",
+      "pbs": ["PB17"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "export-data",
+      "state": "downloaded",
+      "title": "Bấm Request → tải file JSON dữ liệu cá nhân (file bị huỷ ngay, không lưu)",
+      "route": "/settings#data",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB17/PB17-talent-export-data-downloaded.png"],
+      "bytes": [118265],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "downloaded: \\.json$",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>",
+        "download": "remotesea-data-export.json"
+      }
+    },
+    {
+      "id": "PB12-change-password-form",
+      "pb": "PB12",
+      "pbs": ["PB12"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "change-password",
+      "state": "form",
+      "title": "Bảo mật → form Đổi mật khẩu",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB12/PB12-talent-change-password-form.png"],
+      "bytes": [111093],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB12-change-password-validation",
+      "pb": "PB12",
+      "pbs": ["PB12"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "change-password",
+      "state": "validation-empty",
+      "title": "Đổi mật khẩu — gửi rỗng → lỗi validation",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB12/PB12-talent-change-password-validation-empty.png"],
+      "bytes": [116365],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB12-change-password-wrong-current",
+      "pb": "PB12",
+      "pbs": ["PB12"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "change-password",
+      "state": "wrong-current",
+      "title": "Đổi mật khẩu — mật khẩu hiện tại sai → lỗi từ API",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB12/PB12-talent-change-password-wrong-current.png"],
+      "bytes": [111432],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /settings",
+          "pass": true
+        }
+      ],
+      "apiErrors": ["POST /users/me/password -> 400"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB12-change-password-success",
+      "pb": "PB12",
+      "pbs": ["PB12"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "change-password",
+      "state": "success",
+      "title": "Đổi mật khẩu thành công → toast 'Password updated'",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB12/PB12-talent-change-password-success.png"],
+      "bytes": [114548],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Password updated",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB19-sessions-multiple",
+      "pb": "PB19",
+      "pbs": ["PB19"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "active-sessions",
+      "state": "list-multiple",
+      "title": "Phiên đăng nhập đang hoạt động — nhiều phiên (đăng nhập thêm 1 phiên phụ; IP bị che)",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB19/PB19-talent-active-sessions-list-multiple.png"],
+      "bytes": [110322],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Revoke",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB19-session-revoked",
+      "pb": "PB19",
+      "pbs": ["PB19"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "active-sessions",
+      "state": "one-revoked",
+      "title": "Bấm Revoke ở một phiên khác → phiên bị thu hồi",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB19/PB19-talent-active-sessions-one-revoked.png"],
+      "bytes": [111093],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB19-sign-out-others",
+      "pb": "PB19",
+      "pbs": ["PB19"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "active-sessions",
+      "state": "sign-out-all-others",
+      "title": "Sign out of all other sessions → chỉ còn phiên hiện tại",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB19/PB19-talent-active-sessions-sign-out-all-others.png"],
+      "bytes": [115252],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB10-2fa-off",
+      "pb": "PB10",
+      "pbs": ["PB10"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-setup",
+      "state": "off",
+      "title": "2FA — trạng thái tắt (công tắc)",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB10/PB10-talent-2fa-setup-off.png"],
+      "bytes": [111093],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB10-2fa-setup-qr",
+      "pb": "PB10",
+      "pbs": ["PB10"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-setup",
+      "state": "setup-qr",
+      "title": "2FA — bật công tắc → mã QR + khoá thủ công + ô nhập mã (QR/khoá bị che)",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB10/PB10-talent-2fa-setup-setup-qr.png"],
+      "bytes": [99259],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: 6-digit code",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB10-2fa-wrong-code",
+      "pb": "PB10",
+      "pbs": ["PB10"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-setup",
+      "state": "wrong-code",
+      "title": "2FA — nhập sai mã → lỗi",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB10/PB10-talent-2fa-setup-wrong-code.png"],
+      "bytes": [98654],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": ["POST /auth/2fa/verify -> 400"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB10-2fa-backup-codes",
+      "pb": "PB10",
+      "pbs": ["PB10"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-setup",
+      "state": "backup-codes",
+      "title": "2FA — nhập đúng mã TOTP → hiện 10 mã dự phòng (bị che)",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB10/PB10-talent-2fa-setup-backup-codes.png"],
+      "bytes": [98766],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: I've saved these",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB10-2fa-enabled",
+      "pb": "PB10",
+      "pbs": ["PB10"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-setup",
+      "state": "enabled",
+      "title": "2FA — đã bật",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB10/PB10-talent-2fa-setup-enabled.png"],
+      "bytes": [111058],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB09-signout-dialog",
+      "pb": "PB09",
+      "pbs": ["PB09"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "sign-out",
+      "state": "confirm-dialog",
+      "title": "Đăng xuất — hộp xác nhận",
+      "route": "(navbar)",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB09/PB09-talent-sign-out-confirm-dialog.png"],
+      "bytes": [138910],
+      "finalUrl": "/jobs",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Sign out\\?",
+          "pass": true
+        }
+      ],
+      "apiErrors": ["GET /jobs -> 500"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB09-signed-out",
+      "pb": "PB09",
+      "pbs": ["PB09"],
+      "actor": "guest",
+      "session": "dt",
+      "feature": "sign-out",
+      "state": "signed-out",
+      "title": "Xác nhận đăng xuất → về trang chủ, navbar trở về trạng thái khách",
+      "route": "/",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB09/PB09-guest-sign-out-signed-out.png"],
+      "bytes": [267187],
+      "finalUrl": "/",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Sign in",
+          "pass": true
+        },
+        {
+          "check": "storageCleared: remotesea_access_token",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB02-login-wrong-password",
+      "pb": "PB02",
+      "pbs": ["PB02"],
+      "actor": "guest",
+      "session": "dt",
+      "feature": "login",
+      "state": "wrong-password",
+      "title": "Đăng nhập — sai mật khẩu → thông báo lỗi",
+      "route": "/login",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB02/PB02-guest-login-wrong-password.png"],
+      "bytes": [320467],
+      "finalUrl": "/login",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /login",
+          "pass": true
+        }
+      ],
+      "apiErrors": ["POST /auth/login -> 401"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB02-login-filled",
+      "pb": "PB02",
+      "pbs": ["PB02"],
+      "actor": "guest",
+      "session": "dt",
+      "feature": "login",
+      "state": "filled",
+      "title": "Đăng nhập — đã nhập email/mật khẩu (mật khẩu ẩn)",
+      "route": "/login",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB02/PB02-guest-login-filled.png"],
+      "bytes": [315201],
+      "finalUrl": "/login",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB03-2fa-challenge",
+      "pb": "PB03",
+      "pbs": ["PB03", "PB02"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-challenge",
+      "state": "challenge",
+      "title": "Đăng nhập tài khoản đã bật 2FA → màn hình nhập mã 6 số",
+      "route": "/login",
+      "viewport": "desktop",
+      "writes": true,
+      "files": [
+        "PB03/PB03-talent-2fa-challenge-challenge.png",
+        "PB03/PB03-talent-2fa-challenge-challenge-fullpage.png"
+      ],
+      "bytes": [302721, 348288],
+      "finalUrl": "/login",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Two-factor authentication",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB03-2fa-wrong-code",
+      "pb": "PB03",
+      "pbs": ["PB03"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-challenge",
+      "state": "wrong-code",
+      "title": "2FA challenge — sai mã → báo lỗi, xoá các ô",
+      "route": "/login",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB03/PB03-talent-2fa-challenge-wrong-code.png"],
+      "bytes": [312835],
+      "finalUrl": "/login",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": ["POST /auth/2fa/challenge -> 400"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB03-2fa-backup-mode",
+      "pb": "PB03",
+      "pbs": ["PB03"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-challenge",
+      "state": "backup-code-mode",
+      "title": "2FA challenge — chuyển sang nhập mã dự phòng",
+      "route": "/login",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB03/PB03-talent-2fa-challenge-backup-code-mode.png"],
+      "bytes": [309093],
+      "finalUrl": "/login",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB03-2fa-success",
+      "pb": "PB03",
+      "pbs": ["PB03"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-challenge",
+      "state": "success",
+      "title": "2FA challenge — nhập đúng mã TOTP → đăng nhập thành công",
+      "route": "/login → /jobs",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB03/PB03-talent-2fa-challenge-success.png"],
+      "bytes": [144781],
+      "finalUrl": "/jobs",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "notUrl: /login",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB11-2fa-disable-prompt",
+      "pb": "PB11",
+      "pbs": ["PB11"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-disable",
+      "state": "password-prompt",
+      "title": "Tắt 2FA — gạt công tắc → yêu cầu nhập mật khẩu",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB11/PB11-talent-2fa-disable-password-prompt.png"],
+      "bytes": [102844],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB11-2fa-disable-wrong-password",
+      "pb": "PB11",
+      "pbs": ["PB11"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-disable",
+      "state": "wrong-password",
+      "title": "Tắt 2FA — sai mật khẩu → lỗi",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB11/PB11-talent-2fa-disable-wrong-password.png"],
+      "bytes": [324665],
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": ["POST /auth/2fa/disable -> 401"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB11-2fa-disabled",
+      "pb": "PB11",
+      "pbs": ["PB11"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-disable",
+      "state": "disabled",
+      "title": "Tắt 2FA — đúng mật khẩu → đã tắt (toast)",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": true,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "/jobs",
+      "ok": false,
+      "verified": null,
+      "checks": [],
+      "apiErrors": ["DELETE /users/me -> 400"],
+      "evidence": {
+        "recovery": "session lost (401) — signed in again before this entry",
+        "failureShot": "PB11/PB11-talent-2fa-disable-disabled-FAILED.png"
+      },
+      "error": "TimeoutError: locator.fill: Timeout 30000ms exceeded."
+    },
+    {
+      "id": "PB16-pause-default",
+      "pb": "PB16",
+      "pbs": ["PB16", "PB20"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "danger-zone",
+      "title": "Vùng nguy hiểm — Tạm dừng / Xoá tài khoản",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB16/PB16-talent-pause-account-danger-zone.png"],
+      "bytes": [120131],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB16-paused",
+      "pb": "PB16",
+      "pbs": ["PB16"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "paused",
+      "title": "Bấm Pause → tài khoản tạm dừng (quan sát phản hồi thực tế)",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": true,
+      "files": [
+        "PB16/PB16-talent-pause-account-paused.png",
+        "PB16/PB16-talent-pause-account-paused-fullpage.png"
+      ],
+      "bytes": [318771, 364874],
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB16-relogin-paused",
+      "pb": "PB16",
+      "pbs": ["PB16"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "after-relogin",
+      "title": "Đăng nhập lại khi đang tạm dừng (quan sát tuỳ chọn kích hoạt lại)",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB16/PB16-talent-pause-account-after-relogin.png"],
+      "bytes": [119638],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "recovery": "session lost (401) — signed in again before this entry",
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB16-reactivated",
+      "pb": "PB16",
+      "pbs": ["PB16"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "reactivated",
+      "title": "Bấm Reactivate → tài khoản hoạt động lại",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB16/PB16-talent-pause-account-reactivated.png"],
+      "bytes": [122595],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Pause",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-delete-confirm",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "confirm-panel",
+      "title": "Xoá tài khoản — bảng xác nhận (mật khẩu + gõ DELETE)",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB20/PB20-talent-delete-account-confirm-panel.png"],
+      "bytes": [103326],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-delete-wrong-password",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "wrong-password",
+      "title": "Xoá tài khoản — sai mật khẩu → lỗi, tài khoản còn nguyên",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB20/PB20-talent-delete-account-wrong-password.png"],
+      "bytes": [110287],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": ["DELETE /users/me -> 400"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-deleted",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "guest",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "deleted",
+      "title": "Xoá tài khoản thành công → đăng xuất về trang chủ",
+      "route": "/settings → /",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB20/PB20-guest-delete-account-deleted.png"],
+      "bytes": [314289],
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "notUrl: /settings",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-login-after-delete",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "delete-account",
+      "state": "login-rejected",
+      "title": "Đăng nhập lại bằng tài khoản đã xoá → bị từ chối",
+      "route": "/login",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB20/PB20-guest-delete-account-login-rejected.png"],
+      "bytes": [320467],
+      "finalUrl": "/login",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /login",
+          "pass": true
+        }
+      ],
+      "apiErrors": ["POST /auth/login -> 401"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB01-register-employer-filled",
+      "pb": "PB01",
+      "pbs": ["PB01"],
+      "actor": "guest",
+      "session": "de",
+      "feature": "register",
+      "state": "employer-filled",
+      "title": "Đăng ký Nhà tuyển dụng — form đã điền",
+      "route": "/register",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB01/PB01-guest-register-employer-filled.png"],
+      "bytes": [326307],
+      "finalUrl": "/register",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB01-register-employer-success",
+      "pb": "PB01",
+      "pbs": ["PB01"],
+      "actor": "employer",
+      "session": "de",
+      "feature": "register",
+      "state": "employer-success-redirect",
+      "title": "Đăng ký Nhà tuyển dụng thành công → chuyển tới Employer dashboard (chưa có công ty)",
+      "route": "/register → /employer-dashboard",
+      "viewport": "desktop",
+      "writes": true,
+      "files": [
+        "PB01/PB01-employer-register-employer-success-redirect.png",
+        "PB01/PB01-employer-register-employer-success-redirect-fullpage.png"
+      ],
+      "bytes": [88013, 131586],
+      "finalUrl": "/employer-dashboard",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /employer-dashboard",
+          "pass": true
+        }
+      ],
+      "apiErrors": ["GET /team/members -> 403"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB12-settings-employer",
+      "pb": "PB12",
+      "pbs": [
+        "PB05",
+        "PB10",
+        "PB12",
+        "PB14",
+        "PB15",
+        "PB16",
+        "PB17",
+        "PB18",
+        "PB19",
+        "PB20"
+      ],
+      "actor": "employer",
+      "session": "de",
+      "feature": "settings",
+      "state": "employer-overview",
+      "title": "Cài đặt tài khoản — vai trò Nhà tuyển dụng (so sánh với Ứng viên)",
+      "route": "/settings",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [
+        "PB12/PB12-employer-settings-employer-overview.png",
+        "PB12/PB12-employer-settings-employer-overview-fullpage.png"
+      ],
+      "bytes": [110148, 377080],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": ["GET /talent/me -> 404"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-employer-deleted",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "employer",
+      "session": "de",
+      "feature": "delete-account",
+      "state": "employer-deleted",
+      "title": "Nhà tuyển dụng (chưa có công ty) xoá tài khoản",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB20/PB20-employer-delete-account-employer-deleted.png"],
+      "bytes": [314289],
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "notUrl: /settings",
+          "pass": true
+        }
+      ],
+      "apiErrors": ["GET /talent/me -> 404"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    }
+  ]
+}

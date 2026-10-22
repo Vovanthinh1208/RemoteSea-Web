@@ -417,12 +417,12 @@
     }
   },
   "country": {
-    "Vietnam": "Vietnam",
-    "Singapore": "Singapore",
-    "Indonesia": "Indonesia",
-    "Philippines": "Philippines",
-    "Malaysia": "Malaysia",
-    "Thailand": "Thailand"
+    "vietnam": "Vietnam",
+    "singapore": "Singapore",
+    "indonesia": "Indonesia",
+    "philippines": "Philippines",
+    "malaysia": "Malaysia",
+    "thailand": "Thailand"
   },
   "card": {
     "remote": "Remote",

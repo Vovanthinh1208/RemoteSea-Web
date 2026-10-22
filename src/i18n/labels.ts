@@ -1,4 +1,5 @@
 import { translate } from "@/i18n/runtime";
+import { hasTranslation } from "@/i18n/translate";
 
 /** "Principal / Lead" -> "principal_lead", "UTC+7 (Hanoi)" -> "utc_7_hanoi" */
 export const valueSlug = (value: string): string =>
@@ -15,6 +16,5 @@ export const valueSlug = (value: string): string =>
  */
 export const optionLabel = (prefix: string, value: string): string => {
   const key = `${prefix}.${valueSlug(value)}`;
-  const text = translate(key);
-  return text === key ? value : text;
+  return hasTranslation("en", key) ? translate(key) : value;
 };

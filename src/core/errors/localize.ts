@@ -1,13 +1,15 @@
 import { ApiError } from "@/core/errors/api-error";
-import { translate } from "@/i18n/runtime";
+import { getRuntimeLocale, translate } from "@/i18n/runtime";
+import { hasTranslation } from "@/i18n/translate";
 
 const STATUS_KEYS = new Set([400, 401, 403, 404, 409, 422, 429]);
 
-// translate() returns the key itself when it has no entry
-const lookup = (key: string): string | null => {
-  const text = translate(key);
-  return text === key ? null : text;
-};
+// Backend error codes are an open set: an unknown code is expected and falls
+// through to the status-based message, so probe instead of translating.
+const lookup = (key: string): string | null =>
+  hasTranslation("en", key) || hasTranslation(getRuntimeLocale(), key)
+    ? translate(key)
+    : null;
 
 /**
  * The user-facing, localized message for any thrown value.

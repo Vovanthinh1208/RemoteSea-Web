@@ -46,51 +46,62 @@ const pluralCategory = (locale: SupportedLocale, count: number): string =>
   // Vietnamese has no grammatical plural; English distinguishes exactly one.
   locale === "en" && count === 1 ? "one" : "other";
 
+/** Raw lookup in one locale: no plural selection, no fallback, no reporting. */
+const lookup = (locale: SupportedLocale, key: string): string | undefined => {
+  const parts = key.split(".");
+  // A key that does not start with a known namespace lives in "common".
+  return parts[0] in RESOURCES.en
+    ? getNestedValue(RESOURCES[locale]?.[parts[0]], parts.slice(1))
+    : getNestedValue(RESOURCES[locale]?.common, parts);
+};
+
+/** Whether `key` (or its plural variants) is defined for `locale`. */
+export const hasTranslation = (locale: SupportedLocale, key: string): boolean =>
+  lookup(locale, key) !== undefined ||
+  lookup(locale, `${key}_other`) !== undefined;
+
+// In development and tests a missing translation is reported instead of being
+// hidden behind the English fallback: it is logged once and collected on
+// globalThis.__I18N_MISSING__ so browser QA can assert on it. Production keeps
+// the silent fallback so a gap never breaks the UI.
+const REPORT_MISSING = import.meta.env.DEV || import.meta.env.MODE === "test";
+
+const reportMissing = (locale: SupportedLocale, key: string): void => {
+  if (!REPORT_MISSING) return;
+  const g = globalThis as { __I18N_MISSING__?: Set<string> };
+  g.__I18N_MISSING__ ??= new Set();
+  const id = `${locale}:${key}`;
+  if (g.__I18N_MISSING__.has(id)) return;
+  g.__I18N_MISSING__.add(id);
+  if (import.meta.env.DEV) console.warn(`[i18n] missing translation ${id}`);
+};
+
 export const resolveTranslation = (
   locale: SupportedLocale,
   key: string,
   params?: TranslationParams
 ): string => {
   // Plural variants: "<key>_one" / "<key>_other" selected by params.count
-  if (
-    !params?.__plural &&
-    (typeof params?.count === "number" || typeof params?.n === "number")
-  ) {
+  if (typeof params?.count === "number" || typeof params?.n === "number") {
     const n = Number(params.count ?? params.n);
     const pluralKey = `${key}_${pluralCategory(locale, n)}`;
-    const resolved = resolveTranslation(locale, pluralKey, {
-      ...params,
-      __plural: 1,
-    });
-    if (resolved !== pluralKey) return resolved;
-  }
-
-  const parts = key.split(".");
-  let ns = parts[0];
-  let subPath = parts.slice(1);
-
-  // If key does not start with a known namespace, default to "common"
-  if (!(ns in RESOURCES.en)) {
-    ns = "common";
-    subPath = parts;
-  }
-
-  // 1. Try target locale
-  const targetDict = RESOURCES[locale]?.[ns];
-  const targetVal = getNestedValue(targetDict, subPath);
-  if (targetVal !== undefined) {
-    return interpolate(targetVal, params);
-  }
-
-  // 2. Fallback to English
-  if (locale !== "en") {
-    const enDict = RESOURCES.en?.[ns];
-    const enVal = getNestedValue(enDict, subPath);
-    if (enVal !== undefined) {
-      return interpolate(enVal, params);
+    if (lookup("en", pluralKey) !== undefined) {
+      key = pluralKey;
     }
   }
 
-  // 3. Fallback: return key
+  // 1. Target locale
+  const targetVal = lookup(locale, key);
+  if (targetVal !== undefined) return interpolate(targetVal, params);
+
+  reportMissing(locale, key);
+
+  // 2. English fallback
+  if (locale !== "en") {
+    const enVal = lookup("en", key);
+    if (enVal !== undefined) return interpolate(enVal, params);
+  }
+
+  // 3. The key itself
   return key;
 };

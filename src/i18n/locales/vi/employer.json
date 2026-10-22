@@ -72,9 +72,9 @@
       "NEW": "Ứng viên mới",
       "REVIEWING": "Sàng lọc hồ sơ",
       "INTERVIEWING": "Phỏng vấn",
-      "OFFERED": "Đề nghị tuyển dụng",
+      "OFFERED": "Đã gửi offer",
       "HIRED": "Đã tuyển",
-      "REJECTED": "Lưu trữ / Từ chối"
+      "REJECTED": "Lưu trữ"
     },
     "moveTo": "Chuyển giai đoạn",
     "viewScorecard": "Phiếu đánh giá (Scorecard)",
@@ -135,14 +135,14 @@
   },
   "next": {
     "PENDING": "Xem xét",
-    "REVIEWING": "Chọn vào danh sách",
+    "REVIEWING": "Đưa vào danh sách rút gọn",
     "SHORTLISTED": "Phỏng vấn",
     "INTERVIEW": "Gửi offer"
   },
   "tab": {
     "all": "Tất cả",
     "new": "Mới",
-    "shortlisted": "Đã chọn"
+    "shortlisted": "Danh sách rút gọn"
   },
   "applicants": {
     "emptyAll": "Chưa có ứng viên nào.",
@@ -174,7 +174,7 @@
       "inReview": "{{count}} đang duyệt",
       "total": "Tổng số hồ sơ",
       "allListings": "tất cả tin đăng",
-      "shortlisted": "Đã chọn",
+      "shortlisted": "Danh sách rút gọn",
       "acrossRoles": "trên các vị trí",
       "timeToHire": "Thời gian tuyển trung bình",
       "applyToOffer": "từ ứng tuyển đến offer",
@@ -193,7 +193,7 @@
     "col": {
       "role": "Vị trí",
       "status": "Trạng thái",
-      "applications": "Hồ sơ",
+      "applications": "Đơn ứng tuyển",
       "views": "Lượt xem"
     },
     "featured": "Nổi bật",
@@ -247,7 +247,7 @@
     "group": {
       "new": "Mới",
       "reviewing": "Đang xem xét",
-      "shortlisted": "Đã chọn",
+      "shortlisted": "Danh sách rút gọn",
       "archived": "Đã lưu trữ"
     },
     "rejected": "Đã từ chối",
@@ -272,7 +272,7 @@
     "stage": {
       "PENDING": "Đã ứng tuyển",
       "REVIEWING": "Đang xem xét",
-      "SHORTLISTED": "Đã chọn",
+      "SHORTLISTED": "Danh sách rút gọn",
       "INTERVIEW": "Phỏng vấn",
       "OFFERED": "Đã gửi offer",
       "OFFER_ACCEPTED": "Đã tuyển"
@@ -293,7 +293,7 @@
   "stage": {
     "PENDING": "Đã ứng tuyển",
     "REVIEWING": "Đang xem xét",
-    "SHORTLISTED": "Đã chọn",
+    "SHORTLISTED": "Danh sách rút gọn",
     "INTERVIEW": "Phỏng vấn",
     "INTERVIEW_DONE": "Chờ quyết định",
     "OFFERED": "Đã gửi offer",
@@ -417,12 +417,12 @@
     }
   },
   "country": {
-    "Vietnam": "Việt Nam",
-    "Singapore": "Singapore",
-    "Indonesia": "Indonesia",
-    "Philippines": "Philippines",
-    "Malaysia": "Malaysia",
-    "Thailand": "Thái Lan"
+    "vietnam": "Việt Nam",
+    "singapore": "Singapore",
+    "indonesia": "Indonesia",
+    "philippines": "Philippines",
+    "malaysia": "Malaysia",
+    "thailand": "Thái Lan"
   },
   "card": {
     "remote": "Remote",

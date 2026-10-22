@@ -8,6 +8,7 @@ export type TranslationParams = Record<
 export interface I18nContextValue {
   locale: SupportedLocale;
   setLocale: (locale: SupportedLocale) => void;
+  setLocaleFromAccount: (locale: SupportedLocale) => void;
   t: (key: string, params?: TranslationParams) => string;
   formatDate: (
     date: Date | string | number,

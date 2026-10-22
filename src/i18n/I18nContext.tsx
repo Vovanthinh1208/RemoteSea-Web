@@ -13,42 +13,37 @@ import type {
 import { resolveTranslation } from "@/i18n/translate";
 import { setRuntimeLocale } from "@/i18n/runtime";
 import { applyZodLocale } from "@/i18n/zod";
+import { applyDefaultDocumentMeta } from "@/i18n/document-meta";
 import {
   formatCurrency as fmtCurrency,
   formatDate as fmtDate,
   formatNumber as fmtNumber,
   formatRelativeTime as fmtRelativeTime,
 } from "@/i18n/formatters";
+import {
+  LOCALES_STORAGE_KEY,
+  hasPendingLocaleSync,
+  isSupportedLocale,
+  normalizeAccountLanguage,
+  readStoredLocale,
+  writeStoredLocale,
+} from "@/i18n/locale-storage";
 
-export const LOCALES_STORAGE_KEY = "remotesea_locale";
-
-const normalizeAccountLanguage = (
-  val?: string | null
-): SupportedLocale | undefined => {
-  if (!val) return undefined;
-  if (val === "Tiếng Việt" || val.toLowerCase() === "vi") return "vi";
-  if (val === "English" || val.toLowerCase() === "en") return "en";
-  return undefined;
-};
-
+// Resolution order: a choice not yet saved to the account (the latest one) →
+// the account preference → the stored choice → the browser language → English.
 const getInitialLocale = (accountLang?: string | null): SupportedLocale => {
   if (typeof window === "undefined") return "en";
 
-  try {
-    const stored = localStorage.getItem(LOCALES_STORAGE_KEY);
-    if (stored === "vi" || stored === "en") return stored;
-
-    const fromAccount = normalizeAccountLanguage(accountLang);
-    if (fromAccount) return fromAccount;
-
-    const navLang = navigator.language?.toLowerCase() || "";
-    if (navLang.startsWith("vi")) return "vi";
-  } catch {
-    // LocalStorage access denied or unavailable
-  }
+  const stored = readStoredLocale();
+  if (stored && hasPendingLocaleSync()) return stored;
 
   const fromAccount = normalizeAccountLanguage(accountLang);
   if (fromAccount) return fromAccount;
+
+  if (stored) return stored;
+
+  const navLang = navigator.language?.toLowerCase() || "";
+  if (navLang.startsWith("vi")) return "vi";
 
   return "en";
 };
@@ -67,7 +62,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
   accountLanguage,
 }) => {
   const [locale, setLocaleState] = useState<SupportedLocale>(() => {
-    if (initialLocale) return initialLocale;
+    if (isSupportedLocale(initialLocale)) return initialLocale;
     return getInitialLocale(accountLanguage);
   });
 
@@ -79,7 +74,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
     useState(accountLanguage);
   if (accountLanguage !== prevAccountLanguage) {
     setPrevAccountLanguage(accountLanguage);
-    if (accountLanguage && !hasExplicitSelection) {
+    if (accountLanguage && !hasExplicitSelection && !hasPendingLocaleSync()) {
       const normalized = normalizeAccountLanguage(accountLanguage);
       if (normalized && normalized !== locale) {
         setLocaleState(normalized);
@@ -91,25 +86,50 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
   setRuntimeLocale(locale);
   applyZodLocale(locale);
 
-  // Keep <html lang="..."> attribute in sync
+  // Keep <html lang="..."> and the default title/meta in sync. Child effects run
+  // first, so a page that sets its own title (useDocumentTitle) keeps it.
   useEffect(() => {
     if (typeof document !== "undefined") {
       document.documentElement.lang = locale;
+      applyDefaultDocumentMeta();
     }
   }, [locale]);
 
+  // A choice the user made: it wins over the account preference until the
+  // account holds the same language (see I18nAccountSync).
   const setLocale = useCallback((newLocale: SupportedLocale) => {
+    if (!isSupportedLocale(newLocale)) return;
     setLocaleState(newLocale);
     setHasExplicitSelection(true);
+    writeStoredLocale(newLocale, { pendingSync: true });
+    window.dispatchEvent(
+      new CustomEvent("remotesea_locale_change", { detail: newLocale })
+    );
+  }, []);
 
-    try {
-      localStorage.setItem(LOCALES_STORAGE_KEY, newLocale);
-      window.dispatchEvent(
-        new CustomEvent("remotesea_locale_change", { detail: newLocale })
-      );
-    } catch {
-      // Ignore localStorage errors
-    }
+  // The account preference: ignored while a newer user choice exists.
+  const setLocaleFromAccount = useCallback(
+    (newLocale: SupportedLocale) => {
+      if (!isSupportedLocale(newLocale)) return;
+      if (hasExplicitSelection || hasPendingLocaleSync()) return;
+      setLocaleState(newLocale);
+      writeStoredLocale(newLocale, { pendingSync: false });
+    },
+    [hasExplicitSelection]
+  );
+
+  // A selection made in another tab is the latest user choice for this tab.
+  // That tab already wrote storage, so only adopt it here (no write-back).
+  useEffect(() => {
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== LOCALES_STORAGE_KEY) return;
+      if (isSupportedLocale(event.newValue)) {
+        setLocaleState(event.newValue);
+        setHasExplicitSelection(true);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
   const t = useCallback(
@@ -145,6 +165,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
     () => ({
       locale,
       setLocale,
+      setLocaleFromAccount,
       t,
       formatDate,
       formatNumber,
@@ -154,6 +175,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
     [
       locale,
       setLocale,
+      setLocaleFromAccount,
       t,
       formatDate,
       formatNumber,

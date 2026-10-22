@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -32,14 +33,7 @@ export const RegisterForm = () => {
   const { toast } = useToast();
   const submitError = useSubmitError();
 
-  const {
-    register,
-    handleSubmit,
-    setError,
-    watch,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<RegisterFormValues>({
+  const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
@@ -48,6 +42,16 @@ export const RegisterForm = () => {
       role: "TALENT",
     },
   });
+  const {
+    register,
+    handleSubmit,
+    setError,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = form;
+  // Field errors on screen re-validate in the new language after a switch.
+  useRevalidateOnLocaleChange(form);
 
   const role = watch("role");
 

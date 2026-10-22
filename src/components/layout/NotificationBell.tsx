@@ -15,6 +15,7 @@ import { cn } from "@/utils/cn";
 import { EVENT_ICON } from "@/utils/notification-icons";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useTranslation } from "@/i18n/useTranslation";
+import { localizeNotification } from "@/features/notifications/notification.localize";
 
 const PANEL_ITEM_LIMIT = 8;
 const PANEL_SKELETON_COUNT = 3;
@@ -24,7 +25,7 @@ export const NotificationBell = () => {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation("notifications");
 
   // Bundled unreadCount from the same response — no separate
   // GET /notifications/unread-count round trip (see notifications.service.ts).
@@ -156,9 +157,9 @@ export const NotificationBell = () => {
                           lets the inner span actually shrink — `truncate`
                           on the flex row itself doesn't reliably ellipsis
                           with an icon sibling in the mix. */}
-                      <p className="flex min-w-0 items-center gap-1 text-[13px] font-medium text-neutral-900">
+                      <p className="flex min-w-0 items-start gap-1 text-[13px] font-medium text-neutral-900">
                         <TypeIcon
-                          className="shrink-0 text-neutral-400"
+                          className="mt-[3px] shrink-0 text-neutral-400"
                           size={11}
                         />
                         {!n.readAt && (
@@ -166,7 +167,11 @@ export const NotificationBell = () => {
                             {t("common.notifications.unread")}
                           </span>
                         )}
-                        <span className="truncate">{n.title}</span>
+                        {/* Two lines rather than one: localized titles run
+                            longer, and the key information sits at the end. */}
+                        <span className="line-clamp-2 break-words">
+                          {localizeNotification(n, locale, t).title}
+                        </span>
                       </p>
                       <p className="mt-0.5 text-[11.5px] text-neutral-400">
                         {timeAgoShort(n.createdAt)}

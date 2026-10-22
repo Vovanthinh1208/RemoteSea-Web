@@ -1,7 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
-import { I18nProvider, useTranslation, LOCALES_STORAGE_KEY } from "@/i18n";
+import {
+  I18nProvider,
+  useTranslation,
+  LOCALES_STORAGE_KEY,
+  LOCALE_PENDING_SYNC_KEY,
+} from "@/i18n";
 import {
   formatDate,
   formatCurrency,
@@ -66,7 +71,7 @@ describe("I18n System", () => {
   });
 
   const TestConsumer = () => {
-    const { locale, setLocale, t } = useTranslation();
+    const { locale, setLocale, setLocaleFromAccount, t } = useTranslation();
     return (
       <div>
         <span data-testid="current-locale">{locale}</span>
@@ -87,6 +92,20 @@ describe("I18n System", () => {
           onClick={() => setLocale("en")}
         >
           Switch to EN
+        </button>
+        <button
+          data-testid="server-set-to-vi"
+          type="button"
+          onClick={() => setLocaleFromAccount("vi")}
+        >
+          Server preference: VI
+        </button>
+        <button
+          data-testid="server-set-to-en"
+          type="button"
+          onClick={() => setLocaleFromAccount("en")}
+        >
+          Server preference: EN
         </button>
       </div>
     );
@@ -132,6 +151,53 @@ describe("I18n System", () => {
     renderWithProviders(<TestConsumer />);
     expect(screen.getByTestId("current-locale").textContent).toBe("vi");
     expect(screen.getByTestId("translated-jobs").textContent).toBe("Việc làm");
+  });
+
+  it("prefers the validated account language over localStorage", () => {
+    localStorage.setItem(LOCALES_STORAGE_KEY, "en");
+    renderWithProviders(<TestConsumer />, { accountLanguage: "Tiếng Việt" });
+    expect(screen.getByTestId("current-locale").textContent).toBe("vi");
+  });
+
+  it("keeps a choice not yet saved to the account over the account language", () => {
+    localStorage.setItem(LOCALES_STORAGE_KEY, "vi");
+    localStorage.setItem(LOCALE_PENDING_SYNC_KEY, "1");
+    renderWithProviders(<TestConsumer />, { accountLanguage: "English" });
+    expect(screen.getByTestId("current-locale").textContent).toBe("vi");
+  });
+
+  it("ignores unsupported locale values and falls back to English", () => {
+    localStorage.setItem(LOCALES_STORAGE_KEY, "fr");
+    renderWithProviders(<TestConsumer />, { accountLanguage: "fr" });
+    expect(screen.getByTestId("current-locale").textContent).toBe("en");
+  });
+
+  it("accepts a valid locale change from another tab", async () => {
+    renderWithProviders(<TestConsumer />);
+    await act(async () => {
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: LOCALES_STORAGE_KEY,
+          oldValue: null,
+          newValue: "vi",
+        })
+      );
+    });
+    expect(screen.getByTestId("current-locale").textContent).toBe("vi");
+    expect(screen.getByTestId("translated-jobs").textContent).toBe("Việc làm");
+  });
+
+  it("lets a server preference override storage until a session choice is made", async () => {
+    const user = userEvent.setup();
+    localStorage.setItem(LOCALES_STORAGE_KEY, "en");
+    renderWithProviders(<TestConsumer />);
+
+    await user.click(screen.getByTestId("server-set-to-vi"));
+    expect(screen.getByTestId("current-locale").textContent).toBe("vi");
+
+    await user.click(screen.getByTestId("switch-to-en"));
+    await user.click(screen.getByTestId("server-set-to-vi"));
+    expect(screen.getByTestId("current-locale").textContent).toBe("en");
   });
 
   it("initializes from account language if no local override exists", () => {

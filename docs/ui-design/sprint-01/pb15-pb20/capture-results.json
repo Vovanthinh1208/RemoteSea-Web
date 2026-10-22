@@ -1,0 +1,1362 @@
+{
+  "generatedAt": "2026-10-21T15:19:21.418Z",
+  "baseUrl": "http://localhost:3001",
+  "apiConcurrencyCap": 2,
+  "runId": "mvi90po0",
+  "disposableAccounts": {
+    "talent": "e2e-ui-s1-mvi90po0-talent@example.com",
+    "employer": "e2e-ui-s1-mvi90po0-employer@example.com",
+    "cleanup": {
+      "dt": "deleted via UI (PB20)",
+      "de": "deleted via UI (PB20)"
+    }
+  },
+  "results": [
+    {
+      "id": "SETUP-register-talent",
+      "pb": "SETUP",
+      "pbs": ["SETUP"],
+      "actor": "guest",
+      "session": "dt",
+      "feature": "setup",
+      "state": "register-talent",
+      "title": "Chuẩn bị: đăng ký tài khoản Ứng viên dùng một lần",
+      "route": "/register",
+      "viewport": "desktop",
+      "writes": true,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "/profile",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /profile",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB15-settings-overview",
+      "pb": "PB15",
+      "pbs": ["PB15"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "account-settings",
+      "state": "overview",
+      "title": "Trang Cài đặt — điểm truy cập chung của PB15–PB20 (ảnh full-page dùng chung, chỉ đặt ở PB15)",
+      "route": "/settings",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [
+        "PB15/PB15-account-settings-overview.png",
+        "PB15/PB15-account-settings-overview-fullpage.png"
+      ],
+      "bytes": [110229, 382918],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /settings$",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB15-nav-to-section",
+      "pb": "PB15",
+      "pbs": ["PB15"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "nav-click",
+      "title": "Bấm 'Notifications' trong menu mục bên trái → cuộn tới mục 04",
+      "route": "/settings#notifications",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB15/PB15-notification-preferences-nav-click.png"],
+      "bytes": [124853],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB15-desktop",
+      "pb": "PB15",
+      "pbs": ["PB15"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "desktop",
+      "title": "Tuỳ chọn thông báo — viewport desktop",
+      "route": "/settings#notifications",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB15/PB15-notification-preferences-desktop.png"],
+      "bytes": [122604],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Application updates",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB15-section",
+      "pb": "PB15",
+      "pbs": ["PB15"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "section-fullpage",
+      "title": "Tuỳ chọn thông báo — toàn bộ mục (cắt theo section)",
+      "route": "/settings#notifications",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB15/PB15-notification-preferences-section-fullpage.png"],
+      "bytes": [87689],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB15-toggled",
+      "pb": "PB15",
+      "pbs": ["PB15"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "toggle-saved",
+      "title": "Gạt công tắc 'Weekly digest' → lưu ngay, thanh trạng thái 'All changes saved · just now'",
+      "route": "/settings#notifications",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB15/PB15-notification-preferences-toggle-saved.png"],
+      "bytes": [122660],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: All changes saved",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB15-persisted",
+      "pb": "PB15",
+      "pbs": ["PB15"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "persisted-after-reload",
+      "title": "Tải lại trang → công tắc vẫn giữ giá trị mới (đã lưu ở server)",
+      "route": "/settings#notifications",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [
+        "PB15/PB15-notification-preferences-persisted-after-reload.png"
+      ],
+      "bytes": [122660],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB15-restored",
+      "pb": "PB15",
+      "pbs": ["PB15"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "toggle-restored",
+      "title": "Gạt lại về giá trị ban đầu",
+      "route": "/settings#notifications",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB15/PB15-notification-preferences-toggle-restored.png"],
+      "bytes": [122604],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB15-error",
+      "pb": "PB15",
+      "pbs": ["PB15"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "network-error-simulated",
+      "title": "Lỗi lưu (mô phỏng mất kết nối cho PATCH /users/me/notification-preferences) → toast 'Couldn't update notification preference'",
+      "route": "/settings#notifications",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [
+        "PB15/PB15-notification-preferences-network-error-simulated.png"
+      ],
+      "bytes": [131926],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Couldn't update notification preference",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB15-error-cleanup",
+      "pb": "SETUP",
+      "pbs": ["SETUP"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "setup",
+      "state": "clear-simulation",
+      "title": "Gỡ mô phỏng lỗi",
+      "route": "-",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB15-mobile",
+      "pb": "PB15",
+      "pbs": ["PB15"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "mobile",
+      "title": "Tuỳ chọn thông báo — mobile (không có menu mục bên trái ở < lg)",
+      "route": "/settings#notifications",
+      "viewport": "mobile",
+      "writes": false,
+      "files": ["PB15/PB15-notification-preferences-mobile.png"],
+      "bytes": [165206],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB16-desktop",
+      "pb": "PB16",
+      "pbs": ["PB16"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "desktop",
+      "title": "Vùng nguy hiểm — thẻ 'Pause my account' (viewport)",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB16/PB16-pause-account-desktop.png"],
+      "bytes": [120111],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Pause my account",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB16-section",
+      "pb": "PB16",
+      "pbs": ["PB16"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "section-fullpage",
+      "title": "Vùng nguy hiểm — toàn bộ mục 06",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB16/PB16-pause-account-section-fullpage.png"],
+      "bytes": [32654],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB16-paused",
+      "pb": "PB16",
+      "pbs": ["PB16"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "paused-toast",
+      "title": "Bấm Pause → tạm dừng ngay (không có hộp xác nhận) + toast 'Account paused'",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB16/PB16-pause-account-paused-toast.png"],
+      "bytes": [314031],
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "ok": true,
+      "verified": false,
+      "checks": [
+        {
+          "check": "text: Account paused",
+          "pass": false
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB16-paused-reload",
+      "pb": "PB16",
+      "pbs": ["PB16"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "paused-state",
+      "title": "Tải lại → trạng thái 'Account paused — You can still sign in…' + nút Reactivate",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB16/PB16-pause-account-paused-state.png"],
+      "bytes": [119638],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: You can still sign in",
+          "pass": true
+        },
+        {
+          "check": "text: Reactivate",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "recovery": "session lost (401) — signed in again before this entry"
+      }
+    },
+    {
+      "id": "PB16-sign-out",
+      "pb": "PB16",
+      "pbs": ["PB16"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "sign-out",
+      "title": "Đăng xuất để kiểm tra đăng nhập lại khi đang tạm dừng",
+      "route": "(navbar)",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "/",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "storageCleared: remotesea_access_token",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB16-relogin",
+      "pb": "PB16",
+      "pbs": ["PB16"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "relogin-while-paused",
+      "title": "Đăng nhập lại khi tài khoản đang tạm dừng → đăng nhập được, trang đích sau đăng nhập",
+      "route": "/login → …",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB16/PB16-pause-account-relogin-while-paused.png"],
+      "bytes": [145475],
+      "finalUrl": "/jobs",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "notUrl: /login",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB16-relogin-settings",
+      "pb": "PB16",
+      "pbs": ["PB16"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "relogin-reactivate-option",
+      "title": "Sau khi đăng nhập lại: Settings vẫn hiển thị trạng thái tạm dừng + Reactivate",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB16/PB16-pause-account-relogin-reactivate-option.png"],
+      "bytes": [119512],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Reactivate",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB16-mobile",
+      "pb": "PB16",
+      "pbs": ["PB16"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "mobile-paused",
+      "title": "Vùng nguy hiểm khi đang tạm dừng — mobile",
+      "route": "/settings#danger",
+      "viewport": "mobile",
+      "writes": false,
+      "files": ["PB16/PB16-pause-account-mobile-paused.png"],
+      "bytes": [118211],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB16-reactivated",
+      "pb": "PB16",
+      "pbs": ["PB16"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "reactivated-toast",
+      "title": "Bấm Reactivate → toast 'Account reactivated', nút trở lại 'Pause'",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB16/PB16-pause-account-reactivated-toast.png"],
+      "bytes": [122428],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Account reactivated",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB17-desktop",
+      "pb": "PB17",
+      "pbs": ["PB17"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "export-data",
+      "state": "desktop",
+      "title": "Quyền riêng tư & dữ liệu — 'Download your data' + nút Request (viewport)",
+      "route": "/settings#data",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB17/PB17-export-data-desktop.png"],
+      "bytes": [113458],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Download your data",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB17-section",
+      "pb": "PB17",
+      "pbs": ["PB17"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "export-data",
+      "state": "section-fullpage",
+      "title": "Mục 05 Privacy & data — toàn bộ mục",
+      "route": "/settings#data",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB17/PB17-export-data-section-fullpage.png"],
+      "bytes": [41430],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB17-loading",
+      "pb": "PB17",
+      "pbs": ["PB17"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "export-data",
+      "state": "loading-slow-network-simulated",
+      "title": "Đang chuẩn bị file (mô phỏng phản hồi chậm 4s cho GET /users/me/export) — trạng thái nút khi đang xử lý",
+      "route": "/settings#data",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB17/PB17-export-data-loading-slow-network-simulated.png"],
+      "bytes": [113533],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB17-loading-cleanup",
+      "pb": "SETUP",
+      "pbs": ["SETUP"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "setup",
+      "state": "clear-simulation",
+      "title": "Chờ request chậm kết thúc rồi gỡ mô phỏng",
+      "route": "-",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB17-downloaded",
+      "pb": "PB17",
+      "pbs": ["PB17"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "export-data",
+      "state": "downloaded-toast",
+      "title": "Bấm Request → trình duyệt tải file JSON + toast 'Export downloaded' (file huỷ ngay, không lưu)",
+      "route": "/settings#data",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB17/PB17-export-data-downloaded-toast.png"],
+      "bytes": [118026],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "downloaded: \\.json$",
+          "pass": true
+        },
+        {
+          "check": "text: Export downloaded",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "download": "remotesea-data-export.json"
+      }
+    },
+    {
+      "id": "PB17-error",
+      "pb": "PB17",
+      "pbs": ["PB17"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "export-data",
+      "state": "network-error-simulated",
+      "title": "Lỗi xuất dữ liệu (mô phỏng mất kết nối cho GET /users/me/export) → toast 'Couldn't export your data'",
+      "route": "/settings#data",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB17/PB17-export-data-network-error-simulated.png"],
+      "bytes": [120762],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Couldn't export your data",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB17-error-cleanup",
+      "pb": "SETUP",
+      "pbs": ["SETUP"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "setup",
+      "state": "clear-simulation",
+      "title": "Gỡ mô phỏng lỗi",
+      "route": "-",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB17-mobile",
+      "pb": "PB17",
+      "pbs": ["PB17"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "export-data",
+      "state": "mobile",
+      "title": "Privacy & data — mobile",
+      "route": "/settings#data",
+      "viewport": "mobile",
+      "writes": false,
+      "files": ["PB17/PB17-export-data-mobile.png"],
+      "bytes": [146282],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB18-desktop",
+      "pb": "PB18",
+      "pbs": ["PB18"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "connected-accounts",
+      "state": "desktop",
+      "title": "Tài khoản liên kết — Google / GitHub / LinkedIn, chưa liên kết (viewport)",
+      "route": "/settings#connected",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB18/PB18-connected-accounts-desktop.png"],
+      "bytes": [113682],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Connect",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB18-section",
+      "pb": "PB18",
+      "pbs": ["PB18"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "connected-accounts",
+      "state": "section-fullpage",
+      "title": "Mục 03 Connected accounts — toàn bộ mục",
+      "route": "/settings#connected",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB18/PB18-connected-accounts-section-fullpage.png"],
+      "bytes": [29734],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {}
+    },
+    {
+      "id": "PB18-connect-redirect",
+      "pb": "PB18",
+      "pbs": ["PB18"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "connected-accounts",
+      "state": "connect-redirect",
+      "title": "Bấm Connect (GitHub) → điều hướng tới nhà cung cấp OAuth (bị chặn; chỉ ghi URL đã làm sạch — trang đích chứa token state nên không chụp)",
+      "route": "/settings#connected",
+      "viewport": "desktop",
+      "writes": false,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "chrome-error://chromewebdata/",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "blocked: github\\.com",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB18-return-error",
+      "pb": "PB18",
+      "pbs": ["PB18"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "connected-accounts",
+      "state": "oauth-return-error",
+      "title": "Trang trả về từ OAuth với lỗi 'already_linked' (mở bằng query ?connectionError=GitHub&reason=already_linked mà API dùng khi chuyển hướng về) → toast lỗi",
+      "route": "/settings?connectionError=…",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB18/PB18-connected-accounts-oauth-return-error.png"],
+      "bytes": [113614],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": false,
+      "checks": [
+        {
+          "check": "text: already connected to a different RemoteSEA account",
+          "pass": false
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB18-mobile",
+      "pb": "PB18",
+      "pbs": ["PB18"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "connected-accounts",
+      "state": "mobile",
+      "title": "Connected accounts — mobile",
+      "route": "/settings#connected",
+      "viewport": "mobile",
+      "writes": false,
+      "files": ["PB18/PB18-connected-accounts-mobile.png"],
+      "bytes": [148674],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB19-single",
+      "pb": "PB19",
+      "pbs": ["PB19"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "active-sessions",
+      "state": "single-session",
+      "title": "Phiên đăng nhập — chỉ có phiên hiện tại ('This device · Active now'), IP bị che",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB19/PB19-active-sessions-single-session.png"],
+      "bytes": [104896],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": false,
+      "checks": [
+        {
+          "check": "text: This device",
+          "pass": false
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB19-multiple",
+      "pb": "PB19",
+      "pbs": ["PB19"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "active-sessions",
+      "state": "multiple-sessions",
+      "title": "Đăng nhập thêm 2 phiên khác → danh sách nhiều phiên, mỗi phiên có nút Revoke",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB19/PB19-active-sessions-multiple-sessions.png"],
+      "bytes": [100058],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Revoke",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB19-revoked-one",
+      "pb": "PB19",
+      "pbs": ["PB19"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "active-sessions",
+      "state": "after-revoke",
+      "title": "Bấm Revoke ở một phiên → phiên biến khỏi danh sách",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB19/PB19-active-sessions-after-revoke.png"],
+      "bytes": [104667],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB19-sign-out-others",
+      "pb": "PB19",
+      "pbs": ["PB19"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "active-sessions",
+      "state": "sign-out-all-others-toast",
+      "title": "'Sign out of all other sessions' → toast 'Signed out of all other sessions', chỉ còn phiên hiện tại",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB19/PB19-active-sessions-sign-out-all-others-toast.png"],
+      "bytes": [114134],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Signed out of all other sessions",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB19-revoked-device",
+      "pb": "PB19",
+      "pbs": ["PB19"],
+      "actor": "guest",
+      "session": "dt2",
+      "feature": "active-sessions",
+      "state": "revoked-device-signed-out",
+      "title": "Thiết bị/phiên đã bị thu hồi mở /settings → bị đưa về /login",
+      "route": "/settings → /login",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB19/PB19-active-sessions-revoked-device-signed-out.png"],
+      "bytes": [314289],
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /login",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB19-mobile",
+      "pb": "PB19",
+      "pbs": ["PB19"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "active-sessions",
+      "state": "mobile",
+      "title": "Phiên đăng nhập — mobile",
+      "route": "/settings#security",
+      "viewport": "mobile",
+      "writes": false,
+      "files": ["PB19/PB19-active-sessions-mobile.png"],
+      "bytes": [132076],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-desktop",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "desktop",
+      "title": "Thẻ 'Delete account' trong Vùng nguy hiểm (viewport)",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB20/PB20-delete-account-desktop.png"],
+      "bytes": [120237],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Delete account",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-confirm",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "confirm-panel",
+      "title": "Bấm 'Delete account' → bảng xác nhận: mật khẩu hiện tại + gõ DELETE",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB20/PB20-delete-account-confirm-panel.png"],
+      "bytes": [103326],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Type DELETE to confirm",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-confirm-disabled",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "confirm-button-disabled",
+      "title": "Gõ chưa đúng ('DEL') → nút 'Yes, delete' vẫn bị khoá",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB20/PB20-delete-account-confirm-button-disabled.png"],
+      "bytes": [104174],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "attr: #danger button:has-text('Yes, delete')|disabled|",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-wrong-password",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "wrong-password-error",
+      "title": "Mật khẩu sai + DELETE → API từ chối, toast lỗi, tài khoản còn nguyên",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB20/PB20-delete-account-wrong-password-error.png"],
+      "bytes": [110287],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /settings",
+          "pass": true
+        }
+      ],
+      "apiErrors": ["DELETE /users/me -> 400"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-cancel",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "cancelled",
+      "title": "Bấm Cancel → đóng bảng xác nhận, quay về nút 'Delete account'",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB20/PB20-delete-account-cancelled.png"],
+      "bytes": [327144],
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "notText: Type DELETE to confirm",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-mobile",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "mobile-confirm-panel",
+      "title": "Bảng xác nhận xoá — mobile",
+      "route": "/settings#danger",
+      "viewport": "mobile",
+      "writes": false,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "ok": false,
+      "verified": null,
+      "checks": [],
+      "apiErrors": [],
+      "evidence": {
+        "failureShot": "PB20/PB20-delete-account-mobile-confirm-panel-FAILED.png"
+      },
+      "error": "TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 30000ms exceeded."
+    },
+    {
+      "id": "PB20-deleting",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "deleting-loading-slow-network-simulated",
+      "title": "Đang xoá — nút 'Deleting…' + spinner (mô phỏng phản hồi chậm 4s cho DELETE /users/me)",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": true,
+      "files": [
+        "PB20/PB20-delete-account-deleting-loading-slow-network-simulated.png"
+      ],
+      "bytes": [104096],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "text: Deleting",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "recovery": "session lost (401) — signed in again before this entry",
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-deleted",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "guest",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "deleted-signed-out",
+      "title": "Xoá xong → tự đăng xuất, về trang chủ (navbar trạng thái khách)",
+      "route": "/settings → /",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB20/PB20-delete-account-deleted-signed-out.png"],
+      "bytes": [314289],
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "notUrl: /settings",
+          "pass": true
+        },
+        {
+          "check": "storageCleared: remotesea_access_token",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-login-rejected",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "guest",
+      "session": "guest",
+      "feature": "delete-account",
+      "state": "login-after-delete-rejected",
+      "title": "Đăng nhập lại bằng tài khoản đã xoá → bị từ chối",
+      "route": "/login",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB20/PB20-delete-account-login-after-delete-rejected.png"],
+      "bytes": [320460],
+      "finalUrl": "/login",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /login",
+          "pass": true
+        }
+      ],
+      "apiErrors": ["POST /auth/login -> 401"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "SETUP-register-employer",
+      "pb": "SETUP",
+      "pbs": ["SETUP"],
+      "actor": "guest",
+      "session": "de",
+      "feature": "setup",
+      "state": "register-employer",
+      "title": "Chuẩn bị: đăng ký tài khoản Nhà tuyển dụng dùng một lần",
+      "route": "/register",
+      "viewport": "desktop",
+      "writes": true,
+      "files": [],
+      "bytes": [],
+      "finalUrl": "/employer-dashboard",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "url: /employer-dashboard",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB15-employer",
+      "pb": "PB15",
+      "pbs": ["PB15"],
+      "actor": "employer",
+      "session": "de",
+      "feature": "notification-preferences",
+      "state": "employer-section",
+      "title": "Tuỳ chọn thông báo — vai trò Nhà tuyển dụng (so sánh với Ứng viên)",
+      "route": "/settings#notifications",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB15/PB15-notification-preferences-employer-section.png"],
+      "bytes": [87689],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": ["GET /talent/me -> 404"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB19-employer",
+      "pb": "PB19",
+      "pbs": ["PB19"],
+      "actor": "employer",
+      "session": "de",
+      "feature": "active-sessions",
+      "state": "employer-sessions",
+      "title": "Phiên đăng nhập — vai trò Nhà tuyển dụng",
+      "route": "/settings#security",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB19/PB19-active-sessions-employer-sessions.png"],
+      "bytes": [108848],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": ["GET /talent/me -> 404"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-employer-confirm",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "employer",
+      "session": "de",
+      "feature": "delete-account",
+      "state": "employer-confirm-panel",
+      "title": "Nhà tuyển dụng (chưa có công ty) — bảng xác nhận xoá",
+      "route": "/settings#danger",
+      "viewport": "desktop",
+      "writes": false,
+      "files": ["PB20/PB20-delete-account-employer-confirm-panel.png"],
+      "bytes": [104777],
+      "finalUrl": "/settings",
+      "ok": true,
+      "verified": null,
+      "checks": [],
+      "apiErrors": ["GET /talent/me -> 404"],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    },
+    {
+      "id": "PB20-employer-deleted",
+      "pb": "PB20",
+      "pbs": ["PB20"],
+      "actor": "guest",
+      "session": "de",
+      "feature": "delete-account",
+      "state": "employer-deleted-signed-out",
+      "title": "Nhà tuyển dụng xoá tài khoản thành công → về trang chủ",
+      "route": "/settings → /",
+      "viewport": "desktop",
+      "writes": true,
+      "files": ["PB20/PB20-delete-account-employer-deleted-signed-out.png"],
+      "bytes": [314289],
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "ok": true,
+      "verified": true,
+      "checks": [
+        {
+          "check": "notUrl: /settings",
+          "pass": true
+        }
+      ],
+      "apiErrors": [],
+      "evidence": {
+        "blockedRedirect": "https://github.com/login/oauth/authorize?client_id=<EMPTY>"
+      }
+    }
+  ]
+}

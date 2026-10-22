@@ -1,0 +1,2466 @@
+{
+  "sprint": 1,
+  "pbs": [
+    "PB01",
+    "PB02",
+    "PB03",
+    "PB04",
+    "PB05",
+    "PB06",
+    "PB07",
+    "PB08",
+    "PB09",
+    "PB10",
+    "PB11",
+    "PB12",
+    "PB13",
+    "PB14",
+    "PB15",
+    "PB16",
+    "PB17",
+    "PB18",
+    "PB19",
+    "PB20",
+    "PB21",
+    "PB22"
+  ],
+  "_doc": [
+    "Ordered list of captures for scripts/capture-sprint-01-ui.ts. One entry = one screenshot (plus a full-page copy when full=true).",
+    "session: guest (fresh context each time) | seed-talent | seed-employer (seed accounts, READ-ONLY) | dt | de (disposable Talent / Employer created by this run; their context persists across entries in order).",
+    "writes=true is only allowed on dt/de. Variables: ${RUN_ID} ${DT_EMAIL} ${DT_PASSWORD} ${DT_PASSWORD_NEW} ${DE_EMAIL} ${DE_PASSWORD} ${SEED_TALENT_EMAIL}; passwords are generated at runtime / read from env and never written to disk.",
+    "Steps: goto, click{name,role?,selector?,exact?}, fill{selector,value}, type{selector,value}, press, clear, scrollTo, wait, waitUrl, waitText, read{selector,var}, totp{var,into}, setVar{name,value}, localStorage{key,value}, download{name}, blockHosts[], newContext, select{selector,label}.",
+    "expect: [{url}|{text}|{notText}] — regex strings; all must hold for the entry to count as UI-verified."
+  ],
+  "captures": [
+    {
+      "id": "PB01-register-default",
+      "pb": "PB01",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "default",
+      "title": "Đăng ký — mặc định (vai trò Ứng viên)",
+      "route": "/register",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/register"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Join RemoteSEA"
+        }
+      ]
+    },
+    {
+      "id": "PB01-register-mobile",
+      "pb": "PB01",
+      "actor": "guest",
+      "session": "guest",
+      "viewport": "mobile",
+      "feature": "register",
+      "state": "mobile",
+      "title": "Đăng ký — mobile",
+      "route": "/register",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/register"
+        }
+      ]
+    },
+    {
+      "id": "PB01-register-role-employer",
+      "pb": "PB01",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "role-employer",
+      "title": "Đăng ký — chọn vai trò Nhà tuyển dụng",
+      "route": "/register",
+      "steps": [
+        {
+          "goto": "/register"
+        },
+        {
+          "click": {
+            "name": "^Hire remote talent$"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PB01-register-validation-empty",
+      "pb": "PB01",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "validation-empty",
+      "title": "Đăng ký — gửi form rỗng",
+      "route": "/register",
+      "steps": [
+        {
+          "goto": "/register"
+        },
+        {
+          "click": {
+            "name": "^Create account$"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "text": "Name is required"
+        }
+      ]
+    },
+    {
+      "id": "PB01-register-validation-invalid",
+      "pb": "PB01",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "validation-invalid",
+      "title": "Đăng ký — dữ liệu sai định dạng (tên 1 ký tự, email sai, mật khẩu ngắn)",
+      "route": "/register",
+      "steps": [
+        {
+          "goto": "/register"
+        },
+        {
+          "fill": {
+            "selector": "#name",
+            "value": "A"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#email",
+            "value": "not-an-email"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#password",
+            "value": "123"
+          }
+        },
+        {
+          "click": {
+            "name": "^Create account$"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PB01-register-submitting",
+      "pb": "PB01",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "submitting-loading",
+      "title": "Đăng ký — đang gửi (nút 'Creating account…' + spinner, form bị khoá)",
+      "route": "/register",
+      "noSettle": true,
+      "steps": [
+        {
+          "goto": "/register"
+        },
+        {
+          "fill": {
+            "selector": "#name",
+            "value": "Loading State"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#email",
+            "value": "${SEED_TALENT_EMAIL}"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#password",
+            "value": "${DT_PASSWORD}"
+          }
+        },
+        {
+          "clickNoWait": {
+            "name": "^Create account$"
+          }
+        },
+        {
+          "wait": 250
+        }
+      ],
+      "expect": [
+        {
+          "text": "Creating account"
+        }
+      ]
+    },
+    {
+      "id": "PB01-register-duplicate-email",
+      "pb": "PB01",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "register",
+      "state": "duplicate-email",
+      "title": "Đăng ký — email đã tồn tại (API từ chối, không tạo tài khoản) — kết quả sau khi API trả lời",
+      "route": "/register",
+      "steps": [
+        {
+          "goto": "/register"
+        },
+        {
+          "fill": {
+            "selector": "#name",
+            "value": "Duplicate Check"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#email",
+            "value": "${SEED_TALENT_EMAIL}"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#password",
+            "value": "${DT_PASSWORD}"
+          }
+        },
+        {
+          "click": {
+            "name": "^Create account$"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "url": "/register"
+        }
+      ]
+    },
+    {
+      "id": "PB02-login-default",
+      "pb": "PB02",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "login",
+      "state": "default",
+      "title": "Đăng nhập — mặc định",
+      "route": "/login",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/login"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Sign in to RemoteSEA"
+        }
+      ]
+    },
+    {
+      "id": "PB02-login-mobile",
+      "pb": "PB02",
+      "actor": "guest",
+      "session": "guest",
+      "viewport": "mobile",
+      "feature": "login",
+      "state": "mobile",
+      "title": "Đăng nhập — mobile",
+      "route": "/login",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/login"
+        }
+      ]
+    },
+    {
+      "id": "PB02-login-validation-empty",
+      "pb": "PB02",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "login",
+      "state": "validation-empty",
+      "title": "Đăng nhập — gửi form rỗng",
+      "route": "/login",
+      "steps": [
+        {
+          "goto": "/login"
+        },
+        {
+          "click": {
+            "name": "^Sign in$",
+            "selector": "form button[type=submit]"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "text": "Email is required"
+        }
+      ]
+    },
+    {
+      "id": "PB04-login-oauth-buttons",
+      "pb": "PB04",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "oauth",
+      "state": "provider-buttons",
+      "title": "OAuth — 3 nút nhà cung cấp trên trang Đăng nhập",
+      "route": "/login",
+      "shot": {
+        "selector": "form",
+        "parent": true
+      },
+      "steps": [
+        {
+          "goto": "/login"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Continue with Google"
+        },
+        {
+          "text": "Continue with GitHub"
+        },
+        {
+          "text": "Continue with LinkedIn"
+        }
+      ]
+    },
+    {
+      "id": "PB04-oauth-google-redirect",
+      "pb": "PB04",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "oauth",
+      "state": "google-click-local-500",
+      "title": "Bấm 'Continue with Google' → trình duyệt mở GET /auth/google của API; trên môi trường local API trả 500 (chưa cấu hình OAuth) → trang JSON lỗi thô",
+      "route": "/login",
+      "steps": [
+        {
+          "blockHosts": [
+            "accounts.google.com",
+            "github.com",
+            "www.linkedin.com"
+          ]
+        },
+        {
+          "goto": "/login"
+        },
+        {
+          "click": {
+            "selector": "a",
+            "name": "Continue with Google"
+          }
+        },
+        {
+          "wait": 2500
+        }
+      ],
+      "expect": [
+        {
+          "url": "/auth/google"
+        },
+        {
+          "blocked": "accounts\\.google\\.com"
+        }
+      ]
+    },
+    {
+      "id": "PB04-oauth-callback-no-code",
+      "pb": "PB04",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "oauth",
+      "state": "callback-missing-code",
+      "title": "OAuth callback thiếu mã → quay về /login kèm toast lỗi",
+      "route": "/auth/callback",
+      "steps": [
+        {
+          "goto": "/auth/callback"
+        },
+        {
+          "wait": 1000
+        }
+      ],
+      "expect": [
+        {
+          "url": "/login"
+        },
+        {
+          "text": "Missing authentication code"
+        }
+      ]
+    },
+    {
+      "id": "PB06-forgot-default",
+      "pb": "PB06",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "forgot-password",
+      "state": "default",
+      "title": "Quên mật khẩu — mặc định",
+      "route": "/forgot-password",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/login"
+        },
+        {
+          "click": {
+            "name": "Forgot password",
+            "role": "link"
+          }
+        },
+        {
+          "waitUrl": "/forgot-password"
+        }
+      ],
+      "expect": [
+        {
+          "url": "/forgot-password"
+        }
+      ]
+    },
+    {
+      "id": "PB06-forgot-mobile",
+      "pb": "PB06",
+      "actor": "guest",
+      "session": "guest",
+      "viewport": "mobile",
+      "feature": "forgot-password",
+      "state": "mobile",
+      "title": "Quên mật khẩu — mobile",
+      "route": "/forgot-password",
+      "steps": [
+        {
+          "goto": "/forgot-password"
+        }
+      ]
+    },
+    {
+      "id": "PB06-forgot-validation",
+      "pb": "PB06",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "forgot-password",
+      "state": "validation-invalid-email",
+      "title": "Quên mật khẩu — email sai định dạng",
+      "route": "/forgot-password",
+      "steps": [
+        {
+          "goto": "/forgot-password"
+        },
+        {
+          "fill": {
+            "selector": "#email",
+            "value": "abc"
+          }
+        },
+        {
+          "click": {
+            "name": "^Send reset link$"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PB06-forgot-submitted",
+      "pb": "PB06",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "forgot-password",
+      "state": "submitted",
+      "title": "Quên mật khẩu — đã gửi yêu cầu (email không tồn tại → không có thư nào được gửi, thông báo chung)",
+      "route": "/forgot-password",
+      "writes": false,
+      "steps": [
+        {
+          "goto": "/forgot-password"
+        },
+        {
+          "fill": {
+            "selector": "#email",
+            "value": "no-such-user-${RUN_ID}@example.com"
+          }
+        },
+        {
+          "click": {
+            "name": "^Send reset link$"
+          }
+        },
+        {
+          "wait": 2000
+        }
+      ]
+    },
+    {
+      "id": "PB07-reset-no-token",
+      "pb": "PB07",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "reset-password",
+      "state": "missing-token",
+      "title": "Đặt lại mật khẩu — thiếu token",
+      "route": "/reset-password",
+      "steps": [
+        {
+          "goto": "/reset-password"
+        }
+      ],
+      "expect": [
+        {
+          "text": "invalid or missing its token"
+        }
+      ]
+    },
+    {
+      "id": "PB07-reset-form",
+      "pb": "PB07",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "reset-password",
+      "state": "form",
+      "title": "Đặt lại mật khẩu — có token (giả) → form",
+      "route": "/reset-password?token=…",
+      "steps": [
+        {
+          "goto": "/reset-password?token=ui-capture-fake-${RUN_ID}"
+        }
+      ]
+    },
+    {
+      "id": "PB07-reset-validation",
+      "pb": "PB07",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "reset-password",
+      "state": "validation-mismatch",
+      "title": "Đặt lại mật khẩu — mật khẩu xác nhận không khớp",
+      "route": "/reset-password?token=…",
+      "steps": [
+        {
+          "goto": "/reset-password?token=ui-capture-fake-${RUN_ID}"
+        },
+        {
+          "fill": {
+            "selector": "#password",
+            "value": "Abcdefgh1!"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#confirmPassword",
+            "value": "Different1!"
+          }
+        },
+        {
+          "click": {
+            "name": "^Reset password$"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PB07-reset-invalid-token",
+      "pb": "PB07",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "reset-password",
+      "state": "invalid-token-error",
+      "title": "Đặt lại mật khẩu — token sai/hết hạn (API từ chối, AC 2.1)",
+      "route": "/reset-password?token=…",
+      "steps": [
+        {
+          "goto": "/reset-password?token=ui-capture-fake-${RUN_ID}"
+        },
+        {
+          "fill": {
+            "selector": "#password",
+            "value": "Abcdefgh1!"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#confirmPassword",
+            "value": "Abcdefgh1!"
+          }
+        },
+        {
+          "click": {
+            "name": "^Reset password$"
+          }
+        },
+        {
+          "wait": 2000
+        }
+      ]
+    },
+    {
+      "id": "PB08-navbar-guest",
+      "pb": "PB08",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "session",
+      "state": "navbar-signed-out",
+      "title": "Trạng thái phiên — navbar khi chưa đăng nhập",
+      "route": "(navbar)",
+      "shot": {
+        "selector": "header"
+      },
+      "steps": [
+        {
+          "goto": "/jobs"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Sign in"
+        }
+      ]
+    },
+    {
+      "id": "PB08-protected-redirect",
+      "pb": "PB08",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "session",
+      "state": "protected-redirect",
+      "title": "Khách mở /settings → chuyển về /login?callbackUrl=/settings",
+      "route": "/settings",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "waitUrl": "/login"
+        }
+      ],
+      "expect": [
+        {
+          "url": "callbackUrl=%2Fsettings"
+        }
+      ]
+    },
+    {
+      "id": "PB08-invalid-token",
+      "pb": "PB08",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "session",
+      "state": "invalid-token-cleared",
+      "title": "Token không hợp lệ trong localStorage → về /login (kiểm tra: token có bị xoá khỏi localStorage không — AC 2.2)",
+      "route": "/settings",
+      "steps": [
+        {
+          "goto": "/jobs"
+        },
+        {
+          "localStorage": {
+            "key": "remotesea_access_token",
+            "value": "invalid.ui-capture.token"
+          }
+        },
+        {
+          "goto": "/settings"
+        },
+        {
+          "waitUrl": "/login"
+        }
+      ],
+      "expect": [
+        {
+          "url": "/login"
+        },
+        {
+          "storageCleared": "remotesea_access_token"
+        }
+      ]
+    },
+    {
+      "id": "PB22-verify-no-token",
+      "pb": "PB22",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "verify-email",
+      "state": "link-invalid",
+      "title": "Xác minh email — liên kết không có/không hợp lệ token",
+      "route": "/talent/verify",
+      "steps": [
+        {
+          "goto": "/talent/verify"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Link expired or invalid"
+        }
+      ]
+    },
+    {
+      "id": "PB21-profile-filled",
+      "pb": "PB21",
+      "actor": "talent",
+      "session": "seed-talent",
+      "feature": "profile",
+      "state": "filled-desktop",
+      "title": "Hồ sơ ứng viên đã điền đầy đủ (tài khoản seed, chỉ xem)",
+      "route": "/profile",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/profile"
+        }
+      ]
+    },
+    {
+      "id": "PB21-profile-filled-mobile",
+      "pb": "PB21",
+      "actor": "talent",
+      "session": "seed-talent",
+      "viewport": "mobile",
+      "feature": "profile",
+      "state": "filled-mobile",
+      "title": "Hồ sơ ứng viên — mobile",
+      "route": "/profile",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/profile"
+        }
+      ]
+    },
+    {
+      "id": "PB12-settings-overview",
+      "pb": "PB12",
+      "pbs": [
+        "PB05",
+        "PB10",
+        "PB11",
+        "PB12",
+        "PB14",
+        "PB15",
+        "PB16",
+        "PB17",
+        "PB18",
+        "PB19",
+        "PB20"
+      ],
+      "actor": "talent",
+      "session": "seed-talent",
+      "feature": "settings",
+      "state": "overview",
+      "title": "Cài đặt tài khoản — toàn trang (ứng viên seed, chỉ xem)",
+      "route": "/settings",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/settings"
+        }
+      ],
+      "expect": [
+        {
+          "url": "/settings$"
+        }
+      ]
+    },
+    {
+      "id": "PB12-settings-mobile",
+      "pb": "PB12",
+      "pbs": [
+        "PB05",
+        "PB10",
+        "PB11",
+        "PB12",
+        "PB14",
+        "PB15",
+        "PB16",
+        "PB17",
+        "PB18",
+        "PB19",
+        "PB20"
+      ],
+      "actor": "talent",
+      "session": "seed-talent",
+      "viewport": "mobile",
+      "feature": "settings",
+      "state": "mobile",
+      "title": "Cài đặt tài khoản — mobile",
+      "route": "/settings",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/settings"
+        }
+      ]
+    },
+    {
+      "id": "PB09-signout-dialog-seed",
+      "pb": "PB09",
+      "actor": "talent",
+      "session": "seed-talent",
+      "feature": "sign-out",
+      "state": "confirm-dialog-seed-account",
+      "title": "Đăng xuất — hộp xác nhận (seed, KHÔNG xác nhận)",
+      "route": "(navbar)",
+      "steps": [
+        {
+          "goto": "/jobs"
+        },
+        {
+          "click": {
+            "name": "^Sign out$"
+          }
+        },
+        {
+          "wait": 500
+        }
+      ],
+      "expect": [
+        {
+          "text": "Sign out\\?"
+        }
+      ]
+    },
+    {
+      "id": "PB01-register-talent-filled",
+      "pb": "PB01",
+      "actor": "guest",
+      "session": "dt",
+      "feature": "register",
+      "state": "talent-filled",
+      "title": "Đăng ký Ứng viên — form đã điền hợp lệ (tài khoản dùng một lần)",
+      "route": "/register",
+      "steps": [
+        {
+          "goto": "/register"
+        },
+        {
+          "fill": {
+            "selector": "#name",
+            "value": "UI Capture Talent"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#email",
+            "value": "${DT_EMAIL}"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#password",
+            "value": "${DT_PASSWORD}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PB01-register-talent-success",
+      "pb": "PB01",
+      "pbs": ["PB01", "PB21"],
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "register",
+      "state": "talent-success-redirect-profile",
+      "title": "Đăng ký Ứng viên thành công → chuyển tới /profile (bước 2)",
+      "route": "/register → /profile",
+      "full": true,
+      "steps": [
+        {
+          "click": {
+            "name": "^Create account$"
+          }
+        },
+        {
+          "waitUrl": "/profile"
+        }
+      ],
+      "expect": [
+        {
+          "url": "/profile"
+        }
+      ],
+      "createsAccount": "dt"
+    },
+    {
+      "id": "PB21-profile-new-empty",
+      "pb": "PB21",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "profile",
+      "state": "new-empty",
+      "title": "Hồ sơ ứng viên mới — trạng thái ban đầu",
+      "route": "/profile",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/profile"
+        }
+      ]
+    },
+    {
+      "id": "PB21-profile-skill-suggest",
+      "pb": "PB21",
+      "pbs": ["PB21", "PB52"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "profile",
+      "state": "skill-suggestions",
+      "title": "Hồ sơ — gõ kỹ năng → danh sách gợi ý kỹ năng chuẩn",
+      "route": "/profile",
+      "steps": [
+        {
+          "goto": "/profile"
+        },
+        {
+          "scrollTo": "#skills"
+        },
+        {
+          "type": {
+            "selector": "#skills input",
+            "value": "Rea"
+          }
+        },
+        {
+          "wait": 1200
+        }
+      ]
+    },
+    {
+      "id": "PB13-name-validation",
+      "pb": "PB13",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "display-name",
+      "state": "validation-empty",
+      "title": "Tên hiển thị — xoá tên rồi Lưu → lỗi validation",
+      "route": "/profile",
+      "steps": [
+        {
+          "goto": "/profile"
+        },
+        {
+          "clear": "#p-name"
+        },
+        {
+          "click": {
+            "name": "^Save$",
+            "selector": "button[type=submit]"
+          }
+        },
+        {
+          "wait": 600
+        },
+        {
+          "scrollTo": "#basics"
+        }
+      ]
+    },
+    {
+      "id": "PB21-profile-filled-before-save",
+      "pb": "PB21",
+      "pbs": ["PB21", "PB13"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "profile",
+      "state": "edited-unsaved",
+      "title": "Hồ sơ — đã nhập tên mới, headline, địa điểm (chưa lưu)",
+      "route": "/profile",
+      "steps": [
+        {
+          "goto": "/profile"
+        },
+        {
+          "fill": {
+            "selector": "#p-name",
+            "value": "UI Capture Talent Renamed"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#p-headline",
+            "value": "Frontend Engineer (UI capture test)"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#p-loc",
+            "value": "Da Nang, Vietnam"
+          }
+        },
+        {
+          "scrollTo": "#basics"
+        }
+      ]
+    },
+    {
+      "id": "PB21-profile-saved",
+      "pb": "PB21",
+      "pbs": ["PB21", "PB13"],
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "profile",
+      "state": "saved-success",
+      "title": "Hồ sơ — Lưu thành công (toast) và tên mới hiện trên navbar (PB13)",
+      "route": "/profile",
+      "steps": [
+        {
+          "click": {
+            "name": "^Save$",
+            "selector": "button[type=submit]"
+          }
+        },
+        {
+          "waitText": "Profile saved"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Profile saved"
+        }
+      ]
+    },
+    {
+      "id": "PB13-name-updated-navbar",
+      "pb": "PB13",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "display-name",
+      "state": "updated-everywhere",
+      "title": "Tên hiển thị mới sau khi tải lại trang",
+      "route": "/profile",
+      "steps": [
+        {
+          "goto": "/profile"
+        },
+        {
+          "scrollTo": "#basics"
+        }
+      ],
+      "expect": [
+        {
+          "text": "UI Capture Talent Renamed"
+        }
+      ]
+    },
+    {
+      "id": "PB22-verify-banner",
+      "pb": "PB22",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "verify-email",
+      "state": "dashboard-error-no-banner",
+      "title": "Ứng viên mới (chưa xác minh) mở /talent → dashboard lỗi 500, banner 'Verify your email' không hiển thị",
+      "route": "/talent",
+      "steps": [
+        {
+          "goto": "/talent"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Couldn't load your dashboard"
+        },
+        {
+          "notText": "Verify your email"
+        }
+      ]
+    },
+    {
+      "id": "PB14-account-default",
+      "pb": "PB14",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "account-info",
+      "state": "default",
+      "title": "Cài đặt → Account: email (chỉ đọc), điện thoại, ngôn ngữ, khu vực, tiền tệ",
+      "route": "/settings#account",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#account"
+        }
+      ]
+    },
+    {
+      "id": "PB14-phone-invalid",
+      "pb": "PB14",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "account-info",
+      "state": "phone-invalid",
+      "title": "Số điện thoại sai định dạng → toast lỗi (không gọi API)",
+      "route": "/settings#account",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#account"
+        },
+        {
+          "fill": {
+            "selector": "#account input[type=tel], #account input[inputmode=tel], #account input:not([readonly])",
+            "value": "abc123"
+          }
+        },
+        {
+          "press": "Tab"
+        },
+        {
+          "wait": 800
+        }
+      ]
+    },
+    {
+      "id": "PB14-phone-saved",
+      "pb": "PB14",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "account-info",
+      "state": "phone-saved",
+      "title": "Nhập số điện thoại E.164 hợp lệ → lưu khi rời ô",
+      "route": "/settings#account",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#account"
+        },
+        {
+          "fill": {
+            "selector": "#account input[type=tel], #account input[inputmode=tel], #account input:not([readonly])",
+            "value": "+84901234567"
+          }
+        },
+        {
+          "press": "Tab"
+        },
+        {
+          "wait": 1500
+        },
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#account"
+        }
+      ]
+    },
+    {
+      "id": "PB14-language-vi",
+      "pb": "PB14",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "account-info",
+      "state": "language-vietnamese",
+      "title": "Đổi Ngôn ngữ giao diện sang Tiếng Việt → giao diện chuyển ngay sang tiếng Việt",
+      "route": "/settings#account",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#account"
+        },
+        {
+          "select": {
+            "selector": "#account select",
+            "nth": 0,
+            "label": "Tiếng Việt"
+          }
+        },
+        {
+          "wait": 1500
+        },
+        {
+          "scrollTo": "#account"
+        }
+      ]
+    },
+    {
+      "id": "PB14-language-restore-en",
+      "pb": "PB14",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "account-info",
+      "state": "language-restored-english",
+      "title": "Đổi lại English",
+      "route": "/settings#account",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#account"
+        },
+        {
+          "select": {
+            "selector": "#account select",
+            "nth": 0,
+            "label": "English"
+          }
+        },
+        {
+          "wait": 1500
+        }
+      ],
+      "expect": [
+        {
+          "text": "Account"
+        }
+      ]
+    },
+    {
+      "id": "PB15-notifications-default",
+      "pb": "PB15",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "default",
+      "title": "Tuỳ chọn thông báo — các công tắc bật/tắt",
+      "route": "/settings#notifications",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#notifications"
+        }
+      ]
+    },
+    {
+      "id": "PB15-notifications-toggled",
+      "pb": "PB15",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "notification-preferences",
+      "state": "toggled-saved",
+      "title": "Bật/tắt 'Weekly digest' → lưu ngay (toast)",
+      "route": "/settings#notifications",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#notifications"
+        },
+        {
+          "click": {
+            "role": "switch",
+            "nth": 2,
+            "selector": "#notifications [role=switch]"
+          }
+        },
+        {
+          "wait": 1500
+        }
+      ]
+    },
+    {
+      "id": "PB05-connected-accounts",
+      "pb": "PB05",
+      "pbs": ["PB05", "PB18"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "connected-accounts",
+      "state": "default-none-linked",
+      "title": "Tài khoản liên kết — Google / GitHub / LinkedIn, chưa liên kết, nút Connect",
+      "route": "/settings#connected",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#connected"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Connect"
+        }
+      ]
+    },
+    {
+      "id": "PB05-connect-redirect",
+      "pb": "PB05",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "connected-accounts",
+      "state": "connect-click",
+      "title": "Bấm Connect (GitHub) → chuyển hướng OAuth (bị chặn; chỉ ghi URL đã làm sạch — trang lỗi chứa token state nên KHÔNG chụp)",
+      "route": "/settings#connected",
+      "steps": [
+        {
+          "blockHosts": [
+            "accounts.google.com",
+            "github.com",
+            "www.linkedin.com"
+          ]
+        },
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#connected"
+        },
+        {
+          "click": {
+            "selector": "#connected button",
+            "nth": 1,
+            "name": "Connect"
+          }
+        },
+        {
+          "wait": 2500
+        }
+      ],
+      "expect": [
+        {
+          "blocked": "github\\.com|accounts\\.google\\.com|linkedin\\.com"
+        }
+      ],
+      "noShot": true
+    },
+    {
+      "id": "PB17-export-section",
+      "pb": "PB17",
+      "pbs": ["PB17", "PB23"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "export-data",
+      "state": "privacy-section",
+      "title": "Quyền riêng tư & dữ liệu — hiển thị hồ sơ, yêu cầu xuất dữ liệu",
+      "route": "/settings#data",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#data"
+        }
+      ]
+    },
+    {
+      "id": "PB17-export-downloaded",
+      "pb": "PB17",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "export-data",
+      "state": "downloaded",
+      "title": "Bấm Request → tải file JSON dữ liệu cá nhân (file bị huỷ ngay, không lưu)",
+      "route": "/settings#data",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#data"
+        },
+        {
+          "download": {
+            "name": "^Request$"
+          }
+        },
+        {
+          "wait": 800
+        }
+      ],
+      "expect": [
+        {
+          "downloaded": "\\.json$"
+        }
+      ]
+    },
+    {
+      "id": "PB12-change-password-form",
+      "pb": "PB12",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "change-password",
+      "state": "form",
+      "title": "Bảo mật → form Đổi mật khẩu",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#security"
+        },
+        {
+          "click": {
+            "name": "^Change password$",
+            "optional": true
+          }
+        },
+        {
+          "scrollTo": "#security"
+        }
+      ]
+    },
+    {
+      "id": "PB12-change-password-validation",
+      "pb": "PB12",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "change-password",
+      "state": "validation-empty",
+      "title": "Đổi mật khẩu — gửi rỗng → lỗi validation",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#security"
+        },
+        {
+          "click": {
+            "name": "^Change password$",
+            "optional": true
+          }
+        },
+        {
+          "click": {
+            "name": "^Update password$"
+          }
+        },
+        {
+          "wait": 500
+        }
+      ]
+    },
+    {
+      "id": "PB12-change-password-wrong-current",
+      "pb": "PB12",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "change-password",
+      "state": "wrong-current",
+      "title": "Đổi mật khẩu — mật khẩu hiện tại sai → lỗi từ API",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#security"
+        },
+        {
+          "click": {
+            "name": "^Change password$",
+            "optional": true
+          }
+        },
+        {
+          "fill": {
+            "selector": "#currentPassword",
+            "value": "Wrong-${RUN_ID}-x"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#newPassword",
+            "value": "${DT_PASSWORD_NEW}"
+          }
+        },
+        {
+          "click": {
+            "name": "^Update password$"
+          }
+        },
+        {
+          "wait": 2000
+        }
+      ],
+      "expect": [
+        {
+          "url": "/settings"
+        }
+      ]
+    },
+    {
+      "id": "PB12-change-password-success",
+      "pb": "PB12",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "change-password",
+      "state": "success",
+      "title": "Đổi mật khẩu thành công → toast 'Password updated'",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#security"
+        },
+        {
+          "click": {
+            "name": "^Change password$",
+            "optional": true
+          }
+        },
+        {
+          "fill": {
+            "selector": "#currentPassword",
+            "value": "${DT_PASSWORD}"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#newPassword",
+            "value": "${DT_PASSWORD_NEW}"
+          }
+        },
+        {
+          "click": {
+            "name": "^Update password$"
+          }
+        },
+        {
+          "waitText": "Password updated"
+        },
+        {
+          "setVar": {
+            "name": "DT_PASSWORD",
+            "value": "${DT_PASSWORD_NEW}"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "text": "Password updated"
+        }
+      ]
+    },
+    {
+      "id": "PB19-sessions-multiple",
+      "pb": "PB19",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "active-sessions",
+      "state": "list-multiple",
+      "title": "Phiên đăng nhập đang hoạt động — nhiều phiên (đăng nhập thêm 1 phiên phụ; IP bị che)",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "extraSession": "dt"
+        },
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#security"
+        },
+        {
+          "waitText": "Revoke"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Revoke"
+        }
+      ]
+    },
+    {
+      "id": "PB19-session-revoked",
+      "pb": "PB19",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "active-sessions",
+      "state": "one-revoked",
+      "title": "Bấm Revoke ở một phiên khác → phiên bị thu hồi",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#security"
+        },
+        {
+          "click": {
+            "name": "^Revoke$"
+          }
+        },
+        {
+          "wait": 2000
+        },
+        {
+          "scrollTo": "#security"
+        }
+      ]
+    },
+    {
+      "id": "PB19-sign-out-others",
+      "pb": "PB19",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "active-sessions",
+      "state": "sign-out-all-others",
+      "title": "Sign out of all other sessions → chỉ còn phiên hiện tại",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "extraSession": "dt"
+        },
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#security"
+        },
+        {
+          "click": {
+            "name": "Sign out of all other sessions|Log out of all other sessions"
+          }
+        },
+        {
+          "wait": 2000
+        },
+        {
+          "scrollTo": "#security"
+        }
+      ]
+    },
+    {
+      "id": "PB10-2fa-off",
+      "pb": "PB10",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-setup",
+      "state": "off",
+      "title": "2FA — trạng thái tắt (công tắc)",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#security"
+        }
+      ]
+    },
+    {
+      "id": "PB10-2fa-setup-qr",
+      "pb": "PB10",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "2fa-setup",
+      "state": "setup-qr",
+      "title": "2FA — bật công tắc → mã QR + khoá thủ công + ô nhập mã (QR/khoá bị che)",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#security"
+        },
+        {
+          "click": {
+            "role": "switch",
+            "name": "Two-factor authentication"
+          }
+        },
+        {
+          "waitText": "6-digit code"
+        },
+        {
+          "read": {
+            "selector": "#security p.font-mono",
+            "var": "DT_TOTP_SECRET"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "text": "6-digit code"
+        }
+      ]
+    },
+    {
+      "id": "PB10-2fa-wrong-code",
+      "pb": "PB10",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-setup",
+      "state": "wrong-code",
+      "title": "2FA — nhập sai mã → lỗi",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "fill": {
+            "selector": "#security input[autocomplete=one-time-code]",
+            "value": "000000"
+          }
+        },
+        {
+          "click": {
+            "name": "^Confirm$"
+          }
+        },
+        {
+          "wait": 1500
+        }
+      ]
+    },
+    {
+      "id": "PB10-2fa-backup-codes",
+      "pb": "PB10",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "2fa-setup",
+      "state": "backup-codes",
+      "title": "2FA — nhập đúng mã TOTP → hiện 10 mã dự phòng (bị che)",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "totp": {
+            "var": "DT_TOTP_SECRET",
+            "into": "#security input[autocomplete=one-time-code]"
+          }
+        },
+        {
+          "click": {
+            "name": "^Confirm$"
+          }
+        },
+        {
+          "waitText": "I've saved these"
+        }
+      ],
+      "expect": [
+        {
+          "text": "I've saved these"
+        }
+      ]
+    },
+    {
+      "id": "PB10-2fa-enabled",
+      "pb": "PB10",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-setup",
+      "state": "enabled",
+      "title": "2FA — đã bật",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "click": {
+            "name": "I've saved these"
+          }
+        },
+        {
+          "wait": 800
+        },
+        {
+          "scrollTo": "#security"
+        }
+      ]
+    },
+    {
+      "id": "PB09-signout-dialog",
+      "pb": "PB09",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "sign-out",
+      "state": "confirm-dialog",
+      "title": "Đăng xuất — hộp xác nhận",
+      "route": "(navbar)",
+      "steps": [
+        {
+          "goto": "/jobs"
+        },
+        {
+          "click": {
+            "name": "^Sign out$"
+          }
+        },
+        {
+          "wait": 500
+        }
+      ],
+      "expect": [
+        {
+          "text": "Sign out\\?"
+        }
+      ]
+    },
+    {
+      "id": "PB09-signed-out",
+      "pb": "PB09",
+      "actor": "guest",
+      "session": "dt",
+      "writes": true,
+      "feature": "sign-out",
+      "state": "signed-out",
+      "title": "Xác nhận đăng xuất → về trang chủ, navbar trở về trạng thái khách",
+      "route": "/",
+      "steps": [
+        {
+          "click": {
+            "name": "^Sign out$",
+            "nth": -1
+          }
+        },
+        {
+          "wait": 1500
+        }
+      ],
+      "expect": [
+        {
+          "text": "Sign in"
+        },
+        {
+          "storageCleared": "remotesea_access_token"
+        }
+      ]
+    },
+    {
+      "id": "PB02-login-wrong-password",
+      "pb": "PB02",
+      "actor": "guest",
+      "session": "dt",
+      "feature": "login",
+      "state": "wrong-password",
+      "title": "Đăng nhập — sai mật khẩu → thông báo lỗi",
+      "route": "/login",
+      "steps": [
+        {
+          "login": {
+            "email": "${DT_EMAIL}",
+            "password": "Wrong-${RUN_ID}-pw"
+          }
+        },
+        {
+          "wait": 2000
+        }
+      ],
+      "expect": [
+        {
+          "url": "/login"
+        }
+      ]
+    },
+    {
+      "id": "PB02-login-filled",
+      "pb": "PB02",
+      "actor": "guest",
+      "session": "dt",
+      "feature": "login",
+      "state": "filled",
+      "title": "Đăng nhập — đã nhập email/mật khẩu (mật khẩu ẩn)",
+      "route": "/login",
+      "steps": [
+        {
+          "goto": "/login"
+        },
+        {
+          "fill": {
+            "selector": "#email",
+            "value": "${DT_EMAIL}"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#password",
+            "value": "${DT_PASSWORD}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PB03-2fa-challenge",
+      "pb": "PB03",
+      "pbs": ["PB03", "PB02"],
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "2fa-challenge",
+      "state": "challenge",
+      "title": "Đăng nhập tài khoản đã bật 2FA → màn hình nhập mã 6 số",
+      "route": "/login",
+      "full": true,
+      "steps": [
+        {
+          "click": {
+            "selector": "form button[type=submit]",
+            "name": "Sign in"
+          }
+        },
+        {
+          "waitText": "Two-factor authentication"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Two-factor authentication"
+        }
+      ],
+      "noAuthCheck": true
+    },
+    {
+      "id": "PB03-2fa-wrong-code",
+      "pb": "PB03",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-challenge",
+      "state": "wrong-code",
+      "title": "2FA challenge — sai mã → báo lỗi, xoá các ô",
+      "route": "/login",
+      "steps": [
+        {
+          "type": {
+            "selector": "input[inputmode=numeric]",
+            "value": "000000"
+          }
+        },
+        {
+          "wait": 2000
+        }
+      ],
+      "noAuthCheck": true
+    },
+    {
+      "id": "PB03-2fa-backup-mode",
+      "pb": "PB03",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-challenge",
+      "state": "backup-code-mode",
+      "title": "2FA challenge — chuyển sang nhập mã dự phòng",
+      "route": "/login",
+      "steps": [
+        {
+          "click": {
+            "name": "Use a backup code instead"
+          }
+        },
+        {
+          "wait": 500
+        }
+      ],
+      "noAuthCheck": true
+    },
+    {
+      "id": "PB03-2fa-success",
+      "pb": "PB03",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "2fa-challenge",
+      "state": "success",
+      "title": "2FA challenge — nhập đúng mã TOTP → đăng nhập thành công",
+      "route": "/login → /jobs",
+      "steps": [
+        {
+          "click": {
+            "name": "Use your authenticator app|authenticator",
+            "optional": true
+          }
+        },
+        {
+          "wait": 400
+        },
+        {
+          "totp": {
+            "var": "DT_TOTP_SECRET",
+            "into": "input[inputmode=numeric]",
+            "freshWindow": true
+          }
+        },
+        {
+          "click": {
+            "name": "^Verify$",
+            "optional": true
+          }
+        },
+        {
+          "waitUrl": "^(?!.*/login)"
+        }
+      ],
+      "expect": [
+        {
+          "notUrl": "/login"
+        }
+      ],
+      "noAuthCheck": true
+    },
+    {
+      "id": "PB11-2fa-disable-prompt",
+      "pb": "PB11",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-disable",
+      "state": "password-prompt",
+      "title": "Tắt 2FA — gạt công tắc → yêu cầu nhập mật khẩu",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#security"
+        },
+        {
+          "click": {
+            "role": "switch",
+            "name": "Two-factor authentication"
+          }
+        },
+        {
+          "wait": 500
+        }
+      ]
+    },
+    {
+      "id": "PB11-2fa-disable-wrong-password",
+      "pb": "PB11",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "2fa-disable",
+      "state": "wrong-password",
+      "title": "Tắt 2FA — sai mật khẩu → lỗi",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "fill": {
+            "selector": "#security input[type=password][placeholder=\"Password\"]",
+            "value": "Wrong-${RUN_ID}-pw"
+          }
+        },
+        {
+          "click": {
+            "name": "^Disable$"
+          }
+        },
+        {
+          "wait": 2000
+        }
+      ]
+    },
+    {
+      "id": "PB11-2fa-disabled",
+      "pb": "PB11",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "2fa-disable",
+      "state": "disabled",
+      "title": "Tắt 2FA — đúng mật khẩu → đã tắt (toast)",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "fill": {
+            "selector": "#security input[type=password][placeholder=\"Password\"]",
+            "value": "${DT_PASSWORD}"
+          }
+        },
+        {
+          "click": {
+            "name": "^Disable$"
+          }
+        },
+        {
+          "wait": 2000
+        },
+        {
+          "scrollTo": "#security"
+        }
+      ]
+    },
+    {
+      "id": "PB16-pause-default",
+      "pb": "PB16",
+      "pbs": ["PB16", "PB20"],
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "danger-zone",
+      "title": "Vùng nguy hiểm — Tạm dừng / Xoá tài khoản",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        }
+      ]
+    },
+    {
+      "id": "PB16-paused",
+      "pb": "PB16",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "pause-account",
+      "state": "paused",
+      "title": "Bấm Pause → tài khoản tạm dừng (quan sát phản hồi thực tế)",
+      "route": "/settings#danger",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        },
+        {
+          "click": {
+            "name": "^Pause$"
+          }
+        },
+        {
+          "wait": 2500
+        }
+      ]
+    },
+    {
+      "id": "PB16-relogin-paused",
+      "pb": "PB16",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "after-relogin",
+      "title": "Đăng nhập lại khi đang tạm dừng (quan sát tuỳ chọn kích hoạt lại)",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "ensureLoggedIn": "dt"
+        },
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        }
+      ]
+    },
+    {
+      "id": "PB16-reactivated",
+      "pb": "PB16",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "pause-account",
+      "state": "reactivated",
+      "title": "Bấm Reactivate → tài khoản hoạt động lại",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        },
+        {
+          "click": {
+            "name": "^Reactivate$"
+          }
+        },
+        {
+          "wait": 2000
+        },
+        {
+          "scrollTo": "#danger"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Pause"
+        }
+      ]
+    },
+    {
+      "id": "PB20-delete-confirm",
+      "pb": "PB20",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "confirm-panel",
+      "title": "Xoá tài khoản — bảng xác nhận (mật khẩu + gõ DELETE)",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        },
+        {
+          "click": {
+            "name": "^Delete account$"
+          }
+        },
+        {
+          "wait": 500
+        }
+      ]
+    },
+    {
+      "id": "PB20-delete-wrong-password",
+      "pb": "PB20",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "wrong-password",
+      "title": "Xoá tài khoản — sai mật khẩu → lỗi, tài khoản còn nguyên",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "fill": {
+            "selector": "#danger input[type=password]",
+            "value": "Wrong-${RUN_ID}-pw"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#danger input:not([type=password])",
+            "value": "DELETE"
+          }
+        },
+        {
+          "click": {
+            "name": "^Yes, delete$"
+          }
+        },
+        {
+          "wait": 2000
+        }
+      ]
+    },
+    {
+      "id": "PB20-deleted",
+      "pb": "PB20",
+      "actor": "guest",
+      "session": "dt",
+      "writes": true,
+      "feature": "delete-account",
+      "state": "deleted",
+      "title": "Xoá tài khoản thành công → đăng xuất về trang chủ",
+      "route": "/settings → /",
+      "steps": [
+        {
+          "fill": {
+            "selector": "#danger input[type=password]",
+            "value": "${DT_PASSWORD}"
+          }
+        },
+        {
+          "click": {
+            "name": "^Yes, delete$"
+          }
+        },
+        {
+          "waitUrl": "^(?!/settings)"
+        }
+      ],
+      "expect": [
+        {
+          "notUrl": "/settings"
+        }
+      ],
+      "marksDeleted": "dt"
+    },
+    {
+      "id": "PB20-login-after-delete",
+      "pb": "PB20",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "delete-account",
+      "state": "login-rejected",
+      "title": "Đăng nhập lại bằng tài khoản đã xoá → bị từ chối",
+      "route": "/login",
+      "steps": [
+        {
+          "login": {
+            "email": "${DT_EMAIL}",
+            "password": "${DT_PASSWORD}"
+          }
+        },
+        {
+          "wait": 2000
+        }
+      ],
+      "expect": [
+        {
+          "url": "/login"
+        }
+      ]
+    },
+    {
+      "id": "PB01-register-employer-filled",
+      "pb": "PB01",
+      "actor": "guest",
+      "session": "de",
+      "feature": "register",
+      "state": "employer-filled",
+      "title": "Đăng ký Nhà tuyển dụng — form đã điền",
+      "route": "/register",
+      "steps": [
+        {
+          "goto": "/register"
+        },
+        {
+          "click": {
+            "name": "^Hire remote talent$"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#name",
+            "value": "UI Capture Employer"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#email",
+            "value": "${DE_EMAIL}"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#password",
+            "value": "${DE_PASSWORD}"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PB01-register-employer-success",
+      "pb": "PB01",
+      "actor": "employer",
+      "session": "de",
+      "writes": true,
+      "feature": "register",
+      "state": "employer-success-redirect",
+      "title": "Đăng ký Nhà tuyển dụng thành công → chuyển tới Employer dashboard (chưa có công ty)",
+      "route": "/register → /employer-dashboard",
+      "full": true,
+      "steps": [
+        {
+          "click": {
+            "name": "^Create account$"
+          }
+        },
+        {
+          "waitUrl": "/employer-dashboard"
+        }
+      ],
+      "expect": [
+        {
+          "url": "/employer-dashboard"
+        }
+      ],
+      "createsAccount": "de"
+    },
+    {
+      "id": "PB12-settings-employer",
+      "pb": "PB12",
+      "pbs": [
+        "PB05",
+        "PB10",
+        "PB12",
+        "PB14",
+        "PB15",
+        "PB16",
+        "PB17",
+        "PB18",
+        "PB19",
+        "PB20"
+      ],
+      "actor": "employer",
+      "session": "de",
+      "feature": "settings",
+      "state": "employer-overview",
+      "title": "Cài đặt tài khoản — vai trò Nhà tuyển dụng (so sánh với Ứng viên)",
+      "route": "/settings",
+      "full": true,
+      "steps": [
+        {
+          "goto": "/settings"
+        }
+      ]
+    },
+    {
+      "id": "PB20-employer-deleted",
+      "pb": "PB20",
+      "actor": "employer",
+      "session": "de",
+      "writes": true,
+      "feature": "delete-account",
+      "state": "employer-deleted",
+      "title": "Nhà tuyển dụng (chưa có công ty) xoá tài khoản",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        },
+        {
+          "click": {
+            "name": "^Delete account$"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#danger input[type=password]",
+            "value": "${DE_PASSWORD}"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#danger input:not([type=password])",
+            "value": "DELETE"
+          }
+        },
+        {
+          "click": {
+            "name": "^Yes, delete$"
+          }
+        },
+        {
+          "waitUrl": "^(?!/settings)"
+        }
+      ],
+      "expect": [
+        {
+          "notUrl": "/settings"
+        }
+      ],
+      "marksDeleted": "de"
+    }
+  ]
+}

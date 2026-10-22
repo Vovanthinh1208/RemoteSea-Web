@@ -98,6 +98,11 @@
       "equityExplained": "Quyền chọn cổ phiếu, RSU, vesting",
       "parentsWhoRemote": "Làm việc tại nhà khi có con nhỏ",
       "colivingDaNang": "Trụ sở không chính thức"
+    },
+    "threads": {
+      "offer": "Vừa nhận offer từ một startup Series B ở Singapore — lương cứng $4.8k, 0,08% cổ phần ở mức định giá $80M. Senior FE, 5 năm kinh nghiệm. Mức này có thấp so với thị trường không? Có ai từng đàm phán trường hợp tương tự chưa?",
+      "async": "Có ai dùng Loom để góp ý thiết kế trong team làm việc hoàn toàn bất đồng bộ chưa? Team mình ở Sydney rất thích, nhưng mình hay phải xem lại ở tốc độ 2x mà vẫn bỏ lỡ nhiều chi tiết. Mong mọi người chia sẻ kinh nghiệm.",
+      "coliving": "Báo nhanh — hôm nay Hidden Bean ở An Thượng mất wifi hoàn toàn. Mình chuyển qua Surf Bar. Có ai ở gần muốn ngồi làm chung từ 2–6 giờ chiều không?"
     }
   },
   "page": {

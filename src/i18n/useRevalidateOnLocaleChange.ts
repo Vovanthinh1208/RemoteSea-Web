@@ -22,7 +22,11 @@ export const useRevalidateOnLocaleChange = <T extends FieldValues>(
     // this effect but exit here.
     if (previous.current === locale) return;
     previous.current = locale;
-    const fields = Object.keys(errors);
+    // Errors set from an API response (setError type "server") are not
+    // produced by the schema, so re-validating would silently clear them.
+    const fields = Object.entries(errors)
+      .filter(([, error]) => (error as { type?: string })?.type !== "server")
+      .map(([field]) => field);
     if (fields.length > 0) {
       void trigger(fields as Parameters<typeof trigger>[0]);
     }

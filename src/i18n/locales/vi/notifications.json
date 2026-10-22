@@ -12,5 +12,40 @@
   "row": {
     "markFailed": "Không thể đánh dấu đã đọc",
     "unread": "Chưa đọc: "
+  },
+  "tpl": {
+    "message": {
+      "title": "Tin nhắn mới",
+      "titleAbout": "Tin nhắn mới về vị trí {{job}}"
+    },
+    "status": {
+      "title": "Trạng thái đơn ứng tuyển của bạn đã thay đổi",
+      "body": "Đơn ứng tuyển vị trí {{job}} của bạn hiện ở trạng thái: {{status}}."
+    },
+    "report": {
+      "resolvedTitle": "Báo cáo của bạn đã được xử lý",
+      "resolvedBody": "Báo cáo của bạn về tin “{{job}}” đã được xử lý.",
+      "dismissedTitle": "Báo cáo của bạn đã bị bác bỏ",
+      "dismissedBody": "Báo cáo của bạn về tin “{{job}}” đã bị bác bỏ."
+    },
+    "interviewProposed": {
+      "title": "{{company}} đã đề xuất lịch phỏng vấn",
+      "body": "{{count}} khung giờ cho buổi phỏng vấn {{minutes}} phút vị trí {{job}}."
+    },
+    "interviewConfirmed": {
+      "title": "Đã xác nhận lịch phỏng vấn",
+      "body": "{{name}} đã xác nhận buổi phỏng vấn vị trí {{job}}.",
+      "someone": "Ứng viên"
+    },
+    "invitation": {
+      "title": "{{company}} mời bạn ứng tuyển",
+      "body": "Bạn được mời ứng tuyển vị trí {{job}}.",
+      "bodyFrom": "{{company}} mời bạn ứng tuyển vị trí {{job}}"
+    },
+    "activity": {
+      "jobLine": "{{job}} tại {{company}}",
+      "interviewProposed": "Lịch phỏng vấn được đề xuất",
+      "invitationTitle": "Lời mời ứng tuyển"
+    }
   }
 }

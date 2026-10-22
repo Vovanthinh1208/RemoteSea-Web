@@ -1,0 +1,1513 @@
+{
+  "sprint": 1,
+  "pbs": ["PB15", "PB16", "PB17", "PB18", "PB19", "PB20"],
+  "outDir": "docs/ui-design/sprint-01/pb15-pb20",
+  "shotsDir": "docs/ui-design/sprint-01/pb15-pb20",
+  "naming": "pb-feature-state",
+  "_doc": [
+    "PB15–PB20 (Settings: notification preferences, pause/reactivate, export data, connected accounts, active sessions, delete account).",
+    "Run: CAPTURE_API_CONCURRENCY=2 node scripts/capture-sprint-01-ui.ts --manifest=scripts/manifests/sprint-01-pb15-pb20.json",
+    "Every entry runs on disposable accounts (dt = Talent, de = Employer) that this run registers and deletes (PB20). No seed account is used.",
+    "States marked 'network-error-simulated' / 'loading-slow-network-simulated' abort or delay ONE API call in the browser to show the app's real error / loading UI; nothing is faked in the page."
+  ],
+  "captures": [
+    {
+      "id": "SETUP-register-talent",
+      "pb": "SETUP",
+      "actor": "guest",
+      "session": "dt",
+      "writes": true,
+      "createsAccount": "dt",
+      "noShot": true,
+      "feature": "setup",
+      "state": "register-talent",
+      "title": "Chuẩn bị: đăng ký tài khoản Ứng viên dùng một lần",
+      "route": "/register",
+      "steps": [
+        {
+          "goto": "/register"
+        },
+        {
+          "fill": {
+            "selector": "#name",
+            "value": "UI Capture PB15-20"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#email",
+            "value": "${DT_EMAIL}"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#password",
+            "value": "${DT_PASSWORD}"
+          }
+        },
+        {
+          "click": {
+            "name": "^Create account$"
+          }
+        },
+        {
+          "waitUrl": "/profile"
+        }
+      ],
+      "expect": [
+        {
+          "url": "/profile"
+        }
+      ]
+    },
+    {
+      "id": "PB15-settings-overview",
+      "pb": "PB15",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "account-settings",
+      "state": "overview",
+      "full": true,
+      "title": "Trang Cài đặt — điểm truy cập chung của PB15–PB20 (ảnh full-page dùng chung, chỉ đặt ở PB15)",
+      "route": "/settings",
+      "steps": [
+        {
+          "goto": "/jobs"
+        },
+        {
+          "click": {
+            "name": "^Settings$",
+            "role": "link"
+          }
+        },
+        {
+          "waitUrl": "/settings"
+        }
+      ],
+      "expect": [
+        {
+          "url": "/settings$"
+        }
+      ]
+    },
+    {
+      "id": "PB15-nav-to-section",
+      "pb": "PB15",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "nav-click",
+      "title": "Bấm 'Notifications' trong menu mục bên trái → cuộn tới mục 04",
+      "route": "/settings#notifications",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "click": {
+            "selector": "aside button",
+            "name": "Notifications"
+          }
+        },
+        {
+          "wait": 900
+        }
+      ]
+    },
+    {
+      "id": "PB15-desktop",
+      "pb": "PB15",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "desktop",
+      "title": "Tuỳ chọn thông báo — viewport desktop",
+      "route": "/settings#notifications",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#notifications"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Application updates"
+        }
+      ]
+    },
+    {
+      "id": "PB15-section",
+      "pb": "PB15",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "section-fullpage",
+      "title": "Tuỳ chọn thông báo — toàn bộ mục (cắt theo section)",
+      "route": "/settings#notifications",
+      "shot": {
+        "selector": "#notifications"
+      },
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#notifications"
+        }
+      ]
+    },
+    {
+      "id": "PB15-toggled",
+      "pb": "PB15",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "notification-preferences",
+      "state": "toggle-saved",
+      "title": "Gạt công tắc 'Weekly digest' (bật → tắt) — lưu ngay khi đổi; thanh 'All changes saved' là văn bản trang trí, không phải xác nhận",
+      "route": "/settings#notifications",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#notifications"
+        },
+        {
+          "read": {
+            "selector": "#notifications [role=switch] >> nth=2",
+            "var": "IGNORED"
+          }
+        },
+        {
+          "click": {
+            "selector": "#notifications [role=switch]",
+            "nth": 2
+          }
+        },
+        {
+          "wait": 1200
+        }
+      ],
+      "expect": [
+        {
+          "attr": "#notifications [role=switch] >> nth=2|aria-checked|false"
+        }
+      ]
+    },
+    {
+      "id": "PB15-persisted",
+      "pb": "PB15",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "persisted-after-reload",
+      "title": "Tải lại trang → công tắc vẫn giữ giá trị mới (đã lưu ở server)",
+      "route": "/settings#notifications",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#notifications"
+        }
+      ],
+      "expect": [
+        {
+          "attr": "#notifications [role=switch] >> nth=2|aria-checked|false"
+        }
+      ]
+    },
+    {
+      "id": "PB15-restored",
+      "pb": "PB15",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "notification-preferences",
+      "state": "toggle-restored",
+      "title": "Gạt lại về giá trị ban đầu",
+      "route": "/settings#notifications",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#notifications"
+        },
+        {
+          "click": {
+            "selector": "#notifications [role=switch]",
+            "nth": 2
+          }
+        },
+        {
+          "wait": 1200
+        }
+      ]
+    },
+    {
+      "id": "PB15-error",
+      "pb": "PB15",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "notification-preferences",
+      "state": "network-error-simulated",
+      "noSettle": true,
+      "title": "Lỗi lưu (mô phỏng mất kết nối cho PATCH /users/me/notification-preferences) → toast 'Couldn't update notification preference'",
+      "route": "/settings#notifications",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#notifications"
+        },
+        {
+          "failApi": {
+            "method": "PATCH",
+            "path": "/users/me/notification-preferences"
+          }
+        },
+        {
+          "click": {
+            "selector": "#notifications [role=switch]",
+            "nth": 4
+          }
+        },
+        {
+          "waitText": "Couldn't update notification preference"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Couldn't update notification preference"
+        }
+      ]
+    },
+    {
+      "id": "PB15-error-cleanup",
+      "pb": "SETUP",
+      "actor": "talent",
+      "session": "dt",
+      "noShot": true,
+      "feature": "setup",
+      "state": "clear-simulation",
+      "title": "Gỡ mô phỏng lỗi",
+      "route": "-",
+      "steps": [
+        {
+          "clearFailApi": true
+        },
+        {
+          "goto": "/settings"
+        }
+      ]
+    },
+    {
+      "id": "PB15-mobile",
+      "pb": "PB15",
+      "actor": "talent",
+      "session": "dt",
+      "viewport": "mobile",
+      "feature": "notification-preferences",
+      "state": "mobile",
+      "title": "Tuỳ chọn thông báo — mobile (không có menu mục bên trái ở < lg)",
+      "route": "/settings#notifications",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#notifications"
+        }
+      ]
+    },
+    {
+      "id": "PB16-desktop",
+      "pb": "PB16",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "desktop",
+      "title": "Vùng nguy hiểm — thẻ 'Pause my account' (viewport)",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Pause my account"
+        }
+      ]
+    },
+    {
+      "id": "PB16-section",
+      "pb": "PB16",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "section-fullpage",
+      "title": "Vùng nguy hiểm — toàn bộ mục 06",
+      "route": "/settings#danger",
+      "shot": {
+        "selector": "#danger"
+      },
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        }
+      ]
+    },
+    {
+      "id": "PB16-paused",
+      "pb": "PB16",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "pause-account",
+      "state": "paused-signed-out",
+      "title": "Bấm Pause → tạm dừng ngay (không có hộp xác nhận) → ứng dụng tự đăng xuất (usePauseMyAccount → logout) và về /login",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        },
+        {
+          "click": {
+            "name": "^Pause$"
+          }
+        },
+        {
+          "waitUrl": "/login"
+        }
+      ],
+      "expect": [
+        {
+          "url": "/login"
+        },
+        {
+          "storageCleared": "remotesea_access_token"
+        }
+      ]
+    },
+    {
+      "id": "PB16-relogin",
+      "pb": "PB16",
+      "actor": "talent",
+      "session": "dt",
+      "noAuthCheck": true,
+      "feature": "pause-account",
+      "state": "relogin-while-paused",
+      "title": "Đăng nhập lại khi tài khoản đang tạm dừng → vẫn đăng nhập được (auth.service.ts cố ý không chặn), trang đích sau đăng nhập",
+      "route": "/login → …",
+      "steps": [
+        {
+          "login": {
+            "email": "${DT_EMAIL}",
+            "password": "${DT_PASSWORD}"
+          }
+        },
+        {
+          "waitUrl": "^(?!/login)"
+        }
+      ],
+      "expect": [
+        {
+          "notUrl": "/login"
+        }
+      ]
+    },
+    {
+      "id": "PB16-paused-reload",
+      "pb": "PB16",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "pause-account",
+      "state": "paused-state-after-relogin",
+      "title": "Sau khi đăng nhập lại: Settings hiển thị 'Account paused — You can still sign in…' + nút Reactivate (AC 5)",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        }
+      ],
+      "expect": [
+        {
+          "text": "You can still sign in"
+        },
+        {
+          "text": "Reactivate"
+        }
+      ]
+    },
+    {
+      "id": "PB16-mobile",
+      "pb": "PB16",
+      "actor": "talent",
+      "session": "dt",
+      "viewport": "mobile",
+      "feature": "pause-account",
+      "state": "mobile-paused",
+      "title": "Vùng nguy hiểm khi đang tạm dừng — mobile",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        }
+      ]
+    },
+    {
+      "id": "PB16-reactivated",
+      "pb": "PB16",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "noSettle": true,
+      "feature": "pause-account",
+      "state": "reactivated-toast",
+      "title": "Bấm Reactivate → toast 'Account reactivated', nút trở lại 'Pause'",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        },
+        {
+          "click": {
+            "name": "^Reactivate$"
+          }
+        },
+        {
+          "waitText": "Account reactivated"
+        },
+        {
+          "scrollTo": "#danger"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Account reactivated"
+        }
+      ]
+    },
+    {
+      "id": "PB17-desktop",
+      "pb": "PB17",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "export-data",
+      "state": "desktop",
+      "title": "Quyền riêng tư & dữ liệu — 'Download your data' + nút Request (viewport)",
+      "route": "/settings#data",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#data"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Download your data"
+        }
+      ]
+    },
+    {
+      "id": "PB17-section",
+      "pb": "PB17",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "export-data",
+      "state": "section-fullpage",
+      "title": "Mục 05 Privacy & data — toàn bộ mục",
+      "route": "/settings#data",
+      "shot": {
+        "selector": "#data"
+      },
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#data"
+        }
+      ]
+    },
+    {
+      "id": "PB17-loading",
+      "pb": "PB17",
+      "actor": "talent",
+      "session": "dt",
+      "noSettle": true,
+      "feature": "export-data",
+      "state": "loading-slow-network-simulated",
+      "title": "Đang chuẩn bị file (mô phỏng phản hồi chậm 4s cho GET /users/me/export) — trạng thái nút khi đang xử lý",
+      "route": "/settings#data",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#data"
+        },
+        {
+          "delayApi": {
+            "method": "GET",
+            "path": "/users/me/export",
+            "ms": 4000
+          }
+        },
+        {
+          "clickNoWait": {
+            "name": "^Request$"
+          }
+        },
+        {
+          "wait": 700
+        }
+      ]
+    },
+    {
+      "id": "PB17-loading-cleanup",
+      "pb": "SETUP",
+      "actor": "talent",
+      "session": "dt",
+      "noShot": true,
+      "feature": "setup",
+      "state": "clear-simulation",
+      "title": "Chờ request chậm kết thúc rồi gỡ mô phỏng",
+      "route": "-",
+      "steps": [
+        {
+          "wait": 4500
+        },
+        {
+          "clearFailApi": true
+        },
+        {
+          "goto": "/settings"
+        }
+      ]
+    },
+    {
+      "id": "PB17-downloaded",
+      "pb": "PB17",
+      "actor": "talent",
+      "session": "dt",
+      "noSettle": true,
+      "feature": "export-data",
+      "state": "downloaded-toast",
+      "title": "Bấm Request → trình duyệt tải file JSON + toast 'Export downloaded' (file huỷ ngay, không lưu)",
+      "route": "/settings#data",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#data"
+        },
+        {
+          "download": {
+            "name": "^Request$"
+          }
+        },
+        {
+          "waitText": "Export downloaded"
+        }
+      ],
+      "expect": [
+        {
+          "downloaded": "\\.json$"
+        },
+        {
+          "text": "Export downloaded"
+        }
+      ]
+    },
+    {
+      "id": "PB17-error",
+      "pb": "PB17",
+      "actor": "talent",
+      "session": "dt",
+      "noSettle": true,
+      "feature": "export-data",
+      "state": "network-error-simulated",
+      "title": "Lỗi xuất dữ liệu (mô phỏng mất kết nối cho GET /users/me/export) → toast 'Couldn't export your data'",
+      "route": "/settings#data",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#data"
+        },
+        {
+          "failApi": {
+            "method": "GET",
+            "path": "/users/me/export"
+          }
+        },
+        {
+          "click": {
+            "name": "^Request$"
+          }
+        },
+        {
+          "waitText": "Couldn't export your data"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Couldn't export your data"
+        }
+      ]
+    },
+    {
+      "id": "PB17-error-cleanup",
+      "pb": "SETUP",
+      "actor": "talent",
+      "session": "dt",
+      "noShot": true,
+      "feature": "setup",
+      "state": "clear-simulation",
+      "title": "Gỡ mô phỏng lỗi",
+      "route": "-",
+      "steps": [
+        {
+          "clearFailApi": true
+        },
+        {
+          "goto": "/settings"
+        }
+      ]
+    },
+    {
+      "id": "PB17-mobile",
+      "pb": "PB17",
+      "actor": "talent",
+      "session": "dt",
+      "viewport": "mobile",
+      "feature": "export-data",
+      "state": "mobile",
+      "title": "Privacy & data — mobile",
+      "route": "/settings#data",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#data"
+        }
+      ]
+    },
+    {
+      "id": "PB18-desktop",
+      "pb": "PB18",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "connected-accounts",
+      "state": "desktop",
+      "title": "Tài khoản liên kết — Google / GitHub / LinkedIn, chưa liên kết (viewport)",
+      "route": "/settings#connected",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#connected"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Connect"
+        }
+      ]
+    },
+    {
+      "id": "PB18-section",
+      "pb": "PB18",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "connected-accounts",
+      "state": "section-fullpage",
+      "title": "Mục 03 Connected accounts — toàn bộ mục",
+      "route": "/settings#connected",
+      "shot": {
+        "selector": "#connected"
+      },
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#connected"
+        }
+      ]
+    },
+    {
+      "id": "PB18-connect-redirect",
+      "pb": "PB18",
+      "actor": "talent",
+      "session": "dt",
+      "noShot": true,
+      "feature": "connected-accounts",
+      "state": "connect-redirect",
+      "title": "Bấm Connect (GitHub) → điều hướng tới nhà cung cấp OAuth (bị chặn; chỉ ghi URL đã làm sạch — trang đích chứa token state nên không chụp)",
+      "route": "/settings#connected",
+      "steps": [
+        {
+          "blockHosts": [
+            "accounts.google.com",
+            "github.com",
+            "www.linkedin.com"
+          ]
+        },
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#connected"
+        },
+        {
+          "click": {
+            "selector": "#connected button",
+            "nth": 1,
+            "name": "Connect"
+          }
+        },
+        {
+          "wait": 2500
+        }
+      ],
+      "expect": [
+        {
+          "blocked": "github\\.com"
+        }
+      ]
+    },
+    {
+      "id": "PB18-return-error",
+      "pb": "PB18",
+      "actor": "talent",
+      "session": "dt",
+      "noSettle": true,
+      "feature": "connected-accounts",
+      "state": "oauth-return-error",
+      "title": "Trang trả về từ OAuth với lỗi 'already_linked' (mở bằng query ?connectionError=GitHub&reason=already_linked — tham số mà luồng OAuth dùng khi chuyển hướng về) → toast lỗi",
+      "route": "/settings?connectionError=…",
+      "steps": [
+        {
+          "goto": "/jobs"
+        },
+        {
+          "gotoFast": "/settings?connectionError=GitHub&reason=already_linked"
+        },
+        {
+          "waitText": "Couldn't connect GitHub"
+        }
+      ],
+      "expect": [
+        {
+          "text": "already connected to a different RemoteSEA account"
+        }
+      ]
+    },
+    {
+      "id": "PB18-mobile",
+      "pb": "PB18",
+      "actor": "talent",
+      "session": "dt",
+      "viewport": "mobile",
+      "feature": "connected-accounts",
+      "state": "mobile",
+      "title": "Connected accounts — mobile",
+      "route": "/settings#connected",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#connected"
+        }
+      ]
+    },
+    {
+      "id": "PB19-stale-after-signout",
+      "pb": "PB19",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "active-sessions",
+      "state": "signed-out-session-still-listed",
+      "title": "Sau khi đã đăng xuất (PB16) và đăng nhập lại, phiên cũ vẫn được liệt kê là đang hoạt động — Sign out chỉ xoá token ở trình duyệt (AuthContext.logout), không thu hồi phiên phía server",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollToText": "Active sessions"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Revoke"
+        }
+      ]
+    },
+    {
+      "id": "PB19-setup-single",
+      "pb": "SETUP",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "noShot": true,
+      "feature": "setup",
+      "state": "single-session",
+      "title": "Chuẩn bị: thu hồi các phiên cũ (đăng xuất ở client không thu hồi phiên phía server) để có trạng thái 1 phiên",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollToText": "Active sessions"
+        },
+        {
+          "click": {
+            "name": "Sign out of all other sessions",
+            "optional": true
+          }
+        },
+        {
+          "wait": 1500
+        }
+      ]
+    },
+    {
+      "id": "PB19-single",
+      "pb": "PB19",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "active-sessions",
+      "state": "single-session",
+      "title": "Phiên đăng nhập — chỉ có phiên hiện tại ('This device · Active now'), IP bị che",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollToText": "Active sessions"
+        }
+      ],
+      "expect": [
+        {
+          "text": "This device"
+        }
+      ]
+    },
+    {
+      "id": "PB19-multiple",
+      "pb": "PB19",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "active-sessions",
+      "state": "multiple-sessions",
+      "title": "Đăng nhập thêm 2 phiên khác → danh sách nhiều phiên, mỗi phiên có nút Revoke",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "extraSession": {
+            "of": "dt",
+            "as": "dt2"
+          }
+        },
+        {
+          "extraSession": "dt"
+        },
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollToText": "Active sessions"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Revoke"
+        }
+      ]
+    },
+    {
+      "id": "PB19-revoked-one",
+      "pb": "PB19",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "feature": "active-sessions",
+      "state": "after-revoke",
+      "title": "Bấm Revoke ở một phiên → phiên biến khỏi danh sách",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollToText": "Active sessions"
+        },
+        {
+          "click": {
+            "name": "^Revoke$"
+          }
+        },
+        {
+          "wait": 1500
+        },
+        {
+          "scrollToText": "Active sessions"
+        }
+      ]
+    },
+    {
+      "id": "PB19-sign-out-others",
+      "pb": "PB19",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "noSettle": true,
+      "feature": "active-sessions",
+      "state": "sign-out-all-others-toast",
+      "title": "'Sign out of all other sessions' → toast 'Signed out of all other sessions', chỉ còn phiên hiện tại",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollToText": "Active sessions"
+        },
+        {
+          "click": {
+            "name": "Sign out of all other sessions"
+          }
+        },
+        {
+          "waitText": "Signed out of all other sessions"
+        },
+        {
+          "scrollToText": "Active sessions"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Signed out of all other sessions"
+        }
+      ]
+    },
+    {
+      "id": "PB19-revoked-device",
+      "pb": "PB19",
+      "actor": "guest",
+      "session": "dt2",
+      "feature": "active-sessions",
+      "state": "revoked-device-signed-out",
+      "title": "Thiết bị/phiên đã bị thu hồi mở /settings → bị đưa về /login",
+      "route": "/settings → /login",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "waitUrl": "/login"
+        }
+      ],
+      "expect": [
+        {
+          "url": "/login"
+        }
+      ]
+    },
+    {
+      "id": "PB19-mobile",
+      "pb": "PB19",
+      "actor": "talent",
+      "session": "dt",
+      "viewport": "mobile",
+      "feature": "active-sessions",
+      "state": "mobile",
+      "title": "Phiên đăng nhập — mobile",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollToText": "Active sessions"
+        }
+      ]
+    },
+    {
+      "id": "PB20-desktop",
+      "pb": "PB20",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "desktop",
+      "title": "Thẻ 'Delete account' trong Vùng nguy hiểm (viewport)",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollToText": "Permanently remove your profile"
+        }
+      ],
+      "expect": [
+        {
+          "text": "Delete account"
+        }
+      ]
+    },
+    {
+      "id": "PB20-confirm",
+      "pb": "PB20",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "confirm-panel",
+      "title": "Bấm 'Delete account' → bảng xác nhận: mật khẩu hiện tại + gõ DELETE",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        },
+        {
+          "click": {
+            "name": "^Delete account$"
+          }
+        },
+        {
+          "wait": 400
+        }
+      ],
+      "expect": [
+        {
+          "text": "Type DELETE to confirm"
+        }
+      ]
+    },
+    {
+      "id": "PB20-confirm-disabled",
+      "pb": "PB20",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "confirm-button-disabled",
+      "title": "Gõ chưa đúng ('DEL') → nút 'Yes, delete' vẫn bị khoá",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "fill": {
+            "selector": "#danger input:not([type=password])",
+            "value": "DEL"
+          }
+        },
+        {
+          "wait": 300
+        }
+      ],
+      "expect": [
+        {
+          "attr": "#danger button:has-text('Yes, delete')|disabled|"
+        }
+      ]
+    },
+    {
+      "id": "PB20-wrong-password",
+      "pb": "PB20",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "wrong-password-error",
+      "title": "Mật khẩu sai + DELETE → API từ chối, toast lỗi, tài khoản còn nguyên",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "fill": {
+            "selector": "#danger input[type=password]",
+            "value": "Wrong-${RUN_ID}-pw"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#danger input:not([type=password])",
+            "value": "DELETE"
+          }
+        },
+        {
+          "click": {
+            "name": "^Yes, delete$"
+          }
+        },
+        {
+          "wait": 800
+        }
+      ],
+      "expect": [
+        {
+          "url": "/settings"
+        }
+      ]
+    },
+    {
+      "id": "PB20-cancel",
+      "pb": "PB20",
+      "actor": "talent",
+      "session": "dt",
+      "feature": "delete-account",
+      "state": "cancelled",
+      "title": "Bấm Cancel → đóng bảng xác nhận, quay về nút 'Delete account'",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "click": {
+            "selector": "#danger button",
+            "name": "^Cancel$"
+          }
+        },
+        {
+          "wait": 400
+        },
+        {
+          "scrollTo": "#danger"
+        }
+      ],
+      "expect": [
+        {
+          "notText": "Type DELETE to confirm"
+        }
+      ]
+    },
+    {
+      "id": "PB20-mobile",
+      "pb": "PB20",
+      "actor": "talent",
+      "session": "dt",
+      "viewport": "mobile",
+      "feature": "delete-account",
+      "state": "mobile-confirm-panel",
+      "title": "Bảng xác nhận xoá — mobile",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        },
+        {
+          "click": {
+            "name": "^Delete account$"
+          }
+        },
+        {
+          "wait": 400
+        },
+        {
+          "scrollToText": "Type DELETE to confirm"
+        }
+      ]
+    },
+    {
+      "id": "PB20-deleting",
+      "pb": "PB20",
+      "actor": "talent",
+      "session": "dt",
+      "writes": true,
+      "noSettle": true,
+      "feature": "delete-account",
+      "state": "deleting-loading-slow-network-simulated",
+      "title": "Đang xoá — nút 'Deleting…' + spinner (mô phỏng phản hồi chậm 4s cho DELETE /users/me)",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        },
+        {
+          "click": {
+            "name": "^Delete account$"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#danger input[type=password]",
+            "value": "${DT_PASSWORD}"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#danger input:not([type=password])",
+            "value": "DELETE"
+          }
+        },
+        {
+          "delayApi": {
+            "method": "DELETE",
+            "path": "/users/me",
+            "ms": 4000
+          }
+        },
+        {
+          "clickNoWait": {
+            "name": "^Yes, delete$"
+          }
+        },
+        {
+          "wait": 600
+        }
+      ],
+      "expect": [
+        {
+          "text": "Deleting"
+        }
+      ]
+    },
+    {
+      "id": "PB20-deleted",
+      "pb": "PB20",
+      "actor": "guest",
+      "session": "dt",
+      "writes": true,
+      "feature": "delete-account",
+      "state": "deleted-signed-out",
+      "title": "Xoá xong → tự đăng xuất, về trang chủ (navbar trạng thái khách)",
+      "route": "/settings → /",
+      "marksDeleted": "dt",
+      "steps": [
+        {
+          "waitUrl": "^(?!/settings)"
+        }
+      ],
+      "expect": [
+        {
+          "notUrl": "/settings"
+        },
+        {
+          "storageCleared": "remotesea_access_token"
+        }
+      ]
+    },
+    {
+      "id": "PB20-login-rejected",
+      "pb": "PB20",
+      "actor": "guest",
+      "session": "guest",
+      "feature": "delete-account",
+      "state": "login-after-delete-rejected",
+      "title": "Đăng nhập lại bằng tài khoản đã xoá → bị từ chối",
+      "route": "/login",
+      "steps": [
+        {
+          "login": {
+            "email": "${DT_EMAIL}",
+            "password": "${DT_PASSWORD}"
+          }
+        },
+        {
+          "wait": 1500
+        }
+      ],
+      "expect": [
+        {
+          "url": "/login"
+        }
+      ]
+    },
+    {
+      "id": "SETUP-register-employer",
+      "pb": "SETUP",
+      "actor": "guest",
+      "session": "de",
+      "writes": true,
+      "createsAccount": "de",
+      "noShot": true,
+      "feature": "setup",
+      "state": "register-employer",
+      "title": "Chuẩn bị: đăng ký tài khoản Nhà tuyển dụng dùng một lần",
+      "route": "/register",
+      "steps": [
+        {
+          "goto": "/register"
+        },
+        {
+          "click": {
+            "name": "^Hire remote talent$"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#name",
+            "value": "UI Capture Employer PB15-20"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#email",
+            "value": "${DE_EMAIL}"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#password",
+            "value": "${DE_PASSWORD}"
+          }
+        },
+        {
+          "click": {
+            "name": "^Create account$"
+          }
+        },
+        {
+          "waitUrl": "/employer-dashboard"
+        }
+      ],
+      "expect": [
+        {
+          "url": "/employer-dashboard"
+        }
+      ]
+    },
+    {
+      "id": "PB15-employer",
+      "pb": "PB15",
+      "actor": "employer",
+      "session": "de",
+      "feature": "notification-preferences",
+      "state": "employer-section",
+      "title": "Tuỳ chọn thông báo — vai trò Nhà tuyển dụng (so sánh với Ứng viên)",
+      "route": "/settings#notifications",
+      "shot": {
+        "selector": "#notifications"
+      },
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#notifications"
+        }
+      ]
+    },
+    {
+      "id": "PB19-employer",
+      "pb": "PB19",
+      "actor": "employer",
+      "session": "de",
+      "feature": "active-sessions",
+      "state": "employer-sessions",
+      "title": "Phiên đăng nhập — vai trò Nhà tuyển dụng",
+      "route": "/settings#security",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollToText": "Active sessions"
+        }
+      ]
+    },
+    {
+      "id": "PB20-employer-confirm",
+      "pb": "PB20",
+      "actor": "employer",
+      "session": "de",
+      "feature": "delete-account",
+      "state": "employer-confirm-panel",
+      "title": "Nhà tuyển dụng (chưa có công ty) — bảng xác nhận xoá",
+      "route": "/settings#danger",
+      "steps": [
+        {
+          "goto": "/settings"
+        },
+        {
+          "scrollTo": "#danger"
+        },
+        {
+          "click": {
+            "name": "^Delete account$"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#danger input[type=password]",
+            "value": "${DE_PASSWORD}"
+          }
+        },
+        {
+          "fill": {
+            "selector": "#danger input:not([type=password])",
+            "value": "DELETE"
+          }
+        }
+      ]
+    },
+    {
+      "id": "PB20-employer-deleted",
+      "pb": "PB20",
+      "actor": "guest",
+      "session": "de",
+      "writes": true,
+      "feature": "delete-account",
+      "state": "employer-deleted-signed-out",
+      "title": "Nhà tuyển dụng xoá tài khoản thành công → về trang chủ",
+      "route": "/settings → /",
+      "marksDeleted": "de",
+      "steps": [
+        {
+          "click": {
+            "name": "^Yes, delete$"
+          }
+        },
+        {
+          "waitUrl": "^(?!/settings)"
+        }
+      ],
+      "expect": [
+        {
+          "notUrl": "/settings"
+        }
+      ]
+    }
+  ]
+}

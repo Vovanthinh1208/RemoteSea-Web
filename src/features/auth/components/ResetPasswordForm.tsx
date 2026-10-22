@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -21,15 +22,18 @@ export const ResetPasswordForm = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const submitError = useSubmitError();
+  const form = useForm<ResetPasswordFormValues>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: { password: "", confirmPassword: "" },
+  });
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<ResetPasswordFormValues>({
-    resolver: zodResolver(resetPasswordSchema),
-    defaultValues: { password: "", confirmPassword: "" },
-  });
+  } = form;
+  // Field errors on screen re-validate in the new language after a switch.
+  useRevalidateOnLocaleChange(form);
 
   const onSubmit = async (values: ResetPasswordFormValues) => {
     if (!token) {

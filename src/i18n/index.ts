@@ -1,8 +1,13 @@
+export { I18nProvider, I18nContext } from "@/i18n/I18nContext";
 export {
-  I18nProvider,
-  I18nContext,
   LOCALES_STORAGE_KEY,
-} from "@/i18n/I18nContext";
+  LOCALE_PENDING_SYNC_KEY,
+  clearPendingLocaleSync,
+  hasPendingLocaleSync,
+  normalizeAccountLanguage,
+  readStoredLocale,
+  toAccountLanguage,
+} from "@/i18n/locale-storage";
 export { useI18n } from "@/i18n/useI18n";
 export { useTranslation } from "@/i18n/useTranslation";
 export {

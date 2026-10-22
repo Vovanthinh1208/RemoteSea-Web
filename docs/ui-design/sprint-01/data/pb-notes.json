@@ -1,0 +1,231 @@
+{
+  "PB01": {
+    "component": "features/auth/pages/RegisterPage.tsx → components/RegisterForm.tsx, OAuthButtons.tsx",
+    "access": "Chỉ khách (GuestOnlyRoute — đã đăng nhập thì về /)",
+    "purpose": "Người dùng mới tạo tài khoản với vai trò Ứng viên ('Find remote work') hoặc Nhà tuyển dụng ('Hire remote talent'), bằng email/mật khẩu hoặc OAuth.",
+    "layout": "Desktop 2 cột: trái là panel thương hiệu (gradient brand-900→brand-700, tiêu đề serif-italic '500+ talent', trích dẫn người dùng); phải là form: Back / 'Already a member? Sign in', chỉ báo '1 of 2 · Your account', H1 'Join RemoteSEA.', cặp nút chọn vai trò, 3 nút OAuth, phân cách 'OR CONTINUE WITH', Full name / Email / Password, nút primary 'Create account', dòng điều khoản. Mobile: ẩn panel trái.",
+    "interactions": "Chọn vai trò đổi trạng thái nút (viền + nền brand-50). Validation client (zod): trống → 'Name is required', 'Email is required', 'Password must be at least 8 characters'; dữ liệu sai định dạng hiển thị lỗi tương ứng. Khi gửi: nút chuyển 'Creating account…' + spinner. Email đã tồn tại → API từ chối, ở lại /register. Đăng ký Ứng viên thành công → /profile (bước 2 của onboarding); Nhà tuyển dụng → /employer-dashboard.",
+    "gaps": "AC 2 nói tên tối thiểu 2 ký tự — đã thấy lỗi khi nhập 1 ký tự (xem ảnh validation-invalid). Nội dung chính xác của thông báo 'Email đã được sử dụng' xem trong ảnh duplicate-email.",
+    "coverageNote": "Đăng ký thật trên tài khoản dùng một lần (Talent + Employer), đã xoá sau khi chụp."
+  },
+  "PB02": {
+    "component": "features/auth/pages/LoginPage.tsx → components/LoginForm.tsx",
+    "access": "Chỉ khách",
+    "purpose": "Đăng nhập bằng email và mật khẩu để tiếp tục phiên làm việc.",
+    "layout": "Cùng khung 2 cột với Đăng ký: panel trái 'Welcome back. Pick up where you left off.' + 3 chỉ số + 2 thẻ việc làm; form phải gồm 3 nút OAuth, Email, Password + link 'Forgot password?', checkbox 'Remember me' (mặc định bật), nút 'Sign in'.",
+    "interactions": "Gửi rỗng → lỗi inline. Sai mật khẩu → thông báo lỗi, ở lại /login. 'Remember me' quyết định token lưu localStorage hay sessionStorage (source token-storage.ts). Đăng nhập thành công → callbackUrl hoặc trang mặc định theo vai trò.",
+    "gaps": "Số liệu và 2 thẻ việc làm ở panel trái được viết cứng trong LoginPage.tsx (không phải dữ liệu thật). Khoá tài khoản sau nhiều lần sai / rate-limit 10 lần/phút (AC) không tái hiện để tránh khoá IP môi trường chụp."
+  },
+  "PB03": {
+    "component": "features/auth/components/TwoFactorChallengeForm.tsx (render trong LoginPage khi API trả challenge token)",
+    "access": "Người dùng đã bật 2FA, sau bước email/mật khẩu",
+    "purpose": "Yêu cầu mã TOTP 6 số (hoặc mã dự phòng) trước khi hoàn tất đăng nhập.",
+    "layout": "Thay form đăng nhập bằng: tiêu đề 'Two-factor authentication', hướng dẫn, 6 ô nhập 1 chữ số (tự nhảy ô, hỗ trợ dán), nút 'Verify', link 'Use a backup code instead', link quay lại đăng nhập.",
+    "interactions": "Sai mã → toast lỗi, các ô được xoá và focus về ô đầu (có test TwoFactorChallengeForm.test.tsx). Chuyển sang chế độ mã dự phòng. Mã TOTP đúng → đăng nhập thành công. Mã được tính trong script từ khoá bí mật của tài khoản dùng một lần.",
+    "gaps": "Hết hạn challenge sau 5 phút và khoá sau >5 lần sai (AC) không tái hiện."
+  },
+  "PB04": {
+    "component": "features/auth/components/OAuthButtons.tsx (link tới API /auth/{provider}); pages/AuthCallbackPage.tsx",
+    "access": "Khách (trang Đăng nhập / Đăng ký)",
+    "purpose": "Đăng nhập/đăng ký nhanh bằng Google, GitHub hoặc LinkedIn.",
+    "layout": "3 nút viền trắng full-width có huy hiệu nhà cung cấp (G / GH / in) phía trên form email.",
+    "interactions": "Nút là thẻ <a> trỏ tới API GET /auth/google|github|linkedin. Trên môi trường chụp, API trả 500 cho cả 3 nhà cung cấp (biến GOOGLE_/GITHUB_/LINKEDIN_* không có trong remotesea-api/.env) → trình duyệt hiện JSON lỗi thô. /auth/callback không có mã → về /login với toast 'Sign in failed — Missing authentication code.'",
+    "gaps": "Luồng OAuth thật (AC 2–4) không thể chạy: thiếu cấu hình OAuth ở API local; ngoài ra không đăng nhập nhà cung cấp thật. Khi OAuth lỗi, người dùng thấy trang JSON thô thay vì thông báo thân thiện.",
+    "status": "PARTIALLY_CAPTURED",
+    "missing": [
+      {
+        "what": "Trang đồng ý của nhà cung cấp, callback thành công, tạo/liên kết tài khoản qua OAuth",
+        "why": "API local thiếu cấu hình OAuth (GET /auth/{provider} → 500); không dùng tài khoản nhà cung cấp thật",
+        "next": "Cấu hình client ID/secret test trong remotesea-api/.env rồi chụp thủ công"
+      }
+    ]
+  },
+  "PB05": {
+    "component": "features/settings/components/ConnectedAccountsSection.tsx",
+    "access": "Đã đăng nhập (mọi vai trò) — /settings#connected",
+    "purpose": "Liên kết thêm Google/GitHub/LinkedIn vào tài khoản hiện có.",
+    "layout": "Mục 'Connected accounts' trong Settings: mỗi nhà cung cấp một hàng (huy hiệu màu, tên, trạng thái) với nút 'Connect' hoặc nút ngắt kết nối khi đã liên kết.",
+    "interactions": "Bấm Connect (GitHub) → trình duyệt được chuyển tới https://github.com/login/oauth/authorize với **client_id rỗng** (API local chưa cấu hình OAuth) — điều hướng bị chặn trong môi trường chụp, chỉ ghi URL đã làm sạch (capture-results.json → evidence.blockedRedirect). Trang lỗi không được chụp vì URL chứa token state đã ký.",
+    "gaps": "Liên kết thành công và trạng thái 'đã liên kết' chưa chụp (cần OAuth thật).",
+    "status": "PARTIALLY_CAPTURED",
+    "missing": [
+      {
+        "what": "Trạng thái đã liên kết / ngắt kết nối",
+        "why": "Cần OAuth thật",
+        "next": "Như PB04"
+      }
+    ]
+  },
+  "PB06": {
+    "component": "features/auth/pages/ForgotPasswordPage.tsx → ForgotPasswordForm.tsx",
+    "access": "Chỉ khách",
+    "purpose": "Yêu cầu liên kết đặt lại mật khẩu qua email.",
+    "layout": "Khung hẹp căn giữa: 'Back to sign in', H1 'Reset your password', mô tả, trường Email, nút 'Send reset link'.",
+    "interactions": "Email sai định dạng → lỗi inline. Gửi hợp lệ → thông báo nền brand-50 'We've sent a password reset link to … if an account exists.' (cùng một thông báo cho email có/không tồn tại — chống dò tài khoản). Ảnh dùng email không tồn tại nên không có thư nào được gửi.",
+    "gaps": "Nội dung email và thời hạn token 15 phút (AC 3.1) không kiểm tra."
+  },
+  "PB07": {
+    "component": "features/auth/pages/ResetPasswordPage.tsx → ResetPasswordForm.tsx",
+    "access": "Chỉ khách, từ liên kết email ?token=",
+    "purpose": "Đặt mật khẩu mới bằng token trong email.",
+    "layout": "Khung hẹp: H1 'Choose a new password', 'New password', 'Confirm new password', nút 'Reset password'.",
+    "interactions": "Không có token → hộp lỗi 'This reset link is invalid or missing its token. Request a new one.' thay cho form. Mật khẩu xác nhận không khớp → lỗi client. Token sai/hết hạn → API 400 → 'This link is invalid or has expired.' (AC 2.1).",
+    "gaps": "Đặt lại thành công (AC 4) cần token thật trong email — chưa chụp.",
+    "missing": [
+      {
+        "what": "Đặt lại mật khẩu thành công",
+        "why": "Cần token thật gửi qua email",
+        "next": "Lấy token từ CSDL test hoặc hộp thư test"
+      }
+    ]
+  },
+  "PB08": {
+    "component": "contexts/AuthContext.tsx (GET /auth/session), router/ProtectedRoute.tsx, components/layout/navbar.tsx",
+    "access": "Mọi trang (client kiểm tra phiên khi khởi động)",
+    "purpose": "Ứng dụng xác định người dùng đã đăng nhập hay chưa để hiển thị navbar và cho phép vào route được bảo vệ.",
+    "layout": "Không có màn hình riêng — thể hiện qua navbar (khách: For employers · bookmark · English · Sign in · Get job alerts; đã đăng nhập: Dashboard · chuông · Settings · Sign out) và chuyển hướng của ProtectedRoute.",
+    "interactions": "Khách mở /settings → /login?callbackUrl=%2Fsettings. Đặt token không hợp lệ vào localStorage rồi mở /settings → về /login.",
+    "gaps": "Khác AC 2.2: Backlog mô tả GET /auth/me trả 401 và client xoá dữ liệu xác thực cục bộ. Thực tế endpoint là GET /auth/session, trả **200 {\"user\":null}** với token sai/thiếu; client coi là chưa đăng nhập nhưng **không xoá** token hỏng khỏi localStorage (kiểm tra 'storageCleared' không đạt). Có màn hình 'không xác nhận được phiên → Thử lại' trong ProtectedRoute cho lỗi mạng/5xx (đọc source, chưa tái hiện)."
+  },
+  "PB09": {
+    "component": "components/layout/navbar.tsx (nút 'Sign out' + ConfirmDialog)",
+    "access": "Đã đăng nhập (mọi vai trò)",
+    "purpose": "Đăng xuất khỏi thiết bị hiện tại.",
+    "layout": "Nút văn bản 'Sign out' cuối navbar (trong menu mobile ở <lg). Hộp thoại modal giữa màn hình, nền mờ: 'Sign out?', mô tả 'You will be signed out on this device and sent back to the home page.', nút 'Cancel' (soft) và 'Sign out' (primary).",
+    "interactions": "Mở hộp xác nhận (seed — không xác nhận). Trên tài khoản dùng một lần: xác nhận → về trang chủ, navbar trở về trạng thái khách, token bị xoá.",
+    "gaps": "AC 1 nói 'menu hồ sơ cá nhân → Đăng xuất'; implementation là nút trực tiếp trên navbar, không có menu hồ sơ."
+  },
+  "PB10": {
+    "component": "features/settings/components/TwoFactorSection.tsx (trong SecuritySection)",
+    "access": "Đã đăng nhập — /settings#security",
+    "purpose": "Bật xác thực hai lớp bằng ứng dụng Authenticator.",
+    "layout": "Hàng 'Two-factor authentication' (nhãn Recommended) + công tắc. Khi bật: khối hướng dẫn quét QR, ảnh QR, 'setup key' dạng chữ mono, ô nhập '6-digit code', nút Confirm/Cancel. Sau xác nhận: danh sách 10 mã dự phòng + Copy + nút 'I've saved these'.",
+    "interactions": "Gạt công tắc → POST /auth/2fa/setup trả secret + QR. Mã sai → lỗi. Mã TOTP đúng → POST /auth/2fa/verify trả backup codes → trạng thái bật. QR, khoá và mã dự phòng được che trong ảnh.",
+    "gaps": "AC nói chọn nút [Kích hoạt 2FA]; implementation dùng công tắc."
+  },
+  "PB11": {
+    "component": "features/settings/components/TwoFactorSection.tsx",
+    "access": "Đã đăng nhập và đã bật 2FA",
+    "purpose": "Tắt xác thực hai lớp sau khi xác nhận mật khẩu.",
+    "layout": "Gạt công tắc tắt → lời nhắc 'disablePrompt', ô Password, nút 'Disable' / Cancel (inline, không phải hộp thoại).",
+    "interactions": "Sai mật khẩu → toast lỗi từ API; đúng → toast 'tfa.disabled', công tắc về tắt.",
+    "gaps": "AC 2 nói 'hộp thoại cảnh báo rủi ro'; implementation là lời nhắc inline. Email thông báo (AC 4) không kiểm tra."
+  },
+  "PB12": {
+    "component": "features/settings/pages/SettingsPage.tsx → SecuritySection.tsx → ChangePasswordForm.tsx",
+    "access": "Đã đăng nhập (mọi vai trò) — /settings#security",
+    "purpose": "Đổi mật khẩu tài khoản. Ảnh tổng quan Settings cũng được xếp ở PB12 vì đây là PB đầu tiên của trang.",
+    "layout": "Trang Settings: breadcrumb 'Dashboard · Settings', H1 'Account *settings*' (serif-italic), menu mục dính bên trái từ lg (Account, Security, Connected, Notifications, Privacy & data, Danger zone, Profile setup), 6 thẻ mục đánh số (01 … 06), thanh lưu cố định cuối trang 'All changes saved · just now' + Close/Done. Form đổi mật khẩu: Current password, New password, nút 'Update password'.",
+    "interactions": "Gửi rỗng → lỗi validation. Mật khẩu hiện tại sai → lỗi từ API. Đúng → toast 'Password updated'.",
+    "gaps": "AC 2 yêu cầu 'Nhập lại mật khẩu mới' — form chỉ có 2 trường (Current/New), không có ô xác nhận."
+  },
+  "PB13": {
+    "component": "features/talent/components/ProfileForm.tsx → profile-form/BasicsSection.tsx (#p-name)",
+    "access": "Ứng viên đã đăng nhập — /profile (mục Basics)",
+    "purpose": "Cập nhật tên hiển thị.",
+    "layout": "Trường 'Full name' trong mục Basics của hồ sơ, cạnh avatar chữ cái đầu.",
+    "interactions": "Xoá tên rồi Save → lỗi validation (zod, không gọi API). Tên mới + Save → 'Profile saved'; tên mới hiển thị sau khi tải lại.",
+    "gaps": "AC 1 đặt chức năng ở 'Cài đặt tài khoản → Thông tin cơ bản'; implementation đặt ở trang Hồ sơ (/profile), chỉ có cho TALENT. Nhà tuyển dụng không có ô đổi tên trong Settings."
+  },
+  "PB14": {
+    "component": "features/settings/components/AccountSection.tsx",
+    "access": "Đã đăng nhập — /settings#account",
+    "purpose": "Cập nhật thông tin tài khoản: số điện thoại, ngôn ngữ giao diện, khu vực, đơn vị tiền tệ.",
+    "layout": "Mục 01 'Account': Email (chỉ đọc, badge verified nếu có), Phone (placeholder '+84 90 123 4567'), 3 select Language / Region / Currency.",
+    "interactions": "Phone lưu khi rời ô (onBlur); sai định dạng E.164 → toast lỗi, không gọi API. Mỗi select lưu ngay khi đổi; đổi Language sang 'Tiếng Việt' chuyển toàn bộ giao diện sang tiếng Việt lập tức.",
+    "gaps": "AC 3 (tải ảnh đại diện JPG/PNG/WEBP ≤ 5MB): Settings không có trường avatar; nút 'Upload photo' nằm ở trang Hồ sơ /profile (mục Basics, chỉ TALENT) với giới hạn hiển thị 'JPG or PNG · square crop · max 2 MB' — khác AC về định dạng và dung lượng. Không tải ảnh thật lên trong lần chụp. AC 4 nói nút [Cập nhật thông tin]; implementation tự lưu từng trường. Huy hiệu 'Verified' cạnh email được render **vô điều kiện** trong AccountSection.tsx — tài khoản vừa tạo, chưa xác minh vẫn hiện 'Verified' (mâu thuẫn với PB22).",
+    "missing": [
+      {
+        "what": "Tải ảnh đại diện thành công",
+        "why": "Không chủ động tải file lên S3/R2 trong lần chụp; chức năng nằm ở /profile chứ không ở Settings",
+        "next": "Chụp nút Upload photo ở /profile (đã có trong ảnh PB13/PB21) và thử tải ảnh test nếu cần"
+      }
+    ]
+  },
+  "PB15": {
+    "component": "features/settings/components/NotificationsSection.tsx, ToggleRow.tsx",
+    "access": "Đã đăng nhập — /settings#notifications",
+    "purpose": "Chọn loại thông báo muốn nhận.",
+    "layout": "Mục 04: danh sách ToggleRow (tiêu đề + mô tả + công tắc): application updates, employer messages, weekly digest, instant match alerts, product news, tips & resources, browser push.",
+    "interactions": "Mỗi công tắc lưu ngay (PATCH /users/me/notification-preferences) — không có nút [Lưu cài đặt] như AC 3.",
+    "gaps": "Khác AC 3 (lưu tự động thay vì bấm Lưu)."
+  },
+  "PB16": {
+    "component": "features/settings/components/DangerZoneSection.tsx",
+    "access": "Đã đăng nhập — /settings#danger",
+    "purpose": "Tạm dừng tài khoản và kích hoạt lại.",
+    "layout": "Mục 06 'Danger zone': thẻ 'Pause my account' (mô tả + nút Pause màu amber); khi đã tạm dừng hiển thị trạng thái 'paused' và nút Reactivate.",
+    "interactions": "Bấm Pause → POST /users/me/pause ngay (không có hộp xác nhận) → ứng dụng **tự đăng xuất** (usePauseMyAccount gọi logout() — khớp AC 4) và về /login. Đăng nhập lại vẫn được (auth.service.ts cố ý không chặn) → Settings hiển thị 'Account paused' + Reactivate (AC 5).",
+    "gaps": "Khác AC: không có hộp thoại cảnh báo trước khi tạm dừng (AC 2); theo comment trong remotesea-api auth.service.ts 'nothing currently hides a paused user's profile from search or suppresses emails' — tức tạm dừng chưa ẩn hồ sơ khỏi nhà tuyển dụng, chưa dừng email (AC 2/4 phần ẩn hồ sơ)."
+  },
+  "PB17": {
+    "component": "features/settings/components/PrivacyDataSection.tsx",
+    "access": "Đã đăng nhập — /settings#data",
+    "purpose": "Tải xuống bản sao dữ liệu cá nhân.",
+    "layout": "Mục 05 'Privacy & data': công tắc hiển thị hồ sơ (PB23) và hàng 'export' với nút 'Request'.",
+    "interactions": "Bấm Request → GET /users/me/export → trình duyệt tải file JSON (tên file ghi trong capture-results) + toast 'Export downloaded'. File bị huỷ ngay trong môi trường chụp.",
+    "gaps": "Nội dung đầy đủ của gói dữ liệu (AC 2) không mở/kiểm tra (dữ liệu cá nhân)."
+  },
+  "PB18": {
+    "component": "features/settings/components/ConnectedAccountsSection.tsx",
+    "access": "Đã đăng nhập — /settings#connected",
+    "purpose": "Xem và ngắt kết nối tài khoản mạng xã hội đã liên kết.",
+    "layout": "Dùng chung mục 'Connected accounts' với PB05.",
+    "interactions": "Chỉ xác minh trạng thái 'chưa liên kết' (nút Connect).",
+    "gaps": "Không có tài khoản test đã liên kết OAuth → không chụp được danh sách đã liên kết, ngày liên kết, nút ngắt kết nối và ràng buộc 'còn phương thức đăng nhập khác' (AC 2–4).",
+    "status": "PARTIALLY_CAPTURED",
+    "noFolderReason": "không có màn hình riêng; ảnh nằm trong PB05 (mục Connected accounts)",
+    "missing": [
+      {
+        "what": "Danh sách tài khoản đã liên kết + Ngắt kết nối",
+        "why": "Cần OAuth thật (xem PB04)",
+        "next": "Liên kết một tài khoản test rồi chụp"
+      }
+    ]
+  },
+  "PB19": {
+    "component": "features/settings/components/SecuritySection.tsx (sessions list)",
+    "access": "Đã đăng nhập — /settings#security",
+    "purpose": "Xem và thu hồi các phiên đăng nhập.",
+    "layout": "Danh sách phiên trong mục Security: thiết bị/trình duyệt, IP (che trong ảnh), thời điểm hoạt động ('Active now' cho phiên hiện tại), nút 'Revoke' từng phiên, nút 'Sign out of all other sessions'.",
+    "interactions": "Tạo thêm phiên bằng một lần đăng nhập riêng → danh sách nhiều phiên. Revoke một phiên khác; 'Sign out of all other sessions'.",
+    "gaps": "AC 2 liệt kê cột Hệ điều hành; dữ liệu thực tế ghi 'Browser on an unknown OS' cho trình duyệt headless."
+  },
+  "PB20": {
+    "component": "features/settings/components/DangerZoneSection.tsx → DeleteAccountButton.tsx",
+    "access": "Đã đăng nhập (TALENT, EMPLOYER) — /settings#danger",
+    "purpose": "Xoá vĩnh viễn tài khoản.",
+    "layout": "Thẻ 'Delete account' nền danger-50: nút 'Delete account' → bảng xác nhận inline: 'Are you sure? This cannot be undone…', 'Current password' (để trống nếu chỉ dùng OAuth), 'Type DELETE to confirm', nút 'Yes, delete' (chỉ bật khi gõ đúng DELETE) + Cancel; khi xử lý hiển thị 'Deleting…'.",
+    "interactions": "Sai mật khẩu → lỗi, tài khoản còn nguyên. Đúng → xoá, đăng xuất về trang chủ; đăng nhập lại bị từ chối. Thực hiện trên cả tài khoản Ứng viên và Nhà tuyển dụng (chưa có công ty) dùng một lần.",
+    "gaps": "Ràng buộc AC 4.1 (OWNER duy nhất của công ty còn thành viên không được xoá) không tái hiện — cần công ty có thành viên."
+  },
+  "PB21": {
+    "component": "features/talent/pages/ProfilePage.tsx → ProfileForm.tsx, profile-form/* (Basics, About, Experience, Skills, Preferences, Links, Highlights, Visibility), components/shared/SkillTagEditor.tsx",
+    "access": "Chỉ TALENT — /profile",
+    "purpose": "Tạo và cập nhật hồ sơ năng lực của ứng viên.",
+    "layout": "Menu mục dính bên trái (scroll-spy, dấu hoàn thành từng mục); cột nội dung gồm các mục Basics (avatar chữ, tên, headline, địa điểm, múi giờ), About, Experience, Skills (tag + gợi ý), Preferences, Links, Highlights, Visibility; thanh lưu cố định cuối trang (trạng thái + 'Save' + 'Done →').",
+    "interactions": "Tài khoản mới vào /profile ngay sau đăng ký (hồ sơ rỗng). Gõ kỹ năng → danh sách gợi ý từ taxonomy. Nhập headline/địa điểm → Save → toast 'Profile saved'. Hồ sơ đầy đủ của tài khoản seed được chụp làm đối chiếu.",
+    "gaps": "AC 1 ghi route /talent/profile; route thực tế là /profile."
+  },
+  "PB22": {
+    "component": "features/talent/components/talent-dashboard/VerifyEmailBanner.tsx; pages/TalentVerifyPage.tsx",
+    "access": "Ứng viên chưa xác minh email (banner trên /talent); /talent/verify công khai",
+    "purpose": "Xác minh email để nhận huy hiệu Verified.",
+    "layout": "Banner 'Verify your email' trên dashboard ứng viên: mô tả lợi ích, ô email (#verification-email), nút 'Send verification email'. Trang /talent/verify: icon kết quả, tiêu đề, mô tả, nút 'Go to dashboard'.",
+    "interactions": "Mở /talent/verify không có token → 'Link expired or invalid' + 'Go to dashboard' (đã xác minh runtime).",
+    "gaps": "VerifyEmailBanner chỉ được render bên trong TalentDashboard.tsx. GET /talent/me/dashboard trả 500 cho mọi tài khoản TALENT (kể cả tài khoản vừa đăng ký) → cả trang dashboard là trạng thái lỗi 'Couldn't load your dashboard' và **banner không bao giờ xuất hiện** → không thể gửi email xác minh từ UI. AC 1 nói banner ở 'đầu trang hồ sơ'; implementation đặt trên dashboard /talent. Bấm liên kết thật và huy hiệu 'Email đã xác minh' (AC 3–4) cần token trong email.",
+    "status": "BLOCKED_API",
+    "missing": [
+      {
+        "what": "Banner 'Verify your email' + gửi email xác minh",
+        "why": "GET /talent/me/dashboard → 500, dashboard không render",
+        "next": "Sửa lỗi API dashboard (issues-and-gaps A2) rồi chụp lại"
+      },
+      {
+        "what": "Xác minh thành công + huy hiệu Verified",
+        "why": "Token chỉ có trong email",
+        "next": "Lấy token từ CSDL test"
+      }
+    ]
+  }
+}

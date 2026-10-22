@@ -248,5 +248,9 @@
     "verified": "Verified",
     "unverified": "Unverified"
   },
-  "offline": "You're offline — changes and new results will load once you reconnect."
+  "offline": "You're offline — changes and new results will load once you reconnect.",
+  "meta": {
+    "defaultTitle": "RemoteSEA — Remote Jobs from SG, AU & beyond",
+    "defaultDescription": "Curated remote jobs from Singapore, Australia & beyond — for Vietnam talent. Clear salary ranges, verified employers, sensible timezones."
+  }
 }

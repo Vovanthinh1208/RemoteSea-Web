@@ -1,0 +1,398 @@
+[
+  {
+    "path": "/",
+    "component": "pages/HomePage",
+    "guard": "Công khai",
+    "routeSprint": "shell",
+    "pbs": ["UNMAPPED"],
+    "nav": "Logo navbar",
+    "api": "/jobs, /categories",
+    "screens": ["SH-HOME"]
+  },
+  {
+    "path": "/login",
+    "component": "features/auth/pages/LoginPage",
+    "guard": "GuestOnlyRoute",
+    "routeSprint": "1",
+    "pbs": ["PB02", "PB03", "PB04"],
+    "nav": "Navbar 'Sign in'; redirect từ ProtectedRoute",
+    "api": "/auth/login, /auth/2fa/challenge",
+    "screens": ["S1-LOGIN", "S1-AUTH-GUARD"]
+  },
+  {
+    "path": "/register",
+    "component": "features/auth/pages/RegisterPage",
+    "guard": "GuestOnlyRoute",
+    "routeSprint": "1",
+    "pbs": ["PB01", "PB04"],
+    "nav": "Navbar 'Get job alerts'",
+    "api": "/auth/register",
+    "screens": ["S1-REGISTER"]
+  },
+  {
+    "path": "/forgot-password",
+    "component": "features/auth/pages/ForgotPasswordPage",
+    "guard": "GuestOnlyRoute",
+    "routeSprint": "1",
+    "pbs": ["PB06"],
+    "nav": "Link trên form đăng nhập",
+    "api": "/auth/forgot-password",
+    "screens": ["S1-FORGOT"]
+  },
+  {
+    "path": "/reset-password",
+    "component": "features/auth/pages/ResetPasswordPage",
+    "guard": "GuestOnlyRoute",
+    "routeSprint": "1",
+    "pbs": ["PB07"],
+    "nav": "Chỉ từ email (?token=)",
+    "api": "/auth/reset-password",
+    "screens": ["S1-RESET"]
+  },
+  {
+    "path": "/auth/callback",
+    "component": "features/auth/pages/AuthCallbackPage",
+    "guard": "Công khai",
+    "routeSprint": "1",
+    "pbs": ["PB04", "PB05"],
+    "nav": "Chỉ do nhà cung cấp OAuth gọi về",
+    "api": "/auth/oauth/exchange",
+    "screens": ["S1-OAUTH-CALLBACK"]
+  },
+  {
+    "path": "/jobs",
+    "component": "features/jobs/pages/JobsPage",
+    "guard": "Công khai",
+    "routeSprint": "2",
+    "pbs": ["PB47", "PB49", "PB51"],
+    "nav": "Navbar 'Jobs'",
+    "api": "/jobs, /categories, /saved/ids",
+    "screens": ["S2-JOBS"]
+  },
+  {
+    "path": "/jobs/:id",
+    "component": "features/jobs/pages/JobDetailPage",
+    "guard": "Công khai (khối Apply/Match cần đăng nhập)",
+    "routeSprint": "2",
+    "pbs": ["PB48", "PB50", "PB53", "PB82", "PB88"],
+    "nav": "JobCard",
+    "api": "/jobs/:id, /salary/benchmarks, /applications, /jobs/:id/report",
+    "screens": ["S2-JOB-DETAIL", "S2-JOB-DETAIL-TALENT"]
+  },
+  {
+    "path": "/sprints",
+    "component": "features/sprints/pages/SprintBoardPage",
+    "guard": "Chỉ khai báo khi DEV hoặc VITE_ENABLE_SPRINT_BOARD=true",
+    "routeSprint": "1",
+    "pbs": ["UNMAPPED"],
+    "nav": "Không có trên menu",
+    "api": "— (JSON tĩnh)",
+    "screens": ["S1-SPRINT-BOARD"]
+  },
+  {
+    "path": "/salary",
+    "component": "pages/SalaryPage",
+    "guard": "Công khai",
+    "routeSprint": "4",
+    "pbs": ["PB82"],
+    "nav": "Navbar 'Salary'",
+    "api": "/salary/benchmarks*",
+    "screens": ["S4-SALARY"]
+  },
+  {
+    "path": "/blog",
+    "component": "pages/BlogPage",
+    "guard": "Công khai",
+    "routeSprint": "unassigned",
+    "pbs": ["UNMAPPED"],
+    "nav": "Navbar 'Blog'",
+    "api": "—",
+    "screens": ["SH-BLOG"]
+  },
+  {
+    "path": "/community",
+    "component": "pages/CommunityPage",
+    "guard": "Công khai",
+    "routeSprint": "unassigned",
+    "pbs": ["UNMAPPED"],
+    "nav": "Navbar 'Community'",
+    "api": "—",
+    "screens": ["SH-COMMUNITY"]
+  },
+  {
+    "path": "/employer",
+    "component": "features/employer/pages/EmployerMarketingPage",
+    "guard": "Công khai",
+    "routeSprint": "unassigned",
+    "pbs": ["UNMAPPED"],
+    "nav": "Navbar 'For employers'",
+    "api": "—",
+    "screens": ["SH-EMPLOYER-MKT"]
+  },
+  {
+    "path": "/employer/verify",
+    "component": "features/employer/pages/EmployerVerifyPage",
+    "guard": "Công khai",
+    "routeSprint": "2",
+    "pbs": ["PB32"],
+    "nav": "Chỉ từ email (?token=)",
+    "api": "/employer/verification/confirm",
+    "screens": ["S2-EMPLOYER-VERIFY"]
+  },
+  {
+    "path": "/team/invitations/:token",
+    "component": "features/team/pages/TeamInvitePage",
+    "guard": "Công khai",
+    "routeSprint": "2",
+    "pbs": ["PB36"],
+    "nav": "Chỉ từ email mời",
+    "api": "/team/invitations/:token, /team/invitations/accept",
+    "screens": ["S2-TEAM-INVITE"]
+  },
+  {
+    "path": "/post-job/success",
+    "component": "features/post-job/pages/PostJobSuccessPage",
+    "guard": "Công khai",
+    "routeSprint": "2",
+    "pbs": ["PB43", "PB80", "PB81"],
+    "nav": "Stripe Checkout chuyển về",
+    "api": "/employer/jobs",
+    "screens": ["S2-POSTJOB-SUCCESS"]
+  },
+  {
+    "path": "/talent/verify",
+    "component": "features/talent/pages/TalentVerifyPage",
+    "guard": "Công khai",
+    "routeSprint": "1",
+    "pbs": ["PB22"],
+    "nav": "Chỉ từ email (?token=)",
+    "api": "/talent/verification/confirm",
+    "screens": ["S1-TALENT-VERIFY"]
+  },
+  {
+    "path": "/talent/:slug",
+    "component": "features/talent/pages/PublicTalentProfilePage",
+    "guard": "Công khai (tuỳ visibility của hồ sơ)",
+    "routeSprint": "2",
+    "pbs": ["PB28", "PB23", "PB72"],
+    "nav": "Kết quả tìm ứng viên, workspace",
+    "api": "/talent/:slug, /reviews/user/:id",
+    "screens": ["S2-TALENT-PUBLIC"]
+  },
+  {
+    "path": "/companies/:slug",
+    "component": "features/employer/pages/CompanyProfilePage",
+    "guard": "Công khai",
+    "routeSprint": "2",
+    "pbs": ["PB33", "PB31", "PB72"],
+    "nav": "Tên công ty trên JobCard",
+    "api": "/companies/:slug",
+    "screens": ["S2-COMPANY", "S2-COMPANY-OWNER"]
+  },
+  {
+    "path": "/post-job",
+    "component": "features/post-job/pages/PostJobPage",
+    "guard": "ProtectedRoute (mọi vai trò)",
+    "routeSprint": "2",
+    "pbs": ["PB41", "PB30", "PB42", "PB43", "PB80"],
+    "nav": "Nút trên Employer dashboard / trang /employer",
+    "api": "/employer/profile, /employer/jobs, /billing/checkout",
+    "screens": ["S2-POSTJOB"]
+  },
+  {
+    "path": "/alerts",
+    "component": "features/alerts/pages/AlertsPage",
+    "guard": "ProtectedRoute (mọi vai trò)",
+    "routeSprint": "4",
+    "pbs": ["PB76", "PB77"],
+    "nav": "AlertsPanel trên dashboard ứng viên; gợi ý 'Create a job alert instead' trên /jobs",
+    "api": "/alerts",
+    "screens": ["S4-ALERTS"]
+  },
+  {
+    "path": "/settings",
+    "component": "features/settings/pages/SettingsPage",
+    "guard": "ProtectedRoute (mọi vai trò)",
+    "routeSprint": "1",
+    "pbs": [
+      "PB05",
+      "PB10",
+      "PB11",
+      "PB12",
+      "PB13",
+      "PB14",
+      "PB15",
+      "PB16",
+      "PB17",
+      "PB18",
+      "PB19",
+      "PB20"
+    ],
+    "nav": "Navbar 'Settings'",
+    "api": "/users/me/*, /auth/2fa/*",
+    "screens": ["S1-SETTINGS"]
+  },
+  {
+    "path": "/saved",
+    "component": "features/saved/pages/SavedJobsPage",
+    "guard": "ProtectedRoute (mọi vai trò)",
+    "routeSprint": "3",
+    "pbs": ["PB49"],
+    "nav": "Icon bookmark trên navbar",
+    "api": "/saved",
+    "screens": ["S3-SAVED"]
+  },
+  {
+    "path": "/notifications",
+    "component": "features/notifications/pages/NotificationsPage",
+    "guard": "ProtectedRoute (mọi vai trò)",
+    "routeSprint": "3",
+    "pbs": ["PB73", "PB74", "PB75"],
+    "nav": "Dropdown chuông → 'View all'",
+    "api": "/notifications, /notifications/unread-count",
+    "screens": ["S3-NOTIFICATIONS"]
+  },
+  {
+    "path": "/profile",
+    "component": "features/talent/pages/ProfilePage",
+    "guard": "ProtectedRoute TALENT",
+    "routeSprint": "1",
+    "pbs": ["PB21", "PB23", "PB24", "PB25", "PB52"],
+    "nav": "'Edit profile' trên dashboard; link trong Settings",
+    "api": "/talent/me, /talent/me/experience, /talent/me/highlights, /skills",
+    "screens": ["S1-PROFILE"]
+  },
+  {
+    "path": "/talent",
+    "component": "features/talent/pages/TalentDashboardPage",
+    "guard": "ProtectedRoute TALENT",
+    "routeSprint": "2",
+    "pbs": ["PB26", "PB27", "PB22", "PB54"],
+    "nav": "Navbar 'Dashboard' (ứng viên)",
+    "api": "/talent/me/dashboard, /talent/me/profile-views, /applications, /invitations",
+    "screens": ["S2-TALENT-DASH"]
+  },
+  {
+    "path": "/applications/:id",
+    "component": "features/applications/pages/ApplicationDetailPage",
+    "guard": "ProtectedRoute TALENT",
+    "routeSprint": "3",
+    "pbs": ["PB54", "PB55", "PB56", "PB70", "PB71"],
+    "nav": "Bảng đơn ứng tuyển trên dashboard",
+    "api": "/applications/:id, /reviews/eligibility/:id",
+    "screens": [
+      "S3-APP-DETAIL-OFFER",
+      "S3-APP-DETAIL-INTERVIEW",
+      "S3-APP-DETAIL-PENDING"
+    ]
+  },
+  {
+    "path": "/employer-dashboard",
+    "component": "features/employer/pages/EmployerDashboardPage",
+    "guard": "ProtectedRoute EMPLOYER",
+    "routeSprint": "2",
+    "pbs": ["PB34", "PB45", "PB57", "PB59", "PB31", "PB32"],
+    "nav": "Navbar 'Dashboard' (nhà tuyển dụng)",
+    "api": "/employer/dashboard, /employer/jobs, /employer/applications/recent, /employer/analytics/funnel",
+    "screens": ["S2-EMP-DASH"]
+  },
+  {
+    "path": "/employer-dashboard/talent",
+    "component": "features/employer/pages/TalentSearchPage",
+    "guard": "ProtectedRoute EMPLOYER",
+    "routeSprint": "2",
+    "pbs": ["PB29", "PB79"],
+    "nav": "Link trên Employer dashboard",
+    "api": "/talent",
+    "screens": ["S2-TALENT-SEARCH"]
+  },
+  {
+    "path": "/employer-dashboard/team",
+    "component": "features/team/pages/TeamSettingsPage",
+    "guard": "ProtectedRoute EMPLOYER",
+    "routeSprint": "2",
+    "pbs": ["PB35", "PB37", "PB38", "PB39", "PB40"],
+    "nav": "Link trên Employer dashboard",
+    "api": "/team/members, /team/invitations",
+    "screens": ["S2-TEAM"]
+  },
+  {
+    "path": "/employer-dashboard/interviews",
+    "component": "features/interviews/pages/UpcomingInterviewsPage",
+    "guard": "ProtectedRoute EMPLOYER",
+    "routeSprint": "3",
+    "pbs": ["PB60"],
+    "nav": "Link trên Employer dashboard",
+    "api": "/employer/interviews/upcoming",
+    "screens": ["S3-INTERVIEWS-UPCOMING"]
+  },
+  {
+    "path": "/employer-dashboard/applications/:id",
+    "component": "features/employer/hiring/pages/ApplicationWorkspacePage",
+    "guard": "ProtectedRoute EMPLOYER",
+    "routeSprint": "3",
+    "pbs": ["PB57", "PB58", "PB60", "PB64", "PB65", "PB66", "PB67", "PB69"],
+    "nav": "Hàng ứng viên trên Employer dashboard",
+    "api": "/employer/applications/:id, …/scorecards, …/ai-cv-analysis, …/comments",
+    "screens": ["S3-WORKSPACE", "S3-WORKSPACE-OFFER"]
+  },
+  {
+    "path": "/admin",
+    "component": "features/admin/pages/AdminPage → AdminConsole (?tab=)",
+    "guard": "ProtectedRoute ADMIN",
+    "routeSprint": "4",
+    "pbs": [
+      "PB83",
+      "PB84",
+      "PB85",
+      "PB86",
+      "PB87",
+      "PB89",
+      "PB90",
+      "PB91",
+      "PB92",
+      "PB93"
+    ],
+    "nav": "Navbar 'Admin' (chỉ ADMIN)",
+    "api": "/admin/*",
+    "screens": [
+      "S4-ADMIN-QUEUE",
+      "S4-ADMIN-EMPLOYERS",
+      "S4-ADMIN-USERS",
+      "S4-ADMIN-REPORTS",
+      "S4-ADMIN-REVENUE",
+      "S4-ADMIN-AUDIT-LOG",
+      "S4-ROLE-GUARD"
+    ]
+  },
+  {
+    "path": "/applications/:id/messages",
+    "component": "features/messages/pages/MessageThreadPage",
+    "guard": "ProtectedRoute TALENT, EMPLOYER",
+    "routeSprint": "3",
+    "pbs": ["PB68"],
+    "nav": "Từ chi tiết đơn / workspace",
+    "api": "/applications/:id/messages, /employer/applications/:id/messages",
+    "screens": ["S3-MESSAGES-TALENT", "S3-MESSAGES-EMPLOYER"]
+  },
+  {
+    "path": "/applications/:id/interview",
+    "component": "features/interviews/pages/InterviewPage",
+    "guard": "ProtectedRoute TALENT, EMPLOYER",
+    "routeSprint": "3",
+    "pbs": ["PB60", "PB61", "PB62", "PB63"],
+    "nav": "Từ chi tiết đơn / workspace",
+    "api": "/applications/:id/interview(/confirm), /employer/applications/:id/interview(/cancel)",
+    "screens": ["S3-INTERVIEW-TALENT", "S3-INTERVIEW-EMPLOYER"]
+  },
+  {
+    "path": "*",
+    "component": "pages/NotFoundPage",
+    "guard": "Công khai",
+    "routeSprint": "shell",
+    "pbs": ["UNMAPPED"],
+    "nav": "—",
+    "api": "—",
+    "screens": ["SH-404"]
+  }
+]

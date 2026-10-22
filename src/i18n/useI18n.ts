@@ -17,6 +17,7 @@ const detachedValue = (): I18nContextValue => {
   return {
     locale,
     setLocale: setRuntimeLocale,
+    setLocaleFromAccount: setRuntimeLocale,
     t: translate,
     formatDate: (date, options) => formatDate(date, options, locale),
     formatNumber: (value, options) => formatNumber(value, options, locale),

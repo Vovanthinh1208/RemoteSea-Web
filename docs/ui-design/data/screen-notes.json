@@ -1,0 +1,359 @@
+{
+  "S1-LOGIN": {
+    "component": "src/features/auth/pages/LoginPage.tsx → components/LoginForm.tsx (+ TwoFactorChallengeForm khi tài khoản bật 2FA)",
+    "access": "Chỉ khách (GuestOnlyRoute: đã đăng nhập → chuyển về /)",
+    "purpose": "Cho phép người dùng đã có tài khoản đăng nhập bằng email/mật khẩu hoặc OAuth (Google, GitHub, LinkedIn) và tiếp tục phiên làm việc.",
+    "navigation": "Từ nút 'Sign in' trên navbar, từ mọi route được bảo vệ (chuyển hướng kèm ?callbackUrl=), từ link 'Already a member? Sign in' ở trang Đăng ký. Sau khi đăng nhập thành công: về callbackUrl hoặc trang mặc định (quan sát: ứng viên → /jobs).",
+    "layout": "Bố cục 2 cột ở desktop: cột trái là panel marketing nền gradient brand-900→brand-700 (lời chào serif-italic, 3 chỉ số, 2 thẻ việc làm mẫu); cột phải là form: link Back / Create account, tiêu đề H1, 3 nút OAuth, đường phân cách 'OR CONTINUE WITH', trường Email, trường Password + link 'Forgot password?', checkbox 'Remember me' (mặc định bật), nút primary 'Sign in' full-width. Mobile: ẩn panel trái, chỉ còn form.",
+    "behavior": "Gửi form rỗng → lỗi inline dưới từng trường ('Email is required', 'Password must be at least 8 characters'), viền trường đầu tiên chuyển sang focus brand. 'Remember me' quyết định token lưu localStorage hay sessionStorage. Nút có trạng thái loading 'Signing in...'.",
+    "gaps": "Các số liệu và thẻ việc làm ở panel trái được viết cứng trong LoginPage.tsx (12 / 2 / $3.2k, 'Canva · AU', 'Linear · US'), không lấy từ API. Màn hình nhập mã 2FA (PB03) chỉ xuất hiện với tài khoản đã bật 2FA — không có tài khoản test như vậy nên chưa chụp. Luồng OAuth thật không thực hiện (cần nhà cung cấp thật)."
+  },
+  "S1-REGISTER": {
+    "component": "src/features/auth/pages/RegisterPage.tsx → components/RegisterForm.tsx",
+    "access": "Chỉ khách (GuestOnlyRoute)",
+    "purpose": "Tạo tài khoản mới với vai trò Ứng viên (Find remote work) hoặc Nhà tuyển dụng (Hire remote talent).",
+    "navigation": "Từ nút primary 'Get job alerts' trên navbar (trỏ tới /register), link 'Create account' ở trang Đăng nhập.",
+    "layout": "Cùng khung 2 cột với trang Đăng nhập. Cột phải: chỉ báo tiến trình '1 of 2 · Your account', H1 'Join RemoteSEA.', cặp nút chọn vai trò (PillToggle), 3 nút OAuth, các trường Full name / Email / Password, nút 'Create account'. Panel trái: tiêu đề serif-italic '500+ talent', trích dẫn người dùng.",
+    "behavior": "Chọn 'Hire remote talent' đổi trạng thái nút vai trò (viền + nền brand-50). Gửi rỗng → 'Name is required', 'Email is required', 'Password must be at least 8 characters'.",
+    "gaps": "Không gửi form thật (sẽ tạo tài khoản). Trạng thái 'email đã tồn tại' (AC 4.1) cần API — chưa chụp."
+  },
+  "S1-FORGOT": {
+    "component": "src/features/auth/pages/ForgotPasswordPage.tsx → ForgotPasswordForm.tsx",
+    "access": "Chỉ khách",
+    "purpose": "Yêu cầu gửi liên kết đặt lại mật khẩu qua email.",
+    "navigation": "Link 'Forgot password?' trên form đăng nhập.",
+    "layout": "Form một cột: tiêu đề, mô tả, trường Email, nút 'Send reset link', link quay lại đăng nhập.",
+    "behavior": "Gửi rỗng → lỗi validation email.",
+    "gaps": "Không gửi yêu cầu thật (sẽ gửi email). Trạng thái thành công 'đã gửi' chưa chụp."
+  },
+  "S1-RESET": {
+    "component": "src/features/auth/pages/ResetPasswordPage.tsx → ResetPasswordForm.tsx",
+    "access": "Chỉ khách; cần ?token= từ email",
+    "purpose": "Đặt mật khẩu mới từ liên kết trong email.",
+    "navigation": "Chỉ đi vào từ liên kết email (không có trên menu).",
+    "layout": "Khung form hẹp căn giữa: link 'Back to sign in', H1 'Choose a new password', mô tả yêu cầu ≥ 8 ký tự. Không có token: hộp lỗi nền danger-50 'This reset link is invalid or missing its token. Request a new one.' thay cho form. Có token: hiện form mật khẩu mới.",
+    "behavior": "Ảnh 'with-token' dùng token giả chỉ để hiển thị form; không gửi.",
+    "gaps": "Không có token thật nên không xác minh luồng đặt lại thành công / token hết hạn."
+  },
+  "S1-OAUTH-CALLBACK": {
+    "component": "src/features/auth/pages/AuthCallbackPage.tsx",
+    "access": "Công khai — đích chuyển hướng của nhà cung cấp OAuth",
+    "purpose": "Nhận mã từ nhà cung cấp OAuth, đổi lấy phiên đăng nhập (POST /auth/oauth/exchange).",
+    "navigation": "Không có trên menu; chỉ được nhà cung cấp OAuth gọi về.",
+    "behavior": "Mở trực tiếp không có mã → không có trang riêng: ứng dụng chuyển về /login và hiện toast lỗi 'Sign in failed — Missing authentication code.' (góc dưới phải). Việc chuyển hướng này là hành vi đúng của trang, không phải lỗi chụp.",
+    "gaps": "Luồng thành công cần đăng nhập Google/GitHub/LinkedIn thật — không thực hiện."
+  },
+  "S1-TALENT-VERIFY": {
+    "component": "src/features/talent/pages/TalentVerifyPage.tsx",
+    "access": "Công khai — liên kết trong email xác minh",
+    "purpose": "Xác nhận email ứng viên bằng token (POST /talent/verification/confirm).",
+    "navigation": "Liên kết trong email; banner 'Verify email' trên dashboard ứng viên gửi email này.",
+    "layout": "Trạng thái kết quả căn giữa: icon tròn (đỏ khi lỗi), tiêu đề, mô tả, nút primary.",
+    "behavior": "Không có token → 'Link expired or invalid — Request a new verification email from your dashboard.' + nút 'Go to dashboard'.",
+    "gaps": "Không xác minh luồng thành công (cần email thật)."
+  },
+  "S1-AUTH-GUARD": {
+    "component": "src/router/ProtectedRoute.tsx",
+    "access": "Khách mở route cần đăng nhập",
+    "purpose": "Bằng chứng cho cơ chế kiểm tra phiên: route được bảo vệ chuyển khách về /login?callbackUrl=… thay vì hiển thị nội dung.",
+    "behavior": "Mở /settings khi chưa đăng nhập → URL cuối là /login?callbackUrl=%2Fsettings. Nếu không xác nhận được phiên do lỗi mạng/5xx, ProtectedRoute hiển thị màn hình 'thử lại' thay vì đá ra đăng nhập (đọc từ source, chưa tái hiện)."
+  },
+  "S1-SPRINT-BOARD": {
+    "component": "src/features/sprints/pages/SprintBoardPage.tsx (dữ liệu sinh từ docs/ bởi scripts/generate-sprints.mjs)",
+    "access": "Chỉ khi import.meta.env.DEV hoặc VITE_ENABLE_SPRINT_BOARD=true",
+    "purpose": "Công cụ nội bộ phục vụ kiểm thử: liệt kê Sprint và PB theo Product Backlog. Không phải tính năng người dùng cuối.",
+    "gaps": "Không thuộc PB nào — ghi UNMAPPED. sprint-routes.ts gán route này cho Sprint 1."
+  },
+  "S2-JOBS": {
+    "component": "src/features/jobs/pages/JobsPage.tsx → components/JobsBoard.tsx, SearchBar.tsx, FilterSidebar.tsx, JobCard.tsx, Pagination.tsx",
+    "access": "Công khai",
+    "purpose": "Tìm kiếm và lọc tin tuyển dụng remote theo từ khoá, loại hình, múi giờ/khu vực, dải lương, cấp bậc, ngành nghề; sắp xếp kết quả.",
+    "navigation": "Link 'Jobs' trên navbar; trang mặc định sau khi ứng viên đăng nhập. Trạng thái lọc được giữ trên URL (?q=, type=, tz=, level=, category=, salaryMin/Max, sort=, page=).",
+    "layout": "Thanh tìm kiếm toàn chiều rộng; sidebar 'Filters' bên trái (nhóm JOB TYPE, TIMEZONE / LOCATION, SALARY RANGE với thanh trượt kép, SENIORITY, CATEGORY — mỗi lựa chọn có số đếm facet); vùng kết quả bên phải với tổng số, dropdown 'Sort by'; danh sách JobCard (logo chữ cái, badge Verified/Verified job, công ty + quốc gia, tiêu đề, tag ngành/cấp bậc/loại hình/múi giờ, SalaryBadge màu amber, thời gian đăng, nút lưu). Mobile: sidebar thu thành nút 'Filters' mở/đóng.",
+    "behavior": "Đã kiểm tra: tìm 'engineer', lọc Full-time + Senior + sắp theo lương (qua URL), từ khoá không có kết quả → empty state, mở bộ lọc trên mobile. Dữ liệu thật: 9 tin đang mở.",
+    "gaps": "Chỉ có 9 tin (limit 20/trang) nên không tái hiện được trạng thái phân trang nhiều trang. Lọc 'Quốc gia' trong AC PB47 được thể hiện qua nhóm Timezone/Location, không có bộ lọc quốc gia riêng."
+  },
+  "S2-JOB-DETAIL": {
+    "component": "src/features/jobs/pages/JobDetailPage.tsx → job-detail/JobHeaderCard, JobDescriptionCard, JobSkillsCard, JobBenefitsCard, ApplyCard, SalaryBenchmarkCard, QuickFactsCard, JobCompanyCard, VnSignalCard, MatchCard, ReportJobForm",
+    "access": "Công khai (một số khối chỉ hiện khi đăng nhập)",
+    "purpose": "Xem đầy đủ thông tin tin tuyển dụng trước khi ứng tuyển.",
+    "navigation": "Bấm JobCard ở /jobs, trang công ty, gợi ý trên dashboard; 'Back to jobs'.",
+    "layout": "2 cột: trái gồm thẻ tiêu đề (logo, Verified employer, quốc gia, tiêu đề, công ty, tag, SalaryBadge, thời gian đăng), 'About the role', 'Skills & technologies', 'Benefits'; phải gồm thẻ ứng tuyển (mức lương lớn, 'Apply now', 'Save for later', số người đã ứng tuyển), 'Salary check' (so sánh với thị trường — PB82), 'Quick facts'.",
+    "behavior": "Khách bấm 'Apply now' → chuyển tới /login (đã xác minh).",
+    "gaps": "Khối Match Score (PB50) và form ứng tuyển chỉ có khi đăng nhập — xem S2-JOB-DETAIL-TALENT."
+  },
+  "S2-COMPANY": {
+    "component": "src/features/employer/pages/CompanyProfilePage.tsx",
+    "access": "Công khai",
+    "purpose": "Trang thương hiệu công ty: giới thiệu, thông tin cơ bản, danh sách vị trí đang tuyển.",
+    "navigation": "Tên công ty trên JobCard / chi tiết việc làm.",
+    "layout": "Thẻ đầu trang (logo, tên + badge Verified, mô tả, địa điểm, ngành, quy mô, năm thành lập, link Website); 'Open positions (n)' dùng lại JobCard; sidebar 'Quick facts' (số vị trí, thời gian phản hồi trung bình, ngày xác minh).",
+    "gaps": "Khối đánh giá công khai (PB72) chỉ hiện khi công ty có đánh giá — công ty được chụp chưa có."
+  },
+  "S2-TALENT-PUBLIC": {
+    "component": "src/features/talent/pages/PublicTalentProfilePage.tsx → public-profile/*",
+    "access": "Công khai nếu hồ sơ đặt PUBLIC; VERIFIED_EMPLOYERS / PRIVATE → khách nhận 404",
+    "purpose": "Hồ sơ năng lực công khai của ứng viên để nhà tuyển dụng xem.",
+    "navigation": "Từ kết quả Tìm kiếm ứng viên, từ không gian xử lý hồ sơ, link chia sẻ.",
+    "behavior": "Trạng thái 'private-profile': hồ sơ của tài khoản talent1 (visibility = VERIFIED_EMPLOYERS) → khách thấy 'Profile not found' + nút 'Browse jobs' — bằng chứng cho PB23."
+  },
+  "S2-EMPLOYER-VERIFY": {
+    "component": "src/features/employer/pages/EmployerVerifyPage.tsx",
+    "access": "Công khai — liên kết trong email tên miền công ty",
+    "purpose": "Xác nhận công ty qua email tên miền doanh nghiệp (POST /employer/verification/confirm).",
+    "behavior": "Không có token → trạng thái liên kết không hợp lệ.",
+    "gaps": "Backlog PB32 mô tả OTP nhập trong 15 phút, implementation dùng liên kết/token (đã ghi trong SPRINT2_TEST_REPORT.md, lỗi S2-D15)."
+  },
+  "S2-TEAM-INVITE": {
+    "component": "src/features/team/pages/TeamInvitePage.tsx",
+    "access": "Công khai — người được mời có thể chưa có tài khoản",
+    "purpose": "Xem và chấp nhận lời mời gia nhập đội tuyển dụng của công ty.",
+    "behavior": "Token không hợp lệ → thông báo lời mời không tồn tại/hết hạn.",
+    "gaps": "Không có token mời thật (tạo lời mời sẽ gửi email) → trạng thái chấp nhận thành công chưa chụp."
+  },
+  "S2-POSTJOB-SUCCESS": {
+    "component": "src/features/post-job/pages/PostJobSuccessPage.tsx",
+    "access": "Công khai — đích quay về từ Stripe Checkout",
+    "purpose": "Thông báo kết quả thanh toán gói đăng tin.",
+    "behavior": "Mở trực tiếp không có session_id → trạng thái không có thông tin phiên thanh toán.",
+    "gaps": "Không thanh toán thật (Stripe) theo yêu cầu an toàn → trạng thái thanh toán thành công chưa chụp."
+  },
+  "S4-SALARY": {
+    "component": "src/pages/SalaryPage.tsx → components/salary/*",
+    "access": "Công khai",
+    "purpose": "Tham khảo mức lương remote theo vai trò, quốc gia, cấp bậc (GET /salary/benchmarks*).",
+    "navigation": "Link 'Salary' trên navbar; khối 'Salary check' trên chi tiết việc làm dùng cùng dữ liệu."
+  },
+  "SH-HOME": {
+    "component": "src/pages/HomePage.tsx → components/home/*",
+    "access": "Công khai",
+    "purpose": "Landing page: giới thiệu nền tảng, dẫn vào tìm việc / đăng ký.",
+    "gaps": "Không có PB riêng cho landing page trong Product Backlog → UNMAPPED."
+  },
+  "SH-EMPLOYER-MKT": {
+    "component": "src/features/employer/pages/EmployerMarketingPage.tsx → employer-marketing/*, PricingSection, FAQSection",
+    "access": "Công khai",
+    "purpose": "Trang giới thiệu cho nhà tuyển dụng: lợi ích, bảng giá gói đăng tin, FAQ.",
+    "gaps": "Không có PB riêng (sprint-routes.ts đánh dấu 'unassigned'). Bảng giá liên quan gián tiếp PB43/PB80."
+  },
+  "SH-BLOG": {
+    "component": "src/pages/BlogPage.tsx",
+    "access": "Công khai",
+    "purpose": "Trang nội dung Blog.",
+    "gaps": "Không có PB tương ứng (unassigned)."
+  },
+  "SH-COMMUNITY": {
+    "component": "src/pages/CommunityPage.tsx → components/community/*",
+    "access": "Công khai",
+    "purpose": "Trang Cộng đồng.",
+    "gaps": "Không có PB tương ứng (unassigned)."
+  },
+  "SH-404": {
+    "component": "src/pages/NotFoundPage.tsx",
+    "access": "Công khai",
+    "purpose": "Trang lỗi cho mọi URL không khớp route (catch-all '*')."
+  },
+  "S1-SETTINGS": {
+    "component": "features/settings/pages/SettingsPage.tsx → AccountSection, SecuritySection (ChangePasswordForm, TwoFactorSection, phiên), ConnectedAccountsSection, NotificationsSection, PrivacyDataSection, DangerZoneSection, SettingsSaveBar",
+    "access": "ProtectedRoute (mọi vai trò)",
+    "purpose": "Trung tâm quản lý tài khoản: thông tin, bảo mật, liên kết, thông báo, quyền riêng tư, vùng nguy hiểm.",
+    "layout": "Breadcrumb 'Dashboard · Settings', H1 'Account settings' (serif-italic), menu mục dính bên trái (≥ lg), 6 thẻ mục đánh số 01–06, thanh trạng thái lưu cố định cuối trang (All changes saved · Close · Done).",
+    "behavior": "Đã chụp từng mục (cuộn tới), form đổi mật khẩu gửi rỗng → validation, mở bảng xác nhận xoá tài khoản (không xác nhận), menu ngôn ngữ. Các select/công tắc lưu ngay khi đổi nên KHÔNG thao tác trên tài khoản seed — luồng ghi chụp trên tài khoản dùng một lần ở sprint-01/.",
+    "gaps": "Xem sprint-01/sprint-01-screen-catalog.md cho từng PB10–PB20."
+  },
+  "S1-PROFILE": {
+    "component": "features/talent/pages/ProfilePage.tsx → ProfileForm + profile-form/*",
+    "access": "ProtectedRoute TALENT",
+    "purpose": "Biên tập hồ sơ năng lực ứng viên.",
+    "layout": "Menu mục dính bên trái có dấu hoàn thành; các mục Basics (avatar + 'Upload photo', tên, headline, địa điểm, múi giờ), About, Experience, Skills, Job preferences (thanh trượt lương, loại hình), Links & CV, Highlights, Visibility; thanh lưu cố định 'Save / Done →'.",
+    "behavior": "Cuộn tới từng mục; mở form 'Add role' (kinh nghiệm) và gửi rỗng → lỗi validation; không lưu (tài khoản seed)."
+  },
+  "S1-LOGOUT": {
+    "component": "components/layout/navbar.tsx + ui/confirm-dialog",
+    "access": "Đã đăng nhập",
+    "purpose": "Đăng xuất có xác nhận.",
+    "layout": "Hộp thoại modal 'Sign out?' với Cancel / Sign out trên nền mờ.",
+    "behavior": "Chỉ mở hộp thoại, không xác nhận (seed)."
+  },
+  "S2-TALENT-DASH": {
+    "component": "features/talent/pages/TalentDashboardPage.tsx → TalentDashboard + talent-dashboard/*",
+    "access": "ProtectedRoute TALENT",
+    "purpose": "Tổng quan của ứng viên: đơn ứng tuyển theo tab, pipeline, gợi ý việc, cảnh báo, lời mời, xác minh email.",
+    "layout": "Trên runtime: toàn trang là trạng thái lỗi 'Couldn't load your dashboard — Something went wrong loading your dashboard.' + nút 'Try again'.",
+    "behavior": "Mọi trạng thái (?appTab=all|offers|closed, mobile) đều hiển thị trạng thái lỗi vì GET /talent/me/dashboard → 500. Ảnh dropdown chuông thông báo vẫn hợp lệ (navbar).",
+    "gaps": "Bố cục dashboard thực (ApplicationsTable, Pipeline, CompletionRing, RecommendedJobs, AlertsPanel, InvitationsPanel, VerifyEmailBanner) chỉ xác minh được qua source — issues A2."
+  },
+  "S2-JOB-DETAIL-TALENT": {
+    "component": "features/jobs/pages/JobDetailPage.tsx + job-detail/ApplyCard, MatchCard, ReportJobForm",
+    "access": "Công khai; khối ứng tuyển/match cần TALENT",
+    "purpose": "Ứng viên xem việc, mức độ phù hợp và ứng tuyển.",
+    "layout": "Như trang khách, cột phải thêm 'Your match xx%' (thanh tiến độ + lý do: kinh nghiệm, lương, thời gian sẵn sàng).",
+    "behavior": "'Apply now' mở form inline: resume lấy từ hồ sơ ('Replace resume uploaded'), cover letter tuỳ chọn, 'Send application' / 'Cancel' — KHÔNG gửi. 'Report this job' mở form lý do + chi tiết — KHÔNG gửi."
+  },
+  "S2-EMP-DASH": {
+    "component": "features/employer/pages/EmployerDashboardPage.tsx → EmployerDashboard + employer-dashboard/*",
+    "access": "ProtectedRoute EMPLOYER",
+    "purpose": "Tổng quan nhà tuyển dụng: công ty, tin đăng, phễu, ứng viên mới.",
+    "layout": "Trên runtime: toàn trang là 'Couldn't load your dashboard' + 'Try again'.",
+    "behavior": "GET /employer/dashboard → 500 ở mọi lần; các tab ?applicantTab= cũng là trạng thái lỗi.",
+    "gaps": "ApplicantsPanel, ApplicantBulkActions, ListingsPanel, FunnelPanel, CompanyCard, VerifyCompanyBanner chỉ xác minh qua source — issues A3."
+  },
+  "S2-POSTJOB": {
+    "component": "features/post-job/components/PostJobWizard.tsx → StepCompany, StepRole, StepPlan, StepReview, PreviewCard",
+    "access": "ProtectedRoute (mọi vai trò; tạo hồ sơ công ty ở bước 1)",
+    "purpose": "Soạn tin tuyển dụng 4 bước và chuyển sang thanh toán.",
+    "layout": "Thanh bước trên cùng (1 Company › 2 Role › 3 Plan › 4 Review & pay, 'Step 1 / 4'); cột trái form; cột phải 'LIVE PREVIEW' (thẻ tin cập nhật theo form), 'ORDER SUMMARY', 'Secured by Stripe · SSL encrypted'.",
+    "behavior": "Sang bước 2 và bấm Continue khi thiếu trường → lỗi theo bước; nháp lưu ở localStorage, không tạo tin."
+  },
+  "S2-TALENT-SEARCH": {
+    "component": "features/employer/pages/TalentSearchPage.tsx → talent-search/*",
+    "access": "ProtectedRoute EMPLOYER",
+    "purpose": "Tìm ứng viên theo kỹ năng, sẵn sàng, cấp bậc, quốc gia, múi giờ…",
+    "layout": "Ô tìm kiếm toàn chiều rộng; sidebar Filters (Skills có ô tìm, Availability, Seniority…); danh sách thẻ ứng viên (avatar chữ, tên + quốc gia, headline, tag, badge sẵn sàng, mức lương mong muốn, 'Invite to apply'); 'Rank against' chọn tin để xếp hạng.",
+    "behavior": "48 ứng viên; lọc Senior; tìm 'engineer' (đều trả dữ liệu)."
+  },
+  "S2-TEAM": {
+    "component": "features/team/pages/TeamSettingsPage.tsx → TeamMembersSection, InviteMemberSection, RoleBadge",
+    "access": "ProtectedRoute EMPLOYER",
+    "purpose": "Quản lý đội tuyển dụng của công ty.",
+    "layout": "Breadcrumb 'Dashboard · Company Settings', H1 'Team members.'; thẻ danh sách 5 thành viên (Owner badge; các thành viên khác có select vai trò + nút ×); thẻ 'Invite a team member' (Email + Role + 'Send invite'); 'PENDING INVITATIONS' (email, vai trò, 'expired', nút ×).",
+    "behavior": "Gửi form mời rỗng → validation. Không đổi vai trò / xoá / thu hồi (tài khoản seed). Email không thuộc tên miền test bị che trong ảnh."
+  },
+  "S2-COMPANY-OWNER": {
+    "component": "features/employer/pages/CompanyProfilePage.tsx",
+    "access": "Công khai (xem bởi chủ công ty)",
+    "purpose": "Trang công ty khi chủ công ty xem.",
+    "behavior": "Hiển thị giống trang công khai; không thấy chế độ chỉnh sửa.",
+    "gaps": "Màn hình cập nhật hồ sơ công ty (PB31) chưa xác định được runtime."
+  },
+  "S3-SAVED": {
+    "component": "features/saved/pages/SavedJobsPage.tsx",
+    "access": "ProtectedRoute",
+    "purpose": "Danh sách việc đã lưu.",
+    "layout": "H1 'Saved jobs' + mô tả; empty state 'No saved jobs yet — Bookmark a job from its listing…' + 'Browse jobs'."
+  },
+  "S3-APP-DETAIL-OFFER": {
+    "component": "features/applications/pages/ApplicationDetailPage.tsx + talent-dashboard/ApplicationTimeline",
+    "access": "ProtectedRoute TALENT (chủ đơn)",
+    "purpose": "Theo dõi một đơn ứng tuyển và phản hồi offer.",
+    "layout": "Header (logo công ty, tên, vị trí, nút back); thẻ đơn: badge trạng thái 'Offer', mức lương · Remote, 'Message'; thông điệp theo trạng thái + 'Accept offer' / 'Decline offer'; dòng thời gian trạng thái có thời gian.",
+    "behavior": "Không chấp nhận / từ chối (seed).",
+    "gaps": "Dòng thời gian cuộn ngang, ở 1440px chỉ thấy 4 mốc đầu."
+  },
+  "S3-APP-DETAIL-INTERVIEW": {
+    "component": "features/applications/pages/ApplicationDetailPage.tsx",
+    "access": "ProtectedRoute TALENT",
+    "purpose": "Đơn ở trạng thái Interview."
+  },
+  "S3-APP-DETAIL-PENDING": {
+    "component": "features/applications/pages/ApplicationDetailPage.tsx",
+    "access": "ProtectedRoute TALENT",
+    "purpose": "Đơn vừa nộp.",
+    "layout": "Badge 'Applied', 'Your application is in the queue…', nút × (rút đơn) cạnh 'Message', timeline chỉ mốc Applied hoàn tất ('Not yet' các mốc còn lại)."
+  },
+  "S3-MESSAGES-TALENT": {
+    "component": "features/messages/pages/MessageThreadPage.tsx",
+    "access": "ProtectedRoute TALENT/EMPLOYER (bên liên quan của đơn)",
+    "purpose": "Trao đổi theo ngữ cảnh một đơn ứng tuyển.",
+    "layout": "Header (đối phương + vị trí); khung tin nhắn nhóm theo ngày (nhãn ngày giữa), bong bóng trái (đối phương, avatar chữ) / phải (mình, nền brand-600), thời gian tương đối; ô soạn 'Write a message…' + nút gửi tròn.",
+    "behavior": "Không gửi tin.",
+    "gaps": "Nội dung là tin thử nghiệm của nhóm."
+  },
+  "S3-MESSAGES-EMPLOYER": {
+    "component": "features/messages/pages/MessageThreadPage.tsx",
+    "access": "ProtectedRoute EMPLOYER",
+    "purpose": "Cùng luồng tin nhắn, nhìn từ phía nhà tuyển dụng."
+  },
+  "S3-INTERVIEW-TALENT": {
+    "component": "features/interviews/pages/InterviewPage.tsx",
+    "access": "ProtectedRoute TALENT",
+    "purpose": "Xem lịch phỏng vấn đã chốt, tham gia, thêm vào lịch.",
+    "layout": "Thẻ 'UPCOMING INTERVIEW' (ngày giờ, thời lượng, 'your local time', 'Join interview', 'Add to calendar'); thẻ 'Your interview … is complete' + 'Write a review'.",
+    "gaps": "Nhãn 'UPCOMING' cho buổi đã qua (24/09)."
+  },
+  "S3-INTERVIEW-EMPLOYER": {
+    "component": "features/interviews/pages/InterviewPage.tsx",
+    "access": "ProtectedRoute EMPLOYER",
+    "purpose": "Phía nhà tuyển dụng của buổi phỏng vấn.",
+    "layout": "Như phía ứng viên + thẻ 'Team feedback' (1/1 recommend hire).",
+    "gaps": "Không có buổi đang chờ để thấy form đề xuất (ProposeInterviewForm) / nút huỷ."
+  },
+  "S3-NOTIFICATIONS": {
+    "component": "features/notifications/pages/NotificationsPage.tsx → NotificationRow",
+    "access": "ProtectedRoute",
+    "purpose": "Trung tâm thông báo trong ứng dụng.",
+    "layout": "H1 'Notifications' + mô tả; nhóm theo ngày; mỗi hàng: icon theo loại (tin nhắn, lịch phỏng vấn, trạng thái đơn), tiêu đề, nội dung, thời gian.",
+    "behavior": "Mở dropdown chuông trên navbar; không đánh dấu đã đọc."
+  },
+  "S3-WORKSPACE": {
+    "component": "features/employer/hiring/pages/ApplicationWorkspacePage.tsx → HiringProgressStepper, CandidateSummaryCard, CvAnalysisCard, ScorecardSection, CandidateNotesCard, DiscussionThreadCard, HiringDecisionCard",
+    "access": "ProtectedRoute EMPLOYER",
+    "purpose": "Không gian xử lý một hồ sơ: pipeline, phân tích CV bằng AI, scorecard, ghi chú, thảo luận nội bộ.",
+    "layout": "Header (tên ứng viên, vị trí, badge 'Awaiting decision'); stepper 6 bước (Applied → Reviewing → Interview → Feedback → Decision → Hired) + 'Message' + 'View feedback status'; cột trái: 'Analyze with AI', 'Team feedback' (tổng hợp + 'Your feedback'), 'Private notes', 'Internal discussion'; cột phải: tóm tắt ứng viên (kinh nghiệm, lương mong muốn, địa điểm, múi giờ, kỹ năng, liên kết CV — bị che).",
+    "behavior": "Chỉ xem; không chạy AI, không ghi chú, không đổi trạng thái."
+  },
+  "S3-WORKSPACE-OFFER": {
+    "component": "ApplicationWorkspacePage.tsx",
+    "access": "ProtectedRoute EMPLOYER",
+    "purpose": "Workspace của ứng viên đã nhận offer."
+  },
+  "S3-INTERVIEWS-UPCOMING": {
+    "component": "features/interviews/pages/UpcomingInterviewsPage.tsx",
+    "access": "ProtectedRoute EMPLOYER",
+    "purpose": "Lịch phỏng vấn sắp tới của cả đội (scope team).",
+    "behavior": "API trả danh sách rỗng → empty state."
+  },
+  "S4-ALERTS": {
+    "component": "features/alerts/pages/AlertsPage.tsx → AlertsManager, CreateAlertForm, AlertListItem",
+    "access": "ProtectedRoute",
+    "purpose": "Tạo và quản lý cảnh báo việc làm.",
+    "layout": "H1 'Job alerts'; thẻ 'Create a new alert' (Alert name, Keywords, Job type, Seniority, Minimum salary, Notification frequency, chip ngành, '+ Create alert'); danh sách cảnh báo (tên, tiêu chí, badge 'Paused', nút xoá).",
+    "behavior": "Gửi form với tên rỗng → validation; không tạo."
+  },
+  "S4-ROLE-GUARD": {
+    "component": "router/ProtectedRoute.tsx (roles=['ADMIN'])",
+    "access": "TALENT mở /admin",
+    "purpose": "Bằng chứng phân quyền theo vai trò.",
+    "behavior": "Bị chuyển về '/'."
+  },
+  "S4-ADMIN-QUEUE": {
+    "component": "features/admin/components/AdminConsole.tsx → AdminQueue + admin-queue/*",
+    "access": "ProtectedRoute ADMIN",
+    "purpose": "Kiểm duyệt tin tuyển dụng chờ đăng.",
+    "layout": "(Giao diện tiếng Việt do tài khoản admin.) Menu mục trái (Hàng chờ duyệt, Nhà tuyển dụng, Người dùng, Báo cáo, Doanh thu, Nhật ký kiểm toán); KPI (Trong hàng chờ, Thời gian chờ TB, Đã duyệt, Đã từ chối); danh sách tin chờ (cũ nhất trước, thời gian chờ màu đỏ); chi tiết tin: tóm tắt, 'Kiểm tra tự động 4/4 đạt', 'Kiểm tra rủi ro bằng AI' (Rủi ro thấp + giải thích), thanh quyết định.",
+    "behavior": "Tin đầu được chọn mặc định; trạng thái 'item-selected' không đổi được tin (bộ chọn không khớp) — ảnh vẫn là tin đầu."
+  },
+  "S4-ADMIN-EMPLOYERS": {
+    "component": "AdminEmployers.tsx",
+    "access": "ProtectedRoute ADMIN",
+    "purpose": "Xác minh / đình chỉ nhà tuyển dụng.",
+    "layout": "KPI (16 nhà tuyển dụng, 3 chưa xác minh, $20.7k đã thanh toán), lọc Tất cả / Chưa xác minh, ô tìm; bảng: công ty + badge xác minh, số tin, tổng chi tiêu (thanh), ngày tham gia, nút 'Xác minh' / 'Đình chỉ'.",
+    "gaps": "Cột ngày tham gia hiển thị 'Invalid Date'."
+  },
+  "S4-ADMIN-USERS": {
+    "component": "AdminUsers.tsx",
+    "access": "ProtectedRoute ADMIN",
+    "purpose": "Quản lý người dùng.",
+    "layout": "KPI (Tổng người dùng, Quản trị viên, Bị cấm), lọc vai trò dạng pill có số đếm, ô tìm tên/email; bảng: người dùng, select vai trò, trạng thái, ngày tham gia, nút 'Cấm'.",
+    "behavior": "Lọc ?role=EMPLOYER và tìm ?q=talent (URL)."
+  },
+  "S4-ADMIN-REPORTS": {
+    "component": "AdminReports.tsx",
+    "access": "ProtectedRoute ADMIN",
+    "purpose": "Xử lý báo cáo vi phạm tin tuyển dụng.",
+    "layout": "KPI (Báo cáo đang mở 3, Đã xử lý, Đã bỏ qua); lọc Đang mở / Đã xử lý / Đã bỏ qua; bảng: việc làm + công ty, người báo cáo, badge lý do, chi tiết, ngày báo cáo, nút 'Xử lý' / 'Bỏ qua'."
+  },
+  "S4-ADMIN-REVENUE": {
+    "component": "AdminRevenue.tsx",
+    "access": "ProtectedRoute ADMIN",
+    "purpose": "Thống kê doanh thu từ gói đăng tin.",
+    "gaps": "Không có PB riêng.",
+    "layout": "KPI (doanh thu luỹ kế $20.7k, tháng này, số tin theo gói Tiêu chuẩn/Nổi bật/Hỗ trợ trực tiếp); biểu đồ cột chồng doanh thu 8 tháng gần nhất theo gói; thanh tỉ lệ 'Doanh thu theo gói'; bảng 'Giao dịch gần đây'."
+  },
+  "S4-ADMIN-AUDIT-LOG": {
+    "component": "AdminAuditLog.tsx",
+    "access": "ProtectedRoute ADMIN",
+    "purpose": "Nhật ký hành động quản trị, lọc theo loại đối tượng.",
+    "layout": "Lọc pill theo loại đối tượng (Tất cả / Nhà tuyển dụng / Việc làm / Báo cáo / Người dùng); danh sách sự kiện có icon, câu mô tả '<admin> đã … <đối tượng>', thời gian tương đối, mở rộng chi tiết."
+  }
+}

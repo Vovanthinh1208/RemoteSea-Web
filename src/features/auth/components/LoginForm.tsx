@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -37,15 +38,18 @@ export const LoginForm = () => {
     remember: boolean;
   } | null>(null);
 
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "", remember: true },
+  });
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "", remember: true },
-  });
+  } = form;
+  // Field errors on screen re-validate in the new language after a switch.
+  useRevalidateOnLocaleChange(form);
 
   const onSubmit = async (values: LoginFormValues) => {
     submitError.clear();

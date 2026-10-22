@@ -33,7 +33,7 @@
     "interviews_other": "{{count}} buổi phỏng vấn",
     "offers_one": "{{count}} offer",
     "offers_other": "{{count}} offer",
-    "alerts": "Thông báo",
+    "alerts": "Thông báo việc làm",
     "browseJobs": "Tìm việc",
     "profileIs": "Hồ sơ của bạn đã ",
     "complete": "hoàn thiện {{pct}}%",
@@ -61,7 +61,7 @@
     "experience": "Kinh nghiệm làm việc",
     "skills": "Kỹ năng chuyên môn",
     "education": "Học vấn",
-    "resume": "Hồ sơ / CV",
+    "resume": "CV / Sơ yếu lý lịch",
     "headline": "Chức danh chuyên môn",
     "headlinePlaceholder": "Ví dụ: Kỹ sư Full-Stack cấp cao · React & Node.js",
     "bio": "Giới thiệu bản thân",
@@ -120,7 +120,7 @@
     "SHORTLISTED": "Vào danh sách rút gọn",
     "INTERVIEW": "Đang phỏng vấn",
     "OFFERED": "Đã nhận offer",
-    "OFFER_ACCEPTED": "Đã nhận offer này",
+    "OFFER_ACCEPTED": "Đã chấp nhận offer",
     "OFFER_DECLINED": "Đã từ chối offer",
     "REJECTED": "Không được chọn",
     "WITHDRAWN": "Đã rút đơn"
@@ -314,7 +314,7 @@
     "prefs": "Mong muốn",
     "links": "Liên kết & CV",
     "highlights": "Điểm nổi bật",
-    "visibility": "Hiển thị",
+    "visibility": "Chế độ hiển thị",
     "preview": "Xem như nhà tuyển dụng",
     "saveFirst": "Hãy lưu hồ sơ trước"
   },
@@ -425,7 +425,7 @@
   "vis": {
     "eyebrow": "07 · Ai thấy bạn",
     "help": "Kiểm soát ai có thể tìm thấy hồ sơ và liên hệ với bạn. Thay đổi bất cứ lúc nào.",
-    "title": "Hiển thị.",
+    "title": "Chế độ hiển thị hồ sơ.",
     "open": {
       "title": "Mở cho mọi người",
       "desc": "Mọi nhà tuyển dụng đã đăng nhập trên RemoteSEA đều có thể tìm thấy bạn. Nhanh nhất, nhiều cơ hội nhất."

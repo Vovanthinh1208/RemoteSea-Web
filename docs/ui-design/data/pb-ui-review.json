@@ -1,0 +1,438 @@
+{
+  "_doc": "Đánh giá thủ công từng PB sau khi xem ảnh (2026-10-21). status theo bộ trạng thái chuẩn; screens = Screen ID bổ sung ngoài khai báo trong script; note = lý do. Sprint 1 chi tiết hơn ở sprint-01/.",
+  "PB01": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Mặc định, chọn vai trò, validation. Đăng ký thật + email trùng: xem sprint-01/ (tài khoản dùng một lần)."
+  },
+  "PB02": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Mặc định, validation, mobile; sai mật khẩu/đăng nhập thành công: sprint-01/."
+  },
+  "PB03": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "screens": ["S1-LOGIN"],
+    "runtime": "Màn hình challenge 2FA chụp trên tài khoản dùng một lần đã bật 2FA — xem sprint-01/screenshots/PB03/",
+    "note": "Không có trong bộ ảnh toàn ứng dụng; bằng chứng ở sprint-01/."
+  },
+  "PB04": {
+    "status": "PARTIALLY_CAPTURED",
+    "note": "Có nút OAuth + callback thiếu mã. API local trả 500 cho /auth/{provider} (thiếu cấu hình OAuth) — issues A7."
+  },
+  "PB05": {
+    "status": "PARTIALLY_CAPTURED",
+    "note": "Mục Connected accounts (chưa liên kết). Connect chuyển tới GitHub với client_id rỗng — không liên kết được ở local."
+  },
+  "PB06": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Mặc định + validation; trạng thái đã gửi: sprint-01/."
+  },
+  "PB07": {
+    "status": "PARTIALLY_CAPTURED",
+    "note": "Thiếu token, có token (form), token sai (lỗi API). Đặt lại thành công cần token thật."
+  },
+  "PB08": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Chuyển hướng khi chưa đăng nhập đã xác minh. Khác AC 2.2: /auth/session trả 200 {user:null}, token hỏng không bị xoá (issues A6)."
+  },
+  "PB09": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Hộp xác nhận Sign out (không xác nhận trên tài khoản seed); xác nhận đăng xuất: sprint-01/."
+  },
+  "PB10": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Công tắc 2FA (tắt) trong ảnh Settings; QR / mã dự phòng / bật thành công: sprint-01/ (QR, khoá, mã dự phòng bị che)."
+  },
+  "PB11": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Tắt 2FA (sai/đúng mật khẩu): sprint-01/."
+  },
+  "PB12": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Form + validation; sai mật khẩu hiện tại / thành công: sprint-01/. Form không có ô 'Nhập lại mật khẩu mới' như AC."
+  },
+  "PB13": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "screens": ["S1-PROFILE"],
+    "note": "Tên hiển thị nằm ở /profile (Basics), không ở Settings như AC."
+  },
+  "PB14": {
+    "status": "PARTIALLY_CAPTURED",
+    "note": "Phone/Language/Region/Currency (lưu ngay). Avatar không có trong Settings (ở /profile, JPG/PNG ≤ 2MB khác AC). Badge 'Verified' vô điều kiện."
+  },
+  "PB15": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Công tắc lưu ngay (không có nút Lưu như AC)."
+  },
+  "PB16": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Tạm dừng → tự đăng xuất (khớp AC 4) → đăng nhập lại → Reactivate (sprint-01/, sprint-01/pb15-pb20/). Khác AC: không có hộp cảnh báo, chưa ẩn hồ sơ/dừng email."
+  },
+  "PB17": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Nút Request tải JSON (sprint-01/; file huỷ ngay)."
+  },
+  "PB18": {
+    "status": "PARTIALLY_CAPTURED",
+    "screens": ["S1-SETTINGS"],
+    "note": "Chỉ trạng thái chưa liên kết; cần OAuth thật để có danh sách đã liên kết."
+  },
+  "PB19": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Danh sách phiên (IP che). Revoke / sign out others trên tài khoản dùng một lần: sprint-01/."
+  },
+  "PB20": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Bảng xác nhận + xoá thật tài khoản dùng một lần (Talent & Employer): sprint-01/."
+  },
+  "PB21": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Hồ sơ seed đầy đủ + hồ sơ mới, gợi ý kỹ năng, lưu thành công: sprint-01/."
+  },
+  "PB22": {
+    "status": "BLOCKED_API",
+    "note": "Trang /talent/verify (token sai) chụp được. Banner gửi email xác minh nằm trong dashboard /talent — dashboard lỗi 500 (A2) nên không hiển thị."
+  },
+  "PB23": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "screens": ["S1-PROFILE", "S2-TALENT-PUBLIC"],
+    "note": "Mục Visibility trong hồ sơ + bằng chứng hành vi: hồ sơ VERIFIED_EMPLOYERS → khách thấy 'Profile not found'."
+  },
+  "PB24": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "screens": ["S1-PROFILE"],
+    "note": "Mở form thêm kinh nghiệm + validation (không lưu)."
+  },
+  "PB25": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S1-PROFILE"],
+    "note": "Mục Highlights hiển thị; chưa mở form thêm project/education/language."
+  },
+  "PB26": {
+    "status": "BLOCKED_API",
+    "note": "GET /talent/me/dashboard → 500: toàn trang /talent là trạng thái lỗi (A2). Ảnh là bằng chứng trạng thái lỗi."
+  },
+  "PB27": {
+    "status": "BLOCKED_API",
+    "screens": ["S2-TALENT-DASH"],
+    "note": "Khối lượt xem hồ sơ nằm trong dashboard /talent (lỗi 500)."
+  },
+  "PB28": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Hồ sơ công khai (PUBLIC) + mobile; hồ sơ không công khai → not found."
+  },
+  "PB29": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Danh sách 48 ứng viên, lọc Senior, tìm từ khoá (đều trả dữ liệu)."
+  },
+  "PB30": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S2-POSTJOB"],
+    "note": "Bước 1 'About your company' của wizard đăng tin = onboarding hồ sơ công ty; không tạo công ty mới."
+  },
+  "PB31": {
+    "status": "NOT_VERIFIED",
+    "screens": ["S2-COMPANY-OWNER"],
+    "note": "Trang công ty của chính nhà tuyển dụng hiển thị như trang công khai; chưa tìm thấy/không mở màn hình chỉnh sửa (Company card trên dashboard bị lỗi 500)."
+  },
+  "PB32": {
+    "status": "PARTIALLY_CAPTURED",
+    "note": "Chỉ trang /employer/verify với token không hợp lệ; banner yêu cầu xác minh nằm trong dashboard (lỗi 500). Backlog: OTP 15 phút ≠ liên kết token."
+  },
+  "PB33": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Trang công ty công khai + mobile."
+  },
+  "PB34": {
+    "status": "BLOCKED_API",
+    "note": "GET /employer/dashboard → 500: toàn trang là 'Couldn't load your dashboard' (A3)."
+  },
+  "PB35": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "screens": ["S2-TEAM"],
+    "note": "Form mời (email + role) + validation; không gửi lời mời."
+  },
+  "PB36": {
+    "status": "PARTIALLY_CAPTURED",
+    "note": "Chỉ trạng thái token không hợp lệ; tạo lời mời thật sẽ gửi email."
+  },
+  "PB37": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Danh sách 5 thành viên, Owner badge, role select, nút xoá."
+  },
+  "PB38": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S2-TEAM"],
+    "note": "Khu 'Pending invitations' cuối trang (ảnh full-page); không thu hồi."
+  },
+  "PB39": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S2-TEAM"],
+    "note": "Select vai trò từng thành viên; không đổi (seed)."
+  },
+  "PB40": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S2-TEAM"],
+    "note": "Nút × xoá thành viên; không bấm (seed)."
+  },
+  "PB41": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Wizard 4 bước, bước 1–2, validation theo bước (không tạo tin)."
+  },
+  "PB42": {
+    "status": "BLOCKED_API",
+    "screens": ["S2-EMP-DASH"],
+    "note": "Lối vào chỉnh sửa tin nằm ở ListingsPanel trong dashboard (lỗi 500)."
+  },
+  "PB43": {
+    "status": "PARTIALLY_CAPTURED",
+    "note": "Order summary + 'Secured by Stripe' ở wizard, trang /post-job/success không có session. Không thanh toán thật."
+  },
+  "PB44": {
+    "status": "NOT_VERIFIED",
+    "runtime": "Không có màn hình riêng (xử lý phía API khi đăng tin)",
+    "note": "PB nền — không có UI để chụp; chỉ quan sát gián tiếp qua trạng thái tin."
+  },
+  "PB46": {
+    "status": "NOT_VERIFIED",
+    "runtime": "Không có màn hình riêng (cron phía API)",
+    "note": "PB nền — không có UI để chụp."
+  },
+  "PB78": {
+    "status": "NOT_VERIFIED",
+    "runtime": "Không có màn hình riêng (cron + email)",
+    "note": "PB nền — UI chỉ có phần tạo/quản lý cảnh báo (PB76/77)."
+  },
+  "PB81": {
+    "status": "NOT_VERIFIED",
+    "screens": ["S2-POSTJOB-SUCCESS"],
+    "runtime": "Chỉ có trang trả về /post-job/success, không có session thanh toán",
+    "note": "Webhook Stripe là xử lý nền; không thanh toán thật."
+  },
+  "PB45": {
+    "status": "BLOCKED_API",
+    "screens": ["S2-EMP-DASH"],
+    "note": "Đóng tin thực hiện trong ListingsPanel của dashboard (lỗi 500)."
+  },
+  "PB47": {
+    "status": "PARTIALLY_CAPTURED",
+    "note": "Danh sách, bộ lọc, sắp xếp, empty state, mobile OK. Tìm theo từ khoá luôn lỗi 500 (A4). Chỉ 9 tin nên không có phân trang."
+  },
+  "PB48": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Chi tiết tin (khách + ứng viên), khách bấm Apply → login."
+  },
+  "PB49": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S2-JOBS", "S2-JOB-DETAIL"],
+    "note": "Trang Saved (empty state) + nút bookmark/'Save for later'; không lưu/bỏ lưu (seed)."
+  },
+  "PB50": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Thẻ 'Your match 56%' + lý do trên chi tiết việc làm; badge '% match' trên JobCard khi đăng nhập."
+  },
+  "PB51": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S2-JOBS"],
+    "note": "Nhóm CATEGORY trong sidebar lọc + tag ngành trên JobCard."
+  },
+  "PB52": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "screens": ["S1-PROFILE"],
+    "note": "Gõ 'Rea' → gợi ý '+ React' (sprint-01/screenshots/PB21/…skill-suggestions)."
+  },
+  "PB53": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Mở form ứng tuyển inline (resume từ hồ sơ + cover letter); KHÔNG gửi đơn."
+  },
+  "PB54": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "3 trạng thái đơn (Offer / Interview / Applied) + timeline. Timeline cuộn ngang bị cắt ở 1440px (issues G)."
+  },
+  "PB55": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S3-APP-DETAIL-PENDING"],
+    "note": "Nút × (rút đơn) ở đầu thẻ đơn Applied; không bấm."
+  },
+  "PB56": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "'Accept offer' / 'Decline offer' hiển thị; không phản hồi (seed)."
+  },
+  "PB57": {
+    "status": "BLOCKED_API",
+    "screens": ["S2-EMP-DASH"],
+    "note": "Applicants panel nằm trong dashboard nhà tuyển dụng (lỗi 500). Workspace từng hồ sơ vẫn mở được (PB58)."
+  },
+  "PB58": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Workspace: stepper pipeline 6 bước, 'View feedback status', Message; không đổi trạng thái."
+  },
+  "PB59": {
+    "status": "BLOCKED_API",
+    "screens": ["S2-EMP-DASH"],
+    "note": "Thao tác hàng loạt cần applicants panel (dashboard lỗi 500)."
+  },
+  "PB60": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Trang lịch phỏng vấn sắp tới (rỗng) + trang interview phía nhà tuyển dụng (buổi đã diễn ra, không có form đề xuất)."
+  },
+  "PB61": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Trang interview phía ứng viên (đã có lịch); không có lịch chờ xác nhận để chụp form xác nhận. Nhãn 'UPCOMING' cho buổi đã qua (issues G)."
+  },
+  "PB62": {
+    "status": "NOT_VERIFIED",
+    "screens": ["S3-INTERVIEW-EMPLOYER"],
+    "note": "Nút huỷ không xuất hiện vì buổi phỏng vấn duy nhất đã hoàn tất."
+  },
+  "PB63": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S3-INTERVIEW-TALENT", "S3-INTERVIEW-EMPLOYER"],
+    "note": "Nút 'Add to calendar' (.ics) hiển thị; không tải."
+  },
+  "PB64": {
+    "status": "PARTIALLY_CAPTURED",
+    "screens": ["S3-WORKSPACE"],
+    "note": "Thấy 'Your feedback: Strong yes' (đã nộp); form chấm điểm không hiển thị vì tài khoản đã nộp, tạo mới sẽ ghi vào seed."
+  },
+  "PB65": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Khối Team feedback (1/1 recommend hire, phân bố Strong yes/Yes/No/Strong no)."
+  },
+  "PB66": {
+    "status": "PARTIALLY_CAPTURED",
+    "screens": ["S3-WORKSPACE"],
+    "note": "Nút 'Analyze with AI'; không chạy (gọi LLM + ghi kết quả)."
+  },
+  "PB67": {
+    "status": "NOT_VERIFIED",
+    "screens": ["S3-WORKSPACE"],
+    "note": "Nút regenerate chỉ có sau khi đã có kết quả phân tích."
+  },
+  "PB68": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Luồng tin nhắn 2 phía + ô soạn; không gửi. Dữ liệu là tin thử nghiệm."
+  },
+  "PB69": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S3-WORKSPACE"],
+    "note": "'Private notes' + 'Internal discussion' trong workspace; không ghi."
+  },
+  "PB70": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S3-INTERVIEW-TALENT", "S3-INTERVIEW-EMPLOYER"],
+    "note": "CTA 'Write a review' xuất hiện sau phỏng vấn hoàn tất (đủ điều kiện) ở cả 2 phía."
+  },
+  "PB71": {
+    "status": "NOT_VERIFIED",
+    "note": "Form đánh giá chưa mở (tạo đánh giá sẽ ghi vào seed)."
+  },
+  "PB72": {
+    "status": "NOT_VERIFIED",
+    "note": "Công ty/ứng viên được chụp chưa có đánh giá công khai."
+  },
+  "PB73": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Trang thông báo nhóm theo ngày, icon theo loại."
+  },
+  "PB74": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Dropdown chuông thông báo mở được."
+  },
+  "PB75": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S3-NOTIFICATIONS"],
+    "note": "Không bấm đánh dấu đã đọc (seed)."
+  },
+  "PB76": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Form tạo cảnh báo + validation (không tạo)."
+  },
+  "PB77": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Danh sách cảnh báo hiện có của tài khoản seed với điều khiển bật/tắt, xoá; không thao tác."
+  },
+  "PB79": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S2-TALENT-SEARCH"],
+    "note": "Nút 'Invite to apply' trên từng ứng viên (mờ khi chưa chọn job ở 'Rank against')."
+  },
+  "PB80": {
+    "status": "PARTIALLY_CAPTURED",
+    "screens": ["S2-POSTJOB", "S2-POSTJOB-SUCCESS", "SH-EMPLOYER-MKT"],
+    "note": "Không mở Stripe Checkout (không thanh toán thật)."
+  },
+  "PB82": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Trang Salary + khối 'Salary check' trên chi tiết việc làm."
+  },
+  "PB83": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Tab Nhà tuyển dụng (tiếng Việt do tài khoản admin): 16 công ty, 3 chưa xác minh, nút 'Xác minh'; không bấm. Cột 'Tham gia' hiển thị 'Invalid Date' (lỗi)."
+  },
+  "PB84": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S4-ADMIN-EMPLOYERS"],
+    "note": "Nút 'Đình chỉ' từng công ty đã xác minh; không bấm."
+  },
+  "PB85": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Hàng đợi 9 tin, KPI, chi tiết tin đầu tiên. Lưu ý: trạng thái 'item-selected' thực tế vẫn là tin đầu (chọn mặc định)."
+  },
+  "PB86": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S4-ADMIN-QUEUE"],
+    "note": "Thanh quyết định duyệt/từ chối (ảnh full-page); không duyệt."
+  },
+  "PB87": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S4-ADMIN-QUEUE"],
+    "note": "Khối 'Kiểm tra rủi ro bằng AI' (Rủi ro thấp + giải thích); không chạy lại."
+  },
+  "PB88": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Mở form báo cáo tin (lý do + chi tiết); không gửi."
+  },
+  "PB89": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Tab Reports."
+  },
+  "PB90": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "note": "Danh sách 50 người dùng, lọc vai trò, tìm kiếm."
+  },
+  "PB91": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "screens": ["S4-ADMIN-USERS"],
+    "note": "Nút 'Cấm' từng dòng; không bấm."
+  },
+  "PB92": {
+    "status": "CAPTURED_AND_VERIFIED",
+    "screens": ["S4-ADMIN-USERS"],
+    "note": "Select vai trò từng dòng (không đổi) + bằng chứng phân quyền: ứng viên mở /admin → về trang chủ."
+  },
+  "PB93": {
+    "status": "CAPTURED_NOT_INTERACTION_TESTED",
+    "note": "Tab Audit log."
+  },
+  "UNMAPPED:S4-ADMIN-REVENUE": {
+    "note": "Tab Doanh thu của Admin không có PB riêng; liên quan gián tiếp PB80/PB81 (thanh toán)."
+  },
+  "UNMAPPED:S1-SPRINT-BOARD": {
+    "note": "Công cụ nội bộ phục vụ kiểm thử, không phải tính năng người dùng."
+  },
+  "UNMAPPED:SH-HOME": {
+    "note": "Landing page — Backlog không có PB cho trang chủ."
+  },
+  "UNMAPPED:SH-EMPLOYER-MKT": {
+    "note": "sprint-routes.ts: 'unassigned'. Bảng giá liên quan gián tiếp PB43/PB80."
+  },
+  "UNMAPPED:SH-BLOG": {
+    "note": "sprint-routes.ts: 'unassigned'."
+  },
+  "UNMAPPED:SH-COMMUNITY": {
+    "note": "sprint-routes.ts: 'unassigned'."
+  },
+  "UNMAPPED:SH-404": {
+    "note": "Trang lỗi chung (catch-all)."
+  }
+}

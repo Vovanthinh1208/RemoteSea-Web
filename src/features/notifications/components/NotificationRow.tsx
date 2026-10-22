@@ -6,13 +6,15 @@ import { timeAgoLong } from "@/utils/time";
 import { cn } from "@/utils/cn";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useTranslation } from "@/i18n/useTranslation";
+import { localizeNotification } from "@/features/notifications/notification.localize";
 
 export const NotificationRow = ({
   notification,
 }: {
   notification: Notification;
 }) => {
-  const { t } = useTranslation("notifications");
+  const { t, locale } = useTranslation("notifications");
+  const { title, body } = localizeNotification(notification, locale, t);
   const markRead = useMarkNotificationRead();
   const runWithToast = useToastMutation();
   const navigate = useNavigate();
@@ -57,12 +59,10 @@ export const NotificationRow = ({
           )}
         >
           {isUnread && <span className="sr-only">{t("row.unread")}</span>}
-          {notification.title}
+          {title}
         </p>
-        {notification.body && (
-          <p className="mt-0.5 text-[13.5px] text-neutral-600">
-            {notification.body}
-          </p>
+        {body && (
+          <p className="mt-0.5 text-[13.5px] text-neutral-600">{body}</p>
         )}
         <p className="mt-1.5 text-[12px] text-neutral-400">
           {timeAgoLong(notification.createdAt)}

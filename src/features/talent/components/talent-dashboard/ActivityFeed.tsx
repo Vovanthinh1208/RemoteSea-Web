@@ -7,10 +7,13 @@ import { timeAgoLong } from "@/utils/time";
 import { EVENT_BULLET_CLASS, EVENT_ICON } from "@/utils/notification-icons";
 import type { ActivityItem } from "@/types/activity";
 import { useTranslation } from "@/i18n/useTranslation";
+import { localizeActivity } from "@/features/notifications/notification.localize";
 
 const ActivityRow = ({ item }: { item: ActivityItem }) => {
   const navigate = useNavigate();
   const FeedIcon = EVENT_ICON[item.type];
+  const { t, locale } = useTranslation("notifications");
+  const { title, body } = localizeActivity(item, locale, t);
   return (
     <button
       className="flex w-full gap-3 rounded-8 px-2 py-2.5 text-left transition-colors hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none"
@@ -27,11 +30,11 @@ const ActivityRow = ({ item }: { item: ActivityItem }) => {
       </span>
       <div className="min-w-0">
         <p className="text-[12.5px] leading-relaxed text-neutral-700">
-          <strong className="font-medium text-neutral-900">{item.title}</strong>
-          {item.body && (
+          <strong className="font-medium text-neutral-900">{title}</strong>
+          {body && (
             <>
               {" — "}
-              {item.body}
+              {body}
             </>
           )}
         </p>

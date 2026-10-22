@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import type { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { Check, Globe } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useTranslation } from "@/i18n/useTranslation";
 import type { SupportedLocale } from "@/i18n/types";
-import { useAuth } from "@/contexts/AuthContext";
-import { useUpdateMyAccount } from "@/features/users/users.queries";
 
 interface LanguageSwitcherProps {
   variant?: "desktop" | "mobile" | "settings";
@@ -23,10 +22,16 @@ export const LanguageSwitcher = ({
   const { locale, setLocale, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { user } = useAuth();
-  const updateAccount = useUpdateMyAccount();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const listboxId = useId();
 
-  // Close dropdown on outside click
+  const close = (returnFocus: boolean) => {
+    setIsOpen(false);
+    if (returnFocus) triggerRef.current?.focus();
+  };
+
+  // Close dropdown on outside click / Escape
   useEffect(() => {
     if (!isOpen) return;
 
@@ -42,6 +47,7 @@ export const LanguageSwitcher = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsOpen(false);
+        triggerRef.current?.focus();
       }
     };
 
@@ -53,17 +59,40 @@ export const LanguageSwitcher = ({
     };
   }, [isOpen]);
 
+  // Opening moves focus to the selected language, as a listbox expects.
+  useEffect(() => {
+    if (!isOpen) return;
+    const selected = LANGUAGES.findIndex((lang) => lang.code === locale);
+    optionRefs.current[Math.max(selected, 0)]?.focus();
+    // Only on open; arrow keys move focus afterwards.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
+
+  // The account preference is updated by I18nAccountSync, which also covers a
+  // language picked while signed out.
   const handleSelect = (code: SupportedLocale) => {
     setLocale(code);
-    setIsOpen(false);
+    close(true);
+  };
 
-    // Sync to user profile if authenticated (silently in background)
-    if (user) {
-      updateAccount.mutate(
-        { language: code === "vi" ? "Tiếng Việt" : "English" },
-        { onError: () => {} }
-      );
-    }
+  const handleListKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+    const options = optionRefs.current.filter(
+      (el): el is HTMLButtonElement => el !== null
+    );
+    const current = options.indexOf(
+      document.activeElement as HTMLButtonElement
+    );
+    const focusAt = (i: number) =>
+      options[(i + options.length) % options.length]?.focus();
+    if (e.key === "ArrowDown") focusAt(current + 1);
+    else if (e.key === "ArrowUp") focusAt(current - 1);
+    else if (e.key === "Home") focusAt(0);
+    else if (e.key === "End") focusAt(options.length - 1);
+    else if (e.key === "Tab") {
+      setIsOpen(false);
+      return;
+    } else return;
+    e.preventDefault();
   };
 
   const currentLang =
@@ -81,6 +110,7 @@ export const LanguageSwitcher = ({
             return (
               <button
                 aria-pressed={isSelected}
+                lang={lang.code}
                 className={cn(
                   "flex flex-1 items-center justify-center gap-1.5 rounded-8 py-2 text-sm font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none",
                   isSelected
@@ -107,6 +137,7 @@ export const LanguageSwitcher = ({
       ref={containerRef}
     >
       <button
+        aria-controls={isOpen ? listboxId : undefined}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label={t("language.switchPrompt")}
@@ -114,8 +145,15 @@ export const LanguageSwitcher = ({
           "inline-flex h-9 items-center gap-1.5 rounded-8 px-2.5 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none",
           isOpen && "bg-neutral-100 text-neutral-900"
         )}
+        ref={triggerRef}
         type="button"
         onClick={() => setIsOpen((open) => !open)}
+        onKeyDown={(e) => {
+          if (!isOpen && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
+            e.preventDefault();
+            setIsOpen(true);
+          }
+        }}
       >
         <Globe className="text-neutral-500" size={16} />
         <span className="hidden sm:inline">{currentLang.label}</span>
@@ -128,13 +166,19 @@ export const LanguageSwitcher = ({
         <div
           aria-label={t("language.label")}
           className="animate-in fade-in zoom-in-95 shadow-popover absolute right-0 top-full z-50 mt-1.5 w-40 rounded-12 border border-neutral-200 bg-white p-1.5"
+          id={listboxId}
           role="listbox"
+          onKeyDown={handleListKeyDown}
         >
-          {LANGUAGES.map((lang) => {
+          {LANGUAGES.map((lang, index) => {
             const isSelected = locale === lang.code;
             return (
               <button
                 aria-selected={isSelected}
+                lang={lang.code}
+                ref={(el) => {
+                  optionRefs.current[index] = el;
+                }}
                 className={cn(
                   "flex w-full items-center justify-between rounded-8 px-3 py-2 text-left text-sm transition-colors focus-visible:shadow-focus focus-visible:outline-none",
                   isSelected

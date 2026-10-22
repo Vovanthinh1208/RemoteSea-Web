@@ -12,5 +12,40 @@
   "row": {
     "markFailed": "Couldn't mark as read",
     "unread": "Unread: "
+  },
+  "tpl": {
+    "message": {
+      "title": "New message",
+      "titleAbout": "New message about {{job}}"
+    },
+    "status": {
+      "title": "Your application status changed",
+      "body": "Your application for {{job}} is now {{status}}."
+    },
+    "report": {
+      "resolvedTitle": "Your report was resolved",
+      "resolvedBody": "Your report on “{{job}}” has been resolved.",
+      "dismissedTitle": "Your report was dismissed",
+      "dismissedBody": "Your report on “{{job}}” has been dismissed."
+    },
+    "interviewProposed": {
+      "title": "{{company}} proposed interview times",
+      "body": "{{count}} time option(s) for a {{minutes}}-min interview for {{job}}."
+    },
+    "interviewConfirmed": {
+      "title": "Interview confirmed",
+      "body": "{{name}} confirmed the interview for {{job}}.",
+      "someone": "The candidate"
+    },
+    "invitation": {
+      "title": "{{company}} invited you to apply",
+      "body": "You have been invited to apply for {{job}}.",
+      "bodyFrom": "{{job}} at {{company}} invited you to apply"
+    },
+    "activity": {
+      "jobLine": "{{job}} at {{company}}",
+      "interviewProposed": "Interview proposed",
+      "invitationTitle": "Job invitation"
+    }
   }
 }

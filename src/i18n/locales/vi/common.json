@@ -63,12 +63,12 @@
     "closed": "Đã đóng",
     "pending": "Chờ xử lý",
     "reviewing": "Đang xem xét",
-    "shortlisted": "Đã chọn lọc",
+    "shortlisted": "Danh sách rút gọn",
     "interviewing": "Đang phỏng vấn",
-    "offered": "Đã gửi đề nghị",
+    "offered": "Đã gửi offer",
     "hired": "Đã tuyển dụng",
     "rejected": "Đã từ chối",
-    "withdrawn": "Đã rút hồ sơ",
+    "withdrawn": "Đã rút đơn",
     "published": "Đã đăng",
     "expired": "Đã hết hạn",
     "verified": "Đã xác minh",
@@ -248,5 +248,9 @@
     "verified": "Đã xác minh",
     "unverified": "Chưa xác minh"
   },
-  "offline": "Bạn đang ngoại tuyến — thay đổi và kết quả mới sẽ được tải khi bạn kết nối lại."
+  "offline": "Bạn đang ngoại tuyến — thay đổi và kết quả mới sẽ được tải khi bạn kết nối lại.",
+  "meta": {
+    "defaultTitle": "RemoteSEA — Việc làm remote từ Singapore, Úc và toàn cầu",
+    "defaultDescription": "Việc làm remote được tuyển chọn từ Singapore, Úc và toàn cầu — dành cho nhân sự Việt Nam. Mức lương minh bạch, nhà tuyển dụng đã xác minh, múi giờ phù hợp."
+  }
 }

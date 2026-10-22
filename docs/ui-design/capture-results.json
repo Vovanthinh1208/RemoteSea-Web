@@ -1,0 +1,3860 @@
+{
+  "generatedAt": "2026-10-21T14:11:02.888Z",
+  "baseUrl": "http://localhost:3001",
+  "apiConcurrencyCap": 3,
+  "locale": "en-US",
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 900
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  "accounts": {
+    "talent": "talent1@remotesea.dev",
+    "employer": "employer1@remotesea.dev",
+    "admin": "admin@remotesea.dev"
+  },
+  "blocked": {},
+  "idsResolved": {
+    "jobId": true,
+    "companySlug": true,
+    "talentSlug": true,
+    "jobForApplyId": true,
+    "appOffered": true,
+    "appPending": true,
+    "appInterview": true,
+    "ownCompanySlug": true,
+    "empAppInterview": true,
+    "empAppOffered": true,
+    "publicTalentSlug": true
+  },
+  "results": [
+    {
+      "screen": {
+        "id": "S1-LOGIN",
+        "sprint": 1,
+        "pbs": ["PB02", "PB03", "PB04", "PB06"],
+        "actor": "guest",
+        "feature": "auth",
+        "screen": "login",
+        "title": "Đăng nhập",
+        "route": "/login",
+        "mobile": true,
+        "states": ["validation-error"]
+      },
+      "url": "/login",
+      "finalUrl": "/login",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-01/PB02-guest-auth-login-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 314289,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB02-guest-auth-login-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 360471,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB02-guest-auth-login-validation-error.png",
+          "state": "validation-error",
+          "label": "Gửi form rỗng → lỗi validation",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 317861,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB02-guest-auth-login-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 102527,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB02-guest-auth-login-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 206727,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Sign In | RemoteSEA",
+        "headings": ["H1: Sign in to RemoteSEA."],
+        "buttons": ["Sign in"],
+        "inputs": 3,
+        "forms": 1,
+        "tables": 0,
+        "links": 6,
+        "textLength": 534
+      }
+    },
+    {
+      "screen": {
+        "id": "S1-REGISTER",
+        "sprint": 1,
+        "pbs": ["PB01", "PB04"],
+        "actor": "guest",
+        "feature": "auth",
+        "screen": "register",
+        "title": "Đăng ký tài khoản",
+        "route": "/register",
+        "mobile": true,
+        "states": ["validation-error", "employer-role"]
+      },
+      "url": "/register",
+      "finalUrl": "/register",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-01/PB01-guest-auth-register-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 324939,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB01-guest-auth-register-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 403432,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB01-guest-auth-register-validation-error.png",
+          "state": "validation-error",
+          "label": "Gửi form rỗng → lỗi validation",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 329212,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB01-guest-auth-register-employer-role.png",
+          "state": "employer-role",
+          "label": "Chọn vai trò Nhà tuyển dụng",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 324961,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB01-guest-auth-register-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 107129,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB01-guest-auth-register-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 228566,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Create Account | RemoteSEA",
+        "headings": ["H1: Join RemoteSEA."],
+        "buttons": ["Find remote work", "Hire remote talent", "Create account"],
+        "inputs": 3,
+        "forms": 1,
+        "tables": 0,
+        "links": 7,
+        "textLength": 671
+      }
+    },
+    {
+      "screen": {
+        "id": "S1-FORGOT",
+        "sprint": 1,
+        "pbs": ["PB06"],
+        "actor": "guest",
+        "feature": "auth",
+        "screen": "forgot-password",
+        "title": "Quên mật khẩu",
+        "route": "/forgot-password",
+        "states": ["validation-error"]
+      },
+      "url": "/forgot-password",
+      "finalUrl": "/forgot-password",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-01/PB06-guest-auth-forgot-password-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 44340,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB06-guest-auth-forgot-password-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 87721,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB06-guest-auth-forgot-password-validation-error.png",
+          "state": "validation-error",
+          "label": "Gửi form rỗng → lỗi validation",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 46291,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Reset your password | RemoteSEA",
+        "headings": ["H1: Reset your password"],
+        "buttons": ["Send reset link"],
+        "inputs": 1,
+        "forms": 1,
+        "tables": 0,
+        "links": 1,
+        "textLength": 142
+      }
+    },
+    {
+      "screen": {
+        "id": "S1-RESET",
+        "sprint": 1,
+        "pbs": ["PB07"],
+        "actor": "guest",
+        "feature": "auth",
+        "screen": "reset-password",
+        "title": "Đặt lại mật khẩu (thiếu token)",
+        "route": "/reset-password",
+        "states": ["with-token"]
+      },
+      "url": "/reset-password",
+      "finalUrl": "/reset-password",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-01/PB07-guest-auth-reset-password-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 40890,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB07-guest-auth-reset-password-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 84479,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB07-guest-auth-reset-password-with-token.png",
+          "state": "with-token",
+          "label": "Có tham số token (giả) → hiển thị form",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 49252,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Choose a new password | RemoteSEA",
+        "headings": ["H1: Choose a new password"],
+        "buttons": [],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 1,
+        "textLength": 161
+      }
+    },
+    {
+      "screen": {
+        "id": "S1-OAUTH-CALLBACK",
+        "sprint": 1,
+        "pbs": ["PB04"],
+        "actor": "guest",
+        "feature": "auth",
+        "screen": "oauth-callback",
+        "title": "OAuth callback (không có mã)",
+        "route": "/auth/callback",
+        "states": []
+      },
+      "url": "/auth/callback",
+      "finalUrl": "/login",
+      "redirected": true,
+      "status": "UNEXPECTED_REDIRECT",
+      "shots": [
+        {
+          "file": "sprint-01/PB04-guest-auth-oauth-callback-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 321564,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB04-guest-auth-oauth-callback-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 367120,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Sign In | RemoteSEA",
+        "headings": ["H1: Sign in to RemoteSEA."],
+        "buttons": ["Sign in"],
+        "inputs": 3,
+        "forms": 1,
+        "tables": 0,
+        "links": 6,
+        "textLength": 534
+      }
+    },
+    {
+      "screen": {
+        "id": "S1-TALENT-VERIFY",
+        "sprint": 1,
+        "pbs": ["PB22"],
+        "actor": "guest",
+        "feature": "talent",
+        "screen": "email-verify",
+        "title": "Xác minh email ứng viên (không có token)",
+        "route": "/talent/verify",
+        "states": []
+      },
+      "url": "/talent/verify",
+      "finalUrl": "/talent/verify",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-01/PB22-guest-talent-email-verify-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 34007,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB22-guest-talent-email-verify-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 77432,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Verify Your Email | RemoteSEA",
+        "headings": ["H1: Link expired or invalid"],
+        "buttons": [],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 1,
+        "textLength": 91
+      }
+    },
+    {
+      "screen": {
+        "id": "S1-AUTH-GUARD",
+        "sprint": 1,
+        "pbs": ["PB08"],
+        "actor": "guest",
+        "feature": "auth",
+        "screen": "protected-redirect",
+        "title": "Truy cập trang cần đăng nhập → chuyển về /login",
+        "route": "/settings (guest)",
+        "expectRedirect": true,
+        "states": []
+      },
+      "url": "/settings",
+      "finalUrl": "/login?callbackUrl=%2Fsettings",
+      "redirected": true,
+      "status": "REDIRECT_AS_EXPECTED",
+      "shots": [
+        {
+          "file": "sprint-01/PB08-guest-auth-protected-redirect-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 314289,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB08-guest-auth-protected-redirect-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 360471,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Sign In | RemoteSEA",
+        "headings": ["H1: Sign in to RemoteSEA."],
+        "buttons": ["Sign in"],
+        "inputs": 3,
+        "forms": 1,
+        "tables": 0,
+        "links": 6,
+        "textLength": 534
+      }
+    },
+    {
+      "screen": {
+        "id": "S1-SPRINT-BOARD",
+        "sprint": 1,
+        "pbs": ["UNMAPPED"],
+        "actor": "guest",
+        "feature": "internal",
+        "screen": "sprint-board",
+        "title": "Sprint Board (công cụ nội bộ kiểm thử)",
+        "route": "/sprints",
+        "states": []
+      },
+      "url": "/sprints",
+      "finalUrl": "/sprints",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-01/UNMAPPED-guest-internal-sprint-board-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 88042,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/UNMAPPED-guest-internal-sprint-board-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 642613,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Sprint board | RemoteSEA",
+        "headings": [
+          "H1: Sprint 1",
+          "H2: Product backlog items",
+          "H1: Sprint 2",
+          "H1: Sprint 3",
+          "H1: Sprint 4"
+        ],
+        "buttons": [],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 4705
+      }
+    },
+    {
+      "screen": {
+        "id": "S2-JOBS",
+        "sprint": 2,
+        "pbs": ["PB47", "PB49", "PB51"],
+        "actor": "guest",
+        "feature": "jobs",
+        "screen": "job-board",
+        "title": "Tìm kiếm & lọc việc làm",
+        "route": "/jobs",
+        "mobile": true,
+        "states": ["search", "filtered", "empty-result", "mobile-filters"]
+      },
+      "url": "/jobs",
+      "finalUrl": "/jobs",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB47-guest-jobs-job-board-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 145823,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB47-guest-jobs-job-board-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 270183,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB47-guest-jobs-job-board-search.png",
+          "state": "search",
+          "label": "Tìm kiếm theo từ khoá 'engineer'",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 70867,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB47-guest-jobs-job-board-filtered.png",
+          "state": "filtered",
+          "label": "Lọc Full-time + Senior, sắp xếp theo lương",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 83446,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB47-guest-jobs-job-board-empty-result.png",
+          "state": "empty-result",
+          "label": "Không có kết quả (empty state)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 71450,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB47-guest-jobs-job-board-mobile-filters.png",
+          "state": "mobile-filters",
+          "label": "Mở bộ lọc trên mobile",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 97421,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB47-guest-jobs-job-board-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 122498,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB47-guest-jobs-job-board-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 501150,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /categories -> 500", "GET /jobs -> 500"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "dom": {
+        "title": "Browse Remote Jobs | RemoteSEA",
+        "headings": [
+          "H1: Jobs",
+          "H3: Filters",
+          "H3: Machine Learning Engineer",
+          "H3: Marketing Operations Manager",
+          "H3: Product Designer",
+          "H3: Performance Marketing Specialist",
+          "H3: Data Engineer",
+          "H3: Business Intelligence Analyst",
+          "H3: Design Systems Lead"
+        ],
+        "buttons": ["Filters", "Clear all", "Sort jobs", "Save job"],
+        "inputs": 19,
+        "forms": 0,
+        "tables": 0,
+        "links": 18,
+        "textLength": 1428
+      }
+    },
+    {
+      "screen": {
+        "id": "S2-JOB-DETAIL",
+        "sprint": 2,
+        "pbs": ["PB48", "PB82"],
+        "actor": "guest",
+        "feature": "jobs",
+        "screen": "job-detail",
+        "title": "Chi tiết tin tuyển dụng (khách)",
+        "route": "/jobs/:id",
+        "mobile": true,
+        "states": ["apply-as-guest"]
+      },
+      "url": "/jobs/cmrxb4i6v007ce9zeq0fw2kg7",
+      "finalUrl": "/jobs/cmrxb4i6v007ce9zeq0fw2kg7",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB48-guest-jobs-job-detail-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 25434,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB48-guest-jobs-job-detail-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 63177,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB48-guest-jobs-job-detail-apply-as-guest.png",
+          "state": "apply-as-guest",
+          "label": "Khách bấm Ứng tuyển → chuyển tới đăng nhập",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 314289,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB48-guest-jobs-job-detail-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 129586,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB48-guest-jobs-job-detail-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 394604,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Job | RemoteSEA",
+        "headings": [],
+        "buttons": [],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 0
+      }
+    },
+    {
+      "screen": {
+        "id": "S2-COMPANY",
+        "sprint": 2,
+        "pbs": ["PB33", "PB72"],
+        "actor": "guest",
+        "feature": "company",
+        "screen": "public-company",
+        "title": "Hồ sơ công ty công khai",
+        "route": "/companies/:slug",
+        "mobile": true,
+        "states": []
+      },
+      "url": "/companies/coral-bay-studio-Vd4CB2",
+      "finalUrl": "/companies/coral-bay-studio-Vd4CB2",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB33-guest-company-public-company-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 74598,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB33-guest-company-public-company-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 117409,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB33-guest-company-public-company-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 120016,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB33-guest-company-public-company-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 246071,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Coral Bay Studio — Company Profile | RemoteSEA",
+        "headings": [
+          "H1: Coral Bay Studio",
+          "H2: Open positions (1)",
+          "H3: Machine Learning Engineer"
+        ],
+        "buttons": ["Save job"],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 3,
+        "textLength": 392
+      }
+    },
+    {
+      "screen": {
+        "id": "S2-TALENT-PUBLIC",
+        "sprint": 2,
+        "pbs": ["PB28", "PB72"],
+        "actor": "guest",
+        "feature": "talent",
+        "screen": "public-profile",
+        "title": "Hồ sơ công khai ứng viên",
+        "route": "/talent/:slug",
+        "mobile": true,
+        "states": ["private-profile"]
+      },
+      "url": "/talent/mai-nguyen-wsYDRb",
+      "finalUrl": "/talent/mai-nguyen-wsYDRb",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB28-guest-talent-public-profile-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 114756,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB28-guest-talent-public-profile-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 175175,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB28-guest-talent-public-profile-private-profile.png",
+          "state": "private-profile",
+          "label": "Hồ sơ đặt chế độ VERIFIED_EMPLOYERS → khách thấy 'Profile not found' (PB23)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 71239,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB28-guest-talent-public-profile-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 104339,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB28-guest-talent-public-profile-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 392004,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /talent/phuong-do-xrwFJu -> 404"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "dom": {
+        "title": "Mai Nguyen — Talent Profile | RemoteSEA",
+        "headings": [
+          "H1: Mai Nguyen",
+          "H2: About",
+          "H2: Experience",
+          "H2: Skills",
+          "H2: Education"
+        ],
+        "buttons": [],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 3,
+        "textLength": 950
+      }
+    },
+    {
+      "screen": {
+        "id": "S2-EMPLOYER-VERIFY",
+        "sprint": 2,
+        "pbs": ["PB32"],
+        "actor": "guest",
+        "feature": "employer",
+        "screen": "domain-verify",
+        "title": "Xác minh công ty qua email tên miền (không có token)",
+        "route": "/employer/verify",
+        "states": []
+      },
+      "url": "/employer/verify",
+      "finalUrl": "/employer/verify",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB32-guest-employer-domain-verify-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 34655,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB32-guest-employer-domain-verify-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 78131,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Verify Your Company | RemoteSEA",
+        "headings": ["H1: Link expired or invalid"],
+        "buttons": [],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 1,
+        "textLength": 100
+      }
+    },
+    {
+      "screen": {
+        "id": "S2-TEAM-INVITE",
+        "sprint": 2,
+        "pbs": ["PB36"],
+        "actor": "guest",
+        "feature": "team",
+        "screen": "accept-invitation",
+        "title": "Chấp nhận lời mời gia nhập công ty (token không hợp lệ)",
+        "route": "/team/invitations/:token",
+        "states": []
+      },
+      "url": "/team/invitations/invalid-sample-token",
+      "finalUrl": "/team/invitations/invalid-sample-token",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB36-guest-team-accept-invitation-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 44268,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB36-guest-team-accept-invitation-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 63065,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Join your team — RemoteSEA | RemoteSEA",
+        "headings": [],
+        "buttons": [],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 0
+      }
+    },
+    {
+      "screen": {
+        "id": "S2-POSTJOB-SUCCESS",
+        "sprint": 2,
+        "pbs": ["PB43", "PB80", "PB81"],
+        "actor": "guest",
+        "feature": "billing",
+        "screen": "checkout-return",
+        "title": "Trang trả về sau Stripe Checkout (không có session)",
+        "route": "/post-job/success",
+        "states": []
+      },
+      "url": "/post-job/success",
+      "finalUrl": "/post-job/success",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB43-guest-billing-checkout-return-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 76441,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB43-guest-billing-checkout-return-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 76441,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Payment received | RemoteSEA",
+        "headings": ["H1: Thanks for your submission"],
+        "buttons": ["Go to dashboard"],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 1,
+        "textLength": 114
+      }
+    },
+    {
+      "screen": {
+        "id": "S4-SALARY",
+        "sprint": 4,
+        "pbs": ["PB82"],
+        "actor": "guest",
+        "feature": "salary",
+        "screen": "salary-insights",
+        "title": "Tham khảo mức lương",
+        "route": "/salary",
+        "mobile": true,
+        "states": []
+      },
+      "url": "/salary",
+      "finalUrl": "/salary",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-04/PB82-guest-salary-salary-insights-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 121591,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB82-guest-salary-salary-insights-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 327119,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB82-guest-salary-salary-insights-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 157444,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB82-guest-salary-salary-insights-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 576548,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Remote Salary Guide — Vietnam Talent | RemoteSEA",
+        "headings": [
+          "H1: What should you actually earn working remotely?",
+          "H2: Salary by role & seniority",
+          "H2: Where the money lives",
+          "H2: Submit your salary, anonymously."
+        ],
+        "buttons": [
+          "USD",
+          "VND",
+          "Data",
+          "Marketing",
+          "Engineering",
+          "Design",
+          "Product",
+          "All",
+          "Entry",
+          "Mid",
+          "Senior",
+          "Lead",
+          "Executive",
+          "Submit a data point"
+        ],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 1,
+        "textLength": 1520
+      }
+    },
+    {
+      "screen": {
+        "id": "SH-HOME",
+        "sprint": "shared",
+        "pbs": ["UNMAPPED"],
+        "actor": "guest",
+        "feature": "public",
+        "screen": "homepage",
+        "title": "Trang chủ (Landing page)",
+        "route": "/",
+        "mobile": true,
+        "states": ["mobile-menu"]
+      },
+      "url": "/",
+      "finalUrl": "/",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "shared/UNMAPPED-guest-public-homepage-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 267187,
+          "ok": true
+        },
+        {
+          "file": "shared/UNMAPPED-guest-public-homepage-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 443148,
+          "ok": true
+        },
+        {
+          "file": "shared/UNMAPPED-guest-public-homepage-mobile-menu.png",
+          "state": "mobile-menu",
+          "label": "Mở menu điều hướng trên mobile",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 173961,
+          "ok": true
+        },
+        {
+          "file": "shared/UNMAPPED-guest-public-homepage-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 352309,
+          "ok": true
+        },
+        {
+          "file": "shared/UNMAPPED-guest-public-homepage-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 827554,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Remote Jobs from SG, AU & beyond | RemoteSEA",
+        "headings": [
+          "H1: Remote jobs from Singapore, Australia & beyond — curated for Vietnam talent.",
+          "H2: Simple. Curated. Built for you.",
+          "H3: Browse verified jobs",
+          "H3: Track applications in one place",
+          "H3: Land your first remote offer",
+          "H2: Find roles in your field",
+          "H2: Know your worth before you negotiate.",
+          "H2: Jobs open right now",
+          "H3: Machine Learning Engineer",
+          "H3: Marketing Operations Manager",
+          "H3: Product Designer",
+          "H3: Performance Marketing Specialist",
+          "H2: Built by someone who's actually done it.",
+          "H2: From apply to offer.",
+          "H2: Looking for remote talent in Vietnam?",
+          "H2: Don't miss the next opportunity."
+        ],
+        "buttons": ["Save job", "Subscribe"],
+        "inputs": 1,
+        "forms": 1,
+        "tables": 0,
+        "links": 20,
+        "textLength": 4530
+      }
+    },
+    {
+      "screen": {
+        "id": "SH-EMPLOYER-MKT",
+        "sprint": "shared",
+        "pbs": ["UNMAPPED"],
+        "actor": "guest",
+        "feature": "public",
+        "screen": "employer-marketing",
+        "title": "Trang giới thiệu cho nhà tuyển dụng (bảng giá, FAQ)",
+        "route": "/employer",
+        "mobile": true,
+        "states": []
+      },
+      "url": "/employer",
+      "finalUrl": "/employer",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "shared/UNMAPPED-guest-public-employer-marketing-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 166901,
+          "ok": true
+        },
+        {
+          "file": "shared/UNMAPPED-guest-public-employer-marketing-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 968672,
+          "ok": true
+        },
+        {
+          "file": "shared/UNMAPPED-guest-public-employer-marketing-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 207966,
+          "ok": true
+        },
+        {
+          "file": "shared/UNMAPPED-guest-public-employer-marketing-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 1809952,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "For Employers — Hire Vietnam Remote Talent | RemoteSEA",
+        "headings": [
+          "H1: Hire from Vietnam.The right way.",
+          "H2: Smaller pool. Higher signal.",
+          "H3: Better response rate",
+          "H3: Median time to hire",
+          "H3: Listings filled",
+          "H2: Versus the alternatives.",
+          "H2: List → review → match.",
+          "H3: Submit your role",
+          "H3: We review & verify",
+          "H3: Receive matched candidates",
+          "H2: One-time, not subscription.",
+          "H2: \"We hired our founding engineer in 11 days through RemoteSEA.\"",
+          "H2: Honest answers.",
+          "H2: Post your role today.Get applies by Friday."
+        ],
+        "buttons": [
+          "Per role",
+          "Annualsave 20%",
+          "What does 'verified employer' actually mean?",
+          "Why do you require a salary range?",
+          "Can I post a role that pays in VND?",
+          "What if I want to hire as a contractor, not FTE?",
+          "Do you charge candidates anything?",
+          "What if my listing doesn't work out?"
+        ],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 7,
+        "textLength": 4355
+      }
+    },
+    {
+      "screen": {
+        "id": "SH-BLOG",
+        "sprint": "shared",
+        "pbs": ["UNMAPPED"],
+        "actor": "guest",
+        "feature": "public",
+        "screen": "blog",
+        "title": "Blog",
+        "route": "/blog",
+        "states": []
+      },
+      "url": "/blog",
+      "finalUrl": "/blog",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "shared/UNMAPPED-guest-public-blog-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 185911,
+          "ok": true
+        },
+        {
+          "file": "shared/UNMAPPED-guest-public-blog-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 705093,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Field Notes — RemoteSEA Blog | RemoteSEA",
+        "headings": [
+          "H1: Field notes from remote work, written by the people doing it.",
+          "H2: Why your offer is probably 22% too low — and the exact 4 sentences that fix it.",
+          "H2: The archive",
+          "H3: The 5pm shutdown ritual that saved my marriage (and my Loom usage).",
+          "H3: What 612 remote offers told us about senior frontend pay.",
+          "H3: I bombed 7 Stripe-loop interviews. Then I figured out the system.",
+          "H3: Why I left a 6-figure FAANG offer to join a 22-person SG startup.",
+          "H3: Standups are dead, long live the Friday roll-up.",
+          "H3: Equity, RSUs, options — a Vietnamese employee's tax guide.",
+          "H3: My async stack: Notion + Linear + Loom, and the glue between them.",
+          "H2: Get the next essay, before it hits the site."
+        ],
+        "buttons": [
+          "All",
+          "Negotiation",
+          "Salary",
+          "Async Work",
+          "Interview",
+          "Career",
+          "Tools",
+          "Subscribe"
+        ],
+        "inputs": 2,
+        "forms": 2,
+        "tables": 0,
+        "links": 1,
+        "textLength": 2928
+      }
+    },
+    {
+      "screen": {
+        "id": "SH-COMMUNITY",
+        "sprint": "shared",
+        "pbs": ["UNMAPPED"],
+        "actor": "guest",
+        "feature": "public",
+        "screen": "community",
+        "title": "Cộng đồng",
+        "route": "/community",
+        "states": []
+      },
+      "url": "/community",
+      "finalUrl": "/community",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "shared/UNMAPPED-guest-public-community-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 128721,
+          "ok": true
+        },
+        {
+          "file": "shared/UNMAPPED-guest-public-community-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 459183,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Community — RemoteSEA | RemoteSEA",
+        "headings": [
+          "H1: 500+ remote-working Vietnamese, one Slack.",
+          "H2: The people actually in here.",
+          "H2: What people actually talk about.",
+          "H2: Coffee, beers, & offline bandwidth.",
+          "H2: Ready to join the family?"
+        ],
+        "buttons": [
+          "Request an invite",
+          "Watch the tour (2 min)",
+          "RSVP →",
+          "Request invite",
+          "Read the code of conduct"
+        ],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 3375
+      }
+    },
+    {
+      "screen": {
+        "id": "SH-404",
+        "sprint": "shared",
+        "pbs": ["UNMAPPED"],
+        "actor": "guest",
+        "feature": "error",
+        "screen": "not-found",
+        "title": "Trang 404",
+        "route": "*",
+        "states": []
+      },
+      "url": "/this-page-does-not-exist",
+      "finalUrl": "/this-page-does-not-exist",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "shared/UNMAPPED-guest-error-not-found-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 68536,
+          "ok": true
+        },
+        {
+          "file": "shared/UNMAPPED-guest-error-not-found-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 74602,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Page not found | RemoteSEA",
+        "headings": ["H1: Page not found"],
+        "buttons": ["Back to home"],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 1,
+        "textLength": 84
+      }
+    },
+    {
+      "screen": {
+        "id": "S1-SETTINGS",
+        "sprint": 1,
+        "pbs": [
+          "PB12",
+          "PB05",
+          "PB10",
+          "PB11",
+          "PB13",
+          "PB14",
+          "PB15",
+          "PB16",
+          "PB17",
+          "PB18",
+          "PB19",
+          "PB20"
+        ],
+        "actor": "talent",
+        "feature": "settings",
+        "screen": "account-settings",
+        "title": "Cài đặt tài khoản",
+        "route": "/settings",
+        "mobile": true,
+        "states": [
+          "security",
+          "connected",
+          "notifications",
+          "privacy",
+          "danger-zone",
+          "change-password-validation",
+          "delete-confirm",
+          "language-menu"
+        ]
+      },
+      "url": "/settings",
+      "finalUrl": "/settings",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-01/PB12-talent-settings-account-settings-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 108617,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB12-talent-settings-account-settings-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 547782,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB12-talent-settings-account-settings-security.png",
+          "state": "security",
+          "label": "Mục Bảo mật (mật khẩu, 2FA, phiên đăng nhập)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 111443,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB12-talent-settings-account-settings-connected.png",
+          "state": "connected",
+          "label": "Mục Tài khoản liên kết (OAuth)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 118584,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB12-talent-settings-account-settings-notifications.png",
+          "state": "notifications",
+          "label": "Mục Tuỳ chọn thông báo",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 124631,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB12-talent-settings-account-settings-privacy.png",
+          "state": "privacy",
+          "label": "Mục Quyền riêng tư & dữ liệu",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 112576,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB12-talent-settings-account-settings-danger-zone.png",
+          "state": "danger-zone",
+          "label": "Vùng nguy hiểm (tạm dừng / xoá tài khoản)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 109322,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB12-talent-settings-account-settings-change-password-validation.png",
+          "state": "change-password-validation",
+          "label": "Form đổi mật khẩu gửi rỗng → lỗi validation",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 110795,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB12-talent-settings-account-settings-delete-confirm.png",
+          "state": "delete-confirm",
+          "label": "Mở hộp xác nhận xoá tài khoản (không xác nhận)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 96515,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB12-talent-settings-account-settings-language-menu.png",
+          "state": "language-menu",
+          "label": "Mở menu chọn ngôn ngữ trên navbar",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 112055,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB12-talent-settings-account-settings-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 138525,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB12-talent-settings-account-settings-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 1241380,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /notifications -> 500"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "dom": {
+        "title": "Settings | RemoteSEA",
+        "headings": [
+          "H1: Your account, your rules.",
+          "H2: Your account .",
+          "H2: Security.",
+          "H2: Connected accounts.",
+          "H2: Notifications.",
+          "H2: Privacy & data.",
+          "H2: Danger zone."
+        ],
+        "buttons": [
+          "Account",
+          "Security",
+          "Connected",
+          "Notifications",
+          "Privacy & data",
+          "Danger zone",
+          "Update password",
+          "Two-factor authentication",
+          "Revoke",
+          "Sign out of all other sessions",
+          "Connect",
+          "Request",
+          "Pause",
+          "Delete account"
+        ],
+        "inputs": 7,
+        "forms": 1,
+        "tables": 0,
+        "links": 5,
+        "textLength": 3778
+      }
+    },
+    {
+      "screen": {
+        "id": "S1-PROFILE",
+        "sprint": 1,
+        "pbs": ["PB21", "PB23", "PB24", "PB25", "PB52"],
+        "actor": "talent",
+        "feature": "talent-profile",
+        "screen": "profile-editor",
+        "title": "Tạo / cập nhật hồ sơ ứng viên",
+        "route": "/profile",
+        "mobile": true,
+        "states": [
+          "experience",
+          "skills",
+          "highlights",
+          "visibility",
+          "add-experience-form",
+          "add-experience-validation"
+        ]
+      },
+      "url": "/profile",
+      "finalUrl": "/profile",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-01/PB21-talent-talent-profile-profile-editor-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 118173,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB21-talent-talent-profile-profile-editor-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 506858,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB21-talent-talent-profile-profile-editor-experience.png",
+          "state": "experience",
+          "label": "Mục Kinh nghiệm làm việc (PB24)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 119267,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB21-talent-talent-profile-profile-editor-skills.png",
+          "state": "skills",
+          "label": "Mục Kỹ năng — gợi ý kỹ năng chuẩn (PB52)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 118480,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB21-talent-talent-profile-profile-editor-highlights.png",
+          "state": "highlights",
+          "label": "Mục Điểm nhấn / portfolio / học vấn / ngôn ngữ (PB25)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 125375,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB21-talent-talent-profile-profile-editor-visibility.png",
+          "state": "visibility",
+          "label": "Mục Chế độ hiển thị hồ sơ (PB23)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 134054,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB21-talent-talent-profile-profile-editor-add-experience-form.png",
+          "state": "add-experience-form",
+          "label": "Mở form thêm kinh nghiệm làm việc",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 105677,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB21-talent-talent-profile-profile-editor-add-experience-validation.png",
+          "state": "add-experience-validation",
+          "label": "Form kinh nghiệm gửi rỗng → lỗi validation",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 103572,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB21-talent-talent-profile-profile-editor-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 143362,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB21-talent-talent-profile-profile-editor-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 1073608,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Profile Setup | RemoteSEA",
+        "headings": [
+          "H1: Make sure recruiters see what matters.",
+          "H2: The basics.",
+          "H2: About you.",
+          "H2: Experience.",
+          "H2: Skills.",
+          "H2: Job preferences.",
+          "H2: Links & CV.",
+          "H2: Highlights.",
+          "H3: Selected work",
+          "H3: Education",
+          "H3: Languages",
+          "H2: Visibility."
+        ],
+        "buttons": [
+          "Basics",
+          "About you",
+          "Experience",
+          "Skills",
+          "Preferences",
+          "Links & CV",
+          "Highlights",
+          "Visibility",
+          "Upload photo",
+          "Remove",
+          "Add your first role",
+          "Remove skill: SQL",
+          "Remove skill: Agile/Scrum",
+          "Remove skill: React",
+          "AWS",
+          "Content Strategy",
+          "Data Visualization",
+          "Docker",
+          "Figma",
+          "Go",
+          "Upload CV uploaded",
+          "Add project",
+          "Add education",
+          "Add language",
+          "Open to everyoneAny signed-in employer on RemoteSEA can find you. Fastest, most matches.",
+          "Verified employers onlyRecommended. Only employers we've manually verified. No recruiter spam.",
+          "Invited onlyOnly employers you apply to can see you. Slower, but private.",
+          "PausedProfile hidden. You can still browse jobs and save. Resume anytime.",
+          "Save"
+        ],
+        "inputs": 18,
+        "forms": 1,
+        "tables": 0,
+        "links": 4,
+        "textLength": 3861
+      }
+    },
+    {
+      "screen": {
+        "id": "S1-LOGOUT",
+        "sprint": 1,
+        "pbs": ["PB09"],
+        "actor": "talent",
+        "feature": "auth",
+        "screen": "sign-out",
+        "title": "Đăng xuất (hộp xác nhận trên navbar)",
+        "route": "(navbar, mọi trang)",
+        "states": ["confirm-dialog"]
+      },
+      "url": "/jobs",
+      "finalUrl": "/jobs",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-01/PB09-talent-auth-sign-out-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 138997,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB09-talent-auth-sign-out-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 285024,
+          "ok": true
+        },
+        {
+          "file": "sprint-01/PB09-talent-auth-sign-out-confirm-dialog.png",
+          "state": "confirm-dialog",
+          "label": "Bấm 'Sign out' → hộp xác nhận (không xác nhận)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 138910,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Browse Remote Jobs | RemoteSEA",
+        "headings": [
+          "H1: Jobs",
+          "H3: Filters",
+          "H3: Machine Learning Engineer",
+          "H3: Marketing Operations Manager",
+          "H3: Product Designer",
+          "H3: Performance Marketing Specialist",
+          "H3: Data Engineer",
+          "H3: Business Intelligence Analyst",
+          "H3: Design Systems Lead"
+        ],
+        "buttons": ["Filters", "Clear all", "Sort jobs", "Save job"],
+        "inputs": 19,
+        "forms": 0,
+        "tables": 0,
+        "links": 18,
+        "textLength": 1509
+      },
+      "retried": true
+    },
+    {
+      "screen": {
+        "id": "S2-TALENT-DASH",
+        "sprint": 2,
+        "pbs": ["PB26", "PB27", "PB22", "PB54"],
+        "actor": "talent",
+        "feature": "talent-dashboard",
+        "screen": "dashboard",
+        "title": "Bảng điều khiển ứng viên",
+        "route": "/talent",
+        "mobile": true,
+        "states": ["tab-all", "tab-offers", "tab-closed", "user-menu"]
+      },
+      "url": "/talent",
+      "finalUrl": "/talent",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB26-talent-talent-dashboard-dashboard-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 69419,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB26-talent-talent-dashboard-dashboard-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 69419,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB26-talent-talent-dashboard-dashboard-tab-all.png",
+          "state": "tab-all",
+          "label": "Tab Tất cả đơn ứng tuyển",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 69419,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB26-talent-talent-dashboard-dashboard-tab-offers.png",
+          "state": "tab-offers",
+          "label": "Tab Offer",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 69419,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB26-talent-talent-dashboard-dashboard-tab-closed.png",
+          "state": "tab-closed",
+          "label": "Tab Đã đóng",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 69419,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB26-talent-talent-dashboard-dashboard-user-menu.png",
+          "state": "user-menu",
+          "label": "Navbar khi đã đăng nhập — mở thông báo (chuông)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 99607,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB26-talent-talent-dashboard-dashboard-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 97820,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB26-talent-talent-dashboard-dashboard-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 135926,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /talent/me/dashboard -> 500"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "dom": {
+        "title": "Dashboard | RemoteSEA",
+        "headings": [],
+        "buttons": ["Try again"],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 81
+      },
+      "retried": true
+    },
+    {
+      "screen": {
+        "id": "S2-JOB-DETAIL-TALENT",
+        "sprint": 2,
+        "pbs": ["PB48", "PB50", "PB53", "PB49", "PB88"],
+        "actor": "talent",
+        "feature": "jobs",
+        "screen": "job-detail-talent",
+        "title": "Chi tiết việc làm (ứng viên đăng nhập: Match Score, Ứng tuyển, Báo cáo)",
+        "route": "/jobs/:id",
+        "states": ["apply-form", "report-form"]
+      },
+      "url": "/jobs/cmrxb4hds007ae9ze64e91iez",
+      "finalUrl": "/jobs/cmrxb4hds007ae9ze64e91iez",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB48-talent-jobs-job-detail-talent-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 121683,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB48-talent-jobs-job-detail-talent-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 207655,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB48-talent-jobs-job-detail-talent-apply-form.png",
+          "state": "apply-form",
+          "label": "Mở form ứng tuyển inline (không gửi)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 119659,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB48-talent-jobs-job-detail-talent-report-form.png",
+          "state": "report-form",
+          "label": "Mở form báo cáo vi phạm (không gửi)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 89200,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Product Designer at Delta Payments | RemoteSEA",
+        "headings": [
+          "H1: Product Designer",
+          "H2: About the role",
+          "H2: Skills & technologies",
+          "H2: Benefits",
+          "H3: Company"
+        ],
+        "buttons": ["Apply now", "Save for later", "Report this job"],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 3,
+        "textLength": 1112
+      }
+    },
+    {
+      "screen": {
+        "id": "S3-SAVED",
+        "sprint": 3,
+        "pbs": ["PB49"],
+        "actor": "talent",
+        "feature": "saved-jobs",
+        "screen": "saved-jobs",
+        "title": "Việc làm đã lưu",
+        "route": "/saved",
+        "states": []
+      },
+      "url": "/saved",
+      "finalUrl": "/saved",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-03/PB49-talent-saved-jobs-saved-jobs-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 78027,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB49-talent-saved-jobs-saved-jobs-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 78027,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /saved -> 500"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "dom": {
+        "title": "Saved Jobs | RemoteSEA",
+        "headings": ["H1: Saved jobs"],
+        "buttons": ["Browse jobs"],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 1,
+        "textLength": 131
+      }
+    },
+    {
+      "screen": {
+        "id": "S3-APP-DETAIL-OFFER",
+        "sprint": 3,
+        "pbs": ["PB54", "PB56", "PB55", "PB70", "PB71"],
+        "actor": "talent",
+        "feature": "applications",
+        "screen": "application-offer",
+        "title": "Chi tiết đơn ứng tuyển — trạng thái Offer",
+        "route": "/applications/:id",
+        "mobile": true,
+        "states": []
+      },
+      "url": "/applications/cmrxb5enu00b6e9ze2jw0k085",
+      "finalUrl": "/applications/cmrxb5enu00b6e9ze2jw0k085",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-03/PB54-talent-applications-application-offer-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 90220,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB54-talent-applications-application-offer-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 90220,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB54-talent-applications-application-offer-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 117992,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB54-talent-applications-application-offer-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 183079,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Bamboo Labs | RemoteSEA",
+        "headings": ["H1: Bamboo Labs"],
+        "buttons": ["Accept offer", "Decline offer"],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 2,
+        "textLength": 305
+      }
+    },
+    {
+      "screen": {
+        "id": "S3-APP-DETAIL-INTERVIEW",
+        "sprint": 3,
+        "pbs": ["PB54", "PB61"],
+        "actor": "talent",
+        "feature": "applications",
+        "screen": "application-interview",
+        "title": "Chi tiết đơn ứng tuyển — trạng thái Phỏng vấn",
+        "route": "/applications/:id",
+        "states": []
+      },
+      "url": "/applications/cmt2lgko7000cbmeondz7lhv8",
+      "finalUrl": "/applications/cmt2lgko7000cbmeondz7lhv8",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-03/PB54-talent-applications-application-interview-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 86498,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB54-talent-applications-application-interview-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 86498,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Mekong Digital | RemoteSEA",
+        "headings": ["H1: Mekong Digital"],
+        "buttons": [],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 3,
+        "textLength": 275
+      }
+    },
+    {
+      "screen": {
+        "id": "S3-APP-DETAIL-PENDING",
+        "sprint": 3,
+        "pbs": ["PB54", "PB55"],
+        "actor": "talent",
+        "feature": "applications",
+        "screen": "application-pending",
+        "title": "Chi tiết đơn ứng tuyển — trạng thái Chờ xử lý",
+        "route": "/applications/:id",
+        "states": []
+      },
+      "url": "/applications/cmt8ffpal0002hkb8fwbgj8t4",
+      "finalUrl": "/applications/cmt8ffpal0002hkb8fwbgj8t4",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-03/PB54-talent-applications-application-pending-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 87893,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB54-talent-applications-application-pending-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 87893,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Saigon Cloudworks | RemoteSEA",
+        "headings": ["H1: Saigon Cloudworks"],
+        "buttons": [],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 2,
+        "textLength": 284
+      }
+    },
+    {
+      "screen": {
+        "id": "S3-MESSAGES-TALENT",
+        "sprint": 3,
+        "pbs": ["PB68"],
+        "actor": "talent",
+        "feature": "messages",
+        "screen": "thread",
+        "title": "Nhắn tin theo đơn ứng tuyển (ứng viên)",
+        "route": "/applications/:id/messages",
+        "mobile": true,
+        "states": []
+      },
+      "url": "/applications/cmt2lgko7000cbmeondz7lhv8/messages",
+      "finalUrl": "/applications/cmt2lgko7000cbmeondz7lhv8/messages",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-03/PB68-talent-messages-thread-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 52363,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB68-talent-messages-thread-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 95391,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB68-talent-messages-thread-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 87984,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB68-talent-messages-thread-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 192194,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Mekong Digital | RemoteSEA",
+        "headings": ["H1: Mekong Digital"],
+        "buttons": ["Send message"],
+        "inputs": 1,
+        "forms": 1,
+        "tables": 0,
+        "links": 1,
+        "textLength": 188
+      }
+    },
+    {
+      "screen": {
+        "id": "S3-INTERVIEW-TALENT",
+        "sprint": 3,
+        "pbs": ["PB61", "PB63"],
+        "actor": "talent",
+        "feature": "interviews",
+        "screen": "interview-talent",
+        "title": "Lịch phỏng vấn (ứng viên xác nhận / tải .ics)",
+        "route": "/applications/:id/interview",
+        "states": []
+      },
+      "url": "/applications/cmt2lgko7000cbmeondz7lhv8/interview",
+      "finalUrl": "/applications/cmt2lgko7000cbmeondz7lhv8/interview",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-03/PB61-talent-interviews-interview-talent-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 87457,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB61-talent-interviews-interview-talent-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 87457,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Mekong Digital | RemoteSEA",
+        "headings": ["H1: Mekong Digital"],
+        "buttons": ["Add to calendar", "Write a review"],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 2,
+        "textLength": 218
+      }
+    },
+    {
+      "screen": {
+        "id": "S3-NOTIFICATIONS",
+        "sprint": 3,
+        "pbs": ["PB73", "PB74", "PB75"],
+        "actor": "talent",
+        "feature": "notifications",
+        "screen": "notifications",
+        "title": "Trung tâm thông báo",
+        "route": "/notifications",
+        "mobile": true,
+        "states": ["bell-dropdown"]
+      },
+      "url": "/notifications",
+      "finalUrl": "/notifications",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-03/PB73-talent-notifications-notifications-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 94472,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB73-talent-notifications-notifications-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 260687,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB73-talent-notifications-notifications-bell-dropdown.png",
+          "state": "bell-dropdown",
+          "label": "Dropdown chuông thông báo + số chưa đọc",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 125427,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB73-talent-notifications-notifications-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 140984,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB73-talent-notifications-notifications-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 560337,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /notifications -> 500"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "dom": {
+        "title": "Notifications | RemoteSEA",
+        "headings": [
+          "H1: Notifications",
+          "H2: Friday, September 25",
+          "H2: Wednesday, September 23",
+          "H2: Tuesday, September 22",
+          "H2: Friday, August 21",
+          "H2: Tuesday, August 18",
+          "H2: Monday, August 17"
+        ],
+        "buttons": [
+          "New message about Senior Backend Engineerhello26d ago",
+          "New message about Senior Backend Engineerlo lo26d ago",
+          "Mekong Digital proposed interview times1 option(s) for a 30-min interview for Senior Backend Engineer.28d ago",
+          "Your application status changedYour application for Senior Backend Engineer is now Interview.28d ago",
+          "New message about Senior Backend Engineerxin chao29d ago",
+          "New message about Senior Backend Engineertest29d ago",
+          "Your application status changedYour application for Senior Backend Engineer is now Shortlisted.29d ago",
+          "Your application status changedYour application for Senior Backend Engineer is now In review.61d ago",
+          "Delta Payments proposed interview times2 option(s) for a 45-min interview for Content Marketing Manager.64d ago",
+          "Your application status changedYour application for Content Marketing Manager is now Interview.64d ago",
+          "Your application status changedYour application for Content Marketing Manager is now Shortlisted.64d ago",
+          "New message about Content Marketing ManagerThanks for checking in — you are still in review, will update by Friday.64d ago",
+          "Your report was resolvedYour report on \"Content Marketing Manager\" has been resolved.65d ago",
+          "Your application status changedYour application for Content Marketing Manager is now In review.65d ago",
+          "Saigon Cloudworks invited you to applyYou've been invited to apply for Performance Marketing Specialist.65d ago"
+        ],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 1567
+      }
+    },
+    {
+      "screen": {
+        "id": "S4-ALERTS",
+        "sprint": 4,
+        "pbs": ["PB76", "PB77"],
+        "actor": "talent",
+        "feature": "alerts",
+        "screen": "job-alerts",
+        "title": "Cảnh báo việc làm",
+        "route": "/alerts",
+        "mobile": true,
+        "states": ["create-validation"]
+      },
+      "url": "/alerts",
+      "finalUrl": "/alerts",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-04/PB76-talent-alerts-job-alerts-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 77508,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB76-talent-alerts-job-alerts-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 112527,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB76-talent-alerts-job-alerts-create-validation.png",
+          "state": "create-validation",
+          "label": "Form tạo cảnh báo gửi rỗng → lỗi validation",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 73303,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB76-talent-alerts-job-alerts-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 115854,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB76-talent-alerts-job-alerts-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 244542,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Job Alerts | RemoteSEA",
+        "headings": ["H1: Job alerts", "H2: Create a new alert"],
+        "buttons": [
+          "Data",
+          "Design",
+          "Engineering",
+          "Marketing",
+          "Product",
+          "Create alert",
+          "Paused",
+          "Delete alert"
+        ],
+        "inputs": 6,
+        "forms": 1,
+        "tables": 0,
+        "links": 0,
+        "textLength": 426
+      }
+    },
+    {
+      "screen": {
+        "id": "S4-ROLE-GUARD",
+        "sprint": 4,
+        "pbs": ["PB92"],
+        "actor": "talent",
+        "feature": "admin",
+        "screen": "role-guard",
+        "title": "Ứng viên truy cập /admin → bị chuyển về trang chủ",
+        "route": "/admin (talent)",
+        "expectRedirect": true,
+        "states": []
+      },
+      "url": "/admin",
+      "finalUrl": "/",
+      "redirected": true,
+      "status": "REDIRECT_AS_EXPECTED",
+      "shots": [
+        {
+          "file": "sprint-04/PB92-talent-admin-role-guard-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 266634,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB92-talent-admin-role-guard-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 442655,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /jobs -> 500"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "dom": {
+        "title": "Remote Jobs from SG, AU & beyond | RemoteSEA",
+        "headings": [
+          "H1: Remote jobs from Singapore, Australia & beyond — curated for Vietnam talent.",
+          "H2: Simple. Curated. Built for you.",
+          "H3: Browse verified jobs",
+          "H3: Track applications in one place",
+          "H3: Land your first remote offer",
+          "H2: Find roles in your field",
+          "H2: Know your worth before you negotiate.",
+          "H2: Jobs open right now",
+          "H3: Machine Learning Engineer",
+          "H3: Marketing Operations Manager",
+          "H3: Product Designer",
+          "H3: Performance Marketing Specialist",
+          "H2: Built by someone who's actually done it.",
+          "H2: From apply to offer.",
+          "H2: Looking for remote talent in Vietnam?",
+          "H2: Don't miss the next opportunity."
+        ],
+        "buttons": ["Save job", "Subscribe"],
+        "inputs": 1,
+        "forms": 1,
+        "tables": 0,
+        "links": 20,
+        "textLength": 4530
+      }
+    },
+    {
+      "screen": {
+        "id": "S2-EMP-DASH",
+        "sprint": 2,
+        "pbs": ["PB34", "PB57", "PB59", "PB45", "PB31", "PB32"],
+        "actor": "employer",
+        "feature": "employer-dashboard",
+        "screen": "dashboard",
+        "title": "Bảng điều khiển nhà tuyển dụng",
+        "route": "/employer-dashboard",
+        "mobile": true,
+        "states": ["tab-new", "tab-shortlisted", "bulk-select"]
+      },
+      "url": "/employer-dashboard",
+      "finalUrl": "/employer-dashboard",
+      "redirected": false,
+      "status": "PARTIAL",
+      "shots": [
+        {
+          "file": "sprint-02/PB34-employer-employer-dashboard-dashboard-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 29321,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB34-employer-employer-dashboard-dashboard-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 72925,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB34-employer-employer-dashboard-dashboard-tab-new.png",
+          "state": "tab-new",
+          "label": "Tab ứng viên Mới",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 29321,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB34-employer-employer-dashboard-dashboard-tab-shortlisted.png",
+          "state": "tab-shortlisted",
+          "label": "Tab ứng viên Shortlist",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 29321,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB34-employer-employer-dashboard-dashboard-bulk-select.png",
+          "state": "bulk-select",
+          "label": "Chọn ứng viên → thanh thao tác hàng loạt (không thực thi)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 0,
+          "ok": false,
+          "error": "TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 30000ms exceeded."
+        },
+        {
+          "file": "sprint-02/PB34-employer-employer-dashboard-dashboard-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 36875,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB34-employer-employer-dashboard-dashboard-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 142691,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /employer/dashboard -> 500"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "dom": {
+        "title": "Employer Dashboard | RemoteSEA",
+        "headings": [],
+        "buttons": ["Try again"],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 81
+      },
+      "retried": true
+    },
+    {
+      "screen": {
+        "id": "S2-POSTJOB",
+        "sprint": 2,
+        "pbs": ["PB41", "PB30", "PB42", "PB43"],
+        "actor": "employer",
+        "feature": "post-job",
+        "screen": "wizard",
+        "title": "Đăng tin tuyển dụng (wizard 4 bước)",
+        "route": "/post-job",
+        "mobile": true,
+        "states": ["step2-role", "step2-validation"]
+      },
+      "url": "/post-job",
+      "finalUrl": "/post-job",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB41-employer-post-job-wizard-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 103712,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB41-employer-post-job-wizard-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 149927,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB41-employer-post-job-wizard-step2-role.png",
+          "state": "step2-role",
+          "label": "Bước 2 — Vai trò",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 105427,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB41-employer-post-job-wizard-step2-validation.png",
+          "state": "step2-validation",
+          "label": "Bước 2 bấm Tiếp tục khi chưa nhập → lỗi bước",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 105448,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB41-employer-post-job-wizard-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 112350,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB41-employer-post-job-wizard-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 259180,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Post a Remote Job | RemoteSEA",
+        "headings": [
+          "H1: Post a job",
+          "H2: About your company",
+          "H3: Recruiter / hiring manager"
+        ],
+        "buttons": ["1", "2", "3", "4", "Continue"],
+        "inputs": 9,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 612
+      }
+    },
+    {
+      "screen": {
+        "id": "S2-TALENT-SEARCH",
+        "sprint": 2,
+        "pbs": ["PB29", "PB79"],
+        "actor": "employer",
+        "feature": "talent-search",
+        "screen": "talent-search",
+        "title": "Tìm kiếm ứng viên",
+        "route": "/employer-dashboard/talent",
+        "mobile": true,
+        "states": ["filtered", "search"]
+      },
+      "url": "/employer-dashboard/talent",
+      "finalUrl": "/employer-dashboard/talent",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB29-employer-talent-search-talent-search-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 139641,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB29-employer-talent-search-talent-search-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 333020,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB29-employer-talent-search-talent-search-filtered.png",
+          "state": "filtered",
+          "label": "Lọc cấp độ Senior",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 142880,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB29-employer-talent-search-talent-search-search.png",
+          "state": "search",
+          "label": "Tìm theo từ khoá 'engineer'",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 134765,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB29-employer-talent-search-talent-search-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 130337,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB29-employer-talent-search-talent-search-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 623998,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /employer/jobs -> 500", "GET /talent -> 500"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "dom": {
+        "title": "Find Talent | RemoteSEA",
+        "headings": [
+          "H1: Find talent",
+          "H3: Filters",
+          "H3: Executive UX Researcher",
+          "H3: Senior Backend Engineer",
+          "H3: Backend Engineer",
+          "H3: Senior Full-Stack Engineer",
+          "H3: Senior Data Engineer"
+        ],
+        "buttons": [
+          "Filters",
+          "Clear all",
+          "Rank against a job",
+          "Invite to apply",
+          "Previous page",
+          "1",
+          "2",
+          "3",
+          "4",
+          "Next page"
+        ],
+        "inputs": 31,
+        "forms": 0,
+        "tables": 0,
+        "links": 12,
+        "textLength": 1922
+      }
+    },
+    {
+      "screen": {
+        "id": "S2-TEAM",
+        "sprint": 2,
+        "pbs": ["PB37", "PB35", "PB38", "PB39", "PB40"],
+        "actor": "employer",
+        "feature": "team",
+        "screen": "team-settings",
+        "title": "Quản lý thành viên công ty",
+        "route": "/employer-dashboard/team",
+        "states": ["invite-validation"]
+      },
+      "url": "/employer-dashboard/team",
+      "finalUrl": "/employer-dashboard/team",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB37-employer-team-team-settings-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 99723,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB37-employer-team-team-settings-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 156921,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB37-employer-team-team-settings-invite-validation.png",
+          "state": "invite-validation",
+          "label": "Form mời thành viên gửi rỗng → lỗi validation",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 101177,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Team — Company Settings | RemoteSEA",
+        "headings": [
+          "H1: Team members.",
+          "H2: Team members",
+          "H2: Remove Thu Le?",
+          "H2: Transfer ownership to Thu Le?",
+          "H2: Remove Duc Pham?",
+          "H2: Transfer ownership to Duc Pham?",
+          "H2: Remove Linh Vu?",
+          "H2: Transfer ownership to Linh Vu?",
+          "H2: Remove Khanh Hoang?",
+          "H2: Transfer ownership to Khanh Hoang?",
+          "H2: Invite a team member",
+          "H2: Revoke invitation?"
+        ],
+        "buttons": [
+          "Remove Thu Le",
+          "Cancel",
+          "Remove from company",
+          "Transfer ownership",
+          "Remove Duc Pham",
+          "Remove Linh Vu",
+          "Remove Khanh Hoang",
+          "Send invite",
+          "Revoke invitation to test@remotesea.dev",
+          "Revoke invitation to vovanthinh12082k4@gmail.com",
+          "Revoke"
+        ],
+        "inputs": 10,
+        "forms": 1,
+        "tables": 0,
+        "links": 1,
+        "textLength": 2254
+      }
+    },
+    {
+      "screen": {
+        "id": "S2-COMPANY-OWNER",
+        "sprint": 2,
+        "pbs": ["PB31", "PB33"],
+        "actor": "employer",
+        "feature": "company",
+        "screen": "own-company",
+        "title": "Trang công ty của chính nhà tuyển dụng",
+        "route": "/companies/:slug",
+        "states": []
+      },
+      "url": "/companies/mekong-digital-bhSuHu",
+      "finalUrl": "/companies/mekong-digital-bhSuHu",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-02/PB31-employer-company-own-company-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 92754,
+          "ok": true
+        },
+        {
+          "file": "sprint-02/PB31-employer-company-own-company-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 136529,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /saved/ids -> 403", "GET /talent/me -> 404"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "dom": {
+        "title": "Mekong Digital — Company Profile | RemoteSEA",
+        "headings": [
+          "H1: Mekong Digital",
+          "H2: Open positions (2)",
+          "H3: Business Intelligence Analyst",
+          "H3: Design Systems Lead"
+        ],
+        "buttons": ["Save job"],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 6,
+        "textLength": 513
+      }
+    },
+    {
+      "screen": {
+        "id": "S3-WORKSPACE",
+        "sprint": 3,
+        "pbs": ["PB58", "PB57", "PB60", "PB64", "PB65", "PB66", "PB67", "PB69"],
+        "actor": "employer",
+        "feature": "hiring",
+        "screen": "application-workspace",
+        "title": "Không gian xử lý hồ sơ ứng viên (pipeline, scorecard, AI CV, ghi chú)",
+        "route": "/employer-dashboard/applications/:id",
+        "mobile": true,
+        "states": ["scorecard-form"]
+      },
+      "url": "/employer-dashboard/applications/cmt2lgko7000cbmeondz7lhv8",
+      "finalUrl": "/employer-dashboard/applications/cmt2lgko7000cbmeondz7lhv8",
+      "redirected": false,
+      "status": "PARTIAL",
+      "shots": [
+        {
+          "file": "sprint-03/PB58-employer-hiring-application-workspace-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 91269,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB58-employer-hiring-application-workspace-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 164288,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB58-employer-hiring-application-workspace-scorecard-form.png",
+          "state": "scorecard-form",
+          "label": "Mở form chấm điểm Scorecard (không gửi)",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 0,
+          "ok": false,
+          "error": "TimeoutError: locator.scrollIntoViewIfNeeded: Timeout 30000ms exceeded."
+        },
+        {
+          "file": "sprint-03/PB58-employer-hiring-application-workspace-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 127731,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB58-employer-hiring-application-workspace-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 347842,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /employer/jobs -> 500"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "dom": {
+        "title": "thinh — Hiring | RemoteSEA",
+        "headings": [
+          "H1: thinh",
+          "H3: Team feedback",
+          "H3: Private notes",
+          "H3: Internal discussion",
+          "H3: Activity"
+        ],
+        "buttons": ["Analyze with AI", "Post"],
+        "inputs": 2,
+        "forms": 0,
+        "tables": 0,
+        "links": 5,
+        "textLength": 940
+      },
+      "retried": true
+    },
+    {
+      "screen": {
+        "id": "S3-WORKSPACE-OFFER",
+        "sprint": 3,
+        "pbs": ["PB58", "PB65"],
+        "actor": "employer",
+        "feature": "hiring",
+        "screen": "application-workspace-offer",
+        "title": "Không gian xử lý hồ sơ — ứng viên ở trạng thái Offer",
+        "route": "/employer-dashboard/applications/:id",
+        "states": []
+      },
+      "url": "/employer-dashboard/applications/cmt0vujv0007uoafa5ezgqxgr",
+      "finalUrl": "/employer-dashboard/applications/cmt0vujv0007uoafa5ezgqxgr",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-03/PB58-employer-hiring-application-workspace-offer-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 86733,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB58-employer-hiring-application-workspace-offer-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 143405,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /employer/jobs -> 500"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "dom": {
+        "title": "Hai Doan — Hiring | RemoteSEA",
+        "headings": [
+          "H1: Hai Doan",
+          "H3: Team feedback",
+          "H3: Private notes",
+          "H3: Internal discussion",
+          "H3: Activity"
+        ],
+        "buttons": [
+          "Analyze with AI",
+          "Add feedback",
+          "View cover letter",
+          "Post"
+        ],
+        "inputs": 2,
+        "forms": 0,
+        "tables": 0,
+        "links": 3,
+        "textLength": 818
+      }
+    },
+    {
+      "screen": {
+        "id": "S3-INTERVIEWS-UPCOMING",
+        "sprint": 3,
+        "pbs": ["PB60"],
+        "actor": "employer",
+        "feature": "interviews",
+        "screen": "upcoming",
+        "title": "Lịch phỏng vấn sắp tới của đội tuyển dụng",
+        "route": "/employer-dashboard/interviews",
+        "states": []
+      },
+      "url": "/employer-dashboard/interviews",
+      "finalUrl": "/employer-dashboard/interviews",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-03/PB60-employer-interviews-upcoming-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 43818,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB60-employer-interviews-upcoming-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 88252,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Interview schedule — Employer Dashboard | RemoteSEA",
+        "headings": ["H1: Team interview schedule."],
+        "buttons": [],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 1,
+        "textLength": 191
+      }
+    },
+    {
+      "screen": {
+        "id": "S3-MESSAGES-EMPLOYER",
+        "sprint": 3,
+        "pbs": ["PB68"],
+        "actor": "employer",
+        "feature": "messages",
+        "screen": "thread-employer",
+        "title": "Nhắn tin theo đơn ứng tuyển (nhà tuyển dụng)",
+        "route": "/applications/:id/messages",
+        "states": []
+      },
+      "url": "/applications/cmt2lgko7000cbmeondz7lhv8/messages",
+      "finalUrl": "/applications/cmt2lgko7000cbmeondz7lhv8/messages",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-03/PB68-employer-messages-thread-employer-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 50153,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB68-employer-messages-thread-employer-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 93206,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "thinh | RemoteSEA",
+        "headings": ["H1: thinh"],
+        "buttons": ["Send message"],
+        "inputs": 1,
+        "forms": 1,
+        "tables": 0,
+        "links": 1,
+        "textLength": 179
+      }
+    },
+    {
+      "screen": {
+        "id": "S3-INTERVIEW-EMPLOYER",
+        "sprint": 3,
+        "pbs": ["PB60", "PB62", "PB63"],
+        "actor": "employer",
+        "feature": "interviews",
+        "screen": "interview-employer",
+        "title": "Lịch phỏng vấn (nhà tuyển dụng đề xuất / huỷ)",
+        "route": "/applications/:id/interview",
+        "states": []
+      },
+      "url": "/applications/cmt2lgko7000cbmeondz7lhv8/interview",
+      "finalUrl": "/applications/cmt2lgko7000cbmeondz7lhv8/interview",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-03/PB60-employer-interviews-interview-employer-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 86542,
+          "ok": true
+        },
+        {
+          "file": "sprint-03/PB60-employer-interviews-interview-employer-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 92620,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "thinh | RemoteSEA",
+        "headings": ["H1: thinh", "H3: Team feedback"],
+        "buttons": ["Add to calendar", "Write a review"],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 2,
+        "textLength": 251
+      }
+    },
+    {
+      "screen": {
+        "id": "S4-ADMIN-QUEUE",
+        "sprint": 4,
+        "pbs": ["PB85", "PB86", "PB87"],
+        "actor": "admin",
+        "feature": "admin",
+        "screen": "queue",
+        "title": "Admin — Hàng đợi kiểm duyệt tin",
+        "route": "/admin?tab=queue",
+        "mobile": true,
+        "states": ["item-selected"]
+      },
+      "url": "/admin?tab=queue",
+      "finalUrl": "/admin?tab=queue",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-04/PB85-admin-admin-queue-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 172945,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB85-admin-admin-queue-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 242405,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB85-admin-admin-queue-item-selected.png",
+          "state": "item-selected",
+          "label": "Chọn tin thứ 2 trong hàng đợi",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 172945,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB85-admin-admin-queue-mobile.png",
+          "state": "mobile",
+          "label": "Viewport mobile 390×844",
+          "viewport": "mobile",
+          "fullPage": false,
+          "bytes": 131232,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB85-admin-admin-queue-mobile-full.png",
+          "state": "mobile-full",
+          "label": "Toàn trang mobile",
+          "viewport": "mobile",
+          "fullPage": true,
+          "bytes": 494753,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Bảng điều hành | RemoteSEA",
+        "headings": ["H1: Hàng chờ duyệt", "H2: Data Analyst"],
+        "buttons": [
+          "Hàng chờ duyệt",
+          "Nhà tuyển dụng",
+          "Người dùng",
+          "Báo cáo",
+          "Doanh thu",
+          "Nhật ký kiểm toán",
+          "PPearl River TechData Analyst90 ngày 4 giờ",
+          "EEverline SystemsBackend Engineer90 ngày 4 giờ",
+          "EEverline SystemsPerformance Marketing Specialist90 ngày 4 giờ",
+          "BBluePeak HealthFrontend Developer90 ngày 4 giờ",
+          "RRiverside FintechDesign Systems Lead90 ngày 4 giờNổi bật",
+          "OOrchid CommerceSite Reliability Engineer90 ngày 4 giờ",
+          "SSunbelt LogisticsBackend Engineer90 ngày 4 giờ",
+          "SSunbelt LogisticsProduct Designer90 ngày 4 giờ",
+          "IIronwood SecurityUI/Visual Designer90 ngày 4 giờ",
+          "Kiểm tra lại — chạy lại phân tích và thay thế kết quả này",
+          "Vị trí thực sự là remoteKhông phải hybrid bị gắn nhầm là remote.",
+          "Mức lương nằm trong khung thị trườngSo sánh với dữ liệu tham chiếu.",
+          "Không có ngôn từ phân biệt đối xửYêu cầu được diễn đạt trung lập.",
+          "Công ty có vẻ hợp phápWebsite và thông tin liên hệ hợp lệ.",
+          "Duyệt & đăng",
+          "Yêu cầu chỉnh sửa",
+          "Từ chối"
+        ],
+        "inputs": 1,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 1862
+      },
+      "retried": true
+    },
+    {
+      "screen": {
+        "id": "S4-ADMIN-EMPLOYERS",
+        "sprint": 4,
+        "pbs": ["PB83", "PB84"],
+        "actor": "admin",
+        "feature": "admin",
+        "screen": "employers",
+        "title": "Admin — Quản lý nhà tuyển dụng",
+        "route": "/admin?tab=employers",
+        "mobile": false,
+        "states": []
+      },
+      "url": "/admin?tab=employers",
+      "finalUrl": "/admin?tab=employers",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-04/PB83-admin-admin-employers-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 142084,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB83-admin-admin-employers-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 294502,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Bảng điều hành | RemoteSEA",
+        "headings": ["H1: Nhà tuyển dụng"],
+        "buttons": [
+          "Hàng chờ duyệt",
+          "Nhà tuyển dụng",
+          "Người dùng",
+          "Báo cáo",
+          "Doanh thu",
+          "Nhật ký kiểm toán",
+          "Tất cả 16",
+          "Chưa xác minh 3",
+          "Xác minh",
+          "Đình chỉ"
+        ],
+        "inputs": 1,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 1744
+      }
+    },
+    {
+      "screen": {
+        "id": "S4-ADMIN-USERS",
+        "sprint": 4,
+        "pbs": ["PB90", "PB91", "PB92"],
+        "actor": "admin",
+        "feature": "admin",
+        "screen": "users",
+        "title": "Admin — Quản lý người dùng",
+        "route": "/admin?tab=users",
+        "mobile": false,
+        "states": ["filter-employer", "search"]
+      },
+      "url": "/admin?tab=users",
+      "finalUrl": "/admin?tab=users",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-04/PB90-admin-admin-users-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 127749,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB90-admin-admin-users-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 613397,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB90-admin-admin-users-filter-employer.png",
+          "state": "filter-employer",
+          "label": "Lọc vai trò EMPLOYER",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 128495,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB90-admin-admin-users-search.png",
+          "state": "search",
+          "label": "Tìm kiếm 'talent'",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 124395,
+          "ok": true
+        }
+      ],
+      "apiErrors": ["GET /admin/users -> 500"],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 500 (Internal Server Error)"
+      ],
+      "dom": {
+        "title": "Bảng điều hành | RemoteSEA",
+        "headings": ["H1: Người dùng"],
+        "buttons": [
+          "Hàng chờ duyệt",
+          "Nhà tuyển dụng",
+          "Người dùng",
+          "Báo cáo",
+          "Doanh thu",
+          "Nhật ký kiểm toán",
+          "Tất cả 50",
+          "Ứng viên 44",
+          "Nhà tuyển dụng 6",
+          "Quản trị 0",
+          "Vai trò của phase2-employer-a@example.com",
+          "Cấm",
+          "Vai trò của invited.candidate@remotesea.dev",
+          "Vai trò của upcoming6@remotesea.dev",
+          "Vai trò của upcoming5@remotesea.dev",
+          "Vai trò của upcoming4@remotesea.dev",
+          "Vai trò của upcoming3@remotesea.dev",
+          "Vai trò của upcoming2@remotesea.dev",
+          "Vai trò của upcoming1@remotesea.dev",
+          "Vai trò của candidate.fullpanel@remotesea.dev",
+          "Vai trò của candidate.rejected@remotesea.dev",
+          "Vai trò của candidate.mixed@remotesea.dev",
+          "Vai trò của candidate.strong@remotesea.dev",
+          "Vai trò của recruiter2@remotesea.dev",
+          "Vai trò của interviewer2@remotesea.dev",
+          "Vai trò của interviewer1@remotesea.dev",
+          "Vai trò của hiringmanager1@remotesea.dev",
+          "Vai trò của recruiter1@remotesea.dev",
+          "Vai trò của sessions-smoke2-1785234154@example.com",
+          "Vai trò của sessions-smoke-1785233546@example.com",
+          "Vai trò của test1@gmail.com",
+          "Vai trò của talent40@remotesea.dev",
+          "Vai trò của talent39@remotesea.dev",
+          "Vai trò của talent38@remotesea.dev",
+          "Vai trò của talent37@remotesea.dev",
+          "Vai trò của talent36@remotesea.dev",
+          "Vai trò của talent35@remotesea.dev",
+          "Vai trò của talent34@remotesea.dev",
+          "Vai trò của talent33@remotesea.dev",
+          "Vai trò của talent32@remotesea.dev"
+        ],
+        "inputs": 1,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 3550
+      }
+    },
+    {
+      "screen": {
+        "id": "S4-ADMIN-REPORTS",
+        "sprint": 4,
+        "pbs": ["PB89", "PB88"],
+        "actor": "admin",
+        "feature": "admin",
+        "screen": "reports",
+        "title": "Admin — Xử lý báo cáo vi phạm",
+        "route": "/admin?tab=reports",
+        "mobile": false,
+        "states": []
+      },
+      "url": "/admin?tab=reports",
+      "finalUrl": "/admin?tab=reports",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-04/PB89-admin-admin-reports-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 102657,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB89-admin-admin-reports-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 153444,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Bảng điều hành | RemoteSEA",
+        "headings": ["H1: Báo cáo"],
+        "buttons": [
+          "Hàng chờ duyệt",
+          "Nhà tuyển dụng",
+          "Người dùng",
+          "Báo cáo",
+          "Doanh thu",
+          "Nhật ký kiểm toán",
+          "Đang mở",
+          "Đã xử lý",
+          "Đã bỏ qua",
+          "Xử lý",
+          "Bỏ qua"
+        ],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 3,
+        "textLength": 723
+      }
+    },
+    {
+      "screen": {
+        "id": "S4-ADMIN-REVENUE",
+        "sprint": 4,
+        "pbs": ["UNMAPPED"],
+        "actor": "admin",
+        "feature": "admin",
+        "screen": "revenue",
+        "title": "Admin — Doanh thu",
+        "route": "/admin?tab=revenue",
+        "mobile": false,
+        "states": []
+      },
+      "url": "/admin?tab=revenue",
+      "finalUrl": "/admin?tab=revenue",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-04/UNMAPPED-admin-admin-revenue-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 105186,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/UNMAPPED-admin-admin-revenue-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 226853,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Bảng điều hành | RemoteSEA",
+        "headings": [
+          "H1: Doanh thu",
+          "H3: Doanh thu theo gói · từ trước đến nay",
+          "H3: Giao dịch gần đây"
+        ],
+        "buttons": [
+          "Hàng chờ duyệt",
+          "Nhà tuyển dụng",
+          "Người dùng",
+          "Báo cáo",
+          "Doanh thu",
+          "Nhật ký kiểm toán"
+        ],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 1371
+      }
+    },
+    {
+      "screen": {
+        "id": "S4-ADMIN-AUDIT-LOG",
+        "sprint": 4,
+        "pbs": ["PB93"],
+        "actor": "admin",
+        "feature": "admin",
+        "screen": "audit-log",
+        "title": "Admin — Nhật ký quản trị",
+        "route": "/admin?tab=audit-log",
+        "mobile": false,
+        "states": []
+      },
+      "url": "/admin?tab=audit-log",
+      "finalUrl": "/admin?tab=audit-log",
+      "redirected": false,
+      "status": "OK",
+      "shots": [
+        {
+          "file": "sprint-04/PB93-admin-admin-audit-log-desktop.png",
+          "state": "desktop",
+          "label": "Viewport desktop 1440×900",
+          "viewport": "desktop",
+          "fullPage": false,
+          "bytes": 87473,
+          "ok": true
+        },
+        {
+          "file": "sprint-04/PB93-admin-admin-audit-log-desktop-full.png",
+          "state": "desktop-full",
+          "label": "Toàn trang desktop",
+          "viewport": "desktop",
+          "fullPage": true,
+          "bytes": 138264,
+          "ok": true
+        }
+      ],
+      "apiErrors": [],
+      "consoleErrors": [],
+      "dom": {
+        "title": "Bảng điều hành | RemoteSEA",
+        "headings": ["H1: Nhật ký kiểm toán"],
+        "buttons": [
+          "Hàng chờ duyệt",
+          "Nhà tuyển dụng",
+          "Người dùng",
+          "Báo cáo",
+          "Doanh thu",
+          "Nhật ký kiểm toán",
+          "Tất cả",
+          "Việc làm",
+          "admin@remotesea.dev đã đổi vai trò talent32@remotesea.dev34 ngày trước",
+          "admin@remotesea.dev đã xử lý báo cáo Machine Learning Engineer62 ngày trước"
+        ],
+        "inputs": 0,
+        "forms": 0,
+        "tables": 0,
+        "links": 0,
+        "textLength": 596
+      }
+    }
+  ]
+}

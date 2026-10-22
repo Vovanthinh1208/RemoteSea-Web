@@ -41,14 +41,16 @@ const CHANNELS = [
   },
 ];
 
+// Illustrative threads written by us (like the member quotes), so they are
+// translated; member names and channel handles stay as they are.
 const THREADS = [
   {
     channel: "#offer-negotiations",
     initial: "L",
     color: "linear-gradient(135deg,#2E9B52,#1F7A3D)",
     name: "Linh N.",
-    time: "2h",
-    text: "Just got an offer from a Series B in SG — $4.8k base, 0.08% equity at $80M valuation. Senior FE, 5 yoe. Feels low vs market? Anyone negotiated similar?",
+    age: { unit: "hourShort", n: 2 },
+    textKey: "channels.threads.offer",
     replies: 18,
     reactions: ["🤔", "💪", "🔥"],
   },
@@ -57,8 +59,8 @@ const THREADS = [
     initial: "M",
     color: "linear-gradient(135deg,#F59E0B,#B45309)",
     name: "Minh T.",
-    time: "5h",
-    text: "Anyone tried Loom for design crits in fully-async teams? My team in Sydney loves it but I find myself rewatching at 2x and missing the nuance. Tips welcome.",
+    age: { unit: "hourShort", n: 5 },
+    textKey: "channels.threads.async",
     replies: 11,
     reactions: ["📹", "✨"],
   },
@@ -67,8 +69,8 @@ const THREADS = [
     initial: "K",
     color: "linear-gradient(135deg,#7C3AED,#5B21B6)",
     name: "Khang L.",
-    time: "1d",
-    text: "Heads up — Hidden Bean in An Thượng has zero wifi today. Going to Surf Bar instead. Anyone else around for coworking 2–6pm?",
+    age: { unit: "dayShort", n: 1 },
+    textKey: "channels.threads.coliving",
     replies: 7,
     reactions: ["☕", "🏄"],
   },
@@ -151,12 +153,12 @@ export const ChannelsThreadsSection = () => {
                       {thread.channel}
                     </span>
                     <span className="text-[12px] text-neutral-400">
-                      {thread.time}
+                      {t(`common.time.${thread.age.unit}`, { n: thread.age.n })}
                     </span>
                   </div>
                 </div>
                 <p className="mb-3 text-[14px] leading-relaxed text-neutral-700">
-                  {thread.text}
+                  {t(thread.textKey)}
                 </p>
                 <div className="flex items-center justify-between">
                   <div className="flex gap-1.5">

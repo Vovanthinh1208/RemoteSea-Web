@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   forgotPasswordSchema,
@@ -17,15 +18,18 @@ export const ForgotPasswordForm = () => {
   const [isSent, setIsSent] = useState(false);
   const [sentEmail, setSentEmail] = useState("");
   const submitError = useSubmitError();
+  const form = useForm<ForgotPasswordFormValues>({
+    resolver: zodResolver(forgotPasswordSchema),
+    defaultValues: { email: "" },
+  });
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<ForgotPasswordFormValues>({
-    resolver: zodResolver(forgotPasswordSchema),
-    defaultValues: { email: "" },
-  });
+  } = form;
+  // Field errors on screen re-validate in the new language after a switch.
+  useRevalidateOnLocaleChange(form);
 
   const onSubmit = async (values: ForgotPasswordFormValues) => {
     submitError.clear();
