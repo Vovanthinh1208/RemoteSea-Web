@@ -15,6 +15,7 @@ const ROUTE_SPRINTS: ReadonlyArray<readonly [pattern: string, RouteSprint]> = [
   ["/auth/callback", 1],
   ["/settings", 1],
   ["/profile", 1],
+  ["/talent/profile", 1],
   ["/talent/verify", 1],
   ["/sprints", 1],
 

@@ -78,7 +78,7 @@ export const authRepository = {
   },
 
   getSession: async (opts?: RequestOptions): Promise<SessionResponseDto> => {
-    const { data } = await apiClient.get<SessionResponseDto>("/auth/session", {
+    const { data } = await apiClient.get<SessionResponseDto>("/auth/me", {
       signal: opts?.signal,
     });
     return data;

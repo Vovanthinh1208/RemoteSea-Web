@@ -247,6 +247,7 @@ export const AppRouter = () => {
 
         <Route element={<ProtectedRoute roles={["TALENT"]} />}>
           <Route element={<ProfilePage />} path="profile" />
+          <Route element={<ProfilePage />} path="talent/profile" />
           <Route element={<TalentDashboardPage />} path="talent" />
           <Route element={<ApplicationDetailPage />} path="applications/:id" />
         </Route>

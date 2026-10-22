@@ -31,6 +31,7 @@ describe("sprintForPath", () => {
     ["/register", 1],
     ["/settings", 1],
     ["/profile", 1],
+    ["/talent/profile", 1],
     ["/talent/verify", 1],
     ["/talent", 2],
     ["/talent/jane-doe", 2],
@@ -64,6 +65,7 @@ describe("with Sprint 1 focus", () => {
       "/register",
       "/settings",
       "/profile",
+      "/talent/profile",
       "/talent/verify",
     ])
       expect(isPathVisible(p, sprint1)).toBe(true);
@@ -107,6 +109,7 @@ describe("with Sprint 1+2 focus", () => {
       "/login",
       "/settings",
       "/profile",
+      "/talent/profile",
       "/talent/verify",
       "/jobs",
       "/jobs/abc123",

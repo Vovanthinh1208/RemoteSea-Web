@@ -2,7 +2,7 @@ import type { RequestOptions } from "@/core/http/request-config";
 import { parseOrThrow } from "@/core/validation/validate-response";
 import { authRepository } from "@/features/auth/auth.repository";
 import { toAuthUser } from "@/features/auth/auth.mapper";
-import { sessionResponseSchema } from "@/features/auth/auth.dto";
+import { authUserSchema } from "@/features/auth/auth.dto";
 import type {
   LoginPayload,
   LoginResponseDto,
@@ -60,12 +60,8 @@ export const getSession = async (
   opts?: RequestOptions
 ): Promise<AuthUser | null> => {
   const dto = await authRepository.getSession(opts);
-  const { user } = parseOrThrow(
-    sessionResponseSchema,
-    dto,
-    "GET /auth/session"
-  );
-  return user ? toAuthUser(user) : null;
+  const user = parseOrThrow(authUserSchema, dto, "GET /auth/me");
+  return toAuthUser(user);
 };
 
 export const forgotPassword = async (

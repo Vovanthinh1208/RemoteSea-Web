@@ -78,7 +78,7 @@ const SHOTS = path.join(
 );
 const ONLY: string[] | null = args.only ? String(args.only).split(",") : null;
 
-type Step = Record<string, any>;
+type Step = Record<string, unknown>;
 interface Entry {
   id: string;
   pb: string;

@@ -14,40 +14,45 @@ const repository = vi.hoisted(() => ({
 vi.mock("@/features/auth/auth.repository", () => repository);
 
 const { getSession } = await import("@/features/auth/auth.service");
-const { ValidationError } = await import("@/core/errors/error-types");
+const { UnauthorizedError, ValidationError } =
+  await import("@/core/errors/error-types");
 
 const validUser = {
   id: "user-1",
   email: "a@b.com",
   name: "Ada",
   role: "TALENT" as const,
+  permissions: ["TALENT"],
+  avatar: null,
 };
 
 describe("getSession", () => {
   it("returns the mapped user when a session exists", async () => {
     repository.authRepository.getSession.mockResolvedValueOnce({
-      user: validUser,
+      ...validUser,
     });
     await expect(getSession()).resolves.toEqual(validUser);
   });
 
-  it("returns null when there is no session (the 401 -> null contract AuthContext relies on)", async () => {
-    repository.authRepository.getSession.mockResolvedValueOnce({
-      user: null,
-    });
-    await expect(getSession()).resolves.toBeNull();
+  it("propagates unauthorized responses so the HTTP client clears the stale token", async () => {
+    repository.authRepository.getSession.mockRejectedValueOnce(
+      new UnauthorizedError(401, { error: "Unauthorized" })
+    );
+    await expect(getSession()).rejects.toBeInstanceOf(UnauthorizedError);
   });
 
   it("tolerates additive/unknown fields on the user object (loose schema)", async () => {
     repository.authRepository.getSession.mockResolvedValueOnce({
-      user: { ...validUser, futureField: "some-new-thing" },
+      ...validUser,
+      futureField: "some-new-thing",
     });
     await expect(getSession()).resolves.toEqual(validUser);
   });
 
   it("throws a ValidationError when id/role are missing from the response", async () => {
     repository.authRepository.getSession.mockResolvedValueOnce({
-      user: { email: "a@b.com", name: "Ada" },
+      email: "a@b.com",
+      name: "Ada",
     });
     await expect(getSession()).rejects.toBeInstanceOf(ValidationError);
   });
