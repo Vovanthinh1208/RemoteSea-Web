@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,11 +14,13 @@ import { useToast } from "@/components/ui/toast";
 import { applyFormSubmitError } from "@/utils/form-errors";
 import { useSubmitError } from "@/hooks/useSubmitError";
 import { ROUTES } from "@/constants/routes";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { useTranslation } from "@/i18n";
+import { ApiError } from "@/core/errors/api-error";
 
 export const ResetPasswordForm = () => {
   const { t } = useTranslation("auth");
+  const [canRequestNewLink, setCanRequestNewLink] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
@@ -41,6 +45,7 @@ export const ResetPasswordForm = () => {
       return;
     }
     submitError.clear();
+    setCanRequestNewLink(false);
     try {
       await resetPassword({ token, password: values.password });
       toast({
@@ -52,13 +57,22 @@ export const ResetPasswordForm = () => {
     } catch (err) {
       applyFormSubmitError(err, setError);
       submitError.fail(err);
+      setCanRequestNewLink(
+        err instanceof ApiError && err.code === "INVALID_OR_EXPIRED_TOKEN"
+      );
     }
   };
 
   if (!token) {
     return (
-      <div className="rounded-12 border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-        {t("resetPassword.invalidToken")}
+      <div className="space-y-3 rounded-12 border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <p>{t("resetPassword.invalidToken")}</p>
+        <Link
+          className={buttonVariants({ size: "md" })}
+          to={ROUTES.forgotPassword}
+        >
+          {t("resetPassword.requestNewLink")}
+        </Link>
       </div>
     );
   }
@@ -89,6 +103,15 @@ export const ResetPasswordForm = () => {
         <p className="text-sm text-red-600" role="alert">
           {submitError.message}
         </p>
+      )}
+
+      {canRequestNewLink && (
+        <Link
+          className={buttonVariants({ size: "md", variant: "outline" })}
+          to={ROUTES.forgotPassword}
+        >
+          {t("resetPassword.requestNewLink")}
+        </Link>
       )}
 
       <Button

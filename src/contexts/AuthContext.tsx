@@ -75,6 +75,16 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 // The session is auth's own cache, not a regular feature query — kept here rather than
 // in a `.queries.ts` file since AuthContext is the single place that owns writes to it.
 const SESSION_KEY = sessionKeys.all;
+const LOGOUT_SIGNAL_KEY = "remotesea_logout_signal";
+
+const signalLogoutToOtherTabs = () => {
+  try {
+    localStorage.setItem(LOGOUT_SIGNAL_KEY, String(Date.now()));
+    localStorage.removeItem(LOGOUT_SIGNAL_KEY);
+  } catch {
+    // Cross-tab signaling is best-effort when Web Storage is unavailable.
+  }
+};
 
 // Only a confirmed 401 means "not logged in" — resolve to null so the caller can
 // treat it as a real logout. Any other failure (network blip, 5xx) is rethrown so
@@ -93,6 +103,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [hasToken, setHasToken] = useState(() => !!getAccessToken());
+
+  const clearPrivateQueries = useCallback(() => {
+    queryClient.removeQueries({
+      predicate: (query) =>
+        query.queryKey.length !== SESSION_KEY.length ||
+        query.queryKey.some((part, index) => part !== SESSION_KEY[index]),
+    });
+  }, [queryClient]);
 
   const sessionQuery = useQuery({
     queryKey: SESSION_KEY,
@@ -131,6 +149,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         // Clear storage too (mirrors logout()) — previously the dead token
         // survived a reload and re-failed the session check every visit.
         clearAccessToken();
+        clearPrivateQueries();
         queryClient.setQueryData(SESSION_KEY, null);
         setHasToken(false);
         if (hadSession) {
@@ -141,7 +160,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           });
         }
       }),
-    [queryClient, toast]
+    [clearPrivateQueries, queryClient, toast]
   );
 
   // Cross-tab session sync: logging out (or in) in one tab updates every other
@@ -151,20 +170,30 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   // per-tab by design, so there is nothing to sync for them.
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
+      if (e.key === LOGOUT_SIGNAL_KEY && e.newValue !== null) {
+        clearAccessToken();
+        clearPrivateQueries();
+        queryClient.setQueryData(SESSION_KEY, null);
+        setHasToken(false);
+        return;
+      }
       if (e.key !== ACCESS_TOKEN_STORAGE_KEY) return;
       if (e.newValue === null) {
+        clearPrivateQueries();
         queryClient.setQueryData(SESSION_KEY, null);
         setHasToken(false);
       } else {
         // A login elsewhere: mark the token present and let the session query
         // (re)fetch the user for this tab.
+        clearPrivateQueries();
+        queryClient.setQueryData(SESSION_KEY, null);
         setHasToken(true);
         void queryClient.invalidateQueries({ queryKey: SESSION_KEY });
       }
     };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);
-  }, [queryClient]);
+  }, [clearPrivateQueries, queryClient]);
 
   // Login/register/2FA-challenge responses already bundle the session's user
   // alongside the token — this commits both to storage/cache in one shot
@@ -246,9 +275,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = useCallback(() => {
     clearAccessToken();
+    clearPrivateQueries();
     queryClient.setQueryData(SESSION_KEY, null);
     setHasToken(false);
-  }, [queryClient]);
+    signalLogoutToOtherTabs();
+  }, [clearPrivateQueries, queryClient]);
 
   const patchUser = useCallback(
     (partial: Partial<AuthUser>) => {

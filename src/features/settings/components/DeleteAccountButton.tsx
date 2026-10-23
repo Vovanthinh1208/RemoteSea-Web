@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TEXT_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useToastMutation } from "@/hooks/useToastMutation";
@@ -19,6 +19,10 @@ export const DeleteAccountButton = () => {
   const [isConfirming, setIsConfirming] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
+  // isPending only flips after TanStack Query's async notify, so a fast
+  // double-click/Enter could fire two DELETEs; the second would then fail
+  // (session already gone) and toast an error over a successful deletion.
+  const inFlight = useRef(false);
 
   const reset = () => {
     setIsConfirming(false);
@@ -27,18 +31,24 @@ export const DeleteAccountButton = () => {
   };
 
   const handleDelete = async () => {
-    await runWithToast(
-      () =>
-        deleteAccountMutation.mutateAsync({
-          password: password || undefined,
-          confirmation: CONFIRM_WORD,
-        }),
-      {
-        error: t("del.failed"),
-        onError: (err) =>
-          err instanceof ApiError ? getErrorMessage(err) : undefined,
-      }
-    );
+    if (inFlight.current) return;
+    inFlight.current = true;
+    try {
+      await runWithToast(
+        () =>
+          deleteAccountMutation.mutateAsync({
+            password: password || undefined,
+            confirmation: CONFIRM_WORD,
+          }),
+        {
+          error: t("del.failed"),
+          onError: (err) =>
+            err instanceof ApiError ? getErrorMessage(err) : undefined,
+        }
+      );
+    } finally {
+      inFlight.current = false;
+    }
   };
 
   if (!isConfirming) {

@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import {
   changeMyPassword,
   deleteMyAccount,
@@ -19,6 +20,7 @@ import {
 } from "@/features/users/users.service";
 import { useAuth } from "@/contexts/AuthContext";
 import { talentKeys, usersKeys } from "@/core/query/query-keys";
+import { ROUTES } from "@/constants/routes";
 import type { TalentProfile } from "@/types/talent";
 
 export const useUpdateMyName = () => {
@@ -44,9 +46,14 @@ export const useChangeMyPassword = () =>
 
 export const useDeleteMyAccount = () => {
   const { logout } = useAuth();
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: deleteMyAccount,
     onSuccess: () => {
+      // PB20: land on the home page. Navigating in the same tick as logout
+      // keeps ProtectedRoute from bouncing to /login?callbackUrl=/settings,
+      // a private page of an account that no longer exists.
+      navigate(ROUTES.home, { replace: true });
       logout();
     },
   });

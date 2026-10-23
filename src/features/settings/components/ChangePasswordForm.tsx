@@ -19,7 +19,11 @@ export const ChangePasswordForm = () => {
 
   const form = useForm<ChangePasswordFormValues>({
     resolver: zodResolver(changePasswordFormSchema),
-    defaultValues: { currentPassword: "", newPassword: "" },
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
+    },
   });
   const {
     register,
@@ -31,8 +35,12 @@ export const ChangePasswordForm = () => {
   useRevalidateOnLocaleChange(form);
 
   const onSubmit = async (values: ChangePasswordFormValues) => {
+    const payload = {
+      currentPassword: values.currentPassword,
+      newPassword: values.newPassword,
+    };
     const ok = await runWithToast(
-      () => changePasswordMutation.mutateAsync(values),
+      () => changePasswordMutation.mutateAsync(payload),
       {
         success: t("changePassword.success"),
         error: t("changePassword.error"),
@@ -52,10 +60,19 @@ export const ChangePasswordForm = () => {
       <TextField
         error={errors.currentPassword?.message}
         id="currentPassword"
-        label={t("changePassword.label")}
+        label={t("security.currentPassword")}
         placeholder={t("changePassword.currentPlaceholder")}
         autoComplete="current-password"
         registration={register("currentPassword")}
+        type="password"
+      />
+      <TextField
+        error={errors.confirmNewPassword?.message}
+        id="confirmNewPassword"
+        label={t("security.confirmPassword")}
+        placeholder={t("security.confirmPassword")}
+        autoComplete="new-password"
+        registration={register("confirmNewPassword")}
         type="password"
       />
       <TextField
