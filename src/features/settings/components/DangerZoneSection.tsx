@@ -12,9 +12,11 @@ import { useToastMutation } from "@/hooks/useToastMutation";
 import { useTranslation } from "@/i18n/useTranslation";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const DangerZoneSection = () => {
   const { t } = useTranslation("settings");
+  const { user } = useAuth();
   const runWithToast = useToastMutation();
   const { data: pauseState } = useMyPauseState();
   const pauseMutation = usePauseMyAccount();
@@ -77,19 +79,21 @@ export const DangerZoneSection = () => {
             {isPaused ? t("dz.reactivate") : t("dz.pause")}
           </button>
         </div>
-        <div className="flex items-center justify-between rounded-16 border border-red-200 bg-red-50/40 px-5 py-4">
-          <div>
-            <p className="text-[13.5px] font-semibold text-neutral-900">
-              {t("dz.deleteTitle")}
-            </p>
-            <p className="text-[12.5px] text-neutral-500">
-              {t("dz.deleteDesc")}
-            </p>
+        {(user?.role === "TALENT" || user?.role === "EMPLOYER") && (
+          <div className="flex items-center justify-between rounded-16 border border-red-200 bg-red-50/40 px-5 py-4">
+            <div>
+              <p className="text-[13.5px] font-semibold text-neutral-900">
+                {t("dz.deleteTitle")}
+              </p>
+              <p className="text-[12.5px] text-neutral-500">
+                {t("dz.deleteDesc")}
+              </p>
+            </div>
+            <div className="ml-6 flex-shrink-0">
+              <DeleteAccountButton />
+            </div>
           </div>
-          <div className="ml-6 flex-shrink-0">
-            <DeleteAccountButton />
-          </div>
-        </div>
+        )}
       </div>
       <ConfirmDialog
         cancelLabel={t("actions.cancel")}
