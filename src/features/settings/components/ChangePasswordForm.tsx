@@ -66,15 +66,7 @@ export const ChangePasswordForm = () => {
         registration={register("currentPassword")}
         type="password"
       />
-      <TextField
-        error={errors.confirmNewPassword?.message}
-        id="confirmNewPassword"
-        label={t("security.confirmPassword")}
-        placeholder={t("security.confirmPassword")}
-        autoComplete="new-password"
-        registration={register("confirmNewPassword")}
-        type="password"
-      />
+
       <TextField
         error={errors.newPassword?.message}
         id="newPassword"
@@ -82,6 +74,15 @@ export const ChangePasswordForm = () => {
         placeholder={t("changePassword.newPlaceholder")}
         autoComplete="new-password"
         registration={register("newPassword")}
+        type="password"
+      />
+      <TextField
+        error={errors.confirmNewPassword?.message}
+        id="confirmNewPassword"
+        label={t("security.confirmPassword")}
+        placeholder={t("security.confirmPassword")}
+        autoComplete="new-password"
+        registration={register("confirmNewPassword")}
         type="password"
       />
       <Button disabled={isSubmitting} size="sm" type="submit">
