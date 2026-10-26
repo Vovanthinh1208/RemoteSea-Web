@@ -38,6 +38,22 @@ export type JobListQueryParams = {
   limit: number;
 };
 
+// PATCH /jobs/:id (PB42 AC2) — status, categories and skills are not
+// editable through this route.
+export type UpdateJobRequestDto = {
+  title?: string;
+  description?: string;
+  requirements?: string;
+  jobType?: JobType;
+  level?: ExperienceLevel;
+  salaryMin?: number;
+  salaryMax?: number;
+  currency?: string;
+  timezone?: string;
+  country?: string;
+  benefits?: string[];
+};
+
 export type CreateJobRequestDto = {
   title: string;
   description: string;
@@ -184,4 +200,6 @@ export const jobSchema: ZodType<JobDto> = z.object({
   employer: jobEmployerSummarySchema,
   categories: z.array(z.object({ category: categorySchema })),
   skills: z.array(z.object({ skill: skillSchema, isRequired: z.boolean() })),
+  // PB48 RC1: present only on a member/ADMIN preview of a non-live listing.
+  isPreview: z.boolean().optional(),
 });

@@ -11,6 +11,8 @@ import { PublicTalentExperience } from "./public-profile/PublicTalentExperience"
 import { PublicTalentHighlights } from "./public-profile/PublicTalentHighlights";
 import { PublicTalentSidebar } from "./public-profile/PublicTalentSidebar";
 import { PublicTalentNotFound } from "./public-profile/PublicTalentNotFound";
+import { PublicTalentRestricted } from "./public-profile/PublicTalentRestricted";
+import { ApiError } from "@/core/errors/api-error";
 import { useTranslation } from "@/i18n/useTranslation";
 
 const MOCK_RECRUITER = { company: "Finch Labs" };
@@ -22,7 +24,12 @@ export const PublicTalentProfilePage = () => {
   const [searchParams] = useSearchParams();
   const isRecruiterPreview = searchParams.get("preview") === "recruiter";
   const { user } = useAuth();
-  const { data: profile, isLoading, isError } = usePublicTalentProfile(slug);
+  const {
+    data: profile,
+    isLoading,
+    isError,
+    error,
+  } = usePublicTalentProfile(slug);
 
   useDocumentTitle(
     profile?.user?.name
@@ -32,6 +39,10 @@ export const PublicTalentProfilePage = () => {
 
   if (isLoading) {
     return <ProfileSkeleton />;
+  }
+
+  if (error instanceof ApiError && error.code === "TALENT_PROFILE_RESTRICTED") {
+    return <PublicTalentRestricted />;
   }
 
   if (isError || !profile) {

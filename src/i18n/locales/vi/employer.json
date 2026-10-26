@@ -113,17 +113,28 @@
     "vnHires": "🇻🇳 Người Việt đã tuyển",
     "typicalResponse": "Thời gian phản hồi thường gặp",
     "verifiedSince": "Đã xác minh từ",
-    "yourCompany": "Đây là công ty của bạn · Chỉnh sửa"
+    "yourCompany": "Đây là công ty của bạn · Chỉnh sửa",
+    "linkedin": "LinkedIn",
+    "facebook": "Facebook",
+    "video": "Video giới thiệu",
+    "benefits": "Phúc lợi",
+    "logoAlt": "Logo {{name}}"
   },
   "verifyCompany": {
     "checkInbox": "Hãy kiểm tra hộp thư",
-    "sentTo": "Chúng tôi đã gửi liên kết xác nhận tới {{email}}. Hãy nhấp vào đó để xác minh công ty của bạn.",
+    "sentTo": "Chúng tôi đã gửi mã 6 số tới {{email}}. Hãy nhập mã bên dưới trong vòng 15 phút.",
     "title": "Xác minh công ty của bạn",
-    "expired": "Liên kết đã hết hạn. Hãy nhập email công ty để thử lại.",
+    "expired": "Mã đã hết hạn hoặc bị khóa do nhập sai quá nhiều lần. Hãy nhập email công ty để nhận mã mới.",
     "prompt": "Xác nhận bạn kiểm soát một email thuộc tên miền công ty để nhận huy hiệu Đã xác minh và bỏ qua bước duyệt tin thủ công.",
     "emailLabel": "Email công ty",
     "emailPlaceholder": "ban@congty.com",
-    "send": "Gửi email xác minh"
+    "send": "Gửi mã xác nhận",
+    "codeLabel": "Mã xác nhận",
+    "codePlaceholder": "Mã gồm 6 số",
+    "verify": "Xác minh công ty",
+    "resend": "Gửi lại mã",
+    "changeEmail": "Dùng email khác",
+    "resent": "Mã mới đang được gửi tới hộp thư."
   },
   "jobStatus": {
     "DRAFT": "Bản nháp",
@@ -206,7 +217,19 @@
     "exportAria": "Xuất ứng viên của {{title}} ra tệp CSV",
     "exportTitle": "Tải toàn bộ ứng viên của tin này dưới dạng tệp CSV",
     "exporting": "Đang xuất…",
-    "export": "Xuất danh sách"
+    "export": "Xuất danh sách",
+    "edit": "Sửa",
+    "editAria": "Sửa {{title}}",
+    "preview": "Xem trước",
+    "previewAria": "Xem trước {{title}}",
+    "close": "Đóng tin",
+    "closeAria": "Đóng tin {{title}}",
+    "closeTitle": "Đóng tin tuyển dụng này?",
+    "closeDescription": "\"{{title}}\" sẽ ngừng nhận đơn và bị ẩn khỏi trang tìm việc. Thao tác này không thể hoàn tác. Các đơn đã nhận vẫn được giữ nguyên.",
+    "closeConfirm": "Đóng tin",
+    "closeCancel": "Giữ tin",
+    "closeDone": "Đã đóng tin.",
+    "closeFailed": "Không đóng được tin."
   },
   "applicantsPanel": {
     "title": "Ứng viên gần đây",
@@ -414,7 +437,9 @@
       "FULL_TIME": "Toàn thời gian",
       "CONTRACT": "Hợp đồng",
       "PART_TIME": "Bán thời gian"
-    }
+    },
+    "maxSalary": "Mức lương mong muốn tối đa",
+    "maxSalaryPlaceholder": "VD: 3000 / tháng"
   },
   "country": {
     "vietnam": "Việt Nam",
@@ -438,5 +463,67 @@
     "errorTitle": "Liên kết đã hết hạn hoặc không hợp lệ",
     "errorDesc": "Hãy yêu cầu email xác minh mới từ bảng điều khiển nhà tuyển dụng.",
     "goDashboard": "Đến bảng điều khiển"
+  },
+  "jobEdit": {
+    "docTitle": "Sửa tin tuyển dụng",
+    "back": "Quay lại bảng điều khiển",
+    "title": "Sửa tin tuyển dụng",
+    "subtitle": "Có thể sửa tin nháp và tin bị từ chối. Ngành nghề và kỹ năng giữ nguyên như khi đăng.",
+    "notFoundTitle": "Không tìm thấy tin",
+    "notFoundDesc": "Tin này không tồn tại hoặc không thuộc công ty của bạn.",
+    "notEditableTitle": "Không thể sửa tin này",
+    "notEditableDesc": "Chỉ có thể sửa tin nháp hoặc tin bị từ chối. Tin đang chờ duyệt, đang hiển thị, đã đóng hoặc đã hết hạn sẽ bị khóa.",
+    "saveFailed": "Không lưu được thay đổi.",
+    "cancel": "Hủy",
+    "save": "Lưu thay đổi",
+    "field": {
+      "title": "Tiêu đề công việc",
+      "jobType": "Loại hình",
+      "level": "Cấp bậc",
+      "salaryMin": "Lương tối thiểu",
+      "salaryMax": "Lương tối đa",
+      "currency": "Đơn vị tiền tệ",
+      "timezone": "Múi giờ",
+      "country": "Quốc gia",
+      "description": "Mô tả công việc",
+      "requirements": "Yêu cầu",
+      "benefits": "Phúc lợi",
+      "benefitsHint": "Mỗi dòng một phúc lợi, tối đa 10."
+    }
+  },
+  "companySettings": {
+    "docTitle": "Cài đặt công ty",
+    "back": "Quay lại bảng điều khiển",
+    "title": "Cài đặt công ty",
+    "subtitle": "Nội dung ứng viên thấy trên trang công ty công khai. Chỉ chủ công ty (OWNER) mới lưu được thay đổi.",
+    "viewPublic": "Xem trang công khai",
+    "noCompanyTitle": "Chưa có công ty",
+    "noCompanyDesc": "Hãy tạo hồ sơ công ty trước — đó là bước đầu tiên khi đăng tin.",
+    "createCompany": "Tạo hồ sơ công ty",
+    "saveFailed": "Không lưu được cài đặt công ty.",
+    "saved": "Đã lưu cài đặt công ty.",
+    "save": "Lưu thay đổi",
+    "section": {
+      "images": "Logo & ảnh bìa",
+      "about": "Giới thiệu công ty",
+      "location": "Trụ sở",
+      "links": "Liên kết & video"
+    },
+    "field": {
+      "logo": "Logo (PNG/JPG/WebP, tối đa 5 MB)",
+      "cover": "Ảnh bìa (PNG/JPG/WebP, tối đa 5 MB)",
+      "name": "Tên công ty",
+      "website": "Website",
+      "description": "Giới thiệu công ty",
+      "benefits": "Phúc lợi nổi bật",
+      "benefitsHint": "Mỗi dòng một phúc lợi, tối đa 15.",
+      "country": "Quốc gia",
+      "city": "Thành phố",
+      "address": "Địa chỉ trụ sở",
+      "linkedin": "Trang LinkedIn",
+      "facebook": "Trang Facebook",
+      "video": "Video giới thiệu",
+      "videoHint": "Đường dẫn video YouTube hoặc Vimeo."
+    }
   }
 }

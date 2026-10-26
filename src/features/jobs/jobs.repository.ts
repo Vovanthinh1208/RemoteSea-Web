@@ -6,6 +6,7 @@ import type {
   JobDto,
   JobListQueryParams,
   JobListResponseDto,
+  UpdateJobRequestDto,
 } from "@/features/jobs/jobs.dto";
 
 export const jobsRepository = {
@@ -25,6 +26,14 @@ export const jobsRepository = {
       signal: opts?.signal,
     });
     return data;
+  },
+
+  update: async (id: string, payload: UpdateJobRequestDto): Promise<void> => {
+    await apiClient.patch(`/jobs/${id}`, payload);
+  },
+
+  close: async (id: string): Promise<void> => {
+    await apiClient.patch(`/jobs/${id}/close`);
   },
 
   create: async (

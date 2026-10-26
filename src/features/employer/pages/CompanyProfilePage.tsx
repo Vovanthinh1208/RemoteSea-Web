@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import {
   Building2,
   Calendar,
+  ExternalLink,
   Globe,
   MapPin,
   Settings,
@@ -115,73 +116,148 @@ export const CompanyProfilePage = () => {
     .filter(Boolean)
     .join(", ");
   const websiteHref = safeExternalUrl(profile.websiteUrl);
+  // PB31/PB33 company settings — each link only renders when it's a safe
+  // http(s) URL.
+  const socialLinks = [
+    {
+      href: safeExternalUrl(profile.linkedinUrl),
+      label: t("company.linkedin"),
+    },
+    {
+      href: safeExternalUrl(profile.facebookUrl),
+      label: t("company.facebook"),
+    },
+    { href: safeExternalUrl(profile.videoUrl), label: t("company.video") },
+  ].filter((l): l is { href: string; label: string } => !!l.href);
+  const coverHref = safeExternalUrl(profile.coverImageUrl);
+  const logoHref = safeExternalUrl(profile.logoUrl);
 
   return (
     <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-[1200px] px-6 py-10">
-        {/* Hero */}
-        <div className="mb-6 flex flex-col gap-6 rounded-24 border border-neutral-100 bg-white p-8 sm:flex-row sm:items-start">
-          <CompanyLogo name={profile.companyName} size={72} />
-          <div className="min-w-0 flex-1">
-            <div className="mb-2 flex flex-wrap items-center gap-2">
-              <h1 className="text-[28px] font-semibold tracking-tight text-neutral-900">
-                {profile.companyName}
-              </h1>
-              {profile.isVerified && <VerifiedInline iconSize={14} />}
-            </div>
-            {profile.description && (
-              <p className="mb-3 max-w-2xl text-[14px] leading-relaxed text-neutral-500">
-                {profile.description}
-              </p>
+        {/* Hero — PB33 AC2: cover image, logo, name, badge, intro, size,
+            location. */}
+        <div className="mb-6 overflow-hidden rounded-24 border border-neutral-100 bg-white">
+          {coverHref && (
+            <img
+              alt=""
+              className="h-36 w-full object-cover sm:h-52"
+              src={coverHref}
+            />
+          )}
+          <div className="flex flex-col gap-6 p-8 sm:flex-row sm:items-start">
+            {logoHref ? (
+              <img
+                alt={t("company.logoAlt", { name: profile.companyName })}
+                className="h-[72px] w-[72px] flex-shrink-0 rounded-16 border border-neutral-100 bg-white object-contain"
+                src={logoHref}
+              />
+            ) : (
+              <CompanyLogo name={profile.companyName} size={72} />
             )}
-            <div className="flex flex-wrap gap-x-5 gap-y-1.5">
-              {location && (
-                <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
+            <div className="min-w-0 flex-1">
+              <div className="mb-2 flex flex-wrap items-center gap-2">
+                <h1 className="text-[28px] font-semibold tracking-tight text-neutral-900">
+                  {profile.companyName}
+                </h1>
+                {profile.isVerified && <VerifiedInline iconSize={14} />}
+              </div>
+              {profile.description && (
+                <p className="mb-3 max-w-2xl text-[14px] leading-relaxed text-neutral-500">
+                  {profile.description}
+                </p>
+              )}
+              <div className="flex flex-wrap gap-x-5 gap-y-1.5">
+                {location && (
+                  <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
+                    <MapPin
+                      className="flex-shrink-0 text-neutral-400"
+                      size={12}
+                    />
+                    {location}
+                  </span>
+                )}
+                {profile.industry && (
+                  <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
+                    <Building2
+                      className="flex-shrink-0 text-neutral-400"
+                      size={12}
+                    />
+                    {profile.industry}
+                  </span>
+                )}
+                {profile.size && (
+                  <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
+                    <Users
+                      className="flex-shrink-0 text-neutral-400"
+                      size={12}
+                    />
+                    {t("company.employees", { size: profile.size })}
+                  </span>
+                )}
+                {profile.founded && (
+                  <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
+                    <Calendar
+                      className="flex-shrink-0 text-neutral-400"
+                      size={12}
+                    />
+                    {t("company.founded", { year: profile.founded })}
+                  </span>
+                )}
+                {websiteHref && (
+                  <a
+                    className="flex items-center gap-1.5 text-[13px] text-brand-600 transition-colors hover:text-brand-700"
+                    href={websiteHref}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <Globe className="flex-shrink-0" size={12} />
+                    {t("company.website")}
+                  </a>
+                )}
+                {socialLinks.map((link) => (
+                  <a
+                    className="flex items-center gap-1.5 text-[13px] text-brand-600 transition-colors hover:text-brand-700"
+                    href={link.href}
+                    key={link.label}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <ExternalLink className="flex-shrink-0" size={12} />
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+              {profile.hqAddress && (
+                <p className="mt-2 flex items-start gap-1.5 text-[13px] text-neutral-500 [overflow-wrap:anywhere]">
                   <MapPin
-                    className="flex-shrink-0 text-neutral-400"
+                    className="mt-0.5 flex-shrink-0 text-neutral-400"
                     size={12}
                   />
-                  {location}
-                </span>
-              )}
-              {profile.industry && (
-                <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
-                  <Building2
-                    className="flex-shrink-0 text-neutral-400"
-                    size={12}
-                  />
-                  {profile.industry}
-                </span>
-              )}
-              {profile.size && (
-                <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
-                  <Users className="flex-shrink-0 text-neutral-400" size={12} />
-                  {t("company.employees", { size: profile.size })}
-                </span>
-              )}
-              {profile.founded && (
-                <span className="flex items-center gap-1.5 text-[13px] text-neutral-500">
-                  <Calendar
-                    className="flex-shrink-0 text-neutral-400"
-                    size={12}
-                  />
-                  {t("company.founded", { year: profile.founded })}
-                </span>
-              )}
-              {websiteHref && (
-                <a
-                  className="flex items-center gap-1.5 text-[13px] text-brand-600 transition-colors hover:text-brand-700"
-                  href={websiteHref}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <Globe className="flex-shrink-0" size={12} />
-                  {t("company.website")}
-                </a>
+                  {profile.hqAddress}
+                </p>
               )}
             </div>
           </div>
         </div>
+
+        {profile.benefits.length > 0 && (
+          <section className="mb-6 rounded-20 border border-neutral-100 bg-white p-5">
+            <h2 className="mb-3 text-[15px] font-semibold text-neutral-900">
+              {t("company.benefits")}
+            </h2>
+            <ul className="flex flex-wrap gap-2">
+              {profile.benefits.map((b) => (
+                <li
+                  className="text-brand-800 rounded-full bg-brand-50 px-3 py-1 text-[12.5px]"
+                  key={b}
+                >
+                  {b}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
           <div className="space-y-4">
@@ -268,7 +344,7 @@ export const CompanyProfilePage = () => {
               {isOwnProfile && (
                 <Link
                   className="flex items-center justify-center gap-1.5 rounded-12 border border-neutral-200 bg-white py-2.5 text-[12.5px] font-medium text-neutral-500 transition-colors hover:border-neutral-300 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
-                  to={ROUTES.employerDashboard}
+                  to={ROUTES.companySettings}
                 >
                   <Settings size={12} /> {t("company.yourCompany")}
                 </Link>

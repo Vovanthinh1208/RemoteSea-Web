@@ -12,6 +12,7 @@ import {
   type CreateJobRequestDto,
   type CreateJobResponseDto,
   type JobListQueryParams,
+  type UpdateJobRequestDto,
 } from "@/features/jobs/jobs.dto";
 import {
   JOBTYPE_TO_ENUMS,
@@ -76,6 +77,17 @@ export const getJob = async (
   const dto = await jobsRepository.getById(id, opts);
   return toJob(parseOrThrow(jobSchema, dto, "GET /jobs/:id"));
 };
+
+export const updateJob = async ({
+  id,
+  payload,
+}: {
+  id: string;
+  payload: UpdateJobRequestDto;
+}): Promise<void> => jobsRepository.update(id, payload);
+
+export const closeJob = async (id: string): Promise<void> =>
+  jobsRepository.close(id);
 
 export const createJob = async (
   payload: CreateJobRequestDto

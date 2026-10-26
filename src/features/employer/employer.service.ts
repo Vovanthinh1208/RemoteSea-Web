@@ -101,6 +101,10 @@ export const submitEmployerVerification = async (
 ): Promise<{ message: string }> =>
   employerRepository.submitVerification({ email });
 
+export const verifyEmployerCode = async (
+  code: string
+): Promise<{ message: string }> => employerRepository.verifyCode({ code });
+
 export const confirmEmployerVerification = async (
   token: string
 ): Promise<{ message: string }> =>

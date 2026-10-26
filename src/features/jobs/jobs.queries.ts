@@ -5,7 +5,13 @@ import {
   useQueryClient,
   type QueryClient,
 } from "@tanstack/react-query";
-import { createJob, getJob, listJobs } from "@/features/jobs/jobs.service";
+import {
+  closeJob,
+  createJob,
+  getJob,
+  listJobs,
+  updateJob,
+} from "@/features/jobs/jobs.service";
 import { JOB_LIMIT, type JobFilters } from "@/features/jobs/job-filters";
 import { jobKeys, employerKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
@@ -67,5 +73,30 @@ export const useCreateJob = () => {
       });
       queryClient.invalidateQueries({ queryKey: jobKeys.all });
     },
+  });
+};
+
+// PB42/PB45: both change what the employer dashboard, the public board and
+// the job's own detail page show, so all three caches are refreshed.
+const invalidateAfterJobChange = (queryClient: QueryClient, id: string) => {
+  queryClient.invalidateQueries({ queryKey: employerKeys.jobs() });
+  queryClient.invalidateQueries({ queryKey: employerKeys.dashboard() });
+  queryClient.invalidateQueries({ queryKey: jobKeys.detail(id) });
+  queryClient.invalidateQueries({ queryKey: jobKeys.all });
+};
+
+export const useUpdateJob = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateJob,
+    onSuccess: (_data, { id }) => invalidateAfterJobChange(queryClient, id),
+  });
+};
+
+export const useCloseJob = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: closeJob,
+    onSuccess: (_data, id) => invalidateAfterJobChange(queryClient, id),
   });
 };

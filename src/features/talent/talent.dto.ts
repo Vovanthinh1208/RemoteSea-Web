@@ -18,6 +18,16 @@ export type ConfirmVerificationResponseDto = { message: string };
 export type ProfileViewAnalyticsDto = {
   totalViews: number;
   uniqueViewers: number;
+  // PB27 AC2: per-period totals (UTC days) and the 30-day series (PB26 chart).
+  viewsToday: number;
+  viewsThisWeek: number;
+  viewsThisMonth: number;
+  daily: { date: string; views: number }[];
+  // PB27 AC3: who viewed — null company = an employer not linked to one.
+  recentViewers: {
+    company: { name: string; slug: string; logoUrl: string | null } | null;
+    viewedAt: string;
+  }[];
 };
 
 // GET /talent/me/dashboard — combines the profile/applications/saved-ids/

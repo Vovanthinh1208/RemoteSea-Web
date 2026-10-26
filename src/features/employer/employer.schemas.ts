@@ -10,3 +10,12 @@ export const submitVerificationSchema = z.object({
 export type SubmitVerificationFormValues = z.infer<
   typeof submitVerificationSchema
 >;
+
+// PB32 AC4: the 6-digit code from the company inbox.
+export const verifyCodeSchema = z.object({
+  code: z
+    .string()
+    .trim()
+    .regex(/^\d{6}$/, m("validation.verificationCodeFormat")),
+});
+export type VerifyCodeFormValues = z.infer<typeof verifyCodeSchema>;

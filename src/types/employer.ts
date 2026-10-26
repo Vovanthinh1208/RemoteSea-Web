@@ -28,6 +28,13 @@ export type EmployerProfile = {
   founded: number | null;
   hqCountry: string | null;
   hqCity: string | null;
+  // PB31 company settings, shown on the public company page (PB33).
+  hqAddress: string | null;
+  benefits: string[];
+  linkedinUrl: string | null;
+  facebookUrl: string | null;
+  videoUrl: string | null;
+  coverImageUrl: string | null;
   isVerified: boolean;
   // Self-service domain/email verification — a second, independent path to
   // isVerified alongside the admin verify/suspend toggle. isVerified stays
@@ -55,6 +62,13 @@ export type PublicCompanyProfile = {
   founded: number | null;
   hqCountry: string | null;
   hqCity: string | null;
+  // PB31 company settings, shown on the public company page (PB33).
+  hqAddress: string | null;
+  benefits: string[];
+  linkedinUrl: string | null;
+  facebookUrl: string | null;
+  videoUrl: string | null;
+  coverImageUrl: string | null;
   isVerified: boolean;
   verifiedAt: string | null;
   createdAt: string;
@@ -83,6 +97,13 @@ export type UpdateEmployerProfilePayload =
   Partial<CreateEmployerProfilePayload> & {
     founded?: number;
     logoUrl?: string;
+    // null clears the field (PB31).
+    hqAddress?: string | null;
+    benefits?: string[];
+    linkedinUrl?: string | null;
+    facebookUrl?: string | null;
+    videoUrl?: string | null;
+    coverImageUrl?: string | null;
   };
 
 export type EmployerJobListItem = {

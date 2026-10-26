@@ -1,6 +1,8 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight, Download, Plus } from "lucide-react";
+import { ChevronRight, Download, Eye, Lock, Pencil, Plus } from "lucide-react";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { useCloseJob } from "@/features/jobs/jobs.queries";
 import { EmptyRow } from "@/components/shared/EmptyRow";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import {
@@ -48,7 +50,19 @@ const ListingRow = memo(function ListingRow({
   const isPubliclyViewable = j.status === "ACTIVE";
 
   const exportCsvMutation = useExportJobApplicantsCsv();
+  const closeJobMutation = useCloseJob();
+  const [confirmClose, setConfirmClose] = useState(false);
   const runWithToast = useToastMutation();
+  // PB42: drafts and listings sent back for changes are editable.
+  const isEditable = j.status === "DRAFT" || j.status === "REJECTED";
+
+  const handleClose = async (): Promise<void> => {
+    setConfirmClose(false);
+    await runWithToast(() => closeJobMutation.mutateAsync(j.id), {
+      success: t("listings.closeDone"),
+      error: t("listings.closeFailed"),
+    });
+  };
   const handleExport = async (e: React.MouseEvent): Promise<void> => {
     // The row itself is a Link (or, for a non-live job, a div with no
     // navigation at all) — this button lives inside it purely for layout,
@@ -170,6 +184,58 @@ const ListingRow = memo(function ListingRow({
     </button>
   );
 
+  const actionClass =
+    "inline-flex h-8 flex-shrink-0 items-center gap-1 whitespace-nowrap rounded-8 border border-neutral-200 px-2.5 text-[11px] font-medium text-neutral-500 transition-colors hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50";
+
+  // PB42 edit, PB48 member preview of a listing that isn't live, PB45 close
+  // (one-way, so it goes through a confirmation dialog first).
+  const manageActions = (
+    <>
+      {isEditable && (
+        <Link
+          aria-label={t("listings.editAria", { title: j.title })}
+          className={actionClass}
+          to={ROUTES.editJob(j.id)}
+        >
+          <Pencil size={12} />
+          {t("listings.edit")}
+        </Link>
+      )}
+      {!isPubliclyViewable && (
+        <Link
+          aria-label={t("listings.previewAria", { title: j.title })}
+          className={actionClass}
+          to={ROUTES.jobDetail(j.id)}
+        >
+          <Eye size={12} />
+          {t("listings.preview")}
+        </Link>
+      )}
+      {isPubliclyViewable && (
+        <button
+          aria-label={t("listings.closeAria", { title: j.title })}
+          className={actionClass}
+          disabled={closeJobMutation.isPending}
+          type="button"
+          onClick={() => setConfirmClose(true)}
+        >
+          <Lock size={12} />
+          {t("listings.close")}
+        </button>
+      )}
+      <ConfirmDialog
+        destructive
+        cancelLabel={t("listings.closeCancel")}
+        confirmLabel={t("listings.closeConfirm")}
+        description={t("listings.closeDescription", { title: j.title })}
+        open={confirmClose}
+        title={t("listings.closeTitle")}
+        onCancel={() => setConfirmClose(false)}
+        onConfirm={handleClose}
+      />
+    </>
+  );
+
   // flex-wrap (not nowrap) — at the mobile grid's tightest column widths,
   // an inline "Export applicants" button doesn't fit without crushing the
   // title column's truncate down to near-nothing; wrapping it onto its own
@@ -185,6 +251,7 @@ const ListingRow = memo(function ListingRow({
           {rowContent}
         </Link>
         {exportButton}
+        {manageActions}
       </div>
     );
   }
@@ -198,6 +265,7 @@ const ListingRow = memo(function ListingRow({
         {rowContent}
       </div>
       {exportButton}
+      {manageActions}
     </div>
   );
 });

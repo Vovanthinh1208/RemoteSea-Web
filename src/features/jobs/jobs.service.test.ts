@@ -157,3 +157,45 @@ describe("getJob", () => {
     });
   });
 });
+
+// PB48 RC1: the preview flag must survive response validation, or the
+// detail page shows a draft as if it were a live listing.
+describe("getJob preview flag", () => {
+  it("keeps isPreview from GET /jobs/:id", async () => {
+    repository.jobsRepository.getById.mockResolvedValueOnce({
+      id: "job-2",
+      title: "Draft Engineer",
+      slug: "draft-engineer",
+      description: "Build things",
+      requirements: null,
+      jobType: "FULL_TIME",
+      level: "MID",
+      salaryMin: 1000,
+      salaryMax: 2000,
+      currency: "USD",
+      isRemote: true,
+      timezone: null,
+      country: null,
+      status: "DRAFT",
+      planType: "STANDARD",
+      benefits: [],
+      vnHireCount: 0,
+      isFeatured: false,
+      viewCount: 0,
+      applyCount: 0,
+      publishedAt: null,
+      expiresAt: null,
+      createdAt: "2026-01-01T00:00:00.000Z",
+      employer: {
+        companyName: "Acme",
+        logoUrl: null,
+        slug: "acme",
+        isVerified: true,
+      },
+      categories: [],
+      skills: [],
+      isPreview: true,
+    });
+    await expect(getJob("job-2")).resolves.toMatchObject({ isPreview: true });
+  });
+});

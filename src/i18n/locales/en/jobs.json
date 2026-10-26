@@ -80,7 +80,9 @@
     "marketRange": "Market range",
     "percentile": "This offer sits at the {{percentile}}th percentile for {{role}}s based on {{count}} VN data points.",
     "vnSignalTitle": "{{count}} Vietnamese already work at {{company}}",
-    "vnSignalDesc": "You can connect with them through your application — they're often happy to refer or share what the team's actually like."
+    "vnSignalDesc": "You can connect with them through your application — they're often happy to refer or share what the team's actually like.",
+    "previewTitle": "Preview —",
+    "previewBody": "this listing is {{status}} and isn't visible to candidates. Only your company and RemoteSEA admins can see it."
   },
   "applyModal": {
     "title": "Apply for {{title}}",

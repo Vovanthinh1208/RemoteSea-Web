@@ -52,6 +52,12 @@
       "ofSubmitted": "trên số đã gửi",
       "views": "Lượt xem hồ sơ",
       "unique": "{{count}} người xem"
+    },
+    "recentSaved": {
+      "title": "Việc làm đã lưu gần đây",
+      "seeAll": "Tất cả việc đã lưu",
+      "failed": "Không tải được việc đã lưu.",
+      "empty": "Việc làm bạn lưu sẽ hiển thị ở đây."
     }
   },
   "profile": {
@@ -625,7 +631,12 @@
       "idVerified": "Đã xác minh danh tính",
       "idNotUploaded": "Chưa tải lên",
       "yourProfile": "Đây là hồ sơ của bạn · Chỉnh sửa"
-    }
+    },
+    "restrictedTitle": "Chỉ hiển thị với nhà tuyển dụng đã xác minh",
+    "restrictedDesc": "Ứng viên này chỉ chia sẻ hồ sơ với các công ty đã xác minh. Hãy đăng nhập bằng tài khoản Nhà tuyển dụng đã xác minh để xem.",
+    "restrictedDescEmployer": "Ứng viên này chỉ chia sẻ hồ sơ với các công ty đã xác minh. Hãy xác minh công ty của bạn để xem.",
+    "restrictedLogin": "Đăng nhập tài khoản Nhà tuyển dụng đã xác minh",
+    "restrictedVerify": "Xác minh công ty"
   },
   "availability": {
     "now": "Có thể bắt đầu ngay",
@@ -638,5 +649,28 @@
     "profileSetup": "Thiết lập hồ sơ",
     "loadError": "Không thể tải hồ sơ",
     "loadErrorDesc": "Đã xảy ra lỗi khi tải hồ sơ của bạn."
+  },
+  "views": {
+    "docTitle": "Lượt xem hồ sơ",
+    "back": "Quay lại bảng điều khiển",
+    "title": "Ai đã xem hồ sơ của bạn",
+    "subtitle": "Lượt xem từ nhà tuyển dụng. Mỗi nhà tuyển dụng chỉ được tính một lần mỗi ngày.",
+    "loadFailed": "Không tải được thống kê lượt xem.",
+    "retry": "Thử lại",
+    "today": "Hôm nay",
+    "week": "7 ngày qua",
+    "month": "30 ngày qua",
+    "total": "Tất cả",
+    "unique": "{{count}} nhà tuyển dụng",
+    "chartTitle": "Lượt xem hồ sơ 30 ngày qua",
+    "chartCaption": "Lượt xem hồ sơ theo ngày trong 30 ngày qua",
+    "chartTooltip": "{{date}}: {{count}} lượt xem",
+    "colDate": "Ngày",
+    "colViews": "Lượt xem",
+    "viewersTitle": "Các công ty đã xem hồ sơ",
+    "viewersHint": "Mới nhất trước.",
+    "empty": "Chưa có nhà tuyển dụng nào xem hồ sơ của bạn.",
+    "unknownCompany": "Một nhà tuyển dụng",
+    "seeAll": "Xem chi tiết"
   }
 }

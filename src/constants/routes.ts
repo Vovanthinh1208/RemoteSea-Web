@@ -33,6 +33,9 @@ export const ROUTES = {
   teamInvite: (token: string) => `/team/invitations/${token}`,
   profile: "/profile",
   postJob: "/post-job",
+  editJob: (id: string) => `/employer/jobs/${id}/edit`,
+  companySettings: "/employer/company/settings",
+  talentProfileViews: "/talent/profile/views",
   postJobSuccess: "/post-job/success",
   admin: "/admin",
 } as const;

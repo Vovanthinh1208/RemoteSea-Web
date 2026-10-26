@@ -21,7 +21,7 @@ export const workExperienceFormSchema = z
   })
   .refine(
     (data) =>
-      data.isCurrent || !data.endMonth || data.endMonth >= data.startMonth,
+      data.isCurrent || !data.endMonth || data.endMonth > data.startMonth,
     {
       error: v("validation.endDateOrder"),
       path: ["endMonth"],

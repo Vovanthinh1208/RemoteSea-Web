@@ -206,8 +206,18 @@ export const MIN_JOB_DESCRIPTION_LENGTH = 100;
 // immediately — the wizard used to only validate at final publish, so a user
 // could click through every step with blank required fields and get no error
 // until the server call at the very end.
+// PB30 AC2: website, headcount, HQ country and a short description are
+// required alongside the name — the API rejects the profile without them.
 const stepCompanySchema = z.object({
   coName: z.string().trim().min(1, m("validation.coNameRequired")),
+  coWeb: z
+    .string()
+    .trim()
+    .min(1, m("validation.coWebRequired"))
+    .regex(/^https?:\/\/\S+\.\S+$/i, m("validation.coWebInvalid")),
+  coSize: z.string().trim().min(1, m("validation.coSizeRequired")),
+  coHq: z.string().trim().min(1, m("validation.coHqRequired")),
+  coAbout: z.string().trim().min(1, m("validation.coAboutRequired")),
   recName: z.string().trim().min(1, m("validation.recNameRequired")),
   recEmail: z
     .string()

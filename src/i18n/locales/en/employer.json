@@ -113,17 +113,28 @@
     "vnHires": "🇻🇳 VN hires",
     "typicalResponse": "Typical response",
     "verifiedSince": "Verified since",
-    "yourCompany": "This is your company · Edit"
+    "yourCompany": "This is your company · Edit",
+    "linkedin": "LinkedIn",
+    "facebook": "Facebook",
+    "video": "Intro video",
+    "benefits": "Benefits",
+    "logoAlt": "{{name}} logo"
   },
   "verifyCompany": {
     "checkInbox": "Check your inbox",
-    "sentTo": "We sent a confirmation link to {{email}}. Click it to verify your company.",
+    "sentTo": "We emailed a 6-digit code to {{email}}. Enter it below within 15 minutes.",
     "title": "Verify your company",
-    "expired": "That link expired. Enter your company email to try again.",
+    "expired": "That code expired or was used up. Enter your company email to get a new one.",
     "prompt": "Confirm you control an email at your company domain to earn a Verified badge and skip manual job review.",
     "emailLabel": "Company email",
     "emailPlaceholder": "jane@yourcompany.com",
-    "send": "Send verification email"
+    "send": "Send verification code",
+    "codeLabel": "Verification code",
+    "codePlaceholder": "6-digit code",
+    "verify": "Verify company",
+    "resend": "Resend code",
+    "changeEmail": "Use a different email",
+    "resent": "A new code is on its way."
   },
   "jobStatus": {
     "DRAFT": "Draft",
@@ -206,7 +217,19 @@
     "exportAria": "Export {{title}} applicants as a CSV file",
     "exportTitle": "Download every applicant for this listing as a CSV file",
     "exporting": "Exporting…",
-    "export": "Export applicants"
+    "export": "Export applicants",
+    "edit": "Edit",
+    "editAria": "Edit {{title}}",
+    "preview": "Preview",
+    "previewAria": "Preview {{title}}",
+    "close": "Close listing",
+    "closeAria": "Close {{title}}",
+    "closeTitle": "Close this listing?",
+    "closeDescription": "\"{{title}}\" will stop taking applications and disappear from job search. This can't be undone. Applications you already received stay as they are.",
+    "closeConfirm": "Close listing",
+    "closeCancel": "Keep it open",
+    "closeDone": "Listing closed.",
+    "closeFailed": "Couldn't close the listing."
   },
   "applicantsPanel": {
     "title": "Recent applicants",
@@ -414,7 +437,9 @@
       "FULL_TIME": "Full-time",
       "CONTRACT": "Contract",
       "PART_TIME": "Part-time"
-    }
+    },
+    "maxSalary": "Max desired salary",
+    "maxSalaryPlaceholder": "e.g. 3000 / month"
   },
   "country": {
     "vietnam": "Vietnam",
@@ -438,5 +463,67 @@
     "errorTitle": "Link expired or invalid",
     "errorDesc": "Request a new verification email from your employer dashboard.",
     "goDashboard": "Go to dashboard"
+  },
+  "jobEdit": {
+    "docTitle": "Edit job listing",
+    "back": "Back to dashboard",
+    "title": "Edit job listing",
+    "subtitle": "Drafts and listings sent back for changes can be edited. Category and skills stay as posted.",
+    "notFoundTitle": "Listing not found",
+    "notFoundDesc": "This listing doesn't exist or isn't part of your company.",
+    "notEditableTitle": "This listing can't be edited",
+    "notEditableDesc": "Only drafts and rejected listings can be edited. Listings that are in review, live, closed or expired are locked.",
+    "saveFailed": "Couldn't save your changes.",
+    "cancel": "Cancel",
+    "save": "Save changes",
+    "field": {
+      "title": "Job title",
+      "jobType": "Employment type",
+      "level": "Seniority",
+      "salaryMin": "Minimum salary",
+      "salaryMax": "Maximum salary",
+      "currency": "Currency",
+      "timezone": "Timezone",
+      "country": "Country",
+      "description": "Job description",
+      "requirements": "Requirements",
+      "benefits": "Benefits",
+      "benefitsHint": "One per line, up to 10."
+    }
+  },
+  "companySettings": {
+    "docTitle": "Company settings",
+    "back": "Back to dashboard",
+    "title": "Company settings",
+    "subtitle": "What candidates see on your public company page. Only the company owner can save changes.",
+    "viewPublic": "View public page",
+    "noCompanyTitle": "No company yet",
+    "noCompanyDesc": "Create your company profile first — it's the first step of posting a job.",
+    "createCompany": "Create company profile",
+    "saveFailed": "Couldn't save company settings.",
+    "saved": "Company settings saved.",
+    "save": "Save changes",
+    "section": {
+      "images": "Logo & cover image",
+      "about": "About the company",
+      "location": "Headquarters",
+      "links": "Links & video"
+    },
+    "field": {
+      "logo": "Logo (PNG/JPG/WebP, max 5 MB)",
+      "cover": "Cover image (PNG/JPG/WebP, max 5 MB)",
+      "name": "Company name",
+      "website": "Website",
+      "description": "Company introduction",
+      "benefits": "Highlighted benefits",
+      "benefitsHint": "One per line, up to 15.",
+      "country": "Country",
+      "city": "City",
+      "address": "Office address",
+      "linkedin": "LinkedIn page",
+      "facebook": "Facebook page",
+      "video": "Intro video",
+      "videoHint": "A link to a YouTube or Vimeo video."
+    }
   }
 }

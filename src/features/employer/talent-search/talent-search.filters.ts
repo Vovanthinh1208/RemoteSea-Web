@@ -44,6 +44,8 @@ export type TalentSearchFilters = {
   employmentTypes: EmploymentType[];
   timezoneOverlap: TimezoneOverlap[];
   noticePeriod: NoticePeriod[];
+  // PB29 AC2: employer budget — candidates asking more are left out.
+  maxSalary: number | undefined;
   page: number;
   // Employer's own job to rank/badge the current page's results against —
   // client-side only (see match.util.ts), never sent to GET /talent.
@@ -58,6 +60,7 @@ export const DEFAULT_TALENT_SEARCH_FILTERS: TalentSearchFilters = {
   employmentTypes: [],
   timezoneOverlap: [],
   noticePeriod: [],
+  maxSalary: undefined,
   page: 1,
   forJob: undefined,
 };
@@ -74,6 +77,10 @@ export const parseTalentSearchQuery = (
   employmentTypes: toArray<EmploymentType>(params.getAll("type")),
   timezoneOverlap: toArray<TimezoneOverlap>(params.getAll("tz")),
   noticePeriod: toArray<NoticePeriod>(params.getAll("notice")),
+  maxSalary:
+    Number(params.get("maxSalary")) > 0
+      ? Math.floor(Number(params.get("maxSalary")))
+      : undefined,
   page: Math.max(1, Number(params.get("page")) || 1),
   forJob: params.get("forJob") ?? undefined,
 });
@@ -89,6 +96,7 @@ export const serializeTalentSearchQuery = (
   query.employmentTypes.forEach((v) => p.append("type", v));
   query.timezoneOverlap.forEach((v) => p.append("tz", v));
   query.noticePeriod.forEach((v) => p.append("notice", v));
+  if (query.maxSalary) p.set("maxSalary", String(query.maxSalary));
   if (query.page > 1) p.set("page", String(query.page));
   if (query.forJob) p.set("forJob", query.forJob);
   return p.toString();
@@ -102,4 +110,5 @@ export const countActiveTalentFilters = (
   filters.country.length +
   filters.employmentTypes.length +
   filters.timezoneOverlap.length +
-  filters.noticePeriod.length;
+  filters.noticePeriod.length +
+  (filters.maxSalary ? 1 : 0);

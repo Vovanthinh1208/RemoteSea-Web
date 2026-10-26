@@ -12,6 +12,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTalentDashboard } from "@/features/talent/talent.queries";
 import { CompletionRing } from "@/features/talent/components/talent-dashboard/CompletionRing";
 import { StatCard } from "@/components/ui/stat-card";
+import { ProfileViewsChart } from "@/features/talent/components/talent-dashboard/ProfileViewsChart";
+import { RecentlySavedPanel } from "@/features/talent/components/talent-dashboard/RecentlySavedPanel";
 import { ApplicationsTable } from "@/features/talent/components/talent-dashboard/ApplicationsTable";
 import { RecommendedJobs } from "@/features/talent/components/talent-dashboard/RecommendedJobs";
 import { ProfileSnapshot } from "@/features/talent/components/talent-dashboard/ProfileSnapshot";
@@ -229,6 +231,24 @@ export const TalentDashboard = () => {
         </div>
         <div>
           <ProfileSnapshot profile={profile} />
+          <RecentlySavedPanel />
+          {/* PB26 AC2–3: 30-day profile-view chart + shortcut to PB27. */}
+          {profileViewAnalytics && profileViewAnalytics.daily.length > 0 && (
+            <section className="mb-5 rounded-16 border border-neutral-100 bg-white p-4">
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <h3 className="text-[13.5px] font-semibold text-neutral-900">
+                  {t("views.chartTitle")}
+                </h3>
+                <Link
+                  className="text-[12px] font-medium text-brand-700 hover:underline"
+                  to={ROUTES.talentProfileViews}
+                >
+                  {t("views.seeAll")}
+                </Link>
+              </div>
+              <ProfileViewsChart daily={profileViewAnalytics.daily} />
+            </section>
+          )}
           <InvitationsPanel
             invitations={invitations}
             isError={isError}

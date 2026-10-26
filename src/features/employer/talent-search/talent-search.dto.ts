@@ -23,6 +23,7 @@ export type TalentSearchQueryParams = {
   employmentTypes?: EmploymentType[];
   timezoneOverlap?: TimezoneOverlap[];
   noticePeriod?: NoticePeriod[];
+  maxSalary?: number;
   page: number;
   limit: number;
 };

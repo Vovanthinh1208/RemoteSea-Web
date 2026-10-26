@@ -1,6 +1,6 @@
 import { apiClient } from "@/core/http/http-client";
 
-export type UploadType = "avatar" | "logo" | "resume";
+export type UploadType = "avatar" | "logo" | "cover" | "resume";
 
 type PresignResponse = {
   uploadUrl: string;
@@ -14,6 +14,7 @@ type PresignResponse = {
 const CONTENT_TYPES: Record<UploadType, readonly string[]> = {
   avatar: ["image/jpeg", "image/png", "image/webp"],
   logo: ["image/jpeg", "image/png", "image/webp"],
+  cover: ["image/jpeg", "image/png", "image/webp"],
   resume: ["application/pdf"],
 };
 
@@ -22,6 +23,7 @@ const BYTES_PER_MB = 1024 * 1024;
 export const MAX_FILE_SIZE_BYTES: Record<UploadType, number> = {
   avatar: 5 * BYTES_PER_MB,
   logo: 5 * BYTES_PER_MB,
+  cover: 5 * BYTES_PER_MB,
   resume: 10 * BYTES_PER_MB,
 };
 

@@ -112,6 +112,7 @@ export const TalentFilterSidebar = ({
               employmentTypes: [],
               timezoneOverlap: [],
               noticePeriod: [],
+              maxSalary: undefined,
             })
           }
         >
@@ -198,6 +199,29 @@ export const TalentFilterSidebar = ({
               onToggle={() => toggle("country", country)}
             />
           ))}
+        </FilterGroup>
+
+        <FilterGroup label={t("filter.maxSalary")}>
+          <label className="sr-only" htmlFor="talent-max-salary">
+            {t("filter.maxSalary")}
+          </label>
+          <input
+            className="h-9 w-full rounded-8 border border-neutral-200 px-2.5 text-[13px] focus-visible:shadow-focus focus-visible:outline-none"
+            id="talent-max-salary"
+            inputMode="numeric"
+            min={1}
+            placeholder={t("filter.maxSalaryPlaceholder")}
+            type="number"
+            value={filters.maxSalary ?? ""}
+            onChange={(e) => {
+              const n = Math.floor(Number(e.target.value));
+              onChange({
+                ...filters,
+                maxSalary: n > 0 ? n : undefined,
+                page: 1,
+              });
+            }}
+          />
         </FilterGroup>
       </div>
     </aside>

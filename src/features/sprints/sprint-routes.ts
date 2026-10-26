@@ -21,6 +21,10 @@ const ROUTE_SPRINTS: ReadonlyArray<readonly [pattern: string, RouteSprint]> = [
 
   // Sprint 2 — PB23–PB48: profile extras, talent search, employer, team, job posts
   ["/talent", 2],
+  ["/talent/profile/views", 2],
+  ["/talent/dashboard", 2],
+  ["/talents", 2],
+  ["/talents/:slug", 2],
   ["/talent/:slug", 2],
   ["/companies/:slug", 2],
   ["/employer/verify", 2],
@@ -30,6 +34,13 @@ const ROUTE_SPRINTS: ReadonlyArray<readonly [pattern: string, RouteSprint]> = [
   ["/employer-dashboard", 2],
   ["/employer-dashboard/talent", 2],
   ["/employer-dashboard/team", 2],
+  ["/employer/jobs/:id/edit", 2],
+  ["/employer/company/settings", 2],
+  ["/employer/dashboard", 2],
+  ["/employer/team", 2],
+  ["/employer/jobs/new", 2],
+  ["/employer/onboarding", 2],
+  ["/team/invitation", 2],
   ["/jobs", 2],
   ["/jobs/:id", 2],
 

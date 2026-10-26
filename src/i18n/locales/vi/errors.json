@@ -97,7 +97,10 @@
     "TEAM_INVITATION_ALREADY_PENDING": "Đã có lời mời đang chờ gửi tới email này.",
     "TEAM_INVITATION_EMAIL_MISMATCH": "Lời mời này được gửi tới một địa chỉ email khác.",
     "ACCOUNT_BANNED": "Tài khoản này đã bị đình chỉ.",
-    "CANNOT_MODIFY_OWN_ACCOUNT": "Bạn không thể thay đổi tài khoản của chính mình tại đây."
+    "CANNOT_MODIFY_OWN_ACCOUNT": "Bạn không thể thay đổi tài khoản của chính mình tại đây.",
+    "TALENT_PROFILE_RESTRICTED": "Hồ sơ này chỉ hiển thị với nhà tuyển dụng đã xác minh.",
+    "INVALID_VERIFICATION_CODE": "Mã xác nhận không đúng. Hãy kiểm tra email và thử lại.",
+    "TEAM_INVITATION_NOT_PENDING": "Chỉ có thể thu hồi lời mời đang chờ."
   },
   "network": "Lỗi mạng. Vui lòng kiểm tra kết nối.",
   "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",

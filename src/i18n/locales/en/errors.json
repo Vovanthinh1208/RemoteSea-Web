@@ -97,7 +97,10 @@
     "TEAM_INVITATION_ALREADY_PENDING": "An invitation to this email is already pending.",
     "TEAM_INVITATION_EMAIL_MISMATCH": "This invitation was sent to a different email address.",
     "ACCOUNT_BANNED": "This account has been suspended.",
-    "CANNOT_MODIFY_OWN_ACCOUNT": "You can't change your own account here."
+    "CANNOT_MODIFY_OWN_ACCOUNT": "You can't change your own account here.",
+    "TALENT_PROFILE_RESTRICTED": "This profile is visible to verified employers only.",
+    "INVALID_VERIFICATION_CODE": "That code isn't right. Check the email and try again.",
+    "TEAM_INVITATION_NOT_PENDING": "Only a pending invitation can be revoked."
   },
   "network": "Network error. Please check your connection.",
   "generic": "Something went wrong. Please try again.",

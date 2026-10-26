@@ -60,6 +60,9 @@ export type Job = {
   employer: JobEmployerSummary;
   categories: { category: Category }[];
   skills: { skill: Skill; isRequired: boolean }[];
+  // PB48 RC1: set when a company member/ADMIN opens a listing that isn't
+  // live yet (DRAFT, PENDING_REVIEW, …) — never on the public response.
+  isPreview?: boolean;
 };
 
 // GET /jobs (the paginated board) sends a deliberately narrower shape than the

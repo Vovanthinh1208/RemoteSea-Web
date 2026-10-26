@@ -30,7 +30,7 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => {
             onChange={(v) => set("coName", v)}
           />
         </Field>
-        <Field label={t("company.website")}>
+        <Field label={t("company.website")} required>
           <Input
             placeholder="https://acme.com"
             value={form.coWeb}
@@ -39,7 +39,7 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => {
         </Field>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label={t("company.size")}>
+        <Field label={t("company.size")} required>
           <Select
             options={COMPANY_SIZE_OPTIONS.map((o) => ({
               value: o,
@@ -49,7 +49,7 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => {
             onChange={(v) => set("coSize", v)}
           />
         </Field>
-        <Field label={t("company.hq")}>
+        <Field label={t("company.hq")} required>
           <Select
             options={HQ_OPTIONS.map((o) => ({
               value: o,
@@ -67,7 +67,11 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => {
           onChange={(v) => set("coTag", v)}
         />
       </Field>
-      <Field hint={t("company.overviewHint")} label={t("company.overview")}>
+      <Field
+        hint={t("company.overviewHint")}
+        label={t("company.overview")}
+        required
+      >
         <Textarea
           placeholder={t("company.overviewPlaceholder")}
           rows={4}

@@ -159,6 +159,17 @@ export const employerRepository = {
     return data;
   },
 
+  // PB32: the 6-digit code emailed by submitVerification.
+  verifyCode: async (payload: {
+    code: string;
+  }): Promise<ConfirmVerificationResponseDto> => {
+    const { data } = await apiClient.post<ConfirmVerificationResponseDto>(
+      "/employer/verification/verify-code",
+      payload
+    );
+    return data;
+  },
+
   confirmVerification: async (
     payload: ConfirmVerificationRequestDto
   ): Promise<ConfirmVerificationResponseDto> => {

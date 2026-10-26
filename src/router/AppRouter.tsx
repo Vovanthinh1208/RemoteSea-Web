@@ -1,5 +1,12 @@
 import { lazy } from "react";
-import { Route, Routes } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
+import { ROUTES } from "@/constants/routes";
 import { RootLayout } from "@/layouts/RootLayout";
 import { GuestOnlyRoute } from "@/router/GuestOnlyRoute";
 import { ProtectedRoute } from "@/router/ProtectedRoute";
@@ -106,6 +113,21 @@ const TalentSearchPage = lazy(() =>
     default: m.TalentSearchPage,
   }))
 );
+const EditJobPage = lazy(() =>
+  import("@/features/employer/pages/EditJobPage").then((m) => ({
+    default: m.EditJobPage,
+  }))
+);
+const CompanySettingsPage = lazy(() =>
+  import("@/features/employer/pages/CompanySettingsPage").then((m) => ({
+    default: m.CompanySettingsPage,
+  }))
+);
+const ProfileViewsPage = lazy(() =>
+  import("@/features/talent/pages/ProfileViewsPage").then((m) => ({
+    default: m.ProfileViewsPage,
+  }))
+);
 const TeamSettingsPage = lazy(() =>
   import("@/features/team/pages/TeamSettingsPage").then((m) => ({
     default: m.TeamSettingsPage,
@@ -195,6 +217,20 @@ const AdminPage = lazy(() =>
   }))
 );
 
+const TalentSlugRedirect = () => {
+  const { slug = "" } = useParams<{ slug: string }>();
+  return <Navigate replace to={ROUTES.talentProfile(slug)} />;
+};
+
+// PB36 documents /team/invitation?token=…; the app uses /team/invitations/:token.
+const TeamInvitationQueryRedirect = () => {
+  const [params] = useSearchParams();
+  const token = params.get("token");
+  return (
+    <Navigate replace to={token ? ROUTES.teamInvite(token) : ROUTES.home} />
+  );
+};
+
 export const AppRouter = () => {
   useAnalyticsPageview();
 
@@ -249,6 +285,7 @@ export const AppRouter = () => {
           <Route element={<ProfilePage />} path="profile" />
           <Route element={<ProfilePage />} path="talent/profile" />
           <Route element={<TalentDashboardPage />} path="talent" />
+          <Route element={<ProfileViewsPage />} path="talent/profile/views" />
           <Route element={<ApplicationDetailPage />} path="applications/:id" />
         </Route>
 
@@ -273,7 +310,44 @@ export const AppRouter = () => {
             element={<ApplicationWorkspacePage />}
             path="employer-dashboard/applications/:id"
           />
+          <Route element={<EditJobPage />} path="employer/jobs/:id/edit" />
+          <Route
+            element={<CompanySettingsPage />}
+            path="employer/company/settings"
+          />
         </Route>
+
+        {/* Paths as written in the Product Backlog (PB26/28/29/30/34/35/36/
+            41) → the app's actual routes, so a documented link still lands. */}
+        <Route
+          element={<Navigate replace to={ROUTES.talent} />}
+          path="talent/dashboard"
+        />
+        <Route
+          element={<Navigate replace to={ROUTES.talentSearch} />}
+          path="talents"
+        />
+        <Route element={<TalentSlugRedirect />} path="talents/:slug" />
+        <Route
+          element={<Navigate replace to={ROUTES.employerDashboard} />}
+          path="employer/dashboard"
+        />
+        <Route
+          element={<Navigate replace to={ROUTES.team} />}
+          path="employer/team"
+        />
+        <Route
+          element={<Navigate replace to={ROUTES.postJob} />}
+          path="employer/jobs/new"
+        />
+        <Route
+          element={<Navigate replace to={ROUTES.postJob} />}
+          path="employer/onboarding"
+        />
+        <Route
+          element={<TeamInvitationQueryRedirect />}
+          path="team/invitation"
+        />
 
         <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
           <Route element={<AdminPage />} path="admin" />

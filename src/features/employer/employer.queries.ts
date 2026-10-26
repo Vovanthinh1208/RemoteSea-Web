@@ -13,6 +13,8 @@ import {
   listRecentApplications,
   submitEmployerVerification,
   updateApplicationStatus,
+  updateEmployerProfile,
+  verifyEmployerCode,
 } from "@/features/employer/employer.service";
 import { downloadBlob } from "@/utils/download-blob";
 import { ApiError } from "@/core/errors/api-error";
@@ -65,6 +67,22 @@ export const useCreateEmployerProfile = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: employerKeys.profile(),
+      });
+    },
+  });
+};
+
+// PB31: company settings. The public company page reads its own cache key,
+// so it is refreshed too.
+export const useUpdateEmployerProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateEmployerProfile,
+    onSuccess: (profile) => {
+      queryClient.invalidateQueries({ queryKey: employerKeys.profile() });
+      queryClient.invalidateQueries({ queryKey: employerKeys.dashboard() });
+      queryClient.invalidateQueries({
+        queryKey: employerKeys.public(profile.slug),
       });
     },
   });
@@ -385,6 +403,19 @@ export const useSubmitEmployerVerification = () => {
       // from useEmployerDashboard's own aggregate snapshot now, hence the
       // second invalidation below (same reasoning as
       // useUpdateApplicationStatus's own comment).
+      queryClient.invalidateQueries({ queryKey: employerKeys.profile() });
+      queryClient.invalidateQueries({ queryKey: employerKeys.dashboard() });
+    },
+  });
+};
+
+export const useVerifyEmployerCode = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: verifyEmployerCode,
+    onSuccess: () => {
+      // VERIFIED replaces the banner with the badge — both read the profile
+      // and the dashboard snapshot.
       queryClient.invalidateQueries({ queryKey: employerKeys.profile() });
       queryClient.invalidateQueries({ queryKey: employerKeys.dashboard() });
     },

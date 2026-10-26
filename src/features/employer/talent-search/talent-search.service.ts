@@ -20,6 +20,7 @@ export const buildTalentSearchParams = (
     ? query.timezoneOverlap
     : undefined,
   noticePeriod: query.noticePeriod.length ? query.noticePeriod : undefined,
+  maxSalary: query.maxSalary,
   page: query.page,
   limit,
 });

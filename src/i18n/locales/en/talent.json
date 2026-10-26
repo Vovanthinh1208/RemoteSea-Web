@@ -52,6 +52,12 @@
       "ofSubmitted": "of submitted",
       "views": "Profile views",
       "unique": "{{count}} unique"
+    },
+    "recentSaved": {
+      "title": "Recently saved",
+      "seeAll": "All saved jobs",
+      "failed": "Couldn't load saved jobs.",
+      "empty": "Jobs you save will show up here."
     }
   },
   "profile": {
@@ -625,7 +631,12 @@
       "idVerified": "ID verified",
       "idNotUploaded": "Not yet uploaded",
       "yourProfile": "This is your profile · Edit"
-    }
+    },
+    "restrictedTitle": "Visible to verified employers only",
+    "restrictedDesc": "This candidate shares their profile only with verified companies. Sign in with a Verified Employer account to view it.",
+    "restrictedDescEmployer": "This candidate shares their profile only with verified companies. Verify your company to view it.",
+    "restrictedLogin": "Sign in as a Verified Employer",
+    "restrictedVerify": "Verify your company"
   },
   "availability": {
     "now": "Available now",
@@ -638,5 +649,28 @@
     "profileSetup": "Profile Setup",
     "loadError": "Couldn't load profile",
     "loadErrorDesc": "Something went wrong loading your profile."
+  },
+  "views": {
+    "docTitle": "Profile views",
+    "back": "Back to dashboard",
+    "title": "Who viewed your profile",
+    "subtitle": "Views from employers. One employer counts once per day.",
+    "loadFailed": "Couldn't load your profile views.",
+    "retry": "Try again",
+    "today": "Today",
+    "week": "Last 7 days",
+    "month": "Last 30 days",
+    "total": "All time",
+    "unique": "{{count}} unique employers",
+    "chartTitle": "Profile views, last 30 days",
+    "chartCaption": "Profile views per day over the last 30 days",
+    "chartTooltip": "{{date}}: {{count}} views",
+    "colDate": "Date",
+    "colViews": "Views",
+    "viewersTitle": "Companies that viewed your profile",
+    "viewersHint": "Most recent first.",
+    "empty": "No employer has viewed your profile yet.",
+    "unknownCompany": "An employer",
+    "seeAll": "See details"
   }
 }

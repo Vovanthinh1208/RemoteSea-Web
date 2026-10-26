@@ -22,6 +22,7 @@ import { formatSalaryRange } from "@/utils/format";
 import { useMyMatch } from "@/features/matching/useMyMatch";
 import { translate } from "@/i18n/runtime";
 import { useTranslation } from "@/i18n/useTranslation";
+import { STATUS_LABEL } from "@/features/employer/employer-dashboard.utils";
 
 const jobMetaDescription = (
   job: NonNullable<ReturnType<typeof useJobQuery>["data"]>
@@ -62,7 +63,8 @@ export const JobDetailPage = () => {
       : t("detail.fallbackTitle"),
     job ? jobMetaDescription(job) : undefined
   );
-  useJobPostingSchema(job);
+  // A preview isn't a public listing — keep it out of search engines.
+  useJobPostingSchema(job?.isPreview ? undefined : job);
 
   if (isLoading) {
     return (
@@ -109,6 +111,16 @@ export const JobDetailPage = () => {
         <ArrowLeft size={14} /> {t("detail.back")}
       </Link>
 
+      {job.isPreview && (
+        <div
+          className="mb-6 rounded-16 border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] text-amber-900"
+          role="status"
+        >
+          <strong className="font-semibold">{t("detail.previewTitle")}</strong>{" "}
+          {t("detail.previewBody", { status: STATUS_LABEL[job.status] })}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
         {/* Main content. min-w-0: a grid item won't shrink below its content's
             min-content width, so one long unbroken word/URL in the description
@@ -123,7 +135,7 @@ export const JobDetailPage = () => {
         {/* Sidebar */}
         <div className="space-y-4">
           <div className="sticky top-6 space-y-4">
-            <ApplyCard job={job} />
+            {!job.isPreview && <ApplyCard job={job} />}
             {match && <MatchCard match={match} />}
             <VnSignalCard
               companyName={job.employer.companyName}
