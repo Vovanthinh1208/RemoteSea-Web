@@ -37,7 +37,12 @@ export const ReviewCTA = ({ applicationId, revieweeName }: ReviewCTAProps) => {
   }
 
   if (!data.eligible || !data.direction) {
-    return null;
+    // PB70 AC3.2: say why, instead of silently hiding the form.
+    return data.reason ? (
+      <p className="rounded-16 border border-neutral-100 bg-neutral-50 px-4 py-3 text-[12.5px] text-neutral-500">
+        {t(`cta.reason.${data.reason}`)}
+      </p>
+    ) : null;
   }
 
   if (open) {

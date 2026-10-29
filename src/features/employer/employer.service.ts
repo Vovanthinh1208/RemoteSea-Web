@@ -11,6 +11,7 @@ import {
   toPublicCompanyProfile,
 } from "@/features/employer/employer.mapper";
 import type {
+  ApplicationDecisionDto,
   BulkUpdateApplicationsResponseDto,
   CreateEmployerProfileRequestDto,
   UpdateEmployerProfileRequestDto,
@@ -85,16 +86,25 @@ export const getEmployerDashboard = async (
 export const updateApplicationStatus = async (
   applicationId: string,
   status: ApplicationStatus,
-  notes?: string
+  decision?: ApplicationDecisionDto
 ): Promise<void> =>
-  employerRepository.updateApplicationStatus(applicationId, status, notes);
+  employerRepository.updateApplicationStatus(applicationId, status, decision);
 
 export const bulkUpdateApplicationStatus = async (
   ids: string[],
   status: ApplicationStatus,
-  notes?: string
+  decision?: Omit<ApplicationDecisionDto, "offer">
 ): Promise<BulkUpdateApplicationsResponseDto> =>
-  employerRepository.bulkUpdateApplicationStatus(ids, status, notes);
+  employerRepository.bulkUpdateApplicationStatus(ids, status, decision);
+
+export const searchJobApplications = async (
+  jobId: string,
+  params: { q?: string; status?: ApplicationStatus; limit?: number },
+  opts?: RequestOptions
+): Promise<EmployerJobApplicationsResponse> =>
+  toEmployerJobApplicationsResponse(
+    await employerRepository.searchJobApplications(jobId, params, opts)
+  );
 
 export const submitEmployerVerification = async (
   email: string

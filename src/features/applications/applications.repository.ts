@@ -1,3 +1,4 @@
+import type { OfferResponseBody } from "@/types/application";
 import { apiClient } from "@/core/http/http-client";
 import type { RequestOptions } from "@/core/http/request-config";
 import type {
@@ -74,13 +75,14 @@ export const applicationsRepository = {
     return data;
   },
 
+  // PB56 AC4: a decline always carries the talent's reason.
   respondToOffer: async (
     id: string,
-    response: "ACCEPTED" | "DECLINED"
+    body: OfferResponseBody
   ): Promise<ApplicationWithJobDto> => {
     const { data } = await apiClient.patch<ApplicationWithJobDto>(
       `/applications/${id}/offer-response`,
-      { response }
+      body
     );
     return data;
   },

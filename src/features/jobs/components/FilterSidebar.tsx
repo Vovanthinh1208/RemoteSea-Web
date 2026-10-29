@@ -186,19 +186,34 @@ export const FilterSidebar = ({
           ))}
         </FilterGroup>
 
+        {/* PB51 AC2–3: the full standard category list from GET /categories.
+            The count is the search facet when the API returns one for the
+            current query, otherwise the category's live job count. */}
         <FilterGroup label={t("filters.category")}>
-          {FILTER_OPTIONS.category.map((name) => {
-            const slug = slugForCategoryName(name);
-            return (
-              <CheckRow
-                checked={!!slug && filters.category.includes(slug)}
-                count={facets.category[name] ?? 0}
-                key={name}
-                label={filterValueLabel(name)}
-                onToggle={() => slug && toggle("category", slug)}
-              />
-            );
-          })}
+          {categories && categories.length > 0
+            ? categories.map((category) => (
+                <CheckRow
+                  checked={filters.category.includes(category.slug)}
+                  count={
+                    facets.category[category.name] ?? category.jobCount ?? 0
+                  }
+                  key={category.id}
+                  label={filterValueLabel(category.name)}
+                  onToggle={() => toggle("category", category.slug)}
+                />
+              ))
+            : FILTER_OPTIONS.category.map((name) => {
+                const slug = slugForCategoryName(name);
+                return (
+                  <CheckRow
+                    checked={!!slug && filters.category.includes(slug)}
+                    count={facets.category[name] ?? 0}
+                    key={name}
+                    label={filterValueLabel(name)}
+                    onToggle={() => slug && toggle("category", slug)}
+                  />
+                );
+              })}
         </FilterGroup>
       </div>
     </aside>

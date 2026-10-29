@@ -52,6 +52,8 @@ export interface MatchResult {
   // see exactly what to close before applying, and an employer see exactly
   // what an applicant lacks instead of only a "2/4 matched" fraction.
   missingSkills: SkillGap[];
+  // PB50 AC3: the job skills the talent already has.
+  matchedSkills: SkillGap[];
 }
 
 const WEIGHTS = {
@@ -88,7 +90,7 @@ const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
 
 const scoreSkills = (job: MatchableJob, talent: MatchableTalent) => {
   if (job.skills.length === 0)
-    return { fraction: 1, matched: 0, total: 0, missing: [] };
+    return { fraction: 1, matched: 0, total: 0, missing: [], have: [] };
 
   const talentSkillIds = new Set(talent.skills.map((s) => s.skill.id));
   const required = job.skills.filter((s) => s.isRequired);
@@ -120,7 +122,15 @@ const scoreSkills = (job: MatchableJob, talent: MatchableTalent) => {
       isRequired: s.isRequired,
     }));
 
-  return { fraction, matched, total: job.skills.length, missing };
+  const have: SkillGap[] = [...required, ...optional]
+    .filter((s) => talentSkillIds.has(s.skill.id))
+    .map((s) => ({
+      id: s.skill.id,
+      name: s.skill.name,
+      isRequired: s.isRequired,
+    }));
+
+  return { fraction, matched, total: job.skills.length, missing, have };
 };
 
 const scoreSeniority = (job: MatchableJob, talent: MatchableTalent) => {
@@ -274,5 +284,10 @@ export const computeMatchScore = (
     .slice(0, MAX_REASONS)
     .map((r) => r.reason);
 
-  return { score, reasons, missingSkills: skills.missing };
+  return {
+    score,
+    reasons,
+    missingSkills: skills.missing,
+    matchedSkills: skills.have,
+  };
 };

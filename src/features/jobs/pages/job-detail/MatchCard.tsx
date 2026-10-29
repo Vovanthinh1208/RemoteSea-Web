@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { Check, Sparkles } from "lucide-react";
+import { ROUTES } from "@/constants/routes";
 import type { MatchResult } from "@/features/matching/match.util";
 import { cn } from "@/utils/cn";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -54,6 +56,27 @@ export const MatchCard = ({ match }: MatchCardProps) => {
         </p>
       )}
 
+      {match.matchedSkills.length > 0 && (
+        <div className="mt-3 border-t border-neutral-100 pt-3">
+          <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wider text-neutral-400">
+            {t("matching.matchedSkills")}
+          </p>
+          <ul
+            aria-label={t("matching.matchedSkills")}
+            className="flex flex-wrap gap-1.5"
+          >
+            {match.matchedSkills.map((skill) => (
+              <li
+                className="rounded-full border border-brand-200 bg-brand-50 px-2 py-0.5 text-[11px] font-medium text-brand-700"
+                key={skill.id}
+              >
+                {skill.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {match.missingSkills.length > 0 && (
         <div className="mt-3 border-t border-neutral-100 pt-3">
           <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wider text-neutral-400">
@@ -81,6 +104,27 @@ export const MatchCard = ({ match }: MatchCardProps) => {
           </ul>
         </div>
       )}
+    </div>
+  );
+};
+
+// PB50 AC4: shown instead of a score while the talent has no skills.
+export const MatchSkillsPrompt = () => {
+  const { t } = useTranslation("jobs");
+  return (
+    <div className="rounded-16 border border-dashed border-brand-200 bg-brand-50/40 p-5">
+      <h4 className="mb-1 flex items-center gap-1.5 text-[13px] font-semibold text-neutral-900">
+        <Sparkles className="text-brand-600" size={14} />
+        {t("matching.yourMatch")}
+      </h4>
+      <p className="text-[12.5px] text-neutral-600">
+        <Link
+          className="font-medium text-brand-700 hover:underline"
+          to={ROUTES.profile}
+        >
+          {t("matching.addSkillsPrompt")}
+        </Link>
+      </p>
     </div>
   );
 };

@@ -26,6 +26,32 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 
+// PB64 AC2–4: three 1–5 criteria, strengths, improvements, recommendation.
+const fillScorecard = async (
+  user: ReturnType<typeof userEvent.setup>,
+  recommendation: string
+) => {
+  await user.click(
+    screen.getByRole("radio", { name: "Technical skills: 4/5" })
+  );
+  await user.click(screen.getByRole("radio", { name: "Communication: 3/5" }));
+  await user.click(screen.getByRole("radio", { name: "Culture fit: 5/5" }));
+  await user.type(screen.getByLabelText(/^strengths$/i), "System design");
+  await user.type(
+    screen.getByLabelText(/areas to improve/i),
+    "Testing strategy"
+  );
+  await user.click(screen.getByRole("button", { name: recommendation }));
+};
+
+const filledPayload = {
+  technicalRating: 4,
+  communicationRating: 3,
+  cultureFitRating: 5,
+  strengths: "System design",
+  improvements: "Testing strategy",
+};
+
 describe("ScorecardForm — submission", () => {
   it("shows a validation message and never submits when no recommendation is picked", async () => {
     const mutateAsync = vi.fn();
@@ -52,6 +78,31 @@ describe("ScorecardForm — submission", () => {
     expect(mutateAsync).not.toHaveBeenCalled();
   });
 
+  it("requires every criterion score and both written fields (PB64 AC2–3)", async () => {
+    const mutateAsync = vi.fn();
+    mockedUseCreateScorecard.mockReturnValue({
+      mutateAsync,
+      isPending: false,
+    } as never);
+    const user = userEvent.setup();
+
+    renderWithClient(
+      <ScorecardForm
+        applicationId="app-1"
+        talentName="Jane Doe"
+        onCancel={vi.fn()}
+        onSuccess={vi.fn()}
+      />
+    );
+
+    await user.click(screen.getByRole("button", { name: "Neutral" }));
+    await user.click(screen.getByRole("button", { name: /submit feedback/i }));
+
+    expect(await screen.findAllByText(/pick a rating/i)).toHaveLength(3);
+    expect(screen.getAllByText(/required/i).length).toBeGreaterThanOrEqual(2);
+    expect(mutateAsync).not.toHaveBeenCalled();
+  });
+
   it("submits the picked recommendation and note, then calls onSuccess", async () => {
     const mutateAsync = vi.fn().mockResolvedValue({ id: "scorecard-1" });
     mockedUseCreateScorecard.mockReturnValue({
@@ -70,12 +121,16 @@ describe("ScorecardForm — submission", () => {
       />
     );
 
-    await user.click(screen.getByRole("button", { name: "Strong yes" }));
-    await user.type(screen.getByLabelText(/note/i), "Sharp on system design.");
+    await fillScorecard(user, "Definite hire");
+    await user.type(
+      screen.getByLabelText(/additional note/i),
+      "Sharp on system design."
+    );
     await user.click(screen.getByRole("button", { name: /submit feedback/i }));
 
     expect(mutateAsync).toHaveBeenCalledWith({
-      recommendation: "STRONG_YES",
+      ...filledPayload,
+      recommendation: "STRONGLY_RECOMMEND",
       note: "Sharp on system design.",
     });
     expect(onSuccess).toHaveBeenCalledTimes(1);
@@ -98,11 +153,14 @@ describe("ScorecardForm — submission", () => {
       />
     );
 
-    await user.click(screen.getByRole("button", { name: "No" }));
+    await fillScorecard(user, "No hire");
     await user.click(screen.getByRole("button", { name: /submit feedback/i }));
 
     expect(mutateAsync).toHaveBeenCalledWith(
-      expect.objectContaining({ note: undefined })
+      expect.objectContaining({
+        recommendation: "NOT_RECOMMEND",
+        note: undefined,
+      })
     );
   });
 
@@ -149,7 +207,7 @@ describe("ScorecardForm — error state", () => {
       />
     );
 
-    await user.click(screen.getByRole("button", { name: "Yes" }));
+    await fillScorecard(user, "Hire");
     await user.click(screen.getByRole("button", { name: /submit feedback/i }));
 
     await vi.waitFor(() => expect(toastSpy).toHaveBeenCalled());
@@ -182,7 +240,7 @@ describe("ScorecardForm — error state", () => {
       />
     );
 
-    await user.click(screen.getByRole("button", { name: "Yes" }));
+    await fillScorecard(user, "Hire");
     await user.click(screen.getByRole("button", { name: /submit feedback/i }));
 
     await vi.waitFor(() => expect(toastSpy).toHaveBeenCalled());
@@ -211,7 +269,7 @@ describe("ScorecardForm — error state", () => {
       />
     );
 
-    await user.click(screen.getByRole("button", { name: "Yes" }));
+    await fillScorecard(user, "Hire");
     await user.click(screen.getByRole("button", { name: /submit feedback/i }));
 
     await vi.waitFor(() => expect(toastSpy).toHaveBeenCalled());

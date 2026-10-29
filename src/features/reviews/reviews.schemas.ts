@@ -16,13 +16,17 @@ export const reviewFormSchema = z.object({
   professionalismRating: ratingSchema.optional(),
   interviewProcessRating: ratingSchema.optional(),
   reliabilityRating: ratingSchema.optional(),
-  // No transform here on purpose — a transform changes zod's *output* type
-  // (comment becomes a required-but-possibly-undefined key) in a way
-  // zodResolver can't reconcile with react-hook-form's input type, and
-  // breaks handleSubmit's typing. The textarea always submits a string
-  // (never absent), so "" is converted to undefined at submit time instead
-  // — see ReviewForm's onSubmit.
-  comment: z.string().trim().max(2000, m("validation.max2000")).optional(),
+  // PB71 AC3: a title and a detailed comment of at least 20 characters.
+  title: z
+    .string({ error: v("validation.required") })
+    .trim()
+    .min(1, m("validation.required"))
+    .max(120, m("reviews.form.titleMax")),
+  comment: z
+    .string({ error: v("reviews.form.commentMin") })
+    .trim()
+    .min(20, m("reviews.form.commentMin"))
+    .max(2000, m("validation.max2000")),
 });
 
 export type ReviewFormValues = z.infer<typeof reviewFormSchema>;

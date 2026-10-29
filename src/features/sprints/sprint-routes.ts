@@ -51,6 +51,9 @@ const ROUTE_SPRINTS: ReadonlyArray<readonly [pattern: string, RouteSprint]> = [
   ["/applications/:id/interview", 3],
   ["/employer-dashboard/applications/:id", 3],
   ["/employer-dashboard/interviews", 3],
+  ["/employer/jobs/:id/applicants", 3],
+  ["/talent/saved-jobs", 3],
+  ["/talent/applications", 3],
   ["/notifications", 3],
 
   // Sprint 4 — PB75–PB96: alerts, salary insights, admin, AI assistant

@@ -41,12 +41,16 @@ function open() {
     </MemoryRouter>
   );
   fireEvent.click(screen.getByRole("button", { name: /apply now/i }));
+  // PB53 AC2: the contact phone is part of every application.
+  fireEvent.change(screen.getByLabelText(/contact phone/i), {
+    target: { value: "+84 912 345 678" },
+  });
 }
 describe("PB53 application submission feedback", () => {
   it("S3-PB53-UI01 uses profile CV, trims cover letter and displays success only after persistence", async () => {
     mocks.apply.mockResolvedValue({ id: "application-1" });
     open();
-    fireEvent.change(screen.getByRole("textbox"), {
+    fireEvent.change(screen.getByLabelText(/cover letter/i), {
       target: { value: "  Relevant experience  " },
     });
     fireEvent.click(screen.getByRole("button", { name: /send application/i }));
@@ -55,6 +59,7 @@ describe("PB53 application submission feedback", () => {
         jobId: "job-1",
         resumeUrl: "https://fixtures.invalid/resume.pdf",
         coverLetter: "Relevant experience",
+        contactPhone: "+84 912 345 678",
       })
     );
     await waitFor(() =>
@@ -85,9 +90,22 @@ describe("PB53 application submission feedback", () => {
     await waitFor(() =>
       expect(screen.getByText(/application sent/i)).toBeInTheDocument()
     );
+    // PB53 AC4.1: an error message "Bạn đã nộp đơn cho vị trí này".
     expect(mocks.toast).toHaveBeenCalledWith(
-      expect.objectContaining({ variant: "info" })
+      expect.objectContaining({
+        variant: "error",
+        title: "You've already applied for this position",
+      })
     );
+  });
+  it("S3R2-PB53-UI06 an invalid contact phone blocks submission with a message", async () => {
+    open();
+    fireEvent.change(screen.getByLabelText(/contact phone/i), {
+      target: { value: "12345" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /send application/i }));
+    expect(await screen.findByText(/valid phone number/i)).toBeInTheDocument();
+    expect(mocks.apply).not.toHaveBeenCalled();
   });
   it("S3-PB53-UI04 pending submission disables the submit control", () => {
     mocks.pending = true;

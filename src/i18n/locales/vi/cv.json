@@ -1,7 +1,7 @@
 {
   "rec": {
-    "ADVANCE": "Gợi ý: Tiếp tục",
-    "HOLD": "Gợi ý: Giữ lại",
+    "PROCEED": "Gợi ý: Tiếp tục",
+    "REVIEW": "Gợi ý: Xem xét thêm",
     "REJECT": "Gợi ý: Từ chối"
   },
   "copyQuestion": "Sao chép câu hỏi",

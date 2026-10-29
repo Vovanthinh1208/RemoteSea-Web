@@ -14,12 +14,12 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { translate } from "@/i18n/runtime";
 
 // Same "shade, not a new hue, carries the tier" rule as scoreTier below —
-// ADVANCE/HOLD stay in this card's existing brand/neutral palette, REJECT is
+// PROCEED/REVIEW stay in this card's existing brand/neutral palette, REJECT is
 // the one genuinely different signal worth a distinct (but still muted, not
 // alarming-red) color.
 const RECOMMENDATION_CLASS: Record<CvRecommendation, string> = {
-  ADVANCE: "bg-brand-50 text-brand-700",
-  HOLD: "bg-neutral-100 text-neutral-600",
+  PROCEED: "bg-brand-50 text-brand-700",
+  REVIEW: "bg-neutral-100 text-neutral-600",
   REJECT: "bg-amber-50 text-amber-700",
 };
 

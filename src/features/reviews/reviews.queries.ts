@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   createReview,
   getReviewEligibility,
@@ -7,7 +12,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { reviewKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
-import type { CreateReviewPayload } from "@/types/review";
+import type { CreateReviewPayload, ReviewListFilter } from "@/types/review";
 
 export const useReviewEligibility = (applicationId: string) => {
   const { user } = useAuth();
@@ -43,11 +48,17 @@ export const useCreateReview = () => {
 
 const REVIEWS_PER_PAGE = 20;
 
-export const useUserReviews = (userId: string | undefined, page = 1) => {
+export const useUserReviews = (
+  userId: string | undefined,
+  page = 1,
+  filter: ReviewListFilter = { sort: "newest" }
+) => {
   return useQuery({
-    queryKey: reviewKeys.forUser(userId ?? "", page),
+    queryKey: reviewKeys.forUser(userId ?? "", page, filter),
     queryFn: ({ signal }) =>
-      listUserReviews(userId!, page, REVIEWS_PER_PAGE, { signal }),
+      listUserReviews(userId!, page, REVIEWS_PER_PAGE, filter, { signal }),
     enabled: !!userId,
+    // Keep the previous list on screen while a new star filter loads.
+    placeholderData: keepPreviousData,
   });
 };

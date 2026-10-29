@@ -157,7 +157,35 @@
   },
   "applicants": {
     "emptyAll": "Chưa có ứng viên nào.",
-    "emptyFiltered": "Không có ứng viên {{filter}}."
+    "emptyFiltered": "Không có ứng viên {{filter}}.",
+    "title": "Danh sách ứng viên",
+    "docTitle": "Ứng viên — {{title}}",
+    "searchLabel": "Tìm ứng viên theo tên",
+    "searchPlaceholder": "Tìm theo tên ứng viên…",
+    "statusLabel": "Lọc theo trạng thái",
+    "allStatuses": "Tất cả trạng thái",
+    "errorTitle": "Không thể tải danh sách ứng viên",
+    "errorDesc": "Đã xảy ra lỗi khi tải ứng viên của tin này.",
+    "empty": "Chưa có ứng viên",
+    "emptyDesc": "Ứng viên nộp đơn vào tin này sẽ hiển thị ở đây.",
+    "noMatch": "Không tìm thấy ứng viên phù hợp",
+    "noMatchDesc": "Hãy thử tên khác hoặc bỏ bộ lọc trạng thái.",
+    "count_one": "{{count}} ứng viên",
+    "count_other": "{{count}} ứng viên",
+    "showingSome": "Hiển thị {{shown}}/{{total}} ứng viên mới nhất — dùng tìm kiếm hoặc bộ lọc để thu hẹp.",
+    "updating": "đang cập nhật…",
+    "aiScore": "Điểm phân tích CV (AI)",
+    "appliedOn": "Nộp {{date}}",
+    "openAria": "Mở hồ sơ ứng tuyển của {{name}}",
+    "col": {
+      "applied": "Đã ứng tuyển",
+      "reviewing": "Đang xem xét",
+      "shortlisted": "Rút gọn",
+      "interview": "Phỏng vấn",
+      "offered": "Đã gửi offer",
+      "hired": "Đã tuyển",
+      "rejected": "Từ chối / Đóng"
+    }
   },
   "sort": {
     "recent": "Mới nhất",
@@ -229,7 +257,9 @@
     "closeConfirm": "Đóng tin",
     "closeCancel": "Giữ tin",
     "closeDone": "Đã đóng tin.",
-    "closeFailed": "Không đóng được tin."
+    "closeFailed": "Không đóng được tin.",
+    "applicants": "Ứng viên",
+    "applicantsAria": "Xem ứng viên của {{title}}"
   },
   "applicantsPanel": {
     "title": "Ứng viên gần đây",
@@ -247,7 +277,9 @@
     "bulkPartialAdvanced": "Đã chuyển {{updated}}, {{failed}} không cập nhật được",
     "bulkPartialRejected": "Đã từ chối {{updated}}, {{failed}} không cập nhật được",
     "bulkFailReject": "Không thể từ chối các ứng viên",
-    "bulkFailAdvance": "Không thể chuyển các ứng viên"
+    "bulkFailAdvance": "Không thể chuyển các ứng viên",
+    "bulkSkipped_one": "Đã bỏ qua {{count}} đơn ở trạng thái kết thúc.",
+    "bulkSkipped_other": "Đã bỏ qua {{count}} đơn ở trạng thái kết thúc."
   },
   "bulk": {
     "selectAll": "Chọn tất cả ứng viên hợp lệ",
@@ -263,7 +295,8 @@
     "rejectQ_other": "Từ chối {{count}} ứng viên đã chọn?",
     "rejecting": "Đang từ chối…",
     "rejectSelected": "Từ chối các mục đã chọn",
-    "selectHint": "Chọn để cập nhật hàng loạt"
+    "selectHint": "Chọn để cập nhật hàng loạt",
+    "toolbar": "Thao tác hàng loạt"
   },
   "row": {
     "candidate": "Ứng viên",
@@ -379,7 +412,18 @@
     "extending": "Đang gửi…",
     "reject": "Từ chối",
     "rejectQ": "Từ chối đơn ứng tuyển của {{name}}?",
-    "rejecting": "Đang từ chối…"
+    "rejecting": "Đang từ chối…",
+    "offerForm": "Thông tin đề nghị làm việc",
+    "salary": "Mức lương",
+    "salaryPlaceholder": "Ví dụ: 2.500 USD/tháng",
+    "benefits": "Quyền lợi",
+    "benefitsPlaceholder": "Bảo hiểm, phụ cấp làm việc từ xa, ngày nghỉ…",
+    "startDate": "Ngày bắt đầu đề xuất",
+    "offerRequired": "Bắt buộc nhập.",
+    "startPast": "Ngày bắt đầu không được ở quá khứ.",
+    "sendOffer": "Gửi đề nghị",
+    "rejectReason": "Lý do phản hồi cho ứng viên",
+    "rejectReasonPlaceholder": "Lý do phản hồi cho ứng viên (không bắt buộc)…"
   },
   "notes": {
     "saved": "Đã lưu ghi chú.",
@@ -395,7 +439,11 @@
     "salary": "Mức lương mong muốn",
     "location": "Địa điểm",
     "timezone": "Múi giờ",
-    "resume": "Xem CV"
+    "resume": "Xem CV",
+    "phone": "Điện thoại",
+    "offerSent": "Đã gửi offer",
+    "declineReason": "Lý do ứng viên từ chối:",
+    "feedbackSent": "Phản hồi đã gửi ứng viên:"
   },
   "timeline": {
     "title": "Hoạt động"

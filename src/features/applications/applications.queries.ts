@@ -1,3 +1,4 @@
+import type { OfferResponseBody } from "@/types/application";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   applyToJob,
@@ -101,13 +102,8 @@ export const useWithdrawApplication = () => {
 export const useRespondToOffer = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      id,
-      response,
-    }: {
-      id: string;
-      response: "ACCEPTED" | "DECLINED";
-    }) => respondToOffer(id, response),
+    mutationFn: ({ id, body }: { id: string; body: OfferResponseBody }) =>
+      respondToOffer(id, body),
     onSuccess: (updated) => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.all });
       queryClient.setQueryData(applicationKeys.detail(updated.id), updated);

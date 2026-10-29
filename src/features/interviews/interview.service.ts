@@ -6,6 +6,7 @@ import {
   toUpcomingInterviewsResponse,
   type InterviewWithHeader,
 } from "@/features/interviews/interview.mapper";
+import type { ProposeInterviewRequestDto } from "@/features/interviews/interview.dto";
 import type { Interview, UpcomingInterviewsResponse } from "@/types/interview";
 import type { UserRole } from "@/types/user";
 
@@ -22,17 +23,9 @@ export const getInterview = async (
 
 export const proposeInterview = async (
   applicationId: string,
-  durationMinutes: number,
-  proposedSlots: string[],
-  meetingUrl: string | undefined
+  body: ProposeInterviewRequestDto
 ): Promise<Interview> =>
-  toInterview(
-    await interviewRepository.propose(applicationId, {
-      durationMinutes,
-      proposedSlots,
-      meetingUrl,
-    })
-  );
+  toInterview(await interviewRepository.propose(applicationId, body));
 
 export const confirmInterview = async (
   applicationId: string,
@@ -46,9 +39,10 @@ export const getUpcomingInterviews = async (
   toUpcomingInterviewsResponse(await interviewRepository.listUpcoming(opts));
 
 export const cancelInterview = async (
-  applicationId: string
+  applicationId: string,
+  reason: string
 ): Promise<Interview> =>
-  toInterview(await interviewRepository.cancel(applicationId));
+  toInterview(await interviewRepository.cancel(applicationId, { reason }));
 
 export const getInterviewIcs = (
   applicationId: string,

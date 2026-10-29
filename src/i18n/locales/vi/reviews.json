@@ -16,19 +16,41 @@
     "comment": "Nhận xét",
     "optional": "(không bắt buộc)",
     "commentPlaceholder": "Hãy chia sẻ trải nghiệm của bạn…",
-    "submit": "Gửi đánh giá"
+    "submit": "Gửi đánh giá",
+    "reviewTitle": "Tiêu đề",
+    "reviewTitlePlaceholder": "Tóm tắt trải nghiệm của bạn",
+    "titleMax": "Tối đa 120 ký tự.",
+    "commentHint": "(tối thiểu 20 ký tự)",
+    "commentMin": "Nhận xét chi tiết cần ít nhất 20 ký tự.",
+    "contentRejected": "Đánh giá chứa từ ngữ không phù hợp. Vui lòng chỉnh sửa lại."
   },
   "cta": {
     "reviewed": "Bạn đã đánh giá lần tương tác này.",
     "complete": "Buổi phỏng vấn của bạn với {{name}} đã hoàn tất.",
     "share": "Hãy chia sẻ trải nghiệm của bạn.",
-    "write": "Viết đánh giá"
+    "write": "Viết đánh giá",
+    "reason": {
+      "NO_INTERVIEW": "Bạn có thể viết đánh giá sau khi hai bên đã có một buổi phỏng vấn được xác nhận.",
+      "INTERVIEW_NOT_CONFIRMED": "Buổi phỏng vấn chưa được xác nhận nên chưa thể đánh giá.",
+      "INTERVIEW_NOT_YET_HELD": "Bạn có thể đánh giá sau khi buổi phỏng vấn diễn ra.",
+      "ALREADY_REVIEWED": "Bạn đã đánh giá lần tương tác này."
+    }
   },
   "section": {
     "member": "Thành viên RemoteSEA",
     "title": "Đánh giá",
     "error": "Không thể tải đánh giá.",
     "basedOn_one": "Dựa trên {{count}} đánh giá",
-    "basedOn_other": "Dựa trên {{count}} đánh giá"
+    "basedOn_other": "Dựa trên {{count}} đánh giá",
+    "distribution": "Phân bố điểm số",
+    "starRow": "{{star}} sao: {{count}} đánh giá",
+    "filterLabel": "Lọc theo số sao",
+    "allStars": "Tất cả số sao",
+    "stars_one": "{{count}} sao",
+    "stars_other": "{{count}} sao",
+    "sortLabel": "Sắp xếp",
+    "newest": "Mới nhất",
+    "oldest": "Cũ nhất",
+    "noneForFilter": "Không có đánh giá nào với bộ lọc này."
   }
 }

@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { CalendarClock, MessageCircle, X } from "lucide-react";
+import { CalendarClock, FileText, MessageCircle } from "lucide-react";
 import {
   useApplication,
   useRespondToOffer,
@@ -23,7 +23,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { cn } from "@/utils/cn";
-import { formatSalaryWithCurrency } from "@/utils/format";
+import { formatLocalDate, formatSalaryWithCurrency } from "@/utils/format";
+import { safeExternalUrl } from "@/utils/safe-url";
 import { ROUTES } from "@/constants/routes";
 import type { ApplicationStatus } from "@/types/application";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -97,11 +98,21 @@ export const ApplicationDetailPage = () => {
     });
   };
 
+  // PB56 AC3–4: accepting takes no reason; declining requires one.
   const handleOfferResponse = async (
-    response: "ACCEPTED" | "DECLINED"
+    response: "ACCEPTED" | "DECLINED",
+    reason?: string
   ): Promise<void> => {
+    if (response === "DECLINED" && !reason) return;
     await runWithToast(
-      () => offerResponseMutation.mutateAsync({ id: applicationId, response }),
+      () =>
+        offerResponseMutation.mutateAsync({
+          id: applicationId,
+          body:
+            response === "ACCEPTED"
+              ? { response }
+              : { response, reason: reason ?? "" },
+        }),
       {
         success:
           response === "ACCEPTED"
@@ -214,28 +225,59 @@ export const ApplicationDetailPage = () => {
                     <CalendarClock size={14} /> {t("appDetail.interview")}
                   </Link>
                 )}
-                {WITHDRAWABLE_STATUSES.includes(application.status) && (
-                  <ConfirmAction
-                    confirmLabel={t("appDetail.withdrawLabel")}
-                    isPending={withdrawMutation.isPending}
-                    message={t("appDetail.withdrawQ")}
-                    pendingLabel={t("appDetail.withdrawing")}
-                    onConfirm={handleWithdraw}
-                  >
-                    {({ onClick }) => (
-                      <button
-                        className="grid h-8 w-8 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:shadow-focus focus-visible:outline-none"
-                        title={t("appDetail.withdrawTitle")}
-                        type="button"
-                        onClick={onClick}
-                      >
-                        <X size={14} />
-                      </button>
-                    )}
-                  </ConfirmAction>
-                )}
               </div>
             </div>
+
+            {/* PB54 AC2: what was submitted — the job, the CV and the cover
+                letter (plus the contact phone from the apply form). */}
+            <dl className="grid gap-x-4 gap-y-2 border-b border-neutral-100 px-5 py-4 text-[12.5px] sm:grid-cols-[max-content_1fr]">
+              <dt className="text-neutral-500">{t("appDetail.job")}</dt>
+              <dd className="min-w-0">
+                <Link
+                  className="font-medium text-brand-600 hover:underline"
+                  to={ROUTES.jobDetail(application.jobId)}
+                >
+                  {application.job.title}
+                </Link>
+                <span className="text-neutral-500">
+                  {" "}
+                  · {application.job.employer.companyName}
+                </span>
+              </dd>
+              <dt className="text-neutral-500">{t("appDetail.appliedOn")}</dt>
+              <dd>{formatLocalDate(application.appliedAt)}</dd>
+              <dt className="text-neutral-500">{t("appDetail.cv")}</dt>
+              <dd>
+                {safeExternalUrl(application.resumeUrl) ? (
+                  <a
+                    className="inline-flex items-center gap-1 font-medium text-brand-600 hover:underline"
+                    href={safeExternalUrl(application.resumeUrl) ?? undefined}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    <FileText size={13} /> {t("appDetail.viewCv")}
+                  </a>
+                ) : (
+                  <span className="text-neutral-400">
+                    {t("appDetail.noCv")}
+                  </span>
+                )}
+              </dd>
+              {application.contactPhone && (
+                <>
+                  <dt className="text-neutral-500">{t("appDetail.phone")}</dt>
+                  <dd>{application.contactPhone}</dd>
+                </>
+              )}
+              <dt className="text-neutral-500">{t("appDetail.coverLetter")}</dt>
+              <dd className="whitespace-pre-line text-neutral-700">
+                {application.coverLetter || (
+                  <span className="text-neutral-400">
+                    {t("appDetail.noCoverLetter")}
+                  </span>
+                )}
+              </dd>
+            </dl>
 
             <div className="space-y-3 border-b border-neutral-100 p-5">
               {application.status === "INTERVIEW" ? (
@@ -261,8 +303,64 @@ export const ApplicationDetailPage = () => {
                   </p>
                 )
               )}
+              {/* PB58 BR2: the employer's feedback, when they shared one. */}
+              {application.status === "REJECTED" &&
+                application.rejectionReason && (
+                  <p className="rounded-10 border border-neutral-200 bg-neutral-50 p-3 text-[12.5px] text-neutral-700">
+                    <span className="font-medium">
+                      {t("appDetail.feedback")}
+                    </span>{" "}
+                    {application.rejectionReason}
+                  </p>
+                )}
+              {/* PB56 AC1–2: the offer details block. */}
+              {(application.status === "OFFERED" ||
+                application.status === "OFFER_ACCEPTED" ||
+                application.status === "OFFER_DECLINED") &&
+                application.offerSalary && (
+                  <section
+                    aria-label={t("appDetail.offerDetails")}
+                    className="rounded-12 border border-brand-100 bg-brand-50/60 p-4"
+                  >
+                    <h3 className="mb-2 text-[13px] font-semibold text-neutral-900">
+                      {t("appDetail.offerDetails")}
+                    </h3>
+                    <dl className="grid gap-x-4 gap-y-1.5 text-[12.5px] sm:grid-cols-[max-content_1fr]">
+                      <dt className="text-neutral-500">
+                        {t("appDetail.offerSalary")}
+                      </dt>
+                      <dd className="font-medium text-neutral-900">
+                        {application.offerSalary}
+                      </dd>
+                      <dt className="text-neutral-500">
+                        {t("appDetail.offerBenefits")}
+                      </dt>
+                      <dd className="whitespace-pre-line text-neutral-700">
+                        {application.offerBenefits}
+                      </dd>
+                      <dt className="text-neutral-500">
+                        {t("appDetail.offerStart")}
+                      </dt>
+                      <dd className="text-neutral-700">
+                        {application.offerStartDate &&
+                          formatLocalDate(application.offerStartDate, {
+                            timeZone: "UTC",
+                          })}
+                      </dd>
+                    </dl>
+                    {application.status === "OFFER_DECLINED" &&
+                      application.offerDeclineReason && (
+                        <p className="mt-2 text-[12.5px] text-neutral-600">
+                          <span className="font-medium">
+                            {t("appDetail.yourDeclineReason")}
+                          </span>{" "}
+                          {application.offerDeclineReason}
+                        </p>
+                      )}
+                  </section>
+                )}
               {application.status === "OFFERED" && (
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <ConfirmAction
                     confirmLabel={t("appDetail.accept")}
                     isPending={offerResponseMutation.isPending}
@@ -280,8 +378,13 @@ export const ApplicationDetailPage = () => {
                     confirmLabel={t("appDetail.decline")}
                     isPending={offerResponseMutation.isPending}
                     message={t("appDetail.declineQ")}
+                    noteLabel={t("appDetail.declineReason")}
+                    noteMinLength={1}
+                    notePlaceholder={t("appDetail.declineReasonPlaceholder")}
                     pendingLabel={t("appDetail.declining")}
-                    onConfirm={() => handleOfferResponse("DECLINED")}
+                    onConfirm={(reason) =>
+                      handleOfferResponse("DECLINED", reason)
+                    }
                   >
                     {({ onClick }) => (
                       <Button
@@ -299,6 +402,30 @@ export const ApplicationDetailPage = () => {
             </div>
 
             <ApplicationTimeline application={application} />
+
+            {/* PB55 AC1–3: explicit, irreversible withdraw with confirmation. */}
+            {WITHDRAWABLE_STATUSES.includes(application.status) && (
+              <div className="border-t border-neutral-100 px-5 py-4">
+                <ConfirmAction
+                  confirmLabel={t("appDetail.withdrawLabel")}
+                  isPending={withdrawMutation.isPending}
+                  message={t("appDetail.withdrawQ")}
+                  pendingLabel={t("appDetail.withdrawing")}
+                  onConfirm={handleWithdraw}
+                >
+                  {({ onClick }) => (
+                    <Button
+                      size="sm"
+                      type="button"
+                      variant="outline"
+                      onClick={onClick}
+                    >
+                      {t("appDetail.withdrawTitle")}
+                    </Button>
+                  )}
+                </ConfirmAction>
+              </div>
+            )}
           </>
         )}
       </div>

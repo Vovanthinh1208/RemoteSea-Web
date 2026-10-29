@@ -11,6 +11,7 @@ import {
   getPublicCompanyProfile,
   listEmployerJobs,
   listRecentApplications,
+  searchJobApplications,
   submitEmployerVerification,
   updateApplicationStatus,
   updateEmployerProfile,
@@ -23,6 +24,7 @@ import { MY_APPLICATIONS_KEY } from "@/features/applications/applications.querie
 import { employerKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 import type { ApplicationStatus } from "@/types/application";
+import type { ApplicationDecisionDto } from "@/features/employer/employer.dto";
 import type {
   EmployerApplicant,
   EmployerJobListItem,
@@ -307,6 +309,29 @@ export const useEmployerDashboard = () => {
   };
 };
 
+// PB57: one job's applicants, server-filtered by name (q) and status. Keyed
+// under employerKeys.jobApplications so status updates already invalidate it.
+export const JOB_APPLICANTS_LIMIT = 50;
+
+export const useJobApplicants = (
+  jobId: string,
+  filter: { q?: string; status?: ApplicationStatus }
+) => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: [...employerKeys.jobApplications(jobId), filter] as const,
+    queryFn: ({ signal }) =>
+      searchJobApplications(
+        jobId,
+        { ...filter, limit: JOB_APPLICANTS_LIMIT },
+        { signal }
+      ),
+    enabled: !!user && !!jobId,
+    placeholderData: (previous) => previous,
+    ...TIER.list,
+  });
+};
+
 export const useUpdateApplicationStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -314,13 +339,15 @@ export const useUpdateApplicationStatus = () => {
       id,
       status,
       notes,
+      reason,
+      offer,
     }: {
       id: string;
 
       jobId: string;
       status: ApplicationStatus;
-      notes?: string;
-    }) => updateApplicationStatus(id, status, notes),
+    } & ApplicationDecisionDto) =>
+      updateApplicationStatus(id, status, { notes, reason, offer }),
     onSuccess: (_data, { jobId }) => {
       queryClient.invalidateQueries({
         queryKey: employerKeys.jobApplications(jobId),
@@ -359,15 +386,17 @@ export const useBulkUpdateApplicationStatus = () => {
       items,
       status,
       notes,
+      reason,
     }: {
       items: { id: string; jobId: string }[];
       status: ApplicationStatus;
       notes?: string;
+      reason?: string;
     }) =>
       bulkUpdateApplicationStatus(
         items.map((i) => i.id),
         status,
-        notes
+        { notes, reason }
       ),
     onSuccess: (_data, { items }) => {
       const jobIds = new Set(items.map((i) => i.jobId));

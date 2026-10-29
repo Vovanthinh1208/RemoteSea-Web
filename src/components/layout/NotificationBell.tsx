@@ -82,7 +82,8 @@ export const NotificationBell = () => {
       >
         <Bell size={17} />
         {unreadCount > 0 && (
-          <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-brand-600 px-1 text-[10px] font-medium leading-none text-white">
+          // PB74 AC2: red count badge.
+          <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-red-600 px-1 text-[10px] font-medium leading-none text-white">
             {unreadCount > MAX_BADGE_COUNT ? "9+" : unreadCount}
           </span>
         )}

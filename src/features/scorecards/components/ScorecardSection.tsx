@@ -3,29 +3,84 @@ import { RefreshCw, Users } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useScorecards } from "@/features/scorecards/scorecard.queries";
 import { ScorecardForm } from "@/features/scorecards/components/ScorecardForm";
-import { breakdownByRecommendation } from "@/features/scorecards/scorecard.utils";
+import {
+  breakdownByRecommendation,
+  formatAverage,
+  SCORECARD_CRITERIA,
+  SCORECARD_RECOMMENDATIONS,
+} from "@/features/scorecards/scorecard.utils";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/utils/cn";
-import type { ScorecardRecommendation } from "@/types/scorecard";
+import type { Scorecard, ScorecardRecommendation } from "@/types/scorecard";
 import { useTranslation } from "@/i18n/useTranslation";
 
 const RECOMMENDATION_VARIANTS: Record<ScorecardRecommendation, BadgeVariant> = {
-  STRONG_YES: "success",
-  YES: "positive",
-  NO: "warning",
-  STRONG_NO: "warning",
+  STRONGLY_RECOMMEND: "success",
+  RECOMMEND: "positive",
+  NEUTRAL: "muted",
+  NOT_RECOMMEND: "warning",
+  STRONGLY_NOT_RECOMMEND: "warning",
 };
 
 // Matches each badge variant's dot to the same hue used above, so the
 // breakdown row and the per-scorecard badges read as the same color
 // language rather than two unrelated palettes.
 const RECOMMENDATION_DOT_COLOR: Record<ScorecardRecommendation, string> = {
-  STRONG_YES: "bg-brand-900",
-  YES: "bg-brand-500",
-  NO: "bg-amber-500",
-  STRONG_NO: "bg-amber-500",
+  STRONGLY_RECOMMEND: "bg-brand-900",
+  RECOMMEND: "bg-brand-500",
+  NEUTRAL: "bg-neutral-400",
+  NOT_RECOMMEND: "bg-amber-500",
+  STRONGLY_NOT_RECOMMEND: "bg-amber-500",
+};
+
+// PB65 AC3: each interviewer's per-criterion scores and written feedback.
+const ScorecardDetails = ({ scorecard }: { scorecard: Scorecard }) => {
+  const { t } = useTranslation("scorecards");
+  const hasRatings = SCORECARD_CRITERIA.some(
+    ({ field }) => scorecard[field] !== null
+  );
+  return (
+    <div className="mt-1.5 space-y-1.5 text-[12.5px] leading-relaxed text-neutral-600">
+      {hasRatings && (
+        <dl className="flex flex-wrap gap-x-4 gap-y-0.5 text-[11.5px]">
+          {SCORECARD_CRITERIA.map(({ field }) => (
+            <div className="flex gap-1" key={field}>
+              <dt className="text-neutral-500">{t(`criteria.${field}`)}</dt>
+              <dd className="font-medium text-neutral-800">
+                {scorecard[field] ?? "–"}/5
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      {scorecard.strengths && (
+        <p>
+          <span className="font-medium text-neutral-700">
+            {t("section.strengths")}:
+          </span>{" "}
+          {scorecard.strengths}
+        </p>
+      )}
+      {scorecard.improvements && (
+        <p>
+          <span className="font-medium text-neutral-700">
+            {t("section.improvements")}:
+          </span>{" "}
+          {scorecard.improvements}
+        </p>
+      )}
+      {scorecard.note && (
+        <p>
+          <span className="font-medium text-neutral-700">
+            {t("section.note")}:
+          </span>{" "}
+          {scorecard.note}
+        </p>
+      )}
+    </div>
+  );
 };
 
 const SCORECARD_SKELETON_COUNT = 2;
@@ -129,26 +184,52 @@ export const ScorecardSection = ({
                 })}
               </span>
             </div>
+            <div className="flex items-baseline justify-between gap-3 border-t border-neutral-100 pt-2">
+              <div>
+                <span className="text-[18px] font-semibold leading-none text-neutral-900">
+                  {formatAverage(data.summary.averages.overall)}
+                </span>
+                <span className="text-[11.5px] text-neutral-500">
+                  {t("section.averageOf5")}
+                </span>
+                <p className="mt-1 text-[11.5px] text-neutral-500">
+                  {t("section.averageOverall")}
+                </p>
+              </div>
+              <dl
+                aria-label={t("section.criteriaAverages")}
+                className="space-y-0.5 text-right text-[11.5px]"
+              >
+                {SCORECARD_CRITERIA.map(({ field, average }) => (
+                  <div className="flex justify-end gap-1.5" key={field}>
+                    <dt className="text-neutral-500">
+                      {t(`criteria.${field}`)}
+                    </dt>
+                    <dd className="font-medium text-neutral-800">
+                      {formatAverage(data.summary.averages[average])}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
             <div className="flex flex-wrap gap-x-4 gap-y-1 border-t border-neutral-100 pt-2 text-[11.5px] text-neutral-500">
-              {(["STRONG_YES", "YES", "NO", "STRONG_NO"] as const).map(
-                (recommendation) => (
+              {SCORECARD_RECOMMENDATIONS.map((recommendation) => (
+                <span
+                  className="inline-flex items-center gap-1.5"
+                  key={recommendation}
+                >
                   <span
-                    className="inline-flex items-center gap-1.5"
-                    key={recommendation}
-                  >
-                    <span
-                      className={cn(
-                        "h-1.5 w-1.5 rounded-full",
-                        RECOMMENDATION_DOT_COLOR[recommendation]
-                      )}
-                    />
-                    {t(`rec.${recommendation}`)}{" "}
-                    <span className="font-medium text-neutral-700">
-                      {breakdown[recommendation]}
-                    </span>
+                    className={cn(
+                      "h-1.5 w-1.5 rounded-full",
+                      RECOMMENDATION_DOT_COLOR[recommendation]
+                    )}
+                  />
+                  {t(`rec.${recommendation}`)}{" "}
+                  <span className="font-medium text-neutral-700">
+                    {breakdown[recommendation]}
                   </span>
-                )
-              )}
+                </span>
+              ))}
             </div>
           </div>
         ) : (
@@ -172,11 +253,7 @@ export const ScorecardSection = ({
               {t(`rec.${myScorecard.recommendation}`)}
             </Badge>
           </div>
-          {myScorecard.note && (
-            <p className="mt-1.5 text-[12.5px] leading-relaxed text-neutral-700">
-              &ldquo;{myScorecard.note}&rdquo;
-            </p>
-          )}
+          <ScorecardDetails scorecard={myScorecard} />
         </div>
       )}
 
@@ -198,11 +275,7 @@ export const ScorecardSection = ({
                   {t(`rec.${scorecard.recommendation}`)}
                 </Badge>
               </div>
-              {scorecard.note && (
-                <p className="mt-1.5 text-[12.5px] leading-relaxed text-neutral-600">
-                  {scorecard.note}
-                </p>
-              )}
+              <ScorecardDetails scorecard={scorecard} />
             </li>
           ))}
         </ul>

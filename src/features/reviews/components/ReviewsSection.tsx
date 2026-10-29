@@ -6,7 +6,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/features/jobs/components/Pagination";
 import { useUserReviews } from "@/features/reviews/reviews.queries";
 import { timeAgoLong } from "@/utils/time";
-import type { ReviewListItem, ReviewRatingBreakdown } from "@/types/review";
+import { SELECT_INPUT_CLASS } from "@/components/shared/input-styles";
+import type {
+  ReviewListItem,
+  ReviewRatingBreakdown,
+  ReviewSort,
+} from "@/types/review";
 import { useTranslation } from "@/i18n/useTranslation";
 import { translate } from "@/i18n/runtime";
 
@@ -53,6 +58,11 @@ const ReviewCard = ({ review }: { review: ReviewListItem }) => (
         {timeAgoLong(review.createdAt)}
       </span>
     </div>
+    {review.title && (
+      <p className="mb-0.5 text-[13.5px] font-semibold text-neutral-900">
+        {review.title}
+      </p>
+    )}
     {review.comment && (
       <p className="text-[13.5px] leading-relaxed text-neutral-700">
         “{review.comment}”
@@ -89,6 +99,52 @@ const RatingBar = ({ label, value }: RatingBarProps) => (
   </div>
 );
 
+const STARS = [5, 4, 3, 2, 1] as const;
+
+// PB72 AC2: share of published reviews at each star rating.
+const StarDistribution = ({
+  distribution,
+  total,
+}: {
+  distribution: Record<1 | 2 | 3 | 4 | 5, number>;
+  total: number;
+}) => {
+  const { t } = useTranslation("reviews");
+  return (
+    <div
+      aria-label={t("section.distribution")}
+      className="space-y-1.5"
+      role="list"
+    >
+      {STARS.map((star) => {
+        const count = distribution[star] ?? 0;
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+        return (
+          <div
+            aria-label={t("section.starRow", { star, count })}
+            className="flex items-center gap-3"
+            key={star}
+            role="listitem"
+          >
+            <span className="w-10 flex-shrink-0 text-[12.5px] text-neutral-500">
+              {star}★
+            </span>
+            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-neutral-100">
+              <div
+                className="h-full rounded-full bg-amber-400"
+                style={{ width: `${pct}%` }}
+              />
+            </div>
+            <span className="w-7 flex-shrink-0 text-right text-[12.5px] font-medium text-neutral-700">
+              {count}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 interface ReviewsSectionProps {
   userId: string;
   categories: readonly { key: keyof ReviewRatingBreakdown; label: string }[];
@@ -104,12 +160,19 @@ export const ReviewsSection = ({ userId, categories }: ReviewsSectionProps) => {
   // full remount in between — otherwise carried the stale page number over,
   // requesting a page that may not exist for the new user. Reset-during-render
   // (not an effect), same pattern as navbar.tsx's route-change handling.
+  // PB72 AC3: star filter + date sort; both reset paging.
+  const [rating, setRating] = useState<number | undefined>(undefined);
+  const [sort, setSort] = useState<ReviewSort>("newest");
   const [prevUserId, setPrevUserId] = useState(userId);
   if (userId !== prevUserId) {
     setPrevUserId(userId);
     setPage(1);
+    setRating(undefined);
   }
-  const { data, isLoading, isError, refetch } = useUserReviews(userId, page);
+  const { data, isLoading, isError, refetch } = useUserReviews(userId, page, {
+    rating,
+    sort,
+  });
 
   if (isLoading) {
     return <ReviewsSectionSkeleton />;
@@ -152,16 +215,65 @@ export const ReviewsSection = ({ userId, categories }: ReviewsSectionProps) => {
         </span>
       </div>
 
-      <div className="mb-5 space-y-2 rounded-12 bg-neutral-50 p-4">
-        {categories.map(({ key, label }) => (
-          <RatingBar key={key} label={label} value={data.ratings[key]} />
-        ))}
+      <div className="mb-5 grid gap-4 rounded-12 bg-neutral-50 p-4 md:grid-cols-2">
+        <StarDistribution
+          distribution={data.distribution}
+          total={data.totalReviews}
+        />
+        <div className="space-y-2">
+          {categories.map(({ key, label }) => (
+            <RatingBar key={key} label={label} value={data.ratings[key]} />
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-2 flex flex-wrap items-center gap-2">
+        <label className="sr-only" htmlFor={`reviews-rating-${userId}`}>
+          {t("section.filterLabel")}
+        </label>
+        <select
+          className={SELECT_INPUT_CLASS + " w-auto"}
+          id={`reviews-rating-${userId}`}
+          value={rating ?? ""}
+          onChange={(e) => {
+            setRating(e.target.value ? Number(e.target.value) : undefined);
+            setPage(1);
+          }}
+        >
+          <option value="">{t("section.allStars")}</option>
+          {STARS.map((star) => (
+            <option key={star} value={star}>
+              {t("section.stars", { count: star })}
+            </option>
+          ))}
+        </select>
+        <label className="sr-only" htmlFor={`reviews-sort-${userId}`}>
+          {t("section.sortLabel")}
+        </label>
+        <select
+          className={SELECT_INPUT_CLASS + " w-auto"}
+          id={`reviews-sort-${userId}`}
+          value={sort}
+          onChange={(e) => {
+            setSort(e.target.value as ReviewSort);
+            setPage(1);
+          }}
+        >
+          <option value="newest">{t("section.newest")}</option>
+          <option value="oldest">{t("section.oldest")}</option>
+        </select>
       </div>
 
       <div>
-        {data.reviews.map((review) => (
-          <ReviewCard key={review.id} review={review} />
-        ))}
+        {data.reviews.length === 0 ? (
+          <p className="py-4 text-[13px] text-neutral-500">
+            {t("section.noneForFilter")}
+          </p>
+        ) : (
+          data.reviews.map((review) => (
+            <ReviewCard key={review.id} review={review} />
+          ))
+        )}
       </div>
 
       <Pagination

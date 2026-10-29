@@ -13,6 +13,12 @@ interface ConfirmActionProps {
    *  trimmed (undefined if left blank) — opt-in so every other call site
    *  (account deletion, alert deletion, ...) keeps its current compact form. */
   notePlaceholder?: string;
+  /** Makes that note mandatory: the confirm button stays disabled until the
+   *  trimmed note reaches this many characters (e.g. PB62's cancellation
+   *  reason, PB56's decline reason). Implies the note textarea. */
+  noteMinLength?: number;
+  /** Accessible label for the note textarea. */
+  noteLabel?: string;
   /** Renders the idle-state trigger (e.g. an icon button or a labeled button). */
   children: (props: { onClick: () => void }) => React.ReactNode;
 }
@@ -31,11 +37,17 @@ export const ConfirmAction = ({
   confirmLabel,
   pendingLabel,
   notePlaceholder,
+  noteMinLength,
+  noteLabel,
   children,
 }: ConfirmActionProps) => {
   const { t } = useTranslation();
   const [isConfirming, setIsConfirming] = useState(false);
   const [note, setNote] = useState("");
+
+  const showNote = notePlaceholder !== undefined || noteMinLength !== undefined;
+  const noteMissing =
+    noteMinLength !== undefined && note.trim().length < noteMinLength;
 
   if (!isConfirming) {
     return <>{children({ onClick: () => setIsConfirming(true) })}</>;
@@ -46,7 +58,7 @@ export const ConfirmAction = ({
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-[12px] text-neutral-600">{message}</span>
         <Button
-          disabled={isPending}
+          disabled={isPending || noteMissing}
           isLoading={isPending}
           size="sm"
           type="button"
@@ -74,9 +86,12 @@ export const ConfirmAction = ({
           {t("common.actions.cancel")}
         </Button>
       </div>
-      {notePlaceholder !== undefined && (
+      {showNote && (
         <textarea
+          aria-label={noteLabel}
+          aria-required={noteMinLength !== undefined}
           className={TEXTAREA_INPUT_CLASS}
+          maxLength={1000}
           placeholder={notePlaceholder}
           rows={2}
           value={note}

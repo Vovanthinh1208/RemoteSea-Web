@@ -11,6 +11,8 @@ export type ApplyRequestDto = {
   jobId: string;
   coverLetter?: string;
   resumeUrl?: string;
+  // PB53 AC2.
+  contactPhone?: string;
 };
 
 export type ApplicationListResponseDto = {

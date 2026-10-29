@@ -1,4 +1,5 @@
 import { Check, X } from "lucide-react";
+import { cn } from "@/utils/cn";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { NEXT_LABEL } from "@/features/employer/employer-dashboard.utils";
 import type { ApplicationStatus } from "@/types/application";
@@ -27,7 +28,17 @@ export const ApplicantBulkActions = ({
 }: ApplicantBulkActionsProps) => {
   const { t } = useTranslation("employer");
   return (
-    <div className="mb-1 flex items-center gap-2.5 px-2">
+    <div
+      className={cn(
+        "mb-1 flex items-center gap-2.5 px-2",
+        // PB59 AC2: with a selection, the toolbar docks to the bottom of the
+        // viewport so it stays in reach while scrolling the list.
+        selectedCount > 0 &&
+          "sticky bottom-4 z-20 rounded-12 border border-neutral-200 bg-white py-2 shadow-card"
+      )}
+      role="toolbar"
+      aria-label={t("bulk.toolbar")}
+    >
       <input
         aria-label={t("bulk.selectAll")}
         checked={allEligibleSelected}
@@ -73,7 +84,8 @@ export const ApplicantBulkActions = ({
               confirmLabel={t("bulk.reject")}
               isPending={isPending}
               message={t("bulk.rejectQ", { count: selectedCount })}
-              notePlaceholder={t("bulk.note")}
+              noteLabel={t("decision.rejectReason")}
+              notePlaceholder={t("decision.rejectReasonPlaceholder")}
               pendingLabel={t("bulk.rejecting")}
               onConfirm={(note) => onBulkUpdate("REJECTED", note)}
             >

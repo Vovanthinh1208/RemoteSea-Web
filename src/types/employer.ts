@@ -157,6 +157,15 @@ export type EmployerApplicant = {
   updatedAt: string;
   coverLetter: string | null;
   resumeUrl: string | null;
+  // PB53/PB56/PB58 decision fields (see Application) and the cached AI CV
+  // score for the applicant card (PB57 AC3 — null until analysed).
+  contactPhone: string | null;
+  rejectionReason: string | null;
+  offerSalary: string | null;
+  offerBenefits: string | null;
+  offerStartDate: string | null;
+  offerDeclineReason: string | null;
+  cvAnalysis: { fitScore: number } | null;
   // Previously write-only (only ever sent alongside a status-change PATCH,
   // never read back) — see CandidateNotesCard, which is the first UI to
   // display and edit it independent of a status change.

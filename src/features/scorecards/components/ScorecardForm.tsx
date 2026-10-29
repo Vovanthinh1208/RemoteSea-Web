@@ -1,6 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ThumbsDown, ThumbsUp } from "lucide-react";
+import { Minus, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FieldError } from "@/components/shared/FieldError";
 import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
@@ -12,6 +12,7 @@ import {
   scorecardFormSchema,
   type ScorecardFormValues,
 } from "@/features/scorecards/scorecard.schemas";
+import { SCORECARD_CRITERIA } from "@/features/scorecards/scorecard.utils";
 import type { ScorecardRecommendation } from "@/types/scorecard";
 import { useTranslation } from "@/i18n/useTranslation";
 import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
@@ -24,11 +25,14 @@ const RECOMMENDATION_OPTIONS: {
   icon: typeof ThumbsUp;
   filled: boolean;
 }[] = [
-  { value: "STRONG_YES", icon: ThumbsUp, filled: true },
-  { value: "YES", icon: ThumbsUp, filled: false },
-  { value: "NO", icon: ThumbsDown, filled: false },
-  { value: "STRONG_NO", icon: ThumbsDown, filled: true },
+  { value: "STRONGLY_RECOMMEND", icon: ThumbsUp, filled: true },
+  { value: "RECOMMEND", icon: ThumbsUp, filled: false },
+  { value: "NEUTRAL", icon: Minus, filled: false },
+  { value: "NOT_RECOMMEND", icon: ThumbsDown, filled: false },
+  { value: "STRONGLY_NOT_RECOMMEND", icon: ThumbsDown, filled: true },
 ];
+
+const SCORES = [1, 2, 3, 4, 5] as const;
 
 interface ScorecardFormProps {
   applicationId: string;
@@ -62,6 +66,11 @@ export const ScorecardForm = ({
       () =>
         createScorecardMutation
           .mutateAsync({
+            technicalRating: values.technicalRating,
+            communicationRating: values.communicationRating,
+            cultureFitRating: values.cultureFitRating,
+            strengths: values.strengths,
+            improvements: values.improvements,
             recommendation: values.recommendation,
             note: values.note || undefined,
           })
@@ -95,6 +104,94 @@ export const ScorecardForm = ({
         <p className="mt-0.5 text-[12.5px] text-neutral-500">
           {t("form.hint")}
         </p>
+      </div>
+
+      <fieldset>
+        <legend className="mb-1.5 text-[13px] font-medium text-neutral-700">
+          {t("form.ratingsLabel")}
+        </legend>
+        <div className="space-y-2">
+          {SCORECARD_CRITERIA.map(({ field: name }) => (
+            <Controller
+              control={control}
+              key={name}
+              name={name}
+              render={({ field }) => (
+                <div>
+                  <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                    <span className="text-[12.5px] text-neutral-600">
+                      {t(`criteria.${name}`)}
+                    </span>
+                    <div
+                      aria-label={t(`criteria.${name}`)}
+                      className="flex gap-1"
+                      role="radiogroup"
+                    >
+                      {SCORES.map((score) => (
+                        <button
+                          aria-checked={field.value === score}
+                          aria-label={t("form.ratingAria", {
+                            criterion: t(`criteria.${name}`),
+                            score,
+                          })}
+                          className={cn(
+                            "h-8 w-8 rounded-8 border text-[12.5px] font-medium transition-colors focus-visible:shadow-focus focus-visible:outline-none",
+                            field.value === score
+                              ? "border-brand-600 bg-brand-600 text-white"
+                              : "border-neutral-200 text-neutral-600 hover:border-neutral-300"
+                          )}
+                          key={score}
+                          role="radio"
+                          type="button"
+                          onClick={() => field.onChange(score)}
+                        >
+                          {score}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <FieldError message={errors[name]?.message} />
+                </div>
+              )}
+            />
+          ))}
+        </div>
+      </fieldset>
+
+      <div>
+        <label
+          className="mb-1.5 block text-[13px] font-medium text-neutral-700"
+          htmlFor="scorecard-strengths"
+        >
+          {t("form.strengths")}
+        </label>
+        <textarea
+          className={TEXTAREA_INPUT_CLASS}
+          id="scorecard-strengths"
+          maxLength={2000}
+          placeholder={t("form.strengthsPlaceholder")}
+          rows={3}
+          {...register("strengths")}
+        />
+        <FieldError message={errors.strengths?.message} />
+      </div>
+
+      <div>
+        <label
+          className="mb-1.5 block text-[13px] font-medium text-neutral-700"
+          htmlFor="scorecard-improvements"
+        >
+          {t("form.improvements")}
+        </label>
+        <textarea
+          className={TEXTAREA_INPUT_CLASS}
+          id="scorecard-improvements"
+          maxLength={2000}
+          placeholder={t("form.improvementsPlaceholder")}
+          rows={3}
+          {...register("improvements")}
+        />
+        <FieldError message={errors.improvements?.message} />
       </div>
 
       <Controller
@@ -146,7 +243,7 @@ export const ScorecardForm = ({
           id="scorecard-note"
           maxLength={2000}
           placeholder={t("form.notePlaceholder")}
-          rows={4}
+          rows={2}
           {...register("note")}
         />
         <FieldError message={errors.note?.message} />

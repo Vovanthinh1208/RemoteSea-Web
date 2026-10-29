@@ -177,7 +177,7 @@
   "apply": {
     "sentTitle": "Đã gửi đơn ứng tuyển",
     "sentDesc": "Nhà tuyển dụng đã được thông báo.",
-    "alreadyApplied": "Bạn đã ứng tuyển rồi",
+    "alreadyApplied": "Bạn đã nộp đơn cho vị trí này",
     "profileRequired": "Hãy tạo hồ sơ ứng viên trước.",
     "finishProfile": "Hãy hoàn thiện hồ sơ trước",
     "failedTitle": "Không thể gửi đơn ứng tuyển",
@@ -185,12 +185,14 @@
     "applyNow": "Ứng tuyển ngay",
     "resume": "CV",
     "replaceResume": "Thay CV",
-    "attachResume": "Đính kèm CV",
+    "attachResume": "Đính kèm CV (PDF/DOCX, ≤ 10MB)",
     "usingProfileResume": "Đang dùng CV từ hồ sơ của bạn.",
     "coverLetter": "Thư xin việc",
     "optional": "(không bắt buộc)",
     "coverPlaceholder": "Vì sao bạn phù hợp với vị trí này…",
-    "send": "Gửi đơn ứng tuyển"
+    "send": "Gửi đơn ứng tuyển",
+    "phone": "Số điện thoại liên hệ",
+    "phoneInvalid": "Vui lòng nhập số điện thoại hợp lệ (7–15 chữ số)."
   },
   "save": {
     "saved": "Đã lưu",
@@ -215,7 +217,9 @@
     "optional": "Tùy chọn",
     "yourMatch": "Mức phù hợp của bạn",
     "fillProfile": "Hãy hoàn thiện thêm hồ sơ để xem phân tích mức phù hợp chi tiết hơn.",
-    "closeGap": "Kỹ năng cần bổ sung"
+    "closeGap": "Kỹ năng cần bổ sung",
+    "matchedSkills": "Kỹ năng trùng khớp",
+    "addSkillsPrompt": "Cập nhật kỹ năng để xem độ phù hợp"
   },
   "report": {
     "thanks": "Cảm ơn bạn — đội ngũ của chúng tôi sẽ xem xét.",

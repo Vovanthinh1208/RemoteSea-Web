@@ -16,6 +16,21 @@ const MIN_SKILLS_FOR_MATCH = 1;
 // their own listings, a talent profile too sparse to score, or — for the
 // detail page's still-loading job — nothing to score yet) — the caller
 // doesn't need to know which.
+// PB50 AC4: a signed-in talent whose profile has no skills yet gets a prompt
+// to add them instead of a score.
+export const useNeedsSkillsForMatch = (
+  job: MatchableJob | undefined
+): boolean => {
+  const { user } = useAuth();
+  const { data: talent } = useMyTalentProfile();
+  return (
+    !!job &&
+    user?.role === "TALENT" &&
+    !!talent &&
+    talent.skills.length < MIN_SKILLS_FOR_MATCH
+  );
+};
+
 export const useMyMatch = (
   job: MatchableJob | undefined
 ): MatchResult | null => {

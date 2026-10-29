@@ -10,7 +10,10 @@ import {
 import { useMyTalentProfile } from "@/features/talent/talent.queries";
 import { FileUpload } from "@/components/ui/file-upload";
 import { Button } from "@/components/ui/button";
-import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
+import {
+  TEXT_INPUT_CLASS,
+  TEXTAREA_INPUT_CLASS,
+} from "@/components/shared/input-styles";
 import { ApiError } from "@/core/errors/api-error";
 import { useSubmitError } from "@/hooks/useSubmitError";
 import { ROUTES } from "@/constants/routes";
@@ -19,6 +22,15 @@ import { useTranslation } from "@/i18n/useTranslation";
 const ALREADY_APPLIED_STATUS = 409;
 const PROFILE_REQUIRED_STATUS = 403;
 const COVER_LETTER_MAX_LENGTH = 5000;
+// PB53 AC2 — same rule as the API's contactPhoneSchema: 7–15 digits, with
+// optional "+", spaces, dots, dashes and parentheses.
+const PHONE_PATTERN = /^\+?[0-9 ().-]{7,25}$/;
+const isValidPhone = (value: string): boolean => {
+  const digits = value.replace(/\D/g, "").length;
+  return PHONE_PATTERN.test(value) && digits >= 7 && digits <= 15;
+};
+const RESUME_ACCEPT =
+  "application/pdf,.pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx";
 
 type ApplyState = "idle" | "open" | "applied" | "error";
 
@@ -38,6 +50,11 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
   const submitError = useSubmitError();
   const [resumeOverride, setResumeOverride] = useState<string | null>(null);
   const [coverLetter, setCoverLetter] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+  const [phoneTouched, setPhoneTouched] = useState(false);
+  const phone = contactPhone.trim();
+  const phoneError =
+    phoneTouched && !isValidPhone(phone) ? t("apply.phoneInvalid") : null;
 
   // Server-derived: previously "applied" was only a local flag, so leaving the
   // page and coming back reset the button to "Apply now" until a click bounced
@@ -63,11 +80,14 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
   };
 
   const handleSubmit = async () => {
+    setPhoneTouched(true);
+    if (!isValidPhone(phone)) return;
     try {
       await applyToJobMutation.mutateAsync({
         jobId,
         resumeUrl,
         coverLetter: coverLetter.trim() || undefined,
+        contactPhone: phone,
       });
       setState("applied");
       toast({
@@ -82,7 +102,8 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
         err.code === "ALREADY_APPLIED"
       ) {
         setState("applied");
-        toast({ variant: "info", title: t("apply.alreadyApplied") });
+        // PB53 AC4.1.
+        toast({ variant: "error", title: t("apply.alreadyApplied") });
         return;
       }
       if (err instanceof ApiError && err.status === PROFILE_REQUIRED_STATUS) {
@@ -147,7 +168,7 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
           {t("apply.resume")}
         </p>
         <FileUpload
-          accept="application/pdf"
+          accept={RESUME_ACCEPT}
           key={resumeUrl ?? "none"}
           label={resumeUrl ? t("apply.replaceResume") : t("apply.attachResume")}
           type="resume"
@@ -157,6 +178,35 @@ export const ApplyButton = ({ jobId }: ApplyButtonProps) => {
         {resumeUrl && !resumeOverride && (
           <p className="mt-1 text-[12px] text-neutral-400">
             {t("apply.usingProfileResume")}
+          </p>
+        )}
+      </div>
+      <div>
+        <label
+          className="mb-1.5 block text-[13px] font-medium text-neutral-700"
+          htmlFor="contact-phone"
+        >
+          {t("apply.phone")}
+        </label>
+        <input
+          aria-describedby={phoneError ? "contact-phone-error" : undefined}
+          aria-invalid={!!phoneError}
+          autoComplete="tel"
+          className={TEXT_INPUT_CLASS}
+          id="contact-phone"
+          inputMode="tel"
+          placeholder="+84 912 345 678"
+          type="tel"
+          value={contactPhone}
+          onBlur={() => setPhoneTouched(true)}
+          onChange={(e) => setContactPhone(e.target.value)}
+        />
+        {phoneError && (
+          <p
+            className="mt-1 flex items-center gap-1 text-[12px] text-red-600"
+            id="contact-phone-error"
+          >
+            <AlertCircle size={11} /> {phoneError}
           </p>
         )}
       </div>

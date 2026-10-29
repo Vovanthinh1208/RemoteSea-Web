@@ -5,7 +5,7 @@ import type {
   ReviewEligibilityDto,
   UserReviewsResponseDto,
 } from "@/features/reviews/reviews.dto";
-import type { ReviewListItem } from "@/types/review";
+import type { ReviewListFilter, ReviewListItem } from "@/types/review";
 
 export const reviewsRepository = {
   getEligibility: async (
@@ -28,11 +28,12 @@ export const reviewsRepository = {
     userId: string,
     page: number,
     limit: number,
+    filter: ReviewListFilter,
     opts?: RequestOptions
   ): Promise<UserReviewsResponseDto> => {
     const { data } = await apiClient.get<UserReviewsResponseDto>(
       `/reviews/user/${userId}`,
-      { params: { page, limit }, signal: opts?.signal }
+      { params: { page, limit, ...filter }, signal: opts?.signal }
     );
     return data;
   },

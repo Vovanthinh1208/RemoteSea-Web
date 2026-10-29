@@ -19,3 +19,14 @@ export const safeExternalUrl = (
     return null;
   }
 };
+
+/** True for an absolute http(s) URL — the meeting-link rule the API applies
+ * (remotesea-api httpUrlSchema). */
+export const isHttpUrl = (raw: string): boolean => {
+  try {
+    const url = new URL(raw);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+};

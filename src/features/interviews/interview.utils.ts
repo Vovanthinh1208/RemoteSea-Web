@@ -1,9 +1,26 @@
 import { dayKeyOf, relativeDayLabel } from "@/utils/time";
 import { formatLocalDateTime, formatLocalTime } from "@/utils/format";
-import type { UpcomingInterview } from "@/types/interview";
+import type { InterviewPlatform, UpcomingInterview } from "@/types/interview";
 
 export const DURATION_OPTIONS = [15, 30, 45, 60, 90];
 export const MAX_SLOTS = 2;
+
+// PB60 AC2 — same values the API accepts (interviews/constants.ts).
+export const INTERVIEW_PLATFORMS: readonly InterviewPlatform[] = [
+  "GOOGLE_MEET",
+  "ZOOM",
+  "MS_TEAMS",
+  "OTHER",
+];
+
+// PB60 AC3 "Giờ kết thúc": every slot shares one duration, so its end time is
+// derived from the start rather than entered separately.
+export const slotEndTime = (localStart: string, durationMinutes: number) =>
+  formatTime(
+    new Date(
+      new Date(localStart).getTime() + durationMinutes * 60_000
+    ).toISOString()
+  );
 
 // Mirrors the backend's own eligibility rule (ScorecardsService/
 // ReviewsService's isEligible: CONFIRMED and the slot has passed) — pulled
@@ -12,6 +29,10 @@ export const MAX_SLOTS = 2;
 // (see BACKLOG_THRESHOLD_MS.backlogDays for the same pattern elsewhere).
 export const hasOccurred = (confirmedSlot: string | null): boolean =>
   !!confirmedSlot && new Date(confirmedSlot).getTime() <= Date.now();
+
+// PB60 BR2 — same "impure read in a helper, not in render" reason as above.
+export const isPastLocalSlot = (localValue: string): boolean =>
+  new Date(localValue).getTime() <= Date.now();
 
 export const formatSlot = (iso: string) =>
   formatLocalDateTime(iso, {

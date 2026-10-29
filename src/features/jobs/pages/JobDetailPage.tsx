@@ -13,13 +13,19 @@ import { VnSignalCard } from "@/features/jobs/pages/job-detail/VnSignalCard";
 import { SalaryBenchmarkCard } from "@/features/jobs/pages/job-detail/SalaryBenchmarkCard";
 import { QuickFactsCard } from "@/features/jobs/pages/job-detail/QuickFactsCard";
 import { JobCompanyCard } from "@/features/jobs/pages/job-detail/JobCompanyCard";
-import { MatchCard } from "@/features/jobs/pages/job-detail/MatchCard";
+import {
+  MatchCard,
+  MatchSkillsPrompt,
+} from "@/features/jobs/pages/job-detail/MatchCard";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useJobPostingSchema } from "@/hooks/useJobPostingSchema";
 import { LEVEL_LABELS, JOB_TYPE_LABELS } from "@/utils/labels";
 import { ROUTES } from "@/constants/routes";
 import { formatSalaryRange } from "@/utils/format";
-import { useMyMatch } from "@/features/matching/useMyMatch";
+import {
+  useMyMatch,
+  useNeedsSkillsForMatch,
+} from "@/features/matching/useMyMatch";
 import { translate } from "@/i18n/runtime";
 import { useTranslation } from "@/i18n/useTranslation";
 import { STATUS_LABEL } from "@/features/employer/employer-dashboard.utils";
@@ -54,6 +60,7 @@ export const JobDetailPage = () => {
   const hasSalary = job?.salaryMin != null;
   const { data: benchmarks } = useSalaryBenchmarks(hasSalary);
   const match = useMyMatch(job);
+  const needsSkills = useNeedsSkillsForMatch(job);
   useDocumentTitle(
     job
       ? t("detail.docTitle", {
@@ -136,7 +143,11 @@ export const JobDetailPage = () => {
         <div className="space-y-4">
           <div className="sticky top-6 space-y-4">
             {!job.isPreview && <ApplyCard job={job} />}
-            {match && <MatchCard match={match} />}
+            {match ? (
+              <MatchCard match={match} />
+            ) : (
+              needsSkills && <MatchSkillsPrompt />
+            )}
             <VnSignalCard
               companyName={job.employer.companyName}
               vnHireCount={job.vnHireCount}

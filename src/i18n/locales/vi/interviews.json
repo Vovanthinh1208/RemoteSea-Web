@@ -3,8 +3,8 @@
     "fallbackTitle": "Phỏng vấn",
     "cancelled": "Đã hủy buổi phỏng vấn.",
     "cancelFailed": "Không thể hủy buổi phỏng vấn. Vui lòng thử lại.",
-    "cancel": "Hủy phỏng vấn",
-    "cancelQ": "Hủy buổi phỏng vấn này?",
+    "cancel": "Hủy lịch phỏng vấn",
+    "cancelQ": "Nhập lý do hủy — ứng viên sẽ nhận được qua email:",
     "cancelling": "Đang hủy…",
     "errorTitle": "Không thể tải chi tiết phỏng vấn",
     "errorDesc": "Đã xảy ra lỗi khi tải buổi phỏng vấn này.",
@@ -15,7 +15,11 @@
     "cancelledNote": "Buổi phỏng vấn này đã bị hủy. Hãy đề xuất thời gian mới bên dưới để đổi lịch.",
     "cancelledTitle": "Đã hủy phỏng vấn",
     "cancelledDesc": "Nhà tuyển dụng đã hủy buổi phỏng vấn này.",
-    "waiting": "Đang chờ ứng viên xác nhận một trong các thời gian này. Bạn vẫn có thể chỉnh sửa bên dưới."
+    "waiting": "Đang chờ ứng viên xác nhận một trong các thời gian này. Bạn vẫn có thể chỉnh sửa bên dưới.",
+    "cancelReason": "Lý do hủy lịch",
+    "cancelReasonPlaceholder": "Ví dụ: Người phỏng vấn có việc đột xuất…",
+    "cancelReasonLabel": "Lý do:",
+    "confirmCancel": "Xác nhận hủy"
   },
   "schedule": {
     "docTitle": "Lịch phỏng vấn — Bảng điều khiển nhà tuyển dụng",
@@ -39,7 +43,7 @@
     "minutes": "{{n}} phút · theo giờ địa phương của bạn",
     "with": "Cùng {{name}}",
     "join": "Tham gia phỏng vấn",
-    "calendar": "Thêm vào lịch",
+    "calendar": "Thêm vào lịch / Tải file .ics",
     "calendarFailed": "Không thể tải tệp lịch. Vui lòng thử lại."
   },
   "confirm": {
@@ -59,8 +63,25 @@
     "hint": "Theo giờ địa phương của bạn — ứng viên sẽ thấy đã quy đổi sang giờ của họ.",
     "remove": "Xóa lựa chọn thời gian này",
     "addOption": "+ Thêm lựa chọn khác",
-    "meetingLink": "Liên kết cuộc họp (không bắt buộc)",
+    "meetingLink": "Đường dẫn phòng họp",
     "update": "Cập nhật thời gian",
-    "send": "Gửi lời mời"
+    "send": "Gửi đề xuất lịch",
+    "title": "Tiêu đề buổi phỏng vấn",
+    "titlePlaceholder": "Vòng 1 - Kỹ thuật",
+    "titleRequired": "Vui lòng nhập tiêu đề buổi phỏng vấn.",
+    "platform": "Nền tảng",
+    "interviewer": "Người phỏng vấn",
+    "unassigned": "Chưa phân công",
+    "linkRequired": "Vui lòng nhập đường dẫn http(s) hợp lệ.",
+    "slotRequired": "Hãy chọn ít nhất 1 khung giờ.",
+    "slotPast": "Khung giờ đề xuất phải ở tương lai.",
+    "slotStart": "Khung giờ {{n}} — bắt đầu",
+    "endsAt": "Kết thúc {{time}}"
+  },
+  "platform": {
+    "GOOGLE_MEET": "Google Meet",
+    "ZOOM": "Zoom",
+    "MS_TEAMS": "Microsoft Teams",
+    "OTHER": "Khác"
   }
 }

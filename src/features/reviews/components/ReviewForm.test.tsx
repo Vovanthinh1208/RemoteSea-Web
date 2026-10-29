@@ -37,6 +37,15 @@ const clickStars = async (
   );
 };
 
+// PB71 AC3: title + a comment of at least 20 characters.
+const fillText = async (user: ReturnType<typeof userEvent.setup>) => {
+  await user.type(screen.getByLabelText(/^title$/i), "Smooth process");
+  await user.type(
+    screen.getByLabelText(/comment/i),
+    "Clear communication at every step."
+  );
+};
+
 beforeEach(() => {
   vi.clearAllMocks();
 });
@@ -129,6 +138,7 @@ describe("ReviewForm — submission", () => {
 
     await clickStars(user, "Overall rating", 5);
     await clickStars(user, "Communication", 4);
+    await user.type(screen.getByLabelText(/^title$/i), "Great process");
     await user.type(
       screen.getByLabelText(/comment/i),
       "Great communication throughout."
@@ -140,13 +150,16 @@ describe("ReviewForm — submission", () => {
         applicationId: "app-1",
         overallRating: 5,
         communicationRating: 4,
+        title: "Great process",
         comment: "Great communication throughout.",
       })
     );
     expect(onSuccess).toHaveBeenCalledTimes(1);
   });
 
-  it("omits an unset comment instead of submitting an empty string", async () => {
+  // Was "omits an unset comment…": PB71 AC3 makes title and a >= 20-char
+  // comment mandatory, so a short or missing one is blocked client-side.
+  it("blocks a missing title and a comment under 20 characters", async () => {
     const mutateAsync = vi.fn().mockResolvedValue({ id: "review-1" });
     mockedUseCreateReview.mockReturnValue({
       mutateAsync,
@@ -165,11 +178,14 @@ describe("ReviewForm — submission", () => {
     );
 
     await clickStars(user, "Overall rating", 5);
+    await user.type(screen.getByLabelText(/comment/i), "Too short");
     await user.click(screen.getByRole("button", { name: /submit review/i }));
 
-    expect(mutateAsync).toHaveBeenCalledWith(
-      expect.objectContaining({ comment: undefined })
-    );
+    expect(await screen.findByText(/required/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/at least 20 characters/i, { selector: "p" })
+    ).toBeInTheDocument();
+    expect(mutateAsync).not.toHaveBeenCalled();
   });
 
   it("disables the submit button while the mutation is pending", () => {
@@ -218,6 +234,7 @@ describe("ReviewForm — error state", () => {
     );
 
     await clickStars(user, "Overall rating", 4);
+    await fillText(user);
     await user.click(screen.getByRole("button", { name: /submit review/i }));
 
     await vi.waitFor(() => expect(toastSpy).toHaveBeenCalled());
@@ -252,6 +269,7 @@ describe("ReviewForm — error state", () => {
     );
 
     await clickStars(user, "Overall rating", 4);
+    await fillText(user);
     await user.click(screen.getByRole("button", { name: /submit review/i }));
 
     await vi.waitFor(() => expect(toastSpy).toHaveBeenCalled());
@@ -282,6 +300,7 @@ describe("ReviewForm — error state", () => {
     );
 
     await clickStars(user, "Overall rating", 4);
+    await fillText(user);
     await user.click(screen.getByRole("button", { name: /submit review/i }));
 
     await vi.waitFor(() => expect(toastSpy).toHaveBeenCalled());

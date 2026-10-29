@@ -12,6 +12,12 @@ const baseApplication: Application = {
   appliedAt: "2026-08-01T00:00:00.000Z",
   updatedAt: "2026-08-01T00:00:00.000Z",
   viewedAt: null,
+  contactPhone: null,
+  rejectionReason: null,
+  offerSalary: null,
+  offerBenefits: null,
+  offerStartDate: null,
+  offerDeclineReason: null,
   statusEvents: [{ status: "PENDING", createdAt: "2026-08-01T00:00:00.000Z" }],
 };
 

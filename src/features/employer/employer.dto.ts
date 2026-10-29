@@ -58,8 +58,26 @@ export type BulkUpdateApplicationsRequestDto = {
   ids: string[];
   status: ApplicationStatus;
 };
+// PB56 AC2: what the talent sees in the offer block.
+export type OfferDetailsDto = {
+  salary: string;
+  benefits: string;
+  // YYYY-MM-DD
+  startDate: string;
+};
+
+// Sent alongside a status change: private notes, PB58 BR2 rejection
+// feedback for the talent, or PB56 offer details.
+export type ApplicationDecisionDto = {
+  notes?: string;
+  reason?: string;
+  offer?: OfferDetailsDto;
+};
+
 export type BulkUpdateApplicationsResponseDto = {
   updated: string[];
+  // PB59 BR1: already-terminal applications that were left untouched.
+  skipped: string[];
   failed: {
     id: string;
     reason: "NOT_FOUND" | "INVALID_TRANSITION" | "STALE";

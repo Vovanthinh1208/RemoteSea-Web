@@ -69,7 +69,41 @@ export const CandidateSummaryCard = ({
             </dd>
           </div>
         )}
+        {/* PB53 AC2: the phone entered on the apply form. */}
+        {applicant.contactPhone && (
+          <div className="flex justify-between gap-3">
+            <dt className="text-neutral-400">{t("summary.phone")}</dt>
+            <dd className="text-neutral-700">
+              <a
+                className="hover:underline"
+                href={`tel:${applicant.contactPhone.replace(/[^+\d]/g, "")}`}
+              >
+                {applicant.contactPhone}
+              </a>
+            </dd>
+          </div>
+        )}
       </dl>
+
+      {/* PB56/PB58: what was already sent to the talent. */}
+      {applicant.offerSalary && (
+        <div className="rounded-10 bg-brand-50/60 p-3 text-[12px] text-neutral-700">
+          <p className="font-medium text-neutral-900">
+            {t("summary.offerSent")}
+          </p>
+          <p>{applicant.offerSalary}</p>
+          {applicant.offerDeclineReason && (
+            <p className="mt-1 text-neutral-600">
+              {t("summary.declineReason")} {applicant.offerDeclineReason}
+            </p>
+          )}
+        </div>
+      )}
+      {applicant.rejectionReason && (
+        <p className="rounded-10 bg-neutral-50 p-3 text-[12px] text-neutral-600">
+          {t("summary.feedbackSent")} {applicant.rejectionReason}
+        </p>
+      )}
 
       {talent.skills.length > 0 && (
         <div className="flex flex-wrap gap-1.5">

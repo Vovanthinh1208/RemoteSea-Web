@@ -6,9 +6,30 @@ import {
   stageLabel,
 } from "./hiring-stage.utils";
 import type { Interview } from "@/types/interview";
+import type { ScorecardSummary } from "@/types/scorecard";
+
+const summary = (total: number, hireCount: number): ScorecardSummary => ({
+  total,
+  hireCount,
+  averages: {
+    technical: null,
+    communication: null,
+    cultureFit: null,
+    overall: null,
+  },
+  recommendations: {
+    STRONGLY_RECOMMEND: 0,
+    RECOMMEND: hireCount,
+    NEUTRAL: 0,
+    NOT_RECOMMEND: total - hireCount,
+    STRONGLY_NOT_RECOMMEND: 0,
+  },
+});
 
 const makeInterview = (overrides: Partial<Interview> = {}): Interview => ({
   id: "intv-1",
+  title: null,
+  platform: null,
   durationMinutes: 30,
   proposedSlots: [],
   confirmedSlot: null,
@@ -17,6 +38,8 @@ const makeInterview = (overrides: Partial<Interview> = {}): Interview => ({
   createdAt: "2026-08-01T00:00:00.000Z",
   interviewerId: null,
   interviewer: null,
+  cancelReason: null,
+  cancelledAt: null,
   ...overrides,
 });
 
@@ -176,7 +199,7 @@ describe("getPrimaryAction", () => {
         status: "INTERVIEW",
         interview,
         viewerHasSubmittedScorecard: true,
-        scorecardSummary: { total: 1, hireCount: 1 },
+        scorecardSummary: summary(1, 1),
       })
     ).toEqual({ kind: "view-feedback-status", label: "View feedback status" });
   });
@@ -192,7 +215,7 @@ describe("getPrimaryAction", () => {
         status: "INTERVIEW",
         interview,
         viewerHasSubmittedScorecard: true,
-        scorecardSummary: { total: 3, hireCount: 2 },
+        scorecardSummary: summary(3, 2),
       })
     ).toEqual({ kind: "make-decision", label: "Make hiring decision" });
   });

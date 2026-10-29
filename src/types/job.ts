@@ -9,6 +9,9 @@ export type Category = {
   name: string;
   slug: string;
   icon: string | null;
+  // PB51 AC2: live jobs in the category — only on GET /categories, not on
+  // the categories embedded in a job.
+  jobCount?: number;
 };
 export type Skill = { id: string; name: string; slug: string };
 

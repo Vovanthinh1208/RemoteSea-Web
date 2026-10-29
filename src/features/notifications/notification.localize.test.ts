@@ -238,3 +238,76 @@ describe("localizeActivity (talent/activity.util.ts strings)", () => {
     });
   });
 });
+
+// Sprint 3 round 2 (2026-10-28): templates added/changed by the API.
+describe("localizeNotification — Sprint 3 templates", () => {
+  it("status change with rejection feedback (PB58 BR2)", () => {
+    expect(
+      vi(
+        n(
+          "APPLICATION_STATUS_CHANGED",
+          "Your application status changed",
+          "Your application for Go Dev is now Rejected. Feedback: Need more Go."
+        )
+      ).body
+    ).toBe(
+      "Đơn ứng tuyển vị trí Go Dev của bạn hiện ở trạng thái: Không được chọn. Phản hồi: Need more Go."
+    );
+  });
+
+  it("interview proposal carrying its title (PB60)", () => {
+    expect(
+      vi(
+        n(
+          "INTERVIEW_PROPOSED",
+          "Acme proposed interview times",
+          "Vòng 1 - Kỹ thuật: 2 option(s) for a 45-min interview for Go Dev."
+        )
+      ).body
+    ).toBe(
+      "Vòng 1 - Kỹ thuật: 2 khung giờ cho buổi phỏng vấn 45 phút vị trí Go Dev."
+    );
+  });
+
+  it("cancellation with its reason (PB62)", () => {
+    expect(
+      vi(
+        n(
+          "INTERVIEW_CANCELLED",
+          "Interview cancelled",
+          "Acme cancelled the interview for Go Dev. Reason: Interviewer is ill"
+        )
+      )
+    ).toEqual({
+      title: "Đã hủy lịch phỏng vấn",
+      body: "Acme đã hủy buổi phỏng vấn vị trí Go Dev. Lý do: Interviewer is ill",
+    });
+  });
+
+  it("new application for the employer (PB73)", () => {
+    expect(
+      vi(
+        n(
+          "APPLICATION_RECEIVED",
+          "New application received",
+          "Jane applied to Go Dev."
+        )
+      )
+    ).toEqual({
+      title: "Có đơn ứng tuyển mới",
+      body: "Jane đã ứng tuyển vị trí Go Dev.",
+    });
+  });
+
+  it("declined offer with the talent's reason (PB56)", () => {
+    expect(
+      vi(
+        n(
+          "OFFER_DECLINED",
+          "Offer declined",
+          "Jane declined your offer for Go Dev. Reason: Relocation"
+        )
+      ).body
+    ).toBe("Jane đã từ chối offer vị trí Go Dev. Lý do: Relocation");
+  });
+});

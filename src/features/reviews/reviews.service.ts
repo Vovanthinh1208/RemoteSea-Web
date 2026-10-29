@@ -7,6 +7,7 @@ import {
 import type {
   CreateReviewPayload,
   ReviewEligibility,
+  ReviewListFilter,
   ReviewListItem,
   UserReviewsResponse,
 } from "@/types/review";
@@ -27,8 +28,9 @@ export const listUserReviews = async (
   userId: string,
   page: number,
   limit: number,
+  filter: ReviewListFilter,
   opts?: RequestOptions
 ): Promise<UserReviewsResponse> =>
   toUserReviewsResponse(
-    await reviewsRepository.listForUser(userId, page, limit, opts)
+    await reviewsRepository.listForUser(userId, page, limit, filter, opts)
   );

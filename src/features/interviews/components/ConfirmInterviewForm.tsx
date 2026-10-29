@@ -30,6 +30,17 @@ export const ConfirmInterviewForm = ({
   return (
     <div className="space-y-3">
       <div>
+        {interview.title && (
+          <p className="mb-0.5 text-[14px] font-semibold text-neutral-900">
+            {interview.title}
+            {interview.platform && (
+              <span className="font-normal text-neutral-500">
+                {" "}
+                · {t(`platform.${interview.platform}`)}
+              </span>
+            )}
+          </p>
+        )}
         <p className="text-[13px] text-neutral-600">{t("confirm.pick")}</p>
         <p className="text-[11.5px] text-neutral-400">
           {t("confirm.local", { n: interview.durationMinutes })}

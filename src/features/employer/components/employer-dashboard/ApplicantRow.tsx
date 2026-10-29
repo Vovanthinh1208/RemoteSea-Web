@@ -46,7 +46,9 @@ export interface ApplicantRowProps {
   onStatusChange: (
     id: string,
     jobId: string,
-    status: ApplicationStatus
+    status: ApplicationStatus,
+    // PB58 BR2: optional feedback for the talent when rejecting.
+    reason?: string
   ) => void;
   selected: boolean;
   onToggleSelect: (id: string) => void;
@@ -130,8 +132,12 @@ export const ApplicantRow = memo(function ApplicantRow({
           confirmLabel={t("bulk.reject")}
           isPending={isPending}
           message={t("row.rejectQ")}
+          noteLabel={t("decision.rejectReason")}
+          notePlaceholder={t("decision.rejectReasonPlaceholder")}
           pendingLabel={t("bulk.rejecting")}
-          onConfirm={() => onStatusChange(a.id, a.jobId, "REJECTED")}
+          onConfirm={(reason) =>
+            onStatusChange(a.id, a.jobId, "REJECTED", reason)
+          }
         >
           {({ onClick }) => (
             <button
@@ -170,8 +176,12 @@ export const ApplicantRow = memo(function ApplicantRow({
           confirmLabel={t("bulk.reject")}
           isPending={isPending}
           message={t("row.rejectQ")}
+          noteLabel={t("decision.rejectReason")}
+          notePlaceholder={t("decision.rejectReasonPlaceholder")}
           pendingLabel={t("bulk.rejecting")}
-          onConfirm={() => onStatusChange(a.id, a.jobId, "REJECTED")}
+          onConfirm={(reason) =>
+            onStatusChange(a.id, a.jobId, "REJECTED", reason)
+          }
         >
           {({ onClick }) => (
             <button

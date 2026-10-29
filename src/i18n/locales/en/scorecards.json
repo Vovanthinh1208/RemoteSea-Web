@@ -1,9 +1,10 @@
 {
   "rec": {
-    "STRONG_YES": "Strong yes",
-    "YES": "Yes",
-    "NO": "No",
-    "STRONG_NO": "Strong no"
+    "STRONGLY_RECOMMEND": "Definite hire",
+    "RECOMMEND": "Hire",
+    "NEUTRAL": "Neutral",
+    "NOT_RECOMMEND": "No hire",
+    "STRONGLY_NOT_RECOMMEND": "Strong no"
   },
   "section": {
     "loadError": "Couldn't load team feedback.",
@@ -13,7 +14,13 @@
     "hireLine": "{{hire}}/{{total}} recommend hire",
     "yourFeedback": "Your feedback",
     "member": "Team member",
-    "add": "Add feedback"
+    "add": "Add feedback",
+    "averageOverall": "Average score",
+    "averageOf5": "/5",
+    "criteriaAverages": "Average by criterion",
+    "strengths": "Strengths",
+    "improvements": "To improve",
+    "note": "Note"
   },
   "form": {
     "success": "Feedback submitted.",
@@ -23,9 +30,20 @@
     "title": "Your read on {{name}}",
     "hint": "Only visible to your team, never to the candidate.",
     "recommendation": "Recommendation",
-    "note": "Note",
+    "note": "Additional note",
     "optional": "(optional)",
     "notePlaceholder": "Sharp on system design, weak on the behavioral round…",
-    "submit": "Submit feedback"
+    "submit": "Submit feedback",
+    "ratingsLabel": "Scores (1–5)",
+    "ratingAria": "{{criterion}}: {{score}}/5",
+    "strengths": "Strengths",
+    "strengthsPlaceholder": "Clear system thinking, explains trade-offs well…",
+    "improvements": "Areas to improve",
+    "improvementsPlaceholder": "Probe testing strategy further…"
+  },
+  "criteria": {
+    "technicalRating": "Technical skills",
+    "communicationRating": "Communication",
+    "cultureFitRating": "Culture fit"
   }
 }

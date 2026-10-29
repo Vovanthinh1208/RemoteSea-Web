@@ -205,6 +205,12 @@ const InterviewPage = lazy(() =>
   }))
 );
 
+const JobApplicantsPage = lazy(() =>
+  import("@/features/employer/applicants/JobApplicantsPage").then((m) => ({
+    default: m.JobApplicantsPage,
+  }))
+);
+
 const ApplicationDetailPage = lazy(() =>
   import("@/features/applications/pages/ApplicationDetailPage").then((m) => ({
     default: m.ApplicationDetailPage,
@@ -312,6 +318,10 @@ export const AppRouter = () => {
           />
           <Route element={<EditJobPage />} path="employer/jobs/:id/edit" />
           <Route
+            element={<JobApplicantsPage />}
+            path="employer/jobs/:id/applicants"
+          />
+          <Route
             element={<CompanySettingsPage />}
             path="employer/company/settings"
           />
@@ -347,6 +357,15 @@ export const AppRouter = () => {
         <Route
           element={<TeamInvitationQueryRedirect />}
           path="team/invitation"
+        />
+        {/* Sprint 3 backlog paths (PB49 AC4, PB54 AC1). */}
+        <Route
+          element={<Navigate replace to={ROUTES.saved} />}
+          path="talent/saved-jobs"
+        />
+        <Route
+          element={<Navigate replace to={ROUTES.talent} />}
+          path="talent/applications"
         />
 
         <Route element={<ProtectedRoute roles={["ADMIN"]} />}>

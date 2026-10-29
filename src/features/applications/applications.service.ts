@@ -9,7 +9,11 @@ import {
   type ApplicationStatusCounts,
 } from "@/features/applications/applications.mapper";
 import type { ApplyRequestDto } from "@/features/applications/applications.dto";
-import type { Application, ApplicationWithJob } from "@/types/application";
+import type {
+  Application,
+  ApplicationWithJob,
+  OfferResponseBody,
+} from "@/types/application";
 
 export type ApplyPayload = ApplyRequestDto;
 export type { ApplicationListResponse, ApplicationStatusCounts };
@@ -49,8 +53,6 @@ export const withdrawApplication = async (
 
 export const respondToOffer = async (
   id: string,
-  response: "ACCEPTED" | "DECLINED"
+  body: OfferResponseBody
 ): Promise<ApplicationWithJob> =>
-  toApplicationWithJob(
-    await applicationsRepository.respondToOffer(id, response)
-  );
+  toApplicationWithJob(await applicationsRepository.respondToOffer(id, body));

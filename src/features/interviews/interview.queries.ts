@@ -1,3 +1,4 @@
+import type { ProposeInterviewRequestDto } from "@/features/interviews/interview.dto";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   cancelInterview,
@@ -29,21 +30,8 @@ export const useInterview = (applicationId: string) => {
 export const useProposeInterview = (applicationId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      durationMinutes,
-      proposedSlots,
-      meetingUrl,
-    }: {
-      durationMinutes: number;
-      proposedSlots: string[];
-      meetingUrl: string | undefined;
-    }) =>
-      proposeInterview(
-        applicationId,
-        durationMinutes,
-        proposedSlots,
-        meetingUrl
-      ),
+    mutationFn: (body: ProposeInterviewRequestDto) =>
+      proposeInterview(applicationId, body),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: interviewKeys.detail(applicationId),
@@ -99,7 +87,7 @@ export const useDownloadInterviewIcs = (applicationId: string) => {
 export const useCancelInterview = (applicationId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => cancelInterview(applicationId),
+    mutationFn: (reason: string) => cancelInterview(applicationId, reason),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: interviewKeys.detail(applicationId),

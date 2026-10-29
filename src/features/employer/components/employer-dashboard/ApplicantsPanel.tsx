@@ -95,8 +95,8 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
 
   const { mutateAsync: updateStatus } = updateStatusMutation;
   const updateApplicantStatus = useCallback(
-    (id: string, jobId: string, status: ApplicationStatus) =>
-      runWithToast(() => updateStatus({ id, jobId, status }), {
+    (id: string, jobId: string, status: ApplicationStatus, reason?: string) =>
+      runWithToast(() => updateStatus({ id, jobId, status, reason }), {
         success:
           status === "REJECTED"
             ? t("applicantsPanel.rejected")
@@ -179,16 +179,27 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
     selectedApplicants.every((a) => a.status === selectedApplicants[0].status)
       ? selectedApplicants[0].status
       : null;
-  const bulkNextStatus = commonStatus ? NEXT_STAGE[commonStatus] : undefined;
+  // Offers carry per-candidate details (PB56), so "advance" never targets
+  // OFFERED in bulk — the API refuses it too.
+  const bulkNextStatus =
+    commonStatus && NEXT_STAGE[commonStatus] !== "OFFERED"
+      ? NEXT_STAGE[commonStatus]
+      : undefined;
 
-  const runBulkUpdate = async (status: ApplicationStatus, notes?: string) => {
+  const runBulkUpdate = async (status: ApplicationStatus, note?: string) => {
     const items = selectedApplicants.map((a) => ({ id: a.id, jobId: a.jobId }));
     const rejecting = status === "REJECTED";
     try {
-      // Backend always returns 200 with a per-id updated/failed split —
-      // partial failure isn't an exception, so the message has to be built
-      // from the response, not runWithToast's single static success string.
-      const { updated, failed } = await bulkUpdate({ items, status, notes });
+      // Backend always returns 200 with a per-id updated/skipped/failed
+      // split — partial failure isn't an exception, so the message has to be
+      // built from the response, not runWithToast's single static success
+      // string. A rejection's note is the feedback the talents see (PB58
+      // BR2); an advance's note stays the company's private note.
+      const { updated, skipped, failed } = await bulkUpdate({
+        items,
+        status,
+        ...(rejecting ? { reason: note } : { notes: note }),
+      });
       toast({
         variant: failed.length > 0 ? "info" : "success",
         title:
@@ -205,6 +216,11 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
                   : "applicantsPanel.bulkPartialAdvanced",
                 { updated: updated.length, failed: failed.length }
               ),
+        // PB59 BR1/AC5: say how many end-state applications were skipped.
+        description:
+          skipped.length > 0
+            ? t("applicantsPanel.bulkSkipped", { count: skipped.length })
+            : undefined,
       });
       // Only clear on a real response (even a partial one) — a thrown error
       // (network failure, rate limit) means nothing was updated, so wiping

@@ -188,7 +188,7 @@
     "back": "Back"
   },
   "upload": {
-    "mustBePdf": "Must be a PDF file.",
+    "mustBePdf": "Must be a PDF or Word (.docx) file.",
     "mustBeImage": "Must be a JPEG, PNG, or WebP image.",
     "tooLarge": "File too large — max {{mb}}MB.",
     "failed": "Upload failed. Try again.",

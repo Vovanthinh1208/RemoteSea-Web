@@ -3,6 +3,7 @@ import type { RequestOptions } from "@/core/http/request-config";
 import type { ApplicationStatus } from "@/types/application";
 import type { JobStatus } from "@/types/job";
 import type {
+  ApplicationDecisionDto,
   BulkUpdateApplicationsResponseDto,
   ConfirmVerificationRequestDto,
   ConfirmVerificationResponseDto,
@@ -129,22 +130,35 @@ export const employerRepository = {
   updateApplicationStatus: async (
     applicationId: string,
     status: ApplicationStatus,
-    notes?: string
+    decision: ApplicationDecisionDto = {}
   ): Promise<void> => {
     await apiClient.patch(`/employer/applications/${applicationId}`, {
       status,
-      notes,
+      ...decision,
     });
   },
 
   bulkUpdateApplicationStatus: async (
     ids: string[],
     status: ApplicationStatus,
-    notes?: string
+    decision: Omit<ApplicationDecisionDto, "offer"> = {}
   ): Promise<BulkUpdateApplicationsResponseDto> => {
     const { data } = await apiClient.patch<BulkUpdateApplicationsResponseDto>(
       "/employer/applications/bulk",
-      { ids, status, notes }
+      { ids, status, ...decision }
+    );
+    return data;
+  },
+
+  // PB57 AC4: q = applicant name search.
+  searchJobApplications: async (
+    jobId: string,
+    params: { q?: string; status?: ApplicationStatus; limit?: number },
+    opts?: RequestOptions
+  ): Promise<EmployerJobApplicationsResponseDto> => {
+    const { data } = await apiClient.get<EmployerJobApplicationsResponseDto>(
+      `/employer/jobs/${jobId}/applications`,
+      { params, signal: opts?.signal }
     );
     return data;
   },

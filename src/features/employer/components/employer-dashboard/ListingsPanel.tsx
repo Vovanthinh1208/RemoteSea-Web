@@ -1,6 +1,14 @@
 import { memo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight, Download, Eye, Lock, Pencil, Plus } from "lucide-react";
+import {
+  ChevronRight,
+  Download,
+  Eye,
+  Lock,
+  Pencil,
+  Plus,
+  Users,
+} from "lucide-react";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useCloseJob } from "@/features/jobs/jobs.queries";
 import { EmptyRow } from "@/components/shared/EmptyRow";
@@ -191,6 +199,15 @@ const ListingRow = memo(function ListingRow({
   // (one-way, so it goes through a confirmation dialog first).
   const manageActions = (
     <>
+      {/* PB57 AC1: the job's applicants board. */}
+      <Link
+        aria-label={t("listings.applicantsAria", { title: j.title })}
+        className={actionClass}
+        to={ROUTES.jobApplicants(j.id)}
+      >
+        <Users size={12} />
+        {t("listings.applicants")}
+      </Link>
       {isEditable && (
         <Link
           aria-label={t("listings.editAria", { title: j.title })}

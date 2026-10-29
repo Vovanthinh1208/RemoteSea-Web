@@ -20,7 +20,9 @@
     },
     "status": {
       "title": "Trạng thái đơn ứng tuyển của bạn đã thay đổi",
-      "body": "Đơn ứng tuyển vị trí {{job}} của bạn hiện ở trạng thái: {{status}}."
+      "body": "Đơn ứng tuyển vị trí {{job}} của bạn hiện ở trạng thái: {{status}}.",
+      "feedback": "Phản hồi: {{reason}}",
+      "offerPointer": "Mở đơn ứng tuyển để xem chi tiết đề nghị."
     },
     "report": {
       "resolvedTitle": "Báo cáo của bạn đã được xử lý",
@@ -46,6 +48,25 @@
       "jobLine": "{{job}} tại {{company}}",
       "interviewProposed": "Lịch phỏng vấn được đề xuất",
       "invitationTitle": "Lời mời ứng tuyển"
+    },
+    "interviewCancelled": {
+      "title": "Đã hủy lịch phỏng vấn",
+      "body": "{{company}} đã hủy buổi phỏng vấn vị trí {{job}}.",
+      "reason": "Lý do: {{reason}}"
+    },
+    "applicationReceived": {
+      "title": "Có đơn ứng tuyển mới",
+      "body": "{{name}} đã ứng tuyển vị trí {{job}}."
+    },
+    "withdrawn": {
+      "title": "Ứng viên đã rút đơn",
+      "body": "{{name}} đã rút đơn ứng tuyển vị trí {{job}}."
+    },
+    "offer": {
+      "acceptedTitle": "Offer đã được chấp nhận!",
+      "acceptedBody": "{{name}} đã chấp nhận offer vị trí {{job}}.",
+      "declinedTitle": "Offer bị từ chối",
+      "declinedBody": "{{name}} đã từ chối offer vị trí {{job}}."
     }
   }
 }

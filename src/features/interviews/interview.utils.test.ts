@@ -6,6 +6,7 @@ const makeInterview = (
   overrides: Partial<UpcomingInterview> = {}
 ): UpcomingInterview => ({
   id: "intv-1",
+  title: null,
   applicationId: "app-1",
   confirmedSlot: "2026-08-19T09:00:00.000Z",
   durationMinutes: 30,

@@ -1,9 +1,10 @@
 {
   "rec": {
-    "STRONG_YES": "Rất nên tuyển",
-    "YES": "Nên tuyển",
-    "NO": "Không nên",
-    "STRONG_NO": "Tuyệt đối không"
+    "STRONGLY_RECOMMEND": "Rất nên tuyển",
+    "RECOMMEND": "Nên tuyển",
+    "NEUTRAL": "Trung lập",
+    "NOT_RECOMMEND": "Không nên tuyển",
+    "STRONGLY_NOT_RECOMMEND": "Tuyệt đối không tuyển"
   },
   "section": {
     "loadError": "Không thể tải phản hồi của nhóm.",
@@ -13,7 +14,13 @@
     "hireLine": "{{hire}}/{{total}} đề xuất tuyển",
     "yourFeedback": "Phản hồi của bạn",
     "member": "Thành viên nhóm",
-    "add": "Thêm phản hồi"
+    "add": "Thêm phản hồi",
+    "averageOverall": "Điểm trung bình",
+    "averageOf5": "/5",
+    "criteriaAverages": "Trung bình theo tiêu chí",
+    "strengths": "Điểm mạnh",
+    "improvements": "Cần cải thiện",
+    "note": "Ghi chú"
   },
   "form": {
     "success": "Đã gửi phản hồi.",
@@ -23,9 +30,20 @@
     "title": "Nhận định của bạn về {{name}}",
     "hint": "Chỉ nhóm của bạn thấy, không bao giờ hiển thị cho ứng viên.",
     "recommendation": "Đề xuất",
-    "note": "Ghi chú",
+    "note": "Ghi chú thêm",
     "optional": "(không bắt buộc)",
     "notePlaceholder": "Giỏi thiết kế hệ thống, yếu ở vòng hành vi…",
-    "submit": "Gửi phản hồi"
+    "submit": "Gửi phản hồi",
+    "ratingsLabel": "Chấm điểm (1–5)",
+    "ratingAria": "{{criterion}}: {{score}}/5",
+    "strengths": "Điểm mạnh",
+    "strengthsPlaceholder": "Tư duy hệ thống rõ ràng, giải thích đánh đổi tốt…",
+    "improvements": "Điểm cần cải thiện",
+    "improvementsPlaceholder": "Cần đào sâu chiến lược kiểm thử…"
+  },
+  "criteria": {
+    "technicalRating": "Năng lực chuyên môn",
+    "communicationRating": "Kỹ năng giao tiếp",
+    "cultureFitRating": "Mức độ phù hợp văn hóa"
   }
 }

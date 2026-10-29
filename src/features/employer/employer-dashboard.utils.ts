@@ -144,5 +144,10 @@ export const sortOptions = (): { value: ApplicantSortId; label: string }[] => [
   { value: "match", label: translate("employer.sort.match") },
 ];
 
+// PB59 BR1: end states are never part of a bulk change (OFFER_ACCEPTED is
+// the backlog's "HIRED").
 export const isRejectable = (status: ApplicationStatus): boolean =>
-  status !== "REJECTED" && status !== "WITHDRAWN";
+  status !== "REJECTED" &&
+  status !== "WITHDRAWN" &&
+  status !== "OFFER_ACCEPTED" &&
+  status !== "OFFER_DECLINED";

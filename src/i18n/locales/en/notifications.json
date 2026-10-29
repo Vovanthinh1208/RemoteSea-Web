@@ -20,7 +20,9 @@
     },
     "status": {
       "title": "Your application status changed",
-      "body": "Your application for {{job}} is now {{status}}."
+      "body": "Your application for {{job}} is now {{status}}.",
+      "feedback": "Feedback: {{reason}}",
+      "offerPointer": "Open the application to review the offer details."
     },
     "report": {
       "resolvedTitle": "Your report was resolved",
@@ -46,6 +48,25 @@
       "jobLine": "{{job}} at {{company}}",
       "interviewProposed": "Interview proposed",
       "invitationTitle": "Job invitation"
+    },
+    "interviewCancelled": {
+      "title": "Interview cancelled",
+      "body": "{{company}} cancelled the interview for {{job}}.",
+      "reason": "Reason: {{reason}}"
+    },
+    "applicationReceived": {
+      "title": "New application received",
+      "body": "{{name}} applied to {{job}}."
+    },
+    "withdrawn": {
+      "title": "An applicant withdrew their application",
+      "body": "{{name}} withdrew their application for {{job}}."
+    },
+    "offer": {
+      "acceptedTitle": "Offer accepted!",
+      "acceptedBody": "{{name}} accepted your offer for {{job}}.",
+      "declinedTitle": "Offer declined",
+      "declinedBody": "{{name}} declined your offer for {{job}}."
     }
   }
 }

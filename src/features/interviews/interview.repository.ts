@@ -1,6 +1,7 @@
 import { apiClient } from "@/core/http/http-client";
 import type { RequestOptions } from "@/core/http/request-config";
 import type {
+  CancelInterviewRequestDto,
   ConfirmInterviewRequestDto,
   InterviewDto,
   InterviewWithHeaderResponseDto,
@@ -65,9 +66,14 @@ export const interviewRepository = {
   },
 
   // Employer-only, same reasoning as listUpcoming above.
-  cancel: async (applicationId: string): Promise<InterviewDto> => {
+  // PB62 BR1: the reason is mandatory and reaches the talent.
+  cancel: async (
+    applicationId: string,
+    body: CancelInterviewRequestDto
+  ): Promise<InterviewDto> => {
     const { data } = await apiClient.patch<InterviewDto>(
-      `/employer/applications/${applicationId}/interview/cancel`
+      `/employer/applications/${applicationId}/interview/cancel`,
+      body
     );
     return data;
   },

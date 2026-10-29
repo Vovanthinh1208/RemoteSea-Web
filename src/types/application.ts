@@ -33,8 +33,22 @@ export type Application = {
   // employer's list-view stamp; statusEvents is the full history, oldest
   // first, always starting with the initial PENDING event.
   viewedAt: string | null;
+  // PB53 AC2: the contact phone entered on the apply form.
+  contactPhone: string | null;
+  // PB58 BR2: feedback the employer chose to share when rejecting.
+  rejectionReason: string | null;
+  // PB56 AC1–2: the offer as sent by the employer, and the talent's own
+  // mandatory reason when declining it.
+  offerSalary: string | null;
+  offerBenefits: string | null;
+  offerStartDate: string | null;
+  offerDeclineReason: string | null;
   statusEvents: ApplicationStatusEvent[];
 };
+
+// PB56: accepting takes no reason, declining requires one.
+export type OfferResponseBody =
+  { response: "ACCEPTED" } | { response: "DECLINED"; reason: string };
 
 // GET /applications embeds the same narrow "job card" shape as the /jobs list —
 // the dashboard rows only read title/country/employer.companyName from it.

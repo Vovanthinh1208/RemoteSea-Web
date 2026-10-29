@@ -95,6 +95,18 @@ describe("computeMatchScore", () => {
     ]);
   });
 
+  // PB50 AC3: matched as well as missing skills.
+  it("lists the job skills the talent already has", () => {
+    const talent: MatchableTalent = {
+      ...baseTalent,
+      skills: [talentSkill(TS.id)],
+    };
+    const { matchedSkills } = computeMatchScore(baseJob, talent);
+    expect(matchedSkills).toEqual([
+      { id: TS.id, name: TS.name, isRequired: true },
+    ]);
+  });
+
   it("reports no missing skills once every job skill is covered", () => {
     const { missingSkills } = computeMatchScore(baseJob, baseTalent);
     expect(missingSkills).toEqual([]);

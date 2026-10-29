@@ -18,6 +18,22 @@ import { useApplicationHeaderContext } from "@/hooks/useApplicationHeaderContext
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useTranslation } from "@/i18n/useTranslation";
 
+// Same minimum as the API's cancelInterviewSchema.
+const CANCEL_REASON_MIN_LENGTH = 5;
+
+const CancelReason = ({ reason }: { reason: string | null }) => {
+  const { t } = useTranslation("interviews");
+  if (!reason) return null;
+  return (
+    <p className="mt-2 text-[12.5px] text-neutral-600">
+      <span className="font-medium text-neutral-700">
+        {t("page.cancelReasonLabel")}
+      </span>{" "}
+      {reason}
+    </p>
+  );
+};
+
 export const InterviewPage = () => {
   const { t } = useTranslation("interviews");
   const { id } = useParams<{ id: string }>();
@@ -30,8 +46,10 @@ export const InterviewPage = () => {
   const cancelMutation = useCancelInterview(applicationId);
   const runWithToast = useToastMutation();
 
-  const handleCancel = async (): Promise<void> => {
-    await runWithToast(() => cancelMutation.mutateAsync(), {
+  // PB62 AC2–3: the reason typed into the confirm step goes to the talent.
+  const handleCancel = async (reason?: string): Promise<void> => {
+    if (!reason) return;
+    await runWithToast(() => cancelMutation.mutateAsync(reason), {
       success: t("page.cancelled"),
       error: t("page.cancelFailed"),
     });
@@ -39,9 +57,12 @@ export const InterviewPage = () => {
 
   const cancelInterviewAction = (
     <ConfirmAction
-      confirmLabel={t("page.cancel")}
+      confirmLabel={t("page.confirmCancel")}
       isPending={cancelMutation.isPending}
       message={t("page.cancelQ")}
+      noteLabel={t("page.cancelReason")}
+      noteMinLength={CANCEL_REASON_MIN_LENGTH}
+      notePlaceholder={t("page.cancelReasonPlaceholder")}
       pendingLabel={t("page.cancelling")}
       onConfirm={handleCancel}
     >
@@ -137,6 +158,7 @@ export const InterviewPage = () => {
             <div className="space-y-5">
               <div className="rounded-10 border border-neutral-200 bg-neutral-50 p-3.5 text-[12.5px] text-neutral-600">
                 {t("page.cancelledNote")}
+                <CancelReason reason={data.interview.cancelReason} />
               </div>
               <ProposeInterviewForm
                 applicationId={applicationId}
@@ -144,10 +166,15 @@ export const InterviewPage = () => {
               />
             </div>
           ) : (
-            <EmptyState
-              description={t("page.cancelledDesc")}
-              title={t("page.cancelledTitle")}
-            />
+            <>
+              <EmptyState
+                description={t("page.cancelledDesc")}
+                title={t("page.cancelledTitle")}
+              />
+              <div className="text-center">
+                <CancelReason reason={data.interview.cancelReason} />
+              </div>
+            </>
           )}
         </div>
       ) : isEmployerViewer ? (

@@ -34,6 +34,8 @@ export const ROUTES = {
   profile: "/profile",
   postJob: "/post-job",
   editJob: (id: string) => `/employer/jobs/${id}/edit`,
+  // PB57 AC1.
+  jobApplicants: (id: string) => `/employer/jobs/${id}/applicants`,
   companySettings: "/employer/company/settings",
   talentProfileViews: "/talent/profile/views",
   postJobSuccess: "/post-job/success",

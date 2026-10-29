@@ -183,8 +183,11 @@ export const reviewKeys = {
   eligibility: (applicationId: string) =>
     ["reviews", "eligibility", applicationId] as const,
   forUserPrefix: (userId: string) => ["reviews", "user", userId] as const,
-  forUser: (userId: string, page: number) =>
-    ["reviews", "user", userId, page] as const,
+  forUser: (
+    userId: string,
+    page: number,
+    filter: { rating?: number; sort: string } = { sort: "newest" }
+  ) => ["reviews", "user", userId, page, filter] as const,
 };
 
 export const scorecardKeys = {

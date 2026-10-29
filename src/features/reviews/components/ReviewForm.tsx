@@ -2,7 +2,10 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StarRatingInput } from "@/components/shared/StarRatingInput";
 import { Button } from "@/components/ui/button";
-import { TEXTAREA_INPUT_CLASS } from "@/components/shared/input-styles";
+import {
+  TEXT_INPUT_CLASS,
+  TEXTAREA_INPUT_CLASS,
+} from "@/components/shared/input-styles";
 import { useCreateReview } from "@/features/reviews/reviews.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { ApiError } from "@/core/errors/api-error";
@@ -76,11 +79,7 @@ export const ReviewForm = ({
     runWithToast(
       () =>
         createReviewMutation
-          .mutateAsync({
-            applicationId,
-            ...values,
-            comment: values.comment || undefined,
-          })
+          .mutateAsync({ applicationId, ...values })
           .then(onSuccess),
       {
         success: t("form.success"),
@@ -92,6 +91,9 @@ export const ReviewForm = ({
           }
           if (err.status === NOT_ELIGIBLE_STATUS) {
             return t("form.notEligible");
+          }
+          if (err.code === "REVIEW_CONTENT_REJECTED") {
+            return t("form.contentRejected");
           }
           return undefined;
         },
@@ -147,10 +149,31 @@ export const ReviewForm = ({
       <div>
         <label
           className="mb-1.5 block text-[13px] font-medium text-neutral-700"
+          htmlFor="review-title"
+        >
+          {t("form.reviewTitle")}
+        </label>
+        <input
+          className={TEXT_INPUT_CLASS}
+          id="review-title"
+          maxLength={120}
+          placeholder={t("form.reviewTitlePlaceholder")}
+          {...register("title")}
+        />
+        {errors.title && (
+          <p className="mt-1 text-[12px] text-red-600">
+            {errors.title.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <label
+          className="mb-1.5 block text-[13px] font-medium text-neutral-700"
           htmlFor="review-comment"
         >
           {t("form.comment")}{" "}
-          <span className="text-neutral-400">{t("form.optional")}</span>
+          <span className="text-neutral-400">{t("form.commentHint")}</span>
         </label>
         <textarea
           className={TEXTAREA_INPUT_CLASS}

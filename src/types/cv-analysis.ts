@@ -1,4 +1,5 @@
-export type CvRecommendation = "ADVANCE" | "HOLD" | "REJECT";
+// PB66 AC3.
+export type CvRecommendation = "PROCEED" | "REVIEW" | "REJECT";
 
 export type CvAnalysis = {
   id: string;

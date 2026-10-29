@@ -4,7 +4,7 @@
     "cancelled": "Interview cancelled.",
     "cancelFailed": "Couldn't cancel the interview. Please try again.",
     "cancel": "Cancel interview",
-    "cancelQ": "Cancel this interview?",
+    "cancelQ": "Enter a reason — the candidate receives it by email:",
     "cancelling": "Cancelling…",
     "errorTitle": "Couldn't load interview details",
     "errorDesc": "Something went wrong loading this interview.",
@@ -15,7 +15,11 @@
     "cancelledNote": "This interview was cancelled. Propose new times below to reschedule.",
     "cancelledTitle": "Interview cancelled",
     "cancelledDesc": "The employer cancelled this interview.",
-    "waiting": "Waiting on the candidate to confirm one of these times. You can still revise them below."
+    "waiting": "Waiting on the candidate to confirm one of these times. You can still revise them below.",
+    "cancelReason": "Cancellation reason",
+    "cancelReasonPlaceholder": "e.g. The interviewer is unexpectedly unavailable…",
+    "cancelReasonLabel": "Reason:",
+    "confirmCancel": "Confirm cancellation"
   },
   "schedule": {
     "docTitle": "Interview schedule — Employer Dashboard",
@@ -39,7 +43,7 @@
     "minutes": "{{n}} minutes · your local time",
     "with": "With {{name}}",
     "join": "Join interview",
-    "calendar": "Add to calendar",
+    "calendar": "Add to calendar / Download .ics",
     "calendarFailed": "Couldn't download the calendar file. Please try again."
   },
   "confirm": {
@@ -59,8 +63,25 @@
     "hint": "In your local time — the candidate sees these converted to theirs.",
     "remove": "Remove this time option",
     "addOption": "+ Add another option",
-    "meetingLink": "Meeting link (optional)",
+    "meetingLink": "Meeting link",
     "update": "Update times",
-    "send": "Send invitation"
+    "send": "Send proposal",
+    "title": "Interview title",
+    "titlePlaceholder": "Round 1 - Technical",
+    "titleRequired": "Please enter an interview title.",
+    "platform": "Platform",
+    "interviewer": "Interviewer",
+    "unassigned": "Unassigned",
+    "linkRequired": "Please enter a valid http(s) link.",
+    "slotRequired": "Pick at least one time.",
+    "slotPast": "Proposed times must be in the future.",
+    "slotStart": "Time {{n}} — start",
+    "endsAt": "Ends {{time}}"
+  },
+  "platform": {
+    "GOOGLE_MEET": "Google Meet",
+    "ZOOM": "Zoom",
+    "MS_TEAMS": "Microsoft Teams",
+    "OTHER": "Other"
   }
 }

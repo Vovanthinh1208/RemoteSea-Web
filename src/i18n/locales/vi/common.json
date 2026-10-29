@@ -188,7 +188,7 @@
     "back": "Quay lại"
   },
   "upload": {
-    "mustBePdf": "Phải là tệp PDF.",
+    "mustBePdf": "Phải là tệp PDF hoặc Word (.docx).",
     "mustBeImage": "Phải là ảnh JPEG, PNG hoặc WebP.",
     "tooLarge": "Tệp quá lớn — tối đa {{mb}}MB.",
     "failed": "Tải lên thất bại. Vui lòng thử lại.",

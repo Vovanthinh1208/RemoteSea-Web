@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   breakdownByRecommendation,
   countEligibleReviewers,
+  formatAverage,
 } from "./scorecard.utils";
 import type { Scorecard } from "@/types/scorecard";
 import type { TeamMember } from "@/types/team";
@@ -21,6 +22,11 @@ const makeScorecard = (
   authorId: "author",
   author: { name: "Author" },
   recommendation,
+  technicalRating: 4,
+  communicationRating: 4,
+  cultureFitRating: 4,
+  strengths: null,
+  improvements: null,
   note: null,
   createdAt: "2026-08-01T00:00:00.000Z",
 });
@@ -56,25 +62,36 @@ describe("countEligibleReviewers", () => {
 describe("breakdownByRecommendation", () => {
   it("zero-fills every recommendation even with no scorecards", () => {
     expect(breakdownByRecommendation([])).toEqual({
-      STRONG_YES: 0,
-      YES: 0,
-      NO: 0,
-      STRONG_NO: 0,
+      STRONGLY_RECOMMEND: 0,
+      RECOMMEND: 0,
+      NEUTRAL: 0,
+      NOT_RECOMMEND: 0,
+      STRONGLY_NOT_RECOMMEND: 0,
     });
   });
 
   it("tallies each recommendation independently", () => {
     const scorecards = [
-      makeScorecard("STRONG_YES"),
-      makeScorecard("YES"),
-      makeScorecard("YES"),
-      makeScorecard("NO"),
+      makeScorecard("STRONGLY_RECOMMEND"),
+      makeScorecard("RECOMMEND"),
+      makeScorecard("RECOMMEND"),
+      makeScorecard("NEUTRAL"),
+      makeScorecard("NOT_RECOMMEND"),
     ];
     expect(breakdownByRecommendation(scorecards)).toEqual({
-      STRONG_YES: 1,
-      YES: 2,
-      NO: 1,
-      STRONG_NO: 0,
+      STRONGLY_RECOMMEND: 1,
+      RECOMMEND: 2,
+      NEUTRAL: 1,
+      NOT_RECOMMEND: 1,
+      STRONGLY_NOT_RECOMMEND: 0,
     });
+  });
+});
+
+describe("formatAverage", () => {
+  it("shows one decimal, or a dash when missing", () => {
+    expect(formatAverage(4)).toBe("4.0");
+    expect(formatAverage(3.67)).toBe("3.7");
+    expect(formatAverage(null)).toBe("–");
   });
 });

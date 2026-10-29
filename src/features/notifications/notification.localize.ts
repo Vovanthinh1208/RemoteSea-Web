@@ -48,15 +48,25 @@ const localizeVi = (n: Notification, t: Translate): Localized | null => {
       return null;
     }
     case "APPLICATION_STATUS_CHANGED": {
-      const body = match(n.body, /^Your application for (.+) is now (.+?)\.$/);
+      // Optional suffixes: PB58 rejection feedback, PB56 offer pointer.
+      const body = match(
+        n.body,
+        /^Your application for (.+) is now (.+?)\.(?: Feedback: ([\s\S]+)| (Open the application to review the offer details\.))?$/
+      );
       const status = body && STATUS_BY_LABEL[body[2].toLowerCase()];
       if (!body || !status) return null;
+      const base = t("notifications.tpl.status.body", {
+        job: body[1],
+        status: t(`talent.stage.${status}`),
+      });
+      const suffix = body[3]
+        ? ` ${t("notifications.tpl.status.feedback", { reason: body[3] })}`
+        : body[4]
+          ? ` ${t("notifications.tpl.status.offerPointer")}`
+          : "";
       return {
         title: t("notifications.tpl.status.title"),
-        body: t("notifications.tpl.status.body", {
-          job: body[1],
-          status: t(`talent.stage.${status}`),
-        }),
+        body: `${base}${suffix}`,
       };
     }
     case "JOB_REPORT_RESOLVED": {
@@ -73,20 +83,92 @@ const localizeVi = (n: Notification, t: Translate): Localized | null => {
     }
     case "INTERVIEW_PROPOSED": {
       const title = match(n.title, /^(.+) proposed interview times$/);
+      // PB60: the body now starts with the interview title.
       const body = match(
         n.body,
-        /^(\d+) option(?:\(s\)|s)? for a (\d+)-min interview for (.+)\.$/
+        /^(?:(.+?): )?(\d+) option(?:\(s\)|s)? for a (\d+)-min interview for (.+)\.$/
       );
       if (!title || !body) return null;
+      const text = t("notifications.tpl.interviewProposed.body", {
+        count: Number(body[2]),
+        minutes: Number(body[3]),
+        job: body[4],
+      });
       return {
         title: t("notifications.tpl.interviewProposed.title", {
           company: title[1],
         }),
-        body: t("notifications.tpl.interviewProposed.body", {
-          count: Number(body[1]),
-          minutes: Number(body[2]),
-          job: body[3],
+        body: body[1] ? `${body[1]}: ${text}` : text,
+      };
+    }
+    case "INTERVIEW_CANCELLED": {
+      const body = match(
+        n.body,
+        /^(.+) cancelled the interview for (.+?)\.(?: Reason: ([\s\S]+))?$/
+      );
+      if (n.title.trim() !== "Interview cancelled" || !body) return null;
+      const text = t("notifications.tpl.interviewCancelled.body", {
+        company: body[1],
+        job: body[2],
+      });
+      return {
+        title: t("notifications.tpl.interviewCancelled.title"),
+        body: body[3]
+          ? `${text} ${t("notifications.tpl.interviewCancelled.reason", { reason: body[3] })}`
+          : text,
+      };
+    }
+    case "APPLICATION_RECEIVED": {
+      const body = match(n.body, /^(.+) applied to (.+)\.$/);
+      if (n.title.trim() !== "New application received" || !body) return null;
+      return {
+        title: t("notifications.tpl.applicationReceived.title"),
+        body: t("notifications.tpl.applicationReceived.body", {
+          name:
+            body[1] === "A candidate"
+              ? t("notifications.tpl.interviewConfirmed.someone")
+              : body[1],
+          job: body[2],
         }),
+      };
+    }
+    case "APPLICATION_WITHDRAWN": {
+      const body = match(
+        n.body,
+        /^(.+) withdrew their application for (.+)\.$/
+      );
+      if (!body) return null;
+      return {
+        title: t("notifications.tpl.withdrawn.title"),
+        body: t("notifications.tpl.withdrawn.body", {
+          name: body[1],
+          job: body[2],
+        }),
+      };
+    }
+    case "OFFER_ACCEPTED":
+    case "OFFER_DECLINED": {
+      const body = match(
+        n.body,
+        /^(.+) (accepted|declined) your offer for (.+?)\.(?: Reason: ([\s\S]+))?$/
+      );
+      if (!body) return null;
+      const accepted = n.type === "OFFER_ACCEPTED";
+      const text = t(
+        accepted
+          ? "notifications.tpl.offer.acceptedBody"
+          : "notifications.tpl.offer.declinedBody",
+        { name: body[1], job: body[3] }
+      );
+      return {
+        title: t(
+          accepted
+            ? "notifications.tpl.offer.acceptedTitle"
+            : "notifications.tpl.offer.declinedTitle"
+        ),
+        body: body[4]
+          ? `${text} ${t("notifications.tpl.interviewCancelled.reason", { reason: body[4] })}`
+          : text,
       };
     }
     case "INTERVIEW_CONFIRMED": {

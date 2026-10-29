@@ -157,7 +157,35 @@
   },
   "applicants": {
     "emptyAll": "No applicants yet.",
-    "emptyFiltered": "No {{filter}} applicants."
+    "emptyFiltered": "No {{filter}} applicants.",
+    "title": "Applicants",
+    "docTitle": "Applicants — {{title}}",
+    "searchLabel": "Search applicants by name",
+    "searchPlaceholder": "Search by candidate name…",
+    "statusLabel": "Filter by status",
+    "allStatuses": "All statuses",
+    "errorTitle": "Couldn't load applicants",
+    "errorDesc": "Something went wrong loading this job's applicants.",
+    "empty": "No applicants yet",
+    "emptyDesc": "People who apply to this job will show up here.",
+    "noMatch": "No matching applicants",
+    "noMatchDesc": "Try another name or clear the status filter.",
+    "count_one": "{{count}} applicant",
+    "count_other": "{{count}} applicants",
+    "showingSome": "Showing the latest {{shown}} of {{total}} — use search or filters to narrow down.",
+    "updating": "updating…",
+    "aiScore": "AI CV score",
+    "appliedOn": "Applied {{date}}",
+    "openAria": "Open {{name}}'s application",
+    "col": {
+      "applied": "Applied",
+      "reviewing": "Reviewing",
+      "shortlisted": "Shortlisted",
+      "interview": "Interview",
+      "offered": "Offered",
+      "hired": "Hired",
+      "rejected": "Rejected / Closed"
+    }
   },
   "sort": {
     "recent": "Most recent",
@@ -229,7 +257,9 @@
     "closeConfirm": "Close listing",
     "closeCancel": "Keep it open",
     "closeDone": "Listing closed.",
-    "closeFailed": "Couldn't close the listing."
+    "closeFailed": "Couldn't close the listing.",
+    "applicants": "Applicants",
+    "applicantsAria": "View applicants for {{title}}"
   },
   "applicantsPanel": {
     "title": "Recent applicants",
@@ -247,7 +277,9 @@
     "bulkPartialAdvanced": "{{updated}} advanced, {{failed}} couldn't be updated",
     "bulkPartialRejected": "{{updated}} rejected, {{failed}} couldn't be updated",
     "bulkFailReject": "Couldn't reject applicants",
-    "bulkFailAdvance": "Couldn't advance applicants"
+    "bulkFailAdvance": "Couldn't advance applicants",
+    "bulkSkipped_one": "Skipped {{count}} application in an end state.",
+    "bulkSkipped_other": "Skipped {{count}} applications in an end state."
   },
   "bulk": {
     "selectAll": "Select all eligible",
@@ -263,7 +295,8 @@
     "rejectQ_other": "Reject {{count}} selected applicants?",
     "rejecting": "Rejecting…",
     "rejectSelected": "Reject selected",
-    "selectHint": "Select to update in bulk"
+    "selectHint": "Select to update in bulk",
+    "toolbar": "Bulk actions"
   },
   "row": {
     "candidate": "Candidate",
@@ -379,7 +412,18 @@
     "extending": "Extending…",
     "reject": "Reject",
     "rejectQ": "Reject {{name}}'s application?",
-    "rejecting": "Rejecting…"
+    "rejecting": "Rejecting…",
+    "offerForm": "Offer details",
+    "salary": "Salary",
+    "salaryPlaceholder": "e.g. USD 2,500 / month",
+    "benefits": "Benefits",
+    "benefitsPlaceholder": "Insurance, remote stipend, paid leave…",
+    "startDate": "Proposed start date",
+    "offerRequired": "Required.",
+    "startPast": "The start date can't be in the past.",
+    "sendOffer": "Send offer",
+    "rejectReason": "Feedback for the candidate",
+    "rejectReasonPlaceholder": "Feedback for the candidate (optional)…"
   },
   "notes": {
     "saved": "Note saved.",
@@ -395,7 +439,11 @@
     "salary": "Expected salary",
     "location": "Location",
     "timezone": "Timezone",
-    "resume": "View resume"
+    "resume": "View resume",
+    "phone": "Phone",
+    "offerSent": "Offer sent",
+    "declineReason": "Candidate's reason for declining:",
+    "feedbackSent": "Feedback sent to the candidate:"
   },
   "timeline": {
     "title": "Activity"

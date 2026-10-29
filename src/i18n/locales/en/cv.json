@@ -1,7 +1,7 @@
 {
   "rec": {
-    "ADVANCE": "Suggested: Advance",
-    "HOLD": "Suggested: Hold",
+    "PROCEED": "Suggested: Proceed",
+    "REVIEW": "Suggested: Review",
     "REJECT": "Suggested: Reject"
   },
   "copyQuestion": "Copy question",

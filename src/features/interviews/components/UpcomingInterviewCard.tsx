@@ -29,11 +29,17 @@ export const UpcomingInterviewCard = ({
       <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-brand-700">
         {t("card.upcoming")}
       </p>
+      {interview.title && (
+        <p className="mb-1 text-[13px] font-medium text-neutral-700">
+          {interview.title}
+        </p>
+      )}
       <p className="text-[16px] font-semibold text-neutral-900">
         {interview.confirmedSlot && formatSlot(interview.confirmedSlot)}
       </p>
       <p className="mt-1 text-[13px] text-neutral-500">
         {t("card.minutes", { n: interview.durationMinutes })}
+        {interview.platform && ` · ${t(`platform.${interview.platform}`)}`}
       </p>
       {interview.interviewer?.name && (
         <p className="mt-2 flex items-center gap-1.5 text-[13px] text-neutral-600">

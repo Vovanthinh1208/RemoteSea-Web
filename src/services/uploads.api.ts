@@ -15,7 +15,11 @@ const CONTENT_TYPES: Record<UploadType, readonly string[]> = {
   avatar: ["image/jpeg", "image/png", "image/webp"],
   logo: ["image/jpeg", "image/png", "image/webp"],
   cover: ["image/jpeg", "image/png", "image/webp"],
-  resume: ["application/pdf"],
+  // PB53 AC2: PDF or Word (.docx).
+  resume: [
+    "application/pdf",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ],
 };
 
 const BYTES_PER_MB = 1024 * 1024;

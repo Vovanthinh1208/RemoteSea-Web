@@ -177,7 +177,7 @@
   "apply": {
     "sentTitle": "Application sent",
     "sentDesc": "The employer has been notified.",
-    "alreadyApplied": "Already applied",
+    "alreadyApplied": "You've already applied for this position",
     "profileRequired": "Create a talent profile first.",
     "finishProfile": "Finish your profile first",
     "failedTitle": "Couldn't submit application",
@@ -185,12 +185,14 @@
     "applyNow": "Apply now",
     "resume": "Resume",
     "replaceResume": "Replace resume",
-    "attachResume": "Attach resume",
+    "attachResume": "Attach CV (PDF/DOCX, ≤ 10MB)",
     "usingProfileResume": "Using the resume from your profile.",
     "coverLetter": "Cover letter",
     "optional": "(optional)",
     "coverPlaceholder": "Why you're a good fit for this role…",
-    "send": "Send application"
+    "send": "Send application",
+    "phone": "Contact phone",
+    "phoneInvalid": "Please enter a valid phone number (7–15 digits)."
   },
   "save": {
     "saved": "Saved",
@@ -215,7 +217,9 @@
     "optional": "Optional",
     "yourMatch": "Your match",
     "fillProfile": "Fill out more of your profile for a better match breakdown.",
-    "closeGap": "Skills to close the gap"
+    "closeGap": "Skills to close the gap",
+    "matchedSkills": "Matching skills",
+    "addSkillsPrompt": "Update your skills to see your match"
   },
   "report": {
     "thanks": "Thanks — our team will take a look.",

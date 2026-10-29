@@ -16,19 +16,41 @@
     "comment": "Comment",
     "optional": "(optional)",
     "commentPlaceholder": "Tell us about your experience…",
-    "submit": "Submit review"
+    "submit": "Submit review",
+    "reviewTitle": "Title",
+    "reviewTitlePlaceholder": "Sum up your experience",
+    "titleMax": "120 characters max.",
+    "commentHint": "(at least 20 characters)",
+    "commentMin": "The detailed comment needs at least 20 characters.",
+    "contentRejected": "The review contains language that isn't allowed. Please rephrase it."
   },
   "cta": {
     "reviewed": "You reviewed this interaction.",
     "complete": "Your interview with {{name}} is complete.",
     "share": "Share your experience.",
-    "write": "Write a review"
+    "write": "Write a review",
+    "reason": {
+      "NO_INTERVIEW": "You can write a review once you've had a confirmed interview together.",
+      "INTERVIEW_NOT_CONFIRMED": "The interview isn't confirmed yet, so it can't be reviewed.",
+      "INTERVIEW_NOT_YET_HELD": "You can review once the interview has taken place.",
+      "ALREADY_REVIEWED": "You've reviewed this interaction."
+    }
   },
   "section": {
     "member": "RemoteSEA member",
     "title": "Reviews",
     "error": "Couldn't load reviews.",
     "basedOn_one": "Based on {{count}} review",
-    "basedOn_other": "Based on {{count}} reviews"
+    "basedOn_other": "Based on {{count}} reviews",
+    "distribution": "Rating distribution",
+    "starRow": "{{star}} stars: {{count}} reviews",
+    "filterLabel": "Filter by stars",
+    "allStars": "All ratings",
+    "stars_one": "{{count}} star",
+    "stars_other": "{{count}} stars",
+    "sortLabel": "Sort",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "noneForFilter": "No reviews match this filter."
   }
 }
