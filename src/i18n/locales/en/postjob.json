@@ -130,7 +130,8 @@
     "fullNamePlaceholder": "Alex Chen",
     "role": "Role",
     "rolePlaceholder": "Engineering Manager",
-    "workEmail": "Work email"
+    "workEmail": "Work email",
+    "logo": "Company logo (PNG/JPG, max 5 MB)"
   },
   "role": {
     "title": "Role details",

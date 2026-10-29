@@ -172,7 +172,8 @@
   },
   "pagination": {
     "previous": "Previous page",
-    "next": "Next page"
+    "next": "Next page",
+    "pageOf": "Page {{page}} of {{pages}}"
   },
   "apply": {
     "sentTitle": "Application sent",

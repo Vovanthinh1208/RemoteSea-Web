@@ -558,7 +558,7 @@
       "links": "Liên kết & video"
     },
     "field": {
-      "logo": "Logo (PNG/JPG/WebP, tối đa 5 MB)",
+      "logo": "Logo (PNG/JPG, tối đa 5 MB)",
       "cover": "Ảnh bìa (PNG/JPG/WebP, tối đa 5 MB)",
       "name": "Tên công ty",
       "website": "Website",

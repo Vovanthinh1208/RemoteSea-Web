@@ -172,7 +172,8 @@
   },
   "pagination": {
     "previous": "Trang trước",
-    "next": "Trang sau"
+    "next": "Trang sau",
+    "pageOf": "Trang {{page}}/{{pages}}"
   },
   "apply": {
     "sentTitle": "Đã gửi đơn ứng tuyển",

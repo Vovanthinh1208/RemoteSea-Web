@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { RichTextEditor } from "@/components/shared/rich-text/RichTextEditor";
 import {
   Field,
   Input,
@@ -169,7 +170,7 @@ const EditJobForm = ({ job }: { job: Job }) => {
           </Field>
         </div>
         <Field label={t("jobEdit.field.description")} required>
-          <Textarea
+          <RichTextEditor
             rows={8}
             value={form.description}
             onChange={(v) => set("description", v)}

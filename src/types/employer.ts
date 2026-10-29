@@ -91,6 +91,8 @@ export type CreateEmployerProfilePayload = {
   size?: string;
   hqCountry?: string;
   hqCity?: string;
+  // PB30 AC3: logo uploaded during onboarding (own presigned upload).
+  logoUrl?: string;
 };
 
 export type UpdateEmployerProfilePayload =

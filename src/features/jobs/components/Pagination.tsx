@@ -56,6 +56,8 @@ export const Pagination = ({ page, pages, onPageChange }: PaginationProps) => {
 
   const pageWindow = buildPageWindow(page, pages);
 
+  // Below `sm` the numbered window (up to 7 slots + 2 arrows ≈ 370px) can't
+  // fit a 320px screen, so phones get prev / "Page X of Y" / next instead.
   return (
     <div className="mt-8 flex items-center justify-center gap-1.5">
       <button
@@ -66,11 +68,17 @@ export const Pagination = ({ page, pages, onPageChange }: PaginationProps) => {
       >
         <ChevronLeft size={16} />
       </button>
+      <span
+        aria-live="polite"
+        className="px-2 text-sm text-neutral-600 sm:hidden"
+      >
+        {t("pagination.pageOf", { page, pages })}
+      </span>
       {pageWindow.map((n, i) =>
         n === ELLIPSIS ? (
           <span
             aria-hidden="true"
-            className="grid h-9 w-9 place-items-center text-sm text-neutral-300"
+            className="hidden h-9 w-9 place-items-center text-sm text-neutral-300 sm:grid"
             key={`ellipsis-${i}`}
           >
             {ELLIPSIS}
@@ -81,7 +89,7 @@ export const Pagination = ({ page, pages, onPageChange }: PaginationProps) => {
             aria-current={n === page ? "page" : undefined}
             onClick={() => onPageChange(n)}
             className={cn(
-              "grid h-9 min-w-9 place-items-center rounded-8 px-2 text-sm transition-colors focus-visible:shadow-focus focus-visible:outline-none",
+              "hidden h-9 min-w-9 place-items-center rounded-8 px-2 text-sm transition-colors focus-visible:shadow-focus focus-visible:outline-none sm:grid",
               n === page
                 ? "bg-brand-600 font-medium text-white"
                 : "border border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50"

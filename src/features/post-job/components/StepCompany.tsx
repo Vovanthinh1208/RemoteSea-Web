@@ -4,6 +4,7 @@ import {
   Select,
   Textarea,
 } from "@/features/post-job/components/form-primitives";
+import { PresignedFileUpload } from "@/components/shared/PresignedFileUpload";
 import { useTranslation } from "@/i18n/useTranslation";
 import { optionLabel } from "@/i18n/labels";
 import {
@@ -12,7 +13,21 @@ import {
   type PostJobStepProps,
 } from "@/features/post-job/post-job.schemas";
 
-export const StepCompany = ({ form, set }: PostJobStepProps) => {
+// PB30 AC3: PNG/JPG, <= 5 MB (enforced client-side by uploads.api and again by
+// POST /uploads/presign).
+const LOGO_ACCEPT = "image/png,image/jpeg";
+
+interface StepCompanyProps extends PostJobStepProps {
+  // A company that already exists keeps its logo in Company settings; the
+  // wizard only sends one when it creates the company (onboarding).
+  companyExists?: boolean;
+}
+
+export const StepCompany = ({
+  form,
+  set,
+  companyExists = false,
+}: StepCompanyProps) => {
   const { t } = useTranslation("postjob");
   return (
     <div className="space-y-6">
@@ -60,6 +75,15 @@ export const StepCompany = ({ form, set }: PostJobStepProps) => {
           />
         </Field>
       </div>
+      {!companyExists && (
+        <PresignedFileUpload
+          accept={LOGO_ACCEPT}
+          label={t("company.logo")}
+          type="logo"
+          value={form.coLogo || undefined}
+          onUploaded={(url) => set("coLogo", url)}
+        />
+      )}
       <Field hint={t("company.taglineHint")} label={t("company.tagline")}>
         <Input
           placeholder={t("company.taglinePlaceholder")}

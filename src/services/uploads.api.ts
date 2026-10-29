@@ -13,7 +13,8 @@ type PresignResponse = {
 // network — the server-side allowlist is still the real enforcement boundary.
 const CONTENT_TYPES: Record<UploadType, readonly string[]> = {
   avatar: ["image/jpeg", "image/png", "image/webp"],
-  logo: ["image/jpeg", "image/png", "image/webp"],
+  // PB30 AC3: the company logo is PNG or JPG only.
+  logo: ["image/jpeg", "image/png"],
   cover: ["image/jpeg", "image/png", "image/webp"],
   // PB53 AC2: PDF or Word (.docx).
   resume: [

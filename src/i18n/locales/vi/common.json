@@ -252,5 +252,19 @@
   "meta": {
     "defaultTitle": "RemoteSEA — Việc làm remote từ Singapore, Úc và toàn cầu",
     "defaultDescription": "Việc làm remote được tuyển chọn từ Singapore, Úc và toàn cầu — dành cho nhân sự Việt Nam. Mức lương minh bạch, nhà tuyển dụng đã xác minh, múi giờ phù hợp."
+  },
+  "richText": {
+    "toolbar": "Định dạng",
+    "bold": "In đậm",
+    "italic": "In nghiêng",
+    "bulletList": "Danh sách dấu đầu dòng",
+    "numberedList": "Danh sách đánh số",
+    "link": "Liên kết",
+    "linkText": "nội dung liên kết",
+    "placeholderText": "văn bản",
+    "write": "Soạn thảo",
+    "preview": "Xem trước",
+    "emptyPreview": "Chưa có nội dung để xem trước.",
+    "hint": "Hỗ trợ **in đậm**, _in nghiêng_, danh sách và liên kết (Markdown)."
   }
 }

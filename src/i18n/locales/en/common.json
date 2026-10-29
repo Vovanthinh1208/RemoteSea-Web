@@ -252,5 +252,19 @@
   "meta": {
     "defaultTitle": "RemoteSEA — Remote Jobs from SG, AU & beyond",
     "defaultDescription": "Curated remote jobs from Singapore, Australia & beyond — for Vietnam talent. Clear salary ranges, verified employers, sensible timezones."
+  },
+  "richText": {
+    "toolbar": "Formatting",
+    "bold": "Bold",
+    "italic": "Italic",
+    "bulletList": "Bulleted list",
+    "numberedList": "Numbered list",
+    "link": "Link",
+    "linkText": "link text",
+    "placeholderText": "text",
+    "write": "Write",
+    "preview": "Preview",
+    "emptyPreview": "Nothing to preview yet.",
+    "hint": "Supports **bold**, _italic_, lists and links (Markdown)."
   }
 }

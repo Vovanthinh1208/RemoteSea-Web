@@ -5,7 +5,11 @@ import { useToast } from "@/components/ui/toast";
 import { ApiError } from "@/core/errors/api-error";
 import { reportError } from "@/services/monitoring";
 import { useCategories, useSkills } from "@/features/taxonomy/taxonomy.queries";
-import { useCreateEmployerProfile } from "@/features/employer/employer.queries";
+import {
+  useCreateEmployerProfile,
+  useEmployerProfile,
+} from "@/features/employer/employer.queries";
+import { useAuth } from "@/contexts/AuthContext";
 import { useCreateJob } from "@/features/jobs/jobs.queries";
 import { useCreateCheckoutSession } from "@/features/billing/billing.queries";
 import { StepCompany } from "@/features/post-job/components/StepCompany";
@@ -19,6 +23,7 @@ import {
   INITIAL_FORM_STATE,
   JOB_TYPE_TO_ENUM,
   MIN_JOB_DESCRIPTION_LENGTH,
+  prefillCompanyStep,
   SENIORITY_TO_LEVEL,
   TIERS,
   validateStep,
@@ -72,6 +77,16 @@ export const PostJobWizard = () => {
   const createProfileMutation = useCreateEmployerProfile();
   const createJobMutation = useCreateJob();
   const createCheckoutMutation = useCreateCheckoutSession();
+
+  // PB41: start from the existing company profile when there is one (see
+  // prefillCompanyStep). Applied once, during render, when it arrives.
+  const { user } = useAuth();
+  const { data: existingProfile } = useEmployerProfile();
+  const [companyPrefilled, setCompanyPrefilled] = useState(false);
+  if (!companyPrefilled && existingProfile) {
+    setCompanyPrefilled(true);
+    setForm((prev) => prefillCompanyStep(prev, existingProfile, user));
+  }
 
   const [categoryDefaulted, setCategoryDefaulted] = useState(false);
   if (!categoryDefaulted && categories && categories.length > 0) {
@@ -149,6 +164,7 @@ export const PostJobWizard = () => {
         description: form.coAbout || undefined,
         size: form.coSize || undefined,
         hqCountry: hqToCountry(form.coHq),
+        logoUrl: form.coLogo || undefined,
       });
     } catch (err) {
       if (!(
@@ -270,7 +286,13 @@ export const PostJobWizard = () => {
       {/* Main */}
       <div className="mx-auto max-w-[1200px] gap-8 px-6 py-10 lg:grid lg:grid-cols-[1fr_320px]">
         <div className="rounded-20 border border-neutral-200 bg-white p-8">
-          {step === 1 && <StepCompany form={form} set={set} />}
+          {step === 1 && (
+            <StepCompany
+              companyExists={Boolean(existingProfile)}
+              form={form}
+              set={set}
+            />
+          )}
           {step === 2 && <StepRole form={form} set={set} />}
           {step === 3 && <StepPlan form={form} set={set} />}
           {step === 4 && <StepReview form={form} />}

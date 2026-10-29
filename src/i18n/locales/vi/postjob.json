@@ -130,7 +130,8 @@
     "fullNamePlaceholder": "Nguyễn Văn An",
     "role": "Chức vụ",
     "rolePlaceholder": "Trưởng nhóm kỹ thuật",
-    "workEmail": "Email công việc"
+    "workEmail": "Email công việc",
+    "logo": "Logo công ty (PNG/JPG, tối đa 5 MB)"
   },
   "role": {
     "title": "Chi tiết vị trí",

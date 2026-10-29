@@ -148,6 +148,7 @@ export type PostJobFormState = {
   coHq: string;
   coTag: string;
   coAbout: string;
+  coLogo: string;
   recName: string;
   recRole: string;
   recEmail: string;
@@ -180,6 +181,7 @@ export const INITIAL_FORM_STATE: PostJobFormState = {
   coHq: "🇸🇬 Singapore",
   coTag: "",
   coAbout: "",
+  coLogo: "",
   recName: "",
   recRole: "",
   recEmail: "",
@@ -201,6 +203,41 @@ export const INITIAL_FORM_STATE: PostJobFormState = {
 };
 
 export const MIN_JOB_DESCRIPTION_LENGTH = 100;
+
+// PB41: an OWNER/RECRUITER whose company already exists goes straight to
+// writing the job — the company step starts filled from that profile instead
+// of asking for it again (the wizard's profile create would only 409 and
+// drop whatever was re-typed). Only empty fields are filled, so a restored
+// draft or anything the user already typed is never overwritten.
+export const prefillCompanyStep = (
+  form: PostJobFormState,
+  profile: {
+    companyName: string;
+    websiteUrl: string | null;
+    description: string | null;
+    size: string | null;
+    hqCountry: string | null;
+  },
+  recruiter: { name: string | null; email: string } | null
+): PostJobFormState => {
+  const size = profile.size?.replace("-", "–");
+  const hq =
+    profile.hqCountry &&
+    (HQ_OPTIONS.find((o) => hqToCountry(o) === profile.hqCountry) ?? "Other");
+  return {
+    ...form,
+    coName: form.coName || profile.companyName,
+    coWeb: form.coWeb || profile.websiteUrl || "",
+    coAbout: form.coAbout || profile.description || "",
+    coSize:
+      size && (COMPANY_SIZE_OPTIONS as readonly string[]).includes(size)
+        ? size
+        : form.coSize,
+    coHq: hq || form.coHq,
+    recName: form.recName || recruiter?.name || "",
+    recEmail: form.recEmail || recruiter?.email || "",
+  };
+};
 
 // Per-step validation so "Continue" catches an empty/garbage required field
 // immediately — the wizard used to only validate at final publish, so a user

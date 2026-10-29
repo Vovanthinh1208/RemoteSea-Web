@@ -1,3 +1,4 @@
+import { RichTextContent } from "@/components/shared/rich-text/RichTextContent";
 import { useTranslation } from "@/i18n/useTranslation";
 interface JobDescriptionCardProps {
   description: string;
@@ -12,9 +13,10 @@ export const JobDescriptionCard = ({
       <h2 className="mb-3 text-[15px] font-semibold text-neutral-900">
         {t("detail.aboutRole")}
       </h2>
-      <p className="whitespace-pre-line break-words text-[14px] leading-relaxed text-neutral-600">
-        {description}
-      </p>
+      <RichTextContent
+        className="break-words text-[14px] leading-relaxed text-neutral-600"
+        text={description}
+      />
     </div>
   );
 };

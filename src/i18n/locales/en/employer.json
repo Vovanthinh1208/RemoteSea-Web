@@ -558,7 +558,7 @@
       "links": "Links & video"
     },
     "field": {
-      "logo": "Logo (PNG/JPG/WebP, max 5 MB)",
+      "logo": "Logo (PNG/JPG, max 5 MB)",
       "cover": "Cover image (PNG/JPG/WebP, max 5 MB)",
       "name": "Company name",
       "website": "Website",

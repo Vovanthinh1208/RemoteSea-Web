@@ -26,6 +26,8 @@ import { useTranslation } from "@/i18n/useTranslation";
 import type { EmployerProfile } from "@/types/employer";
 
 const IMAGE_ACCEPT = "image/png,image/jpeg,image/webp";
+// PB30 AC3: logos are PNG/JPG only (the cover image keeps WebP).
+const LOGO_ACCEPT = "image/png,image/jpeg";
 
 // PB31: the OWNER edits the company's introduction, perks, address, social
 // links, intro video, logo and cover image. PATCH /employer/profile checks
@@ -130,7 +132,7 @@ const CompanySettingsEditor = ({ profile }: { profile: EmployerProfile }) => {
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <PresignedFileUpload
-              accept={IMAGE_ACCEPT}
+              accept={LOGO_ACCEPT}
               label={t("companySettings.field.logo")}
               type="logo"
               value={logoUrl ?? profile.logoUrl ?? undefined}

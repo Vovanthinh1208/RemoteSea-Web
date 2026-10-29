@@ -2,6 +2,7 @@ import { z } from "zod";
 import { m, v } from "@/i18n/zod";
 
 const CURRENT_YEAR = new Date().getUTCFullYear();
+const HTTP_URL = /^https?:\/\/\S+$/i;
 export const HIGHLIGHT_YEARS = Array.from({ length: 62 }, (_, i) =>
   String(CURRENT_YEAR + 1 - i)
 );
@@ -16,7 +17,17 @@ export const highlightFormSchema = z
     subtitle: z.string().trim().max(120).optional(),
     description: z.string().trim().max(500).optional(),
     tag: z.string().trim().max(60).optional(),
-    url: z.string().trim().optional(),
+    // PB25 BR: a portfolio link must be http(s) — checked here so the field
+    // itself explains the problem instead of a generic "try again" toast
+    // after the API refuses it.
+    url: z
+      .string()
+      .trim()
+      .optional()
+      .refine(
+        (value) => !value || HTTP_URL.test(value),
+        m("validation.urlHttp")
+      ),
     startYear: z.string().optional(),
     isOngoing: z.boolean(),
     endYear: z.string().optional(),

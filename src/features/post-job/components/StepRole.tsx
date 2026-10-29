@@ -3,9 +3,9 @@ import {
   Field,
   Input,
   Select,
-  Textarea,
 } from "@/features/post-job/components/form-primitives";
 import { SkillTagEditor } from "@/components/shared/SkillTagEditor";
+import { RichTextEditor } from "@/components/shared/rich-text/RichTextEditor";
 import { PillToggle } from "@/components/shared/PillToggle";
 import { useCategories, useSkills } from "@/features/taxonomy/taxonomy.queries";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -101,7 +101,7 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
       </div>
 
       <Field hint={t("role.descHint")} label={t("role.desc")} required>
-        <Textarea
+        <RichTextEditor
           placeholder={t("role.descPlaceholder")}
           rows={8}
           value={form.jobDesc}
