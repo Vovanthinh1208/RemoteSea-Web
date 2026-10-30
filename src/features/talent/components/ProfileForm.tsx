@@ -52,6 +52,8 @@ import type {
 
 interface ProfileFormProps {
   profile: TalentProfile | null;
+  /** Rendered at the top of the page, above the heading (e.g. PB22's verify-email notice). */
+  banner?: React.ReactNode;
 }
 
 // Single source for the profile → form-values mapping, used both to seed
@@ -83,7 +85,7 @@ const profileToFormValues = (
   portfolioUrl: profile?.portfolioUrl ?? "",
 });
 
-export const ProfileForm = ({ profile }: ProfileFormProps) => {
+export const ProfileForm = ({ profile, banner }: ProfileFormProps) => {
   const { toast } = useToast();
   const { t } = useTranslation("talent");
   // Memoized so its identity only changes when `profile` itself changes (a
@@ -227,6 +229,7 @@ export const ProfileForm = ({ profile }: ProfileFormProps) => {
   return (
     <div className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-[1100px] px-6 py-10">
+        {banner}
         <div className="mb-8">
           <div className="mb-3 flex items-center gap-1.5 text-[12px] text-neutral-500">
             <Link className="hover:text-neutral-700" to={ROUTES.talent}>

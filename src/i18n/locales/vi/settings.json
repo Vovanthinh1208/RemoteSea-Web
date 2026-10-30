@@ -118,7 +118,9 @@
     "disconnect": "Ngắt liên kết",
     "connect": "Liên kết",
     "checking": "Đang kiểm tra…",
-    "unavailable": "Chưa khả dụng"
+    "unavailable": "Chưa khả dụng",
+    "connectAria": "Liên kết {{provider}}",
+    "disconnectAria": "Ngắt kết nối {{provider}}"
   },
   "notif2": {
     "eyebrow": "04 · Điều gì đến với bạn",
@@ -215,6 +217,8 @@
     "saved": "Tôi đã lưu các mã này",
     "disablePrompt": "Nhập mật khẩu của bạn để tắt xác thực hai lớp.",
     "password": "Mật khẩu",
-    "disable": "Tắt"
+    "disable": "Tắt",
+    "disableWarningTitle": "Tắt xác thực hai lớp?",
+    "disableWarning": "Tài khoản sẽ chỉ còn được bảo vệ bằng mật khẩu, ai biết mật khẩu đều có thể đăng nhập. Chúng tôi sẽ gửi email xác nhận thay đổi này."
   }
 }

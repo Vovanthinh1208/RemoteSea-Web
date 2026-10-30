@@ -118,7 +118,9 @@
     "disconnect": "Disconnect",
     "connect": "Connect",
     "checking": "Checking…",
-    "unavailable": "Unavailable"
+    "unavailable": "Unavailable",
+    "connectAria": "Connect {{provider}}",
+    "disconnectAria": "Disconnect {{provider}}"
   },
   "notif2": {
     "eyebrow": "04 · What reaches you",
@@ -215,6 +217,8 @@
     "saved": "I've saved these",
     "disablePrompt": "Enter your password to disable two-factor authentication.",
     "password": "Password",
-    "disable": "Disable"
+    "disable": "Disable",
+    "disableWarningTitle": "Turn off two-factor authentication?",
+    "disableWarning": "Your account will be protected by your password alone, so anyone who learns it can sign in. We will email you to confirm the change."
   }
 }

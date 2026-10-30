@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { AlertTriangle, Check, Copy, ShieldCheck } from "lucide-react";
 import { Toggle } from "@/features/talent/components/profile-form/Toggle";
 import {
@@ -32,6 +32,8 @@ export const TwoFactorSection = () => {
   } | null>(null);
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
+  const disableTitleId = useId();
+  const disableDescId = useId();
   const [backupCodes, setBackupCodes] = useState<string[]>([]);
   const submitError = useSubmitError();
   const [codesCopied, setCodesCopied] = useState(false);
@@ -166,6 +168,7 @@ export const TwoFactorSection = () => {
                     {t("tfa.code")}
                   </p>
                   <input
+                    aria-label={t("tfa.code")}
                     autoComplete="one-time-code"
                     className={`${TEXT_INPUT_CLASS} text-center font-mono text-base tracking-[0.4em]`}
                     maxLength={6}
@@ -245,11 +248,30 @@ export const TwoFactorSection = () => {
 
       {step === "disabling" && (
         <div className="py-4">
-          <div className="space-y-3 rounded-14 border border-red-100 bg-red-50/40 p-4">
-            <p className="text-[12.5px] leading-relaxed text-neutral-600">
-              {t("tfa.disablePrompt")}
+          {/* PB11 AC2: a security-risk warning, then the current password
+              (RC1) before 2FA can be turned off. */}
+          <div
+            aria-describedby={disableDescId}
+            aria-labelledby={disableTitleId}
+            className="space-y-3 rounded-14 border border-red-100 bg-red-50/40 p-4"
+            role="alertdialog"
+          >
+            <p
+              className="flex items-center gap-1.5 text-[13px] font-semibold text-red-700"
+              id={disableTitleId}
+            >
+              <AlertTriangle size={14} />
+              {t("tfa.disableWarningTitle")}
+            </p>
+            <p
+              className="text-[12.5px] leading-relaxed text-neutral-600"
+              id={disableDescId}
+            >
+              {t("tfa.disableWarning")} {t("tfa.disablePrompt")}
             </p>
             <input
+              autoFocus
+              aria-label={t("tfa.password")}
               autoComplete="current-password"
               className={TEXT_INPUT_CLASS}
               placeholder={t("tfa.password")}

@@ -19,6 +19,8 @@ import { isSafeInternalPath } from "@/utils/safe-redirect";
 import { ROUTES } from "@/constants/routes";
 import { Button } from "@/components/ui/button";
 import { resolveVisiblePath } from "@/features/sprints/sprint-visibility";
+import { dashboardRouteForRole } from "@/features/auth/role-home";
+import type { AuthUser } from "@/types/user";
 import { useTranslation } from "@/i18n";
 
 export const LoginForm = () => {
@@ -26,10 +28,14 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const rawCallbackUrl = searchParams.get("callbackUrl");
-  const callbackUrl =
+  const safeCallbackUrl =
     rawCallbackUrl && isSafeInternalPath(rawCallbackUrl)
       ? rawCallbackUrl
-      : resolveVisiblePath(ROUTES.jobs, ROUTES.settings);
+      : null;
+  // PB02 AC4.4: an explicit callbackUrl wins; otherwise the role's home.
+  const destinationFor = (user: AuthUser): string =>
+    safeCallbackUrl ??
+    resolveVisiblePath(dashboardRouteForRole(user.role), ROUTES.settings);
   const { login } = useAuth();
   const { toast } = useToast();
   const submitError = useSubmitError();
@@ -66,7 +72,7 @@ export const LoginForm = () => {
         });
         return;
       }
-      navigate(callbackUrl, { replace: true });
+      navigate(destinationFor(result.user), { replace: true });
     } catch (err) {
       applyFormSubmitError(err, setError);
       submitError.fail(err);
@@ -80,7 +86,7 @@ export const LoginForm = () => {
         challengeToken={challenge.challengeToken}
         remember={challenge.remember}
         onBack={() => setChallenge(null)}
-        onSuccess={() => navigate(callbackUrl, { replace: true })}
+        onSuccess={(user) => navigate(destinationFor(user), { replace: true })}
       />
     );
   }

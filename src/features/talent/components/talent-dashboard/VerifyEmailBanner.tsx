@@ -13,6 +13,7 @@ import { useSubmitError } from "@/hooks/useSubmitError";
 import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 import type { TalentVerificationStatus } from "@/types/talent";
 import { useTranslation } from "@/i18n/useTranslation";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface VerifyEmailBannerProps {
   verificationStatus: TalentVerificationStatus;
@@ -26,9 +27,12 @@ export const VerifyEmailBanner = ({
   const { t } = useTranslation("talent");
   const submitError = useSubmitError();
   const submitVerification = useSubmitTalentVerification();
+  const { user } = useAuth();
   const form = useForm<SubmitVerificationFormValues>({
     resolver: zodResolver(submitVerificationSchema),
-    defaultValues: { email: verificationEmail ?? "" },
+    // PB22: only the account's own address can be verified (the API rejects
+    // others), so it is prefilled — sending is one click.
+    defaultValues: { email: verificationEmail ?? user?.email ?? "" },
   });
   const {
     register,

@@ -1,4 +1,5 @@
 import { ProfileForm } from "@/features/talent/components/ProfileForm";
+import { VerifyEmailBanner } from "@/features/talent/components/talent-dashboard/VerifyEmailBanner";
 import { useMyTalentProfile } from "@/features/talent/talent.queries";
 import { FullPageLoader } from "@/components/ui/spinner";
 import { EmptyState } from "@/components/shared/EmptyState";
@@ -30,5 +31,19 @@ export const ProfilePage = () => {
     );
   }
 
-  return <ProfileForm profile={profile ?? null} />;
+  // PB22 AC1: the verify-email notice sits at the top of the profile page
+  // too, not only on the dashboard.
+  return (
+    <ProfileForm
+      banner={
+        profile && !profile.isVerified ? (
+          <VerifyEmailBanner
+            verificationEmail={profile.verificationEmail ?? null}
+            verificationStatus={profile.verificationStatus ?? "NOT_SUBMITTED"}
+          />
+        ) : null
+      }
+      profile={profile ?? null}
+    />
+  );
 };

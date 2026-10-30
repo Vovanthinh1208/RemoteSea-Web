@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TEXT_INPUT_CLASS } from "@/components/shared/input-styles";
 import { useToastMutation } from "@/hooks/useToastMutation";
@@ -23,6 +23,8 @@ export const DeleteAccountButton = () => {
   // double-click/Enter could fire two DELETEs; the second would then fail
   // (session already gone) and toast an error over a successful deletion.
   const inFlight = useRef(false);
+  const passwordId = useId();
+  const passwordHintId = useId();
 
   const reset = () => {
     setIsConfirming(false);
@@ -75,19 +77,22 @@ export const DeleteAccountButton = () => {
       <p className="text-[12px] text-neutral-600">
         {t("del.message")} {t("del.confirmHint")}
       </p>
-      <label className="flex flex-col gap-1 text-[12px] font-medium text-neutral-700">
-        {t("del.passwordLabel")}
+      {/* The hint is a description, not part of the field's name. */}
+      <div className="flex flex-col gap-1 text-[12px] font-medium text-neutral-700">
+        <label htmlFor={passwordId}>{t("del.passwordLabel")}</label>
         <input
+          aria-describedby={passwordHintId}
           autoComplete="current-password"
           className={TEXT_INPUT_CLASS}
+          id={passwordId}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <span className="font-normal text-neutral-500">
+        <span className="font-normal text-neutral-500" id={passwordHintId}>
           {t("del.passwordHint")}
         </span>
-      </label>
+      </div>
       <label className="flex flex-col gap-1 text-[12px] font-medium text-neutral-700">
         {t("del.confirmLabel")}
         <input

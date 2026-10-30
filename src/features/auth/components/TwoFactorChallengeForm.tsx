@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import type { AuthUser } from "@/types/user";
 import { useToast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
@@ -9,7 +10,7 @@ import { useSubmitError } from "@/hooks/useSubmitError";
 interface TwoFactorChallengeFormProps {
   challengeToken: string;
   remember: boolean;
-  onSuccess: () => void;
+  onSuccess: (user: AuthUser) => void;
   onBack: () => void;
 }
 
@@ -126,8 +127,12 @@ export const TwoFactorChallengeForm = ({
     submitError.clear();
     setIsSubmitting(true);
     try {
-      await completeTwoFactorChallenge(challengeToken, submittedCode, remember);
-      onSuccess();
+      const user = await completeTwoFactorChallenge(
+        challengeToken,
+        submittedCode,
+        remember
+      );
+      onSuccess(user);
     } catch (err) {
       submitError.fail(err);
       toast({ title: t("twoFactor.failedToast"), variant: "error" });

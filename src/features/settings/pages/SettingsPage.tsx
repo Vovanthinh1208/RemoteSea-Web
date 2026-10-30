@@ -10,15 +10,9 @@ import { NotificationsSection } from "@/features/settings/components/Notificatio
 import { PrivacyDataSection } from "@/features/settings/components/PrivacyDataSection";
 import { DangerZoneSection } from "@/features/settings/components/DangerZoneSection";
 import { SettingsSaveBar } from "@/features/settings/components/SettingsSaveBar";
-import type { UserRole } from "@/types/user";
+import { dashboardRouteForRole } from "@/features/auth/role-home";
 import { resolveVisiblePath } from "@/features/sprints/sprint-visibility";
 import { useTranslation } from "@/i18n/useTranslation";
-
-const dashboardRouteForRole = (role?: UserRole): string => {
-  if (role === "EMPLOYER") return ROUTES.employerDashboard;
-  if (role === "ADMIN") return ROUTES.admin;
-  return ROUTES.talent;
-};
 
 export const SettingsPage = () => {
   const { t } = useTranslation("settings");

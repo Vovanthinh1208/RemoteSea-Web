@@ -100,7 +100,8 @@
     "CANNOT_MODIFY_OWN_ACCOUNT": "You can't change your own account here.",
     "TALENT_PROFILE_RESTRICTED": "This profile is visible to verified employers only.",
     "INVALID_VERIFICATION_CODE": "That code isn't right. Check the email and try again.",
-    "TEAM_INVITATION_NOT_PENDING": "Only a pending invitation can be revoked."
+    "TEAM_INVITATION_NOT_PENDING": "Only a pending invitation can be revoked.",
+    "TALENT_VERIFICATION_EMAIL_MISMATCH": "Only your account email can be verified."
   },
   "network": "Network error. Please check your connection.",
   "generic": "Something went wrong. Please try again.",
