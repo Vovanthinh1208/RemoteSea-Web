@@ -3,7 +3,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'remotesea-web'
+app = 'remotesea-web-vovanthinh2'
 primary_region = 'sin'
 
 [build]
@@ -13,7 +13,7 @@ primary_region = 'sin'
   # `fly launch` regenerated this file and dropped this section; restored
   # here since deploying without it breaks the build/app entirely.
   [build.args]
-    VITE_API_URL = "https://remotesea-api.fly.dev"
+    VITE_API_URL = "https://remotesea-api-vovanthinh2.fly.dev"
     # Sprint testing aids — .env is excluded from the Docker context, so the
     # Dockerfile's ARGs only see what is passed here. Remove to turn them off.
     VITE_ENABLE_SPRINT_BOARD = "true"

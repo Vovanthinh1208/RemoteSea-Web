@@ -39,6 +39,15 @@ export const loadPostJobDraft = (): StoredDraft | null => {
   }
 };
 
+/** Drops the saved draft, e.g. once the job exists server-side. */
+export const clearPostJobDraft = (): void => {
+  try {
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+  } catch {
+    // Storage unavailable — nothing persisted to clear.
+  }
+};
+
 /**
  * Owns the post-job wizard's localStorage draft lifecycle: toasts once if a
  * draft was restored, autosaves the live form on a debounce, and clears it on
@@ -74,11 +83,7 @@ export const usePostJobDraftPersistence = (
 
   useEffect(() => {
     if (published) {
-      try {
-        localStorage.removeItem(DRAFT_STORAGE_KEY);
-      } catch {
-        // Storage unavailable — nothing persisted to clear.
-      }
+      clearPostJobDraft();
       return;
     }
     if (!hasUserInput) return;

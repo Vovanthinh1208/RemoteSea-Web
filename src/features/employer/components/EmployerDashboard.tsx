@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   Briefcase,
   CalendarClock,
@@ -11,6 +12,8 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEmployerDashboard } from "@/features/employer/employer.queries";
+import { useMyCompanyRole } from "@/features/team/team.queries";
+import { useToast } from "@/components/ui/toast";
 import { StatCard } from "@/components/ui/stat-card";
 import { ListingsPanel } from "@/features/employer/components/employer-dashboard/ListingsPanel";
 import { ApplicantsPanel } from "@/features/employer/components/employer-dashboard/ApplicantsPanel";
@@ -32,6 +35,30 @@ const AFTERNOON_END_HOUR = 18;
 export const EmployerDashboard = () => {
   const { t, formatNumber } = useTranslation("employer");
   const { user } = useAuth();
+  const memberRole = useMyCompanyRole();
+  const { toast } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const checkoutCancelled = searchParams.get("checkout") === "cancelled";
+
+  // Stripe's cancel_url (PB43): say the job is still an unpaid draft, once,
+  // then drop the flag so a refresh doesn't repeat it.
+  useEffect(() => {
+    if (!checkoutCancelled) return;
+    toast({
+      variant: "info",
+      title: t("listings.payCancelledTitle"),
+      description: t("listings.payCancelledDesc"),
+    });
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete("checkout");
+        return next;
+      },
+      { replace: true }
+    );
+  }, [checkoutCancelled, setSearchParams, t, toast]);
+
   const {
     profile,
     jobs: jobsData,
@@ -207,7 +234,11 @@ export const EmployerDashboard = () => {
         {/* Main grid */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
           <div className="space-y-6">
-            <ListingsPanel applicationsByJob={byJobId} jobs={jobs} />
+            <ListingsPanel
+              applicationsByJob={byJobId}
+              jobs={jobs}
+              memberRole={memberRole}
+            />
             <ApplicantsPanel applicants={applications} />
           </div>
 

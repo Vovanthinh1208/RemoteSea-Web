@@ -259,7 +259,19 @@
     "closeDone": "Listing closed.",
     "closeFailed": "Couldn't close the listing.",
     "applicants": "Applicants",
-    "applicantsAria": "View applicants for {{title}}"
+    "applicantsAria": "View applicants for {{title}}",
+    "pay": "Pay to publish",
+    "payAria": "Pay to publish {{title}}",
+    "payTitle": "Choose a plan and pay",
+    "payDescription": "\"{{title}}\" goes live after payment (or to review if your company isn't verified yet).",
+    "payPlan": "Plan",
+    "payConfirm": "Continue to payment",
+    "payStarting": "Starting checkout…",
+    "payCancel": "Not now",
+    "payFailed": "Couldn't start checkout.",
+    "payUnavailable": "Online payment isn't available right now. Your job is saved as a draft.",
+    "payCancelledTitle": "Payment cancelled",
+    "payCancelledDesc": "Your job is still a draft. Use \"Pay to publish\" when you're ready."
   },
   "applicantsPanel": {
     "title": "Recent applicants",

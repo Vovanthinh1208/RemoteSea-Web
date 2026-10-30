@@ -11,6 +11,7 @@ import {
 } from "@/features/team/team.service";
 import { useAuth } from "@/contexts/AuthContext";
 import { teamKeys } from "@/core/query/query-keys";
+import type { CompanyMemberRole } from "@/types/team";
 
 export const useTeamMembers = () => {
   const { user } = useAuth();
@@ -19,6 +20,17 @@ export const useTeamMembers = () => {
     queryFn: ({ signal }) => listTeamMembers({ signal }),
     enabled: !!user,
   });
+};
+
+/**
+ * The signed-in user's role in their company, or null while loading / when
+ * they aren't a member. Read from the same members list the team page uses,
+ * so role-gated buttons match what the server will allow.
+ */
+export const useMyCompanyRole = (): CompanyMemberRole | null => {
+  const { user } = useAuth();
+  const { data } = useTeamMembers();
+  return data?.find((m) => m.userId === user?.id)?.role ?? null;
 };
 
 export const usePendingInvitations = () => {

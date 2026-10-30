@@ -52,6 +52,8 @@ export type UpdateJobRequestDto = {
   timezone?: string;
   country?: string;
   benefits?: string[];
+  // PB43 AC2: the plan is picked before paying, so a DRAFT can switch it.
+  planType?: PlanType;
 };
 
 export type CreateJobRequestDto = {

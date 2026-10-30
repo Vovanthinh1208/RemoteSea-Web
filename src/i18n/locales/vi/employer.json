@@ -259,7 +259,19 @@
     "closeDone": "Đã đóng tin.",
     "closeFailed": "Không đóng được tin.",
     "applicants": "Ứng viên",
-    "applicantsAria": "Xem ứng viên của {{title}}"
+    "applicantsAria": "Xem ứng viên của {{title}}",
+    "pay": "Thanh toán để xuất bản",
+    "payAria": "Thanh toán để xuất bản {{title}}",
+    "payTitle": "Chọn gói và thanh toán",
+    "payDescription": "\"{{title}}\" sẽ được đăng sau khi thanh toán (hoặc chờ duyệt nếu công ty chưa được xác minh).",
+    "payPlan": "Gói dịch vụ",
+    "payConfirm": "Tiếp tục thanh toán",
+    "payStarting": "Đang mở trang thanh toán…",
+    "payCancel": "Để sau",
+    "payFailed": "Không mở được trang thanh toán.",
+    "payUnavailable": "Thanh toán trực tuyến hiện chưa khả dụng. Tin của bạn đã được lưu ở dạng nháp.",
+    "payCancelledTitle": "Đã hủy thanh toán",
+    "payCancelledDesc": "Tin vẫn ở trạng thái nháp. Nhấn \"Thanh toán để xuất bản\" khi bạn sẵn sàng."
   },
   "applicantsPanel": {
     "title": "Ứng viên gần đây",

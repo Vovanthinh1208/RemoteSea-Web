@@ -10,7 +10,7 @@ import {
   useEmployerProfile,
 } from "@/features/employer/employer.queries";
 import { useAuth } from "@/contexts/AuthContext";
-import { useCreateJob } from "@/features/jobs/jobs.queries";
+import { useCreateJob, useUpdateJob } from "@/features/jobs/jobs.queries";
 import { useCreateCheckoutSession } from "@/features/billing/billing.queries";
 import { StepCompany } from "@/features/post-job/components/StepCompany";
 import { StepRole } from "@/features/post-job/components/StepRole";
@@ -30,9 +30,11 @@ import {
   type PostJobFormState,
 } from "@/features/post-job/post-job.schemas";
 import {
+  clearPostJobDraft,
   loadPostJobDraft,
   usePostJobDraftPersistence,
 } from "@/features/post-job/use-post-job-draft";
+import type { UpdateJobRequestDto } from "@/features/jobs/jobs.dto";
 import { formatUsd } from "@/utils/format";
 import { useTranslation } from "@/i18n/useTranslation";
 import { getErrorMessage } from "@/core/errors/localize";
@@ -60,6 +62,9 @@ export const PostJobWizard = () => {
     draft?.form ?? INITIAL_FORM_STATE
   );
   const [publishedJobId, setPublishedJobId] = useState<string | null>(null);
+  // Set once POST /jobs succeeds, so a retry after a failed checkout updates
+  // that DRAFT instead of creating a duplicate one.
+  const [createdJobId, setCreatedJobId] = useState<string | null>(null);
   const [publishing, setPublishing] = useState(false);
   // Holds the failure reason (error or i18n key), not translated text, so the
   // message re-translates if the language changes while it is on screen.
@@ -76,6 +81,7 @@ export const PostJobWizard = () => {
   const { data: allSkills, isError: skillsErrored } = useSkills();
   const createProfileMutation = useCreateEmployerProfile();
   const createJobMutation = useCreateJob();
+  const updateJobMutation = useUpdateJob();
   const createCheckoutMutation = useCreateCheckoutSession();
 
   // PB41: start from the existing company profile when there is one (see
@@ -184,24 +190,39 @@ export const PostJobWizard = () => {
       .filter((id): id is string => Boolean(id))
       .slice(0, MAX_SKILL_IDS);
 
+    const editableFields = {
+      title: form.jobTitle,
+      description: form.jobDesc,
+      jobType: JOB_TYPE_TO_ENUM[form.jobType],
+      level: SENIORITY_TO_LEVEL[form.jobSeniority],
+      salaryMin: form.salMin,
+      salaryMax: form.salMax,
+      timezone: form.jobTz || undefined,
+      country: hqToCountry(form.coHq),
+      benefits: form.benefits.slice(0, MAX_BENEFITS),
+      planType:
+        TIERS.find((tier) => tier.id === form.tier)?.planType ?? "STANDARD",
+    } satisfies UpdateJobRequestDto;
+
     let jobId: string;
     try {
-      const job = await createJobMutation.mutateAsync({
-        title: form.jobTitle,
-        description: form.jobDesc,
-        jobType: JOB_TYPE_TO_ENUM[form.jobType],
-        level: SENIORITY_TO_LEVEL[form.jobSeniority],
-        salaryMin: form.salMin,
-        salaryMax: form.salMax,
-        timezone: form.jobTz || undefined,
-        country: hqToCountry(form.coHq),
-        benefits: form.benefits.slice(0, MAX_BENEFITS),
-        planType:
-          TIERS.find((tier) => tier.id === form.tier)?.planType ?? "STANDARD",
-        categoryIds: [form.jobCategoryId],
-        skillIds,
-      });
-      jobId = job.id;
+      if (createdJobId) {
+        // Retry after checkout failed: carry any edits onto the existing
+        // DRAFT (category and skills aren't editable, PB42 RC2).
+        await updateJobMutation.mutateAsync({
+          id: createdJobId,
+          payload: editableFields,
+        });
+        jobId = createdJobId;
+      } else {
+        const job = await createJobMutation.mutateAsync({
+          ...editableFields,
+          categoryIds: [form.jobCategoryId],
+          skillIds,
+        });
+        jobId = job.id;
+        setCreatedJobId(job.id);
+      }
     } catch (err) {
       reportError(err);
       // A blocked action (e.g. a suspended company) has an actionable,
@@ -214,6 +235,9 @@ export const PostJobWizard = () => {
     try {
       const { url } = await createCheckoutMutation.mutateAsync(jobId);
       if (url) {
+        // The job now lives on the server; a cancelled payment returns to the
+        // dashboard, so the local copy must not resurrect it as a new job.
+        clearPostJobDraft();
         window.location.href = url;
         return;
       }
@@ -221,8 +245,14 @@ export const PostJobWizard = () => {
       reportError(err);
       // The job itself was already created above — only checkout failed, so
       // this must not fall through to the "published" step below as if
-      // nothing went wrong.
-      failWithError(err, "postjob.wizard.checkoutFailed");
+      // nothing went wrong. A payment outage (5xx / network) gets the
+      // "your job was saved, try again" copy rather than a generic server
+      // error; a specific 4xx reason (rate limit, not payable) still shows.
+      if (!(err instanceof ApiError) || err.status === 0 || err.status >= 500) {
+        failWith("postjob.wizard.checkoutFailed");
+      } else {
+        failWithError(err, "postjob.wizard.checkoutFailed");
+      }
       return;
     }
 

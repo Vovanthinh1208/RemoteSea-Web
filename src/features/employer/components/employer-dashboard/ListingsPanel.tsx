@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ChevronRight,
+  CreditCard,
   Download,
   Eye,
   Lock,
@@ -25,6 +26,8 @@ import { percent } from "@/utils/percent";
 import { useExportJobApplicantsCsv } from "@/features/employer/employer.queries";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useTranslation } from "@/i18n/useTranslation";
+import { PayDraftDialog } from "@/features/employer/components/employer-dashboard/PayDraftDialog";
+import type { CompanyMemberRole } from "@/types/team";
 
 const STATUS_VARIANT: Record<string, BadgeVariant> = {
   review: "warning",
@@ -37,11 +40,13 @@ const EMPTY_APPLICATIONS: EmployerApplicant[] = [];
 interface ListingRowProps {
   job: EmployerJobListItem;
   applications: EmployerApplicant[];
+  memberRole: CompanyMemberRole | null;
 }
 
 const ListingRow = memo(function ListingRow({
   job: j,
   applications: apps,
+  memberRole,
 }: ListingRowProps) {
   const { t } = useTranslation("employer");
   const total = j._count.applications;
@@ -61,8 +66,15 @@ const ListingRow = memo(function ListingRow({
   const closeJobMutation = useCloseJob();
   const [confirmClose, setConfirmClose] = useState(false);
   const runWithToast = useToastMutation();
+  // PB42/PB45 PRE: only OWNER and RECRUITER may edit or close; PB43: only
+  // the OWNER pays. Hidden (not just rejected server-side) for other roles,
+  // and while the role is still unknown.
+  const canManage = memberRole === "OWNER" || memberRole === "RECRUITER";
+  const canPay = memberRole === "OWNER" && j.status === "DRAFT" && !j.planPaid;
+  const [payOpen, setPayOpen] = useState(false);
   // PB42: drafts and listings sent back for changes are editable.
-  const isEditable = j.status === "DRAFT" || j.status === "REJECTED";
+  const isEditable =
+    canManage && (j.status === "DRAFT" || j.status === "REJECTED");
 
   const handleClose = async (): Promise<void> => {
     setConfirmClose(false);
@@ -228,7 +240,25 @@ const ListingRow = memo(function ListingRow({
           {t("listings.preview")}
         </Link>
       )}
-      {isPubliclyViewable && (
+      {canPay && (
+        <button
+          aria-label={t("listings.payAria", { title: j.title })}
+          className={actionClass}
+          type="button"
+          onClick={() => setPayOpen(true)}
+        >
+          <CreditCard size={12} />
+          {t("listings.pay")}
+        </button>
+      )}
+      {canPay && (
+        <PayDraftDialog
+          job={j}
+          open={payOpen}
+          onClose={() => setPayOpen(false)}
+        />
+      )}
+      {isPubliclyViewable && canManage && (
         <button
           aria-label={t("listings.closeAria", { title: j.title })}
           className={actionClass}
@@ -290,11 +320,13 @@ const ListingRow = memo(function ListingRow({
 interface ListingsPanelProps {
   jobs: EmployerJobListItem[];
   applicationsByJob: Map<string, EmployerApplicant[]>;
+  memberRole: CompanyMemberRole | null;
 }
 
 export const ListingsPanel = ({
   jobs,
   applicationsByJob,
+  memberRole,
 }: ListingsPanelProps) => {
   const { t } = useTranslation("employer");
   const active = jobs.filter((j) => STATUS_GROUP[j.status] !== "closed").length;
@@ -334,6 +366,7 @@ export const ListingsPanel = ({
                 applications={applicationsByJob.get(j.id) ?? EMPTY_APPLICATIONS}
                 job={j}
                 key={j.id}
+                memberRole={memberRole}
               />
             ))}
           </div>
