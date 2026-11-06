@@ -13,7 +13,8 @@
       "united_states": "🇺🇸 Hoa Kỳ",
       "uk": "🇬🇧 Anh",
       "europe": "🇪🇺 Châu Âu",
-      "other": "Khác"
+      "other": "Khác",
+      "vietnam": "🇻🇳 Việt Nam"
     },
     "seniority": {
       "intern": "Thực tập sinh",
@@ -109,7 +110,9 @@
     "preview": "Xem trước",
     "orderSummary": "Tóm tắt đơn hàng",
     "total": "Tổng cộng",
-    "secured": "Bảo mật bởi Stripe · Mã hóa SSL"
+    "secured": "Bảo mật bởi Stripe · Mã hóa SSL",
+    "saveDraft": "Lưu bản nháp",
+    "ownerPays": "Chỉ chủ công ty mới có thể thanh toán. Hãy lưu bản nháp để chủ công ty đăng tin từ bảng điều khiển."
   },
   "company": {
     "title": "Về công ty của bạn",
@@ -153,7 +156,8 @@
     "max": "Tối đa",
     "currency": "Tiền tệ",
     "period": "Chu kỳ",
-    "benefits": "Phúc lợi"
+    "benefits": "Phúc lợi",
+    "country": "Quốc gia"
   },
   "plan": {
     "title": "Chọn gói",
@@ -182,7 +186,8 @@
     "company": "Công ty",
     "role": "Vị trí",
     "reference": "Mã tham chiếu",
-    "goDashboard": "Đến bảng điều khiển"
+    "goDashboard": "Đến bảng điều khiển",
+    "bodyByChoice": "{{role}} tại {{company}} đã được lưu ở dạng nháp. Tin chưa hiển thị công khai: hãy thanh toán từ bảng điều khiển khi sẵn sàng đăng."
   },
   "success": {
     "docTitle": "Đã nhận thanh toán",
@@ -196,5 +201,12 @@
   },
   "page": {
     "docTitle": "Đăng tin tuyển dụng remote"
+  },
+  "onboarding": {
+    "docTitle": "Tạo hồ sơ công ty",
+    "submit": "Hoàn tất tạo hồ sơ",
+    "submitting": "Đang tạo…",
+    "done": "Đã tạo hồ sơ công ty",
+    "failed": "Không tạo được hồ sơ công ty."
   }
 }

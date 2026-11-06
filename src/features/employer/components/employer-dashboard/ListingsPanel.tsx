@@ -283,22 +283,23 @@ const ListingRow = memo(function ListingRow({
     </>
   );
 
-  // flex-wrap (not nowrap) — at the mobile grid's tightest column widths,
-  // an inline "Export applicants" button doesn't fit without crushing the
-  // title column's truncate down to near-nothing; wrapping it onto its own
-  // line below costs a little row height instead of squeezing content that
-  // matters more (the job title) just to keep a secondary action inline.
+  // The row's 520px flex-basis is what makes the actions wrap: they drop to
+  // their own line below as a group whenever they'd otherwise crush the title
+  // column's truncate down to near-nothing. A little row height is a better
+  // trade than an unreadable job title.
   if (isPubliclyViewable) {
     return (
       <div className="flex flex-wrap items-center gap-1 rounded-12 transition-colors hover:bg-neutral-50">
         <Link
-          className="grid flex-1 cursor-pointer grid-cols-[1fr_64px_88px_20px] items-center gap-2 px-2 py-3 focus-visible:shadow-focus focus-visible:outline-none sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
+          className="grid min-w-0 flex-[1_1_520px] cursor-pointer grid-cols-[1fr_64px_88px_20px] items-center gap-2 px-2 py-3 focus-visible:shadow-focus focus-visible:outline-none sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
           to={ROUTES.jobDetail(j.id)}
         >
           {rowContent}
         </Link>
-        {exportButton}
-        {manageActions}
+        <div className="ml-auto flex flex-wrap items-center justify-end gap-1">
+          {exportButton}
+          {manageActions}
+        </div>
       </div>
     );
   }
@@ -306,13 +307,15 @@ const ListingRow = memo(function ListingRow({
   return (
     <div className="flex flex-wrap items-center gap-1 rounded-12">
       <div
-        className="grid flex-1 grid-cols-[1fr_64px_88px_20px] items-center gap-2 px-2 py-3 sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
+        className="grid min-w-0 flex-[1_1_520px] grid-cols-[1fr_64px_88px_20px] items-center gap-2 px-2 py-3 sm:grid-cols-[1fr_80px_120px_60px_32px] sm:gap-3"
         title={t("listings.notLive")}
       >
         {rowContent}
       </div>
-      {exportButton}
-      {manageActions}
+      <div className="ml-auto flex flex-wrap items-center justify-end gap-1">
+        {exportButton}
+        {manageActions}
+      </div>
     </div>
   );
 });
@@ -329,7 +332,13 @@ export const ListingsPanel = ({
   memberRole,
 }: ListingsPanelProps) => {
   const { t } = useTranslation("employer");
-  const active = jobs.filter((j) => STATUS_GROUP[j.status] !== "closed").length;
+  // Same definition as the dashboard's "Active listings" KPI: a draft or a job
+  // in review isn't live yet.
+  const active = jobs.filter((j) => j.status === "ACTIVE").length;
+  // PB41 PRE: posting is for OWNER and RECRUITER. An unknown role stays allowed
+  // (a new employer with no company gets here before having any role).
+  const canPost =
+    memberRole !== "HIRING_MANAGER" && memberRole !== "INTERVIEWER";
 
   // rounded-16, not rounded-20 — matches EmployerDashboardSkeleton's
   // placeholder for this exact panel; was rounded-20 on the real card, so
@@ -343,9 +352,11 @@ export const ListingsPanel = ({
             {t("listings.active", { count: active })}
           </span>
         </h3>
-        <Link className={buttonVariants({ size: "sm" })} to={ROUTES.postJob}>
-          <Plus size={11} /> {t("listings.postJob")}
-        </Link>
+        {canPost && (
+          <Link className={buttonVariants({ size: "sm" })} to={ROUTES.postJob}>
+            <Plus size={11} /> {t("listings.postJob")}
+          </Link>
+        )}
       </div>
 
       {jobs.length === 0 ? (

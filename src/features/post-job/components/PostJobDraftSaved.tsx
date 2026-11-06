@@ -9,12 +9,17 @@ import { useTranslation } from "@/i18n/useTranslation";
 interface PostJobDraftSavedProps {
   form: PostJobFormState;
   jobId: string;
+  byChoice?: boolean;
 }
 
 // Shown when Stripe isn't configured on the backend and checkout couldn't be started —
 // the job was still created (as an unpaid DRAFT), so this confirms that honestly
 // instead of implying a payment succeeded.
-export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
+export const PostJobDraftSaved = ({
+  form,
+  jobId,
+  byChoice = false,
+}: PostJobDraftSavedProps) => {
   const { t } = useTranslation("postjob");
   const tier = TIERS.find((item) => item.id === form.tier) ?? TIERS[0];
 
@@ -27,7 +32,7 @@ export const PostJobDraftSaved = ({ form, jobId }: PostJobDraftSavedProps) => {
         {t("saved.title")}
       </h1>
       <p className="mb-6 max-w-md text-[15px] text-neutral-500">
-        {t("saved.body", {
+        {t(byChoice ? "saved.bodyByChoice" : "saved.body", {
           role: form.jobTitle || t("saved.yourJob"),
           company: form.coName || t("saved.yourCompanyLower"),
         })}

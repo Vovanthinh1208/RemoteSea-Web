@@ -40,6 +40,15 @@ export const timeAgoLong = (dateString: string | null): string =>
     now: "common.time.justNow",
   });
 
+// "2d ago", but plain "just now": the short form already reads as a complete
+// phrase there, and the "ago" template would turn it into "just now ago".
+export const timeAgoPhrase = (dateString: string | null): string => {
+  const time = timeAgoShort(dateString);
+  return time === translate("common.time.justNowLower")
+    ? time
+    : translate("common.time.ago", { time });
+};
+
 // Local calendar-day identity (not UTC, not a timestamp) — two Dates on the
 // same local day produce the same key regardless of their time-of-day, which
 // is exactly what a "group by day" walker needs. Was defined byte-for-byte

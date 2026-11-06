@@ -13,7 +13,8 @@
       "united_states": "🇺🇸 United States",
       "uk": "🇬🇧 UK",
       "europe": "🇪🇺 Europe",
-      "other": "Other"
+      "other": "Other",
+      "vietnam": "🇻🇳 Vietnam"
     },
     "seniority": {
       "intern": "Intern",
@@ -109,7 +110,9 @@
     "preview": "Live preview",
     "orderSummary": "Order summary",
     "total": "Total",
-    "secured": "Secured by Stripe · SSL encrypted"
+    "secured": "Secured by Stripe · SSL encrypted",
+    "saveDraft": "Save draft",
+    "ownerPays": "Only the company owner can pay. Save this as a draft and they can publish it from the dashboard."
   },
   "company": {
     "title": "About your company",
@@ -153,7 +156,8 @@
     "max": "Max",
     "currency": "Currency",
     "period": "Period",
-    "benefits": "Benefits"
+    "benefits": "Benefits",
+    "country": "Country"
   },
   "plan": {
     "title": "Choose a plan",
@@ -182,7 +186,8 @@
     "company": "Company",
     "role": "Role",
     "reference": "Reference",
-    "goDashboard": "Go to dashboard"
+    "goDashboard": "Go to dashboard",
+    "bodyByChoice": "{{role}} at {{company}} was saved as a draft. It isn't public yet: pay from the dashboard when you're ready to publish."
   },
   "success": {
     "docTitle": "Payment received",
@@ -196,5 +201,12 @@
   },
   "page": {
     "docTitle": "Post a Remote Job"
+  },
+  "onboarding": {
+    "docTitle": "Create your company profile",
+    "submit": "Finish company profile",
+    "submitting": "Creating…",
+    "done": "Company profile created",
+    "failed": "Couldn't create the company profile."
   }
 }

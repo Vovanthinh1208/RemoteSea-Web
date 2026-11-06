@@ -12,6 +12,7 @@ export const COMPANY_SIZE_OPTIONS = [
 ] as const;
 
 export const HQ_OPTIONS = [
+  "🇻🇳 Vietnam",
   "🇸🇬 Singapore",
   "🇦🇺 Australia",
   "🇺🇸 United States",
@@ -154,6 +155,8 @@ export type PostJobFormState = {
   recEmail: string;
   jobTitle: string;
   jobCategoryId: string;
+  // Where the role is based (PB41 AC3); empty means the company's HQ.
+  jobCountry: string;
   jobSeniority: (typeof SENIORITY_OPTIONS)[number];
   jobType: (typeof JOB_TYPE_OPTIONS)[number];
   jobLoc: (typeof LOCATION_OPTIONS)[number];
@@ -187,6 +190,7 @@ export const INITIAL_FORM_STATE: PostJobFormState = {
   recEmail: "",
   jobTitle: "",
   jobCategoryId: "",
+  jobCountry: "",
   jobSeniority: "Senior",
   jobType: "full",
   jobLoc: "remote",
@@ -262,6 +266,20 @@ const stepCompanySchema = z.object({
     .min(1, m("validation.workEmailRequired"))
     .email(m("validation.workEmailInvalid")),
 });
+
+const companyProfileSchema = stepCompanySchema.pick({
+  coName: true,
+  coWeb: true,
+  coSize: true,
+  coHq: true,
+  coAbout: true,
+});
+
+// PB30 onboarding asks only for what the company profile stores.
+export const validateCompanyProfile = (form: PostJobFormState): string[] => {
+  const result = companyProfileSchema.safeParse(form);
+  return result.success ? [] : result.error.issues.map((i) => i.message);
+};
 
 const stepRoleSchema = z
   .object({

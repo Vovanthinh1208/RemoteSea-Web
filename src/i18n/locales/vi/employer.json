@@ -480,7 +480,8 @@
     "inviteSent": "Đã gửi lời mời",
     "inviteFailed": "Không thể gửi lời mời",
     "allCandidates": "Tất cả ứng viên",
-    "rankAria": "Xếp hạng theo một việc làm"
+    "rankAria": "Xếp hạng theo một việc làm",
+    "submit": "Tìm kiếm"
   },
   "filter": {
     "skills": "Kỹ năng",
@@ -585,5 +586,15 @@
       "video": "Video giới thiệu",
       "videoHint": "Đường dẫn video YouTube hoặc Vimeo."
     }
+  },
+  "overview": {
+    "title": "Tổng quan",
+    "active": "Đang mở",
+    "pendingReview": "Chờ duyệt",
+    "draft": "Nháp",
+    "closed": "Đã đóng",
+    "unseen": "Đơn mới chưa xem",
+    "interviews": "Phỏng vấn trong 7 ngày tới",
+    "noInterviews": "Không có buổi phỏng vấn nào trong 7 ngày tới."
   }
 }

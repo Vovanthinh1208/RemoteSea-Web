@@ -14,8 +14,7 @@ import {
   BENEFIT_OPTIONS,
   CURRENCY_OPTIONS,
   JOB_TYPE_OPTIONS,
-  LOCATION_OPTIONS,
-  PERIOD_OPTIONS,
+  HQ_OPTIONS,
   SENIORITY_OPTIONS,
   TIMEZONE_OPTIONS,
   type PostJobStepProps,
@@ -78,14 +77,14 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label={t("role.location")}>
+        <Field label={t("role.country")}>
           <Select
-            options={LOCATION_OPTIONS.map((o) => ({
+            options={HQ_OPTIONS.map((o) => ({
               value: o,
-              label: optionLabel("postjob.opt.loc", o),
+              label: optionLabel("postjob.opt.hq", o),
             }))}
-            value={form.jobLoc}
-            onChange={(v) => set("jobLoc", v)}
+            value={form.jobCountry || form.coHq}
+            onChange={(v) => set("jobCountry", v)}
           />
         </Field>
         <Field label={t("role.tzOverlap")}>
@@ -116,19 +115,11 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
           suggestions={skillSuggestions}
         />
       </Field>
-      <Field label={t("role.niceSkills")}>
-        <SkillTagEditor
-          setSkills={(s) => set("jobNice", s)}
-          skills={form.jobNice}
-          suggestions={skillSuggestions}
-        />
-      </Field>
-
       <div className="border-t border-neutral-100 pt-5">
         <h3 className="mb-4 text-[14px] font-semibold text-neutral-800">
           {t("role.compensation")}
         </h3>
-        <div className="grid gap-4 sm:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-3">
           <Field label={t("role.min")} required>
             <Input
               min={0}
@@ -153,16 +144,6 @@ export const StepRole = ({ form, set }: PostJobStepProps) => {
               }))}
               value={form.salCur}
               onChange={(v) => set("salCur", v)}
-            />
-          </Field>
-          <Field label={t("role.period")}>
-            <Select
-              options={PERIOD_OPTIONS.map((o) => ({
-                value: o,
-                label: optionLabel("postjob.opt.period", o),
-              }))}
-              value={form.salPer}
-              onChange={(v) => set("salPer", v)}
             />
           </Field>
         </div>

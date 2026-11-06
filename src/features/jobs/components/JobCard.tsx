@@ -1,3 +1,4 @@
+import { timeAgoPhrase } from "@/utils/time";
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
@@ -25,7 +26,6 @@ import {
   filterValueLabel,
   isAsyncTimezone,
   isVerifiedJob,
-  timeAgo,
 } from "@/features/jobs/jobs.utils";
 import { ROUTES } from "@/constants/routes";
 import type { JobListItem } from "@/types/job";
@@ -155,9 +155,7 @@ export const JobCard = memo(function JobCard({ job }: JobCardProps) {
         {match && <MatchBadge match={match} />}
         <SalaryBadge max={job.salaryMax} min={job.salaryMin} />
         <span className="text-[12px] text-neutral-400">
-          {t("common.time.ago", {
-            time: timeAgo(job.publishedAt ?? job.createdAt),
-          })}
+          {timeAgoPhrase(job.publishedAt ?? job.createdAt)}
         </span>
         <button
           aria-label={saved ? t("card.unsave") : t("card.save")}

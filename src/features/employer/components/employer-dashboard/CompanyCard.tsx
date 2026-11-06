@@ -11,9 +11,11 @@ interface CompanyCardProps {
     isVerified: boolean;
     hqCountry: string | null;
   };
+  // PB31 RC1: only the OWNER edits the company.
+  canEdit: boolean;
 }
 
-export const CompanyCard = ({ company }: CompanyCardProps) => {
+export const CompanyCard = ({ company, canEdit }: CompanyCardProps) => {
   const { t } = useTranslation("employer");
   return (
     <div className="rounded-20 border border-neutral-100 bg-white p-5">
@@ -32,12 +34,14 @@ export const CompanyCard = ({ company }: CompanyCardProps) => {
         </div>
       </div>
       {/* PB31 entry point: Cài đặt công ty. */}
-      <Link
-        className="flex items-center justify-center gap-1.5 rounded-12 border border-neutral-200 py-2 text-[12.5px] font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:text-neutral-800"
-        to={ROUTES.companySettings}
-      >
-        <Settings size={12} /> {t("companySettings.title")}
-      </Link>
+      {canEdit && (
+        <Link
+          className="flex items-center justify-center gap-1.5 rounded-12 border border-neutral-200 py-2 text-[12.5px] font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:text-neutral-800"
+          to={ROUTES.companySettings}
+        >
+          <Settings size={12} /> {t("companySettings.title")}
+        </Link>
+      )}
     </div>
   );
 };

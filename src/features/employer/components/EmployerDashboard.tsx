@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
   Briefcase,
@@ -19,6 +19,7 @@ import { ListingsPanel } from "@/features/employer/components/employer-dashboard
 import { ApplicantsPanel } from "@/features/employer/components/employer-dashboard/ApplicantsPanel";
 import { CompanyCard } from "@/features/employer/components/employer-dashboard/CompanyCard";
 import { VerifyCompanyBanner } from "@/features/employer/components/employer-dashboard/VerifyCompanyBanner";
+import { DashboardOverviewPanel } from "@/features/employer/components/employer-dashboard/DashboardOverviewPanel";
 import { FunnelPanel } from "@/features/employer/components/employer-dashboard/FunnelPanel";
 import { EmployerDashboardSkeleton } from "@/features/employer/components/employer-dashboard/EmployerDashboardSkeleton";
 import { EmptyState } from "@/components/shared/EmptyState";
@@ -42,8 +43,12 @@ export const EmployerDashboard = () => {
 
   // Stripe's cancel_url (PB43): say the job is still an unpaid draft, once,
   // then drop the flag so a refresh doesn't repeat it.
+  const cancelNoticeShown = useRef(false);
   useEffect(() => {
-    if (!checkoutCancelled) return;
+    if (!checkoutCancelled || cancelNoticeShown.current) return;
+    // The flag outlives this effect's re-run under StrictMode, so the notice
+    // appears once even though the search param is still set on the second run.
+    cancelNoticeShown.current = true;
     toast({
       variant: "info",
       title: t("listings.payCancelledTitle"),
@@ -65,6 +70,7 @@ export const EmployerDashboard = () => {
     applications,
     byJobId,
     funnel,
+    overview,
     isLoading,
     isError,
     refetch,
@@ -97,14 +103,25 @@ export const EmployerDashboard = () => {
   }
 
   const jobs = jobsData?.jobs ?? [];
-  const stats = jobsData?.stats ?? {
-    totalApps: 0,
-    shortlisted: 0,
-    avgTimeToHireInDays: 0,
-    avgFirstResponseHours: 0,
-  };
-  const activeListings = jobs.filter((j) => j.status === "ACTIVE").length;
-  const inReview = jobs.filter((j) => j.status === "PENDING_REVIEW").length;
+  const stats = jobsData?.stats ??
+    overview?.stats ?? {
+      totalApps: 0,
+      shortlisted: 0,
+      avgTimeToHireInDays: 0,
+      avgFirstResponseHours: 0,
+    };
+  // An INTERVIEWER has no job list to count, only the overview's aggregates.
+  const activeListings =
+    overview?.jobCounts.ACTIVE ??
+    jobs.filter((j) => j.status === "ACTIVE").length;
+  const inReview =
+    overview?.jobCounts.PENDING_REVIEW ??
+    jobs.filter((j) => j.status === "PENDING_REVIEW").length;
+  // A member whose role can't review applications sees the summary only, not
+  // empty lists that would read as "this company has no jobs".
+  const canReview = !profile || Boolean(jobsData);
+  const canPost =
+    memberRole !== "HIRING_MANAGER" && memberRole !== "INTERVIEWER";
 
   const hour = new Date().getHours();
   const greeting =
@@ -133,7 +150,7 @@ export const EmployerDashboard = () => {
             </div>
             <Link
               className={buttonVariants({ size: "sm" })}
-              to={ROUTES.postJob}
+              to={ROUTES.employerOnboarding}
             >
               {t("dash.getStarted")}
             </Link>
@@ -181,9 +198,11 @@ export const EmployerDashboard = () => {
               >
                 <Search size={13} /> {t("dash.findTalent")}
               </Link>
-              <Link className={buttonVariants()} to={ROUTES.postJob}>
-                <Plus size={13} /> {t("dash.postJob")}
-              </Link>
+              {canPost && (
+                <Link className={buttonVariants()} to={ROUTES.postJob}>
+                  <Plus size={13} /> {t("dash.postJob")}
+                </Link>
+              )}
             </div>
           )}
         </div>
@@ -234,16 +253,28 @@ export const EmployerDashboard = () => {
         {/* Main grid */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
           <div className="space-y-6">
-            <ListingsPanel
-              applicationsByJob={byJobId}
-              jobs={jobs}
-              memberRole={memberRole}
-            />
-            <ApplicantsPanel applicants={applications} />
+            {canReview && (
+              <>
+                <ListingsPanel
+                  applicationsByJob={byJobId}
+                  jobs={jobs}
+                  memberRole={memberRole}
+                />
+                <ApplicantsPanel applicants={applications} />
+              </>
+            )}
+            {!canReview && overview && (
+              <DashboardOverviewPanel overview={overview} />
+            )}
           </div>
 
           <div className="space-y-4">
-            {profile && <CompanyCard company={profile} />}
+            {profile && (
+              <CompanyCard canEdit={memberRole === "OWNER"} company={profile} />
+            )}
+            {canReview && overview && (
+              <DashboardOverviewPanel overview={overview} />
+            )}
             <Link
               className="flex items-center justify-center gap-1.5 rounded-12 border border-neutral-200 bg-white py-2.5 text-[12.5px] font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:text-neutral-900 focus-visible:shadow-focus focus-visible:outline-none"
               to={ROUTES.interviewSchedule}
@@ -256,7 +287,7 @@ export const EmployerDashboard = () => {
             >
               <Users size={13} /> {t("dash.team")}
             </Link>
-            <FunnelPanel data={funnel} isLoading={isLoading} />
+            {canReview && <FunnelPanel data={funnel} isLoading={isLoading} />}
           </div>
         </div>
       </div>

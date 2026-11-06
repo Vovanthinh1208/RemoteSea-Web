@@ -6,6 +6,7 @@ import { useJobQuery } from "@/features/jobs/jobs.queries";
 import { useSalaryBenchmarks } from "@/features/salary/salary.queries";
 import { JobHeaderCard } from "@/features/jobs/pages/job-detail/JobHeaderCard";
 import { JobDescriptionCard } from "@/features/jobs/pages/job-detail/JobDescriptionCard";
+import { JobRequirementsCard } from "@/features/jobs/pages/job-detail/JobRequirementsCard";
 import { JobSkillsCard } from "@/features/jobs/pages/job-detail/JobSkillsCard";
 import { JobBenefitsCard } from "@/features/jobs/pages/job-detail/JobBenefitsCard";
 import { ApplyCard } from "@/features/jobs/pages/job-detail/ApplyCard";
@@ -135,6 +136,7 @@ export const JobDetailPage = () => {
         <div className="min-w-0">
           <JobHeaderCard job={job} />
           <JobDescriptionCard description={job.description} />
+          <JobRequirementsCard requirements={job.requirements} />
           <JobSkillsCard skills={job.skills} />
           <JobBenefitsCard benefits={job.benefits} />
         </div>

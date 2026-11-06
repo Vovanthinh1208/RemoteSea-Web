@@ -21,12 +21,15 @@ interface StepCompanyProps extends PostJobStepProps {
   // A company that already exists keeps its logo in Company settings; the
   // wizard only sends one when it creates the company (onboarding).
   companyExists?: boolean;
+  // PB30 onboarding: only what gets stored on the company.
+  profileOnly?: boolean;
 }
 
 export const StepCompany = ({
   form,
   set,
   companyExists = false,
+  profileOnly = false,
 }: StepCompanyProps) => {
   const { t } = useTranslation("postjob");
   return (
@@ -84,13 +87,15 @@ export const StepCompany = ({
           onUploaded={(url) => set("coLogo", url)}
         />
       )}
-      <Field hint={t("company.taglineHint")} label={t("company.tagline")}>
-        <Input
-          placeholder={t("company.taglinePlaceholder")}
-          value={form.coTag}
-          onChange={(v) => set("coTag", v)}
-        />
-      </Field>
+      {!profileOnly && (
+        <Field hint={t("company.taglineHint")} label={t("company.tagline")}>
+          <Input
+            placeholder={t("company.taglinePlaceholder")}
+            value={form.coTag}
+            onChange={(v) => set("coTag", v)}
+          />
+        </Field>
+      )}
       <Field
         hint={t("company.overviewHint")}
         label={t("company.overview")}
@@ -104,35 +109,37 @@ export const StepCompany = ({
         />
       </Field>
 
-      <div className="border-t border-neutral-100 pt-5">
-        <h3 className="mb-4 text-[14px] font-semibold text-neutral-800">
-          {t("company.recruiter")}
-        </h3>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <Field label={t("company.fullName")} required>
-            <Input
-              placeholder={t("company.fullNamePlaceholder")}
-              value={form.recName}
-              onChange={(v) => set("recName", v)}
-            />
-          </Field>
-          <Field label={t("company.role")}>
-            <Input
-              placeholder={t("company.rolePlaceholder")}
-              value={form.recRole}
-              onChange={(v) => set("recRole", v)}
-            />
-          </Field>
-          <Field label={t("company.workEmail")} required>
-            <Input
-              placeholder="alex@acme.com"
-              type="email"
-              value={form.recEmail}
-              onChange={(v) => set("recEmail", v)}
-            />
-          </Field>
+      {!profileOnly && (
+        <div className="border-t border-neutral-100 pt-5">
+          <h3 className="mb-4 text-[14px] font-semibold text-neutral-800">
+            {t("company.recruiter")}
+          </h3>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Field label={t("company.fullName")} required>
+              <Input
+                placeholder={t("company.fullNamePlaceholder")}
+                value={form.recName}
+                onChange={(v) => set("recName", v)}
+              />
+            </Field>
+            <Field label={t("company.role")}>
+              <Input
+                placeholder={t("company.rolePlaceholder")}
+                value={form.recRole}
+                onChange={(v) => set("recRole", v)}
+              />
+            </Field>
+            <Field label={t("company.workEmail")} required>
+              <Input
+                placeholder="alex@acme.com"
+                type="email"
+                value={form.recEmail}
+                onChange={(v) => set("recEmail", v)}
+              />
+            </Field>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

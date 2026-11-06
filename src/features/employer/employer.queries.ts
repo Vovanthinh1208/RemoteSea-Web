@@ -70,6 +70,9 @@ export const useCreateEmployerProfile = () => {
       queryClient.invalidateQueries({
         queryKey: employerKeys.profile(),
       });
+      queryClient.invalidateQueries({
+        queryKey: employerKeys.dashboard(),
+      });
     },
   });
 };
@@ -303,6 +306,7 @@ export const useEmployerDashboard = () => {
     applications: all,
     byJobId,
     funnel: data?.funnel ?? null,
+    overview: data?.overview ?? null,
     isLoading,
     isError,
     refetch,

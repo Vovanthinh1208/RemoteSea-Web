@@ -111,7 +111,17 @@ export const TalentSearchBoard = ({
     <div className="mx-auto max-w-[1240px] px-6 py-8">
       <h1 className="sr-only">{t("search.heading")}</h1>
 
-      <div className="relative mb-6 flex h-12 items-center rounded-12 border border-neutral-200 bg-white px-4 shadow-[0_1px_2px_rgba(26,25,23,0.06)] focus-within:border-brand-600 focus-within:shadow-focus">
+      {/* PB29 AC3: [Search] runs the query now; typing still applies it after
+          the debounce. */}
+      <form
+        className="relative mb-6 flex h-12 items-center rounded-12 border border-neutral-200 bg-white pl-4 pr-1.5 shadow-[0_1px_2px_rgba(26,25,23,0.06)] focus-within:border-brand-600 focus-within:shadow-focus"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (search !== query.q) {
+            onFiltersChange({ ...query, q: search, page: 1 });
+          }
+        }}
+      >
         <Search className="flex-shrink-0 text-neutral-400" size={17} />
         <input
           aria-label={t("search.ariaLabel")}
@@ -125,12 +135,16 @@ export const TalentSearchBoard = ({
           <button
             aria-label={t("search.clear")}
             className="grid h-7 w-7 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
+            type="button"
             onClick={() => setSearch("")}
           >
             <X size={14} />
           </button>
         )}
-      </div>
+        <Button className="ml-1.5" size="sm" type="submit">
+          {t("search.submit")}
+        </Button>
+      </form>
 
       <div className="flex flex-col gap-8 sm:flex-row">
         <TalentFilterSidebar filters={query} onChange={setFilters} />

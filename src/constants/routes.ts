@@ -37,6 +37,7 @@ export const ROUTES = {
   // PB57 AC1.
   jobApplicants: (id: string) => `/employer/jobs/${id}/applicants`,
   companySettings: "/employer/company/settings",
+  employerOnboarding: "/employer/onboarding",
   talentProfileViews: "/talent/profile/views",
   postJobSuccess: "/post-job/success",
   admin: "/admin",

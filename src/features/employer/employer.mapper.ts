@@ -59,4 +59,5 @@ export const toEmployerDashboardResponse = (
     ? toEmployerRecentApplicationsResponse(dto.recentApplications)
     : null,
   funnel: dto.funnel ? toHiringFunnelResponse(dto.funnel) : null,
+  overview: dto.overview,
 });

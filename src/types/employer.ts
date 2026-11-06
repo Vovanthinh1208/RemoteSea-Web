@@ -1,3 +1,4 @@
+import type { UpcomingInterviewsResponse } from "@/types/interview";
 import type { ApplicationStatus } from "@/types/application";
 import type {
   ExperienceLevel,
@@ -253,4 +254,20 @@ export type EmployerDashboardResponse = {
   jobs: EmployerJobsResponse | null;
   recentApplications: EmployerRecentApplicationsResponse | null;
   funnel: HiringFunnelResponse | null;
+  overview: EmployerDashboardOverview | null;
+};
+
+// PB34 AC2: the aggregate summary every company member gets, INTERVIEWER
+// included. `stats` is only set for that role, which has no `jobs` to read it
+// from.
+export type EmployerDashboardOverview = {
+  jobCounts: {
+    ACTIVE: number;
+    PENDING_REVIEW: number;
+    DRAFT: number;
+    CLOSED: number;
+  };
+  unseenApplications: number;
+  upcomingInterviews: UpcomingInterviewsResponse;
+  stats: EmployerJobsResponse["stats"] | null;
 };

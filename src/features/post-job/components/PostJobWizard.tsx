@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
 import { ChevronRight, Check, Shield, Tag, Zap } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { useToast } from "@/components/ui/toast";
@@ -12,6 +13,8 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useCreateJob, useUpdateJob } from "@/features/jobs/jobs.queries";
 import { useCreateCheckoutSession } from "@/features/billing/billing.queries";
+import { useMyCompanyRole } from "@/features/team/team.queries";
+import { ROUTES } from "@/constants/routes";
 import { StepCompany } from "@/features/post-job/components/StepCompany";
 import { StepRole } from "@/features/post-job/components/StepRole";
 import { StepPlan } from "@/features/post-job/components/StepPlan";
@@ -62,6 +65,9 @@ export const PostJobWizard = () => {
     draft?.form ?? INITIAL_FORM_STATE
   );
   const [publishedJobId, setPublishedJobId] = useState<string | null>(null);
+  // Set when the employer chose "Save draft", as opposed to landing on the
+  // same screen because checkout couldn't be started.
+  const [savedByChoice, setSavedByChoice] = useState(false);
   // Set once POST /jobs succeeds, so a retry after a failed checkout updates
   // that DRAFT instead of creating a duplicate one.
   const [createdJobId, setCreatedJobId] = useState<string | null>(null);
@@ -88,6 +94,9 @@ export const PostJobWizard = () => {
   // prefillCompanyStep). Applied once, during render, when it arrives.
   const { user } = useAuth();
   const { data: existingProfile } = useEmployerProfile();
+  const memberRole = useMyCompanyRole();
+  // PB43 RC1: only the OWNER pays, and whoever creates the company becomes it.
+  const canPay = !existingProfile || memberRole === "OWNER";
   const [companyPrefilled, setCompanyPrefilled] = useState(false);
   if (!companyPrefilled && existingProfile) {
     setCompanyPrefilled(true);
@@ -141,18 +150,20 @@ export const PostJobWizard = () => {
     setStep(nextStep);
   };
 
-  const handlePublish = async () => {
+  // Creates the company if needed, then the DRAFT job (or updates the one a
+  // failed checkout left behind). Null means it failed and the error is shown.
+  const saveJob = async (): Promise<string | null> => {
     setPublishing(true);
     submitError.clear();
     setShowStepErrors(false);
 
     if (form.jobDesc.trim().length < MIN_JOB_DESCRIPTION_LENGTH) {
       failWith("postjob.wizard.descMin", { min: MIN_JOB_DESCRIPTION_LENGTH });
-      return;
+      return null;
     }
     if (!form.jobCategoryId) {
       failWith("postjob.wizard.noCategories");
-      return;
+      return null;
     }
     if (form.jobSkills.length > 0 && !allSkills) {
       failWith(
@@ -160,7 +171,7 @@ export const PostJobWizard = () => {
           ? "postjob.wizard.skillsFailed"
           : "postjob.wizard.skillsLoading"
       );
-      return;
+      return null;
     }
 
     try {
@@ -178,7 +189,7 @@ export const PostJobWizard = () => {
       )) {
         reportError(err);
         failWith("postjob.wizard.profileFailed");
-        return;
+        return null;
       }
     }
 
@@ -197,8 +208,9 @@ export const PostJobWizard = () => {
       level: SENIORITY_TO_LEVEL[form.jobSeniority],
       salaryMin: form.salMin,
       salaryMax: form.salMax,
+      currency: form.salCur,
       timezone: form.jobTz || undefined,
-      country: hqToCountry(form.coHq),
+      country: hqToCountry(form.jobCountry || form.coHq),
       benefits: form.benefits.slice(0, MAX_BENEFITS),
       planType:
         TIERS.find((tier) => tier.id === form.tier)?.planType ?? "STANDARD",
@@ -229,8 +241,31 @@ export const PostJobWizard = () => {
       // specific reason from the backend — showing it beats a generic
       // "check the required fields" message that doesn't apply here at all.
       failWithError(err, "postjob.wizard.createFailed");
+      return null;
+    }
+    return jobId;
+  };
+
+  // PB41 AC5–6: keep the job as a DRAFT without going to payment. Everything a
+  // draft needs is on the first two steps, so that's what gets checked.
+  const handleSaveDraft = async () => {
+    const invalidStep = [1, 2].find((s) => validateStep(s, form).length > 0);
+    if (invalidStep) {
+      setStep(invalidStep);
+      setShowStepErrors(true);
       return;
     }
+    const jobId = await saveJob();
+    if (!jobId) return;
+    clearPostJobDraft();
+    setSavedByChoice(true);
+    setPublishing(false);
+    setPublishedJobId(jobId);
+  };
+
+  const handlePublish = async () => {
+    const jobId = await saveJob();
+    if (!jobId) return;
 
     try {
       const { url } = await createCheckoutMutation.mutateAsync(jobId);
@@ -260,8 +295,18 @@ export const PostJobWizard = () => {
     setPublishedJobId(jobId);
   };
 
+  // PB41 PRE: posting is for OWNER and RECRUITER.
+  if (memberRole === "HIRING_MANAGER" || memberRole === "INTERVIEWER")
+    return <Navigate replace to={ROUTES.employerDashboard} />;
+
   if (publishedJobId)
-    return <PostJobDraftSaved form={form} jobId={publishedJobId} />;
+    return (
+      <PostJobDraftSaved
+        byChoice={savedByChoice}
+        form={form}
+        jobId={publishedJobId}
+      />
+    );
 
   const selectedTier = TIERS.find((tier) => tier.id === form.tier) ?? TIERS[0];
   const stepErrors = showStepErrors ? validateStep(step, form) : [];
@@ -364,26 +409,45 @@ export const PostJobWizard = () => {
             ) : (
               <div />
             )}
-            {step < 4 ? (
-              <button
-                className="inline-flex items-center gap-2 rounded-12 bg-brand-600 px-6 py-2.5 text-[13.5px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
-                type="button"
-                onClick={() => goToStep(step + 1)}
-              >
-                {t("wizard.continue")} <ChevronRight size={14} />
-              </button>
-            ) : (
-              <button
-                className="inline-flex items-center gap-2 rounded-12 bg-brand-600 px-6 py-2.5 text-[13.5px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
-                disabled={publishing}
-                type="button"
-                onClick={handlePublish}
-              >
-                <Zap size={14} />{" "}
-                {publishing ? t("wizard.processing") : t("wizard.pay")}
-              </button>
-            )}
+            <div className="flex flex-wrap justify-end gap-2">
+              {step >= 2 && (
+                <button
+                  className="rounded-12 border border-neutral-200 px-5 py-2.5 text-[13.5px] font-medium text-neutral-700 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
+                  disabled={publishing}
+                  type="button"
+                  onClick={handleSaveDraft}
+                >
+                  {t("wizard.saveDraft")}
+                </button>
+              )}
+              {step < 4 ? (
+                <button
+                  className="inline-flex items-center gap-2 rounded-12 bg-brand-600 px-6 py-2.5 text-[13.5px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
+                  type="button"
+                  onClick={() => goToStep(step + 1)}
+                >
+                  {t("wizard.continue")} <ChevronRight size={14} />
+                </button>
+              ) : (
+                canPay && (
+                  <button
+                    className="inline-flex items-center gap-2 rounded-12 bg-brand-600 px-6 py-2.5 text-[13.5px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
+                    disabled={publishing}
+                    type="button"
+                    onClick={handlePublish}
+                  >
+                    <Zap size={14} />{" "}
+                    {publishing ? t("wizard.processing") : t("wizard.pay")}
+                  </button>
+                )
+              )}
+            </div>
           </div>
+          {step === 4 && !canPay && (
+            <p className="mt-3 text-right text-[12.5px] text-neutral-500">
+              {t("wizard.ownerPays")}
+            </p>
+          )}
         </div>
 
         {/* Sticky aside */}

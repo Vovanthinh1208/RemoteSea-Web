@@ -44,9 +44,19 @@ describe("prefillCompanyStep (PB41)", () => {
     expect(
       prefillCompanyStep(
         INITIAL_FORM_STATE,
-        { ...profile, hqCountry: "Vietnam" },
+        { ...profile, hqCountry: "Thailand" },
         null
       ).coHq
     ).toBe("Other");
+  });
+
+  it("keeps a Vietnam HQ as Vietnam", () => {
+    expect(
+      prefillCompanyStep(
+        INITIAL_FORM_STATE,
+        { ...profile, hqCountry: "Vietnam" },
+        null
+      ).coHq
+    ).toBe("🇻🇳 Vietnam");
   });
 });

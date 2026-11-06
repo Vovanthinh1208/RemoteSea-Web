@@ -1,3 +1,4 @@
+import { timeAgoPhrase } from "@/utils/time";
 import { Link } from "react-router-dom";
 import { BadgeCheck, Clock, RefreshCw, Star, Users } from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
@@ -11,7 +12,6 @@ import {
   filterValueLabel,
   isAsyncTimezone,
   isVerifiedJob,
-  timeAgo,
 } from "@/features/jobs/jobs.utils";
 import { ROUTES } from "@/constants/routes";
 import type { Job } from "@/types/job";
@@ -96,9 +96,7 @@ export const JobHeaderCard = ({ job }: JobHeaderCardProps) => {
         <span className="inline-flex items-center gap-1 text-[12px] text-neutral-400">
           <Clock size={11} />{" "}
           {t("detail.posted", {
-            time: t("common.time.ago", {
-              time: timeAgo(job.publishedAt ?? job.createdAt),
-            }),
+            time: timeAgoPhrase(job.publishedAt ?? job.createdAt),
           })}
         </span>
       </div>

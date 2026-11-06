@@ -229,4 +229,18 @@ describe("ListingsPanel actions", () => {
     expect(assign).not.toHaveBeenCalled();
     vi.unstubAllGlobals();
   });
+
+  it("counts only live jobs as active, not drafts or jobs in review", () => {
+    renderPanel([
+      job("a1", "ACTIVE"),
+      job("d1", "DRAFT"),
+      job("p1", "PENDING_REVIEW"),
+    ]);
+    expect(screen.getByText(/· 1 active/)).toBeInTheDocument();
+  });
+
+  it("hides Post a job from roles that can't post", () => {
+    renderPanel([job("a1", "ACTIVE")], "INTERVIEWER");
+    expect(screen.queryByRole("link", { name: /post a job/i })).toBeNull();
+  });
 });

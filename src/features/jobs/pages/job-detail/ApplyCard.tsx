@@ -1,6 +1,7 @@
+import { timeAgoPhrase } from "@/utils/time";
 import { ApplyButton } from "@/features/jobs/components/ApplyButton";
 import { SaveJobButton } from "@/features/jobs/components/SaveJobButton";
-import { MS_PER_DAY, timeAgo } from "@/features/jobs/jobs.utils";
+import { MS_PER_DAY } from "@/features/jobs/jobs.utils";
 import { formatSalaryRange } from "@/utils/format";
 import type { Job } from "@/types/job";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -44,9 +45,7 @@ export const ApplyCard = ({ job }: ApplyCardProps) => {
         <div className="flex items-center justify-between text-[13px]">
           <span className="text-neutral-400">{t("detail.postedLabel")}</span>
           <span className="font-medium text-neutral-700">
-            {t("common.time.ago", {
-              time: timeAgo(job.publishedAt ?? job.createdAt),
-            })}
+            {timeAgoPhrase(job.publishedAt ?? job.createdAt)}
           </span>
         </div>
         <div className="flex items-center justify-between text-[13px]">

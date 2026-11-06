@@ -480,7 +480,8 @@
     "inviteSent": "Invitation sent",
     "inviteFailed": "Couldn't send invitation",
     "allCandidates": "All candidates",
-    "rankAria": "Rank against a job"
+    "rankAria": "Rank against a job",
+    "submit": "Search"
   },
   "filter": {
     "skills": "Skills",
@@ -585,5 +586,15 @@
       "video": "Intro video",
       "videoHint": "A link to a YouTube or Vimeo video."
     }
+  },
+  "overview": {
+    "title": "Overview",
+    "active": "Open",
+    "pendingReview": "In review",
+    "draft": "Drafts",
+    "closed": "Closed",
+    "unseen": "New applications not yet viewed",
+    "interviews": "Interviews in the next 7 days",
+    "noInterviews": "No interviews in the next 7 days."
   }
 }

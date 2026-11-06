@@ -1,3 +1,4 @@
+import type { EmployerDashboardOverview } from "@/types/employer";
 import type {
   CreateEmployerProfilePayload,
   EmployerApplicant,
@@ -45,6 +46,7 @@ export type EmployerDashboardResponseDto = {
   jobs: EmployerJobsResponseDto | null;
   recentApplications: EmployerRecentApplicationsResponseDto | null;
   funnel: HiringFunnelResponseDto | null;
+  overview: EmployerDashboardOverview | null;
 };
 
 export type SubmitVerificationRequestDto = { email: string };

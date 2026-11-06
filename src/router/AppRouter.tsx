@@ -118,6 +118,11 @@ const EditJobPage = lazy(() =>
     default: m.EditJobPage,
   }))
 );
+const EmployerOnboardingPage = lazy(() =>
+  import("@/features/employer/pages/EmployerOnboardingPage").then((m) => ({
+    default: m.EmployerOnboardingPage,
+  }))
+);
 const CompanySettingsPage = lazy(() =>
   import("@/features/employer/pages/CompanySettingsPage").then((m) => ({
     default: m.CompanySettingsPage,
@@ -325,6 +330,10 @@ export const AppRouter = () => {
             element={<CompanySettingsPage />}
             path="employer/company/settings"
           />
+          <Route
+            element={<EmployerOnboardingPage />}
+            path="employer/onboarding"
+          />
         </Route>
 
         {/* Paths as written in the Product Backlog (PB26/28/29/30/34/35/36/
@@ -349,10 +358,6 @@ export const AppRouter = () => {
         <Route
           element={<Navigate replace to={ROUTES.postJob} />}
           path="employer/jobs/new"
-        />
-        <Route
-          element={<Navigate replace to={ROUTES.postJob} />}
-          path="employer/onboarding"
         />
         <Route
           element={<TeamInvitationQueryRedirect />}
