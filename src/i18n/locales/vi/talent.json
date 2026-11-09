@@ -121,13 +121,13 @@
     "send": "Gửi email xác minh"
   },
   "stage": {
-    "PENDING": "Đã ứng tuyển",
+    "APPLIED": "Đã ứng tuyển",
     "REVIEWING": "Đang xem xét",
     "SHORTLISTED": "Vào danh sách rút gọn",
     "INTERVIEW": "Đang phỏng vấn",
     "OFFERED": "Đã nhận offer",
-    "OFFER_ACCEPTED": "Đã chấp nhận offer",
-    "OFFER_DECLINED": "Đã từ chối offer",
+    "ACCEPTED": "Đã chấp nhận offer",
+    "DECLINED": "Đã từ chối offer",
     "REJECTED": "Không được chọn",
     "WITHDRAWN": "Đã rút đơn"
   },
@@ -278,12 +278,12 @@
     "declineReasonPlaceholder": "Vui lòng cho nhà tuyển dụng biết lý do…"
   },
   "guidance": {
-    "PENDING": "Đơn của bạn đang trong hàng chờ. Hầu hết nhà tuyển dụng phản hồi trong vài ngày.",
+    "APPLIED": "Đơn của bạn đang trong hàng chờ. Hầu hết nhà tuyển dụng phản hồi trong vài ngày.",
     "REVIEWING": "Nhà tuyển dụng đang xem xét đơn ứng tuyển của bạn.",
     "SHORTLISTED": "Bạn đã vào danh sách rút gọn — nhà tuyển dụng có thể sớm liên hệ để sắp xếp phỏng vấn.",
     "OFFERED": "Nhà tuyển dụng đã gửi offer cho bạn. Chúc mừng! Hãy chấp nhận hoặc từ chối bên dưới.",
-    "OFFER_ACCEPTED": "Bạn đã chấp nhận offer này. Chúc mừng!",
-    "OFFER_DECLINED": "Bạn đã từ chối offer này.",
+    "ACCEPTED": "Bạn đã chấp nhận offer này. Chúc mừng!",
+    "DECLINED": "Bạn đã từ chối offer này.",
     "REJECTED": "Lần này nhà tuyển dụng đã chọn tiếp tục với các ứng viên khác.",
     "WITHDRAWN": "Bạn đã rút đơn ứng tuyển này."
   },

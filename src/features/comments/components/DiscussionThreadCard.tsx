@@ -132,6 +132,7 @@ export const DiscussionThreadCard = ({
         }
       >
         <textarea
+          aria-label={t("thread.title")}
           className={TEXTAREA_INPUT_CLASS}
           maxLength={COMMENT_BODY_MAX_LENGTH}
           placeholder={t("thread.placeholder")}

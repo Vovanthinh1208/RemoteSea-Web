@@ -50,9 +50,9 @@ const ListingRow = memo(function ListingRow({
 }: ListingRowProps) {
   const { t } = useTranslation("employer");
   const total = j._count.applications;
-  const reviewed = apps.filter((a) => a.status !== "PENDING").length;
+  const reviewed = apps.filter((a) => a.status !== "APPLIED").length;
   const shortlisted = apps.filter((a) => a.status === "SHORTLISTED").length;
-  const newApps = apps.filter((a) => a.status === "PENDING").length;
+  const newApps = apps.filter((a) => a.status === "APPLIED").length;
   const reviewPct = percent(reviewed, total);
   const shortPct = percent(shortlisted, total);
 

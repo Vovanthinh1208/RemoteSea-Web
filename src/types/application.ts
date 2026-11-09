@@ -1,15 +1,15 @@
 import type { JobListItem } from "@/types/job";
 
 export type ApplicationStatus =
-  | "PENDING"
+  | "APPLIED"
   | "REVIEWING"
   | "SHORTLISTED"
   | "INTERVIEW"
   | "OFFERED"
   // The talent's own response to an extended offer — set via
   // useRespondToOffer, never something an employer PATCH can set directly.
-  | "OFFER_ACCEPTED"
-  | "OFFER_DECLINED"
+  | "ACCEPTED"
+  | "DECLINED"
   | "REJECTED"
   | "WITHDRAWN";
 
@@ -31,7 +31,7 @@ export type Application = {
   updatedAt: string;
   // Application Transparency — see ApplicationTimeline. viewedAt is the
   // employer's list-view stamp; statusEvents is the full history, oldest
-  // first, always starting with the initial PENDING event.
+  // first, always starting with the initial APPLIED event.
   viewedAt: string | null;
   // PB53 AC2: the contact phone entered on the apply form.
   contactPhone: string | null;

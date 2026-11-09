@@ -21,23 +21,23 @@ describe("applicant board columns (PB57 AC2)", () => {
 
   it("places every status in exactly one column", () => {
     const all: ApplicationStatus[] = [
-      "PENDING",
+      "APPLIED",
       "REVIEWING",
       "SHORTLISTED",
       "INTERVIEW",
       "OFFERED",
-      "OFFER_ACCEPTED",
-      "OFFER_DECLINED",
+      "ACCEPTED",
+      "DECLINED",
       "REJECTED",
       "WITHDRAWN",
     ];
     const grouped = groupByColumn(all.map((status) => ({ status })));
     const placed = Object.values(grouped).flat();
     expect(placed).toHaveLength(all.length);
-    expect(grouped.hired).toEqual([{ status: "OFFER_ACCEPTED" }]);
-    expect(grouped.applied).toEqual([{ status: "PENDING" }]);
+    expect(grouped.hired).toEqual([{ status: "ACCEPTED" }]);
+    expect(grouped.applied).toEqual([{ status: "APPLIED" }]);
     expect(grouped.rejected.map((a) => a.status)).toEqual([
-      "OFFER_DECLINED",
+      "DECLINED",
       "REJECTED",
       "WITHDRAWN",
     ]);

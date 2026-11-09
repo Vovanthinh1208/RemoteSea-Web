@@ -145,7 +145,7 @@
     "EXPIRED": "Hết hạn"
   },
   "next": {
-    "PENDING": "Xem xét",
+    "APPLIED": "Xem xét",
     "REVIEWING": "Đưa vào danh sách rút gọn",
     "SHORTLISTED": "Phỏng vấn",
     "INTERVIEW": "Gửi offer"
@@ -338,12 +338,12 @@
     "allListings": "· tất cả tin đăng",
     "empty": "Chưa có hồ sơ nào.",
     "stage": {
-      "PENDING": "Đã ứng tuyển",
+      "APPLIED": "Đã ứng tuyển",
       "REVIEWING": "Đang xem xét",
       "SHORTLISTED": "Danh sách rút gọn",
       "INTERVIEW": "Phỏng vấn",
       "OFFERED": "Đã gửi offer",
-      "OFFER_ACCEPTED": "Đã tuyển"
+      "ACCEPTED": "Đã tuyển"
     },
     "ariaBar_one": "{{label}}: {{count}} ứng viên, {{pct}}% tổng số hồ sơ",
     "ariaBar_other": "{{label}}: {{count}} ứng viên, {{pct}}% tổng số hồ sơ",
@@ -359,14 +359,14 @@
     "hired": "Đã tuyển"
   },
   "stage": {
-    "PENDING": "Đã ứng tuyển",
+    "APPLIED": "Đã ứng tuyển",
     "REVIEWING": "Đang xem xét",
     "SHORTLISTED": "Danh sách rút gọn",
     "INTERVIEW": "Phỏng vấn",
     "INTERVIEW_DONE": "Chờ quyết định",
     "OFFERED": "Đã gửi offer",
-    "OFFER_ACCEPTED": "Đã tuyển",
-    "OFFER_DECLINED": "Đã từ chối offer",
+    "ACCEPTED": "Đã tuyển",
+    "DECLINED": "Đã từ chối offer",
     "REJECTED": "Đã từ chối",
     "WITHDRAWN": "Đã rút đơn"
   },

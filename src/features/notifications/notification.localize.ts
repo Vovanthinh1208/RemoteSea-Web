@@ -15,13 +15,14 @@ type Translate = (
 
 const STATUS_BY_LABEL: Record<string, string> = {
   // APPLICATION_STATUS_LABELS in remotesea-api employer/constants.ts
-  pending: "PENDING",
+  pending: "APPLIED",
+  applied: "APPLIED",
   "in review": "REVIEWING",
   shortlisted: "SHORTLISTED",
   interview: "INTERVIEW",
   "offer extended": "OFFERED",
-  "offer accepted": "OFFER_ACCEPTED",
-  "offer declined": "OFFER_DECLINED",
+  "offer accepted": "ACCEPTED",
+  "offer declined": "DECLINED",
   rejected: "REJECTED",
   withdrawn: "WITHDRAWN",
   // wording used by the seed data

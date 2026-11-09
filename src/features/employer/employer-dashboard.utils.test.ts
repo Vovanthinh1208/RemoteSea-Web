@@ -7,10 +7,10 @@ import {
 describe("backlogDays", () => {
   const now = new Date("2026-08-14T00:00:00.000Z").getTime();
 
-  it("returns null for a PENDING application within the 3-day threshold", () => {
+  it("returns null for a APPLIED application within the 3-day threshold", () => {
     expect(
       backlogDays(
-        "PENDING",
+        "APPLIED",
         "2026-08-12T00:00:00.000Z",
         "2026-08-12T00:00:00.000Z",
         now
@@ -18,10 +18,10 @@ describe("backlogDays", () => {
     ).toBeNull();
   });
 
-  it("returns the days-stuck count for a PENDING application past the threshold", () => {
+  it("returns the days-stuck count for a APPLIED application past the threshold", () => {
     expect(
       backlogDays(
-        "PENDING",
+        "APPLIED",
         "2026-08-10T00:00:00.000Z",
         "2026-08-10T00:00:00.000Z",
         now

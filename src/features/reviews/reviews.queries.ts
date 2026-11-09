@@ -7,6 +7,7 @@ import {
 import {
   createReview,
   getReviewEligibility,
+  getPartnerReviewEligibility,
   listUserReviews,
 } from "@/features/reviews/reviews.service";
 import { useAuth } from "@/contexts/AuthContext";
@@ -14,12 +15,20 @@ import { reviewKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 import type { CreateReviewPayload, ReviewListFilter } from "@/types/review";
 
-export const useReviewEligibility = (applicationId: string) => {
+export const useReviewEligibility = (
+  applicationId?: string,
+  partnerId?: string
+) => {
   const { user } = useAuth();
   return useQuery({
-    queryKey: reviewKeys.eligibility(applicationId),
-    queryFn: ({ signal }) => getReviewEligibility(applicationId, { signal }),
-    enabled: !!user && !!applicationId,
+    queryKey: reviewKeys.eligibility(
+      partnerId ? `partner:${partnerId}` : (applicationId ?? "")
+    ),
+    queryFn: ({ signal }) =>
+      partnerId
+        ? getPartnerReviewEligibility(partnerId, { signal })
+        : getReviewEligibility(applicationId ?? "", { signal }),
+    enabled: !!user && !!(applicationId || partnerId),
     ...TIER.live,
   });
 };

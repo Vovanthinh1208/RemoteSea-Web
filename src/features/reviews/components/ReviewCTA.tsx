@@ -9,15 +9,23 @@ import { reviewKeys } from "@/core/query/query-keys";
 import { useTranslation } from "@/i18n/useTranslation";
 
 interface ReviewCTAProps {
-  applicationId: string;
+  applicationId?: string;
+  partnerId?: string;
   revieweeName: string;
 }
 
-export const ReviewCTA = ({ applicationId, revieweeName }: ReviewCTAProps) => {
+export const ReviewCTA = ({
+  applicationId,
+  partnerId,
+  revieweeName,
+}: ReviewCTAProps) => {
   const { t } = useTranslation("reviews");
   const [open, setOpen] = useState(false);
   const [justSubmitted, setJustSubmitted] = useState(false);
-  const { data, isLoading, isError } = useReviewEligibility(applicationId);
+  const { data, isLoading, isError } = useReviewEligibility(
+    applicationId,
+    partnerId
+  );
   const queryClient = useQueryClient();
 
   if (isLoading) {
@@ -45,10 +53,13 @@ export const ReviewCTA = ({ applicationId, revieweeName }: ReviewCTAProps) => {
     ) : null;
   }
 
+  const eligibleApplicationId = applicationId ?? data.applicationId;
+  if (!eligibleApplicationId) return null;
+
   if (open) {
     return (
       <ReviewForm
-        applicationId={applicationId}
+        applicationId={eligibleApplicationId}
         direction={data.direction}
         revieweeName={revieweeName}
         onCancel={() => setOpen(false)}

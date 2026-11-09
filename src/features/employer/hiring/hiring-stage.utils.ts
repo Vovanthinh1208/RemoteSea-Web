@@ -24,12 +24,12 @@ const STEP_ORDER: HiringStepKey[] = [
 ];
 
 const HAPPY_PATH: ApplicationStatus[] = [
-  "PENDING",
+  "APPLIED",
   "REVIEWING",
   "SHORTLISTED",
   "INTERVIEW",
   "OFFERED",
-  "OFFER_ACCEPTED",
+  "ACCEPTED",
 ];
 
 export const isTerminalNegative = (status: ApplicationStatus): boolean =>
@@ -49,7 +49,7 @@ export const stageBadgeVariant = (
   interviewOccurred: boolean
 ): StageBadgeVariant => {
   switch (status) {
-    case "PENDING":
+    case "APPLIED":
       return "info";
     case "REVIEWING":
     case "SHORTLISTED":
@@ -57,9 +57,9 @@ export const stageBadgeVariant = (
     case "INTERVIEW":
       return interviewOccurred ? "warning" : "positive";
     case "OFFERED":
-    case "OFFER_ACCEPTED":
+    case "ACCEPTED":
       return "success";
-    case "OFFER_DECLINED":
+    case "DECLINED":
     case "REJECTED":
     case "WITHDRAWN":
       return "muted";
@@ -100,11 +100,11 @@ export const buildHiringPipeline = (
     return { steps: [], terminal: status as "REJECTED" | "WITHDRAWN" };
   }
 
-  // OFFER_DECLINED reached exactly as far as OFFERED did (it's only
+  // DECLINED reached exactly as far as OFFERED did (it's only
   // reachable from there) — same position in HAPPY_PATH for "how far did
-  // this get" purposes, distinguished from OFFER_ACCEPTED by the `hired`
+  // this get" purposes, distinguished from ACCEPTED by the `hired`
   // step and by `current` below, not by a different index.
-  const progressStatus = status === "OFFER_DECLINED" ? "OFFERED" : status;
+  const progressStatus = status === "DECLINED" ? "OFFERED" : status;
   const happyIndex = HAPPY_PATH.indexOf(progressStatus);
   const interviewIndex = HAPPY_PATH.indexOf("INTERVIEW");
   const offeredIndex = HAPPY_PATH.indexOf("OFFERED");
@@ -121,7 +121,7 @@ export const buildHiringPipeline = (
     interview: happyIndex >= interviewIndex,
     feedback: happyIndex >= interviewIndex && (pastInterviewStage || occurred),
     decision: happyIndex >= offeredIndex,
-    hired: status === "OFFER_ACCEPTED",
+    hired: status === "ACCEPTED",
   };
 
   let current: HiringStepKey | null =
@@ -129,7 +129,7 @@ export const buildHiringPipeline = (
   if (current === "decision" && !readyForDecision) current = "feedback";
   // A declined offer is resolved, not "in progress" — no step should read
   // as current (the stage badge already conveys the outcome).
-  if (status === "OFFER_DECLINED") current = null;
+  if (status === "DECLINED") current = null;
 
   const steps = STEP_ORDER.map((key) => ({
     key,
@@ -161,7 +161,7 @@ export interface PrimaryActionContext {
 }
 
 // Exactly one primary action per state — the task's whole point. Reuses the
-// real PENDING→REVIEWING→SHORTLISTED→INTERVIEW→OFFERED progression
+// real APPLIED→REVIEWING→SHORTLISTED→INTERVIEW→OFFERED progression
 // (employer-dashboard.utils.ts's NEXT_STAGE) rather than the simpler
 // 4-state table the design brief sketches, since that's the actual
 // business logic already live in ApplicantsPanel and must keep working.
@@ -178,12 +178,12 @@ export const getPrimaryAction = (ctx: PrimaryActionContext): HiringAction => {
     status === "REJECTED" ||
     status === "WITHDRAWN" ||
     status === "OFFERED" ||
-    status === "OFFER_ACCEPTED" ||
-    status === "OFFER_DECLINED"
+    status === "ACCEPTED" ||
+    status === "DECLINED"
   ) {
     return null; // outcome is already visible in the stage badge — no action to take
   }
-  if (status === "PENDING") {
+  if (status === "APPLIED") {
     return {
       kind: "advance",
       label: translate("employer.action.review"),

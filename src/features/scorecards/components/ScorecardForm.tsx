@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Minus, ThumbsDown, ThumbsUp } from "lucide-react";
@@ -37,6 +38,7 @@ const SCORES = [1, 2, 3, 4, 5] as const;
 interface ScorecardFormProps {
   applicationId: string;
   talentName: string;
+  initialRound?: number;
   onCancel: () => void;
   onSuccess: () => void;
 }
@@ -44,10 +46,12 @@ interface ScorecardFormProps {
 export const ScorecardForm = ({
   applicationId,
   talentName,
+  initialRound = 1,
   onCancel,
   onSuccess,
 }: ScorecardFormProps) => {
   const { t } = useTranslation("scorecards");
+  const [selectedRound, setSelectedRound] = useState(initialRound);
   const form = useForm<ScorecardFormValues>({
     resolver: zodResolver(scorecardFormSchema),
   });
@@ -66,6 +70,9 @@ export const ScorecardForm = ({
       () =>
         createScorecardMutation
           .mutateAsync({
+            ...(selectedRound && selectedRound > 1
+              ? { round: selectedRound, roundName: `Round ${selectedRound}` }
+              : {}),
             technicalRating: values.technicalRating,
             communicationRating: values.communicationRating,
             cultureFitRating: values.cultureFitRating,
@@ -104,6 +111,29 @@ export const ScorecardForm = ({
         <p className="mt-0.5 text-[12.5px] text-neutral-500">
           {t("form.hint")}
         </p>
+      </div>
+
+      <div>
+        <label className="mb-1.5 block text-[13px] font-medium text-neutral-700">
+          Vòng phỏng vấn (Interview Round)
+        </label>
+        <div className="flex gap-2">
+          {[1, 2, 3].map((r) => (
+            <button
+              className={cn(
+                "rounded-8 border px-3.5 py-1.5 text-[12.5px] font-medium transition-colors",
+                selectedRound === r
+                  ? "border-brand-600 bg-brand-50 text-brand-700"
+                  : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300"
+              )}
+              key={r}
+              type="button"
+              onClick={() => setSelectedRound(r)}
+            >
+              Vòng {r}
+            </button>
+          ))}
+        </div>
       </div>
 
       <fieldset>

@@ -82,9 +82,7 @@ export const FunnelPanel = ({ data, isLoading }: FunnelPanelProps) => {
                   <div
                     className={cn(
                       "h-2 rounded-full transition-all",
-                      s.status === "OFFER_ACCEPTED"
-                        ? "bg-brand-500"
-                        : "bg-amber-400"
+                      s.status === "ACCEPTED" ? "bg-brand-500" : "bg-amber-400"
                     )}
                     style={{
                       width: `${Math.max(s.conversionFromFirst, MIN_FUNNEL_BAR_PCT)}%`,

@@ -18,6 +18,8 @@ const requiredText = z
   .max(2000, m("validation.max2000"));
 
 export const scorecardFormSchema = z.object({
+  round: z.number().int().min(1).max(10).optional(),
+  roundName: z.string().trim().max(100).optional(),
   // PB64 AC2: 1–5 per criterion.
   technicalRating: criterionSchema,
   communicationRating: criterionSchema,

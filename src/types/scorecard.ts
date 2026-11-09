@@ -10,6 +10,8 @@ export type Scorecard = {
   id: string;
   authorId: string;
   author: { name: string | null };
+  round?: number;
+  roundName?: string | null;
   recommendation: ScorecardRecommendation;
   // PB64 AC2–3 — null only on scorecards submitted before these existed.
   technicalRating: number | null;
@@ -43,6 +45,8 @@ export type ScorecardListResponse = {
 };
 
 export type CreateScorecardPayload = {
+  round?: number;
+  roundName?: string;
   technicalRating: number;
   communicationRating: number;
   cultureFitRating: number;

@@ -145,7 +145,7 @@
     "EXPIRED": "Expired"
   },
   "next": {
-    "PENDING": "Review",
+    "APPLIED": "Review",
     "REVIEWING": "Shortlist",
     "SHORTLISTED": "Interview",
     "INTERVIEW": "Offer"
@@ -338,12 +338,12 @@
     "allListings": "· all listings",
     "empty": "No applications yet.",
     "stage": {
-      "PENDING": "Applied",
+      "APPLIED": "Applied",
       "REVIEWING": "Reviewing",
       "SHORTLISTED": "Shortlisted",
       "INTERVIEW": "Interview",
       "OFFERED": "Offered",
-      "OFFER_ACCEPTED": "Hired"
+      "ACCEPTED": "Hired"
     },
     "ariaBar_one": "{{label}}: {{count}} applicant, {{pct}}% of total applied",
     "ariaBar_other": "{{label}}: {{count}} applicants, {{pct}}% of total applied",
@@ -359,14 +359,14 @@
     "hired": "Hired"
   },
   "stage": {
-    "PENDING": "Applied",
+    "APPLIED": "Applied",
     "REVIEWING": "Reviewing",
     "SHORTLISTED": "Shortlisted",
     "INTERVIEW": "Interview",
     "INTERVIEW_DONE": "Awaiting decision",
     "OFFERED": "Offer sent",
-    "OFFER_ACCEPTED": "Hired",
-    "OFFER_DECLINED": "Offer declined",
+    "ACCEPTED": "Hired",
+    "DECLINED": "Offer declined",
     "REJECTED": "Rejected",
     "WITHDRAWN": "Withdrawn"
   },

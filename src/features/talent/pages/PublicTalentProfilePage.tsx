@@ -1,5 +1,6 @@
 import { useParams, useSearchParams } from "react-router-dom";
 import { ReviewsSection } from "@/features/reviews/components/ReviewsSection";
+import { ReviewCTA } from "@/features/reviews/components/ReviewCTA";
 import { usePublicTalentProfile } from "@/features/talent/talent.queries";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
@@ -77,6 +78,13 @@ export const PublicTalentProfilePage = () => {
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
           <div className="space-y-5">
+            {user?.role === "EMPLOYER" && !isOwnProfile && (
+              <ReviewCTA
+                key={profile.userId}
+                partnerId={profile.userId}
+                revieweeName={name}
+              />
+            )}
             <ReviewsSection
               categories={[
                 {

@@ -83,7 +83,7 @@ export const useDownloadInterviewIcs = (applicationId: string) => {
   });
 };
 
-// Employer-only — cancels a PENDING or CONFIRMED interview.
+// Employer-only — cancels a PROPOSED or CONFIRMED interview.
 export const useCancelInterview = (applicationId: string) => {
   const queryClient = useQueryClient();
   return useMutation({

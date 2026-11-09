@@ -42,6 +42,47 @@ beforeEach(() => {
 });
 
 describe("ReviewCTA — eligibility states", () => {
+  it("uses the server-selected interaction when reviewing from a public partner profile", async () => {
+    const create = vi.fn().mockResolvedValue({ id: "review-1" });
+    mockedUseCreateReview.mockReturnValue({
+      mutateAsync: create,
+      isPending: false,
+    } as never);
+    mockedUseReviewEligibility.mockReturnValue({
+      data: {
+        eligible: true,
+        reason: null,
+        direction: "EMPLOYER_TO_TALENT",
+        revieweeId: "partner-1",
+        applicationId: "eligible-application",
+        alreadyReviewed: false,
+      },
+      isLoading: false,
+      isError: false,
+    } as never);
+    renderWithToast(
+      <ReviewCTA partnerId="partner-1" revieweeName="Candidate" />
+    );
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: /write a review/i }));
+    await user.click(screen.getAllByRole("button", { name: "5 stars" })[0]);
+    await user.type(
+      screen.getByLabelText(/^title$/i),
+      "Clear technical discussion"
+    );
+    await user.type(
+      screen.getByLabelText(/^comment/i),
+      "The candidate explained the tradeoffs clearly and professionally."
+    );
+    await user.click(screen.getByRole("button", { name: /submit review/i }));
+    expect(create).toHaveBeenCalledWith(
+      expect.objectContaining({ applicationId: "eligible-application" })
+    );
+    expect(mockedUseReviewEligibility).toHaveBeenCalledWith(
+      undefined,
+      "partner-1"
+    );
+  });
   it("shows a loading placeholder while eligibility is being fetched", () => {
     mockedUseReviewEligibility.mockReturnValue({
       data: undefined,

@@ -1,4 +1,4 @@
-export type InterviewStatus = "PENDING" | "CONFIRMED" | "CANCELLED";
+export type InterviewStatus = "PROPOSED" | "CONFIRMED" | "CANCELLED";
 
 // PB60 AC2.
 export type InterviewPlatform = "GOOGLE_MEET" | "ZOOM" | "MS_TEAMS" | "OTHER";

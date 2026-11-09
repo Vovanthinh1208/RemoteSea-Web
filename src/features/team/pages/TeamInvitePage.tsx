@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { CheckCircle2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import {
@@ -10,6 +8,7 @@ import {
 import { roleLabel } from "@/features/team/components/RoleBadge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/components/ui/toast";
 import { ROUTES } from "@/constants/routes";
 import { useSubmitError } from "@/hooks/useSubmitError";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -23,7 +22,7 @@ export const TeamInvitePage = () => {
   const { data: preview, isLoading, isError } = useInvitationPreview(token);
   const acceptMutation = useAcceptTeamInvitation();
   const submitError = useSubmitError();
-  const [accepted, setAccepted] = useState(false);
+  const { toast } = useToast();
 
   const callbackUrl = encodeURIComponent(ROUTES.teamInvite(token ?? ""));
 
@@ -32,7 +31,18 @@ export const TeamInvitePage = () => {
     submitError.clear();
     try {
       await acceptMutation.mutateAsync(token);
-      setAccepted(true);
+      // PB36 AC4: joining takes the member straight to their company's dashboard.
+      if (preview) {
+        toast({
+          variant: "success",
+          title: t("join.in"),
+          description: t("join.joined", {
+            company: preview.companyName,
+            role: roleLabel(preview.role),
+          }),
+        });
+      }
+      navigate(ROUTES.employerDashboard, { replace: true });
     } catch (err) {
       submitError.fail(err);
     }
@@ -57,22 +67,6 @@ export const TeamInvitePage = () => {
           <Link className="mt-6 inline-block" to={ROUTES.home}>
             <Button variant="outline">{t("join.goHome")}</Button>
           </Link>
-        </div>
-      ) : accepted ? (
-        <div className="rounded-20 border border-brand-100 bg-brand-50/60 p-8 text-center">
-          <CheckCircle2 className="mx-auto mb-3 text-brand-600" size={32} />
-          <h1 className="mb-2 text-[20px] font-semibold text-neutral-900">
-            {t("join.in")}
-          </h1>
-          <p className="mb-6 text-[13.5px] text-neutral-500">
-            {t("join.joined", {
-              company: preview.companyName,
-              role: roleLabel(preview.role),
-            })}
-          </p>
-          <Button onClick={() => navigate(ROUTES.employerDashboard)}>
-            {t("join.dashboard")}
-          </Button>
         </div>
       ) : (
         <div className="rounded-20 border border-neutral-100 bg-white p-8 text-center">

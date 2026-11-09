@@ -66,6 +66,7 @@ export const SkillTagEditor = ({
           </span>
         ))}
         <input
+          aria-label={t("common.skills.typePrompt")}
           className="min-w-[120px] flex-1 px-1.5 py-0.5 text-[13px] text-neutral-700 placeholder:text-neutral-400 focus:outline-none"
           id={id}
           placeholder={

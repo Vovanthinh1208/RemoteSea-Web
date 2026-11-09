@@ -24,6 +24,14 @@ export const createReview = async (
   payload: CreateReviewPayload
 ): Promise<ReviewListItem> => reviewsRepository.create(payload);
 
+export const getPartnerReviewEligibility = async (
+  partnerId: string,
+  opts?: RequestOptions
+): Promise<ReviewEligibility> =>
+  toReviewEligibility(
+    await reviewsRepository.getPartnerEligibility(partnerId, opts)
+  );
+
 export const listUserReviews = async (
   userId: string,
   page: number,

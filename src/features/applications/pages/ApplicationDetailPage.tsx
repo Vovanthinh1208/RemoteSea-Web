@@ -32,9 +32,9 @@ import { useTranslation } from "@/i18n/useTranslation";
 // Mirrors the backend's WITHDRAWABLE_STATUSES (applications/constants.ts) —
 // OFFERED is deliberately excluded, since the talent's response to an
 // extended offer is accept/decline (see the OFFERED branch below), not
-// withdraw; REJECTED/WITHDRAWN/OFFER_ACCEPTED/OFFER_DECLINED are terminal.
+// withdraw; REJECTED/WITHDRAWN/ACCEPTED/DECLINED are terminal.
 const WITHDRAWABLE_STATUSES: ApplicationStatus[] = [
-  "PENDING",
+  "APPLIED",
   "REVIEWING",
   "SHORTLISTED",
   "INTERVIEW",
@@ -63,12 +63,12 @@ const TimelineRowSkeleton = ({ last }: { last?: boolean }) => (
 // to expect next. INTERVIEW is handled separately (an inline interview
 // card/prompt carries more signal than a single sentence could).
 const GUIDED_STATUSES: ApplicationStatus[] = [
-  "PENDING",
+  "APPLIED",
   "REVIEWING",
   "SHORTLISTED",
   "OFFERED",
-  "OFFER_ACCEPTED",
-  "OFFER_DECLINED",
+  "ACCEPTED",
+  "DECLINED",
   "REJECTED",
   "WITHDRAWN",
 ];
@@ -315,8 +315,8 @@ export const ApplicationDetailPage = () => {
                 )}
               {/* PB56 AC1–2: the offer details block. */}
               {(application.status === "OFFERED" ||
-                application.status === "OFFER_ACCEPTED" ||
-                application.status === "OFFER_DECLINED") &&
+                application.status === "ACCEPTED" ||
+                application.status === "DECLINED") &&
                 application.offerSalary && (
                   <section
                     aria-label={t("appDetail.offerDetails")}
@@ -348,7 +348,7 @@ export const ApplicationDetailPage = () => {
                           })}
                       </dd>
                     </dl>
-                    {application.status === "OFFER_DECLINED" &&
+                    {application.status === "DECLINED" &&
                       application.offerDeclineReason && (
                         <p className="mt-2 text-[12.5px] text-neutral-600">
                           <span className="font-medium">

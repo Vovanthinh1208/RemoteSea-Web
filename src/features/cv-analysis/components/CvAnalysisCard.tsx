@@ -109,7 +109,9 @@ export const CvAnalysisCard = ({
     useCvAnalysis(applicationId);
   const regenerateMutation = useRegenerateCvAnalysis(applicationId);
 
-  const hasRequested = fetchStatus !== "idle" || !!data;
+  // A failed request settles back to fetchStatus="idle" without data.
+  // Keep that error visible instead of returning to the initial prompt.
+  const hasRequested = fetchStatus !== "idle" || !!data || isError;
 
   if (!hasRequested) {
     return (

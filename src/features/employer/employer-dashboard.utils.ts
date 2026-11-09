@@ -34,20 +34,20 @@ export const STATUS_LABEL: Record<JobStatus, string> = localizedRecord(
 
 export const APPLICANT_STATUS: Record<ApplicationStatus, ApplicantStatusGroup> =
   {
-    PENDING: "new",
+    APPLIED: "new",
     REVIEWING: "reviewing",
     SHORTLISTED: "shortlisted",
     INTERVIEW: "shortlisted",
     OFFERED: "shortlisted",
-    OFFER_ACCEPTED: "archived",
-    OFFER_DECLINED: "archived",
+    ACCEPTED: "archived",
+    DECLINED: "archived",
     REJECTED: "archived",
     WITHDRAWN: "archived",
   };
 
 export const NEXT_STAGE: Partial<Record<ApplicationStatus, ApplicationStatus>> =
   {
-    PENDING: "REVIEWING",
+    APPLIED: "REVIEWING",
     REVIEWING: "SHORTLISTED",
     SHORTLISTED: "INTERVIEW",
     INTERVIEW: "OFFERED",
@@ -55,19 +55,19 @@ export const NEXT_STAGE: Partial<Record<ApplicationStatus, ApplicationStatus>> =
 
 export const NEXT_LABEL: Partial<Record<ApplicationStatus, string>> =
   localizedRecord(
-    ["PENDING", "REVIEWING", "SHORTLISTED", "INTERVIEW"] as const,
+    ["APPLIED", "REVIEWING", "SHORTLISTED", "INTERVIEW"] as const,
     "employer.next"
   );
 
 // Employer Response SLA — mirrors the API's BACKLOG_THRESHOLD_MS
 // (applications/constants.ts) exactly, so this row indicator shows the same
-// signal driving the backend's reminder-email cron. PENDING is measured from
+// signal driving the backend's reminder-email cron. APPLIED is measured from
 // appliedAt (never touched at all); REVIEWING from updatedAt (time since it
 // entered that stage — only real transitions bump it, see
 // EmployerRepository.updateApplication).
 const DAY_MS = 24 * 60 * 60 * 1000;
 export const BACKLOG_THRESHOLD_MS = {
-  PENDING: 3 * DAY_MS,
+  APPLIED: 3 * DAY_MS,
   REVIEWING: 7 * DAY_MS,
 } as const;
 
@@ -77,9 +77,9 @@ export const backlogDays = (
   updatedAt: string,
   now: number = Date.now()
 ): number | null => {
-  if (status === "PENDING") {
+  if (status === "APPLIED") {
     const elapsed = now - new Date(appliedAt).getTime();
-    return elapsed > BACKLOG_THRESHOLD_MS.PENDING
+    return elapsed > BACKLOG_THRESHOLD_MS.APPLIED
       ? Math.floor(elapsed / DAY_MS)
       : null;
   }
@@ -144,10 +144,10 @@ export const sortOptions = (): { value: ApplicantSortId; label: string }[] => [
   { value: "match", label: translate("employer.sort.match") },
 ];
 
-// PB59 BR1: end states are never part of a bulk change (OFFER_ACCEPTED is
+// PB59 BR1: end states are never part of a bulk change (ACCEPTED is
 // the backlog's "HIRED").
 export const isRejectable = (status: ApplicationStatus): boolean =>
   status !== "REJECTED" &&
   status !== "WITHDRAWN" &&
-  status !== "OFFER_ACCEPTED" &&
-  status !== "OFFER_DECLINED";
+  status !== "ACCEPTED" &&
+  status !== "DECLINED";

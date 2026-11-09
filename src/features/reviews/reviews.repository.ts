@@ -8,6 +8,19 @@ import type {
 import type { ReviewListFilter, ReviewListItem } from "@/types/review";
 
 export const reviewsRepository = {
+  getPartnerEligibility: async (
+    partnerId: string,
+    opts?: RequestOptions
+  ): Promise<ReviewEligibilityDto> => {
+    const { data } = await apiClient.get<ReviewEligibilityDto>(
+      "/reviews/eligibility",
+      {
+        params: { partnerId },
+        signal: opts?.signal,
+      }
+    );
+    return data;
+  },
   getEligibility: async (
     applicationId: string,
     opts?: RequestOptions

@@ -67,7 +67,7 @@ test("apply -> hire: a talent's application moves through the real hiring pipeli
     job.id
   );
 
-  // Employer moves the applicant through PENDING -> REVIEWING -> SHORTLISTED
+  // Employer moves the applicant through APPLIED -> REVIEWING -> SHORTLISTED
   // -> INTERVIEW via the real dashboard UI. Each of these buttons shows a
   // ConfirmAction step with the identical label as its own confirmation.
   const employerContext = await browser.newContext();
@@ -131,7 +131,7 @@ test("apply -> hire: a talent's application moves through the real hiring pipeli
   ).toBeVisible();
 
   current = await getApplication(request, talent.accessToken, application.id);
-  expect(current.status).toBe("OFFER_ACCEPTED");
+  expect(current.status).toBe("ACCEPTED");
 
   // No employer cleanup: DELETE /users/me correctly refuses an account with
   // an active job posting (ACTIVE_JOBS_PREVENT_DELETION) — see

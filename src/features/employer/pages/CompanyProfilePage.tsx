@@ -19,6 +19,7 @@ import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
 import { ReviewsSection } from "@/features/reviews/components/ReviewsSection";
 import { usePublicCompanyProfile } from "@/features/employer/employer.queries";
 import { useAuth } from "@/contexts/AuthContext";
+import { ReviewCTA } from "@/features/reviews/components/ReviewCTA";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { safeExternalUrl } from "@/utils/safe-url";
 import { formatResponseTime } from "@/utils/format";
@@ -281,6 +282,13 @@ export const CompanyProfilePage = () => {
               </div>
             )}
 
+            {user?.role === "TALENT" && !isOwnProfile && (
+              <ReviewCTA
+                key={profile.userId}
+                partnerId={profile.userId}
+                revieweeName={profile.companyName}
+              />
+            )}
             <ReviewsSection
               categories={EMPLOYER_REVIEW_KEYS.map((key) => ({
                 key,

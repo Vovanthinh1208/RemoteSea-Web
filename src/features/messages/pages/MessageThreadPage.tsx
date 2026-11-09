@@ -211,6 +211,7 @@ export const MessageThreadPage = () => {
         }}
       >
         <textarea
+          aria-label={t("page.placeholder")}
           className={cn(
             TEXTAREA_INPUT_CLASS,
             "min-h-[24px] resize-none border-none bg-transparent p-0 py-1.5 shadow-none focus:border-none focus:shadow-none"

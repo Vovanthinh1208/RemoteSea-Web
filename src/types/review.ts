@@ -10,6 +10,7 @@ export type ReviewIneligibleReason =
   | "ALREADY_REVIEWED";
 
 export type ReviewEligibility = {
+  applicationId?: string | null;
   eligible: boolean;
   reason: ReviewIneligibleReason | null;
   direction: ReviewDirection | null;

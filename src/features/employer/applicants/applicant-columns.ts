@@ -1,16 +1,16 @@
 import type { ApplicationStatus } from "@/types/application";
 
-// PB57 AC2: the pipeline columns of the applicants board. OFFER_ACCEPTED is
+// PB57 AC2: the pipeline columns of the applicants board. ACCEPTED is
 // the backlog's "Hired"; the other closed states (talent withdrew / declined
 // the offer) sit with Rejected so no applicant ever drops off the board.
 export const APPLICANT_COLUMNS = [
-  { id: "applied", statuses: ["PENDING"] },
+  { id: "applied", statuses: ["APPLIED"] },
   { id: "reviewing", statuses: ["REVIEWING"] },
   { id: "shortlisted", statuses: ["SHORTLISTED"] },
   { id: "interview", statuses: ["INTERVIEW"] },
   { id: "offered", statuses: ["OFFERED"] },
-  { id: "hired", statuses: ["OFFER_ACCEPTED"] },
-  { id: "rejected", statuses: ["REJECTED", "WITHDRAWN", "OFFER_DECLINED"] },
+  { id: "hired", statuses: ["ACCEPTED"] },
+  { id: "rejected", statuses: ["REJECTED", "WITHDRAWN", "DECLINED"] },
 ] as const satisfies readonly {
   id: string;
   statuses: readonly ApplicationStatus[];
@@ -20,13 +20,13 @@ export type ApplicantColumnId = (typeof APPLICANT_COLUMNS)[number]["id"];
 
 // The status filter (PB57 AC4) offers every real status.
 export const APPLICANT_STATUS_FILTERS: readonly ApplicationStatus[] = [
-  "PENDING",
+  "APPLIED",
   "REVIEWING",
   "SHORTLISTED",
   "INTERVIEW",
   "OFFERED",
-  "OFFER_ACCEPTED",
-  "OFFER_DECLINED",
+  "ACCEPTED",
+  "DECLINED",
   "REJECTED",
   "WITHDRAWN",
 ];

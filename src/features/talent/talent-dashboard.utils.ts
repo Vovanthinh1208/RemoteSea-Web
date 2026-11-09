@@ -8,26 +8,26 @@ export type AppStatusBucket =
   "applied" | "review" | "interview" | "offer" | "closed";
 
 export const STATUS_TO_BUCKET: Record<ApplicationStatus, AppStatusBucket> = {
-  PENDING: "applied",
+  APPLIED: "applied",
   REVIEWING: "review",
   SHORTLISTED: "review",
   INTERVIEW: "interview",
   OFFERED: "offer",
-  OFFER_ACCEPTED: "offer",
-  OFFER_DECLINED: "closed",
+  ACCEPTED: "offer",
+  DECLINED: "closed",
   REJECTED: "closed",
   WITHDRAWN: "closed",
 };
 
 export const STAGE_LABEL: Record<ApplicationStatus, string> = localizedRecord(
   [
-    "PENDING",
+    "APPLIED",
     "REVIEWING",
     "SHORTLISTED",
     "INTERVIEW",
     "OFFERED",
-    "OFFER_ACCEPTED",
-    "OFFER_DECLINED",
+    "ACCEPTED",
+    "DECLINED",
     "REJECTED",
     "WITHDRAWN",
   ] as const,
@@ -98,8 +98,8 @@ export const buildTimelineSteps = (
   }));
 
   const terminalStatuses: ApplicationStatus[] = [
-    "OFFER_ACCEPTED",
-    "OFFER_DECLINED",
+    "ACCEPTED",
+    "DECLINED",
     "REJECTED",
     "WITHDRAWN",
   ];

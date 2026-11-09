@@ -8,7 +8,7 @@ const baseApplication: Application = {
   talentId: "talent-1",
   coverLetter: null,
   resumeUrl: null,
-  status: "PENDING",
+  status: "APPLIED",
   appliedAt: "2026-08-01T00:00:00.000Z",
   updatedAt: "2026-08-01T00:00:00.000Z",
   viewedAt: null,
@@ -18,11 +18,11 @@ const baseApplication: Application = {
   offerBenefits: null,
   offerStartDate: null,
   offerDeclineReason: null,
-  statusEvents: [{ status: "PENDING", createdAt: "2026-08-01T00:00:00.000Z" }],
+  statusEvents: [{ status: "APPLIED", createdAt: "2026-08-01T00:00:00.000Z" }],
 };
 
 describe("buildTimelineSteps", () => {
-  it("marks every main-track step unreached when the application is still PENDING", () => {
+  it("marks every main-track step unreached when the application is still APPLIED", () => {
     const steps = buildTimelineSteps(baseApplication);
     expect(steps.every((s) => !s.reached)).toBe(true);
     expect(steps.map((s) => s.status)).toEqual([
@@ -38,7 +38,7 @@ describe("buildTimelineSteps", () => {
       ...baseApplication,
       status: "SHORTLISTED",
       statusEvents: [
-        { status: "PENDING", createdAt: "2026-08-01T00:00:00.000Z" },
+        { status: "APPLIED", createdAt: "2026-08-01T00:00:00.000Z" },
         { status: "REVIEWING", createdAt: "2026-08-02T00:00:00.000Z" },
         { status: "SHORTLISTED", createdAt: "2026-08-04T00:00:00.000Z" },
       ],
@@ -65,7 +65,7 @@ describe("buildTimelineSteps", () => {
       ...baseApplication,
       status: "REJECTED",
       statusEvents: [
-        { status: "PENDING", createdAt: "2026-08-01T00:00:00.000Z" },
+        { status: "APPLIED", createdAt: "2026-08-01T00:00:00.000Z" },
         { status: "REVIEWING", createdAt: "2026-08-02T00:00:00.000Z" },
         { status: "REJECTED", createdAt: "2026-08-05T00:00:00.000Z" },
       ],

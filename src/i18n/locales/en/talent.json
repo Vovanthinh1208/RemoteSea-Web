@@ -121,13 +121,13 @@
     "send": "Send verification email"
   },
   "stage": {
-    "PENDING": "Applied",
+    "APPLIED": "Applied",
     "REVIEWING": "Under review",
     "SHORTLISTED": "Shortlisted",
     "INTERVIEW": "Interviewing",
     "OFFERED": "Offer received",
-    "OFFER_ACCEPTED": "Offer accepted",
-    "OFFER_DECLINED": "Offer declined",
+    "ACCEPTED": "Offer accepted",
+    "DECLINED": "Offer declined",
     "REJECTED": "Not selected",
     "WITHDRAWN": "Withdrawn"
   },
@@ -278,12 +278,12 @@
     "declineReasonPlaceholder": "Let the employer know why…"
   },
   "guidance": {
-    "PENDING": "Your application is in the queue. Most employers respond within a few days.",
+    "APPLIED": "Your application is in the queue. Most employers respond within a few days.",
     "REVIEWING": "The employer is currently reviewing your application.",
     "SHORTLISTED": "You've been shortlisted — the employer may reach out to schedule an interview soon.",
     "OFFERED": "This employer has extended you an offer. Congratulations! Accept or decline below.",
-    "OFFER_ACCEPTED": "You accepted this offer. Congratulations!",
-    "OFFER_DECLINED": "You declined this offer.",
+    "ACCEPTED": "You accepted this offer. Congratulations!",
+    "DECLINED": "You declined this offer.",
     "REJECTED": "This employer decided to move forward with other candidates this time.",
     "WITHDRAWN": "You withdrew this application."
   },

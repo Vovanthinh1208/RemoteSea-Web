@@ -145,10 +145,15 @@ export const ScorecardSection = ({
     );
   }
 
-  const myScorecard = data.scorecards.find(
+  const myScorecards = data.scorecards.filter(
     (scorecard) => scorecard.authorId === user?.id
   );
-  const alreadySubmitted = !!myScorecard;
+  const nextRound =
+    myScorecards.length > 0
+      ? Math.max(...myScorecards.map((s) => s.round || 1)) + 1
+      : 1;
+  const alreadySubmittedAll = myScorecards.length >= 3;
+  const myScorecard = myScorecards[myScorecards.length - 1];
 
   if (data.scorecards.length === 0 && !interviewOccurred) {
     return null;
@@ -265,9 +270,14 @@ export const ScorecardSection = ({
               key={scorecard.id}
             >
               <div className="flex items-center justify-between gap-2">
-                <span className="min-w-0 truncate text-[12.5px] font-medium text-neutral-800">
-                  {scorecard.author.name ?? t("section.member")}
-                </span>
+                <div className="flex min-w-0 items-center gap-1.5">
+                  <span className="truncate text-[12.5px] font-medium text-neutral-800">
+                    {scorecard.author.name ?? t("section.member")}
+                  </span>
+                  <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10.5px] font-medium text-brand-700">
+                    {scorecard.roundName || `Vòng ${scorecard.round || 1}`}
+                  </span>
+                </div>
                 <Badge
                   className="flex-shrink-0"
                   variant={RECOMMENDATION_VARIANTS[scorecard.recommendation]}
@@ -281,7 +291,7 @@ export const ScorecardSection = ({
         </ul>
       )}
 
-      {!alreadySubmitted && interviewOccurred && (
+      {!alreadySubmittedAll && interviewOccurred && (
         <div
           className={
             data.scorecards.length > 0
@@ -292,6 +302,7 @@ export const ScorecardSection = ({
           {open ? (
             <ScorecardForm
               applicationId={applicationId}
+              initialRound={nextRound}
               talentName={talentName}
               onCancel={() => setOpen(false)}
               onSuccess={() => setOpen(false)}
@@ -303,7 +314,9 @@ export const ScorecardSection = ({
               variant="outline"
               onClick={() => setOpen(true)}
             >
-              {t("section.add")}
+              {myScorecards.length > 0
+                ? `Đánh giá vòng ${nextRound}`
+                : t("section.add")}
             </Button>
           )}
         </div>
