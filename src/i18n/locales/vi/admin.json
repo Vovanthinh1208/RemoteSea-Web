@@ -63,7 +63,8 @@
       "status": "Trạng thái",
       "joined": "Tham gia"
     },
-    "empty": "Không có người dùng nào khớp bộ lọc."
+    "empty": "Không có người dùng nào khớp bộ lọc.",
+    "statusFilter": "Trạng thái tài khoản"
   },
   "plan": {
     "STANDARD": "Tiêu chuẩn",
@@ -130,7 +131,9 @@
     "all": "Tất cả",
     "sentence": "{{admin}} {{action}} {{target}}",
     "emptyAll": "Chưa có thao tác kiểm duyệt nào.",
-    "emptyType": "Chưa có thao tác kiểm duyệt nào thuộc loại này."
+    "emptyType": "Chưa có thao tác kiểm duyệt nào thuộc loại này.",
+    "actionFilter": "Hành động",
+    "actorSearch": "Tìm quản trị viên"
   },
   "auditTab": {
     "EMPLOYER": "Nhà tuyển dụng",
@@ -221,7 +224,8 @@
       "OPEN": "Không có báo cáo đang mở.",
       "RESOLVED": "Không có báo cáo đã xử lý.",
       "DISMISSED": "Không có báo cáo đã bỏ qua."
-    }
+    },
+    "resolveQ": "Đóng tin tuyển dụng và giải quyết báo cáo?"
   },
   "rev": {
     "errorTitle": "Không thể tải doanh thu",
@@ -286,7 +290,8 @@
       "approved": "Đã duyệt & đăng",
       "changes": "Đã yêu cầu chỉnh sửa",
       "rejected": "Đã từ chối"
-    }
+    },
+    "reason": "Lý do quyết định"
   },
   "banner": {
     "approved": "Đã duyệt — tin đã được đăng và nhà tuyển dụng đã được thông báo.",

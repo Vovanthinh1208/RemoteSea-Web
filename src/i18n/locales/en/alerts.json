@@ -11,6 +11,7 @@
     "created": "Alert created",
     "createdDesc": "We'll email you matching jobs.",
     "createFailed": "Couldn't create alert",
+    "updated": "Alert updated",
     "updateFailed": "Couldn't update alert",
     "deleted": "Alert deleted",
     "deleteFailed": "Couldn't delete alert",
@@ -22,6 +23,7 @@
     "allJobs": "All jobs",
     "active": "Active",
     "paused": "Paused",
+    "edit": "Edit alert",
     "deleteQ": "Delete this alert?",
     "deleteAria": "Delete alert"
   },
@@ -37,10 +39,13 @@
     "level": "Seniority level",
     "anyLevel": "Any level",
     "salary": "Minimum salary",
+    "salaryMin": "Minimum salary",
     "salaryUnit": "(USD/mo, optional)",
     "salaryPlaceholder": "e.g. 2000",
     "frequency": "Notification frequency",
+    "limitReached": "You have reached the maximum limit of 5 job alerts. Please delete an alert before creating a new one.",
     "creating": "Creating…",
-    "create": "Create alert"
+    "create": "Create alert",
+    "country": "Country"
   }
 }

@@ -35,7 +35,11 @@ const REPORT_GRID_COLUMNS =
 interface ReportRowProps {
   report: AdminJobReport;
   isPending: boolean;
-  onResolve: (id: string, action: "resolve" | "dismiss") => void;
+  onResolve: (
+    id: string,
+    action: "resolve" | "dismiss",
+    reason?: string
+  ) => void;
 }
 
 const ReportRow = memo(function ReportRow({
@@ -69,7 +73,7 @@ const ReportRow = memo(function ReportRow({
         <Tag>{jobReportReasonLabel(r.reason)}</Tag>
       </div>
 
-      <div className="truncate text-[12.5px] text-neutral-500">
+      <div className="break-words text-[12.5px] text-neutral-500">
         {r.details ?? "—"}
       </div>
 
@@ -80,18 +84,30 @@ const ReportRow = memo(function ReportRow({
       <div className="flex justify-end gap-2">
         {r.status === "OPEN" ? (
           <>
-            <button
-              type="button"
-              disabled={isPending}
-              onClick={() => onResolve(r.id, "resolve")}
-              className="inline-flex h-8 items-center justify-center gap-1 rounded-8 border border-brand-200 bg-brand-50 px-2.5 text-xs font-medium text-brand-700 transition-all hover:bg-brand-100 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+            <ConfirmAction
+              message={t("rep.resolveQ")}
+              isPending={isPending}
+              noteMinLength={1}
+              noteLabel={t("decision.reason")}
+              onConfirm={(reason) => onResolve(r.id, "resolve", reason)}
             >
-              <CheckCircle2 size={12} /> {t("rep.resolve")}
-            </button>
+              {({ onClick }) => (
+                <button
+                  type="button"
+                  disabled={isPending}
+                  onClick={onClick}
+                  className="inline-flex h-8 items-center justify-center gap-1 rounded-8 border border-brand-200 bg-brand-50 px-2.5 text-xs font-medium text-brand-700 transition-all hover:bg-brand-100 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <CheckCircle2 size={12} /> {t("rep.resolve")}
+                </button>
+              )}
+            </ConfirmAction>
             <ConfirmAction
               isPending={isPending}
               message={t("rep.dismissQ")}
-              onConfirm={() => onResolve(r.id, "dismiss")}
+              noteMinLength={1}
+              noteLabel={t("decision.reason")}
+              onConfirm={(reason) => onResolve(r.id, "dismiss", reason)}
             >
               {({ onClick }) => (
                 <button
@@ -139,8 +155,8 @@ export const AdminReports = () => {
 
   const { mutateAsync: resolve } = resolveMutation;
   const handleResolve = useCallback(
-    (id: string, action: "resolve" | "dismiss") =>
-      runWithToast(() => resolve({ id, action }), {
+    (id: string, action: "resolve" | "dismiss", reason?: string) =>
+      runWithToast(() => resolve({ id, action, reason }), {
         success:
           action === "resolve"
             ? t("rep.resolvedToast")

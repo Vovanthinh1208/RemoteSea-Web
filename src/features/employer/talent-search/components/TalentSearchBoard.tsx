@@ -1,3 +1,4 @@
+import { InviteTalentDialog } from "@/features/invitations/InviteTalentDialog";
 import { useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
 import { TalentFilterSidebar } from "@/features/employer/talent-search/components/TalentFilterSidebar";
@@ -9,12 +10,8 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { useSyncedState } from "@/hooks/useSyncedState";
 import { useDebouncedSearchSync } from "@/hooks/useDebouncedSearchSync";
-import { useToastMutation } from "@/hooks/useToastMutation";
-import { ApiError } from "@/core/errors/api-error";
-import { getErrorMessage } from "@/core/errors/localize";
 import { useTalentSearchQuery } from "@/features/employer/talent-search/talent-search.queries";
 import { useEmployerJobs } from "@/features/employer/employer.queries";
-import { useSendInvitation } from "@/features/invitations/invitations.queries";
 import { computeMatchScore } from "@/features/matching/match.util";
 import {
   DEFAULT_TALENT_SEARCH_FILTERS,
@@ -44,8 +41,7 @@ export const TalentSearchBoard = ({
   const [invitedTalentIds, setInvitedTalentIds] = useState<Set<string>>(
     new Set()
   );
-  const runWithToast = useToastMutation();
-  const sendInvitation = useSendInvitation();
+  const [invitingTalentId, setInvitingTalentId] = useState<string | null>(null);
   const { data, isLoading, isFetching, isError, isPlaceholderData, refetch } =
     useTalentSearchQuery(query);
   const { data: jobsData } = useEmployerJobs();
@@ -65,24 +61,6 @@ export const TalentSearchBoard = ({
   const setForJob = (jobId: string | undefined) => {
     setSortByMatch(false);
     onFiltersChange({ ...query, forJob: jobId });
-  };
-
-  const inviteTalent = (talentId: string) => {
-    if (!selectedJob) return;
-    void runWithToast(
-      () =>
-        sendInvitation
-          .mutateAsync({ jobId: selectedJob.id, talentId })
-          .then(() =>
-            setInvitedTalentIds((prev) => new Set(prev).add(talentId))
-          ),
-      {
-        success: t("search.inviteSent"),
-        error: t("search.inviteFailed"),
-        onError: (err) =>
-          err instanceof ApiError ? getErrorMessage(err) : undefined,
-      }
-    );
   };
 
   const talents = data?.talents ?? [];
@@ -230,21 +208,32 @@ export const TalentSearchBoard = ({
               {displayedTalents.map((talent) => (
                 <TalentCard
                   invited={invitedTalentIds.has(talent.id)}
-                  inviting={
-                    sendInvitation.isPending &&
-                    sendInvitation.variables?.talentId === talent.id
-                  }
+                  inviting={invitingTalentId === talent.id}
                   key={talent.id}
                   match={matchByTalentId?.get(talent.id)}
                   talent={talent}
                   onInvite={
-                    selectedJob ? () => inviteTalent(talent.id) : undefined
+                    activeJobs.length
+                      ? () => setInvitingTalentId(talent.id)
+                      : undefined
                   }
                 />
               ))}
             </div>
           )}
 
+          {invitingTalentId && (
+            <InviteTalentDialog
+              talentId={invitingTalentId}
+              initialJobId={selectedJob?.id}
+              onClose={() => setInvitingTalentId(null)}
+              onSent={() =>
+                setInvitedTalentIds((prev) =>
+                  new Set(prev).add(invitingTalentId)
+                )
+              }
+            />
+          )}
           {!isLoading && (
             <Pagination
               page={query.page}

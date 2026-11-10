@@ -1,5 +1,6 @@
 import { apiClient } from "@/core/http/http-client";
 import type { RequestOptions } from "@/core/http/request-config";
+import type { UpdateAlertPayload } from "@/types/alert";
 import type {
   CreateAlertRequestDto,
   JobAlertDto,
@@ -22,6 +23,17 @@ export const alertsRepository = {
     const { data } = await apiClient.patch<JobAlertDto>(`/alerts/${id}`, {
       isActive,
     });
+    return data;
+  },
+
+  update: async (
+    id: string,
+    payload: UpdateAlertPayload
+  ): Promise<JobAlertDto> => {
+    const { data } = await apiClient.patch<JobAlertDto>(
+      `/alerts/${id}`,
+      payload
+    );
     return data;
   },
 

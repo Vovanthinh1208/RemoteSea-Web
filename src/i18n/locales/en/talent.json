@@ -652,7 +652,8 @@
     "restrictedDesc": "This candidate shares their profile only with verified companies. Sign in with a Verified Employer account to view it.",
     "restrictedDescEmployer": "This candidate shares their profile only with verified companies. Verify your company to view it.",
     "restrictedLogin": "Sign in as a Verified Employer",
-    "restrictedVerify": "Verify your company"
+    "restrictedVerify": "Verify your company",
+    "invite": "Invite to apply"
   },
   "availability": {
     "now": "Available now",

@@ -88,6 +88,7 @@ export type AdminEmployer = {
   hqCountry: string | null;
   hqCity: string | null;
   isVerified: boolean;
+  suspendedAt?: string | null;
   createdAt: string;
   updatedAt: string;
   user: { email: string };
@@ -190,6 +191,7 @@ export type AdminAuditLogEntry = {
   targetLabel: string;
   before: Record<string, unknown> | null;
   after: Record<string, unknown> | null;
+  ipAddress?: string | null;
   createdAt: string;
 };
 

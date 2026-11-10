@@ -63,7 +63,8 @@
       "status": "Status",
       "joined": "Joined"
     },
-    "empty": "No users match this filter."
+    "empty": "No users match this filter.",
+    "statusFilter": "Account status"
   },
   "plan": {
     "STANDARD": "Standard",
@@ -130,7 +131,9 @@
     "all": "All",
     "sentence": "{{admin}} {{action}} {{target}}",
     "emptyAll": "No moderation actions yet.",
-    "emptyType": "No moderation actions of this type yet."
+    "emptyType": "No moderation actions of this type yet.",
+    "actionFilter": "Action",
+    "actorSearch": "Search administrator"
   },
   "auditTab": {
     "EMPLOYER": "Employers",
@@ -221,7 +224,8 @@
       "OPEN": "No open reports.",
       "RESOLVED": "No resolved reports.",
       "DISMISSED": "No dismissed reports."
-    }
+    },
+    "resolveQ": "Close this listing and resolve the report?"
   },
   "rev": {
     "errorTitle": "Couldn't load revenue",
@@ -286,7 +290,8 @@
       "approved": "Approved & published",
       "changes": "Changes requested",
       "rejected": "Rejected"
-    }
+    },
+    "reason": "Decision reason"
   },
   "banner": {
     "approved": "Approved — job is now live and the employer has been notified.",

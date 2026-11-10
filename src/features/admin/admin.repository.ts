@@ -12,6 +12,7 @@ import type {
 } from "@/features/admin/admin.dto";
 import type {
   AdminAuditTargetType,
+  AdminAuditAction,
   AdminJobModerationFlag,
 } from "@/types/admin";
 import type { UserRole } from "@/types/user";
@@ -43,12 +44,14 @@ export const adminRepository = {
 
   updateEmployer: async (
     id: string,
-    action: "verify" | "suspend"
+    action: "verify" | "suspend",
+    reason?: string
   ): Promise<{ success: true }> => {
     const { data } = await apiClient.patch<{ success: true }>(
       `/admin/employers/${id}`,
       {
         action,
+        reason,
       }
     );
     return data;
@@ -132,13 +135,14 @@ export const adminRepository = {
 
   resolveReport: async (
     id: string,
-    action: "resolve" | "dismiss"
+    action: "resolve" | "dismiss",
+    reason?: string
   ): Promise<{ id: string; status: JobReportStatus; resolvedAt: string }> => {
     const { data } = await apiClient.patch<{
       id: string;
       status: JobReportStatus;
       resolvedAt: string;
-    }>(`/admin/reports/${id}`, { action });
+    }>(`/admin/reports/${id}`, { action, reason });
     return data;
   },
 
@@ -146,6 +150,8 @@ export const adminRepository = {
     params: {
       targetType?: AdminAuditTargetType;
       targetId?: string;
+      action?: AdminAuditAction;
+      q?: string;
       page?: number;
       limit?: number;
     } = {},
@@ -177,7 +183,11 @@ export const adminRepository = {
 
   updateUser: async (
     id: string,
-    body: { action: "ban" | "unban" | "change-role"; role?: UserRole }
+    body: {
+      action: "ban" | "unban" | "change-role";
+      role?: UserRole;
+      reason?: string;
+    }
   ): Promise<{ success: true }> => {
     const { data } = await apiClient.patch<{ success: true }>(
       `/admin/users/${id}`,

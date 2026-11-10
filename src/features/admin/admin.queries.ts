@@ -21,7 +21,7 @@ import {
 } from "@/core/query/query-keys";
 import type { JobStatus } from "@/types/job";
 import type { JobReportStatus } from "@/types/job-report";
-import type { AdminAuditTargetType } from "@/types/admin";
+import type { AdminAuditTargetType, AdminAuditAction } from "@/types/admin";
 import type { UserRole } from "@/types/user";
 
 export const ADMIN_JOBS_KEY = adminKeys.jobs();
@@ -120,10 +120,12 @@ export const useUpdateAdminEmployer = () => {
     mutationFn: ({
       id,
       action,
+      reason,
     }: {
       id: string;
       action: "verify" | "suspend";
-    }) => updateAdminEmployer(id, action),
+      reason?: string;
+    }) => updateAdminEmployer(id, action, reason),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: adminKeys.employers(),
@@ -171,26 +173,40 @@ export const useResolveAdminReport = () => {
     mutationFn: ({
       id,
       action,
+      reason,
     }: {
       id: string;
       action: "resolve" | "dismiss";
-    }) => resolveAdminReport(id, action),
+      reason?: string;
+    }) => resolveAdminReport(id, action, reason),
     // Never touches Job.status, so unlike useReviewAdminJob this doesn't
     // need to invalidate jobKeys — a resolved/dismissed report is purely an
     // admin-side signal.
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: adminKeys.reports() });
+      queryClient.invalidateQueries({ queryKey: jobKeys.all });
+      queryClient.invalidateQueries({ queryKey: jobKeys.details() });
+      queryClient.invalidateQueries({ queryKey: adminKeys.jobs() });
     },
   });
 };
 
 export const useAdminAuditLog = (
   page = 1,
-  filter: { targetType?: AdminAuditTargetType; targetId?: string } = {}
+  filter: {
+    targetType?: AdminAuditTargetType;
+    targetId?: string;
+    action?: AdminAuditAction;
+    q?: string;
+  } = {}
 ) => {
   const { user } = useAuth();
   return useQuery({
-    queryKey: adminKeys.auditLog(page, filter.targetType, filter.targetId),
+    queryKey: [
+      ...adminKeys.auditLog(page, filter.targetType, filter.targetId),
+      filter.action,
+      filter.q,
+    ],
     queryFn: ({ signal }) =>
       listAdminAuditLog(
         { ...filter, page, limit: ADMIN_LIST_LIMIT },
@@ -203,12 +219,19 @@ export const useAdminAuditLog = (
 // Fetches one large page, same as useAdminEmployers — AdminUsers filters
 // role/banned/search client-side over that page rather than round-tripping
 // on every keystroke or toggle.
-export const useAdminUsers = () => {
+export const useAdminUsers = (
+  params: {
+    page?: number;
+    role?: UserRole;
+    banned?: "true" | "false";
+    q?: string;
+  } = {}
+) => {
   const { user } = useAuth();
   return useQuery({
-    queryKey: adminKeys.users(),
+    queryKey: [...adminKeys.users(), params],
     queryFn: ({ signal }) =>
-      listAdminUsers({ limit: ADMIN_LIST_LIMIT }, { signal }),
+      listAdminUsers({ ...params, limit: ADMIN_LIST_LIMIT }, { signal }),
     enabled: !!user && user.role === "ADMIN",
   });
 };
@@ -219,12 +242,14 @@ export const useUpdateAdminUser = () => {
     mutationFn: ({
       id,
       action,
+      reason,
       role,
     }: {
       id: string;
       action: "ban" | "unban" | "change-role";
       role?: UserRole;
-    }) => updateAdminUser(id, { action, role }),
+      reason?: string;
+    }) => updateAdminUser(id, { action, role, reason }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: adminKeys.users() });
     },

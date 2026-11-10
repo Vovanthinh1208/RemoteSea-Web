@@ -596,5 +596,15 @@
     "unseen": "Đơn mới chưa xem",
     "interviews": "Phỏng vấn trong 7 ngày tới",
     "noInterviews": "Không có buổi phỏng vấn nào trong 7 ngày tới."
+  },
+  "invite": {
+    "title": "Mời ứng viên ứng tuyển",
+    "job": "Việc làm đang tuyển",
+    "choose": "Chọn việc làm",
+    "message": "Lời nhắn riêng (không bắt buộc)",
+    "send": "Gửi lời mời",
+    "loading": "Đang tải việc làm…",
+    "error": "Không thể tải việc làm đang tuyển.",
+    "empty": "Đăng một tin đang tuyển trước khi mời ứng viên."
   }
 }

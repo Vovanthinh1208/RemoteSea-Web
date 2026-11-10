@@ -31,3 +31,7 @@ export type CreateAlertPayload = {
   frequency?: AlertFrequency;
   categoryIds?: string[];
 };
+
+export type UpdateAlertPayload = {
+  [K in keyof CreateAlertPayload]?: CreateAlertPayload[K] | null;
+} & { isActive?: boolean };

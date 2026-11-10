@@ -6,6 +6,7 @@ interface PillToggleProps {
   inactiveClassName: string;
   className?: string;
   onClick: () => void;
+  disabled?: boolean;
   children: React.ReactNode;
 }
 
@@ -16,6 +17,7 @@ export const PillToggle = ({
   className,
   onClick,
   children,
+  disabled,
 }: PillToggleProps) => (
   <button
     aria-pressed={active}
@@ -25,6 +27,7 @@ export const PillToggle = ({
       active ? activeClassName : inactiveClassName
     )}
     type="button"
+    disabled={disabled}
     onClick={onClick}
   >
     {children}

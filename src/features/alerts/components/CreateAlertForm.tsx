@@ -16,7 +16,7 @@ import {
   LEVELS,
   type CreateAlertFormValues,
 } from "@/features/alerts/alerts.schemas";
-import type { CreateAlertPayload } from "@/types/alert";
+import type { CreateAlertPayload, JobAlert } from "@/types/alert";
 import { useTranslation } from "@/i18n/useTranslation";
 import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 import { filterValueLabel } from "@/features/jobs/jobs.utils";
@@ -24,6 +24,8 @@ import { JOB_TYPE_LABELS, LEVEL_LABELS } from "@/utils/labels";
 
 interface CreateAlertFormProps {
   onCreate: (payload: CreateAlertPayload) => Promise<boolean>;
+  isLimitReached?: boolean;
+  initialAlert?: JobAlert;
 }
 
 const DEFAULT_FORM_VALUES: CreateAlertFormValues = {
@@ -36,13 +38,31 @@ const DEFAULT_FORM_VALUES: CreateAlertFormValues = {
   categoryIds: [],
 };
 
-export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
+export const CreateAlertForm = ({
+  onCreate,
+  isLimitReached,
+  initialAlert,
+}: CreateAlertFormProps) => {
   const { t } = useTranslation("alerts");
   const { data: categories } = useCategories();
 
   const form = useForm<CreateAlertFormValues>({
     resolver: zodResolver(createAlertFormSchema),
-    defaultValues: DEFAULT_FORM_VALUES,
+    defaultValues: initialAlert
+      ? {
+          name: initialAlert.name,
+          keywords: initialAlert.keywords ?? "",
+          jobType: initialAlert.jobType ?? "",
+          level: initialAlert.level ?? "",
+          salaryMin:
+            initialAlert.salaryMin === null
+              ? ""
+              : String(initialAlert.salaryMin),
+          country: initialAlert.country ?? "",
+          frequency: initialAlert.frequency,
+          categoryIds: initialAlert.categories.map((c) => c.category.id),
+        }
+      : DEFAULT_FORM_VALUES,
   });
   const {
     register,
@@ -61,7 +81,9 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
       "categoryIds",
       categoryIds.includes(categoryId)
         ? categoryIds.filter((id) => id !== categoryId)
-        : [...categoryIds, categoryId]
+        : categoryIds.length < 3
+          ? [...categoryIds, categoryId]
+          : categoryIds
     );
   };
 
@@ -73,11 +95,12 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
       level: values.level || undefined,
       salaryMin: values.salaryMin ? Number(values.salaryMin) : undefined,
       frequency: values.frequency,
+      country: values.country?.trim() || undefined,
       categoryIds: values.categoryIds.length ? values.categoryIds : undefined,
     });
     // Only clear the form if the alert was actually created — on failure the
     // user keeps their input to retry (the error toast already fired).
-    if (created) reset();
+    if (created && !initialAlert) reset();
   };
 
   return (
@@ -86,19 +109,34 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <h2 className="text-[14px] font-semibold text-neutral-900">
-        {t("form.title")}
+        {initialAlert ? t("item.edit") : t("form.title")}
       </h2>
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="space-y-1.5">
           <label
             className="block text-[12.5px] font-medium text-neutral-700"
-            htmlFor="alert-name"
+            htmlFor={`alert-country-${initialAlert?.id ?? "new"}`}
+          >
+            {t("form.country")}
+          </label>
+          <input
+            id={`alert-country-${initialAlert?.id ?? "new"}`}
+            className={TEXT_INPUT_CLASS}
+            {...register("country")}
+          />
+        </div>
+        <div className="space-y-1.5">
+          <label
+            className="block text-[12.5px] font-medium text-neutral-700"
+            htmlFor={
+              initialAlert ? `alert-name-${initialAlert.id}` : "alert-name"
+            }
           >
             {t("form.name")}
           </label>
           <input
             className={TEXT_INPUT_CLASS}
-            id="alert-name"
+            id={initialAlert ? `alert-name-${initialAlert.id}` : "alert-name"}
             placeholder={t("form.namePlaceholder")}
             {...register("name")}
           />
@@ -107,7 +145,11 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
         <div className="space-y-1.5">
           <label
             className="block text-[12.5px] font-medium text-neutral-700"
-            htmlFor="alert-keywords"
+            htmlFor={
+              initialAlert
+                ? `alert-keywords-${initialAlert.id}`
+                : "alert-keywords"
+            }
           >
             {t("form.keywords")}{" "}
             <span className="font-normal text-neutral-400">
@@ -116,7 +158,11 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
           </label>
           <input
             className={TEXT_INPUT_CLASS}
-            id="alert-keywords"
+            id={
+              initialAlert
+                ? `alert-keywords-${initialAlert.id}`
+                : "alert-keywords"
+            }
             placeholder={t("form.keywordsPlaceholder")}
             {...register("keywords")}
           />
@@ -124,13 +170,21 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
         <div className="space-y-1.5">
           <label
             className="block text-[12.5px] font-medium text-neutral-700"
-            htmlFor="alert-job-type"
+            htmlFor={
+              initialAlert
+                ? `alert-job-type-${initialAlert.id}`
+                : "alert-job-type"
+            }
           >
             {t("form.jobType")}
           </label>
           <select
             className={SELECT_INPUT_CLASS}
-            id="alert-job-type"
+            id={
+              initialAlert
+                ? `alert-job-type-${initialAlert.id}`
+                : "alert-job-type"
+            }
             {...register("jobType")}
           >
             <option value="">{t("form.anyJobType")}</option>
@@ -144,13 +198,15 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
         <div className="space-y-1.5">
           <label
             className="block text-[12.5px] font-medium text-neutral-700"
-            htmlFor="alert-level"
+            htmlFor={
+              initialAlert ? `alert-level-${initialAlert.id}` : "alert-level"
+            }
           >
             {t("form.level")}
           </label>
           <select
             className={SELECT_INPUT_CLASS}
-            id="alert-level"
+            id={initialAlert ? `alert-level-${initialAlert.id}` : "alert-level"}
             {...register("level")}
           >
             <option value="">{t("form.anyLevel")}</option>
@@ -164,7 +220,11 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
         <div className="space-y-1.5">
           <label
             className="block text-[12.5px] font-medium text-neutral-700"
-            htmlFor="alert-salary-min"
+            htmlFor={
+              initialAlert
+                ? `alert-salary-min-${initialAlert.id}`
+                : "alert-salary-min"
+            }
           >
             {t("form.salary")}{" "}
             <span className="font-normal text-neutral-400">
@@ -173,23 +233,36 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
           </label>
           <input
             className={TEXT_INPUT_CLASS}
-            id="alert-salary-min"
+            id={
+              initialAlert
+                ? `alert-salary-min-${initialAlert.id}`
+                : "alert-salary-min"
+            }
             min={0}
             placeholder={t("form.salaryPlaceholder")}
             type="number"
             {...register("salaryMin")}
           />
+          <FieldError message={errors.salaryMin?.message} />
         </div>
         <div className="space-y-1.5">
           <label
             className="block text-[12.5px] font-medium text-neutral-700"
-            htmlFor="alert-frequency"
+            htmlFor={
+              initialAlert
+                ? `alert-frequency-${initialAlert.id}`
+                : "alert-frequency"
+            }
           >
             {t("form.frequency")}
           </label>
           <select
             className={SELECT_INPUT_CLASS}
-            id="alert-frequency"
+            id={
+              initialAlert
+                ? `alert-frequency-${initialAlert.id}`
+                : "alert-frequency"
+            }
             {...register("frequency")}
           >
             {FREQUENCIES.map((frequency) => (
@@ -221,9 +294,22 @@ export const CreateAlertForm = ({ onCreate }: CreateAlertFormProps) => {
         </div>
       )}
 
-      <Button disabled={isSubmitting} type="submit">
+      {isLimitReached && (
+        <div className="rounded-8 border border-amber-200 bg-amber-50 p-3 text-[13px] text-amber-800">
+          {t("form.limitReached", {
+            defaultValue:
+              "You have reached the maximum limit of 5 job alerts. Please delete an alert before creating a new one.",
+          })}
+        </div>
+      )}
+
+      <Button disabled={isSubmitting || isLimitReached} type="submit">
         <Plus size={14} />{" "}
-        {isSubmitting ? t("form.creating") : t("form.create")}
+        {isSubmitting
+          ? t("common.actions.saving")
+          : initialAlert
+            ? t("common.actions.save")
+            : t("form.create")}
       </Button>
     </form>
   );

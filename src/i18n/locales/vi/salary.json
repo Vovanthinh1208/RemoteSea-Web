@@ -8,13 +8,15 @@
     "seniority": "Cấp bậc",
     "all": "Tất cả",
     "legendRange": "Khoảng thấp nhất – cao nhất",
-    "legendAverage": "Trung bình",
+    "legendAverage": "Trung vị",
     "noData": "Chưa có dữ liệu cho {{role}} ở cấp bậc {{seniority}}. Hãy thử cấp bậc khác.",
-    "disclaimer": "Số liệu là trung bình từ mức lương công bố trong các tin đang đăng, tính bằng USD trừ khi bạn đổi tiền tệ. Chưa bao gồm thưởng và cổ phần.",
-    "avg": "TB",
-    "midpoint": "Trung điểm trung bình {{value}}",
+    "disclaimer": "Lương thấp nhất, cao nhất và trung vị điểm giữa dải lương của tin đang tuyển bằng USD/tháng. Không gồm thưởng và cổ phần.",
+    "avg": "trung vị",
+    "midpoint": "Trung vị {{value}}",
     "listings_one": "n = {{count}} tin",
-    "listings_other": "n = {{count}} tin"
+    "listings_other": "n = {{count}} tin",
+    "matchingJobs": "Việc làm đang tuyển phù hợp",
+    "noJobs": "Hiện không có việc làm phù hợp."
   },
   "country": {
     "eyebrow": "Theo quốc gia",

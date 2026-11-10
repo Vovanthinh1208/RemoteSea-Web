@@ -1,3 +1,4 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Briefcase,
   Building,
@@ -33,15 +34,35 @@ const isAdminTabId = (v: string): v is AdminTabId =>
 
 export const AdminConsole = () => {
   const { t } = useTranslation("admin");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const pathTab: AdminTabId | null = location.pathname.includes("employers")
+    ? "employers"
+    : location.pathname.includes("queue")
+      ? "queue"
+      : location.pathname.includes("reports")
+        ? "reports"
+        : location.pathname.includes("users")
+          ? "users"
+          : location.pathname.includes("audit")
+            ? "audit-log"
+            : location.pathname.includes("revenue")
+              ? "revenue"
+              : null;
+
   // URL-synced like its sibling components (AdminEmployers' filter/search,
   // ApplicationsTable/ApplicantsPanel's tabs) — previously this was the one
   // piece of admin nav that reset to "Review queue" on every refresh or
   // shared link.
-  const [tab, setTab] = useSearchParamState<AdminTabId>(
+  const [tabParam] = useSearchParamState<AdminTabId>(
     "tab",
-    "queue",
+    pathTab ?? "queue",
     isAdminTabId
   );
+
+  const tab = pathTab ?? tabParam;
+  const setTab = (value: AdminTabId) => navigate(`/admin?tab=${value}`);
 
   return (
     <div className="min-h-screen bg-neutral-50">

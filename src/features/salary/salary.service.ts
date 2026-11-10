@@ -33,3 +33,9 @@ export const listSalaryBenchmarksByCountry = async (
   (await salaryRepository.listBenchmarksByCountry(opts)).map(
     toSalaryBenchmarkByCountry
   );
+
+export const listSalaryJobs = (
+  role: string,
+  level?: string,
+  opts?: RequestOptions
+) => salaryRepository.matchingJobs(role, level, opts);

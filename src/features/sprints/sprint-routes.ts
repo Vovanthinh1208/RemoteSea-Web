@@ -58,8 +58,16 @@ const ROUTE_SPRINTS: ReadonlyArray<readonly [pattern: string, RouteSprint]> = [
 
   // Sprint 4 — PB75–PB96: alerts, salary insights, admin, AI assistant
   ["/alerts", 4],
+  ["/talent/alerts", 4],
   ["/salary", 4],
+  ["/salary-insights", 4],
   ["/admin", 4],
+  ["/admin/employers", 4],
+  ["/admin/jobs/queue", 4],
+  ["/admin/reports", 4],
+  ["/admin/users", 4],
+  ["/admin/audit-logs", 4],
+  ["/admin/audit-log", 4],
 
   // No PBI covers these
   ["/employer", "unassigned"],

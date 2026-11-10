@@ -17,7 +17,11 @@ import { PillToggle } from "@/components/shared/PillToggle";
 import { Pagination } from "@/features/jobs/components/Pagination";
 import { cn } from "@/utils/cn";
 import { timeAgoLong } from "@/utils/time";
-import type { AdminAuditLogEntry, AdminAuditTargetType } from "@/types/admin";
+import type {
+  AdminAuditLogEntry,
+  AdminAuditTargetType,
+  AdminAuditAction,
+} from "@/types/admin";
 import { useTranslation } from "@/i18n/useTranslation";
 
 const TARGET_FILTER_IDS: (AdminAuditTargetType | "ALL")[] = [
@@ -93,6 +97,10 @@ const EntryRow = ({ entry }: { entry: AdminAuditLogEntry }) => {
       {expanded && diff.length > 0 && (
         <div className="border-t border-neutral-50 bg-neutral-50/60 px-5 py-3 pl-[52px]">
           <dl className="space-y-1">
+            <div className="break-all text-xs">
+              Target ID: {entry.targetId} · IP: {entry.ipAddress ?? "—"} ·{" "}
+              {new Date(entry.createdAt).toLocaleString()}
+            </div>
             {diff.map((row) => (
               <div
                 className="flex items-center gap-2 text-[12.5px]"
@@ -117,12 +125,16 @@ const EntryRow = ({ entry }: { entry: AdminAuditLogEntry }) => {
 export const AdminAuditLog = () => {
   const { t } = useTranslation("admin");
   const [page, setPage] = useState(1);
+  const [action, setAction] = useState<AdminAuditAction | "">("");
+  const [actor, setActor] = useState("");
   const [targetType, setTargetType] = useSearchParamState<
     AdminAuditTargetType | "ALL"
   >("auditTarget", "ALL", isTargetFilterId);
 
   const { data, isLoading, isError, refetch } = useAdminAuditLog(page, {
     targetType: targetType === "ALL" ? undefined : targetType,
+    action: action || undefined,
+    q: actor || undefined,
   });
 
   if (isLoading) return <AdminAuditLogSkeleton />;
@@ -163,7 +175,7 @@ export const AdminAuditLog = () => {
           total. pagination.total above is the one number this endpoint
           returns that's actually accurate regardless of page. */}
 
-      <div className="mb-4 flex gap-1">
+      <div className="mb-4 flex flex-wrap gap-1">
         {TARGET_FILTER_IDS.map((id) => (
           <PillToggle
             active={targetType === id}
@@ -179,6 +191,39 @@ export const AdminAuditLog = () => {
             {id === "ALL" ? t("audit.all") : AUDIT_TARGET_TAB_LABEL[id]}
           </PillToggle>
         ))}
+      </div>
+
+      <div className="mb-4 flex flex-wrap gap-3">
+        <label className="text-sm">
+          {t("audit.actionFilter")}
+          <select
+            className="ml-2 rounded border p-2"
+            value={action}
+            onChange={(e) => {
+              setAction(e.target.value as AdminAuditAction | "");
+              setPage(1);
+            }}
+          >
+            <option value="">{t("audit.all")}</option>
+            {(Object.keys(AUDIT_ACTION_LABEL) as AdminAuditAction[]).map(
+              (value) => (
+                <option key={value} value={value}>
+                  {AUDIT_ACTION_LABEL[value]}
+                </option>
+              )
+            )}
+          </select>
+        </label>
+        <input
+          className="min-w-0 rounded border p-2 text-sm"
+          aria-label={t("audit.actorSearch")}
+          placeholder={t("audit.actorSearch")}
+          value={actor}
+          onChange={(e) => {
+            setActor(e.target.value);
+            setPage(1);
+          }}
+        />
       </div>
 
       <div className="overflow-hidden rounded-12 border border-neutral-100 bg-white">

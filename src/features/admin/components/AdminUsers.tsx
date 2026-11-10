@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
 import { Ban, Search, ShieldAlert, Users as UsersIcon } from "lucide-react";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { useAuth } from "@/contexts/AuthContext";
@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { PillToggle } from "@/components/shared/PillToggle";
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { StatCard } from "@/components/ui/stat-card";
-import { Dropdown } from "@/components/ui/dropdown";
+import { Pagination } from "@/features/jobs/components/Pagination";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { AdminUsersSkeleton } from "@/features/admin/components/AdminUsersSkeleton";
 import {
@@ -36,7 +36,7 @@ interface UserRowProps {
   user: AdminUser;
   isPending: boolean;
   isSelf: boolean;
-  onBanChange: (id: string, action: "ban" | "unban") => void;
+  onBanChange: (id: string, action: "ban" | "unban", reason?: string) => void;
   onRoleChange: (id: string, role: UserRole) => void;
 }
 
@@ -48,6 +48,7 @@ const UserRow = memo(function UserRow({
   onRoleChange,
 }: UserRowProps) {
   const { t } = useTranslation("admin");
+  const [selectedRole, setSelectedRole] = useState(u.role);
   const roleOptions = ROLE_VALUES.map((value) => ({
     value,
     label: t(`users.roles.${value}`),
@@ -67,15 +68,33 @@ const UserRow = memo(function UserRow({
           )}
         </div>
         <div className="truncate text-[12px] text-neutral-400">{u.email}</div>
+        <div className="truncate font-mono text-[10px] text-neutral-400">
+          {u.id}
+        </div>
       </div>
 
-      <Dropdown
-        aria-label={t("users.roleFor", { email: u.email })}
-        className={isSelf || isPending ? "pointer-events-none opacity-60" : ""}
-        options={roleOptions}
-        value={u.role}
-        onChange={(v) => onRoleChange(u.id, v as UserRole)}
-      />
+      <div className="space-y-1">
+        <select
+          aria-label={t("users.roleFor", { email: u.email })}
+          disabled={isSelf || isPending}
+          className="w-full rounded border p-1 text-xs"
+          value={selectedRole}
+          onChange={(e) => setSelectedRole(e.target.value as UserRole)}
+        >
+          {roleOptions.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </select>
+        <Button
+          size="sm"
+          disabled={isSelf || isPending || selectedRole === u.role}
+          onClick={() => onRoleChange(u.id, selectedRole)}
+        >
+          {t("common.actions.save")}
+        </Button>
+      </div>
 
       {u.bannedAt ? (
         <span className="inline-flex w-fit items-center gap-1 rounded-full bg-red-50 px-2 py-0.5 text-[11px] font-medium text-red-600">
@@ -107,7 +126,9 @@ const UserRow = memo(function UserRow({
           <ConfirmAction
             isPending={isPending}
             message={t("users.banQ", { email: u.email })}
-            onConfirm={() => onBanChange(u.id, "ban")}
+            noteMinLength={1}
+            noteLabel={t("decision.reason")}
+            onConfirm={(reason) => onBanChange(u.id, "ban", reason)}
           >
             {({ onClick }) => (
               <button
@@ -130,7 +151,8 @@ export const AdminUsers = () => {
   const { t } = useTranslation("admin");
   const { user: currentUser } = useAuth();
   const runWithToast = useToastMutation();
-  const { data, isLoading, isError, refetch } = useAdminUsers();
+  const [page, setPage] = useState(1);
+  const [banned, setBanned] = useState<"all" | "true" | "false">("all");
   const updateUserMutation = useUpdateAdminUser();
 
   const isRoleFilterId = (
@@ -142,12 +164,18 @@ export const AdminUsers = () => {
   >("role", "all", isRoleFilterId);
   const [search, setSearch] = useSearchParamState<string>("q", "");
 
+  const { data, isLoading, isError, refetch } = useAdminUsers({
+    page,
+    role: roleFilter === "all" ? undefined : roleFilter,
+    banned: banned === "all" ? undefined : banned,
+    q: search || undefined,
+  });
   const users = data?.users ?? [];
 
   const { mutateAsync: updateUser } = updateUserMutation;
   const changeBanStatus = useCallback(
-    (id: string, action: "ban" | "unban") =>
-      runWithToast(() => updateUser({ id, action }), {
+    (id: string, action: "ban" | "unban", reason?: string) =>
+      runWithToast(() => updateUser({ id, action, reason }), {
         success:
           action === "ban" ? t("users.bannedToast") : t("users.unbannedToast"),
         successVariant: action === "ban" ? "info" : "success",
@@ -206,7 +234,10 @@ export const AdminUsers = () => {
           {t("users.title")}
         </h1>
         <p className="mt-1 text-sm text-neutral-500">
-          {t("users.summary", { total: users.length, banned: bannedCount })}
+          {t("users.summary", {
+            total: data?.pagination.total ?? 0,
+            banned: bannedCount,
+          })}
         </p>
       </div>
 
@@ -215,18 +246,18 @@ export const AdminUsers = () => {
           icon={UsersIcon}
           label={t("users.stat.total")}
           sub={t("users.stat.totalSub")}
-          value={users.length}
+          value={data?.pagination.total ?? 0}
         />
         <StatCard
           icon={ShieldAlert}
           label={t("users.stat.admins")}
-          sub={t("users.stat.adminsSub")}
+          sub={t("rep.stat.thisView")}
           value={counts.ADMIN}
         />
         <StatCard
           icon={Ban}
           label={t("users.stat.banned")}
-          sub={t("users.stat.bannedSub")}
+          sub={t("rep.stat.thisView")}
           value={bannedCount}
           warn={bannedCount > 0}
         />
@@ -241,25 +272,38 @@ export const AdminUsers = () => {
               className="px-3.5 py-1.5 text-[13px] font-medium transition-colors"
               inactiveClassName="border border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50"
               key={f.id}
-              onClick={() => setRoleFilter(f.id)}
+              onClick={() => {
+                setRoleFilter(f.id);
+                setPage(1);
+              }}
             >
               {t(`users.roles.${f.id}`)}{" "}
-              <span
-                className={`ml-1 text-[11px] ${roleFilter === f.id ? "text-white/70" : "text-neutral-400"}`}
-              >
-                {counts[f.id]}
-              </span>
             </PillToggle>
           ))}
         </div>
         <div className="flex h-9 w-full items-center gap-2 rounded-10 border border-neutral-200 bg-white px-3 focus-within:border-brand-600 focus-within:shadow-focus sm:ml-auto sm:w-auto">
+          <select
+            aria-label={t("users.statusFilter")}
+            value={banned}
+            onChange={(e) => {
+              setBanned(e.target.value as "all" | "true" | "false");
+              setPage(1);
+            }}
+          >
+            <option value="all">{t("users.roles.all")}</option>
+            <option value="false">{t("users.active")}</option>
+            <option value="true">{t("users.banned")}</option>
+          </select>
           <Search className="text-neutral-400" size={14} />
           <input
             aria-label={t("users.searchAria")}
             className="w-full bg-transparent text-sm outline-none placeholder:text-neutral-400 sm:w-48"
             placeholder={t("users.searchPlaceholder")}
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
           />
         </div>
       </div>
@@ -293,6 +337,13 @@ export const AdminUsers = () => {
           ))
         )}
       </div>
+      {data && (
+        <Pagination
+          page={data.pagination.page}
+          pages={data.pagination.pages}
+          onPageChange={setPage}
+        />
+      )}
     </div>
   );
 };

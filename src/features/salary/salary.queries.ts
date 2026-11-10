@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   listSalaryBenchmarks,
+  listSalaryJobs,
   listSalaryBenchmarksByCountry,
   listSalaryBenchmarksBySeniority,
 } from "@/features/salary/salary.service";
@@ -40,3 +41,10 @@ export type {
   SalaryBenchmarkBySeniority,
   SalaryBenchmarkByCountry,
 } from "@/features/salary/salary.service";
+
+export const useSalaryJobs = (role: string | null, level?: string) =>
+  useQuery({
+    queryKey: ["salary", "jobs", role, level],
+    queryFn: ({ signal }) => listSalaryJobs(role!, level, { signal }),
+    enabled: !!role,
+  });

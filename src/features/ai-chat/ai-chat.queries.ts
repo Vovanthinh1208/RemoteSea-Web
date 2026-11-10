@@ -8,21 +8,24 @@ import { aiChatKeys } from "@/core/query/query-keys";
 import { TIER } from "@/core/query/query-client";
 import { useAuth } from "@/contexts/AuthContext";
 
-export const useConversations = () => {
+export const useConversations = (enabled = true) => {
   const { user } = useAuth();
   return useQuery({
     queryKey: aiChatKeys.conversations(),
     queryFn: ({ signal }) => listConversations({ signal }),
-    enabled: !!user,
+    enabled: !!user && enabled,
     ...TIER.list,
   });
 };
 
-export const useConversation = (conversationId: string | null) =>
+export const useConversation = (
+  conversationId: string | null,
+  enabled = true
+) =>
   useQuery({
     queryKey: aiChatKeys.conversation(conversationId ?? ""),
     queryFn: ({ signal }) => getConversation(conversationId!, { signal }),
-    enabled: !!conversationId,
+    enabled: !!conversationId && enabled,
     ...TIER.live,
   });
 

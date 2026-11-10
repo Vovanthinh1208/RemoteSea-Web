@@ -596,5 +596,15 @@
     "unseen": "New applications not yet viewed",
     "interviews": "Interviews in the next 7 days",
     "noInterviews": "No interviews in the next 7 days."
+  },
+  "invite": {
+    "title": "Invite candidate to apply",
+    "job": "Active job",
+    "choose": "Choose a job",
+    "message": "Personal message (optional)",
+    "send": "Send invitation",
+    "loading": "Loading active jobs…",
+    "error": "Could not load your active jobs.",
+    "empty": "Publish an active job before inviting candidates."
   }
 }

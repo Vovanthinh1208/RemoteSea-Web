@@ -652,7 +652,8 @@
     "restrictedDesc": "Ứng viên này chỉ chia sẻ hồ sơ với các công ty đã xác minh. Hãy đăng nhập bằng tài khoản Nhà tuyển dụng đã xác minh để xem.",
     "restrictedDescEmployer": "Ứng viên này chỉ chia sẻ hồ sơ với các công ty đã xác minh. Hãy xác minh công ty của bạn để xem.",
     "restrictedLogin": "Đăng nhập tài khoản Nhà tuyển dụng đã xác minh",
-    "restrictedVerify": "Xác minh công ty"
+    "restrictedVerify": "Xác minh công ty",
+    "invite": "Mời ứng tuyển"
   },
   "availability": {
     "now": "Có thể bắt đầu ngay",

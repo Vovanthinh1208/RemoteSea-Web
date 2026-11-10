@@ -10,8 +10,13 @@ import {
   useCreateAlert,
   useDeleteAlert,
   useSetAlertActive,
+  useUpdateAlert,
 } from "@/features/alerts/alerts.queries";
-import type { CreateAlertPayload, JobAlert } from "@/types/alert";
+import type {
+  CreateAlertPayload,
+  JobAlert,
+  UpdateAlertPayload,
+} from "@/types/alert";
 import { useTranslation } from "@/i18n/useTranslation";
 
 const ALERTS_SKELETON_COUNT = 3;
@@ -23,6 +28,18 @@ export const AlertsManager = () => {
   const createAlertMutation = useCreateAlert();
   const setActiveMutation = useSetAlertActive();
   const deleteAlertMutation = useDeleteAlert();
+  const updateAlertMutation = useUpdateAlert();
+
+  const handleUpdate = async (
+    id: string,
+    payload: UpdateAlertPayload
+  ): Promise<boolean> =>
+    runWithToast(() => updateAlertMutation.mutateAsync({ id, payload }), {
+      success: t("page.updated", {
+        defaultValue: "Alert updated successfully",
+      }),
+      error: t("page.updateFailed"),
+    });
 
   // Returns success so the form only resets when the alert was actually
   // created — runWithToast swallows the error (into a toast) and never throws,
@@ -63,7 +80,10 @@ export const AlertsManager = () => {
         <p className="text-[15px] text-neutral-500">{t("page.desc")}</p>
       </div>
 
-      <CreateAlertForm onCreate={handleCreate} />
+      <CreateAlertForm
+        isLimitReached={(alerts?.length ?? 0) >= 5}
+        onCreate={handleCreate}
+      />
 
       <div className="space-y-3">
         {isLoading ? (
@@ -101,8 +121,13 @@ export const AlertsManager = () => {
                 deleteAlertMutation.variables === alert.id
               }
               key={alert.id}
+              isToggling={
+                setActiveMutation.isPending &&
+                setActiveMutation.variables?.id === alert.id
+              }
               onDelete={handleDelete}
               onToggleActive={handleToggleActive}
+              onUpdate={handleUpdate}
             />
           ))
         )}

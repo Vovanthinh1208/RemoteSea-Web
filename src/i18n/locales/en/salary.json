@@ -8,13 +8,15 @@
     "seniority": "Seniority",
     "all": "All",
     "legendRange": "Min – max range",
-    "legendAverage": "Average",
+    "legendAverage": "Median",
     "noData": "No data yet for {{role}} at {{seniority}}. Try another seniority.",
-    "disclaimer": "Figures are averaged from active job listings' posted salary ranges, in USD unless toggled. Bonuses & equity excluded.",
-    "avg": "avg",
-    "midpoint": "Average midpoint {{value}}",
+    "disclaimer": "Minimum and maximum posted salaries, and the median of listing salary midpoints, from active USD monthly listings. Bonuses and equity excluded.",
+    "avg": "median",
+    "midpoint": "Median {{value}}",
     "listings_one": "n = {{count}} listing",
-    "listings_other": "n = {{count}} listings"
+    "listings_other": "n = {{count}} listings",
+    "matchingJobs": "Matching live jobs",
+    "noJobs": "No matching jobs are currently available."
   },
   "country": {
     "eyebrow": "By country",

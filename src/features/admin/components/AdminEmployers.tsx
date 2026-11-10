@@ -1,4 +1,5 @@
 import { memo, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { Briefcase, Building, Search, Shield, Wallet } from "lucide-react";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
 import { VerifiedBadge } from "@/components/shared/VerifiedBadge";
@@ -31,10 +32,14 @@ interface EmployerRowProps {
   employer: AdminEmployer;
   maxSpend: number;
   isPending: boolean;
-  onStatusChange: (id: string, action: "verify" | "suspend") => void;
+  onStatusChange: (
+    id: string,
+    action: "verify" | "suspend",
+    reason?: string
+  ) => void;
 }
 
-const EMPLOYER_GRID_COLUMNS = "minmax(260px, 1fr) 90px 140px 100px 88px";
+const EMPLOYER_GRID_COLUMNS = "minmax(260px, 1fr) 90px 140px 100px 180px";
 const EmployerRow = memo(function EmployerRow({
   employer: e,
   maxSpend,
@@ -56,7 +61,9 @@ const EmployerRow = memo(function EmployerRow({
 
         <div className="min-w-0">
           <div className="flex items-center gap-1.5 text-[14px] font-semibold text-neutral-900">
-            <span className="truncate">{e.companyName}</span>
+            <Link className="truncate underline" to={`/companies/${e.slug}`}>
+              {e.companyName}
+            </Link>
             <VerifiedBadge isVerified={e.isVerified} />
           </div>
 
@@ -91,11 +98,13 @@ const EmployerRow = memo(function EmployerRow({
       </span>
 
       <div className="flex justify-end">
-        {e.isVerified ? (
+        {!e.suspendedAt && (
           <ConfirmAction
             isPending={isPending}
             message={t("emp.suspendQ", { name: e.companyName })}
-            onConfirm={() => onStatusChange(e.id, "suspend")}
+            noteMinLength={1}
+            noteLabel={t("decision.reason")}
+            onConfirm={(reason) => onStatusChange(e.id, "suspend", reason)}
           >
             {({ onClick }) => (
               <button
@@ -108,7 +117,8 @@ const EmployerRow = memo(function EmployerRow({
               </button>
             )}
           </ConfirmAction>
-        ) : (
+        )}
+        {!e.isVerified && (
           <button
             type="button"
             disabled={isPending}
@@ -142,8 +152,8 @@ export const AdminEmployers = () => {
 
   const { mutateAsync: updateEmployer } = updateEmployerMutation;
   const updateEmployerStatus = useCallback(
-    (id: string, action: "verify" | "suspend") =>
-      runWithToast(() => updateEmployer({ id, action }), {
+    (id: string, action: "verify" | "suspend", reason?: string) =>
+      runWithToast(() => updateEmployer({ id, action, reason }), {
         success:
           action === "verify"
             ? t("emp.verifiedToast")

@@ -1,7 +1,11 @@
 import type { RequestOptions } from "@/core/http/request-config";
 import { alertsRepository } from "@/features/alerts/alerts.repository";
 import { toJobAlert } from "@/features/alerts/alerts.mapper";
-import type { CreateAlertPayload, JobAlert } from "@/types/alert";
+import type {
+  CreateAlertPayload,
+  JobAlert,
+  UpdateAlertPayload,
+} from "@/types/alert";
 
 export const listAlerts = async (opts?: RequestOptions): Promise<JobAlert[]> =>
   (await alertsRepository.list(opts)).map(toJobAlert);
@@ -15,6 +19,11 @@ export const setAlertActive = async (
   isActive: boolean
 ): Promise<JobAlert> =>
   toJobAlert(await alertsRepository.setActive(id, isActive));
+
+export const updateAlert = async (
+  id: string,
+  payload: UpdateAlertPayload
+): Promise<JobAlert> => toJobAlert(await alertsRepository.update(id, payload));
 
 export const deleteAlert = async (id: string): Promise<void> =>
   alertsRepository.delete(id);

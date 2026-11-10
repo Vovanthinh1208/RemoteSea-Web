@@ -1,7 +1,6 @@
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { ExplorerSection } from "@/components/salary/ExplorerSection";
 import { CountrySection } from "@/components/salary/CountrySection";
-import { SubmitSection } from "@/components/salary/SubmitSection";
 import { useSalaryBenchmarks } from "@/features/salary/salary.queries";
 import { useTranslation } from "@/i18n/useTranslation";
 
@@ -88,7 +87,6 @@ export const SalaryPage = () => {
 
       <ExplorerSection />
       <CountrySection />
-      <SubmitSection />
     </>
   );
 };

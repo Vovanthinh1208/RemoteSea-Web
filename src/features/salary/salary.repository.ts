@@ -6,7 +6,26 @@ import type {
   SalaryBenchmarkDto,
 } from "@/features/salary/salary.dto";
 
+export type SalaryJob = {
+  id: string;
+  title: string;
+  slug: string;
+  salaryMin: number;
+  salaryMax: number | null;
+  employer: { companyName: string };
+};
 export const salaryRepository = {
+  matchingJobs: async (
+    role: string,
+    level?: string,
+    opts?: RequestOptions
+  ): Promise<SalaryJob[]> => {
+    const { data } = await apiClient.get<SalaryJob[]>("/salary/jobs", {
+      params: { role, level },
+      signal: opts?.signal,
+    });
+    return data;
+  },
   listBenchmarks: async (
     opts?: RequestOptions
   ): Promise<SalaryBenchmarkDto[]> => {

@@ -1,10 +1,14 @@
 import { useMemo, useState } from "react";
 import { Zap } from "lucide-react";
-import { cn } from "@/utils/cn";
+import { Link } from "react-router-dom";
+import { ROUTES } from "@/constants/routes";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { PillToggle } from "@/components/shared/PillToggle";
 import { Spinner } from "@/components/ui/spinner";
-import { useSalaryBenchmarksBySeniority } from "@/features/salary/salary.queries";
+import {
+  useSalaryBenchmarksBySeniority,
+  useSalaryJobs,
+} from "@/features/salary/salary.queries";
 import { LEVEL_LABELS } from "@/utils/labels";
 import type { ExperienceLevel } from "@/types/job";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -108,7 +112,6 @@ export const ExplorerSection = () => {
   const [role, setRole] = useState<string | null>(null);
   // Stores the stable level code (or "ALL"), never the translated label
   const [seniority, setSeniority] = useState<"ALL" | ExperienceLevel>("ALL");
-  const [currency, setCurrency] = useState<"USD" | "VND">("USD");
 
   const roles = useMemo(() => {
     if (!data) return [];
@@ -141,10 +144,11 @@ export const ExplorerSection = () => {
   );
 
   const globalMax = Math.max(1, ...(data ?? []).map((r) => r.max));
-  const fmt = (n: number) =>
-    currency === "VND"
-      ? `${((n * 25.5) / 1000).toFixed(0)}M₫`
-      : `$${n >= 1000 ? `${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k` : n}`;
+  const fmt = (n: number) => `$${n.toLocaleString()}`;
+  const jobs = useSalaryJobs(
+    activeRole,
+    seniority === "ALL" ? undefined : seniority
+  );
 
   return (
     <section className="py-16">
@@ -159,23 +163,9 @@ export const ExplorerSection = () => {
               </em>
             </h2>
           </div>
-          <div className="flex items-center gap-0.5 rounded-8 border border-neutral-200 bg-white p-0.5">
-            {(["USD", "VND"] as const).map((c) => (
-              <button
-                className={cn(
-                  "rounded-6 px-3 py-1.5 text-[12px] font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none",
-                  currency === c
-                    ? "bg-neutral-900 text-white"
-                    : "text-neutral-500 hover:text-neutral-700"
-                )}
-                key={c}
-                type="button"
-                onClick={() => setCurrency(c)}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
+          <span className="text-sm text-neutral-500">
+            {t("explorer.usdMonth")}
+          </span>
         </div>
 
         {isLoading ? (
@@ -273,6 +263,35 @@ export const ExplorerSection = () => {
           </>
         )}
 
+        {activeRole && (
+          <div className="mt-6 rounded-16 border bg-white p-5">
+            <h3 className="mb-3 font-semibold">{t("explorer.matchingJobs")}</h3>
+            {jobs.isLoading ? (
+              <Spinner />
+            ) : jobs.isError ? (
+              <p role="alert">{t("explorer.unavailable")}</p>
+            ) : jobs.data?.length ? (
+              <ul className="space-y-3">
+                {jobs.data.map((job) => (
+                  <li key={job.id}>
+                    <Link
+                      className="font-medium text-brand-700 underline"
+                      to={ROUTES.jobDetail(job.id)}
+                    >
+                      {job.title}
+                    </Link>
+                    <p className="text-sm text-neutral-500">
+                      {job.employer.companyName} · {fmt(job.salaryMin)}–
+                      {fmt(job.salaryMax ?? job.salaryMin)} / month
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>{t("explorer.noJobs")}</p>
+            )}
+          </div>
+        )}
         {/* Disclaimer */}
         <div className="mt-5 flex items-start gap-2 rounded-12 bg-neutral-50 px-4 py-3 text-[12.5px] text-neutral-500">
           <Zap className="mt-0.5 flex-shrink-0 text-amber-500" size={14} />

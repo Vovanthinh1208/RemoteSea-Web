@@ -13,6 +13,7 @@ import type { JobReportStatus } from "@/types/job-report";
 import type {
   AdminAuditLogResponse,
   AdminAuditTargetType,
+  AdminAuditAction,
   AdminEmployersResponse,
   AdminJobModerationFlag,
   AdminJobReportsResponse,
@@ -34,8 +35,10 @@ export const listAdminEmployers = async (
 
 export const updateAdminEmployer = async (
   id: string,
-  action: "verify" | "suspend"
-): Promise<{ success: true }> => adminRepository.updateEmployer(id, action);
+  action: "verify" | "suspend",
+  reason?: string
+): Promise<{ success: true }> =>
+  adminRepository.updateEmployer(id, action, reason);
 
 export const listAdminJobs = async (
   params: { status?: JobStatus; page?: number; limit?: number } = {},
@@ -74,14 +77,17 @@ export const listAdminReports = async (
 
 export const resolveAdminReport = async (
   id: string,
-  action: "resolve" | "dismiss"
+  action: "resolve" | "dismiss",
+  reason?: string
 ): Promise<{ id: string; status: JobReportStatus; resolvedAt: string }> =>
-  adminRepository.resolveReport(id, action);
+  adminRepository.resolveReport(id, action, reason);
 
 export const listAdminAuditLog = async (
   params: {
     targetType?: AdminAuditTargetType;
     targetId?: string;
+    action?: AdminAuditAction;
+    q?: string;
     page?: number;
     limit?: number;
   } = {},
@@ -103,5 +109,9 @@ export const listAdminUsers = async (
 
 export const updateAdminUser = async (
   id: string,
-  body: { action: "ban" | "unban" | "change-role"; role?: UserRole }
+  body: {
+    action: "ban" | "unban" | "change-role";
+    role?: UserRole;
+    reason?: string;
+  }
 ): Promise<{ success: true }> => adminRepository.updateUser(id, body);

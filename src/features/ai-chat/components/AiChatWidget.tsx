@@ -39,12 +39,12 @@ export const AiChatWidget = () => {
   const [draft, setDraft] = useState("");
   const [pendingQuestion, setPendingQuestion] = useState<string | null>(null);
 
-  const conversations = useConversations();
+  const conversations = useConversations(open);
   const activeConversationId =
     selectedConversationId === undefined
       ? (conversations.data?.[0]?.id ?? null)
       : selectedConversationId;
-  const conversation = useConversation(activeConversationId);
+  const conversation = useConversation(activeConversationId, open);
   const sendMessage = useSendChatMessage();
   const runWithToast = useToastMutation();
 

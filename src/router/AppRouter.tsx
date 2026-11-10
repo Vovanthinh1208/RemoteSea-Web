@@ -266,6 +266,7 @@ export const AppRouter = () => {
           <Route element={<SprintBoardPage />} path="sprints" />
         )}
         <Route element={<SalaryPage />} path="salary" />
+        <Route element={<SalaryPage />} path="salary-insights" />
         <Route element={<BlogPage />} path="blog" />
         <Route element={<CommunityPage />} path="community" />
 
@@ -286,13 +287,14 @@ export const AppRouter = () => {
             authenticated account. */}
         <Route element={<ProtectedRoute />}>
           <Route element={<PostJobPage />} path="post-job" />
-          <Route element={<AlertsPage />} path="alerts" />
           <Route element={<SettingsPage />} path="settings" />
           <Route element={<SavedJobsPage />} path="saved" />
           <Route element={<NotificationsPage />} path="notifications" />
         </Route>
 
         <Route element={<ProtectedRoute roles={["TALENT"]} />}>
+          <Route element={<AlertsPage />} path="alerts" />
+          <Route element={<AlertsPage />} path="talent/alerts" />
           <Route element={<ProfilePage />} path="profile" />
           <Route element={<ProfilePage />} path="talent/profile" />
           <Route element={<TalentDashboardPage />} path="talent" />
@@ -375,6 +377,12 @@ export const AppRouter = () => {
 
         <Route element={<ProtectedRoute roles={["ADMIN"]} />}>
           <Route element={<AdminPage />} path="admin" />
+          <Route element={<AdminPage />} path="admin/employers" />
+          <Route element={<AdminPage />} path="admin/jobs/queue" />
+          <Route element={<AdminPage />} path="admin/reports" />
+          <Route element={<AdminPage />} path="admin/users" />
+          <Route element={<AdminPage />} path="admin/audit-logs" />
+          <Route element={<AdminPage />} path="admin/audit-log" />
         </Route>
 
         {/* One shared thread page for both roles — the API enforces real

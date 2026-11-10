@@ -1,4 +1,7 @@
 import { useParams, useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { InviteTalentDialog } from "@/features/invitations/InviteTalentDialog";
+import { Button } from "@/components/ui/button";
 import { ReviewsSection } from "@/features/reviews/components/ReviewsSection";
 import { ReviewCTA } from "@/features/reviews/components/ReviewCTA";
 import { usePublicTalentProfile } from "@/features/talent/talent.queries";
@@ -21,6 +24,7 @@ const MOCK_MATCH_SCORE = 94;
 
 export const PublicTalentProfilePage = () => {
   const { t } = useTranslation("talent");
+  const [inviting, setInviting] = useState(false);
   const { slug } = useParams<{ slug: string }>();
   const [searchParams] = useSearchParams();
   const isRecruiterPreview = searchParams.get("preview") === "recruiter";
@@ -75,6 +79,19 @@ export const PublicTalentProfilePage = () => {
           name={name}
           profile={profile}
         />
+        {user?.role === "EMPLOYER" && !isOwnProfile && profile.isOpenToWork && (
+          <div className="mb-5">
+            <Button onClick={() => setInviting(true)}>
+              {t("public.invite")}
+            </Button>
+          </div>
+        )}
+        {inviting && (
+          <InviteTalentDialog
+            talentId={profile.id}
+            onClose={() => setInviting(false)}
+          />
+        )}
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
           <div className="space-y-5">

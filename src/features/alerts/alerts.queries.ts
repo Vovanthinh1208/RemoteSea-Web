@@ -4,10 +4,11 @@ import {
   deleteAlert,
   listAlerts,
   setAlertActive,
+  updateAlert,
 } from "@/features/alerts/alerts.service";
 import { useAuth } from "@/contexts/AuthContext";
 import { alertKeys } from "@/core/query/query-keys";
-import type { JobAlert } from "@/types/alert";
+import type { UpdateAlertPayload, JobAlert } from "@/types/alert";
 
 export const ALERTS_KEY = alertKeys.all;
 
@@ -63,6 +64,22 @@ export const useDeleteAlert = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteAlert,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: alertKeys.all });
+    },
+  });
+};
+
+export const useUpdateAlert = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      id,
+      payload,
+    }: {
+      id: string;
+      payload: UpdateAlertPayload;
+    }) => updateAlert(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: alertKeys.all });
     },
