@@ -16,7 +16,8 @@
     "listings_one": "n = {{count}} tin",
     "listings_other": "n = {{count}} tin",
     "matchingJobs": "Việc làm đang tuyển phù hợp",
-    "noJobs": "Hiện không có việc làm phù hợp."
+    "noJobs": "Hiện không có việc làm phù hợp.",
+    "usdMonth": "USD / tháng"
   },
   "country": {
     "eyebrow": "Theo quốc gia",

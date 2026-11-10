@@ -95,6 +95,16 @@ export const usersRepository = {
     return data;
   },
 
+  exportDataBlob: async (format: "pdf" | "json" = "pdf"): Promise<Blob> => {
+    const response = await apiClient.get<Blob>(
+      `/users/me/export?format=${format}`,
+      {
+        responseType: "blob",
+      }
+    );
+    return response.data;
+  },
+
   listConnections: async (): Promise<ConnectionDto[]> => {
     const { data } = await apiClient.get<ConnectionDto[]>(
       "/users/me/connections"

@@ -5,6 +5,7 @@ import {
   deleteMyAccount,
   disconnectMyConnection,
   exportMyData,
+  exportMyDataBlob,
   getMyAccount,
   getMyNotificationPreferences,
   getMyPauseState,
@@ -133,6 +134,10 @@ export const useReactivateMyAccount = () => {
 // Not cached as a query — triggered on demand by the "Request" button, and
 // re-fetching the same export data on every window refocus would be wasteful.
 export const useExportMyData = () => useMutation({ mutationFn: exportMyData });
+export const useExportMyDataBlob = () =>
+  useMutation({
+    mutationFn: (format: "pdf" | "json") => exportMyDataBlob(format),
+  });
 
 export const useMyConnections = () => {
   const { user } = useAuth();

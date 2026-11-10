@@ -57,6 +57,10 @@ export const reactivateMyAccount = async (): Promise<PauseStateDto> =>
 export const exportMyData = async (): Promise<ExportDataDto> =>
   usersRepository.exportData();
 
+export const exportMyDataBlob = async (
+  format: "pdf" | "json" = "pdf"
+): Promise<Blob> => usersRepository.exportDataBlob(format);
+
 export const listMyConnections = async (): Promise<ConnectionDto[]> =>
   usersRepository.listConnections();
 

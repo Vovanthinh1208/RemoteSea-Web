@@ -16,7 +16,8 @@
     "listings_one": "n = {{count}} listing",
     "listings_other": "n = {{count}} listings",
     "matchingJobs": "Matching live jobs",
-    "noJobs": "No matching jobs are currently available."
+    "noJobs": "No matching jobs are currently available.",
+    "usdMonth": "USD / month"
   },
   "country": {
     "eyebrow": "By country",
