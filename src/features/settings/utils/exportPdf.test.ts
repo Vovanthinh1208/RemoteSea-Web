@@ -62,14 +62,16 @@ describe("exportPdf utility (PB17)", () => {
     expect(html).toContain("Principal React Architect");
     expect(html).toContain("React");
     expect(html).toContain("Lead Frontend Engineer");
-    expect(html).toContain("GDPR");
+    expect(html).toContain("Bản lưu dữ liệu cá nhân");
+    expect(html).not.toContain("tuân thủ Điều 20");
     expect(html).toContain("KHÔNG chứa chuỗi mã hóa mật khẩu");
   });
 
   it("generates well-structured HTML report in English", () => {
     const html = generateExportHtml(sampleData, "en");
     expect(html).toContain("RemoteSEA · Personal Data Archive");
-    expect(html).toContain("GDPR / PDPA Compliance Dossier");
+    expect(html).toContain("Personal data archive");
+    expect(html).not.toContain("GDPR / PDPA Compliance Dossier");
     expect(html).toContain("Tran Van Dev");
     expect(html).toContain("Lead Frontend Engineer");
     expect(html).toContain("strictly EXCLUDES password hashes");

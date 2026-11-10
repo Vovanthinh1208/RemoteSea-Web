@@ -58,8 +58,9 @@ export const exportMyData = async (): Promise<ExportDataDto> =>
   usersRepository.exportData();
 
 export const exportMyDataBlob = async (
-  format: "pdf" | "json" = "pdf"
-): Promise<Blob> => usersRepository.exportDataBlob(format);
+  format: "pdf" | "json" = "pdf",
+  locale: "en" | "vi" = "vi"
+): Promise<Blob> => usersRepository.exportDataBlob(format, locale);
 
 export const listMyConnections = async (): Promise<ConnectionDto[]> =>
   usersRepository.listConnections();

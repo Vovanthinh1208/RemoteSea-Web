@@ -91,17 +91,28 @@ export const usersRepository = {
   },
 
   exportData: async (): Promise<ExportDataDto> => {
-    const { data } = await apiClient.get<ExportDataDto>("/users/me/export");
+    const { data } = await apiClient.get<ExportDataDto>(
+      "/users/me/export?format=json"
+    );
     return data;
   },
 
-  exportDataBlob: async (format: "pdf" | "json" = "pdf"): Promise<Blob> => {
-    const response = await apiClient.get<Blob>(
-      `/users/me/export?format=${format}`,
-      {
-        responseType: "blob",
-      }
-    );
+  exportDataBlob: async (
+    format: "pdf" | "json" = "pdf",
+    locale: "en" | "vi" = "vi"
+  ): Promise<Blob> => {
+    const response = await apiClient.get<Blob>("/users/me/data-export", {
+      params: { format, locale },
+      responseType: "blob",
+      timeout: 45_000,
+    });
+    const expected = format === "pdf" ? "application/pdf" : "application/json";
+    if (
+      response.status !== 200 ||
+      String(response.headers["content-type"]).toLowerCase().split(";")[0] !==
+        expected
+    )
+      throw new Error("Invalid export response type");
     return response.data;
   },
 

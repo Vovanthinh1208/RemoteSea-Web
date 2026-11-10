@@ -1,46 +1,36 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+/// <reference types="node" />
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Blob as NodeBlob } from "node:buffer";
 import { I18nProvider } from "@/i18n/I18nContext";
 import { ToastProvider } from "@/components/ui/toast";
 import { PrivacyDataSection } from "./PrivacyDataSection";
 
 const mocks = vi.hoisted(() => ({
-  exportDataMutateAsync: vi.fn(),
-  exportBlobMutateAsync: vi.fn(),
-  updateProfileMutateAsync: vi.fn(),
-  exportDataToPdf: vi.fn(),
+  exportBlob: vi.fn(),
+  updateProfile: vi.fn(),
 }));
-
 vi.mock("@/features/users/users.queries", () => ({
-  useExportMyData: vi.fn(() => ({
-    mutateAsync: mocks.exportDataMutateAsync,
+  useExportMyDataBlob: () => ({
+    mutateAsync: mocks.exportBlob,
     isPending: false,
-  })),
-  useExportMyDataBlob: vi.fn(() => ({
-    mutateAsync: mocks.exportBlobMutateAsync,
-    isPending: false,
-  })),
+  }),
 }));
-
 vi.mock("@/features/talent/talent.queries", () => ({
-  useMyTalentProfile: vi.fn(() => ({
-    data: { visibility: "PUBLIC" },
-  })),
-  useUpdateMyTalentProfile: vi.fn(() => ({
-    mutateAsync: mocks.updateProfileMutateAsync,
+  useMyTalentProfile: () => ({ data: { visibility: "PUBLIC" } }),
+  useUpdateMyTalentProfile: () => ({
+    mutateAsync: mocks.updateProfile,
     isPending: false,
-  })),
+  }),
 }));
-
-vi.mock("@/features/settings/utils/exportPdf", () => ({
-  exportDataToPdf: mocks.exportDataToPdf,
-  generateExportHtml: vi.fn(() => "<html></html>"),
-}));
-
-const renderSection = (locale = "en") =>
+const pdf = () =>
+  new NodeBlob(["%PDF-1.7\nunit client boundary fixture\n%%EOF"], {
+    type: "application/pdf",
+  }) as unknown as Blob;
+const renderSection = (locale: "en" | "vi" = "en") =>
   render(
-    <I18nProvider initialLocale={locale as "en" | "vi"}>
+    <I18nProvider initialLocale={locale}>
       <ToastProvider>
         <PrivacyDataSection />
       </ToastProvider>
@@ -49,69 +39,131 @@ const renderSection = (locale = "en") =>
 
 beforeEach(() => {
   vi.clearAllMocks();
-  mocks.exportBlobMutateAsync.mockResolvedValue(
-    new Blob(["%PDF-sample"], { type: "application/pdf" })
+  mocks.exportBlob.mockResolvedValue(pdf());
+  vi.stubGlobal(
+    "URL",
+    Object.assign(URL, {
+      createObjectURL: vi.fn(() => "blob:private-unit-test"),
+      revokeObjectURL: vi.fn(),
+    })
   );
-  mocks.exportDataMutateAsync.mockResolvedValue({
-    exportedAt: "2026-11-10T10:00:00.000Z",
-    account: { id: "user_123", email: "test@example.com", name: "Test User" },
-  });
+  vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
+});
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
 });
 
-describe("PrivacyDataSection (PB17 - Export Personal Data)", () => {
-  it("renders format selectors (PDF by default) and export button", () => {
-    renderSection("en");
-    expect(screen.getByRole("button", { name: /^PDF$/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /^JSON$/i })).toBeInTheDocument();
+describe("PB17 secure Privacy Settings download", () => {
+  it("defaults to PDF and exposes accessible format controls", () => {
+    renderSection();
     expect(
-      screen.getByRole("button", { name: /export data/i })
+      screen.getByRole("group", { name: "Export format" })
     ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "PDF" })).toHaveAttribute(
+      "aria-pressed",
+      "true"
+    );
+    expect(screen.getByRole("button", { name: "JSON" })).toHaveAttribute(
+      "aria-pressed",
+      "false"
+    );
+    expect(screen.getByRole("button", { name: /export data/i })).toBeEnabled();
   });
-
-  it("exports PDF by default when clicking Export Data", async () => {
-    const user = userEvent.setup();
-    renderSection("en");
-
-    const exportBtn = screen.getByRole("button", { name: /export data/i });
-    await user.click(exportBtn);
-
-    expect(mocks.exportBlobMutateAsync).toHaveBeenCalledWith("pdf");
+  it("calls the real-file mutation with PDF and locale, then starts the download", async () => {
+    renderSection();
+    await userEvent.click(screen.getByRole("button", { name: /export data/i }));
+    await waitFor(() => expect(URL.createObjectURL).toHaveBeenCalledTimes(1));
+    expect(mocks.exportBlob).toHaveBeenCalledWith({
+      format: "pdf",
+      locale: "en",
+    });
+    expect(HTMLAnchorElement.prototype.click).toHaveBeenCalledTimes(1);
+    expect(document.querySelector("a[download]")).toBeNull();
   });
-
-  it("exports JSON when JSON format is selected", async () => {
-    const user = userEvent.setup();
-    renderSection("en");
-
-    const jsonToggle = screen.getByRole("button", { name: /^JSON$/i });
-    await user.click(jsonToggle);
-
-    const exportBtn = screen.getByRole("button", { name: /export data/i });
-    await user.click(exportBtn);
-
-    expect(mocks.exportBlobMutateAsync).toHaveBeenCalledWith("json");
+  it("retains JSON as an explicit download choice", async () => {
+    mocks.exportBlob.mockResolvedValue(
+      new NodeBlob(
+        [
+          JSON.stringify({
+            exportedAt: new Date().toISOString(),
+            account: { email: "unit@example.test" },
+          }),
+        ],
+        { type: "application/json" }
+      )
+    );
+    renderSection();
+    await userEvent.click(screen.getByRole("button", { name: "JSON" }));
+    await userEvent.click(screen.getByRole("button", { name: /export data/i }));
+    await waitFor(() => expect(URL.createObjectURL).toHaveBeenCalledTimes(1));
+    expect(mocks.exportBlob).toHaveBeenCalledWith({
+      format: "json",
+      locale: "en",
+    });
   });
-
-  it("triggers exportDataToPdf when quick print button is clicked", async () => {
+  it.each([
+    ["empty", new NodeBlob([], { type: "application/pdf" })],
+    ["HTML error", new NodeBlob(["<html>error</html>"], { type: "text/html" })],
+    [
+      "truncated PDF",
+      new NodeBlob(["%PDF-incomplete"], { type: "application/pdf" }),
+    ],
+  ])(
+    "does not download a %s response or display a success toast",
+    async (_name, blob) => {
+      mocks.exportBlob.mockResolvedValue(blob);
+      renderSection();
+      await userEvent.click(
+        screen.getByRole("button", { name: /export data/i })
+      );
+      await waitFor(() =>
+        expect(screen.getByText(/couldn.t export/i)).toBeInTheDocument()
+      );
+      expect(URL.createObjectURL).not.toHaveBeenCalled();
+      expect(HTMLAnchorElement.prototype.click).not.toHaveBeenCalled();
+    }
+  );
+  it("shows network errors without creating a download", async () => {
+    mocks.exportBlob.mockRejectedValue(new Error("Network unavailable"));
+    renderSection();
+    await userEvent.click(screen.getByRole("button", { name: /export data/i }));
+    await waitFor(() =>
+      expect(screen.getByText(/couldn.t export/i)).toBeInTheDocument()
+    );
+    expect(URL.createObjectURL).not.toHaveBeenCalled();
+  });
+  it("prevents duplicate submission while processing and restores controls afterwards", async () => {
+    let finish!: (value: Blob) => void;
+    mocks.exportBlob.mockImplementation(
+      () =>
+        new Promise<Blob>((resolve) => {
+          finish = resolve;
+        })
+    );
+    renderSection();
     const user = userEvent.setup();
-    renderSection("en");
-
-    const printBtn = screen.getByTitle(/export pdf/i);
-    await user.click(printBtn);
-
-    expect(mocks.exportDataMutateAsync).toHaveBeenCalled();
-    expect(mocks.exportDataToPdf).toHaveBeenCalledWith(
-      expect.objectContaining({
-        exportedAt: "2026-11-10T10:00:00.000Z",
-      }),
-      "en"
+    await user.dblClick(screen.getByRole("button", { name: /export data/i }));
+    expect(mocks.exportBlob).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("button", { name: "PDF" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /processing/i })).toHaveAttribute(
+      "aria-busy",
+      "true"
+    );
+    await act(async () => finish(pdf()));
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: /export data/i })).toBeEnabled()
     );
   });
-
-  it("renders Vietnamese localized labels correctly", () => {
+  it("uses Vietnamese labels and requests Vietnamese PDF output", async () => {
     renderSection("vi");
-    expect(
+    await userEvent.click(
       screen.getByRole("button", { name: /xuất dữ liệu/i })
-    ).toBeInTheDocument();
+    );
+    expect(mocks.exportBlob).toHaveBeenCalledWith({
+      format: "pdf",
+      locale: "vi",
+    });
     expect(
       screen.getByText(/tải xuống bản sao thông tin tài khoản/i)
     ).toBeInTheDocument();

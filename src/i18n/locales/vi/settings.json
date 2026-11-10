@@ -161,7 +161,7 @@
     "restricted": "Chỉ nhà tuyển dụng đã xác minh",
     "public": "Công khai",
     "download": "Xuất dữ liệu cá nhân",
-    "downloadDesc": "Tải xuống bản sao thông tin tài khoản, hồ sơ, lịch sử ứng tuyển, tin nhắn và cài đặt thông báo của bạn.",
+    "downloadDesc": "Tải xuống bản sao thông tin tài khoản, hồ sơ, lịch sử ứng tuyển, tin nhắn đã gửi và cài đặt thông báo của bạn.",
     "downloadJson": "Tải JSON",
     "downloadPdf": "Xuất PDF",
     "exportAction": "Xuất dữ liệu",
@@ -172,7 +172,8 @@
     "preparing": "Đang xử lý…",
     "request": "Yêu cầu",
     "seo": "Cho phép công cụ tìm kiếm lập chỉ mục hồ sơ công khai của tôi",
-    "seoDesc": "Mặc định tắt. Khi bật, trang ứng viên công khai của bạn có thể xuất hiện trên Google. Chưa được xây dựng — tùy chọn này sẽ chưa có tác dụng."
+    "seoDesc": "Mặc định tắt. Khi bật, trang ứng viên công khai của bạn có thể xuất hiện trên Google. Chưa được xây dựng — tùy chọn này sẽ chưa có tác dụng.",
+    "format": "Định dạng xuất"
   },
   "dz": {
     "eyebrow": "06 · Hãy cẩn thận",

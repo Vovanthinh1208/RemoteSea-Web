@@ -136,7 +136,17 @@ export const useReactivateMyAccount = () => {
 export const useExportMyData = () => useMutation({ mutationFn: exportMyData });
 export const useExportMyDataBlob = () =>
   useMutation({
-    mutationFn: (format: "pdf" | "json") => exportMyDataBlob(format),
+    // Downloads are an immediate user action, not a mutation to queue until
+    // reconnection. Let the HTTP client surface an offline error and free UI.
+    networkMode: "always",
+    retry: false,
+    mutationFn: ({
+      format,
+      locale,
+    }: {
+      format: "pdf" | "json";
+      locale: "en" | "vi";
+    }) => exportMyDataBlob(format, locale),
   });
 
 export const useMyConnections = () => {

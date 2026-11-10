@@ -394,7 +394,14 @@ test("PB17-E2E-01 [AC1-3, C1] Request export downloads JSON with the user's data
   const user = await register(request, "TALENT", "pb17");
   await openSettings(page, user);
   const downloadPromise = page.waitForEvent("download");
-  await page.locator("#data").getByRole("button", { name: "Request" }).click();
+  await page
+    .locator("#data")
+    .getByRole("button", { name: "JSON", exact: true })
+    .click();
+  await page
+    .locator("#data")
+    .getByRole("button", { name: "Export data", exact: true })
+    .click();
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toMatch(/\.json$/);
   const text = readFileSync(await download.path(), "utf8");

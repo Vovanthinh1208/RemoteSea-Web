@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Download, Eye, FileText, Printer } from "lucide-react";
+import { useRef, useState } from "react";
+import { Download, Eye, FileText } from "lucide-react";
 import {
   SectionHead,
   EMPHASIS_STYLE,
@@ -10,25 +10,11 @@ import {
   useMyTalentProfile,
   useUpdateMyTalentProfile,
 } from "@/features/talent/talent.queries";
-import {
-  useExportMyData,
-  useExportMyDataBlob,
-} from "@/features/users/users.queries";
-import { exportDataToPdf } from "@/features/settings/utils/exportPdf";
+import { useExportMyDataBlob } from "@/features/users/users.queries";
+import { downloadPersonalData } from "@/features/users/personal-data-download";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useI18n } from "@/i18n/useI18n";
 import { useTranslation } from "@/i18n/useTranslation";
-
-const triggerBlobDownload = (blob: Blob, filename: string) => {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-};
 
 export const PrivacyDataSection = () => {
   const { t } = useTranslation("settings");
@@ -39,12 +25,12 @@ export const PrivacyDataSection = () => {
 
   const { data: profile } = useMyTalentProfile();
   const updateProfileMutation = useUpdateMyTalentProfile();
-  const exportDataMutation = useExportMyData();
   const exportBlobMutation = useExportMyDataBlob();
+  const inFlight = useRef(false);
+  const [exporting, setExporting] = useState(false);
 
   const isRestricted = profile?.visibility === "VERIFIED_EMPLOYERS";
-  const isExporting =
-    exportBlobMutation.isPending || exportDataMutation.isPending;
+  const isExporting = exportBlobMutation.isPending || exporting;
 
   const toggleVisibility = (restricted: boolean) =>
     runWithToast(
@@ -55,37 +41,27 @@ export const PrivacyDataSection = () => {
       { error: t("priv2.visFailed") }
     );
 
-  const requestDownload = () =>
-    runWithToast(
-      async () => {
-        const dateStr = new Date().toISOString().split("T")[0];
-        const blob = await exportBlobMutation.mutateAsync(format);
-        if (!blob || blob.size === 0) {
-          throw new Error("Empty export received");
+  const requestDownload = async () => {
+    if (inFlight.current) return;
+    inFlight.current = true;
+    setExporting(true);
+    try {
+      await runWithToast(
+        async () => {
+          const blob = await exportBlobMutation.mutateAsync({ format, locale });
+          await downloadPersonalData(blob, format);
+        },
+        {
+          success:
+            format === "pdf" ? t("priv2.exportPdfDone") : t("priv2.exportDone"),
+          error: t("priv2.exportFailed"),
         }
-        triggerBlobDownload(
-          blob,
-          `remotesea-personal-data-${dateStr}.${format}`
-        );
-      },
-      {
-        success:
-          format === "pdf" ? t("priv2.exportPdfDone") : t("priv2.exportDone"),
-        error: t("priv2.exportFailed"),
-      }
-    );
-
-  const requestQuickPrint = () =>
-    runWithToast(
-      async () => {
-        const result = await exportDataMutation.mutateAsync();
-        exportDataToPdf(result, locale);
-      },
-      {
-        success: t("priv2.exportPdfDone"),
-        error: t("priv2.exportFailed"),
-      }
-    );
+      );
+    } finally {
+      inFlight.current = false;
+      setExporting(false);
+    }
+  };
 
   return (
     <section
@@ -150,9 +126,15 @@ export const PrivacyDataSection = () => {
 
           <div className="flex flex-shrink-0 flex-wrap items-center gap-2 self-start sm:self-auto">
             {/* Format Selector Pills (PDF default) */}
-            <div className="inline-flex rounded-8 border border-neutral-200 bg-neutral-50 p-0.5 text-[11px] font-medium">
+            <div
+              role="group"
+              aria-label={t("priv2.format")}
+              className="inline-flex rounded-8 border border-neutral-200 bg-neutral-50 p-0.5 text-[11px] font-medium"
+            >
               <button
                 type="button"
+                aria-pressed={format === "pdf"}
+                disabled={isExporting}
                 className={`rounded-6 px-2.5 py-1 transition ${
                   format === "pdf"
                     ? "bg-white font-semibold text-brand-700 shadow-sm"
@@ -164,6 +146,8 @@ export const PrivacyDataSection = () => {
               </button>
               <button
                 type="button"
+                aria-pressed={format === "json"}
+                disabled={isExporting}
                 className={`rounded-6 px-2.5 py-1 transition ${
                   format === "json"
                     ? "bg-white font-semibold text-brand-700 shadow-sm"
@@ -177,27 +161,24 @@ export const PrivacyDataSection = () => {
 
             {/* Primary Action Button */}
             <button
-              className="flex items-center gap-1.5 rounded-8 bg-brand-600 px-3 py-1.5 text-[12px] font-semibold text-white shadow-sm transition hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
+              className="flex min-w-32 items-center justify-center gap-1.5 rounded-8 bg-brand-600 px-3 py-1.5 text-[12px] font-semibold text-white shadow-sm transition hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
               disabled={isExporting}
+              aria-busy={isExporting}
               type="button"
               onClick={requestDownload}
             >
               <Download size={13} />
               {isExporting ? t("priv2.preparing") : t("priv2.exportAction")}
             </button>
-
-            {/* Secondary Action: Print Preview */}
-            <button
-              className="hidden items-center gap-1 rounded-8 border border-neutral-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-neutral-600 transition hover:border-neutral-300 hover:text-neutral-800 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60 sm:inline-flex"
-              disabled={isExporting}
-              title={t("priv2.downloadPdf")}
-              type="button"
-              onClick={requestQuickPrint}
-            >
-              <Printer size={13} />
-            </button>
           </div>
         </div>
+        <p
+          role="status"
+          aria-live="polite"
+          className="min-h-5 px-4 text-xs text-neutral-500"
+        >
+          {isExporting ? t("priv2.preparing") : ""}
+        </p>
       </div>
 
       <ToggleRow
