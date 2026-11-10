@@ -54,25 +54,28 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("PB17 secure Privacy Settings download", () => {
-  it("defaults to PDF and exposes accessible format controls", () => {
+describe("PB17 secure Privacy Settings PDF-only download", () => {
+  it("TC14 & TC15: displays single primary export button without JSON format options", () => {
     renderSection();
     expect(
-      screen.getByRole("group", { name: "Export format" })
-    ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "PDF" })).toHaveAttribute(
-      "aria-pressed",
-      "true"
-    );
-    expect(screen.getByRole("button", { name: "JSON" })).toHaveAttribute(
-      "aria-pressed",
-      "false"
-    );
-    expect(screen.getByRole("button", { name: /export data/i })).toBeEnabled();
+      screen.queryByRole("group", { name: /format/i })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "PDF" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "JSON" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /request data export/i })
+    ).toBeEnabled();
   });
-  it("calls the real-file mutation with PDF and locale, then starts the download", async () => {
+
+  it("TC16: calls mutation with format=pdf and locale, then triggers file download", async () => {
     renderSection();
-    await userEvent.click(screen.getByRole("button", { name: /export data/i }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /request data export/i })
+    );
     await waitFor(() => expect(URL.createObjectURL).toHaveBeenCalledTimes(1));
     expect(mocks.exportBlob).toHaveBeenCalledWith({
       format: "pdf",
@@ -81,27 +84,7 @@ describe("PB17 secure Privacy Settings download", () => {
     expect(HTMLAnchorElement.prototype.click).toHaveBeenCalledTimes(1);
     expect(document.querySelector("a[download]")).toBeNull();
   });
-  it("retains JSON as an explicit download choice", async () => {
-    mocks.exportBlob.mockResolvedValue(
-      new NodeBlob(
-        [
-          JSON.stringify({
-            exportedAt: new Date().toISOString(),
-            account: { email: "unit@example.test" },
-          }),
-        ],
-        { type: "application/json" }
-      )
-    );
-    renderSection();
-    await userEvent.click(screen.getByRole("button", { name: "JSON" }));
-    await userEvent.click(screen.getByRole("button", { name: /export data/i }));
-    await waitFor(() => expect(URL.createObjectURL).toHaveBeenCalledTimes(1));
-    expect(mocks.exportBlob).toHaveBeenCalledWith({
-      format: "json",
-      locale: "en",
-    });
-  });
+
   it.each([
     ["empty", new NodeBlob([], { type: "application/pdf" })],
     ["HTML error", new NodeBlob(["<html>error</html>"], { type: "text/html" })],
@@ -115,7 +98,7 @@ describe("PB17 secure Privacy Settings download", () => {
       mocks.exportBlob.mockResolvedValue(blob);
       renderSection();
       await userEvent.click(
-        screen.getByRole("button", { name: /export data/i })
+        screen.getByRole("button", { name: /request data export/i })
       );
       await waitFor(() =>
         expect(screen.getByText(/couldn.t export/i)).toBeInTheDocument()
@@ -124,15 +107,19 @@ describe("PB17 secure Privacy Settings download", () => {
       expect(HTMLAnchorElement.prototype.click).not.toHaveBeenCalled();
     }
   );
+
   it("shows network errors without creating a download", async () => {
     mocks.exportBlob.mockRejectedValue(new Error("Network unavailable"));
     renderSection();
-    await userEvent.click(screen.getByRole("button", { name: /export data/i }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /request data export/i })
+    );
     await waitFor(() =>
       expect(screen.getByText(/couldn.t export/i)).toBeInTheDocument()
     );
     expect(URL.createObjectURL).not.toHaveBeenCalled();
   });
+
   it("prevents duplicate submission while processing and restores controls afterwards", async () => {
     let finish!: (value: Blob) => void;
     mocks.exportBlob.mockImplementation(
@@ -143,22 +130,27 @@ describe("PB17 secure Privacy Settings download", () => {
     );
     renderSection();
     const user = userEvent.setup();
-    await user.dblClick(screen.getByRole("button", { name: /export data/i }));
+    await user.dblClick(
+      screen.getByRole("button", { name: /request data export/i })
+    );
     expect(mocks.exportBlob).toHaveBeenCalledTimes(1);
-    expect(screen.getByRole("button", { name: "PDF" })).toBeDisabled();
     expect(screen.getByRole("button", { name: /processing/i })).toHaveAttribute(
       "aria-busy",
       "true"
     );
+    expect(screen.getByRole("button", { name: /processing/i })).toBeDisabled();
     await act(async () => finish(pdf()));
     await waitFor(() =>
-      expect(screen.getByRole("button", { name: /export data/i })).toBeEnabled()
+      expect(
+        screen.getByRole("button", { name: /request data export/i })
+      ).toBeEnabled()
     );
   });
+
   it("uses Vietnamese labels and requests Vietnamese PDF output", async () => {
     renderSection("vi");
     await userEvent.click(
-      screen.getByRole("button", { name: /xuất dữ liệu/i })
+      screen.getByRole("button", { name: /yêu cầu xuất dữ liệu/i })
     );
     expect(mocks.exportBlob).toHaveBeenCalledWith({
       format: "pdf",
