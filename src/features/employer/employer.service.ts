@@ -1,4 +1,9 @@
 import type { RequestOptions } from "@/core/http/request-config";
+import type { EmployerApplicationDetail } from "@/types/employer";
+import {
+  computeMatchScore,
+  type MatchResult,
+} from "@/features/matching/match.util";
 import { employerRepository } from "@/features/employer/employer.repository";
 import {
   toEmployerDashboardResponse,
@@ -28,6 +33,21 @@ import type {
   HiringFunnelResponse,
   PublicCompanyProfile,
 } from "@/types/employer";
+
+export const getEmployerApplication = async (
+  id: string,
+  opts?: RequestOptions
+): Promise<EmployerApplicationDetail & { match: MatchResult }> => {
+  const { job, ...application } = await employerRepository.getApplication(
+    id,
+    opts
+  );
+  return {
+    ...application,
+    jobTitle: job.title,
+    match: computeMatchScore(job, application.talent),
+  };
+};
 
 export const createEmployerProfile = async (
   payload: CreateEmployerProfileRequestDto

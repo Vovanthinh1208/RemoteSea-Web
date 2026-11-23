@@ -185,7 +185,8 @@
       "spend": "Tổng chi tiêu",
       "joined": "Tham gia"
     },
-    "empty": "Không có nhà tuyển dụng nào khớp bộ lọc."
+    "empty": "Không có nhà tuyển dụng nào khớp bộ lọc.",
+    "viewDetails": "Xem công ty và tài liệu"
   },
   "rep": {
     "filter": {

@@ -20,7 +20,8 @@
     "criteriaAverages": "Average by criterion",
     "strengths": "Strengths",
     "improvements": "To improve",
-    "note": "Note"
+    "note": "Note",
+    "addRound": "Add round {{n}} feedback"
   },
   "form": {
     "success": "Feedback submitted.",
@@ -39,7 +40,9 @@
     "strengths": "Strengths",
     "strengthsPlaceholder": "Clear system thinking, explains trade-offs well…",
     "improvements": "Areas to improve",
-    "improvementsPlaceholder": "Probe testing strategy further…"
+    "improvementsPlaceholder": "Probe testing strategy further…",
+    "round": "Interview round",
+    "roundOption": "Round {{n}}"
   },
   "criteria": {
     "technicalRating": "Technical skills",

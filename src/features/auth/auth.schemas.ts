@@ -22,6 +22,7 @@ export type LoginFormValues = z.infer<typeof loginSchema>;
 export const registerSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(1, m("validation.nameRequired"))
     .min(2, m("validation.nameMin"))
     .max(120, m("validation.nameTooLong")),

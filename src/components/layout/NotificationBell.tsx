@@ -90,7 +90,11 @@ export const NotificationBell = () => {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+6px)] z-30 w-[340px] animate-fade-up overflow-hidden rounded-12 border border-neutral-200 bg-white shadow-card-lg">
+        <div
+          role="region"
+          aria-label={t("common.notifications.title")}
+          className="fixed inset-x-3 top-16 z-30 animate-fade-up overflow-hidden rounded-12 border border-neutral-200 bg-white shadow-card-lg sm:absolute sm:inset-x-auto sm:right-0 sm:top-[calc(100%+6px)] sm:w-[340px]"
+        >
           <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
             <span className="text-[13.5px] font-semibold text-neutral-900">
               {t("common.notifications.title")}

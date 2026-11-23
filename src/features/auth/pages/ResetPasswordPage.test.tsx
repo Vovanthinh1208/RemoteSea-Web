@@ -39,7 +39,13 @@ describe("ResetPasswordPage", () => {
     renderResetPasswordUrl("/reset-password?token=mail-token%26part");
 
     expect(
-      await screen.findByRole("heading", { name: "Choose a new password" })
+      // AppRouter lazy-loads this route. Allow the cold module import to
+      // settle on CI/loaded machines before asserting the rendered form.
+      await screen.findByRole(
+        "heading",
+        { name: "Choose a new password" },
+        { timeout: 10000 }
+      )
     ).toBeInTheDocument();
     await user.type(screen.getByLabelText("New password"), "SafePass123!");
     await user.type(
@@ -77,7 +83,11 @@ describe("ResetPasswordPage", () => {
     );
 
     renderResetPasswordUrl("/reset-password?token=expired-token");
-    await screen.findByRole("heading", { name: "Choose a new password" });
+    await screen.findByRole(
+      "heading",
+      { name: "Choose a new password" },
+      { timeout: 10000 }
+    );
     await user.type(screen.getByLabelText("New password"), "SafePass123!");
     await user.type(
       screen.getByLabelText("Confirm new password"),

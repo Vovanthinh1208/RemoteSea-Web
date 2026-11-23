@@ -606,5 +606,28 @@
     "loading": "Đang tải việc làm…",
     "error": "Không thể tải việc làm đang tuyển.",
     "empty": "Đăng một tin đang tuyển trước khi mời ứng viên."
+  },
+  "verificationDocs": {
+    "title": "Tài liệu xác minh công ty",
+    "privacy": "Tài liệu riêng tư chỉ dành cho OWNER của công ty và quản trị viên.",
+    "invalid": "Chọn tệp PDF không quá 5 MiB.",
+    "uploaded": "Đã đính kèm tài liệu xác minh",
+    "uploadFailed": "Không thể đính kèm tài liệu",
+    "downloaded": "Đã bắt đầu tải tài liệu",
+    "downloadFailed": "Không thể tải tài liệu",
+    "loadFailed": "Không thể tải danh sách tài liệu xác minh",
+    "downloading": "Đang tải…",
+    "download": "Tải PDF",
+    "empty": "Chưa có tài liệu xác minh được đính kèm.",
+    "attach": "Đính kèm PDF để quản trị viên xem xét",
+    "limits": "Chỉ nhận PDF, tối đa 5 MiB/tệp và 10 tệp. Tệp trùng nội dung chỉ được lưu một lần.",
+    "upload": "Đính kèm tài liệu",
+    "owner": "Email chủ công ty",
+    "country": "Quốc gia",
+    "industry": "Ngành nghề",
+    "size": "Quy mô công ty",
+    "founded": "Năm thành lập",
+    "website": "Website",
+    "profile": "Xem đầy đủ hồ sơ công ty"
   }
 }

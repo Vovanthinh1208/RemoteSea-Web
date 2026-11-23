@@ -38,6 +38,7 @@
     "responsibilities": "Responsibilities",
     "requirements": "Requirements",
     "benefits": "Benefits",
+    "applicationLink": "Application link",
     "aboutCompany": "About {{company}}",
     "viewCompanyProfile": "View company profile",
     "shareRole": "Share this job",
@@ -231,10 +232,11 @@
     "detailsPlaceholder": "Any details that would help us review this (optional)",
     "submit": "Submit report",
     "reason": {
-      "SCAM": "This looks like a scam",
-      "MISLEADING": "Misleading description",
+      "SCAM": "Scam / pyramid scheme",
+      "ILLEGAL_FEE": "Illegal fee collection",
+      "MISLEADING": "False information",
       "ALREADY_FILLED": "Position already filled",
-      "DISCRIMINATORY": "Discriminatory requirements",
+      "DISCRIMINATORY": "Discriminatory content",
       "DUPLICATE": "Duplicate listing",
       "OTHER": "Other"
     }

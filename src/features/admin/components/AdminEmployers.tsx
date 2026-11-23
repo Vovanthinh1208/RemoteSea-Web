@@ -1,4 +1,5 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
+import { CompanyReviewDialog } from "./CompanyReviewDialog";
 import { Link } from "react-router-dom";
 import { Briefcase, Building, Search, Shield, Wallet } from "lucide-react";
 import { useSearchParamState } from "@/hooks/useSearchParamState";
@@ -32,6 +33,7 @@ interface EmployerRowProps {
   employer: AdminEmployer;
   maxSpend: number;
   isPending: boolean;
+  onInspect: (employer: AdminEmployer) => void;
   onStatusChange: (
     id: string,
     action: "verify" | "suspend",
@@ -45,6 +47,7 @@ const EmployerRow = memo(function EmployerRow({
   maxSpend,
   isPending,
   onStatusChange,
+  onInspect,
 }: EmployerRowProps) {
   const { t } = useTranslation("admin");
   return (
@@ -70,6 +73,13 @@ const EmployerRow = memo(function EmployerRow({
           <div className="truncate text-[12px] text-neutral-400">
             {e.user.email} · {e.hqCountry ?? "—"}
           </div>
+          <button
+            type="button"
+            className="mt-1 text-xs text-brand-700 underline"
+            onClick={() => onInspect(e)}
+          >
+            {t("emp.viewDetails")}
+          </button>
         </div>
       </div>
 
@@ -134,6 +144,7 @@ const EmployerRow = memo(function EmployerRow({
 });
 
 export const AdminEmployers = () => {
+  const [inspected, setInspected] = useState<AdminEmployer | null>(null);
   const { t } = useTranslation("admin");
   const runWithToast = useToastMutation();
   const { data, isLoading, isError, refetch } = useAdminEmployers();
@@ -297,10 +308,17 @@ export const AdminEmployers = () => {
               key={e.id}
               maxSpend={maxSpend}
               onStatusChange={updateEmployerStatus}
+              onInspect={setInspected}
             />
           ))
         )}
       </div>
+      {inspected && (
+        <CompanyReviewDialog
+          employer={inspected}
+          onClose={() => setInspected(null)}
+        />
+      )}
     </div>
   );
 };

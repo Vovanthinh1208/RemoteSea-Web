@@ -188,6 +188,45 @@ describe("ScorecardSection — content", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("offers the next round in the active language, not hardcoded Vietnamese", async () => {
+    mockedUseScorecards.mockReturnValue({
+      data: {
+        scorecards: [
+          {
+            id: "sc-1",
+            authorId: "me",
+            author: { name: "Me" },
+            round: 1,
+            roundName: null,
+            recommendation: "RECOMMEND",
+            note: null,
+            createdAt: "2026-08-19T09:00:00.000Z",
+          },
+        ],
+        summary: { total: 1, hireCount: 1 },
+      },
+      isLoading: false,
+      isError: false,
+      refetch: vi.fn(),
+    } as never);
+    const user = userEvent.setup();
+
+    const { container } = renderWithToast(
+      <ScorecardSection
+        applicationId="app-1"
+        interviewOccurred
+        talentName="Jane Doe"
+      />
+    );
+
+    await user.click(
+      screen.getByRole("button", { name: "Add round 2 feedback" })
+    );
+    expect(screen.getByText("Interview round")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Round 2" })).toBeInTheDocument();
+    expect(container.textContent).not.toMatch(/Vòng|Đánh giá/);
+  });
+
   it("shows Add feedback once the interview has occurred and the caller hasn't submitted", async () => {
     mockedUseScorecards.mockReturnValue({
       data: { scorecards: [], summary: { total: 0, hireCount: 0 } },

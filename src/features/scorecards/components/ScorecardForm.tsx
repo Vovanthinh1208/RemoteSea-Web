@@ -115,7 +115,7 @@ export const ScorecardForm = ({
 
       <div>
         <label className="mb-1.5 block text-[13px] font-medium text-neutral-700">
-          Vòng phỏng vấn (Interview Round)
+          {t("form.round")}
         </label>
         <div className="flex gap-2">
           {[1, 2, 3].map((r) => (
@@ -130,7 +130,7 @@ export const ScorecardForm = ({
               type="button"
               onClick={() => setSelectedRound(r)}
             >
-              Vòng {r}
+              {t("form.roundOption", { n: r })}
             </button>
           ))}
         </div>

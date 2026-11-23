@@ -16,6 +16,16 @@ const CV_ANALYSIS_TIMEOUT_MS = 45_000;
 // Employer-only, same reasoning as scorecard.repository.ts — internal hiring
 // aid, never shown to the talent, so there's no role-branching path.
 export const cvAnalysisRepository = {
+  getCached: async (
+    applicationId: string,
+    opts?: RequestOptions
+  ): Promise<CvAnalysisDto | null> => {
+    const { data } = await apiClient.get<CvAnalysisDto | null>(
+      `/employer/applications/${applicationId}/ai-cv-analysis/cached`,
+      { signal: opts?.signal }
+    );
+    return data || null;
+  },
   get: async (
     applicationId: string,
     opts?: RequestOptions

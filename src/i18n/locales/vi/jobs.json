@@ -38,6 +38,7 @@
     "responsibilities": "Trách nhiệm chính",
     "requirements": "Yêu cầu ứng viên",
     "benefits": "Phúc lợi",
+    "applicationLink": "Liên kết ứng tuyển",
     "aboutCompany": "Về {{company}}",
     "viewCompanyProfile": "Xem hồ sơ công ty",
     "shareRole": "Chia sẻ việc làm",
@@ -231,10 +232,11 @@
     "detailsPlaceholder": "Mọi chi tiết giúp chúng tôi xem xét (không bắt buộc)",
     "submit": "Gửi báo cáo",
     "reason": {
-      "SCAM": "Có dấu hiệu lừa đảo",
-      "MISLEADING": "Mô tả gây hiểu lầm",
+      "SCAM": "Lừa đảo / Đa cấp",
+      "ILLEGAL_FEE": "Thu phí trái phép",
+      "MISLEADING": "Thông tin sai sự thật",
       "ALREADY_FILLED": "Vị trí đã được tuyển",
-      "DISCRIMINATORY": "Yêu cầu mang tính phân biệt đối xử",
+      "DISCRIMINATORY": "Nội dung phân biệt đối xử",
       "DUPLICATE": "Tin đăng trùng lặp",
       "OTHER": "Khác"
     }

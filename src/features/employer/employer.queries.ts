@@ -6,6 +6,7 @@ import {
   createEmployerProfile,
   exportJobApplicantsCsv,
   getEmployerDashboard,
+  getEmployerApplication,
   getEmployerProfile,
   getHiringFunnel,
   getPublicCompanyProfile,
@@ -129,6 +130,13 @@ export type ApplicantWithJob = EmployerApplicant & {
   jobTitle: string;
   match: MatchResult | null;
 };
+
+export const useEmployerApplication = (id: string) =>
+  useQuery({
+    queryKey: employerKeys.application(id),
+    queryFn: ({ signal }) => getEmployerApplication(id, { signal }),
+    enabled: !!id,
+  });
 
 // Shared by useEmployerApplicationsAggregate and useEmployerDashboard below —
 // both end up with the same two raw pieces (a company's jobs, its recent
@@ -353,6 +361,7 @@ export const useUpdateApplicationStatus = () => {
     } & ApplicationDecisionDto) =>
       updateApplicationStatus(id, status, { notes, reason, offer }),
     onSuccess: (_data, { jobId }) => {
+      queryClient.invalidateQueries({ queryKey: ["employer", "application"] });
       queryClient.invalidateQueries({
         queryKey: employerKeys.jobApplications(jobId),
       });
@@ -403,6 +412,7 @@ export const useBulkUpdateApplicationStatus = () => {
         { notes, reason }
       ),
     onSuccess: (_data, { items }) => {
+      queryClient.invalidateQueries({ queryKey: ["employer", "application"] });
       const jobIds = new Set(items.map((i) => i.jobId));
       jobIds.forEach((jobId) => {
         queryClient.invalidateQueries({

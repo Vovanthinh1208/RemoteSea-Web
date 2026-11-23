@@ -185,7 +185,8 @@
       "spend": "Total spend",
       "joined": "Joined"
     },
-    "empty": "No employers match this filter."
+    "empty": "No employers match this filter.",
+    "viewDetails": "View company & documents"
   },
   "rep": {
     "filter": {

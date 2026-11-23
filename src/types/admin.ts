@@ -15,6 +15,8 @@ export type AdminJob = {
   slug: string;
   description: string;
   requirements: string | null;
+  responsibilities?: string | null;
+  applicationUrl?: string | null;
   jobType: JobType;
   level: ExperienceLevel;
   salaryMin: number | null;

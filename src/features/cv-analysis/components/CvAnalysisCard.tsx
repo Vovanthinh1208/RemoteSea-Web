@@ -57,6 +57,7 @@ const NO_RESUME_STATUS = 400;
 interface CvAnalysisCardProps {
   applicationId: string;
   talentName: string;
+  canAnalyze?: boolean;
 }
 
 // Both real tiers stay in the brand-green family (900 vs 600), not a
@@ -103,6 +104,7 @@ const CvAnalysisSkeleton = () => (
 export const CvAnalysisCard = ({
   applicationId,
   talentName,
+  canAnalyze = true,
 }: CvAnalysisCardProps) => {
   const { t } = useTranslation("cv");
   const { data, isFetching, isError, error, fetchStatus, refetch } =
@@ -114,6 +116,7 @@ export const CvAnalysisCard = ({
   const hasRequested = fetchStatus !== "idle" || !!data || isError;
 
   if (!hasRequested) {
+    if (!canAnalyze) return null;
     return (
       <div className="flex items-center justify-between gap-3 rounded-16 border border-neutral-100 bg-white px-4 py-3.5">
         {/* min-w-0 so a long talent name wraps within this text block
@@ -185,19 +188,21 @@ export const CvAnalysisCard = ({
               {t(`rec.${data.recommendation}`)}
             </span>
           )}
-          <button
-            aria-label={t("regenerate")}
-            className="grid h-6 w-6 flex-shrink-0 place-items-center rounded-6 text-neutral-300 transition-colors hover:bg-neutral-100 hover:text-neutral-600 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-            disabled={regenerateMutation.isPending}
-            title={t("regenerateTitle")}
-            type="button"
-            onClick={() => regenerateMutation.mutate()}
-          >
-            <RefreshCw
-              className={cn(regenerateMutation.isPending && "animate-spin")}
-              size={12}
-            />
-          </button>
+          {canAnalyze && (
+            <button
+              aria-label={t("regenerate")}
+              className="grid h-6 w-6 flex-shrink-0 place-items-center rounded-6 text-neutral-300 transition-colors hover:bg-neutral-100 hover:text-neutral-600 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+              disabled={regenerateMutation.isPending}
+              title={t("regenerateTitle")}
+              type="button"
+              onClick={() => regenerateMutation.mutate()}
+            >
+              <RefreshCw
+                className={cn(regenerateMutation.isPending && "animate-spin")}
+                size={12}
+              />
+            </button>
+          )}
         </div>
       </div>
 

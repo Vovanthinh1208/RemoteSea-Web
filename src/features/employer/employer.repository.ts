@@ -2,6 +2,8 @@ import { apiClient } from "@/core/http/http-client";
 import type { RequestOptions } from "@/core/http/request-config";
 import type { ApplicationStatus } from "@/types/application";
 import type { JobStatus } from "@/types/job";
+import type { EmployerApplicant } from "@/types/employer";
+import type { MatchableJob } from "@/features/matching/match.util";
 import type {
   ApplicationDecisionDto,
   BulkUpdateApplicationsResponseDto,
@@ -23,6 +25,16 @@ import type {
 } from "@/features/employer/employer.dto";
 
 export const employerRepository = {
+  getApplication: async (id: string, opts?: RequestOptions) => {
+    const { data } = await apiClient.get<
+      EmployerApplicant & {
+        jobId: string;
+        job: MatchableJob & { title: string };
+        canManage: boolean;
+      }
+    >(`/employer/applications/${id}`, { signal: opts?.signal });
+    return data;
+  },
   createProfile: async (
     payload: CreateEmployerProfileRequestDto
   ): Promise<CreateEmployerProfileResponseDto> => {

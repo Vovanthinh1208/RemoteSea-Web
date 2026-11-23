@@ -606,5 +606,28 @@
     "loading": "Loading active jobs…",
     "error": "Could not load your active jobs.",
     "empty": "Publish an active job before inviting candidates."
+  },
+  "verificationDocs": {
+    "title": "Company verification documents",
+    "privacy": "Private attachments are accessible only to the company OWNER and administrators.",
+    "invalid": "Choose a PDF up to 5 MiB.",
+    "uploaded": "Verification document attached",
+    "uploadFailed": "Could not attach document",
+    "downloaded": "Document download started",
+    "downloadFailed": "Could not download document",
+    "loadFailed": "Could not load verification documents",
+    "downloading": "Downloading…",
+    "download": "Download PDF",
+    "empty": "No verification documents have been attached.",
+    "attach": "Attach a PDF for administrator review",
+    "limits": "PDF only, up to 5 MiB each; up to 10 documents. Identical uploads are kept once.",
+    "upload": "Attach document",
+    "owner": "Company owner email",
+    "country": "Country",
+    "industry": "Industry",
+    "size": "Company size",
+    "founded": "Founded",
+    "website": "Website",
+    "profile": "View full company profile"
   }
 }

@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { CalendarClock, MessageCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
-import { useEmployerApplicationsAggregate } from "@/features/employer/employer.queries";
+import { useEmployerApplication } from "@/features/employer/employer.queries";
 import { useInterview } from "@/features/interviews/interview.queries";
 import { useScorecards } from "@/features/scorecards/scorecard.queries";
 import { useTeamMembers } from "@/features/team/team.queries";
@@ -59,12 +59,11 @@ export const ApplicationWorkspacePage = () => {
   const { user } = useAuth();
 
   const {
-    applications,
+    data: applicant,
     isLoading: applicantsLoading,
     isError: applicantsError,
-    refetchAll,
-  } = useEmployerApplicationsAggregate();
-  const applicant = applications.find((a) => a.id === applicationId);
+    refetch: refetchAll,
+  } = useEmployerApplication(applicationId);
 
   const { data: interviewData, isLoading: interviewLoading } =
     useInterview(applicationId);
@@ -150,15 +149,23 @@ export const ApplicationWorkspacePage = () => {
   const viewerHasSubmittedScorecard =
     scorecardData?.scorecards.some((s) => s.authorId === user?.id) ?? false;
 
-  const primaryAction = getPrimaryAction({
+  const suggestedAction = getPrimaryAction({
     status: applicant.status,
     interview,
     viewerHasSubmittedScorecard,
     scorecardSummary: scorecardData?.summary,
     eligibleReviewerCount,
   });
+  const primaryAction =
+    applicant.canManage ||
+    suggestedAction?.kind === "view-interview" ||
+    suggestedAction?.kind === "add-feedback" ||
+    suggestedAction?.kind === "view-feedback-status"
+      ? suggestedAction
+      : null;
 
   const readyForDecision =
+    applicant.canManage &&
     applicant.status === "INTERVIEW" &&
     occurred &&
     !!scorecardData &&
@@ -262,6 +269,7 @@ export const ApplicationWorkspacePage = () => {
             <CvAnalysisCard
               applicationId={applicant.id}
               talentName={talentName}
+              canAnalyze={applicant.canManage}
             />
 
             {interview?.status === "CONFIRMED" && !occurred && (
@@ -293,7 +301,9 @@ export const ApplicationWorkspacePage = () => {
               <CandidateSummaryCard applicant={applicant} />
             </div>
 
-            <CandidateNotesCard applicant={applicant} />
+            {applicant.canManage && (
+              <CandidateNotesCard applicant={applicant} />
+            )}
 
             <DiscussionThreadCard applicationId={applicant.id} />
 

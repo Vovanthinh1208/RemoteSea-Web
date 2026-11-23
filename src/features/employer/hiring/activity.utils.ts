@@ -51,7 +51,7 @@ export const buildActivityEvents = (
       label: translate("employer.activity.feedback", {
         name:
           scorecard.author.name ?? translate("employer.activity.teamMember"),
-        rec: translate(`employer.rec.${scorecard.recommendation}`),
+        rec: translate(`scorecards.rec.${scorecard.recommendation}`),
       }),
       at: scorecard.createdAt,
     });

@@ -19,6 +19,7 @@ import {
 } from "@/features/admin/components/admin-queue/ResolutionBanner";
 import { JobSummaryHeader } from "@/features/admin/components/admin-queue/JobSummaryHeader";
 import { SubmissionSummary } from "@/features/admin/components/admin-queue/SubmissionSummary";
+import { JobContentPreview } from "@/features/admin/components/admin-queue/JobContentPreview";
 import { AutomatedChecks } from "@/features/admin/components/admin-queue/AutomatedChecks";
 import { AiRiskFlag } from "@/features/admin/components/admin-queue/AiRiskFlag";
 import { ReviewerChecklist } from "@/features/admin/components/admin-queue/ReviewerChecklist";
@@ -208,6 +209,7 @@ export const AdminQueue = () => {
             style={{ maxHeight: "calc(100vh - 440px)" }}
           >
             <SubmissionSummary job={sel} />
+            <JobContentPreview job={sel} />
             <AutomatedChecks job={sel} />
             <AiRiskFlag job={sel} />
             <ReviewerChecklist

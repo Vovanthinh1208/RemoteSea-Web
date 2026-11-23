@@ -52,6 +52,7 @@ export const applicationKeys = {
 };
 
 export const employerKeys = {
+  application: (id: string) => ["employer", "application", id] as const,
   all: ["employer"] as const,
   profile: () => ["employer", "profile"] as const,
   jobs: () => ["employer", "jobs"] as const,

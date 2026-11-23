@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { OwnerCompanyDocuments } from "@/features/company-documents/CompanyDocumentsPanel";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -247,6 +248,7 @@ const CompanySettingsEditor = ({ profile }: { profile: EmployerProfile }) => {
           </Field>
         </section>
 
+        <OwnerCompanyDocuments />
         {errors.length > 0 && (
           <ul
             className="space-y-1 rounded-12 bg-red-50 p-3 text-[13px] text-red-700"

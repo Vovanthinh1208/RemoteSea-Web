@@ -2,6 +2,7 @@ import { translate } from "@/i18n/runtime";
 
 export type JobReportReason =
   | "SCAM"
+  | "ILLEGAL_FEE"
   | "MISLEADING"
   | "ALREADY_FILLED"
   | "DISCRIMINATORY"
@@ -10,12 +11,15 @@ export type JobReportReason =
 
 export type JobReportStatus = "OPEN" | "RESOLVED" | "DISMISSED";
 
+// Reasons offered by the report form — exactly the PB88 AC2 list (scam/MLM,
+// illegal fee collection, discriminatory content, false information, other).
+// ALREADY_FILLED and DUPLICATE remain valid JobReportReason values so reports
+// filed before PB88 still render with a label in the admin queue.
 export const JOB_REPORT_REASONS: JobReportReason[] = [
   "SCAM",
-  "MISLEADING",
-  "ALREADY_FILLED",
+  "ILLEGAL_FEE",
   "DISCRIMINATORY",
-  "DUPLICATE",
+  "MISLEADING",
   "OTHER",
 ];
 

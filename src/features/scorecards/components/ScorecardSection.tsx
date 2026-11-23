@@ -275,7 +275,8 @@ export const ScorecardSection = ({
                     {scorecard.author.name ?? t("section.member")}
                   </span>
                   <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10.5px] font-medium text-brand-700">
-                    {scorecard.roundName || `Vòng ${scorecard.round || 1}`}
+                    {scorecard.roundName ||
+                      t("form.roundOption", { n: scorecard.round || 1 })}
                   </span>
                 </div>
                 <Badge
@@ -315,7 +316,7 @@ export const ScorecardSection = ({
               onClick={() => setOpen(true)}
             >
               {myScorecards.length > 0
-                ? `Đánh giá vòng ${nextRound}`
+                ? t("section.addRound", { n: nextRound })
                 : t("section.add")}
             </Button>
           )}

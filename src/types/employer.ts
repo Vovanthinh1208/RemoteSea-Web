@@ -147,6 +147,12 @@ export type EmployerJobsResponse = {
   };
 };
 
+export type EmployerApplicationDetail = EmployerApplicant & {
+  jobId: string;
+  jobTitle: string;
+  canManage: boolean;
+};
+
 export type EmployerApplicant = {
   id: string;
   status: ApplicationStatus;

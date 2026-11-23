@@ -20,7 +20,8 @@
     "criteriaAverages": "Trung bình theo tiêu chí",
     "strengths": "Điểm mạnh",
     "improvements": "Cần cải thiện",
-    "note": "Ghi chú"
+    "note": "Ghi chú",
+    "addRound": "Đánh giá vòng {{n}}"
   },
   "form": {
     "success": "Đã gửi phản hồi.",
@@ -39,7 +40,9 @@
     "strengths": "Điểm mạnh",
     "strengthsPlaceholder": "Tư duy hệ thống rõ ràng, giải thích đánh đổi tốt…",
     "improvements": "Điểm cần cải thiện",
-    "improvementsPlaceholder": "Cần đào sâu chiến lược kiểm thử…"
+    "improvementsPlaceholder": "Cần đào sâu chiến lược kiểm thử…",
+    "round": "Vòng phỏng vấn",
+    "roundOption": "Vòng {{n}}"
   },
   "criteria": {
     "technicalRating": "Năng lực chuyên môn",

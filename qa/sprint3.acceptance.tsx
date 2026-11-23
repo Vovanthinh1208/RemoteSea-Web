@@ -9,6 +9,7 @@ vi.mock("@/features/reviews/reviews.queries", () => ({
     data: {
       averageRating: 3,
       totalReviews: 2,
+      distribution: { 1: 0, 2: 1, 3: 0, 4: 1, 5: 0 },
       ratings: {},
       reviews: [
         {
@@ -38,6 +39,7 @@ it("S3-PB50-UI01 match percentage exposes the documented progress indicator [AC3
       match={{
         score: 85,
         reasons: [],
+        matchedSkills: [{ id: "react", name: "React", isRequired: true }],
         missingSkills: [{ id: "redis", name: "Redis", isRequired: true }],
       }}
     />
