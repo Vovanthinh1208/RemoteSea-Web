@@ -7,6 +7,7 @@ const repository = vi.hoisted(() => ({
     getSession: vi.fn(),
     forgotPassword: vi.fn(),
     resetPassword: vi.fn(),
+    verifyResetToken: vi.fn(),
     oauthUrl: vi.fn(),
     getOAuthProviders: vi.fn(),
   },
@@ -14,7 +15,7 @@ const repository = vi.hoisted(() => ({
 
 vi.mock("@/features/auth/auth.repository", () => repository);
 
-const { getSession, getOAuthProviders } =
+const { getSession, getOAuthProviders, verifyResetToken } =
   await import("@/features/auth/auth.service");
 const { UnauthorizedError, ValidationError } =
   await import("@/core/errors/error-types");
@@ -66,5 +67,19 @@ describe("getOAuthProviders", () => {
       providers: ["google", "github"],
     });
     await expect(getOAuthProviders()).resolves.toEqual(["google", "github"]);
+  });
+});
+
+describe("verifyResetToken", () => {
+  it("delegates token verification to authRepository", async () => {
+    repository.authRepository.verifyResetToken.mockResolvedValueOnce({
+      valid: true,
+    });
+    await expect(verifyResetToken("test-token")).resolves.toEqual({
+      valid: true,
+    });
+    expect(repository.authRepository.verifyResetToken).toHaveBeenCalledWith(
+      "test-token"
+    );
   });
 });

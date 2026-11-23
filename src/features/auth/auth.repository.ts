@@ -95,6 +95,14 @@ export const authRepository = {
     return data;
   },
 
+  verifyResetToken: async (token: string): Promise<{ valid: boolean }> => {
+    const { data } = await apiClient.get<{ valid: boolean }>(
+      "/auth/verify-reset-token",
+      { params: { token } }
+    );
+    return data;
+  },
+
   resetPassword: async (
     payload: ResetPasswordPayload
   ): Promise<{ message: string }> => {

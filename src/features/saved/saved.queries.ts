@@ -20,7 +20,7 @@ export const useSavedJobs = (page = 1, limit = SAVED_JOBS_LIST_LIMIT) => {
   return useQuery({
     queryKey: savedKeys.jobs(page, limit),
     queryFn: ({ signal }) => listSavedJobs(page, limit, { signal }),
-    enabled: !!user,
+    enabled: !!user && user.role === "TALENT",
     ...TIER.live,
   });
 };
@@ -32,7 +32,7 @@ export const useSavedJobIds = () => {
   return useQuery({
     queryKey: savedKeys.ids(),
     queryFn: ({ signal }) => listSavedJobIds({ signal }),
-    enabled: !!user,
+    enabled: !!user && user.role === "TALENT",
     ...TIER.live,
   });
 };
@@ -47,7 +47,7 @@ export const useIsJobSaved = (jobId: string) => {
   return useQuery({
     queryKey: savedKeys.ids(),
     queryFn: ({ signal }) => listSavedJobIds({ signal }),
-    enabled: !!user,
+    enabled: !!user && user.role === "TALENT",
     ...TIER.live,
     select: (ids) => ids.includes(jobId),
   });

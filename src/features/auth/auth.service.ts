@@ -68,6 +68,10 @@ export const forgotPassword = async (
   email: string
 ): Promise<{ message: string }> => authRepository.forgotPassword(email);
 
+export const verifyResetToken = async (
+  token: string
+): Promise<{ valid: boolean }> => authRepository.verifyResetToken(token);
+
 export const resetPassword = async (
   payload: ResetPasswordPayload
 ): Promise<{ message: string }> => authRepository.resetPassword(payload);

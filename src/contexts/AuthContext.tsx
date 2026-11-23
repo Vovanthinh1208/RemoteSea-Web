@@ -70,7 +70,7 @@ interface AuthProviderProps {
   children: React.ReactNode;
 }
 
-const AuthContext = createContext<AuthContextValue | null>(null);
+export const AuthContext = createContext<AuthContextValue | null>(null);
 
 // The session is auth's own cache, not a regular feature query — kept here rather than
 // in a `.queries.ts` file since AuthContext is the single place that owns writes to it.
@@ -87,14 +87,17 @@ const signalLogoutToOtherTabs = () => {
 };
 
 // Only a confirmed 401 means "not logged in" — resolve to null so the caller can
-// treat it as a real logout. Any other failure (network blip, 5xx) is rethrown so
-// TanStack Query retries it and surfaces it as `isError` instead of a false logout.
+// treat it as a real logout and purge invalid token from storage. Any other failure
+// (network blip, 5xx) is rethrown so TanStack Query retries it and surfaces it as
+// `isError` instead of a false logout.
 const hydrateFromSession = async (): Promise<AuthUser | null> => {
   try {
     return await authService.getSession();
   } catch (err) {
-    if (err instanceof ApiError && err.status === UNAUTHORIZED_STATUS)
+    if (err instanceof ApiError && err.status === UNAUTHORIZED_STATUS) {
+      clearAccessToken();
       return null;
+    }
     throw err;
   }
 };
@@ -130,6 +133,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         : sessionQuery.isError
           ? "error"
           : "unauthenticated";
+
+  // PB08 AC2.2: Automatically clean up stale or invalid token from local storage
+  // when session query resolves to null.
+  useEffect(() => {
+    if (hasToken && sessionQuery.isSuccess && sessionQuery.data === null) {
+      clearAccessToken();
+      setHasToken(false);
+    }
+  }, [hasToken, sessionQuery.isSuccess, sessionQuery.data]);
 
   // Depends on `refetch` (stable identity in TanStack v5), not the whole
   // `sessionQuery` result object (new every render) — with the object as the

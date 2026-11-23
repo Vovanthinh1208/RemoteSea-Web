@@ -38,7 +38,8 @@ export const useMyTalentProfile = () => {
         throw err;
       }
     },
-    enabled: !!user,
+    // Only fire for authenticated TALENT users — prevents 404 request leak when an EMPLOYER or ADMIN logs in.
+    enabled: !!user && user.role === "TALENT",
   });
 };
 

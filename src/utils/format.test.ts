@@ -1,5 +1,24 @@
 import { describe, expect, it } from "vitest";
-import { formatSalaryRange } from "./format";
+import {
+  formatLocalDate,
+  formatLocalDateTime,
+  formatSalaryRange,
+} from "./format";
+
+describe("formatLocalDate (DEF-004 fix)", () => {
+  it("returns fallback dash for null, undefined, or empty date string — never 'Invalid Date'", () => {
+    expect(formatLocalDate(undefined)).toBe("—");
+    expect(formatLocalDate(null)).toBe("—");
+    expect(formatLocalDate("")).toBe("—");
+    expect(formatLocalDate("not-a-valid-date")).toBe("—");
+  });
+
+  it("formats valid date correctly", () => {
+    const res = formatLocalDate("2026-10-15T00:00:00.000Z");
+    expect(res).not.toBe("—");
+    expect(res).not.toBe("Invalid Date");
+  });
+});
 
 describe("formatSalaryRange", () => {
   it("formats a full range with the default $ prefix", () => {

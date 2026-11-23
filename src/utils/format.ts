@@ -121,19 +121,34 @@ export const formatDuration = (
 // Prefer these over `toLocale*String("en-US", …)` so dates/numbers switch with
 // the language switcher.
 export const formatLocalDate = (
-  value: string | number | Date,
+  value: string | number | Date | null | undefined,
   options?: Intl.DateTimeFormatOptions
-): string => new Date(value).toLocaleDateString(getIntlLocale(), options);
+): string => {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString(getIntlLocale(), options);
+};
 
 export const formatLocalTime = (
-  value: string | number | Date,
+  value: string | number | Date | null | undefined,
   options?: Intl.DateTimeFormatOptions
-): string => new Date(value).toLocaleTimeString(getIntlLocale(), options);
+): string => {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return "—";
+  return d.toLocaleTimeString(getIntlLocale(), options);
+};
 
 export const formatLocalDateTime = (
-  value: string | number | Date,
+  value: string | number | Date | null | undefined,
   options?: Intl.DateTimeFormatOptions
-): string => new Date(value).toLocaleString(getIntlLocale(), options);
+): string => {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return "—";
+  return d.toLocaleString(getIntlLocale(), options);
+};
 
 export const formatLocalNumber = (
   value: number,

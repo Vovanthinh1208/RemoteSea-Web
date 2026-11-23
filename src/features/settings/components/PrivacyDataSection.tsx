@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Download, Eye, FileText } from "lucide-react";
 import {
   SectionHead,
@@ -15,12 +15,15 @@ import { downloadPersonalData } from "@/features/users/personal-data-download";
 import { useToastMutation } from "@/hooks/useToastMutation";
 import { useI18n } from "@/i18n/useI18n";
 import { useTranslation } from "@/i18n/useTranslation";
+import { AuthContext } from "@/contexts/AuthContext";
 
 export const PrivacyDataSection = () => {
   const { t } = useTranslation("settings");
   const { locale } = useI18n();
+  const auth = useContext(AuthContext);
   const runWithToast = useToastMutation();
 
+  const isTalent = auth ? auth.user?.role === "TALENT" : true;
   const { data: profile } = useMyTalentProfile();
   const updateProfileMutation = useUpdateMyTalentProfile();
   const exportBlobMutation = useExportMyDataBlob();
@@ -84,7 +87,7 @@ export const PrivacyDataSection = () => {
         }
       />
       <div className="mb-5 divide-y divide-neutral-50">
-        {profile && (
+        {isTalent && profile && (
           <div className="flex items-center gap-3 px-4 py-3.5">
             <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-10 bg-neutral-100 text-neutral-500">
               <Eye size={16} />

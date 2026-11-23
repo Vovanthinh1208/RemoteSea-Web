@@ -1,14 +1,13 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   resetPasswordSchema,
   type ResetPasswordFormValues,
 } from "@/features/auth/auth.schemas";
-import { resetPassword } from "@/features/auth/auth.service";
+import { resetPassword, verifyResetToken } from "@/features/auth/auth.service";
 import { TextField } from "@/components/shared/TextField";
 import { useToast } from "@/components/ui/toast";
 import { applyFormSubmitError } from "@/utils/form-errors";
@@ -17,14 +16,19 @@ import { ROUTES } from "@/constants/routes";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useTranslation } from "@/i18n";
 import { ApiError } from "@/core/errors/api-error";
+import { getErrorMessage } from "@/core/errors/localize";
+import { Spinner } from "@/components/ui/spinner";
 
 export const ResetPasswordForm = () => {
   const { t } = useTranslation("auth");
-  const [canRequestNewLink, setCanRequestNewLink] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
+  const [tokenStatus, setTokenStatus] = useState<
+    "loading" | "valid" | "invalid"
+  >(token ? "loading" : "invalid");
+  const [tokenErrorMessage, setTokenErrorMessage] = useState("");
   const submitError = useSubmitError();
   const form = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -39,13 +43,41 @@ export const ResetPasswordForm = () => {
   // Field errors on screen re-validate in the new language after a switch.
   useRevalidateOnLocaleChange(form);
 
+  useEffect(() => {
+    let active = true;
+    if (!token) {
+      setTokenStatus("invalid");
+      return;
+    }
+
+    setTokenStatus("loading");
+    verifyResetToken(token)
+      .then(() => {
+        if (active) {
+          setTokenStatus("valid");
+        }
+      })
+      .catch((err) => {
+        if (active) {
+          setTokenStatus("invalid");
+          setTokenErrorMessage(
+            getErrorMessage(err, t("resetPassword.invalidToken"))
+          );
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [token, t]);
+
   const onSubmit = async (values: ResetPasswordFormValues) => {
     if (!token) {
-      submitError.failWithKey("auth.resetPassword.invalidToken");
+      setTokenStatus("invalid");
+      setTokenErrorMessage(t("resetPassword.invalidToken"));
       return;
     }
     submitError.clear();
-    setCanRequestNewLink(false);
     try {
       await resetPassword({ token, password: values.password });
       toast({
@@ -55,18 +87,38 @@ export const ResetPasswordForm = () => {
       });
       navigate(ROUTES.login, { replace: true });
     } catch (err) {
+      if (err instanceof ApiError && err.code === "INVALID_OR_EXPIRED_TOKEN") {
+        setTokenStatus("invalid");
+        setTokenErrorMessage(
+          getErrorMessage(err, t("resetPassword.invalidToken"))
+        );
+        return;
+      }
       applyFormSubmitError(err, setError);
       submitError.fail(err);
-      setCanRequestNewLink(
-        err instanceof ApiError && err.code === "INVALID_OR_EXPIRED_TOKEN"
-      );
     }
   };
 
-  if (!token) {
+  if (tokenStatus === "loading") {
+    return (
+      <div
+        className="flex flex-col items-center justify-center py-12 text-sm text-neutral-500"
+        role="status"
+      >
+        <Spinner className="mb-2 h-6 w-6 text-brand-600" />
+        <p>
+          {t("resetPassword.verifyingToken") || "Đang kiểm tra liên kết..."}
+        </p>
+      </div>
+    );
+  }
+
+  if (tokenStatus === "invalid" || !token) {
     return (
       <div className="space-y-3 rounded-12 border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-        <p>{t("resetPassword.invalidToken")}</p>
+        <p role="alert">
+          {tokenErrorMessage || t("resetPassword.invalidToken")}
+        </p>
         <Link
           className={buttonVariants({ size: "md" })}
           to={ROUTES.forgotPassword}
@@ -103,15 +155,6 @@ export const ResetPasswordForm = () => {
         <p className="text-sm text-red-600" role="alert">
           {submitError.message}
         </p>
-      )}
-
-      {canRequestNewLink && (
-        <Link
-          className={buttonVariants({ size: "md", variant: "outline" })}
-          to={ROUTES.forgotPassword}
-        >
-          {t("resetPassword.requestNewLink")}
-        </Link>
       )}
 
       <Button
