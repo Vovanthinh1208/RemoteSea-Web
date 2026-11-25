@@ -22,6 +22,11 @@ export const buttonVariants = cva(
         // instead of reaching for a variant here, since none existed yet.
         danger:
           "bg-danger-600 text-white border-transparent hover:bg-danger-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]",
+        // Secondary-weight trigger for a destructive flow that confirms in a
+        // second step (e.g. PB62 "Cancel interview"): warning color without
+        // the solid fill reserved for the final confirm button.
+        dangerOutline:
+          "bg-transparent text-danger-600 border-danger-600 hover:bg-danger-50",
       },
       size: {
         sm: "h-8 px-3 text-[13px]",

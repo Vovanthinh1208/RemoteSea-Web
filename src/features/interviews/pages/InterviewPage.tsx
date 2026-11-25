@@ -67,7 +67,12 @@ export const InterviewPage = () => {
       onConfirm={handleCancel}
     >
       {({ onClick }) => (
-        <Button size="sm" type="button" variant="outline" onClick={onClick}>
+        <Button
+          size="sm"
+          type="button"
+          variant="dangerOutline"
+          onClick={onClick}
+        >
           {t("page.cancel")}
         </Button>
       )}

@@ -48,7 +48,9 @@ const ApplicationRow = memo(function ApplicationRow({
           <div className="min-w-0">
             <Link
               className="block truncate text-[13.5px] font-medium text-neutral-900 hover:text-brand-700 hover:underline focus-visible:shadow-focus focus-visible:outline-none"
-              to={ROUTES.jobDetail(a.jobId)}
+              // PB54: the row opens the application detail page (status,
+              // timeline, submitted CV); that page links on to the job itself.
+              to={ROUTES.applicationDetail(a.id)}
             >
               {a.job.title}
             </Link>

@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { CalendarClock, FileText, MessageCircle } from "lucide-react";
+import { CalendarClock, FileText, MessageCircle, X } from "lucide-react";
 import {
   useApplication,
   useRespondToOffer,
@@ -17,6 +18,7 @@ import { ApplicationDetailHeader } from "@/components/shared/ApplicationDetailHe
 import { ConfirmAction } from "@/components/shared/ConfirmAction";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Badge } from "@/components/ui/badge";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -87,11 +89,14 @@ export const ApplicationDetailPage = () => {
     useInterview(applicationId);
   const interview = interviewData?.interview ?? null;
 
+  const { t: tc } = useTranslation();
   const withdrawMutation = useWithdrawApplication();
   const offerResponseMutation = useRespondToOffer();
   const runWithToast = useToastMutation();
+  const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
 
   const handleWithdraw = async (): Promise<void> => {
+    setIsWithdrawOpen(false);
     await runWithToast(() => withdrawMutation.mutateAsync(applicationId), {
       success: t("appDetail.withdrawn"),
       error: t("appDetail.withdrawFailed"),
@@ -403,27 +408,30 @@ export const ApplicationDetailPage = () => {
 
             <ApplicationTimeline application={application} />
 
-            {/* PB55 AC1–3: explicit, irreversible withdraw with confirmation. */}
+            {/* PB55 AC1–3: explicit, irreversible withdraw — an X icon button
+                that opens a centered modal confirmation (GUI-PB55-01/02). */}
             {WITHDRAWABLE_STATUSES.includes(application.status) && (
-              <div className="border-t border-neutral-100 px-5 py-4">
-                <ConfirmAction
-                  confirmLabel={t("appDetail.withdrawLabel")}
-                  isPending={withdrawMutation.isPending}
-                  message={t("appDetail.withdrawQ")}
-                  pendingLabel={t("appDetail.withdrawing")}
-                  onConfirm={handleWithdraw}
+              <div className="flex items-center justify-end border-t border-neutral-100 px-5 py-4">
+                <button
+                  aria-label={t("appDetail.withdrawTitle")}
+                  className="grid h-8 w-8 place-items-center rounded-8 border border-neutral-200 text-neutral-500 transition-colors hover:border-danger-200 hover:bg-danger-50 hover:text-danger-600 focus-visible:shadow-focus focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+                  disabled={withdrawMutation.isPending}
+                  title={t("appDetail.withdrawTitle")}
+                  type="button"
+                  onClick={() => setIsWithdrawOpen(true)}
                 >
-                  {({ onClick }) => (
-                    <Button
-                      size="sm"
-                      type="button"
-                      variant="outline"
-                      onClick={onClick}
-                    >
-                      {t("appDetail.withdrawTitle")}
-                    </Button>
-                  )}
-                </ConfirmAction>
+                  <X size={16} />
+                </button>
+                <ConfirmDialog
+                  destructive
+                  cancelLabel={tc("common.actions.cancel")}
+                  confirmLabel={t("appDetail.withdrawLabel")}
+                  description={t("appDetail.withdrawQ")}
+                  open={isWithdrawOpen}
+                  title={t("appDetail.withdrawTitle")}
+                  onCancel={() => setIsWithdrawOpen(false)}
+                  onConfirm={() => void handleWithdraw()}
+                />
               </div>
             )}
           </>

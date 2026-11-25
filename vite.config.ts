@@ -45,7 +45,7 @@ export default defineConfig(({ mode, command }) => {
       },
     },
     server: {
-      port: 3001,
+      port: 3000,
     },
     build: {
       // Generated but not referenced from the bundles ("hidden") — stack traces
