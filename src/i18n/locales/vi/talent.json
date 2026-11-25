@@ -371,7 +371,7 @@
     "photoRemoved": "Đã xóa ảnh",
     "photoRemoveFailed": "Không thể xóa ảnh của bạn",
     "yourName": "Tên của bạn",
-    "photoHint": "JPG hoặc PNG · cắt vuông · tối đa 2 MB",
+    "photoHint": "JPG, PNG hoặc WEBP · cắt vuông · tối đa 5 MB",
     "uploading": "Đang tải lên…",
     "upload": "Tải ảnh lên",
     "remove": "Xóa",

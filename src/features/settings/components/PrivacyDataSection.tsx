@@ -120,6 +120,9 @@ export const PrivacyDataSection = () => {
             <div className="min-w-0 flex-1">
               <p className="text-[13.5px] font-medium text-neutral-900">
                 {t("priv2.download")}
+                <span className="ml-2 text-xs font-normal text-neutral-500">
+                  (Export personal data)
+                </span>
               </p>
               <p className="text-[12px] text-neutral-400">
                 {t("priv2.downloadDesc")}
@@ -128,9 +131,9 @@ export const PrivacyDataSection = () => {
           </div>
 
           <div className="flex flex-shrink-0 items-center self-start sm:self-auto">
-            {/* Primary Action Button (PB17 - PDF export only) */}
+            {/* Primary Action Button (PB17 - PDF & JSON export) */}
             <button
-              className="flex min-w-36 items-center justify-center gap-1.5 rounded-8 bg-brand-600 px-3.5 py-2 text-[12px] font-semibold text-white shadow-sm transition hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
+              className="flex min-w-36 items-center justify-center gap-1.5 rounded-8 border border-neutral-200 bg-white px-3.5 py-2 text-[12px] font-medium text-neutral-800 shadow-sm transition hover:bg-neutral-50 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
               disabled={isExporting}
               aria-busy={isExporting}
               type="button"

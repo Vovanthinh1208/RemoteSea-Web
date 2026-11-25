@@ -46,6 +46,12 @@ const ACCENT = {
   info: "text-neutral-500",
 } as const;
 
+const TITLE_ACCENT = {
+  success: "text-brand-700",
+  error: "text-red-600",
+  info: "text-neutral-900",
+} as const;
+
 export const ToastProvider = ({ children }: ToastProviderProps) => {
   const { t: translateText } = useTranslation();
   const [toasts, setToasts] = useState<ToastItem[]>([]);
@@ -87,7 +93,12 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
                 size={17}
               />
               <div className="min-w-0 flex-1">
-                <p className="text-[13.5px] font-medium text-neutral-900">
+                <p
+                  className={cn(
+                    "text-[13.5px] font-medium",
+                    TITLE_ACCENT[t.variant]
+                  )}
+                >
                   {t.title}
                 </p>
                 {t.description && (

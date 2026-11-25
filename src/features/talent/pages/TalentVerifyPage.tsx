@@ -47,8 +47,16 @@ export const TalentVerifyPage = () => {
           </Link>
         </>
       ) : (
-        <>
-          <XCircle className="mb-4 text-red-500" size={40} />
+        <div className="relative w-full rounded-16 border border-red-200 bg-red-50/50 p-6">
+          <button
+            aria-label="Close"
+            className="absolute right-3 top-3 text-base font-medium text-neutral-500 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
+            type="button"
+            onClick={() => {}}
+          >
+            ×
+          </button>
+          <XCircle className="mx-auto mb-4 text-red-500" size={40} />
           <h1 className="mb-1 text-[24px] font-semibold tracking-tight text-neutral-900">
             {t("verifyPage.errorTitle")}
           </h1>
@@ -58,7 +66,7 @@ export const TalentVerifyPage = () => {
           <Link className={buttonVariants()} to={ROUTES.talent}>
             {t("verifyPage.goDashboard")}
           </Link>
-        </>
+        </div>
       )}
     </div>
   );

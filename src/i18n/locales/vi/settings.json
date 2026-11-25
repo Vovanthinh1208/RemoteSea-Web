@@ -107,7 +107,7 @@
     "connectedToast": "Đã liên kết {{provider}}",
     "linkedOn": "Đã liên kết ngày {{date}}",
     "linkedDateUnknown": "Không có ngày liên kết",
-    "connectFailedTitle": "Không thể liên kết {{provider}}",
+    "connectFailedTitle": "Không thể kết nối tài khoản",
     "reason": {
       "already_linked": "Tài khoản đó đã được liên kết với một tài khoản RemoteSEA khác.",
       "unknown": "Đã xảy ra lỗi. Vui lòng thử lại."
@@ -188,7 +188,7 @@
     "pauseTitle": "Tạm dừng tài khoản của tôi",
     "pausedDesc": "Bạn vẫn có thể đăng nhập. Kích hoạt lại bất cứ lúc nào — không có gì bị xóa.",
     "pauseDesc": "Đánh dấu tài khoản của bạn là tạm dừng. Bạn có thể kích hoạt lại bất cứ lúc nào — không có gì bị xóa.",
-    "pauseConfirm": "Hồ sơ của bạn sẽ bị ẩn khỏi nhà tuyển dụng và bạn sẽ không nhận email việc làm mới. Bạn có thể kích hoạt lại tài khoản khi đăng nhập lần sau.",
+    "pauseConfirm": "Hồ sơ của bạn sẽ bị ẩn khỏi nhà tuyển dụng và bạn sẽ không nhận được email việc làm mới. Bạn có thể kích hoạt lại tài khoản khi đăng nhập lần sau.",
     "pausing": "Đang tạm dừng…",
     "reactivate": "Kích hoạt lại",
     "pause": "Tạm dừng",

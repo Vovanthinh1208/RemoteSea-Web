@@ -172,7 +172,7 @@ export const ConnectedAccountsSection = () => {
               {connection ? (
                 <button
                   aria-label={t("conn2.disconnectAria", { provider: name })}
-                  className="flex flex-shrink-0 items-center gap-1.5 rounded-8 border border-neutral-200 px-2.5 py-1.5 text-[12px] font-medium text-neutral-600 hover:border-neutral-300 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
+                  className="flex flex-shrink-0 items-center gap-1.5 rounded-8 border border-red-200 px-2.5 py-1.5 text-[12px] font-medium text-red-600 hover:border-red-300 hover:bg-red-50 focus-visible:shadow-focus focus-visible:outline-none disabled:opacity-60"
                   disabled={disconnectMutation.isPending}
                   type="button"
                   onClick={() => disconnect(id)}

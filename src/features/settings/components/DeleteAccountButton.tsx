@@ -74,6 +74,9 @@ export const DeleteAccountButton = () => {
         if (confirmation === CONFIRM_WORD && !pending) void handleDelete();
       }}
     >
+      <h4 className="text-[14px] font-semibold text-red-600">
+        Delete account?
+      </h4>
       <p className="text-[12px] text-neutral-600">
         {t("del.message")} {t("del.confirmHint")}
       </p>

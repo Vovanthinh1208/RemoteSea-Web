@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TextField } from "@/components/shared/TextField";
 import { useToastMutation } from "@/hooks/useToastMutation";
@@ -11,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useRevalidateOnLocaleChange } from "@/i18n/useRevalidateOnLocaleChange";
 import { useTranslation } from "@/i18n/useTranslation";
+import { ROUTES } from "@/constants/routes";
 
 export const ChangePasswordForm = () => {
   const { t } = useTranslation("settings");
@@ -65,6 +67,14 @@ export const ChangePasswordForm = () => {
         autoComplete="current-password"
         registration={register("currentPassword")}
         type="password"
+        labelSlot={
+          <Link
+            className="text-xs font-medium text-brand-600 hover:text-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
+            to={ROUTES.forgotPassword}
+          >
+            {t("changePassword.forgotPassword") || "Forgot password?"}
+          </Link>
+        }
       />
 
       <TextField

@@ -31,7 +31,7 @@ interface BasicsSectionProps {
   headlineLength: number;
 }
 
-const MAX_HEADLINE_LENGTH = 80;
+const MAX_HEADLINE_LENGTH = 120;
 
 const getInitials = (name: string): string =>
   name

@@ -371,7 +371,7 @@
     "photoRemoved": "Photo removed",
     "photoRemoveFailed": "Couldn't remove your photo",
     "yourName": "Your name",
-    "photoHint": "JPG or PNG · square crop · max 2 MB",
+    "photoHint": "JPG, PNG or WEBP · square crop · max 5 MB",
     "uploading": "Uploading…",
     "upload": "Upload photo",
     "remove": "Remove",

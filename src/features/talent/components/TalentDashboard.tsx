@@ -10,6 +10,10 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTalentDashboard } from "@/features/talent/talent.queries";
+import {
+  useMyPauseState,
+  useReactivateMyAccount,
+} from "@/features/users/users.queries";
 import { CompletionRing } from "@/features/talent/components/talent-dashboard/CompletionRing";
 import { StatCard } from "@/components/ui/stat-card";
 import { ProfileViewsChart } from "@/features/talent/components/talent-dashboard/ProfileViewsChart";
@@ -39,6 +43,8 @@ const AFTERNOON_END_HOUR = 18;
 export const TalentDashboard = () => {
   const { t } = useTranslation("talent");
   const { user } = useAuth();
+  const { data: pauseState } = useMyPauseState();
+  const reactivateMutation = useReactivateMyAccount();
   const {
     profile,
     applications: applicationsData,
@@ -96,6 +102,21 @@ export const TalentDashboard = () => {
           verificationEmail={profile.verificationEmail ?? null}
           verificationStatus={profile.verificationStatus ?? "NOT_SUBMITTED"}
         />
+      )}
+
+      {pauseState?.isPaused && (
+        <div className="mb-6 flex items-center justify-between rounded-12 border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+          <span>
+            {t("dashboard.pausedNotice") || "Tài khoản của bạn đang tạm dừng."}
+          </span>
+          <Button
+            size="sm"
+            isLoading={reactivateMutation.isPending}
+            onClick={() => reactivateMutation.mutate()}
+          >
+            {t("dashboard.reactivate") || "Kích hoạt lại tài khoản"}
+          </Button>
+        </div>
       )}
 
       {/* Greeting */}
