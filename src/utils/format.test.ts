@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  formatLocalDate,
-  formatLocalDateTime,
-  formatSalaryRange,
-} from "./format";
+import { formatLocalDate, formatSalaryRange } from "./format";
 
 describe("formatLocalDate (DEF-004 fix)", () => {
   it("returns fallback dash for null, undefined, or empty date string — never 'Invalid Date'", () => {
