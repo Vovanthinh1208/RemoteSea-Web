@@ -16,7 +16,10 @@ export const profileFormSchema = z.object({
     .min(2, m("validation.nameMin"))
     .max(100, m("validation.nameTooLong"))
     .refine((v) => !/[<>]/.test(v), m("validation.nameInvalid")),
-  headline: z.string().max(80, m("validation.max80")).optional(),
+  headline: z
+    .string()
+    .max(120, m("validation.max120") || m("validation.max80"))
+    .optional(),
   location: z.string().optional(),
   timezone: z.string().optional(),
   bio: z.string().max(320, m("validation.max320")).optional(),

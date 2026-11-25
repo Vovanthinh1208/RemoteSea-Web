@@ -47,6 +47,9 @@ export const ForgotPasswordForm = () => {
   if (isSent) {
     return (
       <div className="flex flex-col items-start gap-4 rounded-12 border border-brand-200 bg-brand-50 p-4 text-sm text-brand-700">
+        <h3 className="text-base font-semibold text-neutral-900">
+          {t("forgotPassword.successTitle")}
+        </h3>
         <p>{t("forgotPassword.successDesc", { email: sentEmail })}</p>
         <a
           className={buttonVariants({ size: "md" })}
@@ -62,7 +65,7 @@ export const ForgotPasswordForm = () => {
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="space-y-4" noValidate onSubmit={handleSubmit(onSubmit)}>
       <TextField
         error={errors.email?.message}
         id="email"

@@ -11,6 +11,7 @@ import {
 import {
   useMyAccount,
   useUpdateMyAccount,
+  useUpdateMyName,
 } from "@/features/users/users.queries";
 import { useSyncedState } from "@/hooks/useSyncedState";
 import { useToastMutation } from "@/hooks/useToastMutation";
@@ -32,9 +33,20 @@ export const AccountSection = () => {
   const { toast } = useToast();
   const { data: account } = useMyAccount();
   const updateAccountMutation = useUpdateMyAccount();
+  const updateNameMutation = useUpdateMyName();
   const { t, setLocale } = useTranslation();
 
+  const [name, setName] = useSyncedState(user?.name ?? "");
   const [phone, setPhone] = useSyncedState(account?.phone ?? "");
+
+  const saveName = () => {
+    if (!name.trim() || name === (user?.name ?? "")) return;
+    void runWithToast(() => updateNameMutation.mutateAsync(name.trim()), {
+      success:
+        t("settings.account.nameUpdated") || "Tên hiển thị đã được cập nhật",
+      error: t("settings.account.nameUpdateError") || "Không thể cập nhật tên",
+    });
+  };
 
   const savePhone = () => {
     // The placeholder shows "+84 90 123 4567"; the API wants E.164, so strip the
@@ -89,6 +101,18 @@ export const AccountSection = () => {
         }
       />
       <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-1.5 sm:col-span-2">
+          <label className="block text-[12.5px] font-medium text-neutral-700">
+            {t("settings.account.nameLabel") || "Họ và tên"}
+          </label>
+          <input
+            aria-label={t("settings.account.nameLabel") || "Họ và tên"}
+            className={TEXT_INPUT_CLASS}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onBlur={saveName}
+          />
+        </div>
         <div className="space-y-1.5 sm:col-span-2">
           <label className="block text-[12.5px] font-medium text-neutral-700">
             {t("settings.account.emailLabel")}{" "}
@@ -176,6 +200,18 @@ export const AccountSection = () => {
               ))}
             </select>
           </div>
+        </div>
+        <div className="flex justify-end sm:col-span-2">
+          <button
+            className="rounded-8 bg-brand-600 px-4 py-2 text-[13px] font-medium text-white hover:bg-brand-700 focus-visible:shadow-focus focus-visible:outline-none"
+            type="button"
+            onClick={() => {
+              saveName();
+              savePhone();
+            }}
+          >
+            {t("settings.account.updateInfo") || "Cập nhật thông tin"}
+          </button>
         </div>
       </div>
     </section>

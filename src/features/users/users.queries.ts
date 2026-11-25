@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import {
   changeMyPassword,
   deleteMyAccount,
@@ -47,15 +46,11 @@ export const useChangeMyPassword = () =>
 
 export const useDeleteMyAccount = () => {
   const { logout } = useAuth();
-  const navigate = useNavigate();
   return useMutation({
     mutationFn: deleteMyAccount,
     onSuccess: () => {
-      // PB20: land on the home page. Navigating in the same tick as logout
-      // keeps ProtectedRoute from bouncing to /login?callbackUrl=/settings,
-      // a private page of an account that no longer exists.
-      navigate(ROUTES.home, { replace: true });
       logout();
+      window.location.replace(ROUTES.home);
     },
   });
 };

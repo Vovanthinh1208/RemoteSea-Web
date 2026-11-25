@@ -173,18 +173,23 @@ export const TwoFactorChallengeForm = ({
             disabled={isSubmitting}
             value={code}
             onChange={setCode}
-            onComplete={(fullCode) => void verify(fullCode)}
+            onComplete={() => {}}
           />
         ) : (
-          <input
-            autoComplete="off"
-            autoFocus
-            className="h-11 w-full rounded-12 border border-neutral-200 bg-white px-4 text-center font-mono text-lg uppercase tracking-widest text-neutral-900 outline-none transition-all placeholder:normal-case placeholder:tracking-normal placeholder:text-neutral-400 focus:border-brand-600 focus:shadow-focus"
-            disabled={isSubmitting}
-            placeholder="XXXXX-XXXXX"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-          />
+          <div>
+            <label className="mb-1 block text-sm font-medium text-neutral-700">
+              Backup code
+            </label>
+            <input
+              autoComplete="off"
+              autoFocus
+              className="h-11 w-full rounded-12 border border-neutral-200 bg-white px-4 text-center font-mono text-lg uppercase tracking-widest text-neutral-900 outline-none transition-all placeholder:normal-case placeholder:tracking-normal placeholder:text-neutral-400 focus:border-brand-600 focus:shadow-focus"
+              disabled={isSubmitting}
+              placeholder="XXXXX-XXXXX"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
+          </div>
         )}
 
         {submitError.message && (

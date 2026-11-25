@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Bell, Bookmark, Menu, Settings, X } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { buttonVariants } from "@/components/ui/button";
@@ -24,7 +24,6 @@ const MOBILE_ACTION_LINK_CLASS =
 
 export const Navbar = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { t } = useTranslation();
 
@@ -56,7 +55,7 @@ export const Navbar = () => {
   const performSignOut = () => {
     setConfirmSignOut(false);
     logout();
-    navigate(ROUTES.home);
+    window.location.replace(ROUTES.home);
   };
 
   return (
@@ -126,6 +125,12 @@ export const Navbar = () => {
 
           {user ? (
             <>
+              <span
+                className="hidden text-sm font-medium text-neutral-800 md:inline-block"
+                data-testid="nav-user-name"
+              >
+                {user.name}
+              </span>
               {showDashboard && (
                 <Link className={ACTION_LINK_CLASS} to={dashboardHref}>
                   {t("nav.dashboard")}

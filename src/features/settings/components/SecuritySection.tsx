@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Ban, Globe, Laptop, Loader2 } from "lucide-react";
 import { cn } from "@/utils/cn";
 import {
@@ -6,6 +7,7 @@ import {
 } from "@/features/talent/components/profile-form/SectionHead";
 import { ChangePasswordForm } from "@/features/settings/components/ChangePasswordForm";
 import { TwoFactorSection } from "@/features/settings/components/TwoFactorSection";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import {
   useMySessions,
   useRevokeMyOtherSessions,
@@ -28,6 +30,7 @@ export const SecuritySection = () => {
   const { data: sessions } = useMySessions();
   const revokeMutation = useRevokeMySession();
   const revokeOthersMutation = useRevokeMyOtherSessions();
+  const [sessionToRevoke, setSessionToRevoke] = useState<string | null>(null);
 
   const revoke = (id: string) =>
     runWithToast(() => revokeMutation.mutateAsync(id), {
@@ -113,7 +116,7 @@ export const SecuritySection = () => {
                     revokeMutation.variables === s.id
                   }
                   type="button"
-                  onClick={() => revoke(s.id)}
+                  onClick={() => setSessionToRevoke(s.id)}
                 >
                   {revokeMutation.isPending &&
                     revokeMutation.variables === s.id && (
@@ -135,6 +138,22 @@ export const SecuritySection = () => {
         <Ban size={15} />
         {t("sec2.signOutOthers")}
       </button>
+
+      <ConfirmDialog
+        open={Boolean(sessionToRevoke)}
+        title="Revoke this session?"
+        description="Are you sure you want to sign out this session?"
+        confirmLabel={t("sec2.revoke") || "Revoke"}
+        cancelLabel={t("common.actions.cancel") || "Cancel"}
+        onConfirm={() => {
+          if (sessionToRevoke) {
+            void revoke(sessionToRevoke);
+            setSessionToRevoke(null);
+          }
+        }}
+        onCancel={() => setSessionToRevoke(null)}
+        destructive
+      />
     </section>
   );
 };

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { LoginForm } from "@/features/auth/components/LoginForm";
 import { useDocumentTitle } from "@/hooks/useDocumentTitle";
@@ -23,6 +23,9 @@ const PREVIEW_JOBS = [
 export const LoginPage = () => {
   const { t } = useTranslation("auth");
   useDocumentTitle(t("pages.login.docTitle"));
+  const [searchParams] = useSearchParams();
+  const isExpired = searchParams.get("expired") === "true";
+  const hasCallback = Boolean(searchParams.get("callbackUrl"));
 
   return (
     <div className="grid min-h-[calc(100vh-56px)] lg:grid-cols-2">
@@ -125,6 +128,21 @@ export const LoginPage = () => {
         <p className="mb-8 text-sm text-neutral-500">
           {t("pages.login.subtitle")}
         </p>
+
+        {isExpired && (
+          <p
+            className="mb-4 rounded-8 border border-red-200 bg-red-50 p-2.5 text-sm text-red-600"
+            role="alert"
+          >
+            Your session has expired; sign in again
+          </p>
+        )}
+
+        {hasCallback && !isExpired && (
+          <p className="mb-4 text-sm text-neutral-500">
+            Please sign in to continue
+          </p>
+        )}
 
         <LoginForm />
       </div>

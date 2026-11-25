@@ -80,13 +80,17 @@ export const RegisterForm = () => {
       <div className="mb-6 grid grid-cols-2 gap-2">
         {(
           [
-            { value: "TALENT", label: t("register.roleTalent") },
-            { value: "EMPLOYER", label: t("register.roleEmployer") },
+            { value: "TALENT", role: "Talent", desc: t("register.roleTalent") },
+            {
+              value: "EMPLOYER",
+              role: "Employer",
+              desc: t("register.roleEmployer"),
+            },
           ] as const
         ).map((option) => (
           <button
             className={cn(
-              "h-10 rounded-12 border text-sm font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none",
+              "flex h-10 items-center justify-center gap-1 rounded-12 border px-2 text-sm font-medium transition-all focus-visible:shadow-focus focus-visible:outline-none",
               role === option.value
                 ? "border-brand-600 bg-brand-50 text-brand-700"
                 : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300"
@@ -95,7 +99,7 @@ export const RegisterForm = () => {
             type="button"
             onClick={() => setValue("role", option.value)}
           >
-            {option.label}
+            <span>{option.role}:</span> {option.desc}
           </button>
         ))}
       </div>

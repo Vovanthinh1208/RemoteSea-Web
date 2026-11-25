@@ -46,6 +46,7 @@ export const ConfirmDialog = ({
   return (
     <dialog
       ref={ref}
+      open={open}
       aria-describedby={descId}
       aria-labelledby={titleId}
       className="m-auto w-[min(24rem,calc(100%-2rem))] rounded-16 border border-neutral-200 bg-white p-6 shadow-card backdrop:bg-neutral-900/40"

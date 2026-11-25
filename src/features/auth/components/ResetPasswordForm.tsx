@@ -47,6 +47,7 @@ export const ResetPasswordForm = () => {
     let active = true;
     if (!token) {
       setTokenStatus("invalid");
+      setTokenErrorMessage(t("resetPassword.invalidToken"));
       return;
     }
 
@@ -61,7 +62,10 @@ export const ResetPasswordForm = () => {
         if (active) {
           setTokenStatus("invalid");
           setTokenErrorMessage(
-            getErrorMessage(err, t("resetPassword.invalidToken"))
+            getErrorMessage(
+              err,
+              t("resetPassword.expiredToken") || t("resetPassword.invalidToken")
+            )
           );
         }
       });
@@ -114,10 +118,17 @@ export const ResetPasswordForm = () => {
   }
 
   if (tokenStatus === "invalid" || !token) {
+    const defaultMsg = !token
+      ? t("resetPassword.invalidToken")
+      : t("resetPassword.expiredToken") ||
+        "This link is invalid or has expired.";
     return (
       <div className="space-y-3 rounded-12 border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-        <p role="alert">
-          {tokenErrorMessage || t("resetPassword.invalidToken")}
+        <p
+          className="rounded-8 border border-red-200 bg-red-50/50 p-2 text-red-700"
+          role="alert"
+        >
+          {tokenErrorMessage || defaultMsg}
         </p>
         <Link
           className={buttonVariants({ size: "md" })}
