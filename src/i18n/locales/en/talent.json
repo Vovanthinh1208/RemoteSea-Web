@@ -155,6 +155,8 @@
     "remote": "Remote"
   },
   "apps": {
+    "detailAria": "View application details",
+    "viewDetails": "View application details",
     "messageAria": "Message about this application",
     "interviewAria": "View interview",
     "collapse": "Collapse application timeline",
@@ -687,7 +689,7 @@
     "viewersTitle": "Companies that viewed your profile",
     "viewersHint": "Most recent first.",
     "empty": "No employer has viewed your profile yet.",
-    "unknownCompany": "An employer",
+    "unknownCompany": "Anonymous Employer",
     "seeAll": "See details"
   }
 }

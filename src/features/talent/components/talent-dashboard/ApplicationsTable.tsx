@@ -1,6 +1,11 @@
 import { memo, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { CalendarClock, ChevronDown, MessageCircle } from "lucide-react";
+import {
+  CalendarClock,
+  ChevronDown,
+  FileText,
+  MessageCircle,
+} from "lucide-react";
 import { CompanyLogo } from "@/components/ui/company-logo";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Badge } from "@/components/ui/badge";
@@ -86,6 +91,14 @@ const ApplicationRow = memo(function ApplicationRow({
         </span>
 
         <div className="flex shrink-0 items-center gap-1">
+          <Link
+            aria-label={t("apps.detailAria") || "View application details"}
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"
+            title={t("apps.viewDetails") || "View application details"}
+            to={ROUTES.applicationDetail(a.id)}
+          >
+            <FileText size={16} />
+          </Link>
           <Link
             aria-label={t("apps.messageAria")}
             className="grid h-8 w-8 shrink-0 place-items-center rounded-8 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:shadow-focus focus-visible:outline-none"

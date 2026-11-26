@@ -28,7 +28,9 @@ export const ResetPasswordForm = () => {
   const [tokenStatus, setTokenStatus] = useState<
     "loading" | "valid" | "invalid"
   >(token ? "loading" : "invalid");
-  const [tokenErrorMessage, setTokenErrorMessage] = useState("");
+  const [tokenErrorMessage, setTokenErrorMessage] = useState(() =>
+    token ? "" : t("resetPassword.invalidToken")
+  );
   const submitError = useSubmitError();
   const form = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -45,13 +47,8 @@ export const ResetPasswordForm = () => {
 
   useEffect(() => {
     let active = true;
-    if (!token) {
-      setTokenStatus("invalid");
-      setTokenErrorMessage(t("resetPassword.invalidToken"));
-      return;
-    }
+    if (!token) return;
 
-    setTokenStatus("loading");
     verifyResetToken(token)
       .then(() => {
         if (active) {

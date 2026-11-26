@@ -307,6 +307,10 @@
     "rejectQ_other": "Từ chối {{count}} ứng viên đã chọn?",
     "rejecting": "Đang từ chối…",
     "rejectSelected": "Từ chối các mục đã chọn",
+    "shortlist": "Đưa vào danh sách rút gọn",
+    "shortlistSelected": "Rút gọn các mục đã chọn",
+    "shortlistQ_one": "Đưa {{count}} ứng viên đã chọn vào danh sách rút gọn?",
+    "shortlistQ_other": "Đưa {{count}} ứng viên đã chọn vào danh sách rút gọn?",
     "selectHint": "Chọn để cập nhật hàng loạt",
     "toolbar": "Thao tác hàng loạt"
   },

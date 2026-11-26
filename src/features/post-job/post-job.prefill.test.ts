@@ -59,4 +59,33 @@ describe("prefillCompanyStep (PB41)", () => {
       ).coHq
     ).toBe("🇻🇳 Vietnam");
   });
+
+  describe("validateStep 2 jobTitle length (PB41-TC003)", () => {
+    const validStep2 = {
+      ...INITIAL_FORM_STATE,
+      jobTitle: "Senior Software Engineer",
+      jobCategoryId: "cat-1",
+      jobDesc: "A".repeat(150),
+      salMin: 1000,
+      salMax: 2000,
+    };
+
+    it("passes validation for valid job title length between 5 and 200", () => {
+      expect(validateStep(2, validStep2)).toEqual([]);
+    });
+
+    it("fails validation when job title is under 5 characters (e.g. 'QA')", () => {
+      const form = { ...validStep2, jobTitle: "QA" };
+      const errors = validateStep(2, form);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0]).toBe("Job title must be 5–200 characters.");
+    });
+
+    it("fails validation when job title exceeds 200 characters", () => {
+      const form = { ...validStep2, jobTitle: "A".repeat(201) };
+      const errors = validateStep(2, form);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0]).toBe("Job title must be 5–200 characters.");
+    });
+  });
 });

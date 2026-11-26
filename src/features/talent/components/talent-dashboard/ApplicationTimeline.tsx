@@ -1,9 +1,11 @@
-import { Check } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Check, ArrowRight } from "lucide-react";
 import { cn } from "@/utils/cn";
 import { timeAgoLong } from "@/utils/time";
 import { buildTimelineSteps } from "@/features/talent/talent-dashboard.utils";
 import type { Application } from "@/types/application";
 import { useTranslation } from "@/i18n/useTranslation";
+import { ROUTES } from "@/constants/routes";
 
 interface TimelineItem {
   label: string;
@@ -99,7 +101,7 @@ export const ApplicationTimeline = ({
   ];
 
   return (
-    <div className="overflow-x-auto border-t border-neutral-50 bg-neutral-50/40 px-5 py-5">
+    <div className="overflow-x-auto border-t border-neutral-50 bg-neutral-50/40 px-5 py-4">
       <div className="flex w-max items-start">
         {items.map((item, i) => (
           <TimelineStep
@@ -112,6 +114,15 @@ export const ApplicationTimeline = ({
             timestamp={item.timestamp}
           />
         ))}
+      </div>
+      <div className="mt-3 flex justify-end">
+        <Link
+          className="inline-flex items-center gap-1 text-[12px] font-medium text-brand-600 hover:text-brand-700 hover:underline"
+          to={ROUTES.applicationDetail(application.id)}
+        >
+          {t("apps.viewDetails") || "View application details"}{" "}
+          <ArrowRight size={12} />
+        </Link>
       </div>
     </div>
   );

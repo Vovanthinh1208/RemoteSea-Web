@@ -307,6 +307,10 @@
     "rejectQ_other": "Reject {{count}} selected applicants?",
     "rejecting": "Rejecting…",
     "rejectSelected": "Reject selected",
+    "shortlist": "Shortlist",
+    "shortlistSelected": "Shortlist selected",
+    "shortlistQ_one": "Shortlist {{count}} selected applicant?",
+    "shortlistQ_other": "Shortlist {{count}} selected applicants?",
     "selectHint": "Select to update in bulk",
     "toolbar": "Bulk actions"
   },

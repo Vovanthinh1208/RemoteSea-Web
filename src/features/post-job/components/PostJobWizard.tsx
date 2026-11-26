@@ -268,12 +268,19 @@ export const PostJobWizard = () => {
     if (!jobId) return;
 
     try {
-      const { url } = await createCheckoutMutation.mutateAsync(jobId);
-      if (url) {
+      const selectedPlan = TIERS.find(
+        (tier) => tier.id === form.tier
+      )?.planType;
+      const { url, checkoutUrl } = await createCheckoutMutation.mutateAsync({
+        jobId,
+        planType: selectedPlan,
+      });
+      const targetUrl = checkoutUrl || url;
+      if (targetUrl) {
         // The job now lives on the server; a cancelled payment returns to the
         // dashboard, so the local copy must not resurrect it as a new job.
         clearPostJobDraft();
-        window.location.href = url;
+        window.location.href = targetUrl;
         return;
       }
     } catch (err) {

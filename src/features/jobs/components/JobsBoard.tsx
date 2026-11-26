@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
@@ -25,6 +25,7 @@ import { cn } from "@/utils/cn";
 import { Spinner } from "@/components/ui/spinner";
 import { ROUTES } from "@/constants/routes";
 import { useTranslation } from "@/i18n/useTranslation";
+import { useMyTalentProfile } from "@/features/talent/talent.queries";
 
 interface JobsBoardProps {
   filters: JobFilters;
@@ -89,7 +90,44 @@ export const JobsBoard = ({
   const { filters } = query;
   const activePills = buildActivePills(filters, categories, setFilters);
 
-  const jobs = data?.jobs ?? [];
+  const { data: talentProfile } = useMyTalentProfile();
+
+  const talentSkillNames = useMemo(() => {
+    if (!talentProfile?.skills) return new Set<string>();
+    return new Set(talentProfile.skills.map((s) => s.skill.name.toLowerCase()));
+  }, [talentProfile]);
+
+  const jobs = useMemo(() => {
+    const list = data?.jobs ?? [];
+    if (query.sort !== "relevance" || query.q || !talentProfile) {
+      return list;
+    }
+    // PB47-TC006 / PB47 AC3: Sắp xếp phù hợp nhất dựa trên kỹ năng và cấp bậc của hồ sơ ứng viên
+    return [...list].sort((a, b) => {
+      let scoreA = 0;
+      let scoreB = 0;
+
+      for (const item of a.skills) {
+        if (talentSkillNames.has(item.skill.name.toLowerCase())) {
+          scoreA += item.isRequired ? 3 : 2;
+        }
+      }
+      for (const item of b.skills) {
+        if (talentSkillNames.has(item.skill.name.toLowerCase())) {
+          scoreB += item.isRequired ? 3 : 2;
+        }
+      }
+
+      if (a.level === talentProfile.level) scoreA += 2;
+      if (b.level === talentProfile.level) scoreB += 2;
+
+      if (a.isFeatured) scoreA += 0.5;
+      if (b.isFeatured) scoreB += 0.5;
+
+      return scoreB - scoreA;
+    });
+  }, [data?.jobs, query.sort, query.q, talentProfile, talentSkillNames]);
+
   const total = data?.pagination.total ?? 0;
   const pages = data?.pagination.pages ?? 1;
   const facets = data?.facets ?? {
@@ -149,11 +187,7 @@ export const JobsBoard = ({
               {t("board.sortBy")}
               <Dropdown
                 aria-label={t("board.sortAria")}
-                options={
-                  query.q
-                    ? sortOptions
-                    : sortOptions.filter((o) => o.value !== "relevance")
-                }
+                options={sortOptions}
                 value={query.sort}
                 onChange={(v) => setSort(v as SortKey)}
               />

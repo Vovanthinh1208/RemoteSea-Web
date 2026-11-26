@@ -40,9 +40,10 @@ export const PayDraftDialog = ({ job, open, onClose }: PayDraftDialogProps) => {
           payload: { planType: plan },
         });
       }
-      const { url } = await checkoutMutation.mutateAsync(job.id);
-      if (url) {
-        window.location.assign(url);
+      const { url, checkoutUrl } = await checkoutMutation.mutateAsync(job.id);
+      const targetUrl = checkoutUrl || url;
+      if (targetUrl) {
+        window.location.assign(targetUrl);
         return;
       }
       // Stripe isn't configured on this deployment: the job stays an unpaid

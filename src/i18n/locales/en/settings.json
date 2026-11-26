@@ -107,7 +107,7 @@
     "connectedToast": "{{provider}} connected",
     "linkedOn": "Linked {{date}}",
     "linkedDateUnknown": "Link date unavailable",
-    "connectFailedTitle": "Couldn't connect {{provider}}",
+    "connectFailedTitle": "Failed to connect account",
     "reason": {
       "already_linked": "That account is already connected to a different RemoteSEA account.",
       "unknown": "Something went wrong. Please try again."

@@ -11,6 +11,7 @@ export interface ApplicantBulkActionsProps {
   selectedCount: number;
   commonStatus: ApplicationStatus | null;
   bulkNextStatus?: ApplicationStatus;
+  canShortlist?: boolean;
   isPending: boolean;
   onToggleSelectAll: () => void;
   onBulkUpdate: (status: ApplicationStatus, note?: string) => void;
@@ -22,6 +23,7 @@ export const ApplicantBulkActions = ({
   selectedCount,
   commonStatus,
   bulkNextStatus,
+  canShortlist,
   isPending,
   onToggleSelectAll,
   onBulkUpdate,
@@ -79,6 +81,26 @@ export const ApplicantBulkActions = ({
                       {t("bulk.actionSelected", {
                         action: NEXT_LABEL[commonStatus],
                       })}
+                    </button>
+                  )}
+                </ConfirmAction>
+              )}
+              {canShortlist && bulkNextStatus !== "SHORTLISTED" && (
+                <ConfirmAction
+                  confirmLabel={t("bulk.shortlist")}
+                  isPending={isPending}
+                  message={t("bulk.shortlistQ", { count: selectedCount })}
+                  notePlaceholder={t("bulk.note")}
+                  pendingLabel={t("bulk.updating")}
+                  onConfirm={(note) => onBulkUpdate("SHORTLISTED", note)}
+                >
+                  {({ onClick }) => (
+                    <button
+                      className="inline-flex items-center gap-1 rounded-8 px-2.5 py-1 text-[11.5px] font-medium text-emerald-700 transition-colors hover:bg-emerald-50 focus-visible:shadow-focus focus-visible:outline-none"
+                      type="button"
+                      onClick={onClick}
+                    >
+                      <Check size={12} /> {t("bulk.shortlistSelected")}
                     </button>
                   )}
                 </ConfirmAction>

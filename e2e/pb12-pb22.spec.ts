@@ -423,8 +423,7 @@ test("PB18-E2E-01 [AC2-4, C1] linked providers show name + link date; last metho
     (${q(randomUUID())}, ${q(user.id)}, 'oauth', 'google', ${q("g-" + randomUUID())}, now() - interval '3 days'),
     (${q(randomUUID())}, ${q(user.id)}, 'oauth', 'github', ${q("gh-" + randomUUID())}, now())`);
   sql(`update users set "passwordHash" = null where id = ${q(user.id)}`);
-  await signInWithToken(page, user);
-  await page.goto("/settings");
+  await openSettings(page, user);
   const section = page.locator("#connected");
   await expect(section.getByText("Google", { exact: true })).toBeVisible();
   await expect(section.getByText(/^Linked /)).toHaveCount(2);
@@ -437,6 +436,43 @@ test("PB18-E2E-01 [AC2-4, C1] linked providers show name + link date; last metho
   expect(
     sql(`select count(*) from accounts where "userId" = ${q(user.id)}`)
   ).toBe("1");
+});
+
+test("PB18-E2E-02 [GUI-PB18-01..12] OAuth error toast styling and full UI layout compliance", async ({
+  page,
+  request,
+}) => {
+  const user = await register(request, "TALENT", "pb18gui");
+  await openSettings(page, user);
+
+  const section = page.locator("#connected");
+  await expect(section.getByText("Connected accounts.")).toBeVisible();
+  await expect(section.getByText("03 · Sign-in methods")).toBeVisible();
+  await expect(
+    section.getByText(/Providers linked for one-tap sign-in/i)
+  ).toBeVisible();
+
+  // Connect buttons for unlinked providers
+  await expect(
+    section.getByRole("button", { name: "Connect Google" })
+  ).toBeVisible();
+  await expect(
+    section.getByRole("button", { name: "Connect GitHub" })
+  ).toBeVisible();
+  await expect(
+    section.getByRole("button", { name: "Connect LinkedIn" })
+  ).toBeVisible();
+
+  // Test OAuth error toast on callback error
+  await page.goto("/settings?connectionError=google&reason=already_linked");
+  const toast = page.locator("[role='status'], [data-state='open']").first();
+  await expect(toast).toBeVisible();
+  const errorTitle = page.getByText("Failed to connect account").first();
+  await expect(errorTitle).toBeVisible();
+  await expect(errorTitle).toHaveClass(/text-red-600/);
+
+  // Search params stripped after displaying toast
+  await expect(page).toHaveURL(/\/settings$/);
 });
 
 // ─── PB19 ────────────────────────────────────────────────────────────────

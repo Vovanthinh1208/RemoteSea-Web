@@ -139,7 +139,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     if (hasToken && sessionQuery.isSuccess && sessionQuery.data === null) {
       clearAccessToken();
-      setHasToken(false);
+      queueMicrotask(() => {
+        setHasToken(false);
+      });
     }
   }, [hasToken, sessionQuery.isSuccess, sessionQuery.data]);
 

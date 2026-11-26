@@ -283,7 +283,12 @@ export const validateCompanyProfile = (form: PostJobFormState): string[] => {
 
 const stepRoleSchema = z
   .object({
-    jobTitle: z.string().trim().min(1, m("validation.jobTitleRequired")),
+    jobTitle: z
+      .string()
+      .trim()
+      .min(1, m("validation.jobTitleRequired"))
+      .min(5, m("validation.jobTitleLength"))
+      .max(200, m("validation.jobTitleLength")),
     jobCategoryId: z.string().trim().min(1, m("validation.categoryRequired")),
     jobDesc: z
       .string()

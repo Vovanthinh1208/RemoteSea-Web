@@ -155,6 +155,8 @@
     "remote": "Remote"
   },
   "apps": {
+    "detailAria": "Xem chi tiết đơn ứng tuyển",
+    "viewDetails": "Xem chi tiết đơn ứng tuyển",
     "messageAria": "Nhắn tin về đơn ứng tuyển này",
     "interviewAria": "Xem buổi phỏng vấn",
     "collapse": "Thu gọn tiến trình đơn ứng tuyển",
@@ -687,7 +689,7 @@
     "viewersTitle": "Các công ty đã xem hồ sơ",
     "viewersHint": "Mới nhất trước.",
     "empty": "Chưa có nhà tuyển dụng nào xem hồ sơ của bạn.",
-    "unknownCompany": "Một nhà tuyển dụng",
+    "unknownCompany": "Công ty ẩn danh",
     "seeAll": "Xem chi tiết"
   }
 }

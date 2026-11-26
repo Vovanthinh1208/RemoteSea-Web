@@ -186,6 +186,12 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
       ? NEXT_STAGE[commonStatus]
       : undefined;
 
+  const canShortlist =
+    selectedApplicants.length > 0 &&
+    selectedApplicants.some(
+      (a) => a.status === "APPLIED" || a.status === "REVIEWING"
+    );
+
   const runBulkUpdate = async (status: ApplicationStatus, note?: string) => {
     const items = selectedApplicants.map((a) => ({ id: a.id, jobId: a.jobId }));
     const rejecting = status === "REJECTED";
@@ -274,6 +280,7 @@ export const ApplicantsPanel = ({ applicants }: ApplicantsPanelProps) => {
           <ApplicantBulkActions
             allEligibleSelected={allEligibleSelected}
             bulkNextStatus={bulkNextStatus}
+            canShortlist={canShortlist}
             commonStatus={commonStatus}
             eligibleCount={eligibleVisible.length}
             isPending={bulkUpdateMutation.isPending}

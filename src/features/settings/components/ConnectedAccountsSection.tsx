@@ -66,9 +66,11 @@ export const ConnectedAccountsSection = () => {
       });
     } else if (connectionError) {
       const reason = searchParams.get("reason") ?? "unknown";
+      const providerObj = PROVIDERS.find((p) => p.id === connectionError);
+      const providerLabel = providerObj?.name ?? connectionError;
       toast({
         variant: "error",
-        title: t("conn2.connectFailedTitle", { provider: connectionError }),
+        title: t("conn2.connectFailedTitle", { provider: providerLabel }),
         description:
           reason === "already_linked"
             ? t("conn2.reason.already_linked")
